@@ -1,5 +1,5 @@
 {
-  "name": "widget",
+  "name": "gatefy-widget",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,6 +16,8 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
+    "lint": "eslint --fix src/*.ts?\\(x\\)",
+    "checklint": "eslint src/*.ts?\\(x\\)",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
