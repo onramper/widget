@@ -16,8 +16,8 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "lint": "eslint --fix src/*.ts?\\(x\\)",
-    "checklint": "eslint src/*.ts?\\(x\\)",
+    "lint": "eslint src --ext ts,js,tsx --no-ignore --fix",
+    "checklint": "eslint src --ext ts,js,tsx --no-ignore",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -36,6 +36,20 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.9"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,tsx}": [
+      "npm run lint"
     ]
   }
 }
