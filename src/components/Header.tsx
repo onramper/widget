@@ -5,7 +5,7 @@ import IconMenu from '../icons/burger_menu.svg'
 import IconLeftArrow from '../icons/left_arrow.svg'
 
 function Header(props: { title: string; backButton?: boolean }) {
-    const { title, backButton = true } = props
+    const { title, backButton = false } = props
     return (
         <nav className={styles.header}>
             {backButton ? <img className={`${styles['header__child']} ${styles['header__back-icon']}`} alt="Back" src={IconLeftArrow} /> : null}

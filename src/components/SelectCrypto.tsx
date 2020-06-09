@@ -12,10 +12,10 @@ import IconUSD from '../icons/usd.svg'
 function SelectCrypto() {
     return (
         <div className={styles.body}>
-            <InputButton iconPosition='end' className={styles['body__child']} label="I want to buy" selectedOption="Bitcoin" icon={IconBTC} />
+            <InputButton className={styles['body__child']} label="I want to buy" selectedOption="Bitcoin" icon={IconBTC} />
             <div className={`${styles['body__child']} ${styles['row-fields']}`}>
-                <InputText iconPosition='end' className={styles['row-fields__child']} label="Amount" symbol="$" placeholder="100" icon={IconBTC} />
-                <InputButton iconPosition='end' className={styles['row-fields__child']} label="Currency" selectedOption="USD" icon={IconBTC} />
+                <InputText className={styles['row-fields__child']} label="Amount" symbol="$" placeholder="100" />
+                <InputButton className={styles['row-fields__child']} label="Currency" selectedOption="USD" icon={IconUSD} />
             </div>
             <InputButton iconPosition="end" className={styles['body__child']} label="Payment method" selectedOption="Credit card" icon={IconCC} />
             <ExpectedCrypto className={`${styles['body__child']} ${styles.grow}`} amount={0.02} denom="BTC" />
