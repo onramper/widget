@@ -1,0 +1,230 @@
+/*********
+general styles
+*********/
+.view {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 440px;
+    max-height: 576px;
+    border-radius: 10px 10px 10px 10px;
+    background-color: white;
+}
+
+/*********
+components
+*********/
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1.75rem 1.88rem 1.125rem 1.88rem;
+    border-bottom: 1px solid #F5F5F5;
+    border-radius: 10px 10px 0 0;
+}
+
+.header__child+.header__child {
+    margin-left: 1.675rem;
+}
+
+.header h1 {
+    font-size: 1.31rem;
+    font-weight: normal;
+    flex-grow: 1;
+    margin: 0;
+}
+
+.header__burger-icon {
+    width: 1.125rem;
+    height: 0.844rem;
+}
+
+.header__back-icon {
+    width: 1.2rem;
+    height: 1.06rem;
+}
+
+/*-------------------body layot-------------------*/
+
+.body {
+    --body-space-childs-v: 1.25rem;
+    --body-space-childs-h: var(--body-space-childs-v);/* 1.56rem; */
+    display: flex;
+    flex-direction: column;
+    padding: var(--body-space-childs-v) 1.75rem;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.body__child+.body__child {
+    margin-top: var(--body-space-childs-v);
+}
+
+
+.row-fields {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.row-fields__child {
+    flex-grow: 1;
+}
+
+.row-fields__child+.row-fields__child {
+    margin-left: var(--body-space-childs-h);
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+@media (max-width: 410px) {
+    .row-fields {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .row-fields__child+.row-fields__child {
+        margin-left: 0;
+        margin-top: var(--body-space-childs-v);
+    }
+}
+
+/*------------------inputs--------------------*/
+/*container label+type*/
+.input {
+    --input-padding: 0.81rem;
+    --input-content-spacing: var(--input-padding);
+    display: flex;
+    flex-direction: column;
+}
+
+.input > label {
+    margin-bottom: 0.56rem;
+    font-size: 0.875rem;
+}
+
+/*common to all input types*/
+.input__type {
+    background-color: white;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #DEDEDE;
+    padding: var(--input-padding);
+    display: flex;
+}
+
+/*apply space between input__type childs*/
+.input__type__child+.input__type__child {
+    margin-left: var(--input-content-spacing);
+}
+
+.input__type__child--new-first {
+    margin-left: 0!important;
+}
+
+.input__type__child--old-first {
+    margin-left: var(--input-content-spacing);
+}
+
+/***input type=selector***/
+.input__type--selector {
+    cursor: pointer;
+    align-items: center;
+}
+
+.input__type--selector span{
+    flex-grow: 1;
+}
+
+/***input type=number***/
+.input__type--number--disabled {
+    background-color: #F8F8F8;
+}
+
+.input__type--number input {
+    outline: none;
+    font-size: 1rem;
+    border: 0;
+    width: 100%;
+    background-color: transparent;
+    color: inherit;
+}
+
+.symbol::before {
+    position: relative;
+    top: -0.025rem;
+    content: attr(before-content);
+    align-self: center;
+}
+
+.symbol {
+    display: inline-flex;
+    flex-grow: 1;
+}
+
+/*1.333rem=fontsize+spacing*/
+.input__icon {
+    height: 1.333rem
+}
+
+.input__icon--chevron {
+    height: 0.75rem;
+}
+
+
+/*-------------------expected crypto-------------------*/
+
+.expected-crypto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.expected-crypto__amount {
+    font-size: 1.69rem;
+}
+
+.expected-crypto__info {
+    color: #999;
+    font-size: 0.625rem;
+}
+
+/*-------------------button-------------------*/
+
+.button-action {
+    outline: none;
+    cursor: pointer;
+    background-color: #006070;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 0px;
+    border-color: #DEDEDE;
+    padding: 0.78rem;
+    color: white;
+    font-size: 1.25rem;
+}
+
+/*-------------------footer-------------------*/
+
+.footer {
+    display: flex;
+    align-items: center;
+    background-color: #F8F8F8;
+    justify-content: center;
+    border-radius: 0 0 10px 10px;
+    padding: 0.438rem 1.88rem 0.625rem 1.88rem;
+    font-size: 0.75rem;
+}
+
+.footer span, .footer img {
+    opacity: 20%;
+}
+
+.footer img {
+    height: 2.083em;
+}
