@@ -7,7 +7,7 @@ function Footer() {
     return (
         <div className={styles.footer}>
             <span>Powered by</span>
-            <img src={LogoOnramper}></img>
+            <img src={LogoOnramper} alt="logo"></img>
         </div>
     )
 }
