@@ -5,10 +5,10 @@ import LogoOnramper from '../icons/logo.svg'
 
 function Footer() {
     return (
-        <div className={styles.footer}>
+        <footer className={styles.footer}>
             <span>Powered by</span>
             <img src={LogoOnramper} alt="logo"></img>
-        </div>
+        </footer>
     )
 }
 
