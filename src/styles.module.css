@@ -97,6 +97,7 @@ components
 .input {
     --input-padding: 0.81rem;
     --input-content-spacing: var(--input-padding);
+    --input-content-height: 1.25rem;
     display: flex;
     flex-direction: column;
 }
@@ -115,6 +116,7 @@ components
     border-color: #DEDEDE;
     padding: var(--input-padding);
     display: flex;
+    height: var(--input-content-height);
 }
 
 /*apply space between input__type childs*/
@@ -166,9 +168,8 @@ components
     flex-grow: 1;
 }
 
-/*1.333rem=fontsize+spacing*/
 .input__icon {
-    height: 1.333rem
+    height: var(--input-content-height);
 }
 
 .input__icon--chevron {
