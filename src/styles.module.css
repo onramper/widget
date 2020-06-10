@@ -6,6 +6,9 @@ general styles
     --padding-rl: 1.88rem;
     --padding-bottom: 1.125rem;
     --padding: var(--padding-top) var(--padding-rl) var(--padding-bottom) var(--padding-rl);
+    --component-padding: 0.81rem;
+    --component-content-spacing: var(--component-padding);
+    --component-content-height: 1.25rem;
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -98,9 +101,6 @@ components
 /*------------------inputs--------------------*/
 /*container label+type*/
 .input {
-    --input-padding: 0.81rem;
-    --input-content-spacing: var(--input-padding);
-    --input-content-height: 1.25rem;
     display: flex;
     flex-direction: column;
 }
@@ -117,14 +117,14 @@ components
     border-radius: 5px;
     border-width: 1px;
     border-color: #DEDEDE;
-    padding: var(--input-padding);
+    padding: var(--component-padding);
     display: flex;
-    height: var(--input-content-height);
+    height: var(--component-content-height);
 }
 
 /*apply space between input__type childs*/
 .input__type__child+.input__type__child {
-    margin-left: var(--input-content-spacing);
+    margin-left: var(--component-content-spacing);
 }
 
 .input__type__child--new-first {
@@ -132,7 +132,7 @@ components
 }
 
 .input__type__child--old-first {
-    margin-left: var(--input-content-spacing);
+    margin-left: var(--component-content-spacing);
 }
 
 /***input type=selector***/
@@ -172,7 +172,7 @@ components
 }
 
 .input__icon {
-    height: var(--input-content-height);
+    height: var(--component-content-height);
 }
 
 .input__icon--chevron {
@@ -211,6 +211,36 @@ components
     padding: 0.78rem;
     color: white;
     font-size: 1.25rem;
+}
+
+/*-------------------list-------------------*/
+.list {
+    display: flex;
+    flex-direction: column;
+    padding: 0px var(--padding-rl) !important;
+    overflow: auto;
+}
+
+.list-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1.125rem 0px;
+    height: var(--component-content-height);
+}
+
+.list-item__child + .list-item__child {
+    margin-left: var(--component-content-spacing);
+}
+
+.list-item__icon {
+    height: 1.75rem;
+}
+
+.list-item__info {
+    font-size: 0.75em;
+    margin-left: var(--component-content-spacing);
+    opacity: 25%;
 }
 
 /*-------------------footer-------------------*/

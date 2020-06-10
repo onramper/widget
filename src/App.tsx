@@ -1,9 +1,9 @@
 import React from 'react';
-import BuyCryptoView from './views/BuyCryptoView'
+import PickCryptoView from './views/PickCryptoView'
 
 function App() {
   return (
-      <BuyCryptoView />
+      <PickCryptoView />
   );
 }
 
