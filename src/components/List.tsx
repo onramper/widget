@@ -9,8 +9,6 @@ type ItemType = {
 
 function List(props: { items: ItemType[] }) {
     var { items } = props
-    items = items.concat(items)
-    items = items.concat(items)
     
     const listItems = items.map((item) => <ListItem key={item.name} name={item.name} info={item.info} icon={item.icon} />);
 

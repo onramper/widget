@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import List from '../components/List'
 import styles from '../styles.module.css'
 import IconBTC from '../icons/btc.svg'
+import IconUSD from '../icons/usd.svg'
 
 const availableCryptos = [
   {
@@ -12,24 +13,9 @@ const availableCryptos = [
     info: "Bitcoin"
   },
   {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
-  },
-  {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
-  },
-  {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
-  },
-  {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
+    icon: IconUSD,
+    name: "USD",
+    info: "US Dollar"
   },
 ]
 

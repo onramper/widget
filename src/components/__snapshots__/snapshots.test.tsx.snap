@@ -1,0 +1,324 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component snapshots ExpectedCrypto snapshot 1`] = `
+<div
+  className="expected-crypto undefined"
+>
+  <span
+    className="expected-crypto__amount"
+  >
+    1.2 BTC
+  </span>
+  <span
+    className="expected-crypto__info"
+  >
+    Crypto you get (estimation)
+  </span>
+</div>
+`;
+
+exports[`Component snapshots Footer snapshot 1`] = `
+<div
+  className="footer"
+>
+  <span>
+    Powered by
+  </span>
+  <img
+    alt="logo"
+    src="logo.svg"
+  />
+</div>
+`;
+
+exports[`Component snapshots Header snapshot 1`] = `
+<nav
+  className="header"
+>
+  <h1
+    className="header__child"
+  >
+    Buy crypto
+  </h1>
+  <img
+    alt="menu"
+    className="header__child header__burger-icon"
+    src="burger_menu.svg"
+  />
+</nav>
+`;
+
+exports[`Component snapshots Header with backbutton snapshot 1`] = `
+<nav
+  className="header"
+>
+  <img
+    alt="Back"
+    className="header__child header__back-icon"
+    src="left_arrow.svg"
+  />
+  <h1
+    className="header__child"
+  >
+    Buy crypto
+  </h1>
+  <img
+    alt="menu"
+    className="header__child header__burger-icon"
+    src="burger_menu.svg"
+  />
+</nav>
+`;
+
+exports[`Component snapshots InputButton snapshot 1`] = `
+<div
+  className="input "
+>
+  <div
+    className="input__type input__type--selector"
+  >
+    <span
+      className="input__type__child "
+      style={
+        Object {
+          "order": "unset",
+        }
+      }
+    >
+      Credit card
+    </span>
+    <img
+      alt="Chevron right"
+      className="input__type__child input__icon input__icon--chevron"
+      src="chevron_right.svg"
+    />
+  </div>
+</div>
+`;
+
+exports[`Component snapshots InputText snapshot 1`] = `
+<div
+  className="input "
+>
+  <label>
+     
+  </label>
+  <div
+    className="input__type input__type--number "
+  >
+    <span
+      className="input__type__child symbol  "
+      style={
+        Object {
+          "order": "unset",
+        }
+      }
+    >
+      <input
+        disabled={false}
+        min="0"
+        type="number"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Component snapshots List snapshot 1`] = `
+<div
+  className="list"
+>
+  <div
+    className="list-item"
+  >
+    <img
+      alt="Icon"
+      className="list-item__child list-item__icon"
+      src="btc.svg"
+    />
+    <div
+      className="list-item__child"
+    >
+      <span>
+        BTC
+      </span>
+      <span
+        className="list-item__info"
+      >
+        Bitcoin
+      </span>
+    </div>
+  </div>
+  <div
+    className="list-item"
+  >
+    <img
+      alt="Icon"
+      className="list-item__child list-item__icon"
+      src="usd.svg"
+    />
+    <div
+      className="list-item__child"
+    >
+      <span>
+        USD
+      </span>
+      <span
+        className="list-item__info"
+      >
+        US Dollar
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Component snapshots SelectCrypto snapshot 1`] = `
+<div
+  className="body"
+>
+  <div
+    className="input body__child"
+  >
+    <label>
+      I want to buy
+    </label>
+    <div
+      className="input__type input__type--selector"
+    >
+      <img
+        alt="Icon"
+        className="input__type__child input__icon "
+        src="btc.svg"
+      />
+      <span
+        className="input__type__child "
+        style={
+          Object {
+            "order": "unset",
+          }
+        }
+      >
+        Bitcoin
+      </span>
+      <img
+        alt="Chevron right"
+        className="input__type__child input__icon input__icon--chevron"
+        src="chevron_right.svg"
+      />
+    </div>
+  </div>
+  <div
+    className="body__child row-fields"
+  >
+    <div
+      className="input row-fields__child"
+    >
+      <label>
+        Amount
+      </label>
+      <div
+        className="input__type input__type--number "
+      >
+        <span
+          before-content="$"
+          className="input__type__child symbol  "
+          style={
+            Object {
+              "order": "unset",
+            }
+          }
+        >
+          <input
+            disabled={false}
+            min="0"
+            placeholder="100"
+            type="number"
+          />
+        </span>
+      </div>
+    </div>
+    <div
+      className="input row-fields__child"
+    >
+      <label>
+        Currency
+      </label>
+      <div
+        className="input__type input__type--selector"
+      >
+        <img
+          alt="Icon"
+          className="input__type__child input__icon "
+          src="usd.svg"
+        />
+        <span
+          className="input__type__child "
+          style={
+            Object {
+              "order": "unset",
+            }
+          }
+        >
+          USD
+        </span>
+        <img
+          alt="Chevron right"
+          className="input__type__child input__icon input__icon--chevron"
+          src="chevron_right.svg"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="input body__child"
+  >
+    <label>
+      Payment method
+    </label>
+    <div
+      className="input__type input__type--selector"
+    >
+      <img
+        alt="Icon"
+        className="input__type__child input__icon input__type__child--old-first"
+        src="ccs.svg"
+      />
+      <span
+        className="input__type__child input__type__child--new-first"
+        style={
+          Object {
+            "order": -1,
+          }
+        }
+      >
+        Credit card
+      </span>
+      <img
+        alt="Chevron right"
+        className="input__type__child input__icon input__icon--chevron"
+        src="chevron_right.svg"
+      />
+    </div>
+  </div>
+  <div
+    className="expected-crypto body__child grow"
+  >
+    <span
+      className="expected-crypto__amount"
+    >
+      0.02 BTC
+    </span>
+    <span
+      className="expected-crypto__info"
+    >
+      Crypto you get (estimation)
+    </span>
+  </div>
+  <button
+    className="body__child button-action"
+  >
+    Get crypto
+  </button>
+</div>
+`;
