@@ -2,6 +2,10 @@
 general styles
 *********/
 .view {
+    --padding-top: 1.75rem;
+    --padding-rl: 1.88rem;
+    --padding-bottom: 1.125rem;
+    --padding: var(--padding-top) var(--padding-rl) var(--padding-bottom) var(--padding-rl);
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -19,7 +23,7 @@ components
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 1.75rem 1.88rem 1.125rem 1.88rem;
+    padding: var(--padding);
     border-bottom: 1px solid #F5F5F5;
     border-radius: 10px 10px 0 0;
 }
@@ -48,17 +52,16 @@ components
 /*-------------------body layot-------------------*/
 
 .body {
-    --body-space-childs-v: 1.25rem;
-    --body-space-childs-h: var(--body-space-childs-v);/* 1.56rem; */
+    --body-space-childs: var(--padding-bottom);
     display: flex;
     flex-direction: column;
-    padding: var(--body-space-childs-v) 1.75rem;
+    padding: var(--body-space-childs) var(--padding-rl);
     overflow: auto;
     flex-grow: 1;
 }
 
 .body__child+.body__child {
-    margin-top: var(--body-space-childs-v);
+    margin-top: var(--body-space-childs);
 }
 
 
@@ -73,7 +76,7 @@ components
 }
 
 .row-fields__child+.row-fields__child {
-    margin-left: var(--body-space-childs-h);
+    margin-left: var(--body-space-childs);
 }
 
 .grow {
@@ -88,7 +91,7 @@ components
 
     .row-fields__child+.row-fields__child {
         margin-left: 0;
-        margin-top: var(--body-space-childs-v);
+        margin-top: var(--body-space-childs);
     }
 }
 
@@ -218,7 +221,7 @@ components
     background-color: #F8F8F8;
     justify-content: center;
     border-radius: 0 0 10px 10px;
-    padding: 0.438rem 1.88rem 0.625rem 1.88rem;
+    padding: 0.438rem var(--padding-rl) 0.625rem var(--padding-rl);
     font-size: 0.75rem;
 }
 
