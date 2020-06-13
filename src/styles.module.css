@@ -243,6 +243,149 @@ components
     opacity: 25%;
 }
 
+/*-------------------gateway option-------------------*/
+
+.option-container {
+    display: flex;
+    padding: 1rem;
+}
+
+.option-container__radio {
+    padding: 0px 1rem;
+}
+
+.option-container__radio input[type='radio'] {
+    margin: 0;
+}
+
+.option-container__content {
+    display: flex;
+    flex-grow: 1;
+    padding: 0px 1rem;
+}
+
+.content__info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.6rem; /*align with crypto-diff*/
+}
+
+.content__info > :first-child,
+.content__price > :first-child {
+    flex-grow: 1;
+}
+
+.content__info .details {
+    font-size: 0.75rem;
+    opacity: 0.5;
+}
+
+/*icon on details*/
+.details img {
+    height: 0.8rem;
+    vertical-align: bottom;
+}
+
+.content__info .fees {
+    font-size: 0.875rem;
+}
+
+.content__price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.content__price > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-end;
+    text-align: end;
+    font-size: 0.75rem;
+}
+
+/*-------------------range-------------------*/
+.range {
+    --spacing: 0.125rem;
+    display: flex;
+    margin: var(--spacing) 0px;
+}
+
+.range__section{
+    height: 0.3125rem;
+    flex-grow: 1;
+}
+
+.range__section + .range__section {
+    margin-left: var(--spacing);
+}
+
+.range-label-container {
+    --size: 0.3em;
+    position: relative;
+    font-size: 0.75rem;
+}
+
+.range-label-container > * {
+    position: absolute;
+    margin-top: var(--size);
+}
+
+.range-label__min{
+    left: 0;
+}
+
+.range-label__max{
+    right: 0;
+}
+
+.range-label__actual{
+    z-index: 1;
+}
+
+.bubble {
+	background: #00aabb;
+    border-radius: .4em;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.bubble::after {
+    content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: var(--size) solid transparent;
+	border-bottom-color: #00aabb;
+	border-top: 0;
+	margin-left: calc( var(--size) * -1 );
+	margin-top: calc( var(--size) * -1 );
+}
+
+/*------------------- diff receive -------------------*/
+.receive-diff {
+    --diff-size: 0.61312em;
+    position: relative;
+    display: inline-block;
+}
+
+.receive-diff::before {
+    content: '';
+    height: 0;
+
+    border-right: calc( 0.57735 * var(--diff-size) ) solid transparent;
+    border-top: var(--diff-size) solid red;
+    border-left: calc( 0.57735 * var(--diff-size) ) solid transparent;
+    right: 100%;
+    top: 20%;
+    position: absolute;
+    margin-right: 0.33125em;
+}
+
 /*-------------------footer-------------------*/
 
 .footer {

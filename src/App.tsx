@@ -1,9 +1,9 @@
 import React from 'react';
-import PickCryptoView from './views/PickCryptoView'
+import ChooseGatewayView from './views/ChooseGatewayView'
 
 function App() {
   return (
-      <PickCryptoView />
+      <ChooseGatewayView />
   );
 }
 
