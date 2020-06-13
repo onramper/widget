@@ -240,7 +240,7 @@ components
 .list-item__info {
     font-size: 0.75em;
     margin-left: var(--component-content-spacing);
-    opacity: 25%;
+    opacity: 0.25;
 }
 
 /*-------------------gateway option-------------------*/
@@ -398,8 +398,8 @@ components
     font-size: 0.75rem;
 }
 
-.footer span, .footer img {
-    opacity: 20%;
+.footer > * {
+    opacity: 0.2;
 }
 
 .footer img {
