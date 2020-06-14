@@ -246,12 +246,19 @@ components
 /*-------------------gateway option-------------------*/
 
 .option-container {
+    --oc-padding: 0px 0.71875rem;
     display: flex;
-    padding: 1rem;
+
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #C9C9C9;
+
+    padding: 1.25rem 0px;
 }
 
 .option-container__radio {
-    padding: 0px 1rem;
+    padding: var(--oc-padding);
 }
 
 .option-container__radio input[type='radio'] {
@@ -261,14 +268,22 @@ components
 .option-container__content {
     display: flex;
     flex-grow: 1;
-    padding: 0px 1rem;
+    padding: var(--oc-padding);
+    margin-bottom: 0.5rem;
 }
 
 .content__info {
-    flex-grow: 1;
     display: flex;
+    flex-grow: 1;
+    margin-right: 2.125rem;
     flex-direction: column;
-    margin-bottom: 0.6rem; /*align with crypto-diff*/
+    box-sizing: border-box;
+    margin-bottom: 0.6rem; /*margined to align with crypto-diff*/
+}
+
+.content__info > * > span:first-of-type {
+    margin-bottom: 0.4375rem;
+    display: inline-block;
 }
 
 .content__info > :first-child,
