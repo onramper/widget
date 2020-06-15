@@ -16,8 +16,8 @@ function GatewayOption(props: { txTime: string, kycLevel: string }) {
                     <div>
                         <span>Recommended</span>
                         <div className={styles.details} >
-                            <span><img src={IconBtc} />Tx time: {txTime}</span>
-                            <span><img src={IconBtc} />KYC: {kycLevel}</span>
+                            <div className={styles.details__item}><img src={IconBtc} /><span>Tx time: {txTime}</span></div>
+                            <div className={styles.details__item}><img src={IconBtc} /><span>KYC: {kycLevel}</span></div>
                         </div>
                     </div>
                     <div className={styles.fees}>
