@@ -379,6 +379,7 @@ components
     border-radius: .4em;
     position: absolute;
     transform: translateX(-50%);
+    padding: 0px 0.5em;
 }
 
 .bubble::after {
