@@ -8,6 +8,9 @@ const ChooseGatewayView = () => {
   return (
     <div className={styles.view}>
       <Header title="Choose gateway" backButton />
+      <GatewayOption txTime="3-5h" kycLevel="medium" open/>
+      <GatewayOption txTime="3-5h" kycLevel="medium" />
+      <GatewayOption txTime="3-5h" kycLevel="medium" />
       <GatewayOption txTime="3-5h" kycLevel="medium" />
       <Footer />
     </div>

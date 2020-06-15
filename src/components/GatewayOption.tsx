@@ -1,36 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../styles.module.css'
 import LogoOnramper from '../icons/logo.svg'
 import IconBtc from '../icons/btc.svg'
 import Range from '../components/Range'
 
-function GatewayOption(props: { txTime: string, kycLevel: string }) {
-    const { txTime, kycLevel } = props
+const COLLAPSED_SUFFIX = "--collapsed"
+
+function GatewayOption(props: { txTime: string, kycLevel: string, open?: boolean }) {
+    const { txTime, kycLevel, open = false } = props
+    const [isOpen, setIsOpen] = useState(open)
+    const collapsed_suffix = (!isOpen ? COLLAPSED_SUFFIX : '')
+
     return (
-        <div className={styles['option-container']}>
+        <div onClick={() => setIsOpen(!isOpen)} className={`${styles['option-container']} ${styles['option-container' + collapsed_suffix]}`}>
             <div className={styles['option-container__radio']}>
-                <input type='radio' checked></input>
+                <input type='radio' checked={isOpen}></input>
             </div>
-            <div className={styles['option-container__content']}>
-                <div className={styles.content__info} >
+            <div className={`${styles['option-container__content']} ${styles['option-container__content' + collapsed_suffix]}`}>
+                <div className={`${styles.content__info} ${styles['content__info' + collapsed_suffix]}`} >
                     <div>
                         <span>Recommended</span>
-                        <div className={styles.details} >
+                        {isOpen ? <div className={`${styles['details']} ${styles['details' + collapsed_suffix]}`} >
                             <div className={styles.details__item}><img src={IconBtc} /><span>Tx time: {txTime}</span></div>
                             <div className={styles.details__item}><img src={IconBtc} /><span>KYC: {kycLevel}</span></div>
-                        </div>
+                        </div> : null}
                     </div>
-                    <div className={styles.fees}>
-                        <span>Total fees:</span>
-                        <Range />
-                    </div>
+                    {isOpen ?
+                        <div className={`${styles['fees']} ${styles['fees' + collapsed_suffix]}`}>
+                            <span>Total fees:</span>
+                            <Range />
+                        </div> : null}
                 </div>
                 <div className={styles.content__price} >
+                    {isOpen ?
+                        <div className={`${styles['gateway-logo']} ${styles['gateway-logo' + collapsed_suffix]}`}>
+                            <img alt="Gateway logo" src={LogoOnramper} />
+                        </div> : null}
                     <div>
-                        <img alt="Gateway logo" src={LogoOnramper} />
-                    </div>
-                    <div>
-                        <span className={styles['receive-diff']} >0,65%</span>
+                        <span className={!isOpen ? styles['receive-diff'] : ''} >{!isOpen ? '0,65%' : 'You Receive:'}</span>
                         <span>BTC 1.2564</span>
                     </div>
                 </div>

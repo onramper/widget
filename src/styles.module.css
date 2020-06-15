@@ -257,6 +257,10 @@ components
     padding: 1.25rem 0px;
 }
 
+.option-container:hover {
+    cursor: pointer;
+}
+
 .option-container__radio {
     padding: var(--oc-padding);
 }
@@ -324,6 +328,10 @@ components
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+}
+
+.content__price .gateway-logo {
+
 }
 
 .content__price > div {
@@ -397,7 +405,8 @@ components
 }
 
 /*------------------- diff receive -------------------*/
-.receive-diff {
+.receive-diff,
+.receive-diff--collapsed {
     --diff-size: 0.61312em;
     position: relative;
     display: inline-block;
@@ -414,6 +423,20 @@ components
     top: 20%;
     position: absolute;
     margin-right: 0.33125em;
+}
+
+/*gateway collapsed*/
+.option-container--collapsed {
+    border-style: none;
+}
+
+.option-container__content--collapsed {
+    margin: 0px;
+}
+
+.content__info--collapsed,
+.content__info--collapsed > * > span:first-of-type {
+    margin-bottom: 0px;
 }
 
 /*-------------------footer-------------------*/
