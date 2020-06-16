@@ -405,14 +405,19 @@ components
 }
 
 /*------------------- diff receive -------------------*/
-.receive-diff,
-.receive-diff--collapsed {
+.receive-diff {
     --diff-size: 0.61312em;
     position: relative;
     display: inline-block;
+    color: green;
 }
 
-.receive-diff::before {
+/*gateway collapsed*/
+.receive-diff--collapsed {
+    color: red;
+}
+
+.receive-diff--collapsed::before {
     content: '';
     height: 0;
 
@@ -425,13 +430,12 @@ components
     margin-right: 0.33125em;
 }
 
-/*gateway collapsed*/
 .option-container--collapsed {
     border-style: none;
 }
 
 .option-container__content--collapsed,
-.option-container__content > * > :not(:last-child) {
+.option-container__content--collapsed > * > :not(:last-child) {
     margin: 0px;
 }
 

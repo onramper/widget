@@ -35,12 +35,12 @@ function GatewayOption(props: { txTime: string, kycLevel: string, open?: boolean
                         <img alt="Gateway logo" src={LogoOnramper} />
                     </div>
                     <div>
-                        <span className={!isOpen ? styles['receive-diff'] : ''} >{!isOpen ? '0,65%' : 'You Receive:'}</span>
+                        <span className={`${styles['receive-diff']} ${!isOpen ? styles['receive-diff--collapsed'] : ''}`} > {!isOpen ? '0,65%' : 'You Receive:'}</span>
                         <span>BTC 1.2564</span>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
