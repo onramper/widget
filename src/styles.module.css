@@ -430,13 +430,21 @@ components
     border-style: none;
 }
 
-.option-container__content--collapsed {
+.option-container__content--collapsed,
+.option-container__content > * > :not(:last-child) {
     margin: 0px;
 }
 
 .content__info--collapsed,
 .content__info--collapsed > * > span:first-of-type {
     margin-bottom: 0px;
+}
+
+.content__price .gateway-logo--collapsed,
+.content__info .fees--collapsed,
+.content__info .details--collapsed {
+    display: none;
+    margin: 0;
 }
 
 /*-------------------footer-------------------*/
