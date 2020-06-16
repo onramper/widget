@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../styles.module.css'
 import IconBtc from '../icons/btc.svg'
-import Range from '../components/Range'
+import Range from './Range'
 
 export type GatewayOptionType = {
     name: string,

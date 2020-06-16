@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import MainBuyCrypto from '../components/SelectCrypto'
+import Header from '../common/Header'
+import Footer from '../common/Footer'
+import MainBuyCrypto from './SelectCrypto'
 import styles from '../styles.module.css'
 
 const BuyCryptoView = () => {

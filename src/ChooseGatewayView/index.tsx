@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import GatewayOption from '../components/GatewayOption'
+import Header from '../common/Header'
+import Footer from '../common/Footer'
+import GatewayOption from './GatewayOption'
 import styles from '../styles.module.css'
 import LogoOnramper from '../icons/logo.svg'
-import GatewaysList from '../components/GatewaysList'
+import GatewaysList from './GatewaysList'
 
 const availableGateways = [
   {

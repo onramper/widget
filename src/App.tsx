@@ -1,5 +1,5 @@
 import React from 'react';
-import ChooseGatewayView from './views/ChooseGatewayView'
+import ChooseGatewayView from './ChooseGatewayView'
 
 function App() {
   return (

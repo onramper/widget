@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from '../styles.module.css'
 
-import InputButton from './InputButton'
-import InputText from './InputText'
+import InputButton from '../common/InputButton'
+import InputText from '../common/InputText'
 import ExpectedCrypto from './ExpectedCrypto'
 
 import IconBTC from '../icons/btc.svg'
