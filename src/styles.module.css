@@ -262,14 +262,6 @@ components
     padding: 1.25rem 0px;
 }
 
-.option-container + .option-container{
-    margin-top: 1rem;
-}
-
-.option-container:hover {
-    cursor: pointer;
-}
-
 .option-container__radio {
     padding: var(--oc-padding);
 }
@@ -441,7 +433,12 @@ components
 
 .option-container--collapsed {
     border-style: none;
-    padding: .25rem 0px;
+    padding: 0px;
+    margin: 1.25rem 0px;
+}
+
+.option-container--collapsed:hover {
+    cursor: pointer;
 }
 
 .option-container__content--collapsed,
