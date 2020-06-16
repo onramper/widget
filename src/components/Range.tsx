@@ -1,10 +1,8 @@
 import React from 'react'
 import styles from '../styles.module.css'
 
-import LogoOnramper from '../icons/logo.svg'
-
-function Range() {
-    const min = 1, max = 6, actual = 2
+function Range(props: { min: number, max: number, actual: number }) {
+    const { min, max, actual } = props
     const actualInRange = actual < min ? min : actual > max ? max : actual
     const actialPosition = `${(actualInRange - min) / (max - min) * 100}%`
     return (

@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
 import styles from '../styles.module.css'
-import LogoOnramper from '../icons/logo.svg'
 import IconBtc from '../icons/btc.svg'
 import Range from '../components/Range'
 
-const COLLAPSED_SUFFIX = "--collapsed"
 
-function GatewayOption(props: { txTime: string, kycLevel: string, open?: boolean }) {
-    const { txTime, kycLevel, open = false } = props
+function GatewayOption(props: { txTime: string, kycLevel: string, amount: number, denom: string, fee: number, logo?: string, open?: boolean }) {
+    const { txTime, kycLevel, amount, denom, fee, logo, open = false } = props
     const [isOpen, setIsOpen] = useState(open)
-    const collapsed_suffix = (!isOpen ? COLLAPSED_SUFFIX : '')
-    console.log(!isOpen ? styles['gateway-logo--collapsed'] : '')
+
     return (
         <div onClick={() => setIsOpen(!isOpen)} className={`${styles['option-container']} ${!isOpen ? styles['option-container--collapsed'] : ''}`}>
             <div className={styles['option-container__radio']}>
@@ -27,16 +24,16 @@ function GatewayOption(props: { txTime: string, kycLevel: string, open?: boolean
                     </div>
                     <div className={`${styles['fees']} ${!isOpen ? styles['fees--collapsed'] : ''}`}>
                         <span>Total fees:</span>
-                        <Range />
+                        <Range min={1} max={6} actual={fee} /> {/* TODO: get data from context */}
                     </div>
                 </div>
                 <div className={styles.content__price} >
                     <div className={`${styles['gateway-logo']} ${!isOpen ? styles['gateway-logo--collapsed'] : ''}`}>
-                        <img alt="Gateway logo" src={LogoOnramper} />
+                        {logo ? <img alt="Gateway logo" src={logo} /> : null}
                     </div>
                     <div>
                         <span className={`${styles['receive-diff']} ${!isOpen ? styles['receive-diff--collapsed'] : ''}`} > {!isOpen ? '0,65%' : 'You Receive:'}</span>
-                        <span>BTC 1.2564</span>
+                        <span>{denom} {amount}</span>
                     </div>
                 </div>
             </div>
