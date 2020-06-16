@@ -1,0 +1,29 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--padding);
+    border-bottom: 1px solid #F5F5F5;
+    border-radius: 10px 10px 0 0;
+}
+
+.header__child+.header__child {
+    margin-left: 1.675rem;
+}
+
+.header h1 {
+    font-size: 1.31rem;
+    font-weight: normal;
+    flex-grow: 1;
+    margin: 0;
+}
+
+.header__burger-icon {
+    width: 1.125rem;
+    height: 0.844rem;
+}
+
+.header__back-icon {
+    width: 1.2rem;
+    height: 1.06rem;
+}

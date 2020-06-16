@@ -1,0 +1,19 @@
+/*-------------------footer-------------------*/
+
+.footer {
+    display: flex;
+    align-items: center;
+    background-color: #F8F8F8;
+    justify-content: center;
+    border-radius: 0 0 10px 10px;
+    padding: 0.438rem var(--padding-rl) 0.625rem var(--padding-rl);
+    font-size: 0.75rem;
+}
+
+.footer > * {
+    opacity: 0.2;
+}
+
+.footer img {
+    height: 2.083em;
+}

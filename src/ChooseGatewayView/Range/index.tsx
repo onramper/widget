@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../styles.module.css'
+import styles from './styles.module.css'
 
 function Range(props: { min: number, max: number, actual: number }) {
     const { min, max, actual } = props

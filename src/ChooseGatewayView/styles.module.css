@@ -1,0 +1,157 @@
+
+/*-------------------gateway list-------------------*/
+.gateways-list {
+    padding: var(--body-space-childs) var(--padding-rl);
+}
+
+/*-------------------gateway option-------------------*/
+
+.option-container {
+    --oc-padding: 0px 0.71875rem;
+    display: flex;
+
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #C9C9C9;
+
+    padding: 1.25rem 0px;
+}
+
+.option-container__radio {
+    padding: var(--oc-padding);
+}
+
+.option-container__radio input[type='radio'] {
+    margin: 0;
+}
+
+.option-container__content {
+    display: flex;
+    flex-grow: 1;
+    padding: var(--oc-padding);
+    margin-bottom: 0.5rem;
+}
+
+.option-container__content > * > :not(:last-child){
+    margin-bottom: 1.312rem;
+}
+
+.content__info {
+    display: flex;
+    flex-grow: 1;
+    margin-right: 2.125rem;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-bottom: 0.6rem; /*margined to align with crypto-diff*/
+}
+
+.content__info > * > span:first-of-type {
+    margin-bottom: 0.4375rem;
+    display: inline-block;
+}
+
+.content__info > :first-child,
+.content__price > :first-child {
+    flex-grow: 1;
+}
+
+.content__info .details {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3rem, 6rem));
+}
+
+/*child detail*/
+.details__item {
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+/*icon on child detail*/
+.details__item > img {
+    height: 1.066em;
+    vertical-align: bottom;
+    margin-right: 0.34375em;
+}
+
+.content__info .fees {
+    font-size: 0.875rem;
+}
+
+.content__price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.content__price .gateway-logo {
+
+}
+
+.content__price > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-end;
+    text-align: end;
+    font-size: 0.75rem;
+}
+
+
+
+/*------------------- diff receive -------------------*/
+.receive-diff {
+    --diff-size: 0.61312em;
+    position: relative;
+    display: inline-block;
+    color: green;
+}
+
+/*gateway collapsed*/
+.receive-diff--collapsed {
+    color: red;
+}
+
+.receive-diff--collapsed::before {
+    content: '';
+    height: 0;
+
+    border-right: calc( 0.57735 * var(--diff-size) ) solid transparent;
+    border-top: var(--diff-size) solid red;
+    border-left: calc( 0.57735 * var(--diff-size) ) solid transparent;
+    right: 100%;
+    top: 20%;
+    position: absolute;
+    margin-right: 0.33125em;
+}
+
+.option-container--collapsed {
+    border-style: none;
+    padding: 0px;
+    margin: 1.25rem 0px;
+}
+
+.option-container--collapsed:hover {
+    cursor: pointer;
+}
+
+.option-container__content--collapsed,
+.option-container__content--collapsed > * > :not(:last-child) {
+    margin: 0px;
+}
+
+.content__info--collapsed,
+.content__info--collapsed > * > span:first-of-type {
+    margin-bottom: 0px;
+}
+
+.content__price .gateway-logo--collapsed,
+.content__info .fees--collapsed,
+.content__info .details--collapsed {
+    display: none;
+    margin: 0;
+}
+

@@ -1,0 +1,80 @@
+/*------------------inputs--------------------*/
+/*container label+type*/
+.input {
+    display: flex;
+    flex-direction: column;
+}
+
+.input > label {
+    margin-bottom: 0.56rem;
+    font-size: 0.875rem;
+}
+
+/*common to all input types*/
+.input__type {
+    background-color: white;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #DEDEDE;
+    padding: var(--component-padding);
+    display: flex;
+    height: var(--component-content-height);
+}
+
+/*apply space between input__type childs*/
+.input__type__child+.input__type__child {
+    margin-left: var(--component-content-spacing);
+}
+
+.input__type__child--new-first {
+    margin-left: 0!important;
+}
+
+.input__type__child--old-first {
+    margin-left: var(--component-content-spacing);
+}
+
+/***input type=selector***/
+.input__type--selector {
+    cursor: pointer;
+    align-items: center;
+}
+
+.input__type--selector span{
+    flex-grow: 1;
+}
+
+/***input type=number***/
+.input__type--number--disabled {
+    background-color: #F8F8F8;
+}
+
+.input__type--number input {
+    outline: none;
+    font-size: 1rem;
+    border: 0;
+    width: 100%;
+    background-color: transparent;
+    color: inherit;
+}
+
+.symbol::before {
+    position: relative;
+    top: -0.025rem;
+    content: attr(before-content);
+    align-self: center;
+}
+
+.symbol {
+    display: inline-flex;
+    flex-grow: 1;
+}
+
+.input__icon {
+    height: var(--component-content-height);
+}
+
+.input__icon--chevron {
+    height: 0.75rem;
+}

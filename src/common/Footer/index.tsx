@@ -1,7 +1,7 @@
 import React from 'react'
-import styles from '../styles.module.css'
+import styles from './styles.module.css'
 
-import LogoOnramper from '../icons/logo.svg'
+import LogoOnramper from '../../icons/logo.svg'
 
 function Footer() {
     return (

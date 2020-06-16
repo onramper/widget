@@ -1,8 +1,8 @@
 import React from 'react'
-import styles from '../styles.module.css'
+import styles from './styles.module.css'
 
-import IconMenu from '../icons/burger_menu.svg'
-import IconLeftArrow from '../icons/left_arrow.svg'
+import IconMenu from '../../icons/burger_menu.svg'
+import IconLeftArrow from '../../icons/left_arrow.svg'
 
 function Header(props: { title: string; backButton?: boolean }) {
     const { title, backButton = false } = props

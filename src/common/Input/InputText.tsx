@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../styles.module.css'
+import styles from './styles.module.css'
 
 function InputText(props: { disabled?: boolean, symbol?: string, placeholder?: string, label?: string, className?: string, icon?: string, iconPosition?: 'start' | 'end' }) {
     const { symbol, label = '\u00A0', className = '', icon, iconPosition = 'start', disabled = false } = props
