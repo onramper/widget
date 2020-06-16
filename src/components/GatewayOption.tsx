@@ -3,9 +3,19 @@ import styles from '../styles.module.css'
 import IconBtc from '../icons/btc.svg'
 import Range from '../components/Range'
 
+export type GatewayOptionType = {
+    name: string,
+    txTime: string,
+    kycLevel: string,
+    amount: number,
+    denom: string,
+    fee: number,
+    logo?: string,
+    open?: boolean
+}
 
-function GatewayOption(props: { txTime: string, kycLevel: string, amount: number, denom: string, fee: number, logo?: string, open?: boolean }) {
-    const { txTime, kycLevel, amount, denom, fee, logo, open = false } = props
+function GatewayOption(props: GatewayOptionType) {
+    const { name, txTime, kycLevel, amount, denom, fee, logo, open = false } = props
     const [isOpen, setIsOpen] = useState(open)
 
     return (
@@ -16,7 +26,7 @@ function GatewayOption(props: { txTime: string, kycLevel: string, amount: number
             <div className={`${styles['option-container__content']} ${!isOpen ? styles['option-container__content--collapsed'] : ''}`}>
                 <div className={`${styles.content__info} ${!isOpen ? styles['content__info--collapsed'] : ''}`} >
                     <div>
-                        <span>Recommended</span>
+                        <span>{name}</span>
                         <div className={`${styles['details']} ${!isOpen ? styles['details--collapsed'] : ''}`} >
                             <div className={styles.details__item}><img alt='' src={IconBtc} /><span>Tx time: {txTime}</span></div>
                             <div className={styles.details__item}><img alt='' src={IconBtc} /><span>KYC: {kycLevel}</span></div>

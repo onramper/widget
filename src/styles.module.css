@@ -243,6 +243,11 @@ components
     opacity: 0.25;
 }
 
+/*-------------------gateway list-------------------*/
+.gateways-list {
+    padding: var(--body-space-childs) var(--padding-rl);
+}
+
 /*-------------------gateway option-------------------*/
 
 .option-container {
@@ -255,6 +260,10 @@ components
     border-color: #C9C9C9;
 
     padding: 1.25rem 0px;
+}
+
+.option-container + .option-container{
+    margin-top: 1rem;
 }
 
 .option-container:hover {
@@ -432,6 +441,7 @@ components
 
 .option-container--collapsed {
     border-style: none;
+    padding: .25rem 0px;
 }
 
 .option-container__content--collapsed,
