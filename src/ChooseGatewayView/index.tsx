@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from '../common/Header'
 import Footer from '../common/Footer'
-import GatewayOption from './GatewayOption'
 import styles from '../styles.module.css'
 import LogoOnramper from '../icons/logo.svg'
 import GatewaysList from './GatewaysList'
