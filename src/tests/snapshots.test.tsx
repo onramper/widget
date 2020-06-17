@@ -1,14 +1,14 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import List from './List'
+import List from '../PickCryptoScreen/List'
 import IconBTC from '../icons/btc.svg'
 import IconUSD from '../icons/usd.svg'
 import Footer from '../common/Footer'
 import Header from '../common/Header'
-import InputButton from './InputButton'
-import InputText from './InputText'
-import ExpectedCrypto from './ExpectedCrypto'
-import SelectCrypto from './SelectCrypto'
+import InputButton from '../common/Input/InputButton'
+import InputText from '../common/Input/InputText'
+import ExpectedCrypto from '../BuyCryptoView/ExpectedCrypto'
+import BodyBuyCrypto from '../BuyCryptoView/BodyBuyCrypto'
 
 function testSnapshot(element: JSX.Element) {
   const component = renderer
@@ -36,7 +36,7 @@ describe("Component snapshots", () => {
     ["List", <List items={availableCryptos} />],
     ["Header", <Header title="Buy crypto" />],
     ["Header with backbutton", <Header title="Buy crypto" backButton={true} />],
-    ["SelectCrypto", <SelectCrypto />],
+    ["BodyBuyCrypto", <BodyBuyCrypto />],
     ["ExpectedCrypto", <ExpectedCrypto amount={1.2} denom="BTC" />],
     ["InputButton", <InputButton selectedOption="Credit card" />],
     ["InputText", <InputText />],
