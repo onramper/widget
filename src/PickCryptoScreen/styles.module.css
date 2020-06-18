@@ -5,6 +5,7 @@
     flex-direction: column;
     padding: 0px var(--padding-rl) !important;
     overflow: auto;
+    flex-grow: 1;
 }
 
 .list-item {
