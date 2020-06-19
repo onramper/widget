@@ -27,3 +27,8 @@
     width: 1.2rem;
     height: 1.06rem;
 }
+
+.header__back-icon:hover,
+.header__burger-icon:hover {
+    cursor: pointer;
+}
