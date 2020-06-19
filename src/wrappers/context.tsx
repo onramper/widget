@@ -1,44 +1,68 @@
-import React, { createContext, useReducer, Dispatch, useEffect, useState } from 'react';
-import { shoppingCartReducer, ShoppingCartActions, Types } from './reducers';
-import PickCryptoScreen from '../PickCryptoScreen'
-import Header from '../common/Header'
+import React, { createContext, useReducer, /* Dispatch, */ useEffect } from 'react';
 
-type NavigationStateType = {
-  screens: React.ReactNode[];
+export type ScreenType = React.ReactNode;
+
+export type NavigationStateType = {
+    screens: ScreenType[];
 }
 
-const initialState = {
-  screens: [],
+export enum NavigationActionsType {
+    Push = 'PUSH',
+    Pop = 'POP'
 }
 
+export type NavigationActions = {
+    type: NavigationActionsType.Push;
+    screen: ScreenType;
+} | {
+    type: NavigationActionsType.Pop;
+}
+
+const initialState = { screens: [] }
+
+//Creating context
 const AppContext = createContext<{
-  state: NavigationStateType;
-  dispatch: Dispatch<ShoppingCartActions>;
+  //state: NavigationStateType;
+  backScreen: () => void;
+  nextScreen: (screen: ScreenType) => void;
+  //dispatch: Dispatch<NavigationActions>;
 }>({
-  state: initialState,
-  dispatch: () => null
+  //state: initialState,
+  backScreen: () => null,
+  nextScreen: () => null,
+  //dispatch: () => null
 });
 
-const mainReducer = ({ screens }: NavigationStateType, action: ShoppingCartActions) => ({
-  screens: shoppingCartReducer(screens, action),
-});
 
-
+//Creating context
 const AppProvider: React.FC = (props) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
-  const [tittle, setTittle] = useState("hiii")
-  console.log('state', state)
+
+  const backScreen = () => dispatch({ type: NavigationActionsType.Pop })
+  const nextScreen = (screen: ScreenType) => dispatch({ type: NavigationActionsType.Push, screen })
+
   useEffect(() => {
-    dispatch({ type: Types.Push, screen: props.children })
+    dispatch({ type: NavigationActionsType.Push, screen: props.children })
   }, [props.children])
+
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
-      <button onClick={() => dispatch({ type: Types.Push, screen: <Header backButton title={tittle} /> })} >add</button>
-      <button onClick={() => dispatch({ type: Types.Pop })} >back</button>
-      <button onClick={() => setTittle("ddd")} >change tittle</button>
-      {state.screens.map(screen => screen)}
+    <AppContext.Provider value={{ /* state, dispatch, */ backScreen, nextScreen }}>
+      {state.screens.map((screen, i) => <span key={i}>{screen}</span>)}
     </AppContext.Provider>
   )
+}
+
+const mainReducer = (state: NavigationStateType, action: NavigationActions) => ({
+  screens: navigationReducer(state, action),
+});
+
+const navigationReducer = (state: NavigationStateType, action: NavigationActions) => {
+  switch (action.type) {
+    case NavigationActionsType.Push:
+      return [...state.screens, action.screen];
+    case NavigationActionsType.Pop:
+      return [...state.screens.slice(0, -1)];
+  }
 }
 
 export { AppProvider, AppContext };
