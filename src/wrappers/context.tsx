@@ -3,52 +3,54 @@ import React, { createContext, useReducer, /* Dispatch, */ useEffect } from 'rea
 export type ScreenType = React.ReactNode;
 
 export type NavigationStateType = {
-    screens: ScreenType[];
+  screens: ScreenType[];
 }
 
 export enum NavigationActionsType {
-    Push = 'PUSH',
-    Pop = 'POP'
+  Setup = 'SETUP',
+  Push = 'PUSH',
+  Pop = 'POP'
 }
 
 export type NavigationActions = {
-    type: NavigationActionsType.Push;
-    screen: ScreenType;
+  type: NavigationActionsType.Setup;
+  screen: ScreenType;
 } | {
-    type: NavigationActionsType.Pop;
+  type: NavigationActionsType.Push;
+  screen: ScreenType;
+} | {
+  type: NavigationActionsType.Pop;
 }
 
 const initialState = { screens: [] }
 
 //Creating context
-const AppContext = createContext<{
-  //state: NavigationStateType;
+const NavContext = createContext<{
   backScreen: () => void;
   nextScreen: (screen: ScreenType) => void;
-  //dispatch: Dispatch<NavigationActions>;
 }>({
-  //state: initialState,
   backScreen: () => null,
-  nextScreen: () => null,
-  //dispatch: () => null
+  nextScreen: () => null
 });
 
 
 //Creating context
-const AppProvider: React.FC = (props) => {
+const NavProvider: React.FC<{ home: ScreenType }> = (props) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
   const backScreen = () => dispatch({ type: NavigationActionsType.Pop })
   const nextScreen = (screen: ScreenType) => dispatch({ type: NavigationActionsType.Push, screen })
 
+  const firstScreen = props.home
+
   useEffect(() => {
-    dispatch({ type: NavigationActionsType.Push, screen: props.children })
-  }, [props.children])
+    dispatch({ type: NavigationActionsType.Setup, screen: firstScreen })
+  }, [firstScreen])
 
   return (
-    <AppContext.Provider value={{ /* state, dispatch, */ backScreen, nextScreen }}>
-      {state.screens.map((screen, i) => <span key={i}>{screen}</span>)}
-    </AppContext.Provider>
+    <NavContext.Provider value={{ backScreen, nextScreen }}>
+      {state.screens.map((screen, i) => <React.Fragment key={i}>{screen}</React.Fragment>)}
+    </NavContext.Provider>
   )
 }
 
@@ -57,12 +59,18 @@ const mainReducer = (state: NavigationStateType, action: NavigationActions) => (
 });
 
 const navigationReducer = (state: NavigationStateType, action: NavigationActions) => {
+  const { screens } = state
   switch (action.type) {
+    case NavigationActionsType.Setup:
+      if (screens.length === 0)
+        return [action.screen];
+      else
+        return screens
     case NavigationActionsType.Push:
-      return [...state.screens, action.screen];
+      return [...screens, action.screen];
     case NavigationActionsType.Pop:
-      return [...state.screens.slice(0, -1)];
+      return [...screens.slice(0, -1)];
   }
 }
 
-export { AppProvider, AppContext };
+export { NavProvider, NavContext };
