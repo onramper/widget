@@ -6,8 +6,6 @@ general styles
     margin: auto;
     width: 440px;
     height: 576px;
-    position: relative;
-    overflow: hidden;
 }
 
 .view {
@@ -22,7 +20,6 @@ general styles
     flex-direction: column;
     border-radius: 10px 10px 10px 10px;
     background-color: white;
-    position: absolute;
     width: 100%;
     height: 100%;
 }

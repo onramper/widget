@@ -1,4 +1,5 @@
-import React, { createContext, useReducer, /* Dispatch, */ useEffect } from 'react';
+import React, { createContext, useReducer, useEffect } from 'react';
+import styles from './styles.module.css'
 
 export type ScreenType = React.ReactNode;
 
@@ -48,9 +49,15 @@ const NavProvider: React.FC<{ home: ScreenType }> = (props) => {
   }, [firstScreen])
 
   return (
-    <NavContext.Provider value={{ backScreen, nextScreen }}>
-      {state.screens.map((screen, i) => <React.Fragment key={i}>{screen}</React.Fragment>)}
-    </NavContext.Provider>
+    <div className={styles['nav-container']} >
+      <NavContext.Provider value={{ backScreen, nextScreen }}>
+        {state.screens.map((screen, i) => (
+          <div className={styles.screen} key={i}>
+            {screen}
+          </div>
+        ))}
+      </NavContext.Provider>
+    </div>
   )
 }
 
