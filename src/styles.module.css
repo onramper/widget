@@ -2,15 +2,6 @@
 general styles
 *********/
 
-@keyframes slideInFromRight {
-    0% {
-      transform: translateX(100%);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-
 .app {
     margin: auto;
     width: 440px;
@@ -20,8 +11,6 @@ general styles
 }
 
 .view {
-    animation-duration: 0.75s;
-    animation-name: slideInFromRight;
     --padding-top: 1.75rem;
     --padding-rl: 1.88rem;
     --padding-bottom: 1.125rem;
