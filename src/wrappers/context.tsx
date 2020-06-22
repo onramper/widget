@@ -52,7 +52,7 @@ const NavProvider: React.FC<{ home: ScreenType }> = (props) => {
     <div className={styles['nav-container']} >
       <NavContext.Provider value={{ backScreen, nextScreen }}>
         {state.screens.map((screen, i) => (
-          <div className={styles.screen} key={i}>
+          <div style={{ zIndex: (i + 1) }} className={styles.screen} key={i}>
             {screen}
           </div>
         ))}
