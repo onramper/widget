@@ -7,9 +7,9 @@ type ItemType = {
     info?: string
 }
 
-function List(props: { items: ItemType[] }) {
+const List: React.FC<{ items: ItemType[] }> = (props) => {
     var { items } = props
-    
+
     const listItems = items.map((item) => <ListItem key={item.name} name={item.name} info={item.info} icon={item.icon} />);
 
     return (
@@ -19,7 +19,7 @@ function List(props: { items: ItemType[] }) {
     )
 }
 
-function ListItem(props: ItemType) {
+const ListItem: React.FC<ItemType> = (props: ItemType) => {
     const { name, info, icon } = props
     return (
         <div className={`${styles['list-item']}`}>

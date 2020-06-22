@@ -2,7 +2,12 @@ import React from 'react'
 import styles from '../styles.module.css'
 import GatewayOption, { GatewayOptionType } from './GatewayOption'
 
-function GatewaysList(props: { items: GatewayOptionType[], onClick: (...args: any) => void }) {
+type GatewaysListType = {
+    items: GatewayOptionType[],
+    onClick: (...args: any) => void
+}
+
+const GatewaysList: React.FC<GatewaysListType> = (props) => {
     var { items } = props //const
 
     const listItems = items.map((item, i) =>

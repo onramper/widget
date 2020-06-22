@@ -8,7 +8,7 @@ import ChooseGatewayView from '../ChooseGatewayView'
 
 import { NavContext } from '../wrappers/context'
 
-const BuyCryptoView = () => {
+const BuyCryptoView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
   return (
     <div className={styles.view}>

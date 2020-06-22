@@ -3,7 +3,16 @@ import styles from './styles.module.css'
 
 import IconChevronRight from '../../icons/chevron_right.svg'
 
-function InputButton(props: { selectedOption: string, label?: string, icon?: string, className?: string, iconPosition?: 'start' | 'end', onClick?: () => void }) {
+type InputButtonType = {
+    selectedOption: string,
+    label?: string,
+    icon?: string,
+    className?: string,
+    iconPosition?: 'start' | 'end',
+    onClick?: () => void
+}
+
+const InputButton: React.FC<InputButtonType> = (props) => {
     const { selectedOption, label, icon, className = '', iconPosition = 'start' } = props
     return (
         <div onClick={props.onClick} className={`${styles['input']} ${className}`}>

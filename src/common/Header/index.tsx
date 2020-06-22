@@ -6,7 +6,12 @@ import IconLeftArrow from '../../icons/left_arrow.svg'
 
 import { NavContext } from '../../wrappers/context'
 
-function Header(props: { title: string; backButton?: boolean }) {
+type HeaderType = {
+    title: string;
+    backButton?: boolean
+}
+
+const Header: React.FC<HeaderType> = (props) => {
     const { title, backButton = false } = props
     const { backScreen } = useContext(NavContext)
     return (

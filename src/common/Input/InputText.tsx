@@ -1,7 +1,17 @@
 import React from 'react'
 import styles from './styles.module.css'
 
-function InputText(props: { disabled?: boolean, symbol?: string, placeholder?: string, label?: string, className?: string, icon?: string, iconPosition?: 'start' | 'end' }) {
+type InputTextType = {
+    disabled?: boolean,
+    symbol?: string,
+    placeholder?: string,
+    label?: string,
+    className?: string,
+    icon?: string,
+    iconPosition?: 'start' | 'end'
+}
+
+const InputText: React.FC<InputTextType> = (props) => {
     const { symbol, label = '\u00A0', className = '', icon, iconPosition = 'start', disabled = false } = props
     const placeholder = disabled ? '' : props.placeholder
     return (

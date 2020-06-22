@@ -1,7 +1,13 @@
 import React from 'react'
 import styles from './styles.module.css'
 
-function ExpectedCrypto(props: { amount: number, denom: string, className?: string }) {
+type ExpectedCryptoType = {
+    amount: number,
+    denom: string,
+    className?: string
+}
+
+const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
     const { amount, denom, className } = props
     return (
         <div className={`${styles['expected-crypto']} ${className}`}>

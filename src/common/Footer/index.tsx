@@ -3,7 +3,7 @@ import styles from './styles.module.css'
 
 import LogoOnramper from '../../icons/logo.svg'
 
-function Footer() {
+const Footer = () => {
     return (
         <footer className={styles.footer}>
             <span>Powered by</span>

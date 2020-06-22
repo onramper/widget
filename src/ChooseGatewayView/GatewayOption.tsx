@@ -14,7 +14,7 @@ export type GatewayOptionType = {
     open?: boolean
 }
 
-function GatewayOption(props: GatewayOptionType) {
+const GatewayOption: React.FC<GatewayOptionType> = (props) => {
     const { name, txTime, kycLevel, amount, denom, fee, logo, open = false } = props
     const [isOpen, setIsOpen] = useState(open)
 

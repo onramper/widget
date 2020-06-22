@@ -1,7 +1,13 @@
 import React from 'react'
 import styles from './styles.module.css'
 
-function Range(props: { min: number, max: number, actual: number }) {
+type RangeType = {
+    min: number,
+    max: number,
+    actual: number
+}
+
+const Range: React.FC<RangeType> = (props) => {
     const { min, max, actual } = props
     const actualInRange = actual < min ? min : actual > max ? max : actual
     const actialPosition = `${(actualInRange - min) / (max - min) * 100}%`
