@@ -12,7 +12,7 @@ type HeaderType = {
 }
 
 const Header: React.FC<HeaderType> = (props) => {
-    const { title, backButton = false } = props
+    const { title, backButton } = props
     const { backScreen } = useContext(NavContext)
     return (
         <nav className={styles.header}>
@@ -21,6 +21,10 @@ const Header: React.FC<HeaderType> = (props) => {
             <img alt="menu" className={`${styles['header__child']} ${styles['header__burger-icon']}`} src={IconMenu} />
         </nav>
     )
+}
+
+Header.defaultProps = {
+    backButton: false
 }
 
 export default Header

@@ -13,7 +13,7 @@ type InputButtonType = {
 }
 
 const InputButton: React.FC<InputButtonType> = (props) => {
-    const { selectedOption, label, icon, className = '', iconPosition = 'start' } = props
+    const { selectedOption, label, icon, className, iconPosition } = props
     return (
         <div onClick={props.onClick} className={`${styles['input']} ${className}`}>
             {label ? <label>{label}</label> : null}
@@ -24,6 +24,11 @@ const InputButton: React.FC<InputButtonType> = (props) => {
             </div >
         </div >
     )
+}
+
+InputButton.defaultProps = {
+    className: '',
+    iconPosition: 'start'
 }
 
 export default InputButton

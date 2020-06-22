@@ -15,7 +15,7 @@ export type GatewayOptionType = {
 }
 
 const GatewayOption: React.FC<GatewayOptionType> = (props) => {
-    const { name, txTime, kycLevel, amount, denom, fee, logo, open = false } = props
+    const { name, txTime, kycLevel, amount, denom, fee, logo, open } = props
     const [isOpen, setIsOpen] = useState(open)
 
     return (
@@ -49,6 +49,10 @@ const GatewayOption: React.FC<GatewayOptionType> = (props) => {
             </div>
         </div >
     )
+}
+
+GatewayOption.defaultProps = {
+    open: false
 }
 
 export default GatewayOption

@@ -12,7 +12,7 @@ type InputTextType = {
 }
 
 const InputText: React.FC<InputTextType> = (props) => {
-    const { symbol, label = '\u00A0', className = '', icon, iconPosition = 'start', disabled = false } = props
+    const { symbol, label, className, icon, iconPosition, disabled } = props
     const placeholder = disabled ? '' : props.placeholder
     return (
         <div className={`${styles['input']} ${className}`}>
@@ -25,6 +25,13 @@ const InputText: React.FC<InputTextType> = (props) => {
             </div>
         </div>
     )
+}
+
+InputText.defaultProps = {
+    label: '\u00A0',
+    className: '',
+    iconPosition: 'start',
+    disabled: false
 }
 
 export default InputText
