@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import List from '../PickCryptoScreen/List'
+import List from '../PickView/List'
 import IconBTC from '../icons/btc.svg'
 import IconUSD from '../icons/usd.svg'
 import Footer from '../common/Footer'

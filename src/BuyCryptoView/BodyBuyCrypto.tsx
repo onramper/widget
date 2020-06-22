@@ -12,19 +12,21 @@ import IconUSD from '../icons/usd.svg'
 
 type BodyBuyCryptoType = {
     onBuyCrypto: () => void,
-    onPickCrypto: () => void
+    openPickCrypto: () => void,
+    openPickCurrency: () => void,
+    openPickPayment: () => void
 }
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
-    const { onPickCrypto, onBuyCrypto } = props
+    const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
     return (
         <main className={stylesCommon.body}>
-            <InputButton onClick={onPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption="Bitcoin" icon={IconBTC} />
+            <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption="Bitcoin" icon={IconBTC} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
                 <InputText className={stylesCommon['row-fields__child']} label="Amount" symbol="$" placeholder="100" />
-                <InputButton className={stylesCommon['row-fields__child']} label="Currency" selectedOption="USD" icon={IconUSD} />
+                <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption="USD" icon={IconUSD} />
             </div>
-            <InputButton iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption="Credit card" icon={IconCC} />
+            <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption="Credit card" icon={IconCC} />
             <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amount={0.02} denom="BTC" />
             <button onClick={onBuyCrypto} className={`${stylesCommon['body__child']} ${styles['button-action']}`}>Get crypto</button>
         </main>
