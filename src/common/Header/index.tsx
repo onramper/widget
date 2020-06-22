@@ -4,11 +4,11 @@ import styles from './styles.module.css'
 import IconMenu from '../../icons/burger_menu.svg'
 import IconLeftArrow from '../../icons/left_arrow.svg'
 
-import { AppContext } from '../../wrappers/context'
+import { NavContext } from '../../wrappers/context'
 
 function Header(props: { title: string; backButton?: boolean }) {
     const { title, backButton = false } = props
-    const { backScreen } = useContext(AppContext)
+    const { backScreen } = useContext(NavContext)
     return (
         <nav className={styles.header}>
             {backButton ? <img onClick={() => backScreen()} className={`${styles['header__child']} ${styles['header__back-icon']}`} alt="Back" src={IconLeftArrow} /> : null}

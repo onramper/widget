@@ -5,8 +5,9 @@ import GatewayOption, { GatewayOptionType } from './GatewayOption'
 function GatewaysList(props: { items: GatewayOptionType[], onClick: (...args: any) => void }) {
     var { items } = props //const
 
-    const listItems = items.map((item) =>
+    const listItems = items.map((item, i) =>
         <GatewayOption
+            key={i}
             name={item.name}
             txTime={item.txTime}
             kycLevel={item.kycLevel}
@@ -18,9 +19,9 @@ function GatewaysList(props: { items: GatewayOptionType[], onClick: (...args: an
     );
 
     return (
-        <div className={`${styles.body} ${styles['gateways-list']}`}>{/* TODO: change all custom lists to general list */}
+        <main className={`${styles.body} ${styles['gateways-list']}`}>{/* TODO: change all custom lists to general list */}
             {listItems}
-        </div>
+        </main>
     )
 }
 

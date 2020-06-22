@@ -21,11 +21,11 @@ const availableCryptos = [
 
 const PickCryptoView = () => {
   return (
-    <div className={styles.view}>
+    <main className={styles.view}>
       <Header backButton title="Select cryptocurrency" />
       <List items={availableCryptos} />
       <Footer />
-    </div>
+    </main>
   );
 };
 

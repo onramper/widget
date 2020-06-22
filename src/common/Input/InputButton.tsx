@@ -3,10 +3,10 @@ import styles from './styles.module.css'
 
 import IconChevronRight from '../../icons/chevron_right.svg'
 
-function InputButton(props: { selectedOption: string, label?: string, icon?: string, className?: string, iconPosition?: 'start' | 'end' }) {
+function InputButton(props: { selectedOption: string, label?: string, icon?: string, className?: string, iconPosition?: 'start' | 'end', onClick?: () => void }) {
     const { selectedOption, label, icon, className = '', iconPosition = 'start' } = props
     return (
-        <div className={`${styles['input']} ${className}`}>
+        <div onClick={props.onClick} className={`${styles['input']} ${className}`}>
             {label ? <label>{label}</label> : null}
             <div className={`${styles['input__type']} ${styles['input__type--selector']}`}>
                 {icon ? <img alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? styles['input__type__child--old-first'] : ''}`} /> : null}

@@ -1,14 +1,12 @@
 import React from 'react';
 import BuyCryptoView from './BuyCryptoView'
 import styles from './styles.module.css'
-import { AppProvider } from './wrappers/context';
+import { NavProvider } from './wrappers/context';
 
 function App() {
   return (
     <div className={`${styles.app}`}>
-      <AppProvider>
-        <BuyCryptoView />
-      </AppProvider>
+      <NavProvider home={<BuyCryptoView />} />
     </div>
   );
 }
