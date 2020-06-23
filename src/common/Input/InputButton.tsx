@@ -28,7 +28,8 @@ const InputButton: React.FC<InputButtonType> = (props) => {
 
 InputButton.defaultProps = {
     className: '',
-    iconPosition: 'start'
+    iconPosition: 'start',
+    selectedOption: ''
 }
 
 export default InputButton

@@ -1,13 +1,8 @@
 import React from 'react'
 import styles from './styles.module.css'
+import { ListItemType } from '../common/types'
 
-type ItemType = {
-    icon: string,
-    name: string,
-    info?: string
-}
-
-const List: React.FC<{ items: ItemType[] }> = (props) => {
+const List: React.FC<{ items: ListItemType[] }> = (props) => {
     var { items } = props
 
     const listItems = items.map((item) => <ListItem key={item.name} name={item.name} info={item.info} icon={item.icon} />);
@@ -19,7 +14,7 @@ const List: React.FC<{ items: ItemType[] }> = (props) => {
     )
 }
 
-const ListItem: React.FC<ItemType> = (props: ItemType) => {
+const ListItem: React.FC<ListItemType> = (props: ListItemType) => {
     const { name, info, icon } = props
     return (
         <div className={`${styles['list-item']}`}>
