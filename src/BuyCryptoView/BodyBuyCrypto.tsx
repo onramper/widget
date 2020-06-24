@@ -16,22 +16,24 @@ type BodyBuyCryptoType = {
     selectedCrypto: ListItemType,
     selectedCurrency: ListItemType,
     selectedPaymentMethod: ListItemType,
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    expectedAmount: number,
+    amountValue: number
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
-    const { selectedCrypto, selectedCurrency, selectedPaymentMethod } = props
+    const { selectedCrypto, selectedCurrency, selectedPaymentMethod, expectedAmount, amountValue } = props
     const { handleInputChange } = props
     return (
         <main className={stylesCommon.body}>
             <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                <InputText onChange={handleInputChange} className={stylesCommon['row-fields__child']} label="Amount" symbol="$" placeholder="100" />
+                <InputText value={amountValue} onChange={handleInputChange} className={stylesCommon['row-fields__child']} label="Amount" symbol="$" placeholder="100" />
                 <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amount={0.02} denom="BTC" />
+            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amount={expectedAmount} denom="BTC" />
             <button onClick={onBuyCrypto} className={`${stylesCommon['body__child']} ${styles['button-action']}`}>Get crypto</button>
         </main>
     )

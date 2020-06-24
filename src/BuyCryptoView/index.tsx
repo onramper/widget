@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../common/Header'
 import Footer from '../common/Footer'
 import BodyBuyCrypto from './BodyBuyCrypto'
@@ -10,8 +10,17 @@ import { NavContext } from '../wrappers/context'
 import { APIContext } from '../wrappers/APIContext'
 
 const BuyCryptoView: React.FC = () => {
+  const [expectedAmount, setExpectedAmount] = useState(0)
   const { nextScreen } = useContext(NavContext);
-  const { data, api } = useContext(APIContext);
+  const { data, api, remote, collected } = useContext(APIContext);
+
+  useEffect(() => {
+    async function getExpectedCrypto() {
+      let r = await remote.getExpectedCrypto(collected.amount);
+      setExpectedAmount(r)
+    }
+    getExpectedCrypto()
+  }, [collected.amount, remote])
 
   return (
     <div className={styles.view}>
@@ -24,6 +33,8 @@ const BuyCryptoView: React.FC = () => {
         selectedCrypto={data.aviableCryptos[0]}
         selectedCurrency={data.aviableCurrencies[0]}
         selectedPaymentMethod={data.aviablePaymentMethods[0]}
+        expectedAmount={expectedAmount}
+        amountValue={collected.amount}
         handleInputChange={api.handleInputChange}
       />
       <Footer />

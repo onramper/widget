@@ -4,6 +4,8 @@ import IconBTC from '../icons/btc.svg'
 import IconUSD from '../icons/usd.svg'
 import IconCC from '../icons/ccs.svg'
 
+import { getExpectedCrypto } from '../api/api'
+
 
 /* QUERY PARAMS */
 export enum QueryParams {
@@ -32,10 +34,15 @@ type ApiType = {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
+type RemoteType = {
+  getExpectedCrypto: (amount: number) => Promise<number>
+}
+
 type StateType = {
   data: DataStateType,
   collected: CollectedStateType
   api: ApiType
+  remote: RemoteType
 }
 //test data
 const availableCryptos = [
@@ -75,6 +82,9 @@ const initialState = {
   },
   api: {
     handleInputChange: () => null
+  },
+  remote: {
+    getExpectedCrypto: getExpectedCrypto//add api calls
   }
 }
 
@@ -113,7 +123,6 @@ type DataActions = {
 }
 
 const collectedReducer = (state: StateType, action: DataActions) => {
-  console.log(state)
   const { payload } = action
   switch (action.type) {
     case CollectedActionsType.AddField:

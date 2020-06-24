@@ -9,11 +9,12 @@ type InputTextType = {
     className?: string,
     icon?: string,
     iconPosition?: 'start' | 'end',
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    value: number
 }
 
 const InputText: React.FC<InputTextType> = (props) => {
-    const { symbol, label, className, icon, iconPosition, disabled } = props
+    const { symbol, label, className, icon, iconPosition, disabled, value } = props
     const placeholder = disabled ? '' : props.placeholder
     const { onChange } = props
     return (
@@ -22,7 +23,7 @@ const InputText: React.FC<InputTextType> = (props) => {
             <div className={`${styles['input__type']} ${styles['input__type--number']} ${disabled ? styles['input__type--number--disabled'] : ''}`}>
                 {icon ? <img alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? styles['input__type__child--old-first'] : ''}`} /> : null}
                 <span before-content={symbol} className={`${styles['input__type__child']} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} >
-                    <input name='amount' onChange={(e) => onChange(e)} type='number' min="0" placeholder={placeholder} disabled={disabled} />
+                    <input name='amount' value={value} onChange={(e) => onChange(e)} type='number' min="0" placeholder={placeholder} disabled={disabled} />
                 </span>
             </div>
         </div>
