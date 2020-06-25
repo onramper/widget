@@ -31,7 +31,7 @@ components
 /*-------------------body layot-------------------*/
 
 .body {
-    --body-space-childs: var(--padding-bottom);
+    --body-space-childs: 1.25rem; /* var(--padding-bottom); */
     display: flex;
     flex-direction: column;
     padding: var(--body-space-childs) var(--padding-rl);
@@ -59,6 +59,7 @@ components
 }
 
 .grow {
+    display: flex;
     flex-grow: 1;
 }
 
@@ -77,3 +78,19 @@ components
 
 
 
+/*-------------------button-------------------*/
+
+.button-action {
+    outline: none;
+    cursor: pointer;
+    background-color: #006070;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 0px;
+    border-color: #DEDEDE;
+    padding: 0.78rem;
+    color: white;
+    font-size: 1.25rem;
+    width: 100%;
+    margin-top: auto;
+}

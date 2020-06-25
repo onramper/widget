@@ -15,18 +15,3 @@
     color: #999;
     font-size: 0.625rem;
 }
-
-/*-------------------button-------------------*/
-
-.button-action {
-    outline: none;
-    cursor: pointer;
-    background-color: #006070;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 0px;
-    border-color: #DEDEDE;
-    padding: 0.78rem;
-    color: white;
-    font-size: 1.25rem;
-}
