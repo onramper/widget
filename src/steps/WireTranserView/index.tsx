@@ -12,7 +12,7 @@ const CreditCardView: React.FC = () => {
 
   return (
     <div className={styles.view}>
-      <Header title="Card details" backButton/>
+      <Header title="Wire transfer details" backButton/>
       <BodyWireTransfer
         onButtonAction={() => nextScreen(<ChooseGatewayView />)}
         amount={'100,00'}
