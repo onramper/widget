@@ -4,7 +4,7 @@ import GatewayOption, { GatewayOptionType } from './GatewayOption'
 
 type GatewaysListType = {
     items: GatewayOptionType[],
-    onClick: (...args: any) => void
+    onClick: (...args: any) => void//todo: change type
 }
 
 const GatewaysList: React.FC<GatewaysListType> = (props) => {

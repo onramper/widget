@@ -1,4 +1,12 @@
-export const a = 1
+export const copyToClipBoard = async (text: string, copied: (status: boolean, text: string) => void) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        copied(true, text);
+    } catch (err) {
+        copied(false, text);
+    }
+};
+
 //ADD TYPES
 /* export function usePromise(promiseOrFunction, defaultValue) {
     const [state, setState] = React.useState({ value: defaultValue, error: null, isPending: true })

@@ -78,3 +78,7 @@
 .input__icon--chevron {
     height: 0.75rem;
 }
+
+.clickable-icon:hover {
+    cursor: pointer;
+}

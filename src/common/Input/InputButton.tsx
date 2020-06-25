@@ -9,7 +9,7 @@ type InputButtonType = {
     icon?: string,
     className?: string,
     iconPosition?: 'start' | 'end',
-    onClick?: () => void
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
 }
 
 const InputButton: React.FC<InputButtonType> = (props) => {
