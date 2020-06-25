@@ -1,6 +1,6 @@
 import React from 'react';
 import BuyCryptoView from './BuyCryptoView'
-import PersonalDetailsView from './steps/PersonalDetailsView'
+import VerifyCodeView from './steps/VerifyCodeView'
 import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './wrappers/context';
 import { APIProvider } from './wrappers/APIContext'
@@ -10,7 +10,7 @@ function App() {
     <APIProvider>
       <NavProvider>
         <div className={`${styles['views-container']}`}>
-          <NavContainer home={<PersonalDetailsView />} />
+          <NavContainer home={<VerifyCodeView />} />
         </div>
       </NavProvider>
     </APIProvider>
