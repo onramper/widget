@@ -3,12 +3,12 @@ import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
 
-type BodyBuyCryptoType = {
+type BodyCreditCardType = {
     onButtonAction: () => void
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
-const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
+const BodyCreditCard: React.FC<BodyCreditCardType> = (props) => {
     const { handleInputChange, onButtonAction } = props
     return (
         <main className={stylesCommon.body}>
@@ -25,8 +25,8 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     )
 }
 
-BodyBuyCrypto.defaultProps = {
+BodyCreditCard.defaultProps = {
  
 }
 
-export default BodyBuyCrypto
+export default BodyCreditCard
