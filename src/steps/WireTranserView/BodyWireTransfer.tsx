@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
+import InfoBox from '../../common/InfoBox'
 
 import IconCopy from '../../icons/copyicon.svg'
 
@@ -15,10 +16,11 @@ type BodyWireTransferType = {
     bicswift: string
     namne: string
     symbol: string
+    textInfo?: string
 }
 
 const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
-    const { amount, reference, iban, bicswift, namne, symbol } = props
+    const { amount, reference, iban, bicswift, namne, symbol, textInfo } = props
     const { onButtonAction } = props
 
     const copycb = useCallback((e: React.MouseEvent<HTMLImageElement>) => {
@@ -27,6 +29,10 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
+            {textInfo ?
+                <div className={`${stylesCommon['body__child']}`}>
+                    <InfoBox text={textInfo!} />
+                </div> : null}
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
                 <InputText symbol={symbol} value={amount} name='wyret-amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={copycb} />
                 <InputText value={reference} name='wyret-reference' className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={copycb} />

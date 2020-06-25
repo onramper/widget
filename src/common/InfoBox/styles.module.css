@@ -1,0 +1,8 @@
+.infobox{
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.75rem;
+    background-color: #FCF5EE;
+    border-radius: 10px;
+    text-align: justify
+}

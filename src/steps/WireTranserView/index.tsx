@@ -9,10 +9,11 @@ import { NavContext } from '../../wrappers/context'
 
 const CreditCardView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
+  const textInfo = 'Go to your online banking and make a manual payment with the following wire transfer details.'
 
   return (
     <div className={styles.view}>
-      <Header title="Wire transfer details" backButton/>
+      <Header title="Wire transfer details" backButton />
       <BodyWireTransfer
         onButtonAction={() => nextScreen(<ChooseGatewayView />)}
         amount={'100,00'}
@@ -21,6 +22,7 @@ const CreditCardView: React.FC = () => {
         bicswift={'INGBNL2A'}
         namne={'Onramper'}
         symbol={'$'}
+        textInfo={textInfo}
       />
       <Footer />
     </div>
