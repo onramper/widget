@@ -19,7 +19,9 @@ type CollectedStateType = {
   amount: number,
   denom: string,
   currency: string,
-  paymentMethod: string
+  paymentMethod: string,
+  "files-id": File[],
+  [key: string]: any
 }
 
 /* ___________ */
@@ -32,6 +34,8 @@ type DataStateType = {
 
 type ApiType = {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleFilesAdded: (name: string, files: File[], maxFiles: number) => boolean,
+  handleFileDeleted: (name: string, fileName: string) => void
 }
 
 type RemoteType = {
@@ -78,10 +82,13 @@ const initialState = {
     amount: 100,
     denom: 'default',
     currency: 'default',
-    paymentMethod: 'default'
+    paymentMethod: 'default',
+    'files-id': []
   },
   api: {
-    handleInputChange: () => null
+    handleInputChange: () => null,
+    handleFilesAdded: () => true,
+    handleFileDeleted: () => null
   },
   remote: {
     getExpectedCrypto: getExpectedCrypto//add api calls
@@ -89,7 +96,9 @@ const initialState = {
 }
 
 enum CollectedActionsType {
-  AddField = 'ADD_FIELD'
+  AddField = 'ADD_FIELD',
+  AddFile = 'ADD_FILE',
+  DeleteFile = 'DELETE_FILE'
 }
 
 //Creating context
@@ -99,13 +108,42 @@ const APIContext = createContext<StateType>(initialState);
 const APIProvider: React.FC = (props) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({ type: CollectedActionsType.AddField, payload: { state, name: e.target.name, value: e.target.value } })
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({ type: CollectedActionsType.AddField, payload: { name: e.target.name, value: e.target.value } })
+  const handleFilesAdded = (name: string, files: File[], maxFiles: number) => {
+    const existingFiles = state.collected["files-id"].map(f => f.name)
+    files = files.filter(f => !existingFiles.includes(f.name))
+    if (existingFiles.length + files.length > maxFiles) return false
+    dispatch({ type: CollectedActionsType.AddFile, payload: { name, value: files } })
+    return true;
+  }
+  const handleFileDeleted = (name: string, fileName: string) => dispatch({ type: CollectedActionsType.DeleteFile, payload: { name, value: fileName } })
+
 
   return (
-    <APIContext.Provider value={{ ...state, api: { ...state.api, handleInputChange: handleInputChange } }}>
+    <APIContext.Provider value={{ ...state, api: { ...state.api, handleInputChange, handleFilesAdded, handleFileDeleted } }}>
       {props.children}
     </APIContext.Provider>
   )
+}
+
+export type DataActions = {
+  type: CollectedActionsType.AddField;
+  payload: {
+    name: string
+    value: number | string
+  };
+} | {
+  type: CollectedActionsType.AddFile;
+  payload: {
+    name: string
+    value: File[]
+  };
+} | {
+  type: CollectedActionsType.DeleteFile;
+  payload: {
+    name: string
+    value: string
+  };
 }
 
 const mainReducer = (state: StateType, action: DataActions) => ({
@@ -113,22 +151,29 @@ const mainReducer = (state: StateType, action: DataActions) => ({
   collected: collectedReducer(state, action)
 });
 
-type DataActions = {
-  type: CollectedActionsType.AddField;
-  payload: {
-    state: StateType
-    name: string
-    value: number | string
-  };
-}
-
 const collectedReducer = (state: StateType, action: DataActions) => {
-  const { payload } = action
   switch (action.type) {
     case CollectedActionsType.AddField:
       return {
-        ...payload.state.collected,
-        [payload.name]: payload.value
+        ...state.collected,
+        [action.payload.name]: action.payload.value
+      }
+    case CollectedActionsType.AddFile:
+      let newFiles = action.payload.value
+      if (newFiles && newFiles.length > 0) {
+        const existingFiles = (state.collected[action.payload.name] as File[]).map(f => f.name)
+        newFiles = newFiles.filter(f => !existingFiles.includes(f.name))
+      }
+      return {
+        ...state.collected,
+        [action.payload.name]: [...state.collected[action.payload.name], ...newFiles]
+      }
+    case CollectedActionsType.DeleteFile:
+      let name2delete = action.payload.value
+      const newList = (state.collected[action.payload.name] as File[]).filter(f => f.name !== name2delete)
+      return {
+        ...state.collected,
+        [action.payload.name]: [...newList]
       }
     default:
       return state.collected

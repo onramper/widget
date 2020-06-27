@@ -6,46 +6,52 @@ import IconDocument from '../../icons/document.svg'
 import IconDelete from '../../icons/deleteicon.svg'
 
 type UploadBoxType = {
-
+    onFilesAdded: (name: string, files: File[], maxFiles: number) => boolean
+    onFileDeleted: (name: string, fileName: string) => void
+    onError: (err: string) => void
+    id: string
+    filesList: File[]
+    maxFiles?: number
 }
 
 const UploadBox: React.FC<UploadBoxType> = (props) => {
+
+    const { filesList, maxFiles = -1, id } = props
+    const { onFilesAdded, onError, onFileDeleted } = props
 
     const [isDragOver, setIsDragOver] = useState(false)
     const handleDragEnter = useCallback(() => setIsDragOver(true), []);
     const handleDragLeave = useCallback(() => setIsDragOver(false), []);
 
-    const [files, setfiles] = useState<File[]>([])
     const handleOnDropFiles = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         let newFiles = [...e.dataTransfer.files]
-        if (newFiles && newFiles.length > 0) {
-            const existingFiles = files.map(f => f.name)
-            newFiles = newFiles.filter(f => !existingFiles.includes(f.name))
-            setfiles([...files, ...newFiles])
-            e.dataTransfer.clearData();
-        }
-    }, [files]);
+
+        const ok = onFilesAdded(id, [...newFiles], maxFiles)
+        if (!ok) onError(`You only can upload ${maxFiles} files`)
+
+        e.dataTransfer.clearData();
+    }, [maxFiles, id, onError, onFilesAdded]);
 
     const handleOnSelectFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        let newFiles = [...e.currentTarget.files!]
-        if (newFiles && newFiles.length > 0) {
-            const existingFiles = files.map(f => f.name)
-            newFiles = newFiles.filter(f => !existingFiles.includes(f.name))
-            setfiles([...files, ...newFiles])
-            e.currentTarget.value = '';
-        }
-    }, [files]);
+        let currentFiles = e.currentTarget.files || []
+        let newFiles = [...currentFiles]
+
+        const ok = onFilesAdded(id, [...newFiles], maxFiles)
+        if (!ok) onError(`You only can upload ${maxFiles} files`)
+
+        e.currentTarget.value = '';
+    }, [maxFiles, id, onFilesAdded, onError]);
 
     const handleDeleteClick = useCallback((e: React.MouseEvent<HTMLImageElement>) => {
         const name2delete = e.currentTarget.getAttribute('data-name')
-        const newList = files.filter(f => f.name != name2delete)
-        setfiles(newList)
-    }, [files]);
+        onFileDeleted(id, name2delete!)
+    }, [onFileDeleted, id]);
 
     return (
         <div className={styles['upload-container']} >
-            {files.length > 0 ?
-                files.map(f => <FileItem key={f.name} fileName={f.name} onDeleteClick={handleDeleteClick} />)
+            {filesList.map(f => <FileItem key={f.name} fileName={f.name} onDeleteClick={handleDeleteClick} />)}
+            {filesList.length >= maxFiles && maxFiles > 0 ?
+                null
                 :
                 < div onDrop={handleOnDropFiles} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave} className={`${styles['drag-box']} ${isDragOver ? styles['drag-box-dragging'] : ''}`}>
                     <input type='file' multiple onChange={handleOnSelectFiles} />
@@ -63,7 +69,7 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
     )
 }
 
-const FileItem: React.FC<{ fileName: string, key: string, onDeleteClick: (e: React.MouseEvent<HTMLImageElement>) => void }> = (props) => {
+const FileItem: React.FC<{ fileName: string, onDeleteClick: (e: React.MouseEvent<HTMLImageElement>) => void }> = (props) => {
     return (
         <div className={styles.file}>
             <img alt='Icon document' src={IconDocument} />
@@ -74,6 +80,7 @@ const FileItem: React.FC<{ fileName: string, key: string, onDeleteClick: (e: Rea
 }
 
 UploadBox.defaultProps = {
+
 }
 
 export default UploadBox
