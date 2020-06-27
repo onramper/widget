@@ -1,4 +1,13 @@
-.upload-box {
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/*******************/
+
+.drag-box {
+    padding: 1.5rem 0;
     display: flex;
     flex-direction: column;
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='5' ry='5' stroke='black' stroke-width='1' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
@@ -8,9 +17,14 @@
     width: 100%;
     text-align: center;
     position: relative;
+    flex-grow: 1;
 }
 
-.upload-box > input[type='file'] {
+.drag-box-dragging {
+    background-color: whitesmoke;
+}
+
+.drag-box > input[type='file'] {
     position: absolute;
     opacity: 0;
     width: 100%;
@@ -18,6 +32,28 @@
     cursor: pointer;
 }
 
-.upload-info + .upload-info {
+.drag-info + .drag-info {
     margin-top: 1.5625rem;
+}
+
+/*******************/
+
+.file {
+    display: flex;
+    flex-direction: row;
+    padding: 0 1rem 1rem 1rem;
+    align-items: center;
+}
+
+.file-name {
+    flex-grow: 1;
+    margin: 0 1rem;
+}
+
+.file > :first-child {
+    height: 1rem;
+}
+
+.file > :last-child {
+    cursor: pointer;
 }
