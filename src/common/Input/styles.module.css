@@ -46,6 +46,10 @@
 }
 
 /***input type=number***/
+.input__type--number--error {
+    border-color: #E35757;
+}
+
 .input__type--number--disabled {
     background-color: #F8F8F8;
 }
@@ -81,4 +85,10 @@
 
 .clickable-icon:hover {
     cursor: pointer;
+}
+
+.text-error {
+    color: #E35757;
+    font-size: 0.78em;
+    margin-top: 0.2727em;
 }
