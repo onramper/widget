@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './styles.module.css'
 import IconBtc from '../icons/btc.svg'
 import Range from './Range'
@@ -11,15 +11,18 @@ export type GatewayOptionType = {
     denom: string,
     fee: number,
     logo?: string,
-    open?: boolean
+    isOpen?: boolean
+    onClick?: (index: number) => void
+    index: number
 }
 
 const GatewayOption: React.FC<GatewayOptionType> = (props) => {
-    const { name, txTime, kycLevel, amount, denom, fee, logo, open } = props
-    const [isOpen, setIsOpen] = useState(open)
+    const { name, txTime, kycLevel, amount, denom, fee, logo, isOpen } = props
+
+    const { onClick = () => null } = props
 
     return (
-        <div onClick={() => setIsOpen(!isOpen)} className={`${styles['option-container']} ${!isOpen ? styles['option-container--collapsed'] : ''}`}>
+        <div onClick={() => onClick(props.index)} className={`${styles['option-container']} ${!isOpen ? styles['option-container--collapsed'] : ''}`}>
             <div className={styles['option-container__radio']}>
                 <input type='radio' checked={isOpen}></input>
             </div>
@@ -52,7 +55,7 @@ const GatewayOption: React.FC<GatewayOptionType> = (props) => {
 }
 
 GatewayOption.defaultProps = {
-    open: false
+    
 }
 
 export default GatewayOption

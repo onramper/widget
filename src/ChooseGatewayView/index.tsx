@@ -7,17 +7,18 @@ import GatewaysList from './GatewaysList'
 
 const availableGateways = [
   {
-    name:"Recommended",
+    id: 1,
+    name: "Recommended",
     txTime: "3-5h",
     kycLevel: "medium",
     amount: 1.026546,
     denom: "BTC",
     fee: 2,
-    logo: LogoOnramper,
-    open: true
+    logo: LogoOnramper
   },
   {
-    name:"Fastest",
+    id: 2,
+    name: "Fastest",
     txTime: "3-5h",
     kycLevel: "hard",
     amount: 1.026546,
@@ -27,8 +28,8 @@ const availableGateways = [
   }
 ]
 
-const a = (a: any, b: any, c: any) => {
-  console.log(a, b, c)
+const a = (i: number) => {
+  console.log(i)
 }
 
 const ChooseGatewayView = () => {
