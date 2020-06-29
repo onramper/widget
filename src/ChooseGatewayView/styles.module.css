@@ -107,12 +107,12 @@
     --diff-size: 0.61312em;
     position: relative;
     display: inline-block;
-    color: green;
+/*     color: green; */
 }
 
 /*gateway collapsed*/
 .receive-diff--collapsed {
-    color: red;
+/*     color: red; */
 }
 
 .receive-diff--collapsed::before {
@@ -120,12 +120,27 @@
     height: 0;
 
     border-right: calc( 0.57735 * var(--diff-size) ) solid transparent;
-    border-top: var(--diff-size) solid red;
     border-left: calc( 0.57735 * var(--diff-size) ) solid transparent;
     right: 100%;
     top: 20%;
     position: absolute;
     margin-right: 0.33125em;
+}
+
+.diff--down {
+    color: red;
+}
+
+.diff--down::before {
+    border-top: var(--diff-size) solid red;
+}
+
+.diff--up {
+    color: green;
+}
+
+.diff--up::before {
+    border-bottom: var(--diff-size) solid green;
 }
 
 .option-container--collapsed {
