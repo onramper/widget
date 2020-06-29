@@ -3,7 +3,9 @@ import styles from './styles.module.css'
 import IconBtc from '../icons/btc.svg'
 import Range from './Range'
 
-export type GatewayOptionType = {
+export type GatewayOptionType = Omit<_GatewayOptionType, 'index'>
+
+export type _GatewayOptionType = {
     name: string,
     txTime: string,
     kycLevel: string,
@@ -17,7 +19,7 @@ export type GatewayOptionType = {
     selectedAmount?: number
 }
 
-const GatewayOption: React.FC<GatewayOptionType> = (props) => {
+const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
     const { name, txTime, kycLevel, amount, denom, fee, logo, isOpen, selectedAmount = 0 } = props //todo change 
 
     const diffPercent = ((1 - (selectedAmount / amount)) * 100)

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import styles from '../styles.module.css'
+import styles from './styles.module.css'
 import GatewayOption, { GatewayOptionType } from './GatewayOption'
 
 type GatewaysListType = {
@@ -19,7 +19,7 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
     }, [onItemClick])
 
     return (
-        <main className={`${styles.body} ${styles['gateways-list']}`}>{/* TODO: change all custom lists to general list */}
+        <div className={`${styles['gateways-list']}`}>{/* TODO: change all custom lists to general list */}
             {
                 items.map((item, i) =>
                     <GatewayOption
@@ -37,7 +37,7 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
                         selectedAmount={items[selectedGateway].amount} />
                 )
             }
-        </main>
+        </div>
     )
 }
 

@@ -1,7 +1,7 @@
 
 /*-------------------gateway list-------------------*/
 .gateways-list {
-    padding: var(--body-space-childs) var(--padding-rl);
+    width: 100%;
 }
 
 /*-------------------gateway option-------------------*/
@@ -145,8 +145,7 @@
 
 .option-container--collapsed {
     border-style: none;
-    padding: 0px;
-    margin: 1.25rem 0px;
+    padding: 1.25rem 0px;
 }
 
 .option-container--collapsed:hover {

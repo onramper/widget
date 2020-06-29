@@ -3,7 +3,7 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyPersonalDetails from './BodyPersonalDetails'
 import styles from '../../styles.module.css'
-import ChooseGatewayView from '../../ChooseGatewayView'
+import WireTranserView from '../../steps/WireTranserView'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../wrappers/APIContext'
@@ -16,7 +16,7 @@ const PersonalDetailsView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Personal details" backButton/>
       <BodyPersonalDetails
-        onButtonAction={() => nextScreen(<ChooseGatewayView />)}
+        onButtonAction={() => nextScreen(<WireTranserView />)}
         handleInputChange={api.handleInputChange}
       />
       <Footer />
