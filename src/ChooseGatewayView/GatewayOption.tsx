@@ -29,7 +29,7 @@ const GatewayOption: React.FC<GatewayOptionType> = (props) => {
     return (
         <div onClick={() => onClick(props.index)} className={`${styles['option-container']} ${!isOpen ? styles['option-container--collapsed'] : ''}`}>
             <div className={styles['option-container__radio']}>
-                <input type='radio' checked={isOpen}></input>
+                <input type='radio' defaultChecked={isOpen}></input>
             </div>
             <div className={`${styles['option-container__content']} ${!isOpen ? styles['option-container__content--collapsed'] : ''}`}>
                 <div className={`${styles.content__info} ${!isOpen ? styles['content__info--collapsed'] : ''}`} >

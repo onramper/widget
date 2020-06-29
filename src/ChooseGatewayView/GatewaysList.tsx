@@ -4,23 +4,22 @@ import GatewayOption, { GatewayOptionType } from './GatewayOption'
 
 type GatewaysListType = {
     items: Omit<GatewayOptionType, 'index'>[],
-    onClick: (index: number) => void
+    onItemClick?: (index: number) => void
 }
 
 const GatewaysList: React.FC<GatewaysListType> = (props) => {
     const { items } = props //const
-    const { onClick } = props
+    const { onItemClick = () => null } = props
 
     const [selectedGateway, setSelectedGateway] = useState(0)
 
     const handleItemClick = useCallback((index: number) => {
         setSelectedGateway(index)
-        onClick(index)
-    }, [onClick])
+        onItemClick(index)
+    }, [onItemClick])
 
     return (
         <main className={`${styles.body} ${styles['gateways-list']}`}>{/* TODO: change all custom lists to general list */}
-            {console.log(selectedGateway)}
             {
                 items.map((item, i) =>
                     <GatewayOption

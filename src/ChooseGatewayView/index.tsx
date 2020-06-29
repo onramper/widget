@@ -28,15 +28,11 @@ const availableGateways = [
   }
 ]
 
-const a = (i: number) => {
-  console.log(i)
-}
-
 const ChooseGatewayView = () => {
   return (
     <div className={styles.view}>
       <Header title="Choose gateway" backButton />
-      <GatewaysList items={availableGateways} onClick={a} />
+      <GatewaysList items={availableGateways} />
       <Footer />
     </div>
   );
