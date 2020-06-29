@@ -1,5 +1,4 @@
 import React from 'react'
-import styles from './styles.module.css'
 import stylesCommon from '../styles.module.css'
 
 import InputButton from '../common/Input/InputButton'

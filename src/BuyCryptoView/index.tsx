@@ -27,9 +27,9 @@ const BuyCryptoView: React.FC = () => {
       <Header title="Buy crypto" />
       <BodyBuyCrypto
         onBuyCrypto={() => nextScreen(<ChooseGatewayView />)}
-        openPickCrypto={() => nextScreen(<PickView title="Select cryptocurrency" items={data.aviableCryptos} />)}
-        openPickCurrency={() => nextScreen(<PickView title="Select fiat currency" items={data.aviableCurrencies} />)}
-        openPickPayment={() => nextScreen(<PickView title="Select payment method" items={data.aviablePaymentMethods} />)}
+        openPickCrypto={() => nextScreen(<PickView title="Select cryptocurrency" items={data.aviableCryptos} onItemClick={(i) => console.log('Selected', i)} />)}
+        openPickCurrency={() => nextScreen(<PickView title="Select fiat currency" items={data.aviableCurrencies} onItemClick={(i) => console.log('Selected', i)} />)}
+        openPickPayment={() => nextScreen(<PickView title="Select payment method" items={data.aviablePaymentMethods} onItemClick={(i) => console.log('Selected', i)} />)}
         selectedCrypto={data.aviableCryptos[0]}
         selectedCurrency={data.aviableCurrencies[0]}
         selectedPaymentMethod={data.aviablePaymentMethods[0]}

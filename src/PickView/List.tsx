@@ -1,23 +1,42 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styles from './styles.module.css'
-import { ListItemType } from '../common/types'
+import { ListItemType, _ListItemType } from '../common/types'
 
-const List: React.FC<{ items: ListItemType[] }> = (props) => {
-    var { items } = props
+type ListType = {
+    items: ListItemType[]
+    onItemClick?: (index: number) => void
+}
 
-    const listItems = items.map((item) => <ListItem key={item.name} name={item.name} info={item.info} icon={item.icon} />);
+const List: React.FC<ListType> = (props) => {
+    const { items } = props
+    const { onItemClick = () => null } = props
+
+    const handleItemClick = useCallback((index: number) => {
+        onItemClick(index)
+    }, [onItemClick])
 
     return (
         <div className={`${styles.list}`}>
-            {listItems}
+            {
+                items.map((item, i) =>
+                    <ListItem
+                        key={i}
+                        index={i}
+                        name={item.name}
+                        info={item.info}
+                        icon={item.icon}
+                        onClick={handleItemClick} />
+                )
+            }
         </div>
     )
 }
 
-const ListItem: React.FC<ListItemType> = (props: ListItemType) => {
-    const { name, info, icon } = props
+const ListItem: React.FC<_ListItemType> = (props) => {
+    const { index, name, info, icon } = props
+    const { onClick = () => null } = props
     return (
-        <div className={`${styles['list-item']}`}>
+        <div className={`${styles['list-item']}`} onClick={() => onClick(index)}>
             <img alt="Icon" className={`${styles['list-item__child']} ${styles['list-item__icon']}`} src={icon} />
             <div className={styles['list-item__child']}>
                 <span>{name}</span>
