@@ -34,7 +34,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
             <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amount={expectedAmount} denom="BTC" />
             <div className={`${stylesCommon['body__child']}`}>
-                <button onClick={onBuyCrypto} className={`${stylesCommon['button-action']}`}>Continue</button>
+                <button onClick={onBuyCrypto} className={`${stylesCommon['button-action']}`}>Get crypto</button>
             </div>
         </main>
     )
