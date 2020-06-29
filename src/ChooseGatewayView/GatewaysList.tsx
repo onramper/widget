@@ -11,7 +11,7 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
     const { items } = props //const
     const { onClick } = props
 
-    const [selectedGateway, setSelectedGateway] = useState<number | string>(0)
+    const [selectedGateway, setSelectedGateway] = useState(0)
 
     const handleItemClick = useCallback((index: number) => {
         setSelectedGateway(index)
@@ -34,7 +34,8 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
                         fee={item.fee}
                         logo={item.logo}
                         isOpen={i === selectedGateway}
-                        onClick={handleItemClick} />
+                        onClick={handleItemClick}
+                        selectedAmount={items[selectedGateway].amount} />
                 )
             }
         </main>

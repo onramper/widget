@@ -14,10 +14,13 @@ export type GatewayOptionType = {
     isOpen?: boolean
     onClick?: (index: number) => void
     index: number
+    selectedAmount?: number
 }
 
 const GatewayOption: React.FC<GatewayOptionType> = (props) => {
-    const { name, txTime, kycLevel, amount, denom, fee, logo, isOpen } = props
+    const { name, txTime, kycLevel, amount, denom, fee, logo, isOpen, selectedAmount = 0 } = props //todo change 
+
+    const diffPercent = ((1 - (selectedAmount / amount)) * 100).toFixed(2)
 
     const { onClick = () => null } = props
 
@@ -45,7 +48,7 @@ const GatewayOption: React.FC<GatewayOptionType> = (props) => {
                         {logo ? <img alt="Gateway logo" src={logo} /> : null}
                     </div>
                     <div>
-                        <span className={`${styles['receive-diff']} ${!isOpen ? styles['receive-diff--collapsed'] : ''}`} > {!isOpen ? '0,65%' : 'You Receive:'}</span>
+                        <span className={`${styles['receive-diff']} ${!isOpen ? styles['receive-diff--collapsed'] : ''}`} > {!isOpen ? `${diffPercent}%` : 'You Receive:'}</span>
                         <span>{denom} {amount}</span>
                     </div>
                 </div>
@@ -55,7 +58,7 @@ const GatewayOption: React.FC<GatewayOptionType> = (props) => {
 }
 
 GatewayOption.defaultProps = {
-    
+
 }
 
 export default GatewayOption

@@ -11,7 +11,7 @@ const availableGateways = [
     name: "Recommended",
     txTime: "3-5h",
     kycLevel: "medium",
-    amount: 1.026546,
+    amount: 100,
     denom: "BTC",
     fee: 2,
     logo: LogoOnramper
@@ -21,7 +21,7 @@ const availableGateways = [
     name: "Fastest",
     txTime: "3-5h",
     kycLevel: "hard",
-    amount: 1.026546,
+    amount: 99,
     denom: "BTC",
     fee: 4,
     logo: LogoOnramper
