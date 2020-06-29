@@ -1,5 +1,5 @@
 export type _ListItemType = {
-    icon: string,
+    icon?: string,
     name: string,
     info?: string
     onClick?: (index: number) => void
