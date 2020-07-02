@@ -17,29 +17,24 @@ function testSnapshot(element: JSX.Element) {
   expect(component).toMatchSnapshot();
 }
 
-const availableCryptos = [
+const itemsListExample = [
   {
     icon: IconBTC,
     name: "BTC",
     info: "Bitcoin"
-  },
-  {
-    icon: IconUSD,
-    name: "USD",
-    info: "US Dollar"
-  },
+  }
 ];
 
 describe("Component snapshots", () => {
   const components = new Map([
     ["Footer", <Footer />],
-    ["List", <List items={availableCryptos} />],
+    ["List", <List items={itemsListExample} />],
     ["Header", <Header title="Buy crypto" />],
     ["Header with backbutton", <Header title="Buy crypto" backButton={true} />],
-    ["BodyBuyCrypto", <BodyBuyCrypto />],
+    ["BodyBuyCrypto", <BodyBuyCrypto onBuyCrypto={() => null} handleInputChange={() => null} openPickCrypto={() => null} openPickCurrency={() => null} openPickPayment={() => null} selectedCrypto={itemsListExample[0]} selectedCurrency={itemsListExample[0]} selectedPaymentMethod={itemsListExample[0]} expectedAmount={100} amountValue={100} />],
     ["ExpectedCrypto", <ExpectedCrypto amount={1.2} denom="BTC" />],
     ["InputButton", <InputButton selectedOption="Credit card" />],
-    ["InputText", <InputText />],
+    ["InputText", <InputText name='example' />],
   ]);
 
   for (const [name, elem] of components) {

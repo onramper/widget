@@ -1,5 +1,169 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
+<main
+  className="body"
+>
+  <div
+    className="input body__child"
+    onClick={[Function]}
+  >
+    <label>
+      I want to buy
+    </label>
+    <div
+      className="input__type input__type--selector"
+    >
+      <img
+        alt="Icon"
+        className="input__type__child input__icon "
+        src="btc.svg"
+      />
+      <span
+        className="input__type__child "
+        style={
+          Object {
+            "order": "unset",
+          }
+        }
+      >
+        BTC
+      </span>
+      <img
+        alt="Chevron right"
+        className="input__type__child input__icon input__icon--chevron"
+        src="chevron_right.svg"
+      />
+    </div>
+  </div>
+  <div
+    className="body__child row-fields"
+  >
+    <div
+      className="input row-fields__child"
+    >
+      <label>
+        Amount
+      </label>
+      <div
+        className="input__type input__type--number   "
+      >
+        <span
+          before-content="$"
+          className="input__type__child symbol  "
+          style={
+            Object {
+              "order": "unset",
+            }
+          }
+        >
+          <input
+            disabled={false}
+            min="0"
+            name="amount"
+            onChange={[Function]}
+            placeholder="100"
+            type="number"
+            value={100}
+          />
+        </span>
+      </div>
+      <span
+        className="text-error"
+      />
+    </div>
+    <div
+      className="input row-fields__child"
+      onClick={[Function]}
+    >
+      <label>
+        Currency
+      </label>
+      <div
+        className="input__type input__type--selector"
+      >
+        <img
+          alt="Icon"
+          className="input__type__child input__icon "
+          src="btc.svg"
+        />
+        <span
+          className="input__type__child "
+          style={
+            Object {
+              "order": "unset",
+            }
+          }
+        >
+          BTC
+        </span>
+        <img
+          alt="Chevron right"
+          className="input__type__child input__icon input__icon--chevron"
+          src="chevron_right.svg"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="input body__child"
+    onClick={[Function]}
+  >
+    <label>
+      Payment method
+    </label>
+    <div
+      className="input__type input__type--selector"
+    >
+      <img
+        alt="Icon"
+        className="input__type__child input__icon input__type__child--old-first"
+        src="btc.svg"
+      />
+      <span
+        className="input__type__child input__type__child--new-first"
+        style={
+          Object {
+            "order": -1,
+          }
+        }
+      >
+        BTC
+      </span>
+      <img
+        alt="Chevron right"
+        className="input__type__child input__icon input__icon--chevron"
+        src="chevron_right.svg"
+      />
+    </div>
+  </div>
+  <div
+    className="expected-crypto body__child grow"
+  >
+    <span
+      className="expected-crypto__amount"
+    >
+      100 BTC
+    </span>
+    <span
+      className="expected-crypto__info"
+    >
+      Crypto you get (estimation)
+    </span>
+  </div>
+  <div
+    className="body__child"
+  >
+    <button
+      className="button-action"
+      onClick={[Function]}
+    >
+      Get crypto
+    </button>
+  </div>
+</main>
+`;
+
 exports[`Component snapshots ExpectedCrypto snapshot 1`] = `
 <div
   className="expected-crypto undefined"
@@ -18,7 +182,7 @@ exports[`Component snapshots ExpectedCrypto snapshot 1`] = `
 `;
 
 exports[`Component snapshots Footer snapshot 1`] = `
-<div
+<footer
   className="footer"
 >
   <span>
@@ -28,7 +192,7 @@ exports[`Component snapshots Footer snapshot 1`] = `
     alt="logo"
     src="logo.svg"
   />
-</div>
+</footer>
 `;
 
 exports[`Component snapshots Header snapshot 1`] = `
@@ -43,6 +207,7 @@ exports[`Component snapshots Header snapshot 1`] = `
   <img
     alt="menu"
     className="header__child header__burger-icon"
+    onClick={[Function]}
     src="burger_menu.svg"
   />
 </nav>
@@ -55,6 +220,7 @@ exports[`Component snapshots Header with backbutton snapshot 1`] = `
   <img
     alt="Back"
     className="header__child header__back-icon"
+    onClick={[Function]}
     src="left_arrow.svg"
   />
   <h1
@@ -65,6 +231,7 @@ exports[`Component snapshots Header with backbutton snapshot 1`] = `
   <img
     alt="menu"
     className="header__child header__burger-icon"
+    onClick={[Function]}
     src="burger_menu.svg"
   />
 </nav>
@@ -104,7 +271,7 @@ exports[`Component snapshots InputText snapshot 1`] = `
      
   </label>
   <div
-    className="input__type input__type--number "
+    className="input__type input__type--number   "
   >
     <span
       className="input__type__child symbol  "
@@ -117,10 +284,15 @@ exports[`Component snapshots InputText snapshot 1`] = `
       <input
         disabled={false}
         min="0"
-        type="number"
+        name=""
+        onChange={[Function]}
+        type="text"
       />
     </span>
   </div>
+  <span
+    className="text-error"
+  />
 </div>
 `;
 
@@ -130,6 +302,7 @@ exports[`Component snapshots List snapshot 1`] = `
 >
   <div
     className="list-item"
+    onClick={[Function]}
   >
     <img
       alt="Icon"
@@ -151,6 +324,7 @@ exports[`Component snapshots List snapshot 1`] = `
   </div>
   <div
     className="list-item"
+    onClick={[Function]}
   >
     <img
       alt="Icon"
@@ -170,155 +344,5 @@ exports[`Component snapshots List snapshot 1`] = `
       </span>
     </div>
   </div>
-</div>
-`;
-
-exports[`Component snapshots SelectCrypto snapshot 1`] = `
-<div
-  className="body"
->
-  <div
-    className="input body__child"
-  >
-    <label>
-      I want to buy
-    </label>
-    <div
-      className="input__type input__type--selector"
-    >
-      <img
-        alt="Icon"
-        className="input__type__child input__icon "
-        src="btc.svg"
-      />
-      <span
-        className="input__type__child "
-        style={
-          Object {
-            "order": "unset",
-          }
-        }
-      >
-        Bitcoin
-      </span>
-      <img
-        alt="Chevron right"
-        className="input__type__child input__icon input__icon--chevron"
-        src="chevron_right.svg"
-      />
-    </div>
-  </div>
-  <div
-    className="body__child row-fields"
-  >
-    <div
-      className="input row-fields__child"
-    >
-      <label>
-        Amount
-      </label>
-      <div
-        className="input__type input__type--number "
-      >
-        <span
-          before-content="$"
-          className="input__type__child symbol  "
-          style={
-            Object {
-              "order": "unset",
-            }
-          }
-        >
-          <input
-            disabled={false}
-            min="0"
-            placeholder="100"
-            type="number"
-          />
-        </span>
-      </div>
-    </div>
-    <div
-      className="input row-fields__child"
-    >
-      <label>
-        Currency
-      </label>
-      <div
-        className="input__type input__type--selector"
-      >
-        <img
-          alt="Icon"
-          className="input__type__child input__icon "
-          src="usd.svg"
-        />
-        <span
-          className="input__type__child "
-          style={
-            Object {
-              "order": "unset",
-            }
-          }
-        >
-          USD
-        </span>
-        <img
-          alt="Chevron right"
-          className="input__type__child input__icon input__icon--chevron"
-          src="chevron_right.svg"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    className="input body__child"
-  >
-    <label>
-      Payment method
-    </label>
-    <div
-      className="input__type input__type--selector"
-    >
-      <img
-        alt="Icon"
-        className="input__type__child input__icon input__type__child--old-first"
-        src="ccs.svg"
-      />
-      <span
-        className="input__type__child input__type__child--new-first"
-        style={
-          Object {
-            "order": -1,
-          }
-        }
-      >
-        Credit card
-      </span>
-      <img
-        alt="Chevron right"
-        className="input__type__child input__icon input__icon--chevron"
-        src="chevron_right.svg"
-      />
-    </div>
-  </div>
-  <div
-    className="expected-crypto body__child grow"
-  >
-    <span
-      className="expected-crypto__amount"
-    >
-      0.02 BTC
-    </span>
-    <span
-      className="expected-crypto__info"
-    >
-      Crypto you get (estimation)
-    </span>
-  </div>
-  <button
-    className="body__child button-action"
-  >
-    Get crypto
-  </button>
 </div>
 `;
