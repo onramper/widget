@@ -3,20 +3,20 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyConfirmPayment from './BodyConfirmPayment'
 import styles from '../../styles.module.css'
-import WireTranserView from '../WireTranserView'
+import CreditCardView from '../CreditCardView'
 
 import { NavContext } from '../../wrappers/context'
 
 import LogoOnramper from '../../icons/btc.svg'
 
-const PersonalDetailsView: React.FC = () => {
+const ConfirmPaymentView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
 
   return (
     <div className={styles.view}>
       <Header title="Payment confirmation" backButton />
       <BodyConfirmPayment
-        onButtonAction={() => nextScreen(<WireTranserView />)}
+        onButtonAction={() => nextScreen(<CreditCardView />)}
         payAmount={100} //: string
         fees={7.5} //: string
         currency='USD'
@@ -34,4 +34,4 @@ const PersonalDetailsView: React.FC = () => {
   );
 };
 
-export default PersonalDetailsView;
+export default ConfirmPaymentView;

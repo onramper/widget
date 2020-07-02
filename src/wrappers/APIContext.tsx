@@ -54,26 +54,6 @@ const availableCryptos = [
     icon: IconBTC,
     name: "BTC",
     info: "Bitcoin"
-  },
-  {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
-  },
-  {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
-  },
-  {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
-  },
-  {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
   }
 ]
 
