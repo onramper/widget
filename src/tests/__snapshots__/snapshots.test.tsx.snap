@@ -241,9 +241,17 @@ exports[`Component snapshots InputButton snapshot 1`] = `
 <div
   className="input "
 >
+  <label>
+    Label
+  </label>
   <div
     className="input__type input__type--selector"
   >
+    <img
+      alt="Icon"
+      className="input__type__child input__icon "
+      src="btc.svg"
+    />
     <span
       className="input__type__child "
       style={
@@ -252,7 +260,7 @@ exports[`Component snapshots InputButton snapshot 1`] = `
         }
       }
     >
-      Credit card
+      BTC
     </span>
     <img
       alt="Chevron right"
@@ -268,7 +276,7 @@ exports[`Component snapshots InputText snapshot 1`] = `
   className="input "
 >
   <label>
-     
+    Label
   </label>
   <div
     className="input__type input__type--number   "
@@ -284,7 +292,7 @@ exports[`Component snapshots InputText snapshot 1`] = `
       <input
         disabled={false}
         min="0"
-        name=""
+        name="example"
         onChange={[Function]}
         type="text"
       />
@@ -319,28 +327,6 @@ exports[`Component snapshots List snapshot 1`] = `
         className="list-item__info"
       >
         Bitcoin
-      </span>
-    </div>
-  </div>
-  <div
-    className="list-item"
-    onClick={[Function]}
-  >
-    <img
-      alt="Icon"
-      className="list-item__child list-item__icon"
-      src="usd.svg"
-    />
-    <div
-      className="list-item__child"
-    >
-      <span>
-        USD
-      </span>
-      <span
-        className="list-item__info"
-      >
-        US Dollar
       </span>
     </div>
   </div>
