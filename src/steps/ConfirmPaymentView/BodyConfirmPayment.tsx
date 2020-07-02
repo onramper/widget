@@ -3,6 +3,10 @@ import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
 import IconChevron from '../../icons/chevron_right.svg'
+import IconPay from '../../icons/payicon.svg'
+import IconFees from '../../icons/feesicon.svg'
+import IconWallet from '../../icons/walleticon.svg'
+import IconExpectedtime from '../../icons/expectedtimeicon.svg'
 
 type BodyConfirmPaymentViewType = {
     onButtonAction: () => void
@@ -32,8 +36,8 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
         <main className={stylesCommon.body}>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow} ${styles['container']}`}>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={props.cryptoIcon} title='Pay' content={`${props.payAmount} ${props.currency}`} />
-                    <Item type='main' icon={props.cryptoIcon} title='Fees' content={`${props.fees} ${props.currency}`} onClick={() => setIsExpanded(actual => !actual)} isExpanded={isExpanded} />
+                    <Item type='main' icon={IconPay} title='Pay' content={`${props.payAmount} ${props.currency}`} />
+                    <Item type='main' icon={IconFees} title='Fees' content={`${props.fees} ${props.currency}`} onClick={() => setIsExpanded(actual => !actual)} isExpanded={isExpanded} />
                     {isExpanded ?
                         <>
                             <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />
@@ -45,11 +49,12 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
                 </ul>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={props.cryptoIcon} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
+                    <Item type='main' icon={IconWallet} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
                 </ul>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={props.cryptoIcon} title='Expected transaction time' content={props.txTime} single />
+                    <Item type='main' icon={IconExpectedtime} title='Expected transaction time' content={props.txTime} single />
                 </ul>
+                <label className={styles['terms']}><input type="checkbox" name='agreement-wyre' /> I accept Wyre's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
             </div>
             <div className={`${stylesCommon['body__child']}`}>
                 <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Confirm</button>
