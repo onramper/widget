@@ -8,6 +8,8 @@ import IconFees from '../../icons/feesicon.svg'
 import IconWallet from '../../icons/walleticon.svg'
 import IconExpectedtime from '../../icons/expectedtimeicon.svg'
 
+import { CSSTransition } from 'react-transition-group';
+
 type BodyConfirmPaymentViewType = {
     onButtonAction: () => void
     payAmount: number
@@ -38,14 +40,25 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={IconPay} title='Pay' content={`${props.payAmount} ${props.currency}`} />
                     <Item type='main' icon={IconFees} title='Fees' content={`${props.fees} ${props.currency}`} onClick={() => setIsExpanded(actual => !actual)} isExpanded={isExpanded} />
-                    {isExpanded ?
-                        <>
+                    <CSSTransition
+                        in={isExpanded}
+                        timeout={1000}
+                        classNames={{
+                            enter: styles['details-enter'],
+                            enterActive: styles['details-enter-active'],
+                            exit: styles['details-exit'],
+                            exitActive: styles['details-exit-active'],
+                        }}
+                        unmountOnExit
+                        onEnter={() => setIsExpanded(true)}
+                        onExited={() => setIsExpanded(false)}
+                    >
+                        <div>
                             <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />
                             <Item type='detail' title='Gateway fee' content={props.gatewayFee} />
                             <Item type='detail' title='Onramper fee' content={props.onramperFee} />
-                        </>
-                        : null
-                    }
+                        </div>
+                    </CSSTransition>
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
                 </ul>
                 <ul className={`${styles['wrapper']}`}>
@@ -59,7 +72,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
             <div className={`${stylesCommon['body__child']}`}>
                 <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Confirm</button>
             </div>
-        </main>
+        </main >
     )
 }
 

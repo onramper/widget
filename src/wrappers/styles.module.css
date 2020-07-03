@@ -12,3 +12,18 @@
     top: 0;
     left: 0;
 }
+
+.screen-enter {
+    opacity: 0;
+}
+.screen-enter-active {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+.screen-exit {
+    opacity: 1;
+}
+.screen-exit-active {
+    opacity: 0;
+    transition: opacity 200ms;
+}
