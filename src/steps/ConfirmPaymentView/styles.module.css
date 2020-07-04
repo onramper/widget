@@ -39,17 +39,35 @@
     height: 102%;
     background-color: var(--border-color);
     position: absolute;
-    transform: translateX( calc( -50% ) );
+    transform: translateX(-50%);
 }
 
 .item:first-child::before {
     height: 51%;
-    transform: translateX( calc( -50% ) ) translateY(50%);
+    transform: translateX(-50%) translateY(50%);
 }
 
 .item:last-child::before {
     height: 51%;
-    transform: translateX( calc( -50% ) ) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+/**wrapp .item--detail when have to be expanded**/
+.details-container .item--detail::before {
+    content: '';
+    width: var(--border-size);
+    height: 102%;
+    background-color: var(--border-color);
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.details-container .item--detail:first-child::before {
+    transform: translateX(-50%);
+}
+
+.details-container .item--detail:last-child::before {
+    transform: translateX(-50%);
 }
 
 /***disable vertical line when its only 1 item***/

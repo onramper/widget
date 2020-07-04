@@ -53,7 +53,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                         onEnter={() => setIsExpanded(true)}
                         onExited={() => setIsExpanded(false)}
                     >
-                        <div>
+                        <div className={styles['details-container']}>
                             <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />
                             <Item type='detail' title='Gateway fee' content={props.gatewayFee} />
                             <Item type='detail' title='Onramper fee' content={props.onramperFee} />
