@@ -27,3 +27,19 @@
     opacity: 0;
     transition: opacity 200ms;
 }
+
+/* .screen-enter {
+    transform: translateX(100%);
+}
+.screen-enter-active {
+    transform: translateX(0%);
+    transition: transform 300ms;
+}
+
+.screen-exit {
+    transform: translateX(0%);
+}
+.screen-exit-active {
+    transform: translateX(100%);
+    transition: transform 300ms;
+} */

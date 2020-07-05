@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import styles from './styles.module.css'
-import { CSSTransition } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 export type ScreenType = React.ReactNode;
 
@@ -74,18 +74,20 @@ class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStat
         {
           value =>
             <div className={styles['nav-container']} >
-              {value._state.screens.map((screen, i) => (
-                <div style={{ zIndex: (i + 1) }} className={styles.screen} key={i}>
+              <TransitionGroup>
+                {value._state.screens.map((screen, i) => (
                   <CSSTransition timeout={200} classNames={{
                     enter: styles['screen-enter'],
                     enterActive: styles['screen-enter-active'],
                     exit: styles['screen-exit'],
                     exitActive: styles['screen-exit-active'],
                   }}>
-                    {screen}
+                    <div style={{ zIndex: (i + 1) }} className={styles.screen} key={i}>
+                      {screen}
+                    </div>
                   </CSSTransition>
-                </div>
-              ))}
+                ))}
+              </TransitionGroup>
             </div>
         }
       </NavContext.Consumer>
