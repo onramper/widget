@@ -76,13 +76,13 @@ class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStat
             <div className={styles['nav-container']} >
               <TransitionGroup>
                 {value._state.screens.map((screen, i) => (
-                  <CSSTransition timeout={200} classNames={{
+                  <CSSTransition key={i} timeout={200} classNames={{
                     enter: styles['screen-enter'],
                     enterActive: styles['screen-enter-active'],
                     exit: styles['screen-exit'],
                     exitActive: styles['screen-exit-active'],
                   }}>
-                    <div style={{ zIndex: (i + 1) }} className={styles.screen} key={i}>
+                    <div style={{ zIndex: (i + 1) }} className={styles.screen}>
                       {screen}
                     </div>
                   </CSSTransition>
