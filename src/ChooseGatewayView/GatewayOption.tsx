@@ -37,20 +37,26 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                 <div className={`${styles.content__info} ${!isOpen ? styles['content__info--collapsed'] : ''}`} >
                     <div>
                         <span>{name}</span>
-                        <div className={`${styles['details']} ${!isOpen ? styles['details--collapsed'] : ''}`} >
-                            <div className={styles.details__item}><img alt='' src={IconBtc} /><span>Tx time: {txTime}</span></div>
-                            <div className={styles.details__item}><img alt='' src={IconBtc} /><span>KYC: {kycLevel}</span></div>
+                        {isOpen ?
+                            <div className={`${styles['details']}`} >
+                                <div className={styles.details__item}><img alt='' src={IconBtc} /><span>Tx time: {txTime}</span></div>
+                                <div className={styles.details__item}><img alt='' src={IconBtc} /><span>KYC: {kycLevel}</span></div>
+                            </div>
+                            : null}
+                    </div>
+                    {isOpen ?
+                        <div className={`${styles['fees']}`}>
+                            <span>Total fees:</span>
+                            <Range min={1} max={6} actual={fee} /> {/* TODO: get data from context */}
                         </div>
-                    </div>
-                    <div className={`${styles['fees']} ${!isOpen ? styles['fees--collapsed'] : ''}`}>
-                        <span>Total fees:</span>
-                        <Range min={1} max={6} actual={fee} /> {/* TODO: get data from context */}
-                    </div>
+                        : null}
                 </div>
                 <div className={styles.content__price} >
-                    <div className={`${styles['gateway-logo']} ${!isOpen ? styles['gateway-logo--collapsed'] : ''}`}>
-                        {logo ? <img alt="Gateway logo" src={logo} /> : null}
-                    </div>
+                    {isOpen ?
+                        <div className={`${styles['gateway-logo']}`}>
+                            {logo ? <img alt="Gateway logo" src={logo} /> : null}
+                        </div>
+                        : null}
                     <div>
                         <span className={`${styles['receive-diff']} ${!isOpen ? `${styles['receive-diff--collapsed']} ${isDiffPositive ? styles['diff--up'] : styles['diff--down']}` : ''} `} > {!isOpen ? `${diff2Render}%` : 'You Receive:'}</span>
                         <span>{denom} {amount}</span>
