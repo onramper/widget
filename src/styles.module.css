@@ -1,4 +1,11 @@
 /*********
+theme styles
+*********/
+.theme {
+    --primary-color:#31a5ff
+}
+
+/*********
 general styles
 *********/
 
@@ -82,7 +89,7 @@ components
 .button-action {
     outline: none;
     cursor: pointer;
-    background-color: #006070;
+    background-color: var(--primary-color);
     border-style: solid;
     border-radius: 5px;
     border-width: 0px;

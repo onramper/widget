@@ -81,6 +81,8 @@
     transform: translateX( calc( -50% ) ) translateY(-50%);
     top: 50%;
 
+    color: var(--primary-color);
+    fill:red;
     background-color: var(--border-color);
     padding: var(--icon-padding);
     width: var(--icon-width);
@@ -93,7 +95,7 @@
     transform: translateX( calc( -50% ) ) translateY(-50%);
     top: 50%;
 
-    background-color: #266678;
+    background-color: var(--primary-color);
     border-radius: 50%;
 
     width: 0.5625rem;

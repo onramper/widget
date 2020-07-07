@@ -3,10 +3,10 @@ import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
 import IconChevron from '../../icons/chevron_right.svg'
-import IconPay from '../../icons/payicon.svg'
-import IconFees from '../../icons/feesicon.svg'
-import IconWallet from '../../icons/walleticon.svg'
-import IconExpectedtime from '../../icons/expectedtimeicon.svg'
+import { ReactComponent as IconPay } from '../../icons/payicon.svg'
+import { ReactComponent as IconFees } from '../../icons/feesicon.svg'
+import { ReactComponent as IconWallet } from '../../icons/walleticon.svg'
+import { ReactComponent as IconExpectedtime } from '../../icons/expectedtimeicon.svg'
 
 import { CSSTransition } from 'react-transition-group';
 
@@ -38,8 +38,8 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
         <main className={stylesCommon.body}>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow} ${styles['container']}`}>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={IconPay} title='Pay' content={`${props.payAmount} ${props.currency}`} />
-                    <Item type='main' icon={IconFees} title='Fees' content={`${props.fees} ${props.currency}`} onClick={() => setIsExpanded(actual => !actual)} isExpanded={isExpanded} />
+                    <Item type='main' icon={<IconPay className={styles['icon']} />} title='Pay' content={`${props.payAmount} ${props.currency}`} />
+                    <Item type='main' icon={<IconFees className={styles['icon']} />} title='Fees' content={`${props.fees} ${props.currency}`} onClick={() => setIsExpanded(actual => !actual)} isExpanded={isExpanded} />
                     <CSSTransition
                         in={isExpanded}
                         timeout={1000}
@@ -62,10 +62,10 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
                 </ul>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={IconWallet} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
+                    <Item type='main' icon={<IconWallet className={styles['icon']} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
                 </ul>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={IconExpectedtime} title='Expected transaction time' content={props.txTime} single />
+                    <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime} single />
                 </ul>
                 <label className={styles['terms']}><input type="checkbox" name='agreement-wyre' /> I accept Wyre's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
             </div>
@@ -82,7 +82,7 @@ type ItemType = {
     onClick?: () => void,
     title: string,
     content: string
-    icon?: string
+    icon?: React.ReactNode | string
     isExpanded?: boolean
 }
 
@@ -93,7 +93,12 @@ const Item: React.FC<ItemType> = (props) => {
     return (
         <li className={`${styles['item']} ${styles[typeClass]} ${single ? styles['item--single'] : ''}`}>
             {props.type === 'main' ?
-                <img className={`${styles['icon']}`} src={icon} alt='Icon item' /> :
+                /* <img className={`${styles['icon']}`} src={icon} alt='Icon item' /> */
+                /* <svg className={`${styles['icon']}`}>
+                    <use xlinkHref={`${icon}#icon`} />
+                </svg> */
+                typeof icon === 'string' ? <img className={`${styles['icon']}`} src={icon} alt='Icon item' /> : icon
+                :
                 <i className={styles['dot']} />
             }
             <div className={`${styles['content']} ${props.onClick ? styles['content--expandable'] : ''}`} onClick={onClick}>

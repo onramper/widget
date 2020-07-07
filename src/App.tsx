@@ -8,7 +8,7 @@ function App() {
   return (
     <APIProvider>
       <NavProvider>
-        <div className={`${styles['views-container']}`}>
+        <div className={`${styles['theme']} ${styles['views-container']}`}>
           <NavContainer home={<BuyCryptoView />} />
         </div>
       </NavProvider>
