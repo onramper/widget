@@ -43,12 +43,12 @@
     margin-right: 1.6875rem;
     flex-direction: column;
     box-sizing: border-box;
-    --collapsable-height: 96px;
+    --collapsable-height: 4.75rem;
     /* margin-bottom: 0.6rem;  *//*margined to align with crypto-diff*/
 }
 
 .content__info .collapsable-section {
-    height: 6rem;
+    height: var(--collapsable-height);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -71,7 +71,7 @@
     font-size: 0.75rem;
     opacity: 0.5;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(3rem, 6.625rem));
+    grid-template-columns: repeat(auto-fill, minmax(3rem, 6.5rem));
 }
 
 /*child detail*/
