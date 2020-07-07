@@ -30,12 +30,12 @@
     display: flex;
     flex-grow: 1;
     padding: var(--oc-padding);
-    margin-bottom: 0.5rem;
+    /* margin-bottom: 0.5rem; */
 }
 
-.option-container__content > * > :not(:last-child){
+/* .option-container__content:not(:last-child) > * > :not(:last-child){
     margin-bottom: 1.312rem;
-}
+} */
 
 .content__info {
     display: flex;
@@ -43,17 +43,28 @@
     margin-right: 2.125rem;
     flex-direction: column;
     box-sizing: border-box;
-    margin-bottom: 0.6rem; /*margined to align with crypto-diff*/
+    --collapsable-height: 96px;
+    /* margin-bottom: 0.6rem;  *//*margined to align with crypto-diff*/
 }
 
-.content__info > * > span:first-of-type {
+.content__info .collapsable-section {
+    height: 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content__info .title {
     margin-bottom: 0.4375rem;
     display: inline-block;
 }
 
-.content__info > :first-child,
-.content__price > :first-child {
+.content__info > :last-child {
     flex-grow: 1;
+}
+.content__price > :last-child {
+    flex-grow: 1;
+    justify-content: flex-end;
 }
 
 .content__info .details {
@@ -78,6 +89,7 @@
 }
 
 .content__info .fees {
+    transform: translateY(-70%);
     font-size: 0.875rem;
 }
 
@@ -85,10 +97,16 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    --collapsable-height: 1.5625rem;
 }
 
 .content__price .gateway-logo {
+    overflow: hidden;
+}
 
+.content__price .gateway-logo img {
+    width: 100%;
+    height: var(--collapsable-height);
 }
 
 .content__price > div {
@@ -145,19 +163,62 @@
 
 .option-container--collapsed {
     border-style: none;
-    padding: 1.25rem 0px;
 }
 
 .option-container--collapsed:hover {
     cursor: pointer;
 }
 
-.option-container__content--collapsed,
+/* .option-container__content--collapsed,
 .option-container__content--collapsed > * > :not(:last-child) {
     margin: 0px;
-}
+} */
 
 .content__info--collapsed,
 .content__info--collapsed > * > span:first-of-type {
     margin-bottom: 0px;
+}
+
+/******************transitions***********************/
+.collapse-enter {
+    max-height: 0rem;
+    opacity: 0;
+}
+
+.collapse-enter-active {
+    max-height: var(--collapsable-height);
+    opacity: 1;
+    transition: max-height 200ms linear, opacity 300ms linear;
+}
+
+.collapse-exit {
+    max-height: var(--collapsable-height);
+    opacity: 1;
+}
+
+.collapse-exit-active {
+    max-height: 0rem;
+    opacity: 0;
+    transition: max-height 200ms linear, opacity 100ms linear;
+}
+
+/***/
+.fade-enter {
+    max-height: 0;
+    opacity: 0;
+}
+
+.fade-enter-active {
+    max-height: 5rem;
+    opacity: 1;
+    transition: opacity 500ms;
+}
+.fade-exit {
+    max-height: 5rem;
+    opacity: 1;
+}
+.fade-exit-active {
+    max-height: 0;
+    opacity: 0;
+    transition: opacity 100ms;
 }
