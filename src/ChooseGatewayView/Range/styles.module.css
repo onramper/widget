@@ -6,6 +6,7 @@
 }
 
 .range__section{
+    background-color: var(--level-color);
     height: 0.3125rem;
     flex-grow: 1;
 }
@@ -38,7 +39,8 @@
 }
 
 .bubble {
-	background: #00aabb;
+    color: white;
+	background-color: var(--level-color);
     border-radius: .4em;
     position: absolute;
     transform: translateX(-50%);
@@ -53,8 +55,20 @@
 	width: 0;
 	height: 0;
 	border: var(--size) solid transparent;
-	border-bottom-color: #00aabb;
+	border-bottom-color: var(--level-color);
 	border-top: 0;
 	margin-left: calc( var(--size) * -1 );
 	margin-top: calc( var(--size) * -1 );
+}
+
+.color--low {
+    --level-color: #89D16A;
+}
+
+.color--medium {
+    --level-color: #DDCA64;
+}
+
+.color--high {
+    --level-color: #DD8E64;
 }
