@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './styles.module.css'
-import IconBtc from '../icons/btc.svg'
+import IconDetailKYC from '../icons/kyclevelicon.svg'
+import IconDetailTxTime from '../icons/txtimeicon.svg'
 import Range from './Range'
 import { CSSTransition } from 'react-transition-group';
 
@@ -66,8 +67,8 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                         <div style={{ overflow: 'hidden' }}>
                             <div className={styles['collapsable-section']}>
                                 <div className={`${styles['details']}`} >
-                                    <div className={styles.details__item}><img alt='' src={IconBtc} /><span>Tx time: {txTime}</span></div>
-                                    <div className={styles.details__item}><img alt='' src={IconBtc} /><span>KYC: {kycLevel}</span></div>
+                                    <div className={styles.details__item}><img alt='' src={IconDetailTxTime} /><span>Tx time: {txTime}</span></div>
+                                    <div className={styles.details__item}><img alt='' src={IconDetailKYC} /><span>KYC: {kycLevel}</span></div>
                                 </div>
                                 <div className={`${styles['fees']}`}>
                                     <span>Total fees:</span>
