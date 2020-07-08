@@ -97,17 +97,23 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    --collapsable-height: 1.5625rem;
+    --collapsable-height: 1.5rem;
 }
 
 .content__price .gateway-logo {
-    overflow: hidden;
+    /* overflow: hidden; */
+    height: var(--collapsable-height);
+    position: relative;
 }
 
 .content__price .gateway-logo img {
-    max-width: 5rem;
+    /* max-width: 5rem;
     width: 100%;
-    height: var(--collapsable-height);
+    max-height: var(--collapsable-height); */
+    /* width: 100%; */
+    max-height: var(--collapsable-height);
+    max-width: 7rem;
+    position: absolute;
 }
 
 .content__price > div {

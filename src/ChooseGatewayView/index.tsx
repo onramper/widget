@@ -3,6 +3,8 @@ import Header from '../common/Header'
 import Footer from '../common/Footer'
 import styles from '../styles.module.css'
 import LogoOnramper from '../icons/logo.svg'
+import LogoMoonPay from '../icons/moonpay.svg'
+import LogoCryptoCoinPro from '../icons/cryptocoinpro.png'
 import BodyChooseGateway from './BodyChooseGateway'
 import { NavContext } from '../wrappers/context'
 
@@ -16,7 +18,7 @@ const availableGateways = [
     amount: 100,
     denom: "BTC",
     fee: 2,
-    logo: LogoOnramper
+    logo: LogoMoonPay
   },
   {
     name: "Fastest",
@@ -25,7 +27,7 @@ const availableGateways = [
     amount: 99,
     denom: "BTC",
     fee: 4,
-    logo: LogoOnramper
+    logo: LogoCryptoCoinPro
   }
 ]
 
