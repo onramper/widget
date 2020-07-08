@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useCallback } from 'react';
 import { ListItemType } from '../common/types'
 
 import {
@@ -26,14 +26,14 @@ type CollectedStateType = {
 
 /* ___________ */
 
-type DataStateValuesType = {
+type DataStateType = {
   availableCryptos: ListItemType[],
   availableCurrencies: ListItemType[],
   availablePaymentMethods: ListItemType[],
 }
 
-type DataStateType = DataStateValuesType & {
-  addData: (data: DataStateValuesType) => void
+type DataInterfaceType = {
+  addData: (data: DataStateType) => void
 }
 
 type InputInterfaceType = {
@@ -44,13 +44,14 @@ type InputInterfaceType = {
 
 type RemoteType = {
   getExpectedCrypto: (amount: number) => Promise<number>
-  getData: () => Promise<DataStateValuesType>,
+  getData: () => Promise<DataStateType>,
 }
 
 type StateType = {
   data: DataStateType,
   collected: CollectedStateType
   inputInterface: InputInterfaceType
+  dataInterface: DataInterfaceType
   remote: RemoteType
 }
 
@@ -58,8 +59,7 @@ const initialState = {
   data: {
     availableCryptos: [],
     availableCurrencies: [],
-    availablePaymentMethods: [],
-    addData: (data: DataStateValuesType) => null
+    availablePaymentMethods: []
   },
   collected: {
     amount: 100,
@@ -73,6 +73,9 @@ const initialState = {
     handleFilesAdded: () => true,
     handleFileDeleted: () => null,
     //todo: split remote and local and add files
+  },
+  dataInterface: {
+    addData: (data: DataStateType) => null
   },
   remote: {
     getExpectedCrypto: getExpectedCrypto,//add api calls
@@ -97,30 +100,41 @@ const APIContext = createContext<StateType>(initialState);
 const APIProvider: React.FC = (props) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => dispatch({ type: CollectedActionsType.AddField, payload: { name: e.target.name, value: e.target.value } })
-  const handleFilesAdded = (name: string, files: File[], maxFiles: number) => {
-    const existingFiles = state.collected["files-id"].map(f => f.name)
-    files = files.filter(f => !existingFiles.includes(f.name))
-    if (existingFiles.length + files.length > maxFiles) return false
-    dispatch({ type: CollectedActionsType.AddFile, payload: { name, value: files } })
-    return true;
-  }
-  const handleFileDeleted = (name: string, fileName: string) => dispatch({ type: CollectedActionsType.DeleteFile, payload: { name, value: fileName } })
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => dispatch({ type: CollectedActionsType.AddField, payload: { name: e.target.name, value: e.target.value } }),
+    [],
+  )
 
-  const addData = (data: DataStateValuesType) => dispatch({ type: DataActionsType.AddData, payload: { value: data } })
+  const handleFilesAdded = useCallback(
+    (name: string, files: File[], maxFiles: number) => {
+      const existingFiles = state.collected["files-id"].map(f => f.name)
+      files = files.filter(f => !existingFiles.includes(f.name))
+      if (existingFiles.length + files.length > maxFiles) return false
+      dispatch({ type: CollectedActionsType.AddFile, payload: { name, value: files } })
+      return true;
+    },
+    [state.collected],
+  )
 
+  const handleFileDeleted = useCallback(
+    (name: string, fileName: string) => dispatch({ type: CollectedActionsType.DeleteFile, payload: { name, value: fileName } }),
+    [],
+  )
+
+  const addData = useCallback(
+    (data: DataStateType) => dispatch({ type: DataActionsType.AddData, payload: { value: data } }),
+    [],
+  )
 
   return (
     <APIContext.Provider value={{
       ...state,
       inputInterface: {
-        ...state.inputInterface,
         handleInputChange,
         handleFilesAdded,
         handleFileDeleted
       },
-      data: {
-        ...state.data,
+      dataInterface: {
         addData
       }
     }}>
@@ -150,7 +164,7 @@ export type DataActions = {
 } | {
   type: DataActionsType.AddData;
   payload: {
-    value: DataStateValuesType
+    value: DataStateType
   };
 }
 

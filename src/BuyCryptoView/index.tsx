@@ -16,23 +16,24 @@ const BuyCryptoView: React.FC = () => {
   const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState(0)
 
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { data, inputInterface, remote, collected } = useContext(APIContext);
+  const { data, dataInterface, inputInterface, remote, collected } = useContext(APIContext);
+  const { addData } = dataInterface
 
   useEffect(() => {
     async function getExpectedCrypto() {
-      let r = await remote.getExpectedCrypto(collected.amount);
-      setExpectedAmount(r)
+      let expectedValue = await remote.getExpectedCrypto(collected.amount);
+      setExpectedAmount(expectedValue)
     }
     getExpectedCrypto()
   }, [collected.amount, remote])
 
   useEffect(() => {
     async function getData() {
-      let r = await remote.getData();
-      data.addData(r)
+      let data = await remote.getData();
+      addData(data)
     }
     getData()
-  }, [data, remote])
+  }, [addData, remote])
 
   const handleItemClick = (name: string, index: number) => {
     if (name === 'crypto')
