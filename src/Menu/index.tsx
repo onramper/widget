@@ -6,19 +6,32 @@ import styles from '../styles.module.css'
 
 import { NavContext } from '../wrappers/context'
 
-type MenuType = {
-  onItemClick?: (index: number) => void
-}
 
-const Menu: React.FC<MenuType> = (props) => {
+const Menu: React.FC = () => {
   const { backScreen } = useContext(NavContext)
-  const { onItemClick = () => null } = props
+
+  const onItemClick = (i: number) => {
+    switch (i) {
+      case 0:
+        window.open("https://onramper.com/FAQ")
+        break;
+      case 1:
+        window.open("https://onramper.com/privacy-policy")
+        break;
+      case 2:
+        window.open("https://onramper.com/")
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <main className={styles.view}>
       <Header title="Menu" onMenuClick={() => backScreen()} />
       <List onItemClick={onItemClick} items={[
         {
-          name: 'Language',
+          name: 'FAQ/support',
         },
         {
           name: 'Privacy Policy',

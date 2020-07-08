@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import Header from '../common/Header'
 import Footer from '../common/Footer'
 import styles from '../styles.module.css'
-import LogoOnramper from '../icons/logo.svg'
 import LogoMoonPay from '../icons/moonpay.svg'
 import LogoCryptoCoinPro from '../icons/cryptocoinpro.png'
 import BodyChooseGateway from './BodyChooseGateway'
@@ -14,20 +13,20 @@ const availableGateways = [
   {
     name: "Recommended",
     txTime: "3-5h",
-    kycLevel: "medium",
-    amount: 100,
-    denom: "BTC",
-    fee: 2,
-    logo: LogoMoonPay
-  },
-  {
-    name: "Fastest",
-    txTime: "3-5h",
     kycLevel: "hard",
     amount: 99,
     denom: "BTC",
-    fee: 4,
+    fee: 2,
     logo: LogoCryptoCoinPro
+  },
+  {
+    name: "Fastest",
+    txTime: "1-2h",
+    kycLevel: "medium",
+    amount: 100,
+    denom: "BTC",
+    fee: 4,
+    logo: LogoMoonPay
   }
 ]
 
