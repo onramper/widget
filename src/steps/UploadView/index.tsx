@@ -3,7 +3,7 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyUpload from './BodyUpload'
 import styles from '../../styles.module.css'
-import ChooseGatewayView from '../../ChooseGatewayView'
+import ConfirmPaymentView from '../ConfirmPaymentView'
 
 import { NavContext } from '../../wrappers/context'
 
@@ -15,7 +15,7 @@ const UploadView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Upload proof of address" backButton />
       <BodyUpload
-        onButtonAction={() => nextScreen(<ChooseGatewayView />)}
+        onButtonAction={() => nextScreen(<ConfirmPaymentView />)}
         textInfo={textInfo}
       />
       <Footer />

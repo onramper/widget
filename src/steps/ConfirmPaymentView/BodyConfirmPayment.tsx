@@ -4,7 +4,7 @@ import styles from './styles.module.css'
 
 import IconChevron from '../../icons/chevron_right.svg'
 import { ReactComponent as IconPay } from '../../icons/payicon.svg'
-import { ReactComponent as IconFees } from '../../icons/feesicon.svg'
+/* import { ReactComponent as IconFees } from '../../icons/feesicon.svg' */
 import { ReactComponent as IconWallet } from '../../icons/walleticon.svg'
 import { ReactComponent as IconExpectedtime } from '../../icons/expectedtimeicon.svg'
 
@@ -38,8 +38,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
         <main className={stylesCommon.body}>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow} ${styles['container']}`}>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={<IconPay className={styles['icon']} />} title='Pay' content={`${props.payAmount} ${props.currency}`} />
-                    <Item type='main' icon={<IconFees className={styles['icon']} />} title='Fees' content={`${props.fees} ${props.currency}`} onClick={() => setIsExpanded(actual => !actual)} isExpanded={isExpanded} />
+                    <Item type='main' icon={<IconPay className={styles['icon']} />} title='Pay' content={`${props.payAmount} ${props.currency}`} onClick={() => setIsExpanded(actual => !actual)} isExpanded={isExpanded} />
                     <CSSTransition
                         in={isExpanded}
                         timeout={1000}
@@ -55,8 +54,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                     >
                         <div className={styles['details-container']}>
                             <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />
-                            <Item type='detail' title='Gateway fee' content={props.gatewayFee} />
-                            <Item type='detail' title='Onramper fee' content={props.onramperFee} />
+                            <Item type='detail' title='Transaction fee' content={props.gatewayFee} />
                         </div>
                     </CSSTransition>
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
@@ -67,7 +65,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime} single />
                 </ul>
-                <label className={styles['terms']}><input type="checkbox" name='agreement-wyre' /> I accept Wyre's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
+                <label className={styles['terms']}><input type="checkbox" name='agreement-wyre' /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
             </div>
             <div className={`${stylesCommon['body__child']}`}>
                 <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Confirm</button>
