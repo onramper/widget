@@ -14,7 +14,7 @@ const availableGateways = [
     name: "Recommended",
     txTime: "3-5h",
     kycLevel: "hard",
-    amount: 99,
+    rate: 0.0001079,
     denom: "BTC",
     fee: 2,
     logo: LogoCryptoCoinPro
@@ -23,7 +23,7 @@ const availableGateways = [
     name: "Fastest",
     txTime: "1-2h",
     kycLevel: "medium",
-    amount: 100,
+    rate: 0.0001073,
     denom: "BTC",
     fee: 4,
     logo: LogoMoonPay

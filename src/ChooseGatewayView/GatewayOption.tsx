@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styles from './styles.module.css'
 import IconDetailKYC from '../icons/kyclevelicon.svg'
 import IconDetailTxTime from '../icons/txtimeicon.svg'
 import Range from './Range'
 import { CSSTransition } from 'react-transition-group';
+
+import { APIContext } from '../wrappers/APIContext'
 
 export type GatewayOptionType = Omit<_GatewayOptionType, 'index'>
 
@@ -36,20 +38,24 @@ export type _GatewayOptionType = {
     name: string,
     txTime: string,
     kycLevel: string,
-    amount: number,
+    rate: number,
     denom: string,
     fee: number,
     logo?: string,
     isOpen?: boolean
     onClick?: (index: number) => void
     index: number
-    selectedAmount?: number
+    selectedRate?: number
 }
 
 const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
-    const { name, txTime, kycLevel, amount, denom, fee, logo, isOpen, selectedAmount = 0 } = props //todo change 
+    const { name, txTime, kycLevel, rate, denom, fee, logo, isOpen, selectedRate = 0 } = props //todo change 
+    const { collected } = useContext(APIContext)
+    const { amount } = collected
+    var cryptoAmount = (amount * rate)
+    var selectedCryptoAmount = (amount * selectedRate)
 
-    const diffPercent = ((1 - (selectedAmount / amount)) * 100)
+    const diffPercent = ((1 - (selectedCryptoAmount / cryptoAmount)) * 100)
     const isDiffPositive = diffPercent >= 0 ? true : false
     const diff2Render = Math.abs(diffPercent).toFixed(2)
 
@@ -91,7 +97,7 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                         <CSSTransition in={isOpen} {...transitionPropsPrice}>
                             <span className={`${styles['receive-diff']}`} > {'You Receive:'}</span>
                         </CSSTransition>
-                        <span>{denom} {amount}</span>
+                        <span>{denom} {cryptoAmount.toFixed(6)}</span>
                     </div>
                 </div>
             </div>
