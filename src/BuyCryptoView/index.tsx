@@ -12,7 +12,7 @@ import { APIContext } from '../wrappers/APIContext'
 const BuyCryptoView: React.FC = () => {
   const [expectedAmount, setExpectedAmount] = useState(0)
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { data, api, remote, collected } = useContext(APIContext);
+  const { data, inputInterface, remote, collected } = useContext(APIContext);
 
   useEffect(() => {
     async function getExpectedCrypto() {
@@ -21,6 +21,14 @@ const BuyCryptoView: React.FC = () => {
     }
     getExpectedCrypto()
   }, [collected.amount, remote])
+
+  useEffect(() => {
+    async function getData() {
+      let r = await remote.getData();
+      data.addData(r)
+    }
+    getData()
+  }, [data, remote])
 
   const handleItemClick = (index: number) => {
     console.log('Selected', index)
@@ -32,15 +40,15 @@ const BuyCryptoView: React.FC = () => {
       <Header title="Buy crypto" />
       <BodyBuyCrypto
         onBuyCrypto={() => nextScreen(<ChooseGatewayView />)}
-        openPickCrypto={() => nextScreen(<PickView title="Select cryptocurrency" items={data.aviableCryptos} onItemClick={handleItemClick} />)}
-        openPickCurrency={() => nextScreen(<PickView title="Select fiat currency" items={data.aviableCurrencies} onItemClick={handleItemClick} />)}
-        openPickPayment={() => nextScreen(<PickView title="Select payment method" items={data.aviablePaymentMethods} onItemClick={handleItemClick} />)}
-        selectedCrypto={data.aviableCryptos[0]}
-        selectedCurrency={data.aviableCurrencies[0]}
-        selectedPaymentMethod={data.aviablePaymentMethods[0]}
+        openPickCrypto={() => nextScreen(<PickView title="Select cryptocurrency" items={data.availableCryptos} onItemClick={handleItemClick} />)}
+        openPickCurrency={() => nextScreen(<PickView title="Select fiat currency" items={data.availableCurrencies} onItemClick={handleItemClick} />)}
+        openPickPayment={() => nextScreen(<PickView title="Select payment method" items={data.availablePaymentMethods} onItemClick={handleItemClick} />)}
+        selectedCrypto={data.availableCryptos[0]}
+        selectedCurrency={data.availableCurrencies[0]}
+        selectedPaymentMethod={data.availablePaymentMethods[0]}
         expectedAmount={expectedAmount}
         amountValue={collected.amount}
-        handleInputChange={api.handleInputChange}
+        handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />
     </div>

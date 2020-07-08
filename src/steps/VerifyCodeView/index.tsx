@@ -10,7 +10,7 @@ import { APIContext } from '../../wrappers/APIContext'
 
 const CreditCardView: React.FC = () => {
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { api } = useContext(APIContext);
+  const { inputInterface } = useContext(APIContext);
   const textInfo = 'We sent a verification code to hello@onramper.com. Please enter the verification code below.'
   return (
     <div className={styles.view}>
@@ -19,7 +19,7 @@ const CreditCardView: React.FC = () => {
         textInfo={textInfo}
         onButtonAction={() => nextScreen(<ChooseGatewayView />)}
         onResendClick={() => backScreen()}
-        handleInputChange={api.handleInputChange}
+        handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />
     </div>

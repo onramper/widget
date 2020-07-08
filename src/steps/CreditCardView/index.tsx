@@ -10,7 +10,7 @@ import { NavContext } from '../../wrappers/context'
 
 const CreditCardView: React.FC = () => {
 
-  const { api } = useContext(APIContext);
+  const { inputInterface } = useContext(APIContext);
   const { nextScreen } = useContext(NavContext);
 
   return (
@@ -18,7 +18,7 @@ const CreditCardView: React.FC = () => {
       <Header title="Card details" backButton />
       <BodyCreditCard
         onButtonAction={() => nextScreen(<WireTranserView />)}
-        handleInputChange={api.handleInputChange}
+        handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />
     </div>

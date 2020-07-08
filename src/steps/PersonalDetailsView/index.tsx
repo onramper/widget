@@ -10,14 +10,14 @@ import { APIContext } from '../../wrappers/APIContext'
 
 const PersonalDetailsView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
-  const { api } = useContext(APIContext);
+  const { inputInterface } = useContext(APIContext);
 
   return (
     <div className={styles.view}>
-      <Header title="Personal details" backButton/>
+      <Header title="Personal details" backButton />
       <BodyPersonalDetails
         onButtonAction={() => nextScreen(<ConfirmPaymentView />)}
-        handleInputChange={api.handleInputChange}
+        handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />
     </div>

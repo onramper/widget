@@ -16,7 +16,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
     const { textInfo } = props
     const { onButtonAction } = props
 
-    const { api, collected } = useContext(APIContext)
+    const { inputInterface, collected } = useContext(APIContext)
 
     return (
         <main className={stylesCommon.body}>
@@ -25,7 +25,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
                     <InfoBox text={textInfo!} />
                 </div> : null}
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <UploadBox id='files-id' onFilesAdded={api.handleFilesAdded} onFileDeleted={api.handleFileDeleted} filesList={collected['files-id']} maxFiles={2} onError={(err)=>console.log(err)} />
+                <UploadBox id='files-id' onFilesAdded={inputInterface.handleFilesAdded} onFileDeleted={inputInterface.handleFileDeleted} filesList={collected['files-id']} maxFiles={2} onError={(err) => console.log(err)} />
             </div>
             <div className={`${stylesCommon['body__child']}`}>
                 <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>

@@ -1,10 +1,10 @@
 import React, { createContext, useReducer } from 'react';
 import { ListItemType } from '../common/types'
-import IconBTC from '../icons/btc.svg'
-import IconUSD from '../icons/usd.svg'
-import IconCC from '../icons/ccs.svg'
 
-import { getExpectedCrypto } from '../api/api'
+import {
+  getExpectedCrypto,
+  getData
+} from '../api/api'
 
 
 /* QUERY PARAMS */
@@ -26,13 +26,17 @@ type CollectedStateType = {
 
 /* ___________ */
 
-type DataStateType = {
-  aviableCryptos: ListItemType[],
-  aviableCurrencies: ListItemType[],
-  aviablePaymentMethods: ListItemType[],
+type DataStateValuesType = {
+  availableCryptos: ListItemType[],
+  availableCurrencies: ListItemType[],
+  availablePaymentMethods: ListItemType[],
 }
 
-type ApiType = {
+type DataStateType = DataStateValuesType & {
+  addData: (data: DataStateValuesType) => void
+}
+
+type InputInterfaceType = {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleFilesAdded: (name: string, files: File[], maxFiles: number) => boolean,
   handleFileDeleted: (name: string, fileName: string) => void
@@ -40,43 +44,22 @@ type ApiType = {
 
 type RemoteType = {
   getExpectedCrypto: (amount: number) => Promise<number>
+  getData: () => Promise<DataStateValuesType>,
 }
 
 type StateType = {
   data: DataStateType,
   collected: CollectedStateType
-  api: ApiType
+  inputInterface: InputInterfaceType
   remote: RemoteType
 }
-//test data
-const availableCryptos = [
-  {
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
-  }
-]
-
-const aviableCurrencies = [
-  {
-    icon: IconUSD,
-    name: "USD",
-    info: "US Dollar"
-  },
-]
-
-const aviablePaymentMethods = [
-  {
-    icon: IconCC,
-    name: "Credit card"
-  },
-]
 
 const initialState = {
   data: {
-    aviableCryptos: availableCryptos,//[]
-    aviableCurrencies: aviableCurrencies,//[]
-    aviablePaymentMethods: aviablePaymentMethods,//[]
+    availableCryptos: [],
+    availableCurrencies: [],
+    availablePaymentMethods: [],
+    addData: (data: DataStateValuesType) => null
   },
   collected: {
     amount: 100,
@@ -85,13 +68,15 @@ const initialState = {
     paymentMethod: 'default',
     'files-id': []
   },
-  api: {
+  inputInterface: {
     handleInputChange: () => null,
     handleFilesAdded: () => true,
-    handleFileDeleted: () => null
+    handleFileDeleted: () => null,
+    //todo: split remote and local and add files
   },
   remote: {
-    getExpectedCrypto: getExpectedCrypto//add api calls
+    getExpectedCrypto: getExpectedCrypto,//add api calls
+    getData: getData
   }
 }
 
@@ -99,6 +84,10 @@ enum CollectedActionsType {
   AddField = 'ADD_FIELD',
   AddFile = 'ADD_FILE',
   DeleteFile = 'DELETE_FILE'
+}
+
+enum DataActionsType {
+  AddData = 'ADD_DATA'
 }
 
 //Creating context
@@ -118,9 +107,23 @@ const APIProvider: React.FC = (props) => {
   }
   const handleFileDeleted = (name: string, fileName: string) => dispatch({ type: CollectedActionsType.DeleteFile, payload: { name, value: fileName } })
 
+  const addData = (data: DataStateValuesType) => dispatch({ type: DataActionsType.AddData, payload: { value: data } })
+
 
   return (
-    <APIContext.Provider value={{ ...state, api: { ...state.api, handleInputChange, handleFilesAdded, handleFileDeleted } }}>
+    <APIContext.Provider value={{
+      ...state,
+      inputInterface: {
+        ...state.inputInterface,
+        handleInputChange,
+        handleFilesAdded,
+        handleFileDeleted
+      },
+      data: {
+        ...state.data,
+        addData
+      }
+    }}>
       {props.children}
     </APIContext.Provider>
   )
@@ -144,11 +147,17 @@ export type DataActions = {
     name: string
     value: string
   };
+} | {
+  type: DataActionsType.AddData;
+  payload: {
+    value: DataStateValuesType
+  };
 }
 
 const mainReducer = (state: StateType, action: DataActions) => ({
   ...state,
-  collected: collectedReducer(state, action)
+  collected: collectedReducer(state, action),
+  data: dataReducer(state, action)
 });
 
 const collectedReducer = (state: StateType, action: DataActions) => {
@@ -177,6 +186,18 @@ const collectedReducer = (state: StateType, action: DataActions) => {
       }
     default:
       return state.collected
+  }
+}
+
+const dataReducer = (state: StateType, action: DataActions) => {
+  switch (action.type) {
+    case DataActionsType.AddData:
+      return {
+        ...state.data,
+        ...action.payload.value
+      }
+    default:
+      return state.data
   }
 }
 
