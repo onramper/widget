@@ -9,6 +9,9 @@ import IconGBP from '../icons/poundicon.png'
 import IconCC from '../icons/ccs.svg'
 import IconBank from '../icons/bankicon.png'
 
+import LogoMoonPay from '../icons/moonpay.svg'
+import LogoCryptoCoinPro from '../icons/cryptocoinpro.png'
+
 
 const getExpectedCrypto = async (amount: number) => {
     /* await new Promise(resolve => setTimeout(resolve, 1500)); */
@@ -62,6 +65,26 @@ const getData = async () => {
             {
                 icon: IconBank,
                 name: "Bank account"
+            }
+        ],
+        availableGateways: [
+            {
+                name: "Recommended",
+                txTime: "3-5h",
+                kycLevel: "hard",
+                rate: 0.0001079,
+                denom: "BTC",
+                fee: 2,
+                logo: LogoCryptoCoinPro
+            },
+            {
+                name: "Fastest",
+                txTime: "1-2h",
+                kycLevel: "medium",
+                rate: 0.0001073,
+                denom: "BTC",
+                fee: 4,
+                logo: LogoMoonPay
             }
         ]
     }

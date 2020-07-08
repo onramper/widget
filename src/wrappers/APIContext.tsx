@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useCallback } from 'react';
 import { ListItemType } from '../common/types'
+import { GatewayOptionType } from '../ChooseGatewayView/GatewayOption'
 
 import {
   getExpectedCrypto,
@@ -17,11 +18,12 @@ export enum QueryParams {
 
 type CollectedStateType = {
   amount: number,
-  denom: string,
-  currency: string,
-  paymentMethod: string,
   "files-id": File[],
-  [key: string]: any
+  selectedCrypto: number,
+  selectedCurrency: number,
+  selectedPaymentMethod: number,
+  selectedGateway: number
+  [key: string]: any//todo, add all inputs
 }
 
 /* ___________ */
@@ -30,6 +32,7 @@ type DataStateType = {
   availableCryptos: ListItemType[],
   availableCurrencies: ListItemType[],
   availablePaymentMethods: ListItemType[],
+  availableGateways: GatewayOptionType[]
 }
 
 type DataInterfaceType = {
@@ -37,6 +40,7 @@ type DataInterfaceType = {
 }
 
 type InputInterfaceType = {
+  collectData: (name: string, value: any) => void
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleFilesAdded: (name: string, files: File[], maxFiles: number) => boolean,
   handleFileDeleted: (name: string, fileName: string) => void
@@ -59,16 +63,19 @@ const initialState = {
   data: {
     availableCryptos: [],
     availableCurrencies: [],
-    availablePaymentMethods: []
+    availablePaymentMethods: [],
+    availableGateways: []
   },
   collected: {
     amount: 100,
-    denom: 'default',
-    currency: 'default',
-    paymentMethod: 'default',
-    'files-id': []
+    'files-id': [],
+    selectedCrypto: 0,
+    selectedCurrency: 0,
+    selectedPaymentMethod: 0,
+    selectedGateway: 0
   },
   inputInterface: {
+    collectData: () => null,
     handleInputChange: () => null,
     handleFilesAdded: () => true,
     handleFileDeleted: () => null,
@@ -100,6 +107,16 @@ const APIContext = createContext<StateType>(initialState);
 const APIProvider: React.FC = (props) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
+  /*   const collectData = useCallback(
+      (i: number) => dispatch({ type: CollectedActionsType.AddField, payload: { name: 'selectedGateway', value: i } }),
+      [],
+    ) */
+
+  const collectData = useCallback(
+    (name: string, value: number) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
+    [],
+  )
+
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => dispatch({ type: CollectedActionsType.AddField, payload: { name: e.target.name, value: e.target.value } }),
     [],
@@ -130,6 +147,7 @@ const APIProvider: React.FC = (props) => {
     <APIContext.Provider value={{
       ...state,
       inputInterface: {
+        collectData,
         handleInputChange,
         handleFilesAdded,
         handleFileDeleted

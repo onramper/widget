@@ -6,28 +6,31 @@ import styles from '../../styles.module.css'
 import CreditCardView from '../CreditCardView'
 
 import { NavContext } from '../../wrappers/context'
-
-import LogoOnramper from '../../icons/btc.svg'
+import { APIContext } from '../../wrappers/APIContext'
 
 const ConfirmPaymentView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
+  const { collected, data } = useContext(APIContext);
+  const selectedGateway = data.availableGateways[collected.selectedGateway]
+  const selectedCrypto = data.availableCryptos[collected.selectedCrypto]
+  const selectedCurrency = data.availableCurrencies[collected.selectedCurrency]
 
   return (
     <div className={styles.view}>
       <Header title="Payment confirmation" backButton />
       <BodyConfirmPayment
         onButtonAction={() => nextScreen(<CreditCardView />)}
-        payAmount={100} //: string
-        fees={7.5} //: string
-        currency='USD'
-        cryptoAmount={0.0568} //: number
-        cryptoDenom='BTC' //: string
-        txTime='3-5 hours' //: string
+        payAmount={(collected.amount + collected.amount * selectedGateway.fee / 100).toFixed(2)} //: string
+        fees={selectedGateway.fee} //: string
+        currency={selectedCurrency.name}
+        cryptoAmount={(selectedGateway.rate * collected.amount).toFixed(6)} //: number //todo calculate
+        cryptoDenom={selectedCrypto.name} //: string
+        txTime={`${selectedGateway.txTime.slice(0, -1)} hours`} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
         cryptoAddr='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' //: string
-        cryptoIcon={LogoOnramper}
-        conversionRate={0.051} //: string
-        gatewayFee='5.5%' //: string
-        onramperFee='2%' //: string
+        cryptoIcon={selectedCrypto.icon}
+        conversionRate={selectedGateway.rate} //: string
+      /*         gatewayFee='5.5%' //: string
+              onramperFee='2%' //: string */
       />
       <Footer />
     </div>

@@ -18,6 +18,7 @@ const BuyCryptoView: React.FC = () => {
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, dataInterface, inputInterface, remote, collected } = useContext(APIContext);
   const { addData } = dataInterface
+  const { collectData } = inputInterface
 
   useEffect(() => {
     async function getExpectedCrypto() {
@@ -44,6 +45,18 @@ const BuyCryptoView: React.FC = () => {
       setSelectedPaymentMethodIndex(index)
     backScreen()
   }
+
+  useEffect(() => {
+    collectData('selectedCrypto', selectedCryptoIndex)
+  }, [collectData, selectedCryptoIndex])
+
+  useEffect(() => {
+    collectData('selectedCurrency', selectedCurrencyIndex)
+  }, [collectData, selectedCurrencyIndex])
+
+  useEffect(() => {
+    collectData('selectedPaymentMethod', selectedPaymentMethodIndex)
+  }, [collectData, selectedPaymentMethodIndex])
 
   return (
     <div className={styles.view}>

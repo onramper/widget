@@ -12,20 +12,20 @@ import { CSSTransition } from 'react-transition-group';
 
 type BodyConfirmPaymentViewType = {
     onButtonAction: () => void
-    payAmount: number
+    payAmount: string
     fees: number
     currency: string
 
-    cryptoAmount: number
+    cryptoAmount: string
     cryptoDenom: string
     cryptoAddr: string
-    cryptoIcon: string
+    cryptoIcon?: string
     txTime: string
 
 
     conversionRate: number
-    gatewayFee: string
-    onramperFee: string
+    /*     gatewayFee: string
+        onramperFee: string */
 }
 
 const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => {
@@ -54,7 +54,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                     >
                         <div className={styles['details-container']}>
                             <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />
-                            <Item type='detail' title='Transaction fee' content={props.gatewayFee} />
+                            <Item type='detail' title='Transaction fee' content={`${props.fees} %`} />
                         </div>
                     </CSSTransition>
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />

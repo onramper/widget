@@ -7,7 +7,7 @@ import GatewaysList from './GatewaysList'
 
 type BodyChooseGatewayType = {
     onActionButton?: () => void,
-    onItemClick?: () => void,
+    onItemClick?: (index: number) => void,
     availableGateways: GatewayOptionType[]
 }
 
