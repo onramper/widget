@@ -7,16 +7,17 @@ import styles from '../styles.module.css'
 type PickViewType = {
   title: string,
   items: any[]
-  onItemClick?: (index: number) => void
+  onItemClick?: (name: string, index: number) => void
+  name?: string
 }
 
 const PickView: React.FC<PickViewType> = (props) => {
-  const { title, items } = props
+  const { title, items, name = '' } = props
   const { onItemClick = () => null } = props
   return (
     <main className={styles.view}>
       <Header backButton title={title} />
-      <List onItemClick={onItemClick} items={items} />
+      <List onItemClick={(index) => onItemClick(name, index)} items={items} />
       <Footer />
     </main>
   );
