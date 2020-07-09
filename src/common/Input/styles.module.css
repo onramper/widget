@@ -20,6 +20,7 @@
     padding: var(--component-padding);
     display: flex;
     height: var(--component-content-height);
+    align-items: center;
 }
 
 /*apply space between input__type childs*/

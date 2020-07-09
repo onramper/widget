@@ -22,7 +22,8 @@ type CollectedStateType = {
   selectedCrypto: number,
   selectedCurrency: number,
   selectedPaymentMethod: number,
-  selectedGateway: number
+  selectedGateway: number,
+  walletAddress: string
   [key: string]: any//todo, add all inputs
 }
 
@@ -72,7 +73,8 @@ const initialState = {
     selectedCrypto: 0,
     selectedCurrency: 0,
     selectedPaymentMethod: 0,
-    selectedGateway: 0
+    selectedGateway: 0,
+    walletAddress: ''
   },
   inputInterface: {
     collectData: () => null,

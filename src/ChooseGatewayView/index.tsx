@@ -6,7 +6,7 @@ import BodyChooseGateway from './BodyChooseGateway'
 import { NavContext } from '../wrappers/context'
 import { APIContext } from '../wrappers/APIContext'
 
-import PersonalDetailsView from '../steps/PersonalDetailsView'
+import WalletAddressView from '../steps/WalletAddressView'
 
 
 const ChooseGatewayView = () => {
@@ -23,7 +23,7 @@ const ChooseGatewayView = () => {
   return (
     <div className={styles.view}>
       <Header title="Choose gateway" backButton />
-      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} availableGateways={data.availableGateways} onActionButton={() => nextScreen(<PersonalDetailsView />)} />
+      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} availableGateways={data.availableGateways} onActionButton={() => nextScreen(<WalletAddressView />)} />
       <Footer />
     </div>
   );

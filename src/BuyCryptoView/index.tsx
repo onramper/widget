@@ -36,7 +36,7 @@ const BuyCryptoView: React.FC = () => {
     getData()
   }, [addData, remote])
 
-  const handleItemClick = (name: string, index: number) => {
+  const handleItemClick = (index: number, name: string) => {
     if (name === 'crypto')
       setSelectedCryptoIndex(index)
     else if (name === 'currency')

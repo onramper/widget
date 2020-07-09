@@ -37,10 +37,10 @@ const ListItem: React.FC<_ListItemType> = (props) => {
     const { onClick = () => null } = props
     return (
         <div className={`${styles['list-item']}`} onClick={() => onClick(index)}>
-            <img alt="Icon" className={`${styles['list-item__child']} ${styles['list-item__icon']}`} src={icon} />
+            {icon ? <img alt="Icon" className={`${styles['list-item__child']} ${styles['list-item__icon']}`} src={icon} /> : null}
             <div className={styles['list-item__child']}>
                 <span>{name}</span>
-                <span className={`${styles['list-item__info']}`}>{info}</span>
+                {info ? <span className={`${styles['list-item__info']}`}>{info}</span> : null}
             </div>
         </div>
     )
