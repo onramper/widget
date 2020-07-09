@@ -20,7 +20,7 @@ const ConfirmPaymentView: React.FC = () => {
       <Header title="Payment confirmation" backButton />
       <BodyConfirmPayment
         onButtonAction={() => nextScreen(<CreditCardView />)}
-        payAmount={(collected.amount + collected.amount * selectedGateway.fee / 100).toFixed(2)} //: string
+        payAmount={(collected.amount).toFixed(2)} //: string
         fees={selectedGateway.fee} //: string
         currency={selectedCurrency.name}
         cryptoAmount={(selectedGateway.rate * collected.amount).toFixed(6)} //: number //todo calculate
