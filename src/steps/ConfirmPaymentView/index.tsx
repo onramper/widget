@@ -15,7 +15,7 @@ const ConfirmPaymentView: React.FC = () => {
   const selectedCrypto = data.availableCryptos[collected.selectedCrypto]
   const selectedCurrency = data.availableCurrencies[collected.selectedCurrency]
   const selectedPaymentMethod = data.availablePaymentMethods[collected.selectedPaymentMethod]
-
+  console.log('collected.amount', collected.amount)
   return (
     <div className={styles.view}>
       <Header title="Payment confirmation" backButton />
@@ -24,7 +24,7 @@ const ConfirmPaymentView: React.FC = () => {
         payAmount={(collected.amount).toFixed(2)} //: string
         fees={selectedGateway.fee} //: string
         currency={selectedCurrency.name}
-        cryptoAmount={(selectedGateway.rate * collected.amount).toFixed(6)} //: number //todo calculate
+        cryptoAmount={(collected.amount / selectedGateway.rate).toFixed(6)} //: number //todo calculate
         cryptoDenom={selectedCrypto.name} //: string
         txTime={`${selectedGateway.txTime.slice(0, -1)} hours`} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
         cryptoAddr={collected.walletAddress} //: string

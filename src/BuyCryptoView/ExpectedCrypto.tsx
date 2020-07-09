@@ -10,7 +10,7 @@ type ExpectedCryptoType = {
 }
 
 const calculateAmount = (amount: number, rate: number, fee: number) => {
-    let amount2Get = amount * rate
+    let amount2Get = amount / rate
     return amount2Get - amount2Get * fee / 100
 }
 

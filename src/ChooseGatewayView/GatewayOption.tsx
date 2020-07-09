@@ -52,9 +52,9 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
     const { name, txTime, kycLevel, rate, fee, logo, isOpen, selectedRate = 0, selectedFee = 0 } = props //todo change 
     const { collected, data } = useContext(APIContext)
     const { amount } = collected
-    var cryptoAmount = (amount * rate)
+    var cryptoAmount = (amount / rate)
     cryptoAmount = cryptoAmount - (cryptoAmount * fee / 100)
-    var selectedCryptoAmount = (amount * selectedRate)
+    var selectedCryptoAmount = (amount / selectedRate)
     selectedCryptoAmount = selectedCryptoAmount - (selectedCryptoAmount * selectedFee / 100)
 
     const diffPercent = ((1 - (selectedCryptoAmount / cryptoAmount)) * 100)

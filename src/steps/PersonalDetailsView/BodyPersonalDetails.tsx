@@ -7,7 +7,7 @@ import { APIContext } from '../../wrappers/APIContext'
 
 type BodyPersonalDetailsType = {
     onButtonAction: () => void
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleInputChange: (name: string, value: any) => void
 }
 
 const BodyPersonalDetails: React.FC<BodyPersonalDetailsType> = (props) => {

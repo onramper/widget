@@ -17,7 +17,7 @@ type BodyBuyCryptoType = {
     selectedCrypto: ListItemType,
     selectedCurrency: ListItemType,
     selectedPaymentMethod: ListItemType
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleInputChange: (name: string, value: any) => void
 }
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {

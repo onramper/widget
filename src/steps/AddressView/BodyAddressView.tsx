@@ -7,7 +7,7 @@ import { APIContext } from '../../wrappers/APIContext'
 
 type BodyAddressViewType = {
     onButtonAction: () => void
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleInputChange: (name: string, value: any) => void
 }
 
 const BodyAddressView: React.FC<BodyAddressViewType> = (props) => {

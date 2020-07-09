@@ -12,7 +12,7 @@ import { NavContext } from '../../wrappers/context'
 
 type BodyWalletAddressType = {
     onButtonAction: () => void
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleInputChange: (name: string, value: any) => void
 }
 
 const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
@@ -42,9 +42,9 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
         backScreen()
     }
 
-    const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedAddress(e.target.value)
-        handleInputChange(e)
+    const onChange = useCallback((name: string, value: string) => {
+        setSelectedAddress(value)
+        handleInputChange(name, value)
     }, [handleInputChange])
 
     return (

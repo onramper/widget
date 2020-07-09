@@ -5,7 +5,7 @@ import InputText from '../../common/Input/InputText'
 
 type BodyCreditCardType = {
     onButtonAction: () => void
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleInputChange: (name: string, value: any) => void
 }
 
 const BodyCreditCard: React.FC<BodyCreditCardType> = (props) => {

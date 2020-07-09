@@ -8,7 +8,7 @@ import InfoBox from '../../common/InfoBox'
 type BodyVerifyCodeType = {
     onButtonAction: (e: React.MouseEvent<HTMLButtonElement>) => void;
     onResendClick: (e: React.MouseEvent<HTMLSpanElement>) => void;
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleInputChange: (name: string, value: any) => void
     textInfo?: string
 }
 
