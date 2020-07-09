@@ -1,0 +1,26 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1.5rem 0;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.body img {
+    margin: 2rem 0;
+    height: 5rem;
+}
+
+.title {
+    font-size: 1.25rem;
+}
+
+.info {
+    font-size: 0.875rem;
+    color: grey;
+    margin-top: 1rem;
+}

@@ -1,15 +1,17 @@
-import React, { useCallback/* , useContext */ } from 'react';
+import React, { useCallback, useContext } from 'react';
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyWireTransfer from './BodyWireTransfer'
 import styles from '../../styles.module.css'
 
+import SuccessView from '../SuccessView'
+
 import { copyToClipBoard } from './utils'
-/* import { NavContext } from '../../wrappers/context' */
+import { NavContext } from '../../wrappers/context'
 
 
 const CreditCardView: React.FC = () => {
-  /* const { nextScreen } = useContext(NavContext); */
+  const { nextScreen } = useContext(NavContext);
 
   const textInfo = 'Go to your online banking and make a manual payment with the following wire transfer details.'
 
@@ -30,7 +32,7 @@ const CreditCardView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Wire transfer details" backButton />
       <BodyWireTransfer
-        onButtonAction={() => null}
+        onButtonAction={() => nextScreen(<SuccessView />)}
         amount={wyreDetails['wyret-amount']}
         reference={wyreDetails['wyret-reference']}
         iban={wyreDetails['wyret-iban']}
