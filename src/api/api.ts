@@ -73,7 +73,6 @@ const getData = async () => {
                 txTime: "3-5h",
                 kycLevel: "hard",
                 rate: 0.0001079,
-                denom: "BTC",
                 fee: 2,
                 logo: LogoCryptoCoinPro
             },
@@ -82,7 +81,6 @@ const getData = async () => {
                 txTime: "1-2h",
                 kycLevel: "medium",
                 rate: 0.0001073,
-                denom: "BTC",
                 fee: 4,
                 logo: LogoMoonPay
             }

@@ -29,7 +29,6 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
                         txTime={item.txTime}
                         kycLevel={item.kycLevel}
                         rate={item.rate}
-                        denom={item.denom}
                         fee={item.fee}
                         logo={item.logo}
                         isOpen={i === selectedGateway}
