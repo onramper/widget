@@ -50,12 +50,10 @@ export type _GatewayOptionType = {
 
 const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
     const { name, txTime, kycLevel, rate, fee, logo, isOpen, selectedRate = 0, selectedFee = 0 } = props //todo change 
-    const { collected, data } = useContext(APIContext)
+    const { collected, data, remote } = useContext(APIContext)
     const { amount } = collected
-    var cryptoAmount = (amount / rate)
-    cryptoAmount = cryptoAmount - (cryptoAmount * fee / 100)
-    var selectedCryptoAmount = (amount / selectedRate)
-    selectedCryptoAmount = selectedCryptoAmount - (selectedCryptoAmount * selectedFee / 100)
+    const cryptoAmount = remote.calculateExpectedCrypto(amount, rate, fee)
+    const selectedCryptoAmount = remote.calculateExpectedCrypto(amount, selectedRate, selectedFee)
 
     const diffPercent = ((1 - (selectedCryptoAmount / cryptoAmount)) * 100)
     const isDiffPositive = diffPercent >= 0 ? true : false
@@ -99,7 +97,7 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                         <CSSTransition in={isOpen} {...transitionPropsPrice}>
                             <span className={`${styles['receive-diff']}`} > {'You Receive:'}</span>
                         </CSSTransition>
-                        <span>{data.availableCryptos[collected.selectedCrypto].name} {cryptoAmount.toFixed(6)}</span>
+                        <span>{data.availableCryptos[collected.selectedCrypto].name} {cryptoAmount}</span>
                     </div>
                 </div>
             </div>

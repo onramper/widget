@@ -17,17 +17,14 @@ type BodyConfirmPaymentViewType = {
     fees: number
     currency: string
 
-    cryptoAmount: string
+    cryptoAmount: number
     cryptoDenom: string
     cryptoAddr: string
     paymentMethod: string
     cryptoIcon?: string
     txTime: string
 
-
     conversionRate: number
-    /*     gatewayFee: string
-        onramperFee: string */
 }
 
 const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => {

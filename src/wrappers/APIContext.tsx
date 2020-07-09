@@ -4,7 +4,8 @@ import { GatewayOptionType } from '../ChooseGatewayView/GatewayOption'
 
 import {
   getExpectedCrypto,
-  getData
+  getData,
+  calculateExpectedCrypto
 } from '../api/api'
 
 
@@ -57,6 +58,7 @@ type InputInterfaceType = {
 type RemoteType = {
   getExpectedCrypto: (amount: number) => Promise<number>
   getData: () => Promise<DataStateType>,
+  calculateExpectedCrypto: (amount: number, rate: number, fee: number) => number
 }
 
 type StateType = {
@@ -102,7 +104,8 @@ const initialState = {
   },
   remote: {
     getExpectedCrypto: getExpectedCrypto,//add api calls
-    getData: getData
+    getData: getData,
+    calculateExpectedCrypto:calculateExpectedCrypto
   }
 }
 

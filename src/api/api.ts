@@ -12,6 +12,10 @@ import IconBank from '../icons/bankicon.png'
 import LogoMoonPay from '../icons/moonpay.svg'
 import LogoCryptoCoinPro from '../icons/cryptocoinpro.png'
 
+const calculateExpectedCrypto = (amount: number, rate: number, fee: number) => {
+    let amount2Get = amount / rate
+    return Math.round((amount2Get - amount2Get * fee / 100) * 1e6) / 1e6
+}
 
 const getExpectedCrypto = async (amount: number) => {
     /* await new Promise(resolve => setTimeout(resolve, 1500)); */
@@ -90,5 +94,6 @@ const getData = async () => {
 
 export {
     getExpectedCrypto,
-    getData
+    getData,
+    calculateExpectedCrypto
 }

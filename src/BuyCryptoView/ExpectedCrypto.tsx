@@ -4,22 +4,24 @@ import styles from './styles.module.css'
 import { APIContext } from '../wrappers/APIContext'
 
 type ExpectedCryptoType = {
-    amount: number,
     denom: string,
     className?: string
 }
 
-const calculateAmount = (amount: number, rate: number, fee: number) => {
-    let amount2Get = amount / rate
-    return amount2Get - amount2Get * fee / 100
-}
-
 const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
-    const { amount, denom, className } = props
+    const { denom, className } = props
+    const [expectedCrypto, setExpectedCrypto] = useState(0)
 
-    const { data } = useContext(APIContext);
+    const { data, remote, collected } = useContext(APIContext);
     const { availableGateways } = data
     const [lowestFeeGateway, setLowestFeeGateway] = useState({ rate: 0, fee: 0 })
+
+    useEffect(() => {
+        async function calculateExpectedCrypto() {
+            setExpectedCrypto(remote.calculateExpectedCrypto(collected.amount, lowestFeeGateway.rate, lowestFeeGateway.fee))
+        }
+        calculateExpectedCrypto()
+    }, [collected, remote, lowestFeeGateway])
 
     const setMinFee = useCallback(() => {
         let lowest = Number.POSITIVE_INFINITY;
@@ -42,7 +44,7 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
 
     return (
         <div className={`${styles['expected-crypto']} ${className}`}>
-            <span className={styles['expected-crypto__amount']}>{`${Math.round(calculateAmount(amount, lowestFeeGateway.rate, lowestFeeGateway.fee) * 1e8) / 1e8} ${denom}`}</span>
+            <span className={styles['expected-crypto__amount']}>{`${expectedCrypto} ${denom}`}</span>
             <span className={styles['expected-crypto__info']}>Crypto you get (estimation)</span>
         </div>
     )
