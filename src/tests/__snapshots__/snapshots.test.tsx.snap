@@ -142,7 +142,7 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
     <span
       className="expected-crypto__amount"
     >
-      100 BTC
+      0 BTC
     </span>
     <span
       className="expected-crypto__info"
@@ -170,7 +170,7 @@ exports[`Component snapshots ExpectedCrypto snapshot 1`] = `
   <span
     className="expected-crypto__amount"
   >
-    1.2 BTC
+    0 BTC
   </span>
   <span
     className="expected-crypto__info"
