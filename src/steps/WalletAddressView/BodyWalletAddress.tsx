@@ -17,10 +17,9 @@ type BodyWalletAddressType = {
 
 const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
     const { handleInputChange, onButtonAction } = props
-    const { collected, data, inputInterface } = useContext(APIContext)
+    const { collected, data } = useContext(APIContext)
     const { walletAddress } = collected
     const [selectedAddress, setSelectedAddress] = useState(walletAddress)
-    const { collectData } = inputInterface
     const { nextScreen, backScreen } = useContext(NavContext);
     const items = [
         {
@@ -34,8 +33,8 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
     /* const loadedAddrs = items.map((item, i) => ({ ...item, icon: data.availableCryptos[collected.selectedCrypto].icon, name: `Address ${i + 1}: ${item.name}` })) */
 
     useEffect(() => {
-        collectData('walletAddress', selectedAddress)
-    }, [selectedAddress, collectData])
+        handleInputChange('walletAddress', selectedAddress)
+    }, [selectedAddress, handleInputChange])
 
     const handleAddressSelection = (index: number) => {
         setSelectedAddress(items[index].name)

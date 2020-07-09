@@ -15,7 +15,7 @@ const ConfirmPaymentView: React.FC = () => {
   const selectedCrypto = data.availableCryptos[collected.selectedCrypto]
   const selectedCurrency = data.availableCurrencies[collected.selectedCurrency]
   const selectedPaymentMethod = data.availablePaymentMethods[collected.selectedPaymentMethod]
-  console.log('collected.amount', collected.amount)
+  
   return (
     <div className={styles.view}>
       <Header title="Payment confirmation" backButton />

@@ -49,7 +49,6 @@ type DataInterfaceType = {
 }
 
 type InputInterfaceType = {
-  collectData: (name: string, value: any) => void
   handleInputChange: (name: string, value: any) => void
   handleFilesAdded: (name: string, files: File[], maxFiles: number) => boolean,
   handleFileDeleted: (name: string, fileName: string) => void
@@ -93,7 +92,6 @@ const initialState = {
     'personal-country': '',
   },
   inputInterface: {
-    collectData: () => null,
     handleInputChange: () => null,
     handleFilesAdded: () => true,
     handleFileDeleted: () => null,
@@ -125,29 +123,18 @@ const APIContext = createContext<StateType>(initialState);
 const APIProvider: React.FC = (props) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
-  const collectData = useCallback(
-    (name: string, value: string | number) => {
-      console.log(name, value)
-      dispatch({ type: CollectedActionsType.AddField, payload: { name, value } })
-    },
-    [],
-  )
-
   const handleInputChange = useCallback(
-    (name: string, value: string | number) => {
-      console.log(name, value)
-      dispatch({ type: CollectedActionsType.AddField, payload: { name, value } })
-    },
+    (name: string, value: string | number) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
     [],
   )
 
-/*   const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(e.target.name, e.target.value)
-      dispatch({ type: CollectedActionsType.AddField, payload: { name: e.target.name, value: e.target.value } })
-    },
-    [],
-  ) */
+  /*   const handleInputChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.name, e.target.value)
+        dispatch({ type: CollectedActionsType.AddField, payload: { name: e.target.name, value: e.target.value } })
+      },
+      [],
+    ) */
 
   const handleFilesAdded = useCallback(
     (name: string, files: File[], maxFiles: number) => {
@@ -174,7 +161,6 @@ const APIProvider: React.FC = (props) => {
     <APIContext.Provider value={{
       ...state,
       inputInterface: {
-        collectData,
         handleInputChange,
         handleFilesAdded,
         handleFileDeleted

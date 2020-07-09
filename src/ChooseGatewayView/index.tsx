@@ -12,13 +12,13 @@ import WalletAddressView from '../steps/WalletAddressView'
 const ChooseGatewayView = () => {
   const { nextScreen } = useContext(NavContext)
   const { data, inputInterface } = useContext(APIContext)
-  const { collectData } = inputInterface
+  const { handleInputChange } = inputInterface
 
   const [selectedGatewayIndex, setSelectedGatewayIndex] = useState(0)
 
   useEffect(() => {
-    collectData('selectedGateway', selectedGatewayIndex)
-  }, [collectData, selectedGatewayIndex])
+    handleInputChange('selectedGateway', selectedGatewayIndex)
+  }, [handleInputChange, selectedGatewayIndex])
 
   return (
     <div className={styles.view}>
