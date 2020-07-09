@@ -16,7 +16,7 @@ const CreditCardView: React.FC = () => {
   const wyreDetails: { [key: string]: string } = {
     'wyret-amount': '100,00',
     'wyret-reference': 'Text',
-    'wyret-iban': 'NL91 ABNA 0417 1643 00',
+    'wyret-iban': 'NL12 INGB 0123 4567 89',
     'wyret-bicswift': 'INGBNL2A',
     'wyret-name': 'Onramper',
     'wyret-currency': '$'
