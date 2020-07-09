@@ -4,7 +4,7 @@ import Footer from '../../common/Footer'
 import BodySuccessView from './BodySuccessView'
 import styles from '../../styles.module.css'
 
-const SuccessViewView: React.FC = () => {
+const SuccessView: React.FC = () => {
 
   return (
     <div className={styles.view}>
@@ -15,4 +15,4 @@ const SuccessViewView: React.FC = () => {
   );
 };
 
-export default SuccessViewView;
+export default SuccessView;
