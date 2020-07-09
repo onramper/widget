@@ -11,3 +11,17 @@ html, body {
   background-color: grey;
   font-size: 16px;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #0000001f;
+}
+
+/* ::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: rgba(25, 147, 147, 0.1);
+} */
