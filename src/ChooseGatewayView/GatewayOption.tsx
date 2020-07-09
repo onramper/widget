@@ -52,6 +52,7 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
     const { collected, data } = useContext(APIContext)
     const { amount } = collected
     var cryptoAmount = (amount * rate)
+    cryptoAmount = cryptoAmount - (cryptoAmount * fee / 100)
     var selectedCryptoAmount = (amount * selectedRate)
 
     const diffPercent = ((1 - (selectedCryptoAmount / cryptoAmount)) * 100)

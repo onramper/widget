@@ -10,7 +10,7 @@ import { NavContext } from '../wrappers/context'
 import { APIContext } from '../wrappers/APIContext'
 
 const BuyCryptoView: React.FC = () => {
-  const [expectedAmount, setExpectedAmount] = useState(0)
+  /* const [expectedAmount, setExpectedAmount] = useState(0) */
   const [selectedCryptoIndex, setSelectedCryptoIndex] = useState(0)
   const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState(0)
   const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState(0)
@@ -20,13 +20,13 @@ const BuyCryptoView: React.FC = () => {
   const { addData } = dataInterface
   const { collectData } = inputInterface
 
-  useEffect(() => {
+/*   useEffect(() => {
     async function getExpectedCrypto() {
       let expectedValue = await remote.getExpectedCrypto(collected.amount);
       setExpectedAmount(expectedValue)
     }
     getExpectedCrypto()
-  }, [collected.amount, remote])
+  }, [collected.amount, remote]) */
 
   useEffect(() => {
     async function getData() {
@@ -69,7 +69,6 @@ const BuyCryptoView: React.FC = () => {
         selectedCrypto={data.availableCryptos[selectedCryptoIndex]}
         selectedCurrency={data.availableCurrencies[selectedCurrencyIndex]}
         selectedPaymentMethod={data.availablePaymentMethods[selectedPaymentMethodIndex]}
-        expectedAmount={expectedAmount}
         amountValue={collected.amount}
         handleInputChange={inputInterface.handleInputChange}
       />

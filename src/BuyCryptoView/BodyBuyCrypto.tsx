@@ -15,14 +15,13 @@ type BodyBuyCryptoType = {
     selectedCrypto: ListItemType,
     selectedCurrency: ListItemType,
     selectedPaymentMethod: ListItemType,
-    expectedAmount: number,
     amountValue: number
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
-    const { selectedCrypto, selectedCurrency, selectedPaymentMethod, expectedAmount, amountValue } = props
+    const { selectedCrypto, selectedCurrency, selectedPaymentMethod, amountValue } = props
     const { handleInputChange } = props
     return (
         <main className={stylesCommon.body}>
@@ -32,7 +31,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
                 <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amount={expectedAmount} denom={selectedCrypto.name} />
+            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amount={amountValue} denom={selectedCrypto.name} />
             <div className={`${stylesCommon['body__child']}`}>
                 <button onClick={onBuyCrypto} className={`${stylesCommon['button-action']}`}>Get crypto</button>
             </div>
