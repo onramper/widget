@@ -31,7 +31,7 @@ describe("Component snapshots", () => {
     ["List", <List items={itemsListExample} />],
     ["Header", <Header title="Buy crypto" />],
     ["Header with backbutton", <Header title="Buy crypto" backButton={true} />],
-    ["BodyBuyCrypto", <BodyBuyCrypto onBuyCrypto={() => null} handleInputChange={() => null} openPickCrypto={() => null} openPickCurrency={() => null} openPickPayment={() => null} selectedCrypto={itemsListExample[0]} selectedCurrency={itemsListExample[0]} selectedPaymentMethod={itemsListExample[0]} expectedAmount={100} amountValue={100} />],
+    ["BodyBuyCrypto", <BodyBuyCrypto onBuyCrypto={() => null} handleInputChange={() => null} openPickCrypto={() => null} openPickCurrency={() => null} openPickPayment={() => null} selectedCrypto={itemsListExample[0]} selectedCurrency={itemsListExample[0]} selectedPaymentMethod={itemsListExample[0]} amountValue={100} />],
     ["ExpectedCrypto", <ExpectedCrypto amount={1.2} denom="BTC" />],
     ["InputButton", <InputButton label="Label" selectedOption={itemsListExample[0].name} icon={itemsListExample[0].icon} />],
     ["InputText", <InputText name='example' label="Label" />],
