@@ -53,7 +53,7 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
                 value={selectedAddress}
                 icon={items.length > 0 ? IconChevronRight : undefined}
                 iconPosition='end'
-                onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Imported addresses" items={items} />)}
+                onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
                 name='walletAddress' onChange={handleInputChange} className={stylesCommon['body__child']} label={`RECEIVER ${data.availableCryptos[collected.selectedCrypto].name} WALLET ADDRESS`} placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>
