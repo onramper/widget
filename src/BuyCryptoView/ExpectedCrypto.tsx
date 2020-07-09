@@ -10,9 +10,6 @@ type ExpectedCryptoType = {
 }
 
 const calculateAmount = (amount: number, rate: number, fee: number) => {
-    console.log(amount,
-        rate,
-        fee)
     let amount2Get = amount * rate
     return amount2Get - amount2Get * fee / 100
 }
@@ -45,7 +42,6 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
 
     return (
         <div className={`${styles['expected-crypto']} ${className}`}>
-            {console.log(lowestFeeGateway)}
             <span className={styles['expected-crypto__amount']}>{`${Math.round(calculateAmount(amount, lowestFeeGateway.rate, lowestFeeGateway.fee) * 1e8) / 1e8} ${denom}`}</span>
             <span className={styles['expected-crypto__info']}>Crypto you get (estimation)</span>
         </div>
