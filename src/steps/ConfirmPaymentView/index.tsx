@@ -26,7 +26,7 @@ const ConfirmPaymentView: React.FC = () => {
         cryptoAmount={(selectedGateway.rate * collected.amount).toFixed(6)} //: number //todo calculate
         cryptoDenom={selectedCrypto.name} //: string
         txTime={`${selectedGateway.txTime.slice(0, -1)} hours`} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
-        cryptoAddr='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' //: string
+        cryptoAddr={collected.walletAddress} //: string
         cryptoIcon={selectedCrypto.icon}
         conversionRate={selectedGateway.rate} //: string
       /*         gatewayFee='5.5%' //: string
