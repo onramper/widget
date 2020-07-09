@@ -8,7 +8,7 @@ const SuccessViewView: React.FC = () => {
 
   return (
     <div className={styles.view}>
-      <Header title="" backButton />
+      <Header title="Purchase completed" backButton />
       <BodySuccessView />
       <Footer />
     </div>
