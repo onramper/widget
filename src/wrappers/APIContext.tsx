@@ -23,7 +23,15 @@ type CollectedStateType = {
   selectedCurrency: number,
   selectedPaymentMethod: number,
   selectedGateway: number,
-  walletAddress: string
+  walletAddress: string,
+  "personal-fname": string,
+  "personal-lname": string,
+  "personal-birth": string,
+  'personal-address': string
+  'personal-address2': string
+  'personal-city': string
+  'personal-postalcode': string
+  'personal-country': string
   [key: string]: any//todo, add all inputs
 }
 
@@ -74,7 +82,15 @@ const initialState = {
     selectedCurrency: 0,
     selectedPaymentMethod: 0,
     selectedGateway: 0,
-    walletAddress: ''
+    walletAddress: '',
+    "personal-fname": '',
+    "personal-lname": '',
+    "personal-birth": '',
+    'personal-address': '',
+    'personal-address2': '',
+    'personal-city': '',
+    'personal-postalcode': '',
+    'personal-country': '',
   },
   inputInterface: {
     collectData: () => null,

@@ -16,7 +16,7 @@ const BuyCryptoView: React.FC = () => {
   const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState(0)
 
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { data, dataInterface, inputInterface, remote, collected } = useContext(APIContext);
+  const { data, dataInterface, inputInterface, remote } = useContext(APIContext);
   const { addData } = dataInterface
   const { collectData } = inputInterface
 
@@ -69,7 +69,6 @@ const BuyCryptoView: React.FC = () => {
         selectedCrypto={data.availableCryptos[selectedCryptoIndex]}
         selectedCurrency={data.availableCurrencies[selectedCurrencyIndex]}
         selectedPaymentMethod={data.availablePaymentMethods[selectedPaymentMethodIndex]}
-        amountValue={collected.amount}
         handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />
