@@ -14,6 +14,7 @@ const ConfirmPaymentView: React.FC = () => {
   const selectedGateway = data.availableGateways[collected.selectedGateway]
   const selectedCrypto = data.availableCryptos[collected.selectedCrypto]
   const selectedCurrency = data.availableCurrencies[collected.selectedCurrency]
+  const selectedPaymentMethod = data.availablePaymentMethods[collected.selectedPaymentMethod]
 
   return (
     <div className={styles.view}>
@@ -28,6 +29,7 @@ const ConfirmPaymentView: React.FC = () => {
         txTime={`${selectedGateway.txTime.slice(0, -1)} hours`} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
         cryptoAddr={collected.walletAddress} //: string
         cryptoIcon={selectedCrypto.icon}
+        paymentMethod={selectedPaymentMethod.name}
         conversionRate={selectedGateway.rate} //: string
       /*         gatewayFee='5.5%' //: string
               onramperFee='2%' //: string */

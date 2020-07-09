@@ -7,6 +7,7 @@ import { ReactComponent as IconPay } from '../../icons/payicon.svg'
 /* import { ReactComponent as IconFees } from '../../icons/feesicon.svg' */
 import { ReactComponent as IconWallet } from '../../icons/walleticon.svg'
 import { ReactComponent as IconExpectedtime } from '../../icons/expectedtimeicon.svg'
+import { ReactComponent as IconPaymentMethod } from '../../icons/paymentmethodicon.svg'
 
 import { CSSTransition } from 'react-transition-group';
 
@@ -19,6 +20,7 @@ type BodyConfirmPaymentViewType = {
     cryptoAmount: string
     cryptoDenom: string
     cryptoAddr: string
+    paymentMethod: string
     cryptoIcon?: string
     txTime: string
 
@@ -61,6 +63,9 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 </ul>
                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconWallet className={styles['icon']} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
+                </ul>
+                <ul className={`${styles['wrapper']}`}>
+                    <Item type='main' icon={<IconPaymentMethod className={styles['icon']} />} title='Payment method' content={props.paymentMethod} />
                 </ul>
                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime} single />
