@@ -13,8 +13,9 @@ import LogoMoonPay from '../icons/moonpay.svg'
 import LogoCryptoCoinPro from '../icons/cryptocoinpro.png'
 
 const calculateExpectedCrypto = (amount: number, rate: number, fee: number) => {
-    let amount2Get = amount / rate
-    return Math.round((amount2Get - amount2Get * fee / 100) * 1e6) / 1e6
+    let amountcrypto = amount / rate
+    let amount2get = Math.round((amountcrypto - amountcrypto * fee / 100) * 1e6) / 1e6
+    return amount2get ? amount2get : 0
 }
 
 const getExpectedCrypto = async (amount: number) => {
