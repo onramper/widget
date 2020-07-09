@@ -30,10 +30,11 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
         }
     ]
 
-    /* const loadedAddrs = items.map((item, i) => ({ ...item, icon: data.availableCryptos[collected.selectedCrypto].icon, name: `Addr ${i}: ${item.name}` })) */
+    const loadedAddrs = items.map((item, i) => ({ ...item, /* icon: data.availableCryptos[collected.selectedCrypto].icon, */ name: `Address ${i+1}: ${item.name}` }))
 
     useEffect(() => {
         collectData('walletAddress', selectedAddress)
+        console.log('updated in context walletAddress', selectedAddress)
     }, [selectedAddress, collectData])
 
     const handleAddressSelection = (index: number) => {
@@ -45,15 +46,16 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
 
     useEffect(() => {
         setSelectedAddress(walletAddress)
+        console.log('updated in state walletAddress', walletAddress)
     }, [walletAddress])
 
     return (
         <main className={stylesCommon.body}>
             <InputText
-                value={selectedAddress}
+                /* value={selectedAddress} */
                 icon={items.length > 0 ? IconChevronRight : undefined}
                 iconPosition='end'
-                onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
+                onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={loadedAddrs} />)}
                 name='walletAddress' onChange={handleInputChange} className={stylesCommon['body__child']} label={`RECEIVER ${data.availableCryptos[collected.selectedCrypto].name} WALLET ADDRESS`} placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>

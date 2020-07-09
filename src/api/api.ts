@@ -22,14 +22,14 @@ const getData = async () => {
     return {
         availableCryptos: [
             {
-                icon: IconBTC,
-                name: "BTC",
-                info: "Bitcoin"
-            },
-            {
                 icon: IconNEO,
                 name: "NEO",
                 info: "Neo"
+            },
+            {
+                icon: IconBTC,
+                name: "BTC",
+                info: "Bitcoin"
             },
             {
                 icon: IconGAS,
