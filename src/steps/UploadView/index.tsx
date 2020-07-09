@@ -9,11 +9,11 @@ import { NavContext } from '../../wrappers/context'
 
 const UploadView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
-  const textInfo = 'Examples of an address proof document are utility bills, bank, building society or credit card statement (less than 3 months old).'
+  const textInfo = 'Take a photo of the front and back of your passport and attach it here so we can verify your address (one file for each side).'
 
   return (
     <div className={styles.view}>
-      <Header title="Upload proof of address" backButton />
+      <Header title="Upload passport photo" backButton />
       <BodyUpload
         onButtonAction={() => nextScreen(<ConfirmPaymentView />)}
         textInfo={textInfo}
