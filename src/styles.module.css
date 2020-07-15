@@ -11,8 +11,10 @@ general styles
 
 .views-container {
     margin: auto;
-    width: 440px;
-    height: 576px;
+    max-width: 440px;
+    max-height: 576px;
+    height: 100%;
+    width: 100%;
 }
 
 .view {
