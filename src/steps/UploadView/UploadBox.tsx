@@ -24,15 +24,17 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
     const handleDragLeave = useCallback(() => setIsDragOver(false), []);
 
     const handleOnDropFiles = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault()
+        console.log(e.dataTransfer.files)
         let newFiles = [...e.dataTransfer.files]
 
         const ok = onFilesAdded(id, [...newFiles], maxFiles)
         if (!ok) onError(`You only can upload ${maxFiles} files`)
 
-        e.dataTransfer.clearData();
     }, [maxFiles, id, onError, onFilesAdded]);
 
     const handleOnSelectFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault()
         let currentFiles = e.currentTarget.files || []
         let newFiles = [...currentFiles]
 
