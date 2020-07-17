@@ -15,18 +15,52 @@ const BuyCryptoView: React.FC = () => {
   const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState(0)
   const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState(0)
 
+
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, dataInterface, inputInterface, remote } = useContext(APIContext);
   const { addData } = dataInterface
   const { handleInputChange } = inputInterface
+  const { init, onCryptoChange, onCurrencyChange, onPaymentMethodChange } = data
 
-/*   useEffect(() => {
-    async function getExpectedCrypto() {
-      let expectedValue = await remote.getExpectedCrypto(collected.amount);
-      setExpectedAmount(expectedValue)
+  const selectedCrypto = data.availableCryptos[selectedCryptoIndex]
+  const selectedCurrency = data.availableCurrencies[selectedCurrencyIndex]
+  const selectedPaymentMethod = data.availablePaymentMethods[selectedPaymentMethodIndex]
+
+  useEffect(() => {
+    async function initEffect() {
+      await init();
     }
-    getExpectedCrypto()
-  }, [collected.amount, remote]) */
+    initEffect()
+  }, [init])
+
+  useEffect(() => {
+    async function onCryptoChangeEffect() {
+      await onCryptoChange(selectedCrypto?.name);
+    }
+    onCryptoChangeEffect()
+  }, [onCryptoChange, selectedCrypto])
+
+  useEffect(() => {
+    async function onCurrencyChangeEffect() {
+      await onCurrencyChange(selectedCurrency?.name);
+    }
+    onCurrencyChangeEffect()
+  }, [onCurrencyChange, selectedCurrency])
+
+  useEffect(() => {
+    async function onPaymentMethodChangeEffect() {
+      await onPaymentMethodChange(selectedPaymentMethod?.name);
+    }
+    onPaymentMethodChangeEffect()
+  }, [onPaymentMethodChange, selectedPaymentMethod])
+
+  /*   useEffect(() => {
+      async function getExpectedCrypto() {
+        let expectedValue = await remote.getExpectedCrypto(collected.amount);
+        setExpectedAmount(expectedValue)
+      }
+      getExpectedCrypto()
+    }, [collected.amount, remote]) */
 
   useEffect(() => {
     async function getData() {

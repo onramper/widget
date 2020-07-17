@@ -74,7 +74,7 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                             <div className={styles['collapsable-section']}>
                                 <div className={`${styles['details']}`} >
                                     <div className={styles.details__item}><img alt='' src={IconDetailTxTime} /><span>Tx time: {txTime}</span></div>
-                                    <div className={styles.details__item}><img alt='' src={IconDetailKYC} /><span>KYC: {kycLevel}</span></div>
+                                    <div className={styles.details__item}><img alt='' src={IconDetailKYC} /><span>KYC level: {kycLevel}</span></div>
                                 </div>
                                 <div className={`${styles['fees']}`}>
                                     <span>Total fees:</span>

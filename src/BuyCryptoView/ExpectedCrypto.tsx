@@ -13,30 +13,30 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
     const [expectedCrypto, setExpectedCrypto] = useState(0)
 
     const { data, remote, collected } = useContext(APIContext);
-    const { availableGateways } = data
-    const [lowestFeeGateway, setLowestFeeGateway] = useState({ rate: 0, fee: 0 })
+    const { availableRates = [] } = data
+    const [moreExpectedCrypto, setMoreExpectedCrypto] = useState({ rate: 0, fee: 0 })
 
     useEffect(() => {
         async function calculateExpectedCrypto() {
-            setExpectedCrypto(remote.calculateExpectedCrypto(collected.amount, lowestFeeGateway.rate, lowestFeeGateway.fee))
+            setExpectedCrypto(remote.calculateExpectedCrypto(collected.amount, moreExpectedCrypto.rate, moreExpectedCrypto.fee))
         }
         calculateExpectedCrypto()
-    }, [collected, remote, lowestFeeGateway])
+    }, [collected.amount, remote, moreExpectedCrypto])
 
     const setMinFee = useCallback(() => {
         let lowest = Number.POSITIVE_INFINITY;
         let index = 0
         let tmp;
 
-        for (let i = availableGateways.length - 1; i >= 0; i--) {
-            tmp = availableGateways[i].fee;
-            if (tmp < lowest) {
+        for (let i = availableRates.length - 1; i >= 0; i--) {
+            tmp = availableRates[i].amountCrypto;
+            if (tmp > lowest) {
                 lowest = tmp;
                 index = i;
             }
         }
-        if (availableGateways.length > 0) setLowestFeeGateway(availableGateways[index])
-    }, [availableGateways])
+        if (availableRates.length > 0) setMoreExpectedCrypto({ rate: availableRates[index].rate, fee: availableRates[index].fees })
+    }, [availableRates])
 
     useEffect(() => {
         setMinFee()
