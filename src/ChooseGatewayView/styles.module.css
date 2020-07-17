@@ -209,6 +209,24 @@
     transition: max-height 200ms linear, opacity 100ms linear;
 }
 
+.collapse-enter .fees {
+    opacity: 0;
+}
+
+.collapse-enter-active .fees {
+    opacity: 1;
+    transition: opacity 500ms linear;
+}
+
+.collapse-exit .fees {
+    opacity: 1;
+}
+
+.collapse-exit-active .fees {
+    opacity: 1;
+    transition: opacity 500ms linear;
+}
+
 /***/
 .fade-enter {
     max-height: 0;

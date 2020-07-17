@@ -17,7 +17,7 @@ const Range: React.FC<RangeType> = (props) => {
     const { min, max, actual } = props
     const actualInRange = actual < min ? min : actual > max ? max : actual
     const actialPosition = (actualInRange - min) / (max - min) * 100
-    const actualLevel = actialPosition > 80 ? LEVEL_COLORS_CLASS.LOW : actialPosition > 40 ? LEVEL_COLORS_CLASS.MEDIUM : LEVEL_COLORS_CLASS.LOW
+    const actualLevel = actialPosition > 80 ? LEVEL_COLORS_CLASS.HIGH : actialPosition > 40 ? LEVEL_COLORS_CLASS.MEDIUM : LEVEL_COLORS_CLASS.LOW
     return (
         <div>
             <div className={styles.range}>
