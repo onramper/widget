@@ -44,7 +44,7 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
 
     return (
         <div className={`${styles['expected-crypto']} ${className}`}>
-            <span className={styles['expected-crypto__amount']}>{`${expectedCrypto} ${denom}`}</span>
+            <span className={styles['expected-crypto__amount']}>{`${expectedCrypto ? expectedCrypto+' ' : ''}${denom}`}</span>
             <span className={styles['expected-crypto__info']}>Crypto you get (estimation)</span>
         </div>
     )
