@@ -54,10 +54,6 @@ type DataStateType = {
   filtredRatesByAviability: any[]
 }
 
-type DataInterfaceType = {
-  addData: (data: DataStateType) => void
-}
-
 type InputInterfaceType = {
   handleInputChange: (name: string, value: any) => void
   handleFilesAdded: (name: string, files: File[], maxFiles: number) => boolean,
@@ -68,7 +64,6 @@ type StateType = {
   data: DataStateType,
   collected: CollectedStateType
   inputInterface: InputInterfaceType
-  dataInterface: DataInterfaceType
 }
 
 const initialState = {
@@ -110,9 +105,6 @@ const initialState = {
     handleFilesAdded: () => true,
     handleFileDeleted: () => null,
     //todo: split remote and local and add files
-  },
-  dataInterface: {
-    addData: (data: any) => null
   }
 }
 
