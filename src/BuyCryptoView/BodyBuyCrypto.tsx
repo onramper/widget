@@ -34,7 +34,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
                 <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} denom={selectedCrypto.name} />
+            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} denom={selectedCrypto.name} isLoading={selectedCrypto.name === LOAGIND_TEXT} />
             <div className={`${stylesCommon['body__child']}`}>
                 <button onClick={onBuyCrypto} className={`${stylesCommon['button-action']}`}>Get crypto</button>
             </div>
@@ -42,17 +42,19 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     )
 }
 
+const LOAGIND_TEXT = 'Loading...'
+
 BodyBuyCrypto.defaultProps = {
     selectedCrypto: {
-        name: 'Loading...',
+        name: LOAGIND_TEXT,
         icon: ''
     },
     selectedCurrency: {
-        name: 'Loading...',
+        name: LOAGIND_TEXT,
         icon: ''
     },
     selectedPaymentMethod: {
-        name: 'Loading...',
+        name: LOAGIND_TEXT,
         icon: ''
     },
 }

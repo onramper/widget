@@ -10,8 +10,8 @@ import { APIContext } from '../../wrappers/APIContext'
 
 const ConfirmPaymentView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
-  const { collected, data, remote } = useContext(APIContext);
-  const selectedGateway = data.availableGateways[collected.selectedGateway]
+  const { collected, data } = useContext(APIContext);
+  const selectedGateway = data.availableRates[collected.selectedGateway]
   const selectedCrypto = data.availableCryptos[collected.selectedCrypto]
   const selectedCurrency = data.availableCurrencies[collected.selectedCurrency]
   const selectedPaymentMethod = data.availablePaymentMethods[collected.selectedPaymentMethod]
@@ -22,9 +22,9 @@ const ConfirmPaymentView: React.FC = () => {
       <BodyConfirmPayment
         onButtonAction={() => nextScreen(<CreditCardView />)}
         payAmount={(collected.amount).toFixed(2)} //: string
-        fees={selectedGateway.fee} //: string
+        fee={selectedGateway.fees} //: string
         currency={selectedCurrency.name}
-        cryptoAmount={remote.calculateExpectedCrypto(collected.amount, selectedGateway.rate, selectedGateway.fee)}
+        cryptoAmount={selectedGateway.receivedCrypto}
         cryptoDenom={selectedCrypto.name} //: string
         txTime={`${selectedGateway.txTime.slice(0, -1)} hours`} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
         cryptoAddr={collected.walletAddress} //: string

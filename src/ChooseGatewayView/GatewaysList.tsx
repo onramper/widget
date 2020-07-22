@@ -23,18 +23,13 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
             {
                 items.map((item, i) =>
                     <GatewayOption
+                        {...item}
                         key={i}
                         index={i}
-                        name={item.name}
-                        txTime={item.txTime}
-                        kycLevel={item.kycLevel}
-                        rate={item.rate}
-                        fee={item.fee}
                         selectedFee={items[selectedGateway].fee}
-                        logo={item.logo}
                         isOpen={i === selectedGateway}
                         onClick={handleItemClick}
-                        selectedRate={items[selectedGateway].rate} />
+                        selectedReceivedCrypto={items[selectedGateway].receivedCrypto} />
                 )
             }
         </div>

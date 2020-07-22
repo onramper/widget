@@ -2,29 +2,17 @@ import React, { createContext, useReducer, useCallback } from 'react';
 import { ListItemType } from '../common/types'
 import { GatewayOptionType } from '../ChooseGatewayView/GatewayOption'
 
+import { arrayUnique } from './utils'
+
 import IconNEO from '../icons/neoicon.png'
 import IconUSD from '../icons/usd.svg'
 import IconCC from '../icons/ccs.svg'
 
 import LogoOnramper from '../icons/logo.svg'
 
-import {
-  getExpectedCrypto,
-  calculateExpectedCrypto,
-  getData
-} from '../api/api'
-
-import * as API from '../api/api'
+import * as API from '../api'
 
 import * as DATAS from '../api/helper'
-
-/* QUERY PARAMS */
-export enum QueryParams {
-  Amount = 'amount',
-  Denom = 'denom',
-  Currency = 'currency',
-  PaymentMethod = 'paymentMethod'
-}
 
 type CollectedStateType = {
   amount: number,
@@ -51,13 +39,19 @@ type DataStateType = {
   availableCryptos: ListItemType[],
   availableCurrencies: ListItemType[],
   availablePaymentMethods: ListItemType[],
-  availableGateways: GatewayOptionType[],
+  availableRates: GatewayOptionType[],
   [key: string]: any
   init: (country?: string) => void,
-  onCryptoChange: (crypto?: string) => Promise<boolean | undefined>
+  onCryptoChange: (crypto?: string) => Promise<any>
   onCurrencyChange: (currency?: string) => void
   onPaymentMethodChange: (paymentMehtod?: string) => any
   onPriceChange: (amount: number) => void
+  //remote responses
+  response_gateways: any
+  filtredGatewaysByCrypto: any[]
+  filtredGatewaysByCurrency: any[]
+  response_rate: any[]
+  filtredRatesByAviability: any[]
 }
 
 type DataInterfaceType = {
@@ -70,18 +64,11 @@ type InputInterfaceType = {
   handleFileDeleted: (name: string, fileName: string) => void
 }
 
-type RemoteType = {
-  getExpectedCrypto: (amount: number) => Promise<number>
-  getData: () => Promise<any>,
-  calculateExpectedCrypto: (amount: number, rate: number, fee: number) => number
-}
-
 type StateType = {
   data: DataStateType,
   collected: CollectedStateType
   inputInterface: InputInterfaceType
   dataInterface: DataInterfaceType
-  remote: RemoteType
 }
 
 const initialState = {
@@ -89,12 +76,17 @@ const initialState = {
     availableCryptos: [],
     availableCurrencies: [],
     availablePaymentMethods: [],
-    availableGateways: [],
+    availableRates: [],
     init: (country?: string | null) => null,
-    onCryptoChange: async (crypto?: string) => false,
+    onCryptoChange: async (crypto?: string) => null,
     onCurrencyChange: (currency?: string) => null,
     onPaymentMethodChange: (paymentMehtod?: string) => null,
     onPriceChange: (amount: number) => null,
+    response_gateways: {},
+    filtredGatewaysByCrypto: [],
+    filtredGatewaysByCurrency: [],
+    response_rate: [],
+    filtredRatesByAviability: []
   },
   collected: {
     amount: 100,
@@ -121,11 +113,6 @@ const initialState = {
   },
   dataInterface: {
     addData: (data: any) => null
-  },
-  remote: {
-    getExpectedCrypto: getExpectedCrypto,//add api calls
-    getData: getData,
-    calculateExpectedCrypto: calculateExpectedCrypto
   }
 }
 
@@ -177,14 +164,14 @@ const APIProvider: React.FC = (props) => {
     async (country?: string) => {
       const response_gateways = await API.gateways(country)
 
-      addData(response_gateways)
+      addData({ response_gateways: response_gateways })
 
       let availableCryptos: any[] = []
       for (var i in response_gateways.gateways) {
         availableCryptos = availableCryptos.concat(response_gateways.gateways[i].supportedCrypto)
       }
       availableCryptos = arrayUnique(availableCryptos)
-      availableCryptos = availableCryptos.map((item) => ({ name: item, symbol: '', info: 'crypto', icon: IconNEO }))
+      availableCryptos = availableCryptos.map((item) => ({ name: item, symbol: '', info: 'crypto', icon: IconNEO })) //TODO, CHANGE IN THE API
       addData({ availableCryptos })
 
     }, [addData])
@@ -192,61 +179,66 @@ const APIProvider: React.FC = (props) => {
   const handleCryptoChange = useCallback(
     async (crypto?: string) => {
 
-      let gateways = state.data.gateways
+      let gateways = state.data.response_gateways.gateways
 
-      if (!gateways) return false
-      if (state.data.availableCryptos.length <= 0) return false
+      if (!gateways) return
+      if (state.data.availableCryptos.length <= 0) return
 
-      const actualCrypto = crypto || state.data.availableCryptos[0].name
+      const actualCrypto = crypto || state.data.availableCryptos[0].name //TODO: ADD SELECTEDCRYPTO -> crypto || state.data.SELECTEDCRYPTO || state.data.availableCryptos[0].name
 
-      const availableGateway = gateways.filter((item: any) => item.supportedCrypto.includes(actualCrypto))
+      const filtredGatewaysByCrypto = gateways.filter((item: any) => item.supportedCrypto.includes(actualCrypto))
 
       let availableCurrencies: any[] = []
-      for (var i in availableGateway) {
-        availableCurrencies = availableCurrencies.concat(availableGateway[i].supportedCurrencies)
+      for (var i in filtredGatewaysByCrypto) {
+        availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[i].supportedCurrencies)
       }
       availableCurrencies = arrayUnique(availableCurrencies)
-      availableCurrencies = availableCurrencies.map((item) => ({ name: item, symbol: '$', info: 'currency', icon: IconUSD }))
-      addData({ availableCurrencies, availableGateway })
+      availableCurrencies = availableCurrencies.map((item) => ({ name: item, symbol: '$', info: 'currency', icon: IconUSD })) //TODO: TEMP
+      addData({ availableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.gateways, addData, state.data.availableCryptos],
+    }, [state.data.response_gateways.gateways, state.data.availableCryptos, addData],
   )
 
   const handleCurrencyChange = useCallback(
     async (currency?: string) => {
 
-      const availableGateways = state.data.availableGateway
+      const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
 
-      if (!availableGateways) return false
+      if (!filtredGatewaysByCrypto) return
+      if (state.data.availableCurrencies.length <= 0) return
 
-      const actualCurrency = currency || state.data.availableCurrencies[0].name
-      const availableGateway = availableGateways.filter((item: any) => item.supportedCurrencies.includes(actualCurrency))
+      const actualCurrency = currency || state.data.availableCurrencies[0].name //TODO: ADD SELECTEDCRYPTO -> crypto || state.data.SELECTEDCRYPTO || state.data.availableCryptos[0].name
+      const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item: any) => item.supportedCurrencies.includes(actualCurrency))
 
       let availablePaymentMethods: any[] = []
-      for (var i in availableGateway) {
-        availablePaymentMethods = availablePaymentMethods.concat(availableGateway[i].paymentMethods)
+      for (var i in filtredGatewaysByCurrency) {
+        availablePaymentMethods = availablePaymentMethods.concat(filtredGatewaysByCurrency[i].paymentMethods)
       }
 
       availablePaymentMethods = arrayUnique(availablePaymentMethods)
-      availablePaymentMethods = availablePaymentMethods.map((item) => ({ name: item, symbol: '', info: '', icon: IconCC }))
-      addData({ availablePaymentMethods })
-    }, [addData, state.data.availableGateway, state.data.availableCurrencies],
+      availablePaymentMethods = availablePaymentMethods.map((item) => ({ name: item, symbol: '', info: '', icon: IconCC })) //TODO: TEMP
+      addData({ availablePaymentMethods, filtredGatewaysByCurrency })
+    }, [addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies],
   )
 
   const handlePaymentMethodChange = useCallback(
     async (paymentMehtod?: string) => {
 
-      if (state.data.availablePaymentMethods.length <= 0) return false
-      
-      const actualPaymentMethod = paymentMehtod || state.data.availablePaymentMethods[0].name
-      const actualAmount = state.collected.amount ? state.collected.amount : 0
+      if (state.data.availablePaymentMethods.length <= 0) return
+
+      const actualPaymentMethod = paymentMehtod || state.data.availablePaymentMethods[0].name//TODO: ADD SELECTEDCRYPTO -> crypto || state.data.SELECTEDCRYPTO || state.data.availableCryptos[0].name
+      const actualAmount = state.collected.amount || 0
+
       const response_rate = await API.rate(
         state.data.availableCurrencies[state.collected.selectedCurrency].name,
         state.data.availableCryptos[state.collected.selectedCrypto].name,
         actualAmount,
-        actualPaymentMethod)
-      const availableGateways = response_rate.filter((item: any) => item.available === true)
-      const ag = availableGateways.map((item: any) => ({
+        actualPaymentMethod
+      )
+
+      const filtredRatesByAviability = response_rate.filter((item: any) => item.available === true)
+      const availableRates = filtredRatesByAviability.map((item: any) => ({
+        ...item,
         name: item.identifier,
         txTime: item.duration.replace(' ' + item.duration.split(' ')[1], DATAS.TXTIMES_MAP[item.duration.split(' ')[1]]),
         kycLevel: `${item.requiredKYC.length}`,
@@ -255,7 +247,7 @@ const APIProvider: React.FC = (props) => {
         logo: LogoOnramper
       }))
 
-      addData({ availableRates: ag })
+      addData({ availableRates, response_rate, filtredRatesByAviability })
     }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.data.availableCryptos, state.data.availableCurrencies])
 
   return (
@@ -265,9 +257,6 @@ const APIProvider: React.FC = (props) => {
         handleInputChange,
         handleFilesAdded,
         handleFileDeleted
-      },
-      dataInterface: {
-        addData
       },
       data: {
         ...state.data,
@@ -355,16 +344,3 @@ const dataReducer = (state: StateType, action: DataActions) => {
 }
 
 export { APIProvider, APIContext };
-
-
-function arrayUnique(array: any[]) {
-  var a = array.concat();
-  for (var i = 0; i < a.length; ++i) {
-    for (var j = i + 1; j < a.length; ++j) {
-      if (a[i] === a[j])
-        a.splice(j--, 1);
-    }
-  }
-
-  return a;
-}

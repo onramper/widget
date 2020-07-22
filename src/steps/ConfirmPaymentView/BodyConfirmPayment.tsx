@@ -14,7 +14,7 @@ import { CSSTransition } from 'react-transition-group';
 type BodyConfirmPaymentViewType = {
     onButtonAction: () => void
     payAmount: string
-    fees: number
+    fee: number
     currency: string
 
     cryptoAmount: number
@@ -53,7 +53,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                     >
                         <div className={styles['details-container']}>
                             <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />
-                            <Item type='detail' title='Transaction fee' content={`${props.fees} %`} />
+                            <Item type='detail' title='Transaction fee' content={`${props.fee} ${props.currency}`} />
                         </div>
                     </CSSTransition>
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
@@ -61,7 +61,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconWallet className={styles['icon']} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
                 </ul>
-{/*                 <ul className={`${styles['wrapper']}`}>
+                {/*                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconPaymentMethod className={styles['icon']} />} title='Payment method' content={props.paymentMethod} />
                 </ul> */}
                 <ul className={`${styles['wrapper']}`}>
