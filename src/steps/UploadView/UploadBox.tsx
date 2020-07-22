@@ -30,7 +30,7 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
 
         const ok = onFilesAdded(id, [...newFiles], maxFiles)
         if (!ok) onError(`You only can upload ${maxFiles} files`)
-
+        setIsDragOver(false)
     }, [maxFiles, id, onError, onFilesAdded]);
 
     const handleOnSelectFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
