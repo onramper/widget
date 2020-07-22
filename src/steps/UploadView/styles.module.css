@@ -56,4 +56,5 @@
 
 .file > :last-child {
     cursor: pointer;
+    word-break: break-all;
 }
