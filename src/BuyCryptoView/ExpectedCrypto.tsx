@@ -29,8 +29,8 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
                 index = i;
             }
         }
-        
-        if (availableRates.length > 0) setExpectedCrypto(availableRates[index].receivedCrypto)
+
+        availableRates.length > 0 ? setExpectedCrypto(availableRates[index].receivedCrypto) : setExpectedCrypto(0)
     }, [availableRates])
 
     useEffect(() => {
