@@ -14,25 +14,7 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
     return gateways
 }
 
-
-/**
- * 
- */
-const calculateExpectedCrypto = (amount: number, rate: number) => {
-    console.log(amount, rate)
-    let amountcrypto = amount / rate
-    let amount2get = Math.round((amountcrypto) * 1e6) / 1e6
-    return !isFinite(amount2get) ? 0 : amount2get
-}
-
 export {
     gateways,
-    rate,
-    calculateExpectedCrypto
-}
-
-window.opener = {
-    gateways,
-    rate,
-    calculateExpectedCrypto
+    rate
 }

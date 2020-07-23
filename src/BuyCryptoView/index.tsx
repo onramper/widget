@@ -7,7 +7,7 @@ import PickView from '../PickView'
 import ChooseGatewayView from '../ChooseGatewayView'
 
 import { NavContext } from '../wrappers/context'
-import { APIContext } from '../wrappers/APIContext'
+import { APIContext } from '../context'
 
 const BuyCryptoView: React.FC = () => {
   /* const [expectedAmount, setExpectedAmount] = useState(0) */
@@ -19,7 +19,7 @@ const BuyCryptoView: React.FC = () => {
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface } = useContext(APIContext);
   const { handleInputChange } = inputInterface
-  const { init, onCryptoChange, onCurrencyChange, onPaymentMethodChange } = data
+  const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
 
   const selectedCrypto = data.availableCryptos[selectedCryptoIndex]
   const selectedCurrency = data.availableCurrencies[selectedCurrencyIndex]
@@ -33,25 +33,25 @@ const BuyCryptoView: React.FC = () => {
   }, [init])
 
   useEffect(() => {
-    async function onCryptoChangeEffect() {
-      await onCryptoChange(selectedCrypto?.name);
+    async function handleCryptoChangeEffect() {
+      await handleCryptoChange(selectedCrypto?.name);
     }
-    onCryptoChangeEffect()
-  }, [onCryptoChange, selectedCrypto])
+    handleCryptoChangeEffect()
+  }, [handleCryptoChange, selectedCrypto])
 
   useEffect(() => {
-    async function onCurrencyChangeEffect() {
-      await onCurrencyChange(selectedCurrency?.name);
+    async function handleCurrencyChangeEffect() {
+      await handleCurrencyChange(selectedCurrency?.name);
     }
-    onCurrencyChangeEffect()
-  }, [onCurrencyChange, selectedCurrency])
+    handleCurrencyChangeEffect()
+  }, [handleCurrencyChange, selectedCurrency])
 
   useEffect(() => {
-    async function onPaymentMethodChangeEffect() {
-      await onPaymentMethodChange(selectedPaymentMethod?.name);
+    async function handlePaymentMethodChangeEffect() {
+      await handlePaymentMethodChange(selectedPaymentMethod?.name);
     }
-    onPaymentMethodChangeEffect()
-  }, [onPaymentMethodChange, selectedPaymentMethod])
+    handlePaymentMethodChangeEffect()
+  }, [handlePaymentMethodChange, selectedPaymentMethod])
 
   const handleItemClick = (index: number, name: string) => {
     if (name === 'crypto')

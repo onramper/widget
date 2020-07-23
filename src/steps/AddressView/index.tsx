@@ -6,7 +6,7 @@ import styles from '../../styles.module.css'
 import UploadView from '../UploadView'
 
 import { NavContext } from '../../wrappers/context'
-import { APIContext } from '../../wrappers/APIContext'
+import { APIContext } from '../../context'
 
 const AddressView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);

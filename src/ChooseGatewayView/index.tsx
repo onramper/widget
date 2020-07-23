@@ -4,7 +4,7 @@ import Footer from '../common/Footer'
 import styles from '../styles.module.css'
 import BodyChooseGateway from './BodyChooseGateway'
 import { NavContext } from '../wrappers/context'
-import { APIContext } from '../wrappers/APIContext'
+import { APIContext } from '../context'
 
 import WalletAddressView from '../steps/WalletAddressView'
 

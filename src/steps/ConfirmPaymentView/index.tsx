@@ -6,7 +6,7 @@ import styles from '../../styles.module.css'
 import CreditCardView from '../CreditCardView'
 
 import { NavContext } from '../../wrappers/context'
-import { APIContext } from '../../wrappers/APIContext'
+import { APIContext } from '../../context'
 
 const ConfirmPaymentView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);

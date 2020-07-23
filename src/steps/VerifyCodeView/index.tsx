@@ -6,7 +6,7 @@ import styles from '../../styles.module.css'
 import ChooseGatewayView from '../../ChooseGatewayView'
 
 import { NavContext } from '../../wrappers/context'
-import { APIContext } from '../../wrappers/APIContext'
+import { APIContext } from '../../context'
 
 const CreditCardView: React.FC = () => {
   const { nextScreen, backScreen } = useContext(NavContext);

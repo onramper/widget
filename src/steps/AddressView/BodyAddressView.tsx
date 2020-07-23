@@ -3,7 +3,7 @@ import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
 
-import { APIContext } from '../../wrappers/APIContext'
+import { APIContext } from '../../context'
 
 type BodyAddressViewType = {
     onButtonAction: () => void

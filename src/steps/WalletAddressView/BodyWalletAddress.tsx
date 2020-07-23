@@ -7,7 +7,7 @@ import InputText from '../../common/Input/InputText'
 
 import IconChevronRight from '../../icons/chevron_right.svg'
 
-import { APIContext } from '../../wrappers/APIContext'
+import { APIContext } from '../../context'
 import { NavContext } from '../../wrappers/context'
 
 type BodyWalletAddressType = {

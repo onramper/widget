@@ -6,7 +6,7 @@ import styles from '../../styles.module.css'
 import AddressView from '../../steps/AddressView'
 
 import { NavContext } from '../../wrappers/context'
-import { APIContext } from '../../wrappers/APIContext'
+import { APIContext } from '../../context'
 
 const PersonalDetailsView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);

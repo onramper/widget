@@ -18,6 +18,18 @@ export const arrayUnique = (array: any[]) => {
     return a;
 }
 
+export const toMaxDecimalsFloor = (amount: number, decimals: number) => {
+    let factor = Number('1e' + decimals)
+    let n = Math.floor((amount) * factor) / factor
+    return !isFinite(n) ? 0 : n
+}
+
+export const toMaxDecimalsRound = (amount: number, decimals: number) => {
+    let factor = Number('1e' + decimals)
+    let n = Math.round((amount) * factor) / factor
+    return !isFinite(n) ? 0 : n
+}
+
 //ADD TYPES
 /* export function usePromise(promiseOrFunction, defaultValue) {
     const [state, setState] = React.useState({ value: defaultValue, error: null, isPending: true })

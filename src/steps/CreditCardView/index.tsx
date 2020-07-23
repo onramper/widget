@@ -5,7 +5,7 @@ import BodyCreditCard from './BodyCreditCard'
 import styles from '../../styles.module.css'
 import WireTranserView from '../WireTranserView'
 
-import { APIContext } from '../../wrappers/APIContext'
+import { APIContext } from '../../context'
 import { NavContext } from '../../wrappers/context'
 
 const CreditCardView: React.FC = () => {

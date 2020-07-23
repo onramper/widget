@@ -5,7 +5,7 @@ import InputButton from '../common/Input/InputButton'
 import InputText from '../common/Input/InputText'
 import ExpectedCrypto from './ExpectedCrypto'
 
-import { APIContext } from '../wrappers/APIContext'
+import { APIContext } from '../context'
 
 import { ListItemType } from '../common/types'
 

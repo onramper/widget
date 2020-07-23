@@ -2,7 +2,7 @@ import React from 'react';
 import BuyCryptoView from './BuyCryptoView'
 import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './wrappers/context';
-import { APIProvider } from './wrappers/APIContext'
+import { APIProvider } from './context'
 
 function App() {
   return (

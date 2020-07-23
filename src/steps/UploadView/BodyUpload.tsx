@@ -4,7 +4,7 @@ import stylesCommon from '../../styles.module.css'
 import InfoBox from '../../common/InfoBox'
 import UploadBox from './UploadBox'
 
-import { APIContext } from '../../wrappers/APIContext'
+import { APIContext } from '../../context'
 
 
 type BodyUploadType = {

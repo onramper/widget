@@ -5,7 +5,7 @@ import IconDetailTxTime from '../icons/txtimeicon.svg'
 import Range from './Range'
 import { CSSTransition } from 'react-transition-group';
 
-import { APIContext } from '../wrappers/APIContext'
+import { APIContext } from '../context'
 
 export type GatewayOptionType = Omit<_GatewayOptionType, 'index'>
 
