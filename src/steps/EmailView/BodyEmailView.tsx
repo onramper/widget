@@ -10,12 +10,13 @@ type BodyEmailViewType = {
     onActionButton: () => void;
     handleInputChange: (name: string, value: any) => void
     textInfo?: string
+    isFilled: boolean
 }
 
 const BodyEmailView: React.FC<BodyEmailViewType> = (props) => {
     const { collected } = useContext(APIContext);
     const { handleInputChange, onActionButton } = props
-    const { textInfo } = props
+    const { textInfo, isFilled } = props
 
     return (
         <main className={stylesCommon.body}>
@@ -25,7 +26,7 @@ const BodyEmailView: React.FC<BodyEmailViewType> = (props) => {
                 </div> : null}
             <InputText value={collected.email} type='email' name='email' onChange={handleInputChange} className={stylesCommon['body__child']} label="Email" placeholder="hello@onramper.com" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <ButtonAction onClick={onActionButton} text='Continue' />
+                <ButtonAction onClick={onActionButton} text='Send' disabled={!isFilled} />
             </div>
         </main>
     )

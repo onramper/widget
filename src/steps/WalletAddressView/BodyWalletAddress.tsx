@@ -14,10 +14,11 @@ import { NavContext } from '../../wrappers/context'
 type BodyWalletAddressType = {
     onActionButton: () => void
     handleInputChange: (name: string, value: any) => void
+    isFilled: boolean
 }
 
 const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
-    const { handleInputChange, onActionButton } = props
+    const { handleInputChange, onActionButton, isFilled } = props
     const { collected, data } = useContext(APIContext)
     const { walletAddress } = collected
     const [selectedAddress, setSelectedAddress] = useState(walletAddress)
@@ -56,7 +57,7 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
                 onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
                 name='walletAddress' onChange={onChange} className={stylesCommon['body__child']} label={`RECEIVER ${data.availableCryptos[collected.selectedCrypto].name} WALLET ADDRESS`} placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <ButtonAction onClick={onActionButton} text='Continue' />
+                <ButtonAction onClick={onActionButton} text='Continue' disabled={!isFilled} />
             </div>
         </main>
     )

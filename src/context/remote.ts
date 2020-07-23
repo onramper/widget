@@ -18,12 +18,10 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
  * Remote calls - steps
  */
 const email = async (url: string, email: string) => {
+    console.log(JSON.stringify({ email }))
     const nextStep = await fetch(url, {
         method: 'POST',
-        body: JSON.stringify({ email }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        body: JSON.stringify({ email })
     }).then(res => res.json())
     return nextStep
 }
