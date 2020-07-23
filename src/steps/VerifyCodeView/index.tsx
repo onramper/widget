@@ -18,7 +18,7 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string }> = ({ name, co
       <Header title={`Verify ${name}`} backButton />
       <BodyVerifyCode
         textInfo={textInfo}
-        onButtonAction={() => nextScreen(<ChooseGatewayView />)}
+        onActionButton={() => nextScreen(<ChooseGatewayView />)}
         onResendClick={() => backScreen()}
         handleInputChange={inputInterface.handleInputChange}
       />

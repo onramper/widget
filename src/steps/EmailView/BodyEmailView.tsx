@@ -2,18 +2,19 @@ import React, { useContext } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
+import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 import { APIContext } from '../../context'
 
 type BodyEmailViewType = {
-    onButtonAction: () => void;
+    onActionButton: () => void;
     handleInputChange: (name: string, value: any) => void
     textInfo?: string
 }
 
 const BodyEmailView: React.FC<BodyEmailViewType> = (props) => {
     const { collected } = useContext(APIContext);
-    const { handleInputChange, onButtonAction } = props
+    const { handleInputChange, onActionButton } = props
     const { textInfo } = props
 
     return (
@@ -24,7 +25,7 @@ const BodyEmailView: React.FC<BodyEmailViewType> = (props) => {
                 </div> : null}
             <InputText value={collected.email} type='email' name='email' onChange={handleInputChange} className={stylesCommon['body__child']} label="Email" placeholder="hello@onramper.com" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-            <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>
+                <ButtonAction onClick={onActionButton} text='Continue' />
             </div>
         </main>
     )

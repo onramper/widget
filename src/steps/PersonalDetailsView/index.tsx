@@ -16,7 +16,7 @@ const PersonalDetailsView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Personal details" backButton />
       <BodyPersonalDetails
-        onButtonAction={() => nextScreen(<AddressView />)}
+        onActionButton={() => nextScreen(<AddressView />)}
         handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />

@@ -16,7 +16,7 @@ const AddressView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Personal details" backButton />
       <BodyAddress
-        onButtonAction={() => nextScreen(<UploadView />)}
+        onActionButton={() => nextScreen(<UploadView />)}
         handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />

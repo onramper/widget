@@ -25,7 +25,7 @@ const EmailView: React.FC = () => {
       <Header title="Email" backButton />
       <BodyVerifyCode
         textInfo={textInfo}
-        onButtonAction={handleButtonAction}
+        onActionButton={handleButtonAction}
         handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />

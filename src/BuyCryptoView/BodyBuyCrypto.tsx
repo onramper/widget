@@ -3,6 +3,7 @@ import stylesCommon from '../styles.module.css'
 
 import InputButton from '../common/Input/InputButton'
 import InputText from '../common/Input/InputText'
+import ButtonAction from '../common/ButtonAction'
 import ExpectedCrypto from './ExpectedCrypto'
 
 import { APIContext } from '../context'
@@ -36,9 +37,9 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
             <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} denom={selectedCrypto.name} isLoading={selectedCrypto.name === LOAGIND_TEXT} />
             <div className={`${stylesCommon['body__child']}`}>
-                <button onClick={onBuyCrypto} className={`${stylesCommon['button-action']}`}>Get crypto</button>
+                <ButtonAction onClick={onBuyCrypto} text='Get crypto' />
             </div>
-        </main>
+        </main >
     )
 }
 

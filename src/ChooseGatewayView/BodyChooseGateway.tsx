@@ -1,6 +1,8 @@
 import React from 'react'
 import stylesCommon from '../styles.module.css'
 
+import ButtonAction from '../common/ButtonAction'
+
 import { GatewayOptionType } from './GatewayOption'
 
 import GatewaysList from './GatewaysList'
@@ -21,7 +23,7 @@ const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
                 <GatewaysList items={availableGateways} onItemClick={onItemClick} />
             </div>
             <div className={`${stylesCommon['body__child']}`}>
-                <button onClick={onActionButton} className={`${stylesCommon['button-action']}`}>Continue</button>
+                <ButtonAction onClick={onActionButton} text='Continue' />
             </div>
         </main>
     )

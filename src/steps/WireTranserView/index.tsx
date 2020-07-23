@@ -32,7 +32,7 @@ const CreditCardView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Wire transfer details" backButton />
       <BodyWireTransfer
-        onButtonAction={() => nextScreen(<SuccessView />)}
+        onActionButton={() => nextScreen(<SuccessView />)}
         amount={wyreDetails['wyret-amount']}
         reference={wyreDetails['wyret-reference']}
         iban={wyreDetails['wyret-iban']}

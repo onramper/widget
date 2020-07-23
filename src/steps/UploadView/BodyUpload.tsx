@@ -2,19 +2,20 @@ import React, { useContext } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InfoBox from '../../common/InfoBox'
+import ButtonAction from '../../common/ButtonAction'
 import UploadBox from './UploadBox'
 
 import { APIContext } from '../../context'
 
 
 type BodyUploadType = {
-    onButtonAction?: () => void,
+    onActionButton?: () => void,
     textInfo?: string
 }
 
 const BodyUpload: React.FC<BodyUploadType> = (props) => {
     const { textInfo } = props
-    const { onButtonAction } = props
+    const { onActionButton } = props
 
     const { inputInterface, collected } = useContext(APIContext)
 
@@ -28,14 +29,14 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
                 <UploadBox id='files-id' onFilesAdded={inputInterface.handleFilesAdded} onFileDeleted={inputInterface.handleFileDeleted} filesList={collected['files-id']} maxFiles={2} onError={(err) => console.log(err)} />
             </div>
             <div className={`${stylesCommon['body__child']}`}>
-                <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>
+                <ButtonAction onClick={onActionButton} text='Continue' />
             </div>
         </main>
     )
 }
 
 BodyUpload.defaultProps = {
-    onButtonAction: () => null
+    onActionButton: () => null
 }
 
 export default BodyUpload

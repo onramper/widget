@@ -2,16 +2,17 @@ import React, { useContext } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
+import ButtonAction from '../../common/ButtonAction'
 
 import { APIContext } from '../../context'
 
 type BodyPersonalDetailsType = {
-    onButtonAction: () => void
+    onActionButton: () => void
     handleInputChange: (name: string, value: any) => void
 }
 
 const BodyPersonalDetails: React.FC<BodyPersonalDetailsType> = (props) => {
-    const { handleInputChange, onButtonAction } = props
+    const { handleInputChange, onActionButton } = props
 
     const { collected } = useContext(APIContext);
 
@@ -21,7 +22,7 @@ const BodyPersonalDetails: React.FC<BodyPersonalDetailsType> = (props) => {
             <InputText name='personal-lname' value={collected['personal-lname']} onChange={handleInputChange} className={stylesCommon['body__child']} label="Last name" placeholder="" />
             <InputText value={collected['personal-birth']} type='date' name='personal-birth' onChange={handleInputChange} className={stylesCommon['body__child']} label="Date of birth" placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>
+                <ButtonAction onClick={onActionButton} text='Continue' />
             </div>
         </main>
     )

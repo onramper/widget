@@ -15,7 +15,7 @@ const UploadView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Upload passport photo" backButton />
       <BodyUpload
-        onButtonAction={() => nextScreen(<ConfirmPaymentView />)}
+        onActionButton={() => nextScreen(<ConfirmPaymentView />)}
         textInfo={textInfo}
       />
       <Footer />

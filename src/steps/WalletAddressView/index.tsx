@@ -22,7 +22,7 @@ const WalletAddressView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Wallet address" backButton />
       <BodyWalletAddress
-        onButtonAction={handleButtonAction}
+        onActionButton={handleButtonAction}
         handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />

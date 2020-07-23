@@ -2,16 +2,17 @@ import React, { useContext } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
+import ButtonAction from '../../common/ButtonAction'
 
 import { APIContext } from '../../context'
 
 type BodyAddressViewType = {
-    onButtonAction: () => void
+    onActionButton: () => void
     handleInputChange: (name: string, value: any) => void
 }
 
 const BodyAddressView: React.FC<BodyAddressViewType> = (props) => {
-    const { handleInputChange, onButtonAction } = props
+    const { handleInputChange, onActionButton } = props
 
     const { collected } = useContext(APIContext);
 
@@ -23,7 +24,7 @@ const BodyAddressView: React.FC<BodyAddressViewType> = (props) => {
             <InputText name='personal-postalcode' value={collected['personal-postalcode']} onChange={handleInputChange} className={stylesCommon['body__child']} label="Postal / Zip code" placeholder="" />
             <InputText name='personal-country' value={collected['personal-country']} onChange={handleInputChange} className={stylesCommon['body__child']} label="Country" placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>
+                <ButtonAction onClick={onActionButton} text='Continue' />
             </div>
         </main>
     )

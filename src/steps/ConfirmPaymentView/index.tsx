@@ -20,7 +20,7 @@ const ConfirmPaymentView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Payment confirmation" backButton />
       <BodyConfirmPayment
-        onButtonAction={() => nextScreen(<CreditCardView />)}
+        onActionButton={() => nextScreen(<CreditCardView />)}
         payAmount={(collected.amount).toFixed(2)} //: string
         fee={selectedGateway.fees} //: string
         currency={selectedCurrency.name}

@@ -4,6 +4,7 @@ import stylesCommon from '../../styles.module.css'
 import PickView from '../../PickView'
 
 import InputText from '../../common/Input/InputText'
+import ButtonAction from '../../common/ButtonAction'
 
 import IconChevronRight from '../../icons/chevron_right.svg'
 
@@ -11,12 +12,12 @@ import { APIContext } from '../../context'
 import { NavContext } from '../../wrappers/context'
 
 type BodyWalletAddressType = {
-    onButtonAction: () => void
+    onActionButton: () => void
     handleInputChange: (name: string, value: any) => void
 }
 
 const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
-    const { handleInputChange, onButtonAction } = props
+    const { handleInputChange, onActionButton } = props
     const { collected, data } = useContext(APIContext)
     const { walletAddress } = collected
     const [selectedAddress, setSelectedAddress] = useState(walletAddress)
@@ -55,7 +56,7 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
                 onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
                 name='walletAddress' onChange={onChange} className={stylesCommon['body__child']} label={`RECEIVER ${data.availableCryptos[collected.selectedCrypto].name} WALLET ADDRESS`} placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>
+                <ButtonAction onClick={onActionButton} text='Continue' />
             </div>
         </main>
     )

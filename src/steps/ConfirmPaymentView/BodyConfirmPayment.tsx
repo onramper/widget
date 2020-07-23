@@ -11,8 +11,10 @@ import { ReactComponent as IconExpectedtime } from '../../icons/expectedtimeicon
 
 import { CSSTransition } from 'react-transition-group';
 
+import ButtonAction from '../../common/ButtonAction'
+
 type BodyConfirmPaymentViewType = {
-    onButtonAction: () => void
+    onActionButton: () => void
     payAmount: string
     fee: number
     currency: string
@@ -31,7 +33,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
 
     const [isExpanded, setIsExpanded] = useState(false)
 
-    const { onButtonAction } = props
+    const { onActionButton } = props
 
     return (
         <main className={stylesCommon.body}>
@@ -70,7 +72,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 <label className={styles['terms']}><input type="checkbox" name='agreement-wyre' /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
             </div>
             <div className={`${stylesCommon['body__child']}`}>
-                <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Confirm</button>
+                <ButtonAction onClick={onActionButton} text='Confirm' />
             </div>
         </main >
     )

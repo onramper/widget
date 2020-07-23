@@ -2,12 +2,13 @@ import React from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
+import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
 import IconCopy from '../../icons/copyicon.svg'
 
 type BodyWireTransferType = {
-    onButtonAction?: () => void,
+    onActionButton?: () => void,
     onIconClick?: (id: string) => void,
     amount: string
     reference: string
@@ -20,7 +21,7 @@ type BodyWireTransferType = {
 
 const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
     const { amount, reference, iban, bicswift, namne, symbol, textInfo } = props
-    const { onButtonAction, onIconClick } = props
+    const { onActionButton, onIconClick } = props
 
     return (
         <main className={stylesCommon.body}>
@@ -38,14 +39,14 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
                 <InputText value={namne} name='wyret-name' className={stylesCommon['row-fields__child']} label="Name" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
             </div>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <button onClick={onButtonAction} className={`${stylesCommon['button-action']}`}>Continue</button>
+                <ButtonAction onClick={onActionButton} text='Continue' />
             </div>
         </main>
     )
 }
 
 BodyWireTransfer.defaultProps = {
-    onButtonAction: () => null
+    onActionButton: () => null
 }
 
 export default BodyWireTransfer
