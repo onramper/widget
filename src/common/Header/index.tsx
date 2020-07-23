@@ -5,7 +5,7 @@ import IconMenu from '../../icons/burger_menu.svg'
 import IconLeftArrow from '../../icons/left_arrow.svg'
 
 import { NavContext } from '../../wrappers/context'
-import Menu from '../../Menu'
+import Menu from './Menu'
 
 type HeaderType = {
     title: string;

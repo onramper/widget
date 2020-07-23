@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import Header from '../common/Header'
-import Footer from '../common/Footer'
-import List from './List'
-import styles from '../styles.module.css'
+import Header from '..'
+import Footer from '../../Footer'
+import List from '../../List'
+import styles from '../../../styles.module.css'
 
-import { NavContext } from '../wrappers/context'
+import { NavContext } from '../../../wrappers/context'
 
 
 const Menu: React.FC = () => {

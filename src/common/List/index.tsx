@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import styles from './styles.module.css'
-import { ListItemType, _ListItemType } from '../common/types'
+import { ListItemType, _ListItemType } from '../types'
 
 type ListType = {
     items: ListItemType[]
@@ -40,7 +40,7 @@ const ListItem: React.FC<_ListItemType> = (props) => {
             {icon ? <img alt="Icon" className={`${styles['list-item__child']} ${styles['list-item__icon']}`} src={icon} /> : null}
             <div className={styles['list-item__child']}>
                 <span>{name}</span>
-                <span className={`${styles['list-item__info']}`}>{info}</span>
+                {info ? <span className={`${styles['list-item__info']}`}>{info}</span> : null}
             </div>
         </div>
     )
