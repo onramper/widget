@@ -17,4 +17,5 @@
 
 .button-action--disabled {
     background-color: darkgray;
+    cursor: unset;
 }
