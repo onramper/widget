@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './styles.module.css'
+import { toMaxDecimalsFloor } from '../../wrappers/utils'
 
 const LEVEL_COLORS_CLASS = {
     LOW: styles['color--low'],
@@ -30,7 +31,7 @@ const Range: React.FC<RangeType> = (props) => {
             <div className={styles['range-label-container']} >
                 <span className={styles['range-label__min']} >{min}%</span>
                 <div style={{ left: `${actialPosition}%` }} className={styles['range-label__actual']} >
-                    <span className={`${styles.bubble} ${actualLevel}`}>{actual}%</span>
+                    <span className={`${styles.bubble} ${actualLevel}`}>{toMaxDecimalsFloor(actual, 2)}%</span>
                 </div>
                 <span className={styles['range-label__max']} >{max}%</span>
             </div>
