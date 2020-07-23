@@ -10,7 +10,7 @@ import { NavContext } from '../../../wrappers/context'
 const Menu: React.FC = () => {
   const { backScreen } = useContext(NavContext)
 
-  const onItemClick = (i: number) => {
+  const handleItemClick = (i: number) => {
     switch (i) {
       case 0:
         window.open("https://onramper.com/FAQ")
@@ -29,7 +29,7 @@ const Menu: React.FC = () => {
   return (
     <main className={styles.view}>
       <Header title="Menu" onMenuClick={() => backScreen()} />
-      <List onItemClick={onItemClick} items={[
+      <List onItemClick={handleItemClick} items={[
         {
           name: 'FAQ/support',
         },
