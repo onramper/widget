@@ -8,13 +8,14 @@ import ChooseGatewayView from '../../ChooseGatewayView'
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
-const CreditCardView: React.FC = () => {
+const VerifyCodeView: React.FC<{ name: string, codeType: string }> = ({ name, codeType }) => {
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { inputInterface } = useContext(APIContext);
-  const textInfo = 'We sent a verification code to hello@onramper.com. Please enter the verification code below.'
+  const { inputInterface, collected } = useContext(APIContext);
+  const codeSentTo = collected[codeType]
+  const textInfo = `We sent a verification code to ${codeSentTo}. Please enter the verification code below.`
   return (
     <div className={styles.view}>
-      <Header title="Card details" backButton />
+      <Header title={`Verify ${name}`} backButton />
       <BodyVerifyCode
         textInfo={textInfo}
         onButtonAction={() => nextScreen(<ChooseGatewayView />)}
@@ -26,4 +27,4 @@ const CreditCardView: React.FC = () => {
   );
 };
 
-export default CreditCardView;
+export default VerifyCodeView;

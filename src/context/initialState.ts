@@ -5,6 +5,7 @@ export type StateType = {
     data: DataStateType,
     collected: CollectedStateType
     inputInterface: InputInterfaceType
+    apiInterface: ApiInterfaceType
 }
 
 export type CollectedStateType = {
@@ -23,6 +24,7 @@ export type CollectedStateType = {
     'personal-city': string
     'personal-postalcode': string
     'personal-country': string
+    email: string
     [key: string]: any//todo, add all inputs
 }
 
@@ -35,19 +37,26 @@ export type DataStateType = {
     handleCryptoChange: (crypto?: string) => Promise<any>
     handleCurrencyChange: (currency?: string) => void
     handlePaymentMethodChange: (paymentMehtod?: string) => any
-    onPriceChange: (amount: number) => void
     //remote responses
     response_gateways: any
     filtredGatewaysByCrypto: any[]
     filtredGatewaysByCurrency: any[]
     response_rate: any[]
     filtredRatesByAviability: any[]
+    nextStep: {
+        url?: string
+        data?: string[]
+    }
 }
 
 export type InputInterfaceType = {
     handleInputChange: (name: string, value: any) => void
     handleFilesAdded: (name: string, files: File[], maxFiles: number) => boolean,
     handleFileDeleted: (name: string, fileName: string) => void
+}
+
+export type ApiInterfaceType = {
+    email: (url: string, email: string) => Promise<boolean>
 }
 
 export const initialState: StateType = {
@@ -67,26 +76,33 @@ export const initialState: StateType = {
         'personal-city': '',
         'personal-postalcode': '',
         'personal-country': '',
+        email: ''
     },
     data: {
         availableCryptos: [],
         availableCurrencies: [],
         availablePaymentMethods: [],
         availableRates: [],
+        handleCryptoChange: async (crypto?: string) => null,
+        handleCurrencyChange: (currency?: string) => null,
+        handlePaymentMethodChange: (paymentMehtod?: string) => null,
         response_gateways: {},
         filtredGatewaysByCrypto: [],
         filtredGatewaysByCurrency: [],
         response_rate: [],
         filtredRatesByAviability: [],
         init: (country?: string | null) => null,
-        handleCryptoChange: async (crypto?: string) => null,
-        handleCurrencyChange: (currency?: string) => null,
-        handlePaymentMethodChange: (paymentMehtod?: string) => null,
-        onPriceChange: (amount: number) => null
+        nextStep: {
+            url: undefined,
+            data: undefined
+        }
     },
     inputInterface: {
         handleInputChange: () => null,
         handleFilesAdded: () => false,
         handleFileDeleted: () => null
+    },
+    apiInterface: {
+        email: async () => false
     }
 }

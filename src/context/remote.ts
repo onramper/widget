@@ -14,7 +14,24 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
     return gateways
 }
 
+/**
+ * Remote calls - steps
+ */
+const email = async (url: string, email: string) => {
+    const nextStep = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+    return nextStep
+}
+
 export {
     gateways,
-    rate
+    rate,
+    email
 }
+
+window.opener = { email, gateways }

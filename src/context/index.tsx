@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useCallback } from 'react';
+import React, { createContext, useReducer, useCallback, useEffect } from 'react';
 
 import { StateType, initialState } from './initialState'
 import { mainReducer, CollectedActionsType, DataActionsType } from './reducers'
@@ -127,17 +127,24 @@ const APIProvider: React.FC = (props) => {
 
       const filtredRatesByAviability = response_rate.filter((item: any) => item.available === true)
       const availableRates = filtredRatesByAviability.map((item: any) => ({
-        ...item,
+        receivedCrypto: item.receivedCrypto,
+        fees: item.fees,
         name: item.identifier,
         txTime: item.duration.replace(' ' + item.duration.split(' ')[1], DATAS.TXTIMES_MAP[item.duration.split(' ')[1]]),
         kycLevel: `${item.requiredKYC.length}`,
         rate: item.rate,
         fee: (item.fees / state.collected.amount * 100),
-        logo: LogoOnramper
+        logo: LogoOnramper,
+        nextStep: item.nextStep
       }))
 
       addData({ availableRates, response_rate, filtredRatesByAviability })
     }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.data.availableCryptos, state.data.availableCurrencies])
+
+  useEffect(() => {
+    const nextStep = state.data.availableRates.length > 0 ? state.data.availableRates[state.collected.selectedGateway].nextStep : {}
+    addData({ nextStep })
+  }, [state.collected.selectedGateway, state.data.availableRates, addData])
 
   return (
     <APIContext.Provider value={{

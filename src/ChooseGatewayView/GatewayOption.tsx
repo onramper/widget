@@ -48,6 +48,7 @@ export type _GatewayOptionType = {
     index: number
     receivedCrypto: number
     selectedReceivedCrypto: number
+    nextStep: { url: string, data: string[] }
 }
 
 const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
