@@ -109,6 +109,7 @@ const navigationReducer = (state: NavigationStateType, action: NavigationActions
     case NavigationActionsType.Push:
       return [...screens, action.screen];
     case NavigationActionsType.Pop:
+      if (screens.length <= 1) return screens
       return [...screens.slice(0, -1)];
     default:
       return screens
