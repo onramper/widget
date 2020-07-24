@@ -16,8 +16,17 @@ import * as DATAS from './maps'
 //Creating context
 const APIContext = createContext<StateType>(initialState);
 
-const APIProvider: React.FC = (props) => {
-  const [state, dispatch] = useReducer(mainReducer, initialState);
+const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: string]: string[] } }> = (props) => {
+  const { defaultAmount = 100, defaultAddrs = {} } = props
+  const iniState = {
+    ...initialState,
+    collected: {
+      ...initialState.collected,
+      amount: defaultAmount,
+      defaultAddrs: defaultAddrs
+    }
+  }
+  const [state, dispatch] = useReducer(mainReducer, iniState);
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
@@ -141,10 +150,17 @@ const APIProvider: React.FC = (props) => {
       addData({ availableRates, response_rate, filtredRatesByAviability })
     }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.data.availableCryptos, state.data.availableCurrencies])
 
+  /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
   useEffect(() => {
     const nextStep = state.data.availableRates.length > 0 ? state.data.availableRates[state.collected.selectedGateway].nextStep : {}
     addData({ nextStep })
   }, [state.collected.selectedGateway, state.data.availableRates, addData])
+
+  const sendCodeEmail = useCallback(async () => {
+    if (!state.data.nextStep.url) return false
+    await API.email(state.data.nextStep.url, state.collected.email)
+    return true
+  }, [state.data.nextStep.url, state.collected.email])
 
   return (
     <APIContext.Provider value={{
@@ -160,6 +176,9 @@ const APIProvider: React.FC = (props) => {
         handleCryptoChange,
         handleCurrencyChange,
         handlePaymentMethodChange
+      },
+      apiInterface: {
+        sendCodeEmail
       }
     }}>
       {props.children}

@@ -4,22 +4,28 @@ import Footer from '../../common/Footer'
 import BodyVerifyCode from './BodyEmailView'
 import styles from '../../styles.module.css'
 
-import { NavContext } from '../../wrappers/context'
+/* import { NavContext } from '../../wrappers/context' */
 import { APIContext } from '../../context'
 
-import nextStep from '../nextStep'
+/* import nextStep from '../nextStep' */
 
 const EmailView: React.FC = () => {
-  const { nextScreen } = useContext(NavContext);
-  const { inputInterface, collected, data } = useContext(APIContext);
+/*   const { nextScreen } = useContext(NavContext); */
+  const { inputInterface, collected, /* data, */ apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
+  const [requestOk, setRequestOk] = useState(false)
   const textInfo = 'We will send a code to your email.'
 
 
-  const handleButtonAction = () => {
-    if (!collected.email) return
-    nextStep(nextScreen, data.nextStep)
+  const handleButtonAction = async () => {
+    const ok = await apiInterface.sendCodeEmail()
+    setRequestOk(ok)
+    console.log(requestOk)
   }
+
+/*   useEffect(() => {
+    if (requestOk) nextStep(nextScreen, data.nextStep)
+  }, [requestOk, nextScreen, data.nextStep]) */
 
   useEffect(() => {
     const isFilled = collected.email ? true : false

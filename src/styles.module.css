@@ -2,7 +2,8 @@
 theme styles
 *********/
 .theme {
-    --primary-color:#31a5ff
+    --primary-color:#31a5ff;
+    height: 100%;
 }
 
 /*********

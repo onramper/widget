@@ -25,6 +25,9 @@ export type CollectedStateType = {
     'personal-postalcode': string
     'personal-country': string
     email: string
+    defaultAddrs: {
+        [key: string]: string[]
+    }
     [key: string]: any//todo, add all inputs
 }
 
@@ -56,7 +59,7 @@ export type InputInterfaceType = {
 }
 
 export type ApiInterfaceType = {
-    email: (url: string, email: string) => Promise<boolean>
+    sendCodeEmail: () => Promise<boolean>
 }
 
 export const initialState: StateType = {
@@ -76,7 +79,8 @@ export const initialState: StateType = {
         'personal-city': '',
         'personal-postalcode': '',
         'personal-country': '',
-        email: ''
+        email: '',
+        defaultAddrs: {}
     },
     data: {
         availableCryptos: [],
@@ -103,6 +107,6 @@ export const initialState: StateType = {
         handleFileDeleted: () => null
     },
     apiInterface: {
-        email: async () => false
+        sendCodeEmail: async () => false
     }
 }
