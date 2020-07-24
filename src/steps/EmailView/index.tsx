@@ -13,13 +13,16 @@ const EmailView: React.FC = () => {
 /*   const { nextScreen } = useContext(NavContext); */
   const { inputInterface, collected, /* data, */ apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [requestOk, setRequestOk] = useState(false)
   const textInfo = 'We will send a code to your email.'
 
 
   const handleButtonAction = async () => {
+    setIsLoading(true)
     const ok = await apiInterface.sendCodeEmail()
     setRequestOk(ok)
+    setIsLoading(false)
     console.log(requestOk)
   }
 
@@ -40,6 +43,7 @@ const EmailView: React.FC = () => {
         onActionButton={handleButtonAction}
         handleInputChange={inputInterface.handleInputChange}
         isFilled={isFilled}
+        isLoading={isLoading}
       />
       <Footer />
     </div>
