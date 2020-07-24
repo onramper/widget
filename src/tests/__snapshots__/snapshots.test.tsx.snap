@@ -154,7 +154,8 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
     className="body__child"
   >
     <button
-      className="button-action"
+      className="button-action "
+      disabled={false}
       onClick={[Function]}
     >
       Get crypto
