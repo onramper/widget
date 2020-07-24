@@ -77,12 +77,14 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   const handleCryptoChange = useCallback(
     async (crypto?: string) => {
 
+      const selectedCrypto = state.data.availableCryptos[state.collected.selectedCrypto]
+
       let gateways = state.data.response_gateways.gateways
 
       if (!gateways) return
       if (state.data.availableCryptos.length <= 0) return
 
-      const actualCrypto = crypto || state.data.availableCryptos[0].name //TODO: ADD SELECTEDCRYPTO -> crypto || state.data.SELECTEDCRYPTO || state.data.availableCryptos[0].name
+      const actualCrypto = crypto || selectedCrypto.name || state.data.availableCryptos[0].name
 
       const filtredGatewaysByCrypto = gateways.filter((item: any) => item.supportedCrypto.includes(actualCrypto))
 
@@ -91,21 +93,23 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[i].supportedCurrencies)
       }
       availableCurrencies = arrayUnique(availableCurrencies)
-      availableCurrencies = availableCurrencies.map((item) => ({ name: item, symbol: '$', info: 'currency', icon: IconUSD })) //TODO: TEMP
+      availableCurrencies = availableCurrencies.map((item) => ({ name: item, symbol: '$', info: 'currency', icon: IconUSD }))
       addData({ availableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.response_gateways.gateways, state.data.availableCryptos, addData],
+    }, [state.data.response_gateways.gateways, state.data.availableCryptos, addData, state.collected.selectedCrypto],
   )
 
   const handleCurrencyChange = useCallback(
     async (currency?: string) => {
+
+      const selectedCurrency = state.data.availableCurrencies[state.collected.selectedCurrency]
 
       const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
 
       if (!filtredGatewaysByCrypto) return
       if (state.data.availableCurrencies.length <= 0) return
 
-      const actualCurrency = currency || state.data.availableCurrencies[0].name //TODO: ADD SELECTEDCRYPTO -> crypto || state.data.SELECTEDCRYPTO || state.data.availableCryptos[0].name
+      const actualCurrency = currency || selectedCurrency.name || state.data.availableCurrencies[0].name
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item: any) => item.supportedCurrencies.includes(actualCurrency))
 
       let availablePaymentMethods: any[] = []
@@ -114,17 +118,19 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       }
 
       availablePaymentMethods = arrayUnique(availablePaymentMethods)
-      availablePaymentMethods = availablePaymentMethods.map((item) => ({ name: item, symbol: '', info: '', icon: IconCC })) //TODO: TEMP
+      availablePaymentMethods = availablePaymentMethods.map((item) => ({ name: item, symbol: '', info: '', icon: IconCC }))
       addData({ availablePaymentMethods, filtredGatewaysByCurrency })
-    }, [addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies],
+    }, [addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.collected.selectedCurrency],
   )
 
   const handlePaymentMethodChange = useCallback(
     async (paymentMehtod?: string) => {
 
+      const selectedPaymentMethod = state.data.availablePaymentMethods[state.collected.selectedPaymentMethod]
+
       if (state.data.availablePaymentMethods.length <= 0) return
 
-      const actualPaymentMethod = paymentMehtod || state.data.availablePaymentMethods[0].name//TODO: ADD SELECTEDCRYPTO -> crypto || state.data.SELECTEDCRYPTO || state.data.availableCryptos[0].name
+      const actualPaymentMethod = paymentMehtod || selectedPaymentMethod.name || state.data.availablePaymentMethods[0].name
       const actualAmount = state.collected.amount || 0
 
       const response_rate = await API.rate(
@@ -148,7 +154,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       }))
 
       addData({ availableRates, response_rate, filtredRatesByAviability })
-    }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.data.availableCryptos, state.data.availableCurrencies])
+    }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.data.availableCryptos, state.data.availableCurrencies, state.collected.selectedPaymentMethod])
 
   /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
   useEffect(() => {
