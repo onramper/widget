@@ -3,9 +3,24 @@ const BASE_API = 'https://api.onramper.dev'
 /**
  * Remote calls
  */
-const gateways = async (country?: string) => {
-    const endpoint = country ? `/gateways?country=${country}` : '/gateways'
-    const gateways = await fetch(`${BASE_API}${endpoint}`).then(res => res.json())
+type gatewaysParams = {
+    country?: string
+    includeIcons?: boolean
+    [key: string]: any
+}
+
+const gateways = async (params: gatewaysParams) => {
+    const endpoint = '/gateways'
+    const urlParams = Object.keys(params).reduce((acc, current, i, arr) => {
+        if (params[current]) {
+            if (!acc) acc += '?'
+            acc += `${current}=${params[current]}`
+            if (i < arr.length - 1) acc += '&'
+            return acc
+        }
+        return ''
+    }, '')
+    const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`).then(res => res.json())
     return gateways
 }
 

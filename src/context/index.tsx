@@ -5,7 +5,6 @@ import { mainReducer, CollectedActionsType, DataActionsType } from './reducers'
 
 import { arrayUnique } from '../wrappers/utils'
 
-import IconNEO from '../icons/neoicon.png'
 import IconUSD from '../icons/usd.svg'
 import IconCC from '../icons/ccs.svg'
 import LogoOnramper from '../icons/logo.svg'
@@ -60,16 +59,18 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   /* *********** */
   const init = useCallback(
     async (country?: string) => {
-      const response_gateways = await API.gateways(country)
+      const response_gateways = await API.gateways({ country, includeIcons: true })
 
       addData({ response_gateways: response_gateways })
+
+      const ICONS_MAP = response_gateways.icons
 
       let availableCryptos: any[] = []
       for (var i in response_gateways.gateways) {
         availableCryptos = availableCryptos.concat(response_gateways.gateways[i].supportedCrypto)
       }
       availableCryptos = arrayUnique(availableCryptos)
-      availableCryptos = availableCryptos.map((item) => ({ name: item, symbol: '', info: 'crypto', icon: IconNEO })) //TODO, CHANGE IN THE API
+      availableCryptos = availableCryptos.map((item) => ({ name: item, symbol: '', info: ICONS_MAP[item].name, icon: ICONS_MAP[item].icon }))
       addData({ availableCryptos })
 
     }, [addData])
