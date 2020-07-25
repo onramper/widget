@@ -8,7 +8,7 @@ const nextStep = (nextScreen: any, step: { url?: string, data?: string[] }) => {
     if (!step.url) return
 
     const splittedURL = step.url.split('/')
-    const type = splittedURL[splittedURL.length - 1]
+    const type = splittedURL[5]
     switch (type) {
         case 'email':
             nextScreen(<EmailView />)
