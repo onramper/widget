@@ -25,7 +25,7 @@ const gateways = async (params: gatewaysParams) => {
 }
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string) => {
-    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${amount}/${paymentMethod}`).then(res => res.json())
+    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}`).then(res => res.json())
     return gateways
 }
 
