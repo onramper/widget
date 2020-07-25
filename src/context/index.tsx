@@ -165,8 +165,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
   const sendCodeEmail = useCallback(async () => {
     if (!state.data.nextStep.url) return false
-    await API.email(state.data.nextStep.url, state.collected.email)
-    return true
+    return await API.email(state.data.nextStep.url, state.collected.email)
   }, [state.data.nextStep.url, state.collected.email])
 
   return (

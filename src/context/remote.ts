@@ -36,7 +36,7 @@ const email = async (url: string, email: string) => {
     const nextStep = await fetch(url, {
         method: 'POST',
         body: JSON.stringify({ email })
-    }).then(res => res.json())
+    }).then(res => res.json()).catch(() => undefined)
     console.log(nextStep)
     return nextStep
 }

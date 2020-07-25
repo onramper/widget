@@ -10,7 +10,7 @@ import { APIContext } from '../../context'
 /* import nextStep from '../nextStep' */
 
 const EmailView: React.FC = () => {
-/*   const { nextScreen } = useContext(NavContext); */
+  /*   const { nextScreen } = useContext(NavContext); */
   const { inputInterface, collected, /* data, */ apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -21,14 +21,13 @@ const EmailView: React.FC = () => {
   const handleButtonAction = async () => {
     setIsLoading(true)
     const ok = await apiInterface.sendCodeEmail()
-    setRequestOk(ok)
-    setIsLoading(false)
+    ok ? setRequestOk(ok) : setIsLoading(false)
     console.log(requestOk)
   }
 
-/*   useEffect(() => {
-    if (requestOk) nextStep(nextScreen, data.nextStep)
-  }, [requestOk, nextScreen, data.nextStep]) */
+  /*   useEffect(() => {
+      if (requestOk) nextStep(nextScreen, data.nextStep)
+    }, [requestOk, nextScreen, data.nextStep]) */
 
   useEffect(() => {
     const isFilled = collected.email ? true : false
