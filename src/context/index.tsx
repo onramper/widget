@@ -139,6 +139,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       const inCurrency = state.collected.selectedCurrency?.id
       const outCurrency = state.collected.selectedCrypto?.id
 
+      if (actualAmount <= 0) return addData({ availableRates: [] })
       if (!inCurrency || !outCurrency || !actualPaymentMethod.id) return
       const response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod.id)
 
