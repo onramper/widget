@@ -10,10 +10,11 @@ import { NavContext } from '../wrappers/context'
 import { APIContext } from '../context'
 
 const BuyCryptoView: React.FC = () => {
-  const [errors, setErrors] = useState({})
-  const [selectedCryptoIndex, setSelectedCryptoIndex] = useState(0)
-  const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState(0)
-  const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState(0)
+  const [isFilled, setIsFilled] = useState(false)
+  const [errors, setErrors] = useState<{ [key: string]: any } | undefined>({})
+  const [selectedCryptoIndex, setSelectedCryptoIndex] = useState<number>(0)
+  const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState<number>(0)
+  const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState<number>(0)
 
 
   const { nextScreen, backScreen } = useContext(NavContext);
@@ -48,7 +49,8 @@ const BuyCryptoView: React.FC = () => {
   useEffect(() => {
     async function handlePaymentMethodChangeEffect() {
       const err = await handlePaymentMethodChange(selectedPaymentMethod);
-      setErrors(prev => ({ ...prev, amount: {}, ...err }))
+      if (err) setErrors(prev => ({ ...prev, amount: {}, ...err }))
+      else setErrors(undefined)
     }
     handlePaymentMethodChangeEffect()
   }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors])
@@ -63,6 +65,14 @@ const BuyCryptoView: React.FC = () => {
     backScreen()
   }
 
+  useEffect(() => {
+    console.log(!selectedCrypto, !selectedCurrency, !selectedPaymentMethod, !errors)
+    if (selectedCrypto && selectedCurrency && selectedPaymentMethod && !errors)
+      setIsFilled(true)
+    else
+      setIsFilled(false)
+  }, [setIsFilled, selectedCrypto, selectedCurrency, selectedPaymentMethod, errors])
+
   return (
     <div className={styles.view}>
       <Header title="Buy crypto" />
@@ -71,11 +81,12 @@ const BuyCryptoView: React.FC = () => {
         openPickCrypto={() => nextScreen(<PickView name='crypto' title="Select cryptocurrency" items={data.availableCryptos} onItemClick={handleItemClick} />)}
         openPickCurrency={() => nextScreen(<PickView name='currency' title="Select fiat currency" items={data.availableCurrencies} onItemClick={handleItemClick} />)}
         openPickPayment={() => nextScreen(<PickView name='paymentMethod' title="Select payment method" items={data.availablePaymentMethods} onItemClick={handleItemClick} />)}
-        selectedCrypto={data.availableCryptos[selectedCryptoIndex]}
-        selectedCurrency={data.availableCurrencies[selectedCurrencyIndex]}
-        selectedPaymentMethod={data.availablePaymentMethods[selectedPaymentMethodIndex]}
+        selectedCrypto={selectedCrypto}
+        selectedCurrency={selectedCurrency}
+        selectedPaymentMethod={selectedPaymentMethod}
         handleInputChange={inputInterface.handleInputChange}
         errors={errors}
+        isFilled={isFilled}
       />
       <Footer />
     </div>

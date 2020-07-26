@@ -15,16 +15,19 @@ type BodyBuyCryptoType = {
     openPickCrypto: () => void,
     openPickCurrency: () => void,
     openPickPayment: () => void,
-    selectedCrypto: ListItemType,
-    selectedCurrency: ListItemType,
-    selectedPaymentMethod: ListItemType
+    selectedCrypto?: ListItemType,
+    selectedCurrency?: ListItemType,
+    selectedPaymentMethod?: ListItemType
     handleInputChange: (name: string, value: any) => void
     errors?: { [key: string]: any }
+    isFilled?: boolean
 }
+
+
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
-    const { selectedCrypto, selectedCurrency, selectedPaymentMethod, errors = {} } = props
+    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = false } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
 
@@ -38,27 +41,17 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
             <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} denom={selectedCrypto.name} isLoading={selectedCrypto.name === LOAGIND_TEXT} />
             <div className={`${stylesCommon['body__child']}`}>
-                <ButtonAction onClick={onBuyCrypto} text='Get crypto' />
+                <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled} />
             </div>
         </main >
     )
 }
 
 const LOAGIND_TEXT = 'Loading...'
-
-BodyBuyCrypto.defaultProps = {
-    selectedCrypto: {
-        name: LOAGIND_TEXT,
-        icon: ''
-    },
-    selectedCurrency: {
-        name: LOAGIND_TEXT,
-        icon: ''
-    },
-    selectedPaymentMethod: {
-        name: LOAGIND_TEXT,
-        icon: ''
-    },
+const LoadingItem = {
+    name: LOAGIND_TEXT,
+    icon: '',
+    symbol: ''
 }
 
 export default BodyBuyCrypto

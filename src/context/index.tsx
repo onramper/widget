@@ -158,7 +158,8 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       addData({ availableRates, response_rate, filtredRatesByAviability })
       handleInputChange('selectedPaymentMethod', actualPaymentMethod)
 
-      if (filtredRatesByAviability.length <= 0) {
+      if (response_rate.length <= 0) return { general: 'Try again later' }
+      else if (filtredRatesByAviability.length <= 0) {
         const errorsBulk = response_rate.reduce((errorsBulk: { [key: string]: any }, item: any) => {
           if (!item.error) return errorsBulk
           switch (item.error.type) {
@@ -177,10 +178,9 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
               return errorsBulk
           }
         }, {})
-        console.log({ ...errorsBulk, amount: errorsBulk.MIN ?? errorsBulk.MAX })
         return { ...errorsBulk, amount: errorsBulk.MIN ?? errorsBulk.MAX }
       }
-      else return {}
+      else return
     }, [handleInputChange, addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.collected.selectedPaymentMethod])
 
   /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
