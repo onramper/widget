@@ -10,7 +10,7 @@ import { NavContext } from '../wrappers/context'
 import { APIContext } from '../context'
 
 const BuyCryptoView: React.FC = () => {
-  /* const [expectedAmount, setExpectedAmount] = useState(0) */
+  const [errors, setErrors] = useState({})
   const [selectedCryptoIndex, setSelectedCryptoIndex] = useState(0)
   const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState(0)
   const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState(0)
@@ -47,10 +47,11 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     async function handlePaymentMethodChangeEffect() {
-      await handlePaymentMethodChange(selectedPaymentMethod);
+      const err = await handlePaymentMethodChange(selectedPaymentMethod);
+      setErrors(prev => ({ ...prev, amount: {}, ...err }))
     }
     handlePaymentMethodChangeEffect()
-  }, [handlePaymentMethodChange, selectedPaymentMethod])
+  }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors])
 
   const handleItemClick = (name: string, index: number) => {
     if (name === 'crypto')
@@ -74,6 +75,7 @@ const BuyCryptoView: React.FC = () => {
         selectedCurrency={data.availableCurrencies[selectedCurrencyIndex]}
         selectedPaymentMethod={data.availablePaymentMethods[selectedPaymentMethodIndex]}
         handleInputChange={inputInterface.handleInputChange}
+        errors={errors}
       />
       <Footer />
     </div>
