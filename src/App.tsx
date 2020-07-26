@@ -10,7 +10,7 @@ const defaultAddrs = {
   ETH: ['ethAddr1'],
   NEO: ['neoAddr1', 'neoAddr2', 'neoAddr3', 'neoAddr4']
 }
-const defaultAmount = 105
+const defaultAmount = 100
 
 function App() {
   const [color, setColor] = useState(defaultColor)

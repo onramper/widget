@@ -1,4 +1,5 @@
 export type _ListItemType = {
+    id?: string
     icon?: string,
     name: string,
     info?: string

@@ -34,21 +34,21 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     async function handleCryptoChangeEffect() {
-      await handleCryptoChange(selectedCrypto?.name);
+      await handleCryptoChange(selectedCrypto?.id);
     }
     handleCryptoChangeEffect()
   }, [handleCryptoChange, selectedCrypto])
 
   useEffect(() => {
     async function handleCurrencyChangeEffect() {
-      await handleCurrencyChange(selectedCurrency?.name);
+      await handleCurrencyChange(selectedCurrency?.id);
     }
     handleCurrencyChangeEffect()
   }, [handleCurrencyChange, selectedCurrency])
 
   useEffect(() => {
     async function handlePaymentMethodChangeEffect() {
-      await handlePaymentMethodChange(selectedPaymentMethod?.name);
+      await handlePaymentMethodChange(selectedPaymentMethod?.id);
     }
     handlePaymentMethodChangeEffect()
   }, [handlePaymentMethodChange, selectedPaymentMethod])
