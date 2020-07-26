@@ -15,7 +15,7 @@ const WalletAddressView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
 
   const handleButtonAction = () => {
-    if (!collected.walletAddress) return
+    if (!collected.walletAddress || !data.nextStep) return
     nextStep(nextScreen, data.nextStep)
   }
 

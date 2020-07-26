@@ -9,7 +9,7 @@ import { ListItemType } from '../common/types'
 type PickViewType = {
   title: string,
   items: ListItemType[]
-  onItemClick?: (index: number, name: string) => void
+  onItemClick?: (name: string, index: number, item: ListItemType) => void
   name?: string
 }
 
@@ -19,7 +19,7 @@ const PickView: React.FC<PickViewType> = (props) => {
   return (
     <main className={styles.view}>
       <Header backButton title={title} />
-      <List onItemClick={(index) => onItemClick(index, name)} items={items} />
+      <List onItemClick={(index, item) => onItemClick(name, index, item)} items={items} />
       <Footer />
     </main>
   );

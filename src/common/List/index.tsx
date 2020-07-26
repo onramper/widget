@@ -4,15 +4,15 @@ import { ListItemType, _ListItemType } from '../types'
 
 type ListType = {
     items: ListItemType[]
-    onItemClick?: (index: number) => void
+    onItemClick?: (index: number, item: ListItemType) => void
 }
 
 const List: React.FC<ListType> = (props) => {
     const { items } = props
     const { onItemClick = () => null } = props
 
-    const handleItemClick = useCallback((index: number) => {
-        onItemClick(index)
+    const handleItemClick = useCallback((index: number, item: ListItemType) => {
+        onItemClick(index, item)
     }, [onItemClick])
 
     return (
@@ -25,7 +25,7 @@ const List: React.FC<ListType> = (props) => {
                         name={item.name}
                         info={item.info}
                         icon={item.icon}
-                        onClick={handleItemClick} />
+                        onClick={() => handleItemClick(i, item)} />
                 )
             }
         </div>

@@ -34,26 +34,26 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     async function handleCryptoChangeEffect() {
-      await handleCryptoChange(selectedCrypto?.id);
+      await handleCryptoChange(selectedCrypto);
     }
     handleCryptoChangeEffect()
   }, [handleCryptoChange, selectedCrypto])
 
   useEffect(() => {
     async function handleCurrencyChangeEffect() {
-      await handleCurrencyChange(selectedCurrency?.id);
+      await handleCurrencyChange(selectedCurrency);
     }
     handleCurrencyChangeEffect()
   }, [handleCurrencyChange, selectedCurrency])
 
   useEffect(() => {
     async function handlePaymentMethodChangeEffect() {
-      await handlePaymentMethodChange(selectedPaymentMethod?.id);
+      await handlePaymentMethodChange(selectedPaymentMethod);
     }
     handlePaymentMethodChangeEffect()
   }, [handlePaymentMethodChange, selectedPaymentMethod])
 
-  const handleItemClick = (index: number, name: string) => {
+  const handleItemClick = (name: string, index: number) => {
     if (name === 'crypto')
       setSelectedCryptoIndex(index)
     else if (name === 'currency')
@@ -64,16 +64,16 @@ const BuyCryptoView: React.FC = () => {
   }
 
   useEffect(() => {
-    handleInputChange('selectedCrypto', selectedCryptoIndex)
-  }, [handleInputChange, selectedCryptoIndex])
+    handleInputChange('selectedCrypto', selectedCrypto)
+  }, [handleInputChange, selectedCrypto])
 
   useEffect(() => {
-    handleInputChange('selectedCurrency', selectedCurrencyIndex)
-  }, [handleInputChange, selectedCurrencyIndex])
+    handleInputChange('selectedCurrency', selectedCurrency)
+  }, [handleInputChange, selectedCurrency])
 
   useEffect(() => {
-    handleInputChange('selectedPaymentMethod', selectedPaymentMethodIndex)
-  }, [handleInputChange, selectedPaymentMethodIndex])
+    handleInputChange('selectedPaymentMethod', selectedPaymentMethod)
+  }, [handleInputChange, selectedPaymentMethod])
 
   return (
     <div className={styles.view}>

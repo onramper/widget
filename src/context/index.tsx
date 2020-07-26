@@ -9,6 +9,7 @@ import LogoOnramper from '../icons/logo.svg'
 
 import * as API from './remote'
 import * as DATAS from './maps'
+import { ListItemType } from '../common/types';
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -28,7 +29,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
-    (name: string, value: string | number) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
+    (name: string, value: string | number | ListItemType) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
     [],
   )
 
@@ -76,18 +77,17 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
     }, [addData])
 
   const handleCryptoChange = useCallback(
-    async (crypto?: string) => {
+    async (crypto?: ListItemType) => {
 
-      const selectedCrypto = state.data.availableCryptos[state.collected.selectedCrypto]
+      const selectedCrypto = state.collected.selectedCrypto
 
       let gateways = state.data.response_gateways.gateways
-
       if (!gateways) return
       if (state.data.availableCryptos.length <= 0) return
 
-      const actualCrypto = crypto || selectedCrypto.name || state.data.availableCryptos[0].name
+      const actualCrypto = crypto || selectedCrypto || state.data.availableCryptos[0]
 
-      const filtredGatewaysByCrypto = gateways.filter((item: any) => item.supportedCrypto.includes(actualCrypto))
+      const filtredGatewaysByCrypto = gateways.filter((item: any) => item.supportedCrypto.includes(actualCrypto.id))
 
       let availableCurrencies: any[] = []
       for (var i in filtredGatewaysByCrypto) {
@@ -96,22 +96,23 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       availableCurrencies = arrayUnique(availableCurrencies)
       availableCurrencies = availableCurrencies.map((item) => ({ id: item, name: item, symbol: ICONS_MAP[item]?.symbol, info: ICONS_MAP[item]?.name || 'Currency', icon: ICONS_MAP[item]?.icon }))
       addData({ availableCurrencies, filtredGatewaysByCrypto })
+      handleInputChange('selectedCrypto', actualCrypto)
 
-    }, [state.data.response_gateways.gateways, state.data.availableCryptos, addData, state.collected.selectedCrypto, ICONS_MAP],
+    }, [state.data.response_gateways.gateways, state.data.availableCryptos, addData, state.collected.selectedCrypto, ICONS_MAP, handleInputChange],
   )
 
   const handleCurrencyChange = useCallback(
-    async (currency?: string) => {
+    async (currency?: ListItemType) => {
 
-      const selectedCurrency = state.data.availableCurrencies[state.collected.selectedCurrency]
+      const selectedCurrency = state.collected.selectedCurrency
 
       const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
 
       if (!filtredGatewaysByCrypto) return
       if (state.data.availableCurrencies.length <= 0) return
 
-      const actualCurrency = currency || selectedCurrency.name || state.data.availableCurrencies[0].name
-      const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item: any) => item.supportedCurrencies.includes(actualCurrency))
+      const actualCurrency = currency || selectedCurrency || state.data.availableCurrencies[0]
+      const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item: any) => item.supportedCurrencies.includes(actualCurrency.id))
 
       let availablePaymentMethods: any[] = []
       for (var i in filtredGatewaysByCurrency) {
@@ -120,24 +121,26 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
       availablePaymentMethods = arrayUnique(availablePaymentMethods)
       availablePaymentMethods = availablePaymentMethods.map((item, i) => ({ id: item, name: ICONS_MAP[item].name || `Payment method ${i}`, symbol: '', info: '', icon: ICONS_MAP[item]?.icon }))
-      addData({ availablePaymentMethods, filtredGatewaysByCurrency })
-    }, [addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.collected.selectedCurrency, ICONS_MAP],
+      addData({ availablePaymentMethods, filtredGatewaysByCurrency, selectedCurrency: actualCurrency })
+      handleInputChange('selectedCurrency', actualCurrency)
+    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.collected.selectedCurrency, ICONS_MAP],
   )
 
   const handlePaymentMethodChange = useCallback(
-    async (paymentMehtod?: string) => {
+    async (paymentMehtod?: ListItemType) => {
 
-      const selectedPaymentMethod = state.data.availablePaymentMethods[state.collected.selectedPaymentMethod]
+      const selectedPaymentMethod = state.collected.selectedPaymentMethod
 
       if (state.data.availablePaymentMethods.length <= 0) return
-      console.log(paymentMehtod, selectedPaymentMethod.id, state.data.availablePaymentMethods[0].id)
-      const actualPaymentMethod = paymentMehtod || selectedPaymentMethod.id || state.data.availablePaymentMethods[0].id
+
+      const actualPaymentMethod = paymentMehtod || selectedPaymentMethod || state.data.availablePaymentMethods[0]
       const actualAmount = state.collected.amount || 0
 
-      const inCurrency = state.data.availableCurrencies[state.collected.selectedCurrency].id
-      const outCurrency = state.data.availableCryptos[state.collected.selectedCrypto].id
-      if (!inCurrency || !outCurrency || !actualPaymentMethod) return
-      const response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod)
+      const inCurrency = state.collected.selectedCurrency?.id
+      const outCurrency = state.collected.selectedCrypto?.id
+
+      if (!inCurrency || !outCurrency || !actualPaymentMethod.id) return
+      const response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod.id)
 
       const filtredRatesByAviability = response_rate.filter((item: any) => item.available === true)
       const availableRates = filtredRatesByAviability.map((item: any) => ({
@@ -153,18 +156,19 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       }))
 
       addData({ availableRates, response_rate, filtredRatesByAviability })
-    }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.data.availableCryptos, state.data.availableCurrencies, state.collected.selectedPaymentMethod])
+      handleInputChange('selectedPaymentMethod', actualPaymentMethod)
+    }, [handleInputChange, addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.collected.selectedPaymentMethod])
 
   /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
   useEffect(() => {
-    const nextStep = state.data.availableRates.length > 0 ? state.data.availableRates[state.collected.selectedGateway].nextStep : {}
+    const nextStep = state.collected.selectedGateway?.nextStep
     addData({ nextStep })
-  }, [state.collected.selectedGateway, state.data.availableRates, addData])
+  }, [state.collected.selectedGateway, addData])
 
   const sendCodeEmail = useCallback(async () => {
-    if (!state.data.nextStep.url) return false
+    if (!state.data.nextStep?.url) return false
     return await API.email(state.data.nextStep.url, state.collected.email)
-  }, [state.data.nextStep.url, state.collected.email])
+  }, [state.data.nextStep, state.collected.email])
 
   return (
     <APIContext.Provider value={{

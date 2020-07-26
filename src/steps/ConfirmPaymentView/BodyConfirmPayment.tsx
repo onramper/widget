@@ -16,17 +16,17 @@ import ButtonAction from '../../common/ButtonAction'
 type BodyConfirmPaymentViewType = {
     onActionButton: () => void
     payAmount: string
-    fee: number
-    currency: string
+    fees?: number
+    currency?: string
 
     cryptoAmount: number
     cryptoDenom: string
-    cryptoAddr: string
-    paymentMethod: string
+    cryptoAddr?: string
+    paymentMethod?: string
     cryptoIcon?: string
-    txTime: string
+    txTime?: string
 
-    conversionRate: number
+    conversionRate?: number
 }
 
 const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => {
@@ -54,20 +54,20 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                         onExited={() => setIsExpanded(false)}
                     >
                         <div className={styles['details-container']}>
-                            <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />
-                            <Item type='detail' title='Transaction fee' content={`${props.fee} ${props.currency}`} />
+                            {props.conversionRate && <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />}
+                            {props.fees && <Item type='detail' title='Transaction fee' content={`${props.fees} ${props.currency}`} />}
                         </div>
                     </CSSTransition>
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
                 </ul>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={<IconWallet className={styles['icon']} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
+                    <Item type='main' icon={<IconWallet className={styles['icon']} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr || ''} single />
                 </ul>
                 {/*                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconPaymentMethod className={styles['icon']} />} title='Payment method' content={props.paymentMethod} />
                 </ul> */}
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime} single />
+                    {props.txTime && <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime} single />}
                 </ul>
                 <label className={styles['terms']}><input type="checkbox" name='agreement-wyre' /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
             </div>

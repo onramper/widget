@@ -11,10 +11,10 @@ import { APIContext } from '../../context'
 const ConfirmPaymentView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
   const { collected, data } = useContext(APIContext);
-  const selectedGateway = data.availableRates[collected.selectedGateway]
-  const selectedCrypto = data.availableCryptos[collected.selectedCrypto]
-  const selectedCurrency = data.availableCurrencies[collected.selectedCurrency]
-  const selectedPaymentMethod = data.availablePaymentMethods[collected.selectedPaymentMethod]
+  const selectedGateway = collected.selectedGateway
+  const selectedCrypto = collected.selectedCrypto
+  const selectedCurrency = collected.selectedCurrency
+  const selectedPaymentMethod = collected.selectedPaymentMethod
 
   return (
     <div className={styles.view}>
@@ -22,17 +22,15 @@ const ConfirmPaymentView: React.FC = () => {
       <BodyConfirmPayment
         onActionButton={() => nextScreen(<CreditCardView />)}
         payAmount={(collected.amount).toFixed(2)} //: string
-        fee={selectedGateway.fees} //: string
-        currency={selectedCurrency.name}
-        cryptoAmount={selectedGateway.receivedCrypto}
-        cryptoDenom={selectedCrypto.name} //: string
-        txTime={`${selectedGateway.txTime.slice(0, -1)} hours`} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
-        cryptoAddr={collected.walletAddress} //: string
-        cryptoIcon={selectedCrypto.icon}
-        paymentMethod={selectedPaymentMethod.name}
-        conversionRate={selectedGateway.rate} //: string
-      /*         gatewayFee='5.5%' //: string
-              onramperFee='2%' //: string */
+        fees={selectedGateway?.fees} //: string
+        currency={selectedCurrency?.name}
+        cryptoAmount={selectedGateway?.receivedCrypto || 0}
+        cryptoDenom={selectedCrypto?.name || ''} //: string
+        txTime={selectedGateway?.txTime} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
+        cryptoAddr={collected?.walletAddress} //: string
+        cryptoIcon={selectedCrypto?.icon}
+        paymentMethod={selectedPaymentMethod?.name}
+        conversionRate={selectedGateway?.rate} //: string
       />
       <Footer />
     </div>

@@ -1,4 +1,5 @@
 import { StateType, DataStateType } from './initialState'
+import { ListItemType } from '../common/types';
 
 export enum CollectedActionsType {
     AddField = 'ADD_FIELD',
@@ -8,14 +9,15 @@ export enum CollectedActionsType {
 
 export enum DataActionsType {
     AddData = 'ADD_DATA',
-    Init = 'INIT'
+    Init = 'INIT',
+    AddCollected = 'ADD_COLLECTED'
 }
 
 export type DataActions = {
     type: CollectedActionsType.AddField;
     payload: {
         name: string
-        value: number | string
+        value: number | string | ListItemType
     };
 } | {
     type: CollectedActionsType.AddFile;
@@ -35,6 +37,12 @@ export type DataActions = {
         value: DataStateType
     };
 }
+    | {
+        type: DataActionsType.AddData;
+        payload: {
+            value: DataStateType
+        };
+    }
 
 export const mainReducer = (state: StateType, action: DataActions) => ({
     ...state,

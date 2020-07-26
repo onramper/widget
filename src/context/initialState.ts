@@ -10,11 +10,11 @@ export type StateType = {
 
 export type CollectedStateType = {
     amount: number,
-    selectedCrypto: number,
-    selectedCurrency: number,
-    selectedPaymentMethod: number,
-    selectedGateway: number,
-    walletAddress: string,
+    selectedCrypto?: ListItemType,
+    selectedCurrency?: ListItemType,
+    selectedPaymentMethod?: ListItemType,
+    selectedGateway?: GatewayOptionType,
+    walletAddress?: string,
     "files-id": File[],
     "personal-fname": string,
     "personal-lname": string,
@@ -37,9 +37,9 @@ export type DataStateType = {
     availablePaymentMethods: ListItemType[]
     availableRates: GatewayOptionType[]
     init: (country?: string) => void
-    handleCryptoChange: (crypto?: string) => Promise<any>
-    handleCurrencyChange: (currency?: string) => void
-    handlePaymentMethodChange: (paymentMehtod?: string) => any
+    handleCryptoChange: (crypto?: ListItemType) => Promise<any>
+    handleCurrencyChange: (currency?: ListItemType) => void
+    handlePaymentMethodChange: (paymentMehtod?: ListItemType) => any
     //remote responses
     response_gateways: any
     filtredGatewaysByCrypto: any[]
@@ -65,11 +65,11 @@ export type ApiInterfaceType = {
 export const initialState: StateType = {
     collected: {
         amount: 100,
-        selectedCrypto: 0,
-        selectedCurrency: 0,
-        selectedPaymentMethod: 0,
-        selectedGateway: 0,
-        walletAddress: '',
+        selectedCrypto: undefined,
+        selectedCurrency: undefined,
+        selectedPaymentMethod: undefined,
+        selectedGateway: undefined,
+        walletAddress: undefined,
         'files-id': [],
         "personal-fname": '',
         "personal-lname": '',
@@ -87,19 +87,16 @@ export const initialState: StateType = {
         availableCurrencies: [],
         availablePaymentMethods: [],
         availableRates: [],
-        handleCryptoChange: async (crypto?: string) => null,
-        handleCurrencyChange: (currency?: string) => null,
-        handlePaymentMethodChange: (paymentMehtod?: string) => null,
+        handleCryptoChange: async (crypto?: ListItemType) => null,
+        handleCurrencyChange: (currency?: ListItemType) => null,
+        handlePaymentMethodChange: (paymentMehtod?: ListItemType) => null,
         response_gateways: {},
         filtredGatewaysByCrypto: [],
         filtredGatewaysByCurrency: [],
         response_rate: [],
         filtredRatesByAviability: [],
         init: (country?: string | null) => null,
-        nextStep: {
-            url: undefined,
-            data: undefined
-        }
+        nextStep: {}
     },
     inputInterface: {
         handleInputChange: () => null,

@@ -19,22 +19,20 @@ type BodyWalletAddressType = {
 
 const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
     const { handleInputChange, onActionButton, isFilled } = props
-    const { collected, data } = useContext(APIContext)
+    const { collected } = useContext(APIContext)
     const [selectedAddress, setSelectedAddress] = useState('')
     const { nextScreen, backScreen } = useContext(NavContext);
 
-    const selectedCrypto = data.availableCryptos[collected.selectedCrypto]
+    const selectedCrypto = collected.selectedCrypto
     let items: { name: string }[] = []
-    if (collected.defaultAddrs[selectedCrypto.name])
+    if (selectedCrypto && collected.defaultAddrs[selectedCrypto.name])
         items = collected.defaultAddrs[selectedCrypto.name].map((item) => ({ name: item }))
-
-    /* const loadedAddrs = items.map((item, i) => ({ ...item, icon: data.availableCryptos[collected.selectedCrypto].icon, name: `Address ${i + 1}: ${item.name}` })) */
 
     useEffect(() => {
         handleInputChange('walletAddress', selectedAddress)
     }, [selectedAddress, handleInputChange])
 
-    const handleAddressSelection = (index: number) => {
+    const handleAddressSelection = (name: string, index: number) => {
         setSelectedAddress(items[index].name)
         backScreen()
     }
@@ -51,7 +49,7 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
                 icon={items.length > 0 ? IconChevronRight : undefined}
                 iconPosition='end'
                 onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
-                name='walletAddress' onChange={onChange} className={stylesCommon['body__child']} label={`RECEIVER ${data.availableCryptos[collected.selectedCrypto].name} WALLET ADDRESS`} placeholder="" />
+                name='walletAddress' onChange={onChange} className={stylesCommon['body__child']} label={`RECEIVER ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text='Continue' disabled={!isFilled} />
             </div>
