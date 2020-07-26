@@ -26,7 +26,7 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
                         {...item}
                         key={i}
                         index={i}
-                        selectedFee={items[selectedGateway].fee}
+                        selectedFee={items[selectedGateway].feePercent}
                         isOpen={i === selectedGateway}
                         onClick={handleItemClick}
                         selectedReceivedCrypto={items[selectedGateway].receivedCrypto} />

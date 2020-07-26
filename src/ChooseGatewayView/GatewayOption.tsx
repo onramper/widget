@@ -39,7 +39,7 @@ export type _GatewayOptionType = {
     txTime: string,
     kycLevel: string,
     rate: number,
-    fee: number,
+    feePercent: number,
     fees: number,
     selectedFee?: number,
     logo?: string,
@@ -52,7 +52,7 @@ export type _GatewayOptionType = {
 }
 
 const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
-    const { name, txTime, kycLevel, receivedCrypto, fee, logo, isOpen, selectedReceivedCrypto = 0 } = props //todo change 
+    const { name, txTime, kycLevel, receivedCrypto, feePercent, logo, isOpen, selectedReceivedCrypto = 0 } = props //todo change 
     const { collected } = useContext(APIContext)
 
     const diffPercent = ((1 - (selectedReceivedCrypto / receivedCrypto)) * 100)
@@ -78,7 +78,7 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                                 </div>
                                 <div className={`${styles['fees']}`}>
                                     <span>Total fees:</span>
-                                    <Range min={1} max={6} actual={fee} /> {/* TODO: get data from context */}
+                                    <Range min={1} max={6} actual={feePercent} />
                                 </div>
                             </div>
                         </div>

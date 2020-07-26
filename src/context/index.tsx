@@ -150,7 +150,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         txTime: item.duration.replace(' ' + item.duration.split(' ')[1], DATAS.TXTIMES_MAP[item.duration.split(' ')[1]]),
         kycLevel: `${item.requiredKYC.length}`,
         rate: item.rate,
-        fee: (item.fees / state.collected.amount * 100),
+        feePercent: (item.fees / state.collected.amount * 100),
         logo: LogoOnramper,
         nextStep: item.nextStep
       }))
