@@ -15,8 +15,3 @@ html, body {
 html, body, #root {
   height: 100%;
 }
-
-/* ::-webkit-scrollbar-track {
-  border-radius: 10px;
-  background-color: rgba(25, 147, 147, 0.1);
-} */

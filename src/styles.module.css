@@ -6,6 +6,30 @@ theme styles
     height: 100%;
 }
 
+.theme div::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+.theme div::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #0000001f;
+}
+
+.theme div::-webkit-scrollbar-track {
+  
+  background-color: transparent;
+}
+
+.theme input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+.theme input[type=number]::-webkit-outer-spin-button,
+.theme input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /*********
 general styles
 *********/
