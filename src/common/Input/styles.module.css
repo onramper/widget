@@ -69,6 +69,7 @@
     top: -0.025rem;
     content: attr(before-content);
     align-self: center;
+    white-space: nowrap;
 }
 
 .symbol {
