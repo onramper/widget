@@ -18,7 +18,7 @@ const BuyCryptoView: React.FC = () => {
 
 
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { data, inputInterface } = useContext(APIContext);
+  const { data, inputInterface, collected } = useContext(APIContext);
   const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
 
   const selectedCrypto = data.availableCryptos[selectedCryptoIndex]
@@ -66,11 +66,11 @@ const BuyCryptoView: React.FC = () => {
   }
 
   useEffect(() => {
-    if (selectedCrypto && selectedCurrency && selectedPaymentMethod && !errors)
+    if (selectedCrypto && selectedCurrency && selectedPaymentMethod && !errors && collected.amount)
       setIsFilled(true)
     else
       setIsFilled(false)
-  }, [setIsFilled, selectedCrypto, selectedCurrency, selectedPaymentMethod, errors])
+  }, [setIsFilled, selectedCrypto, selectedCurrency, selectedPaymentMethod, errors, collected.amount])
 
   return (
     <div className={styles.view}>
