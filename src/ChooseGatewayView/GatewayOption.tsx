@@ -81,7 +81,7 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                                 </div>
                                 <div className={`${styles['fees']}`}>
                                     <span>Total fees:</span>
-                                    <Range min={1} max={6} actual={feePercent} />
+                                    <Range min={3} max={9} actual={feePercent} />
                                 </div>
                             </div>
                         </div>
