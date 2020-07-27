@@ -20,8 +20,8 @@ const BuyCryptoView: React.FC = () => {
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected } = useContext(APIContext);
   const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
-  const selectedCrypto = selectedCryptoIndex ? data.availableCryptos[selectedCryptoIndex] : collected.selectedCrypto
-  const selectedCurrency = selectedCurrencyIndex ? data.availableCurrencies[selectedCurrencyIndex] : collected.selectedCurrency
+  const selectedCrypto = selectedCryptoIndex !== undefined ? data.availableCryptos[selectedCryptoIndex] : collected.selectedCrypto
+  const selectedCurrency = selectedCurrencyIndex !== undefined ? data.availableCurrencies[selectedCurrencyIndex] : collected.selectedCurrency
   const selectedPaymentMethod = data.availablePaymentMethods[selectedPaymentMethodIndex]
 
   useEffect(() => {

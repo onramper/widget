@@ -25,7 +25,6 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
 
     const handleOnDropFiles = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
-        console.log(e.dataTransfer.files)
         let newFiles = [...e.dataTransfer.files]
 
         const ok = onFilesAdded(id, [...newFiles], maxFiles)

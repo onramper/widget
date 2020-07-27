@@ -3,7 +3,7 @@ import React, { createContext, useReducer, useCallback, useEffect, useState } fr
 import { StateType, initialState } from './initialState'
 import { mainReducer, CollectedActionsType, DataActionsType } from './reducers'
 
-import { arrayUnique } from '../wrappers/utils'
+import { arrayUnique, arrayObjUnique } from '../wrappers/utils'
 
 import LogoOnramper from '../icons/logo.svg'
 
@@ -13,7 +13,7 @@ import { ListItemType } from '../common/types';
 //Creating context
 const APIContext = createContext<StateType>(initialState);
 
-const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: string]: string[] } }> = (props) => {
+const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: string]: string[] }, defaultCrypto?: string }> = (props) => {
   const { defaultAmount = 100, defaultAddrs = {} } = props
   const iniState = {
     ...initialState,
@@ -60,8 +60,6 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
     async (country?: string) => {
       const response_gateways = await API.gateways({ country, includeIcons: true })
 
-      addData({ response_gateways: response_gateways })
-
       const ICONS_MAP = response_gateways.icons
 
       let availableCryptos: any[] = []
@@ -69,24 +67,66 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         if (!response_gateways.gateways[i].cryptoCurrencies) continue
         availableCryptos = availableCryptos.concat(response_gateways.gateways[i].cryptoCurrencies)
       }
-      availableCryptos = arrayUnique(availableCryptos)
+      availableCryptos = arrayObjUnique(availableCryptos, 'code')
       availableCryptos = availableCryptos.map(({ code, precision }) => ({ id: code, name: code, info: ICONS_MAP[code]?.name || 'Cryptocurrency', icon: ICONS_MAP[code]?.icon, precision }))
+      if (availableCryptos.length <= 0) return
 
-      addData({ availableCryptos, ICONS_MAP })
+      let selectedCrypto = availableCryptos[0]
+      const isDefaultCryptoAvailable = response_gateways.gateways.some((gate: any) => {
+        const c = gate.cryptoCurrencies.find((item: any) => item.code === props.defaultCrypto)
+        if (c) selectedCrypto = c
+        return c
+      })
+      if (isDefaultCryptoAvailable)
+        selectedCrypto = {
+          id: selectedCrypto.code,
+          name: selectedCrypto.code,
+          info: ICONS_MAP[selectedCrypto.code]?.name || 'Currency',
+          precision: selectedCrypto.precision,
+          symbol: ICONS_MAP[selectedCrypto.code]?.symbol,
+          icon: ICONS_MAP[selectedCrypto.code]?.icon
+        }
+
+      const filtredGatewaysByCrypto = response_gateways.gateways.filter((item: any) => item.cryptoCurrencies.some((crypto: any) => crypto.code === selectedCrypto.id))
+      let availableCurrencies: any[] = []
+      for (var j in filtredGatewaysByCrypto) {
+        if (!filtredGatewaysByCrypto[j].fiatCurrencies) continue
+        availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[j].fiatCurrencies)
+      }
+      availableCurrencies = arrayObjUnique(availableCurrencies, 'code')
+      availableCurrencies = availableCurrencies.map(({ code, precision }) => ({ precision: precision, id: code, name: code, symbol: ICONS_MAP[code]?.symbol, info: ICONS_MAP[code]?.name || 'Currency', icon: ICONS_MAP[code]?.icon }))
+
+      let selectedCurrency = availableCurrencies[0]
+      const isDefaultCurrencyAvailable = response_gateways.gateways.some((gate: any) => {
+        let f = gate.fiatCurrencies.find((item: any) => item.code === response_gateways.localization?.currency)
+        if (f) selectedCurrency = f
+        return f
+      })
+      if (isDefaultCurrencyAvailable)
+        selectedCurrency = {
+          id: selectedCurrency.code,
+          name: selectedCurrency.code,
+          info: ICONS_MAP[selectedCurrency.code]?.name || 'Currency',
+          precision: selectedCurrency.precision,
+          symbol: ICONS_MAP[selectedCurrency.code]?.symbol,
+          icon: ICONS_MAP[selectedCurrency.code]?.icon
+        }
+
+      handleInputChange('selectedCrypto', selectedCrypto)
+      handleInputChange('selectedCurrency', selectedCurrency)
+      addData({ availableCryptos, ICONS_MAP, response_gateways })
       setICONS_MAP(response_gateways.icons)
 
-    }, [addData])
+    }, [addData, handleInputChange, props.defaultCrypto])
 
   const handleCryptoChange = useCallback(
     async (crypto?: ListItemType) => {
-
-      const selectedCrypto = state.collected.selectedCrypto
 
       let gateways = state.data.response_gateways.gateways
       if (!gateways) return
       if (state.data.availableCryptos.length <= 0) return
 
-      const actualCrypto = crypto || selectedCrypto || state.data.availableCryptos[0]
+      const actualCrypto = crypto || state.data.availableCryptos[0]
 
       const filtredGatewaysByCrypto = gateways.filter((item: any) => item.cryptoCurrencies.some((crypto: any) => crypto.code === actualCrypto.id))
 
@@ -100,20 +140,18 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       addData({ availableCurrencies, filtredGatewaysByCrypto })
       handleInputChange('selectedCrypto', actualCrypto)
 
-    }, [state.data.response_gateways.gateways, state.data.availableCryptos, addData, state.collected.selectedCrypto, ICONS_MAP, handleInputChange],
+    }, [state.data.response_gateways.gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange],
   )
 
   const handleCurrencyChange = useCallback(
     async (currency?: ListItemType) => {
-
-      const selectedCurrency = state.collected.selectedCurrency
 
       const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
 
       if (!filtredGatewaysByCrypto) return
       if (state.data.availableCurrencies.length <= 0) return
 
-      const actualCurrency = currency || selectedCurrency || state.data.availableCurrencies[0]
+      const actualCurrency = currency || state.data.availableCurrencies[0]
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item: any) => item.fiatCurrencies.some((currency: any) => currency.code === actualCurrency.id))
 
       let availablePaymentMethods: any[] = []
@@ -126,17 +164,15 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       availablePaymentMethods = availablePaymentMethods.map((item, i) => ({ id: item, name: ICONS_MAP[item].name || `Payment method ${i}`, symbol: '', info: '', icon: ICONS_MAP[item]?.icon }))
       addData({ availablePaymentMethods, filtredGatewaysByCurrency, selectedCurrency: actualCurrency })
       handleInputChange('selectedCurrency', actualCurrency)
-    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.collected.selectedCurrency, ICONS_MAP],
+    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, ICONS_MAP],
   )
 
   const handlePaymentMethodChange = useCallback(
     async (paymentMehtod?: ListItemType) => {
 
-      const selectedPaymentMethod = state.collected.selectedPaymentMethod
-
       if (state.data.availablePaymentMethods.length <= 0) return
 
-      const actualPaymentMethod = paymentMehtod || selectedPaymentMethod || state.data.availablePaymentMethods[0]
+      const actualPaymentMethod = paymentMehtod || state.data.availablePaymentMethods[0]
       const actualAmount = state.collected.amount || 0
 
       const inCurrency = state.collected.selectedCurrency?.id
@@ -185,7 +221,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         return { ...errorsBulk, amount: errorsBulk.MIN ?? errorsBulk.MAX }
       }
       else return
-    }, [handleInputChange, addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.collected.selectedPaymentMethod])
+    }, [handleInputChange, addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount])
 
   /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
   useEffect(() => {

@@ -18,6 +18,11 @@ export const arrayUnique = (array: any[]) => {
     return a;
 }
 
+export const arrayObjUnique = (array: any[], attrFilter: string) => {
+    return array.filter((value: any, index: number, self: any) => self.findIndex((el: any) => el[attrFilter] === value[attrFilter]) === index)
+}
+
+
 export const toMaxDecimalsFloor = (amount: number, decimals: number) => {
     let factor = Number('1e' + decimals)
     let n = Math.floor((amount) * factor) / factor
