@@ -11,11 +11,11 @@ import { APIContext } from '../context'
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
+  const [calculatingPrice, setCalculatingPrice] = useState(true)
   const [errors, setErrors] = useState<{ [key: string]: any } | undefined>({})
   const [selectedCryptoIndex, setSelectedCryptoIndex] = useState<number>()
   const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState<number>()
   const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState<number>(0)
-
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected } = useContext(APIContext);
@@ -26,6 +26,7 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     async function initEffect() {
+      setCalculatingPrice(true)
       await init();
     }
     initEffect()
@@ -48,8 +49,9 @@ const BuyCryptoView: React.FC = () => {
   useEffect(() => {
     async function handlePaymentMethodChangeEffect() {
       const err = await handlePaymentMethodChange(selectedPaymentMethod);
-      if (err) setErrors(prev => ({ ...prev, amount: {}, ...err }))
+      if (err) setErrors(prev => ({ ...prev, ...err }))
       else setErrors(undefined)
+      setCalculatingPrice(false)
     }
     handlePaymentMethodChangeEffect()
   }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors])
@@ -63,6 +65,10 @@ const BuyCryptoView: React.FC = () => {
       setSelectedPaymentMethodIndex(index)
     backScreen()
   }
+
+  useEffect(() => {
+    setCalculatingPrice(true)
+  }, [collected.amount])
 
   useEffect(() => {
     if (selectedCrypto && selectedCurrency && selectedPaymentMethod && !errors && collected.amount)
@@ -85,6 +91,7 @@ const BuyCryptoView: React.FC = () => {
         handleInputChange={inputInterface.handleInputChange}
         errors={errors}
         isFilled={isFilled}
+        isCalculatingPrice={calculatingPrice}
       />
       <Footer />
     </div>

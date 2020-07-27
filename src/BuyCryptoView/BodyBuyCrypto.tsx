@@ -21,13 +21,14 @@ type BodyBuyCryptoType = {
     handleInputChange: (name: string, value: any) => void
     errors?: { [key: string]: any }
     isFilled?: boolean
+    isCalculatingPrice?: boolean
 }
 
 
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
-    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = false } = props
+    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = false, isCalculatingPrice = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
 
@@ -39,7 +40,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
                 <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} denom={selectedCrypto.name} isLoading={selectedCrypto.name === LOAGIND_TEXT} />
+            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} denom={selectedCrypto.name} isLoading={isCalculatingPrice} />
             <div className={`${stylesCommon['body__child']}`}>
                 <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled} />
             </div>
