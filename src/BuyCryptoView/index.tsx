@@ -12,17 +12,16 @@ import { APIContext } from '../context'
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: any } | undefined>({})
-  const [selectedCryptoIndex, setSelectedCryptoIndex] = useState<number>(0)
-  const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState<number>(0)
+  const [selectedCryptoIndex, setSelectedCryptoIndex] = useState<number>()
+  const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState<number>()
   const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState<number>(0)
 
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected } = useContext(APIContext);
   const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
-
-  const selectedCrypto = data.availableCryptos[selectedCryptoIndex]
-  const selectedCurrency = data.availableCurrencies[selectedCurrencyIndex]
+  const selectedCrypto = selectedCryptoIndex ? data.availableCryptos[selectedCryptoIndex] : collected.selectedCrypto
+  const selectedCurrency = selectedCurrencyIndex ? data.availableCurrencies[selectedCurrencyIndex] : collected.selectedCurrency
   const selectedPaymentMethod = data.availablePaymentMethods[selectedPaymentMethodIndex]
 
   useEffect(() => {
