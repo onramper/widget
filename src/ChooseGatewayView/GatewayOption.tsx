@@ -6,6 +6,7 @@ import Range from './Range'
 import { CSSTransition } from 'react-transition-group';
 
 import { APIContext } from '../context'
+import { formatSeconds } from '../wrappers/utils'
 
 export type GatewayOptionType = Omit<_GatewayOptionType, 'index'>
 
@@ -36,7 +37,7 @@ const transitionPropsPrice = {
 
 export type _GatewayOptionType = {
     name: string,
-    txTime: string,
+    txTime?: { seconds: number, message: string },
     kycLevel: string,
     rate: number,
     feePercent: number,
@@ -59,6 +60,8 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
     const isDiffPositive = diffPercent >= 0 ? true : false
     const diff2Render = Math.abs(diffPercent).toFixed(2)
 
+    let duration = txTime ? { ...formatSeconds(txTime.seconds) } : undefined
+
     const { onClick = (i) => null } = props
 
     return (
@@ -73,8 +76,8 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                         <div>
                             <div className={styles['collapsable-section']}>
                                 <div className={`${styles['details']}`} >
-                                    <div className={styles.details__item}><img alt='' src={IconDetailTxTime} /><span>Tx time: {txTime}</span></div>
-                                    <div className={styles.details__item}><img alt='' src={IconDetailKYC} /><span>KYC level: {kycLevel}</span></div>
+                                    {duration && <div className={styles.details__item}><img alt='' src={IconDetailTxTime} /><span>Tx time: {duration.n}{duration.magnitudeShort}</span></div>}
+                                    {kycLevel && <div className={styles.details__item}><img alt='' src={IconDetailKYC} /><span>KYC level: {kycLevel}</span></div>}
                                 </div>
                                 <div className={`${styles['fees']}`}>
                                     <span>Total fees:</span>

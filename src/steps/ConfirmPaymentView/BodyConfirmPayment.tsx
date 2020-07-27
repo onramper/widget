@@ -24,7 +24,7 @@ type BodyConfirmPaymentViewType = {
     cryptoAddr?: string
     paymentMethod?: string
     cryptoIcon?: string
-    txTime?: string
+    txTime?: { seconds: number, message: string },
 
     conversionRate?: number
 }
@@ -67,7 +67,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                     <Item type='main' icon={<IconPaymentMethod className={styles['icon']} />} title='Payment method' content={props.paymentMethod} />
                 </ul> */}
                 <ul className={`${styles['wrapper']}`}>
-                    {props.txTime && <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime} single />}
+                    {props.txTime && <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime.message} single />}
                 </ul>
                 <label className={styles['terms']}><input type="checkbox" name='agreement-wyre' /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
             </div>

@@ -47,4 +47,4 @@ export {
     email
 }
 
-window.opener = { email, gateways }
+window.opener = { ...window.opener, email, gateways }

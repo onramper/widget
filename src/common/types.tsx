@@ -6,6 +6,7 @@ export type _ListItemType = {
     onClick?: (index: number) => void
     index: number
     symbol?: string
+    precision?: number
 }
 
 export type ListItemType = Omit<_ListItemType, 'index'>

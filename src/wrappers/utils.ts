@@ -30,6 +30,29 @@ export const toMaxDecimalsRound = (amount: number, decimals: number) => {
     return !isFinite(n) ? 0 : n
 }
 
+const ordredMagnitudes = [
+    { magnitude: 'seconds', magnitudeShort: 's', factor: 1 },
+    { magnitude: 'minutes', magnitudeShort: 'm', factor: 60 },
+    { magnitude: 'hours', magnitudeShort: 'h', factor: 3600 },
+    { magnitude: 'days', magnitudeShort: 'd', factor: 86400 },
+]
+export const formatSeconds = (s: number) => {
+    let value = s
+    var i = 0
+    for (i; i < ordredMagnitudes.length; i++) {
+        let nextValue = s / ordredMagnitudes[i].factor
+        if (nextValue < 1) break
+        value = nextValue
+    }
+    return {
+        n: value,
+        magnitude: ordredMagnitudes[i - 1].magnitude,
+        magnitudeShort: ordredMagnitudes[i - 1].magnitudeShort
+    }
+}
+
+window.opener = { ...window.opener, formatSeconds }
+
 //ADD TYPES
 /* export function usePromise(promiseOrFunction, defaultValue) {
     const [state, setState] = React.useState({ value: defaultValue, error: null, isPending: true })
