@@ -11,7 +11,7 @@ const defaultAddrs = {
   NEO: ['neoAddr1', 'neoAddr2', 'neoAddr3', 'neoAddr4']
 }
 const defaultAmount = 100
-const defaultCrypto = 'NEO'
+const defaultCrypto = ''
 
 function App() {
   const [color, setColor] = useState(defaultColor)
