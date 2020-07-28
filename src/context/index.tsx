@@ -121,14 +121,14 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   )
 
   const handleCurrencyChange = useCallback(
-    async (currency?: ListItemType) => {
+    async (selectedCurrency?: ListItemType) => {
 
       const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
 
       if (!filtredGatewaysByCrypto) return
       if (state.data.availableCurrencies.length <= 0) return
 
-      const actualCurrency = currency || state.data.availableCurrencies[0]
+      const actualCurrency = state.data.availableCurrencies.find((currency: any) => currency.id === selectedCurrency?.id) || state.data.availableCurrencies[0]
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item: any) => item.fiatCurrencies.some((currency: any) => currency.code === actualCurrency.id))
 
       let availablePaymentMethods: any[] = []
@@ -145,11 +145,11 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   )
 
   const handlePaymentMethodChange = useCallback(
-    async (paymentMehtod?: ListItemType) => {
+    async (selectedPaymentMethod?: ListItemType) => {
 
       if (state.data.availablePaymentMethods.length <= 0) return
 
-      const actualPaymentMethod = paymentMehtod || state.data.availablePaymentMethods[0]
+      const actualPaymentMethod = state.data.availablePaymentMethods.find((currency: any) => currency.id === selectedPaymentMethod?.id) || state.data.availablePaymentMethods[0]
       handleInputChange('selectedPaymentMethod', actualPaymentMethod)
 
       const actualAmount = state.collected.amount || 0
