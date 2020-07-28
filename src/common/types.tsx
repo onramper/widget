@@ -7,6 +7,7 @@ export type _ListItemType = {
     index: number
     symbol?: string
     precision?: number
+    type?: string
 }
 
 export type ListItemType = Omit<_ListItemType, 'index'>

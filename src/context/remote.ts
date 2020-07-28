@@ -11,21 +11,19 @@ type gatewaysParams = {
 
 const gateways = async (params: gatewaysParams) => {
     const endpoint = '/gateways'
-    const urlParams = Object.keys(params).reduce((acc, current, i, arr) => {
-        if (params[current]) {
-            if (!acc) acc += '?'
-            acc += `${current}=${params[current]}`
-            if (i < arr.length - 1) acc += '&'
-            return acc
-        }
-        return ''
-    }, '')
+    const urlParams = createUrlParamsFromObject(params)
     const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`).then(res => res.json())
     return gateways
 }
 
-const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string) => {
-    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}`).then(res => res.json())
+type rateParams = {
+    amountInCrypto?: boolean
+    [key: string]: any
+}
+
+const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams) => {
+    const urlParams = createUrlParamsFromObject(params ?? {})
+    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`).then(res => res.json())
     return gateways
 }
 
@@ -48,3 +46,14 @@ export {
 }
 
 window.opener = { ...window.opener, email, gateways }
+
+const createUrlParamsFromObject = (paramsObj: { [key: string]: any }) =>
+    Object.keys(paramsObj).reduce((acc, current, i, arr) => {
+        if (paramsObj[current] !== undefined) {
+            if (!acc) acc += '?'
+            acc += `${current}=${paramsObj[current]}`
+            if (i < arr.length - 1) acc += '&'
+            return acc
+        }
+        return ''
+    }, '')

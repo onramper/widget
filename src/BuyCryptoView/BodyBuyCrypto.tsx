@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import stylesCommon from '../styles.module.css'
 
 import InputButton from '../common/Input/InputButton'
@@ -9,6 +9,7 @@ import ExpectedCrypto from './ExpectedCrypto'
 import { APIContext } from '../context'
 
 import { ListItemType } from '../common/types'
+import { ItemType } from '../context'
 
 type BodyBuyCryptoType = {
     onBuyCrypto: () => void,
@@ -32,11 +33,25 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
 
+    const [pairs, setPairs] = useState<ListItemType[]>()
+
+    useEffect(() => {
+        setPairs([selectedCurrency, selectedCrypto])
+    }, [selectedCurrency, selectedCrypto])
+
+    const handleSymbolChange = useCallback(
+        (item: ListItemType | undefined) => {
+            if (item)
+                handleInputChange('amountInCrypto', (item.type === ItemType.Crypto).toString())
+        }, [handleInputChange],
+    )
+
+
     return (
         <main className={stylesCommon.body}>
             <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                <InputText error={errors['amount']?.message} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={stylesCommon['row-fields__child']} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" />
+                <InputText error={errors['amount']?.message} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={stylesCommon['row-fields__child']} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} />
                 <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />

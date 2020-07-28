@@ -8,6 +8,29 @@
 .input > label {
     margin-bottom: 0.56rem;
     font-size: 0.875rem;
+    display: flex;
+}
+
+.label__title {
+    margin-right: auto;
+}
+
+.label__symbol {
+    font-size: 0.875em;
+}
+
+.label__symbol:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.label__symbol--selected {
+    font-weight: 700;
+}
+
+.label__symbol--selected:hover {
+    cursor: unset;
+    text-decoration: unset;
 }
 
 /*common to all input types*/

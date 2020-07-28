@@ -29,10 +29,11 @@ export const toMaxDecimalsFloor = (amount: number, decimals: number) => {
     return !isFinite(n) ? 0 : n
 }
 
-export const toMaxDecimalsRound = (amount: number, decimals: number) => {
+export const toMaxDecimalsRound = (n: number | string, decimals: number) => {
+    const amount = typeof n === 'string' ? Number(n.replace(',', '.')) : n
     let factor = Number('1e' + decimals)
-    let n = Math.round((amount) * factor) / factor
-    return !isFinite(n) ? 0 : n
+    let nRound = Math.round((amount) * factor) / factor
+    return !isFinite(nRound) ? 0 : nRound
 }
 
 const ordredMagnitudes = [

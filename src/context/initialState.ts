@@ -10,6 +10,7 @@ export type StateType = {
 
 export type CollectedStateType = {
     amount: number,
+    amountInCrypto: boolean,
     selectedCrypto?: ListItemType,
     selectedCurrency?: ListItemType,
     selectedPaymentMethod?: ListItemType,
@@ -65,6 +66,7 @@ export type ApiInterfaceType = {
 export const initialState: StateType = {
     collected: {
         amount: 100,
+        amountInCrypto: false,
         selectedCrypto: undefined,
         selectedCurrency: undefined,
         selectedPaymentMethod: undefined,

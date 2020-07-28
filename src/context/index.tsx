@@ -10,6 +10,12 @@ import LogoOnramper from '../icons/logo.svg'
 import * as API from './remote'
 import { ListItemType } from '../common/types';
 
+export enum ItemType {
+  Crypto = 'CRYPTO',
+  Currency = 'CURRENCY',
+  PaymentMethod = 'PAYMENT_METHOD'
+}
+
 //Creating context
 const APIContext = createContext<StateType>(initialState);
 
@@ -29,8 +35,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
     (name: string, value: string | number | ListItemType) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
-    [],
-  )
+    [])
 
   const handleFilesAdded = useCallback(
     (name: string, files: File[], maxFiles: number) => {
@@ -67,25 +72,11 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         if (!response_gateways.gateways[i].cryptoCurrencies) continue
         availableCryptos = availableCryptos.concat(response_gateways.gateways[i].cryptoCurrencies)
       }
-      availableCryptos = arrayObjUnique(availableCryptos, 'code')
-      availableCryptos = availableCryptos.map(({ code, precision }) => ({ id: code, name: code, info: ICONS_MAP[code]?.name || 'Cryptocurrency', icon: ICONS_MAP[code]?.icon, precision }))
       if (availableCryptos.length <= 0) return
+      availableCryptos = arrayObjUnique(availableCryptos, 'code')
+      availableCryptos = availableCryptos.map(({ code, precision }) => ({ id: code, name: code, info: ICONS_MAP[code]?.name || 'Cryptocurrency', icon: ICONS_MAP[code]?.icon, precision, symbol: code, type: ItemType.Crypto }))
 
-      let selectedCrypto = availableCryptos[0]
-      const isDefaultCryptoAvailable = response_gateways.gateways.some((gate: any) => {
-        const c = gate.cryptoCurrencies.find((item: any) => item.code === props.defaultCrypto)
-        if (c) selectedCrypto = c
-        return c
-      })
-      if (isDefaultCryptoAvailable)
-        selectedCrypto = {
-          id: selectedCrypto.code,
-          name: selectedCrypto.code,
-          info: ICONS_MAP[selectedCrypto.code]?.name || 'Currency',
-          precision: selectedCrypto.precision,
-          symbol: ICONS_MAP[selectedCrypto.code]?.symbol,
-          icon: ICONS_MAP[selectedCrypto.code]?.icon
-        }
+      let selectedCrypto = availableCryptos.find((crypto: any) => (crypto.id === props.defaultCrypto)) || availableCryptos[0]
 
       const filtredGatewaysByCrypto = response_gateways.gateways.filter((item: any) => item.cryptoCurrencies.some((crypto: any) => crypto.code === selectedCrypto.id))
       let availableCurrencies: any[] = []
@@ -94,23 +85,9 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[j].fiatCurrencies)
       }
       availableCurrencies = arrayObjUnique(availableCurrencies, 'code')
-      availableCurrencies = availableCurrencies.map(({ code, precision }) => ({ precision: precision, id: code, name: code, symbol: ICONS_MAP[code]?.symbol, info: ICONS_MAP[code]?.name || 'Currency', icon: ICONS_MAP[code]?.icon }))
+      availableCurrencies = availableCurrencies.map(({ code, precision }) => ({ precision: precision, id: code, name: code, symbol: ICONS_MAP[code]?.symbol, info: ICONS_MAP[code]?.name || 'Currency', icon: ICONS_MAP[code]?.icon, type: ItemType.Currency }))
 
-      let selectedCurrency = availableCurrencies[0]
-      const isDefaultCurrencyAvailable = response_gateways.gateways.some((gate: any) => {
-        let f = gate.fiatCurrencies.find((item: any) => item.code === response_gateways.localization?.currency)
-        if (f) selectedCurrency = f
-        return f
-      })
-      if (isDefaultCurrencyAvailable)
-        selectedCurrency = {
-          id: selectedCurrency.code,
-          name: selectedCurrency.code,
-          info: ICONS_MAP[selectedCurrency.code]?.name || 'Currency',
-          precision: selectedCurrency.precision,
-          symbol: ICONS_MAP[selectedCurrency.code]?.symbol,
-          icon: ICONS_MAP[selectedCurrency.code]?.icon
-        }
+      let selectedCurrency = availableCurrencies.find((currency: any) => currency.id === response_gateways.localization?.currency) || availableCurrencies[0]
 
       handleInputChange('selectedCrypto', selectedCrypto)
       handleInputChange('selectedCurrency', selectedCurrency)
@@ -136,7 +113,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[i].fiatCurrencies)
       }
       availableCurrencies = arrayUnique(availableCurrencies)
-      availableCurrencies = availableCurrencies.map(({ code, precision }) => ({ precision: precision, id: code, name: code, symbol: ICONS_MAP[code]?.symbol, info: ICONS_MAP[code]?.name || 'Currency', icon: ICONS_MAP[code]?.icon }))
+      availableCurrencies = availableCurrencies.map(({ code, precision }) => ({ precision: precision, id: code, name: code, symbol: ICONS_MAP[code]?.symbol, info: ICONS_MAP[code]?.name || 'Currency', icon: ICONS_MAP[code]?.icon, type: ItemType.Currency }))
       addData({ availableCurrencies, filtredGatewaysByCrypto })
       handleInputChange('selectedCrypto', actualCrypto)
 
@@ -161,7 +138,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       }
 
       availablePaymentMethods = arrayUnique(availablePaymentMethods)
-      availablePaymentMethods = availablePaymentMethods.map((item, i) => ({ id: item, name: ICONS_MAP[item].name || `Payment method ${i}`, symbol: '', info: '', icon: ICONS_MAP[item]?.icon }))
+      availablePaymentMethods = availablePaymentMethods.map((item, i) => ({ id: item, name: ICONS_MAP[item].name || `Payment method ${i}`, symbol: '', info: '', icon: ICONS_MAP[item]?.icon, type: ItemType.Currency }))
       addData({ availablePaymentMethods, filtredGatewaysByCurrency, selectedCurrency: actualCurrency })
       handleInputChange('selectedCurrency', actualCurrency)
     }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, ICONS_MAP],
@@ -173,17 +150,18 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       if (state.data.availablePaymentMethods.length <= 0) return
 
       const actualPaymentMethod = paymentMehtod || state.data.availablePaymentMethods[0]
-      const actualAmount = state.collected.amount || 0
+      handleInputChange('selectedPaymentMethod', actualPaymentMethod)
 
-      const inCurrency = state.collected.selectedCurrency?.id
-      const outCurrency = state.collected.selectedCrypto?.id
+      const actualAmount = state.collected.amount || 0
 
       if (actualAmount <= 0) {
         addData({ availableRates: [] })
         return {}
       }
+      const inCurrency = state.collected.selectedCurrency?.id
+      const outCurrency = state.collected.selectedCrypto?.id
       if (!inCurrency || !outCurrency || !actualPaymentMethod.id) return
-      const response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod.id)
+      const response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod.id, { amountInCrypto: state.collected.amountInCrypto })
 
       const filtredRatesByAviability = response_rate.filter((item: any) => item.available === true)
       const availableRates = filtredRatesByAviability.map((item: any) => ({
@@ -199,7 +177,6 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       }))
 
       addData({ availableRates, response_rate, filtredRatesByAviability })
-      handleInputChange('selectedPaymentMethod', actualPaymentMethod)
 
       if (response_rate.length <= 0) return { general: 'Try again later' }
       else if (filtredRatesByAviability.length <= 0) {
@@ -224,7 +201,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         return { ...errorsBulk, amount: errorsBulk.MIN ?? errorsBulk.MAX }
       }
       else return
-    }, [handleInputChange, addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount])
+    }, [handleInputChange, addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.collected.amountInCrypto])
 
   /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
   useEffect(() => {
