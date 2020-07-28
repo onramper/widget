@@ -43,12 +43,17 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
       className="input row-fields__child"
     >
       <label>
-        Amount
+        <span
+          className="label__title"
+        >
+          Amount
+        </span>
       </label>
       <div
         className="input__type input__type--number   "
       >
         <span
+          before-content=""
           className="input__type__child symbol  "
           style={
             Object {
@@ -61,7 +66,9 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
             min="0"
             name="amount"
             onChange={[Function]}
+            onInput={[Function]}
             placeholder="100"
+            step="any"
             type="number"
             value={100}
           />
@@ -142,20 +149,21 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
     <span
       className="expected-crypto__amount"
     >
-      0 BTC
+      Fetching best price...
     </span>
     <span
       className="expected-crypto__info"
     >
-      Crypto you get (estimation)
+      Crypto you get
+       (estimation)
     </span>
   </div>
   <div
     className="body__child"
   >
     <button
-      className="button-action "
-      disabled={false}
+      className="button-action button-action--disabled"
+      disabled={true}
       onClick={[Function]}
     >
       Get crypto
@@ -176,7 +184,8 @@ exports[`Component snapshots ExpectedCrypto snapshot 1`] = `
   <span
     className="expected-crypto__info"
   >
-    Crypto you get (estimation)
+    Crypto you get
+     (estimation)
   </span>
 </div>
 `;
@@ -276,12 +285,17 @@ exports[`Component snapshots InputText snapshot 1`] = `
   className="input "
 >
   <label>
-    Label
+    <span
+      className="label__title"
+    >
+      Label
+    </span>
   </label>
   <div
     className="input__type input__type--number   "
   >
     <span
+      before-content=""
       className="input__type__child symbol  "
       style={
         Object {
@@ -294,6 +308,8 @@ exports[`Component snapshots InputText snapshot 1`] = `
         min="0"
         name="example"
         onChange={[Function]}
+        onInput={[Function]}
+        step="any"
         type="text"
       />
     </span>
