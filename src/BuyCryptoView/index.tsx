@@ -23,14 +23,17 @@ const BuyCryptoView: React.FC = () => {
   const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
 
   useEffect(() => {
+    setCalculatingPrice(true)
     setSelectedCrypto(collected.selectedCrypto)
   }, [collected.selectedCrypto])
 
   useEffect(() => {
+    setCalculatingPrice(true)
     setSelectedCurrency(collected.selectedCurrency)
   }, [collected.selectedCurrency])
 
   useEffect(() => {
+    setCalculatingPrice(true)
     setSelectedPaymentMethod(collected.selectedPaymentMethod)
   }, [collected.selectedPaymentMethod])
 
