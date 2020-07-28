@@ -8,21 +8,31 @@ import ChooseGatewayView from '../ChooseGatewayView'
 
 import { NavContext } from '../wrappers/context'
 import { APIContext } from '../context'
+import { ListItemType } from '../common/types';
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
   const [calculatingPrice, setCalculatingPrice] = useState(true)
   const [errors, setErrors] = useState<{ [key: string]: any } | undefined>({})
-  const [selectedCryptoIndex, setSelectedCryptoIndex] = useState<number>()
-  const [selectedCurrencyIndex, setSelectedCurrencyIndex] = useState<number>()
-  const [selectedPaymentMethodIndex, setSelectedPaymentMethodIndex] = useState<number>(0)
+  const [selectedCrypto, setSelectedCrypto] = useState<ListItemType>()
+  const [selectedCurrency, setSelectedCurrency] = useState<ListItemType>()
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<ListItemType>()
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected } = useContext(APIContext);
   const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
-  const selectedCrypto = selectedCryptoIndex !== undefined ? data.availableCryptos[selectedCryptoIndex] : collected.selectedCrypto
-  const selectedCurrency = selectedCurrencyIndex !== undefined ? data.availableCurrencies[selectedCurrencyIndex] : collected.selectedCurrency
-  const selectedPaymentMethod = data.availablePaymentMethods[selectedPaymentMethodIndex]
+
+  useEffect(() => {
+    setSelectedCrypto(collected.selectedCrypto)
+  }, [collected.selectedCrypto])
+
+  useEffect(() => {
+    setSelectedCurrency(collected.selectedCurrency)
+  }, [collected.selectedCurrency])
+
+  useEffect(() => {
+    setSelectedPaymentMethod(collected.selectedPaymentMethod)
+  }, [collected.selectedPaymentMethod])
 
   useEffect(() => {
     async function initEffect() {
@@ -56,13 +66,13 @@ const BuyCryptoView: React.FC = () => {
     handlePaymentMethodChangeEffect()
   }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors])
 
-  const handleItemClick = (name: string, index: number) => {
+  const handleItemClick = (name: string, index: number, item: ListItemType) => {
     if (name === 'crypto')
-      setSelectedCryptoIndex(index)
+      setSelectedCrypto(item)
     else if (name === 'currency')
-      setSelectedCurrencyIndex(index)
+      setSelectedCurrency(item)
     else if (name === 'paymentMethod')
-      setSelectedPaymentMethodIndex(index)
+      setSelectedPaymentMethod(item)
     backScreen()
   }
 
