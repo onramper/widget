@@ -10,7 +10,7 @@ import { APIContext } from '../../context'
 
 const ConfirmPaymentView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
-  const { collected, data } = useContext(APIContext);
+  const { collected/* , data */ } = useContext(APIContext);
   const selectedGateway = collected.selectedGateway
   const selectedCrypto = collected.selectedCrypto
   const selectedCurrency = collected.selectedCurrency
@@ -21,7 +21,7 @@ const ConfirmPaymentView: React.FC = () => {
       <Header title="Payment confirmation" backButton />
       <BodyConfirmPayment
         onActionButton={() => nextScreen(<CreditCardView />)}
-        payAmount={(collected.amount).toFixed(2)} //: string
+        payAmount={collected.amount.toString()} //: string
         fees={selectedGateway?.fees} //: string
         currency={selectedCurrency?.name}
         cryptoAmount={selectedGateway?.receivedCrypto || 0}

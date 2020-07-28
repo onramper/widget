@@ -17,8 +17,8 @@ const ChooseGatewayView = () => {
   const [selectedGatewayIndex, setSelectedGatewayIndex] = useState(0)
 
   useEffect(() => {
-    handleInputChange('selectedGateway', selectedGatewayIndex)
-  }, [handleInputChange, selectedGatewayIndex])
+    handleInputChange('selectedGateway', data.availableRates[selectedGatewayIndex])
+  }, [handleInputChange, selectedGatewayIndex, data.availableRates])
 
   return (
     <div className={styles.view}>
