@@ -34,6 +34,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const { collected } = useContext(APIContext);
 
     const [pairs, setPairs] = useState<ListItemType[]>()
+    const [amountInCrypto, setAmountInCrypto] = useState(false)
 
     useEffect(() => {
         setPairs([selectedCurrency, selectedCrypto])
@@ -41,8 +42,10 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
 
     const handleSymbolChange = useCallback(
         (item: ListItemType | undefined) => {
-            if (item)
+            if (item) {
                 handleInputChange('amountInCrypto', (item.type === ItemType.Crypto).toString())
+                setAmountInCrypto(item.type === ItemType.Crypto)
+            }
         }, [handleInputChange],
     )
 
@@ -55,7 +58,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
                 <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} denom={selectedCrypto.name} isLoading={isCalculatingPrice} />
+            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={isCalculatingPrice} />
             <div className={`${stylesCommon['body__child']}`}>
                 <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled} />
             </div>

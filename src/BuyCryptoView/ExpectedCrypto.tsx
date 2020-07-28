@@ -7,10 +7,11 @@ type ExpectedCryptoType = {
     denom: string,
     className?: string
     isLoading: boolean
+    amountInCrypto?: boolean
 }
 
 const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
-    const { denom, className, isLoading } = props
+    const { denom, className, isLoading, amountInCrypto = false } = props
 
     const [expectedCrypto, setExpectedCrypto] = useState(0)
 
@@ -40,7 +41,7 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
     return (
         <div className={`${styles['expected-crypto']} ${className}`}>
             <span className={styles['expected-crypto__amount']}>{isLoading ? 'Calculating price...' : `${expectedCrypto} ${denom}`}</span>
-            <span className={styles['expected-crypto__info']}>Crypto you get (estimation)</span>
+            <span className={styles['expected-crypto__info']}>{amountInCrypto ? 'Amount you pay' : 'Crypto you get'} (estimation)</span>
         </div>
     )
 }
