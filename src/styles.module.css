@@ -83,9 +83,9 @@ components
     flex-direction: row;
 }
 
-.row-fields__child {
-    flex-grow: 1;
-}
+/* .row-fields__child {
+
+} */
 
 .row-fields__child+.row-fields__child {
     margin-left: var(--body-space-childs);
