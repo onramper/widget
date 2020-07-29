@@ -21,9 +21,9 @@ type rateParams = {
     [key: string]: any
 }
 
-const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams) => {
+const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams, signal?: AbortSignal) => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`).then(res => res.json())
+    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`, {signal}).then(res => res.json())
     return gateways
 }
 

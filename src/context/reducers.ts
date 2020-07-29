@@ -17,7 +17,7 @@ export type DataActions = {
     type: CollectedActionsType.AddField;
     payload: {
         name: string
-        value: number | string | ListItemType
+        value: number | string | boolean | ListItemType
     };
 } | {
     type: CollectedActionsType.AddFile;

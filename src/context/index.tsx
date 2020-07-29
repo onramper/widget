@@ -31,11 +31,16 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [ICONS_MAP, setICONS_MAP] = useState<{ [key: string]: any }>({});
+  const [lastCall, setLastCall] = useState<{ abortController: AbortController, id: string }>();
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
-    (name: string, value: string | number | ListItemType) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
-    [])
+    (name: string, value: string | number | boolean | ListItemType) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }), [])
+
+  useEffect(() => {
+    if (lastCall) handleInputChange('isCalculatingCrypto', true)
+    else handleInputChange('isCalculatingCrypto', false)
+  }, [lastCall, handleInputChange])
 
   const handleFilesAdded = useCallback(
     (name: string, files: File[], maxFiles: number) => {
@@ -161,7 +166,23 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       const inCurrency = state.collected.selectedCurrency?.id
       const outCurrency = state.collected.selectedCrypto?.id
       if (!inCurrency || !outCurrency || !actualPaymentMethod.id) return
-      const response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod.id, { amountInCrypto: state.collected.amountInCrypto })
+
+      const controller = { abortController: new AbortController(), id: Date.now().toString() }
+      const { signal } = controller.abortController;
+      setLastCall(lastController => {
+        if (lastController?.id !== controller.id)
+          lastController?.abortController.abort();
+        return controller
+      })
+      let response_rate = []
+      try {
+        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod.id, { amountInCrypto: state.collected.amountInCrypto }, signal)
+      } catch (error) {
+        if (error.name === 'AbortError')
+          return {}
+        return { general: 'Try again later' }
+      }
+      setLastCall(undefined)
 
       const filtredRatesByAviability = response_rate.filter((item: any) => item.available)
       const availableRates = response_rate.map((item: any) => ({
@@ -177,9 +198,9 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         available: item.available,
         error: item.error?.message
       }))
-
+      console.log('saving...', response_rate)
       addData({ availableRates, response_rate, filtredRatesByAviability })
-
+      console.log('saving...end', response_rate)
       if (response_rate.length <= 0) return { general: 'Try again later' }
       else if (filtredRatesByAviability.length <= 0) {
         const errorsBulk = response_rate.reduce((errorsBulk: { [key: string]: any }, item: any) => {
