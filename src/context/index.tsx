@@ -198,9 +198,9 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         available: item.available,
         error: item.error?.message
       }))
-      console.log('saving...', response_rate)
+
       addData({ availableRates, response_rate, filtredRatesByAviability })
-      console.log('saving...end', response_rate)
+
       if (response_rate.length <= 0) return { general: 'Try again later' }
       else if (filtredRatesByAviability.length <= 0) {
         const errorsBulk = response_rate.reduce((errorsBulk: { [key: string]: any }, item: any) => {
