@@ -42,7 +42,6 @@ export type _GatewayOptionType = {
     rate: number,
     feePercent: number,
     fees: number,
-    selectedFee?: number,
     logo?: string,
     isOpen?: boolean
     onClick?: (index: number) => void
@@ -50,10 +49,12 @@ export type _GatewayOptionType = {
     receivedCrypto: number
     selectedReceivedCrypto: number
     nextStep: { url: string, data: string[] }
+    available: boolean
+    error?: any
 }
 
 const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
-    const { name, txTime, kycLevel, receivedCrypto, feePercent, logo, isOpen, selectedReceivedCrypto = 0 } = props //todo change 
+    const { name, txTime, kycLevel, receivedCrypto, feePercent, logo, isOpen, selectedReceivedCrypto = 0, available = false, error = '' } = props //todo change 
     const { collected } = useContext(APIContext)
 
     const diffPercent = ((1 - (selectedReceivedCrypto / receivedCrypto)) * 100)
@@ -65,14 +66,14 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
     const { onClick = (i) => null } = props
 
     return (
-        <div onClick={() => onClick(props.index)} className={`${styles['option-container']} ${!isOpen ? styles['option-container--collapsed'] : ''}`}>
+        <div onClick={() => onClick(props.index)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
             <div className={styles['option-container__radio']}>
-                <input type='radio' checked={isOpen} readOnly></input>
+                <input type='radio' checked={available && isOpen} readOnly disabled={!available}></input>
             </div>
-            <div className={`${styles['option-container__content']} ${!isOpen ? styles['option-container__content--collapsed'] : ''}`}>
-                <div className={`${styles.content__info} ${!isOpen ? styles['content__info--collapsed'] : ''}`} >
-                    <span className={styles.title}>{name}</span>
-                    <CSSTransition {...transitionPropsCollapse} in={isOpen}>
+            <div className={`${styles['option-container__content']} ${!available || !isOpen ? styles['option-container__content--collapsed'] : ''}`}>
+                <div className={`${styles.content__info} ${!available || !isOpen ? styles['content__info--collapsed'] : ''}`} >
+                    <span className={`${styles.title}`}>{name}</span>
+                    <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div>
                             <div className={styles['collapsable-section']}>
                                 <div className={`${styles['details']}`} >
@@ -88,23 +89,29 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                     </CSSTransition>
                 </div>
                 <div className={styles.content__price} >
-                    <CSSTransition {...transitionPropsCollapse} in={isOpen}>
+                    <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div className={`${styles['gateway-logo']}`}>
                             {logo ? <img alt="Gateway logo" src={logo} /> : null}
                         </div>
                     </CSSTransition>
                     <div>
-                        <CSSTransition in={!isOpen} {...transitionPropsPrice}>
-                            <span className={`${styles['receive-diff']} ${`${styles['receive-diff--collapsed']} ${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
+                        <CSSTransition in={!available || !isOpen} {...transitionPropsPrice}>
+                            {available ?
+                                < span className={`${styles['receive-diff']} ${`${styles['receive-diff--collapsed']} ${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
+                                : <span>Unavailable</span>
+                            }
                         </CSSTransition>
-                        <CSSTransition in={isOpen} {...transitionPropsPrice}>
+                        <CSSTransition in={isOpen && available} {...transitionPropsPrice}>
                             <span className={`${styles['receive-diff']}`} > {'You Receive:'}</span>
                         </CSSTransition>
-                        <span>{collected.selectedCrypto?.name} {receivedCrypto}</span>
+                        {available ?
+                            <span> {collected.selectedCrypto?.name} {receivedCrypto}</span>
+                            : <span>{!error ? 'Try again later' : error}</span>
+                        }
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

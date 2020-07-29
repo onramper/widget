@@ -21,15 +21,45 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
     return (
         <div className={`${styles['gateways-list']}`}>{/* TODO: change all custom lists to general list */}
             {
-                items.map((item, i) =>
+                items.filter((el) => el.available).map((item, i) =>
                     <GatewayOption
-                        {...item}
                         key={i}
                         index={i}
-                        selectedFee={items[selectedGateway].feePercent}
                         isOpen={i === selectedGateway}
                         onClick={handleItemClick}
-                        selectedReceivedCrypto={items[selectedGateway].receivedCrypto} />
+                        selectedReceivedCrypto={items[selectedGateway].receivedCrypto}
+                        name={item.name}
+                        kycLevel={item.kycLevel}
+                        rate={item.rate}
+                        feePercent={item.feePercent}
+                        fees={item.fees}
+                        receivedCrypto={item.receivedCrypto}
+                        nextStep={item.nextStep}
+                        available={item.available}
+                        txTime={item.txTime}
+                        logo={item.logo}
+                        error={item.error?.message} />
+                )
+            }
+            {
+                items.filter((el) => !el.available).map((item, i) =>
+                    <GatewayOption
+                        key={i}
+                        index={i}
+                        isOpen={i === selectedGateway}
+                        onClick={handleItemClick}
+                        selectedReceivedCrypto={items[selectedGateway].receivedCrypto}
+                        name={item.name}
+                        kycLevel={item.kycLevel}
+                        rate={item.rate}
+                        feePercent={item.feePercent}
+                        fees={item.fees}
+                        receivedCrypto={item.receivedCrypto}
+                        nextStep={item.nextStep}
+                        available={item.available}
+                        txTime={item.txTime}
+                        logo={item.logo}
+                        error={item.error} />
                 )
             }
         </div>

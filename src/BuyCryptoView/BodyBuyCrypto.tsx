@@ -29,7 +29,7 @@ type BodyBuyCryptoType = {
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
-    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = false, isCalculatingPrice = true } = props
+    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = true, isCalculatingPrice = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
 

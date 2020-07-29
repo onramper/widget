@@ -176,6 +176,23 @@
     cursor: pointer;
 }
 
+.option-container--collapsed .content__info{
+    margin-right: 0;
+}
+
+.option-container--disabled {
+    border-style: none;
+    color: #d6d6d6;
+}
+
+.option-container--disabled:hover {
+    cursor: default;
+}
+
+.option-container--disabled .content__price > div {   
+    font-size: 0.625rem;
+}
+
 /* .option-container__content--collapsed,
 .option-container__content--collapsed > * > :not(:last-child) {
     margin: 0px;

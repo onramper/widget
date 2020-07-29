@@ -84,11 +84,11 @@ const BuyCryptoView: React.FC = () => {
   }, [collected.amount])
 
   useEffect(() => {
-    if (selectedCrypto && selectedCurrency && selectedPaymentMethod && !errors && collected.amount)
+    if (selectedCrypto && selectedCurrency && selectedPaymentMethod && collected.amount > 0)
       setIsFilled(true)
     else
       setIsFilled(false)
-  }, [setIsFilled, selectedCrypto, selectedCurrency, selectedPaymentMethod, errors, collected.amount])
+  }, [setIsFilled, selectedCrypto, selectedCurrency, selectedPaymentMethod, collected.amount])
 
   return (
     <div className={styles.view}>

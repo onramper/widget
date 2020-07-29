@@ -163,17 +163,19 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       if (!inCurrency || !outCurrency || !actualPaymentMethod.id) return
       const response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod.id, { amountInCrypto: state.collected.amountInCrypto })
 
-      const filtredRatesByAviability = response_rate.filter((item: any) => item.available === true)
-      const availableRates = filtredRatesByAviability.map((item: any) => ({
+      const filtredRatesByAviability = response_rate.filter((item: any) => item.available)
+      const availableRates = response_rate.map((item: any) => ({
         receivedCrypto: item.receivedCrypto,
         fees: item.fees,
         name: item.identifier,
         txTime: { seconds: item.duration.seconds, message: item.duration.message },
-        kycLevel: `${item.requiredKYC.length}`,
+        kycLevel: `${item.requiredKYC?.length}`,
         rate: item.rate,
         feePercent: (item.fees / state.collected.amount * 100),
         logo: LogoOnramper,
-        nextStep: item.nextStep
+        nextStep: item.nextStep,
+        available: item.available,
+        error: item.error?.message
       }))
 
       addData({ availableRates, response_rate, filtredRatesByAviability })
