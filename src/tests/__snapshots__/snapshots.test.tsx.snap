@@ -40,7 +40,7 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
     className="body__child row-fields"
   >
     <div
-      className="input row-fields__child"
+      className="input row-fields__child grow"
     >
       <label>
         <span
@@ -74,9 +74,6 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
           />
         </span>
       </div>
-      <span
-        className="text-error"
-      />
     </div>
     <div
       className="input row-fields__child"
@@ -314,9 +311,6 @@ exports[`Component snapshots InputText snapshot 1`] = `
       />
     </span>
   </div>
-  <span
-    className="text-error"
-  />
 </div>
 `;
 
