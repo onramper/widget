@@ -171,7 +171,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         txTime: { seconds: item.duration.seconds, message: item.duration.message },
         kycLevel: `${item.requiredKYC?.length}`,
         rate: item.rate,
-        feePercent: (item.fees / state.collected.amount * 100),
+        feePercent: (item.fees / (state.collected.amountInCrypto ? item.receivedCrypto : state.collected.amount) * 100),
         logo: LogoOnramper,
         nextStep: item.nextStep,
         available: item.available,

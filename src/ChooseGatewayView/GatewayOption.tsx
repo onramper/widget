@@ -65,6 +65,11 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
 
     const { onClick = (i) => null } = props
 
+    var styleColorUpDownDiff = {
+        "--diff-up-color": collected.amountInCrypto ? 'red' : 'green',
+        "--diff-down-color": collected.amountInCrypto ? 'green' : 'red'
+    } as React.CSSProperties;
+
     return (
         <div onClick={() => onClick(props.index)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
             <div className={styles['option-container__radio']}>
@@ -97,15 +102,15 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                     <div>
                         <CSSTransition in={!available || !isOpen} {...transitionPropsPrice}>
                             {available ?
-                                < span className={`${styles['receive-diff']} ${`${styles['receive-diff--collapsed']} ${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
+                                < span style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${`${styles['receive-diff--collapsed']} ${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
                                 : <span>Unavailable</span>
                             }
                         </CSSTransition>
                         <CSSTransition in={isOpen && available} {...transitionPropsPrice}>
-                            <span className={`${styles['receive-diff']}`} > {'You Receive:'}</span>
+                            <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You Receive:'}</span>
                         </CSSTransition>
                         {available ?
-                            <span> {collected.selectedCrypto?.name} {receivedCrypto}</span>
+                            <span> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {receivedCrypto}</span>
                             : <span>{!error ? 'Try again later' : error}</span>
                         }
                     </div>

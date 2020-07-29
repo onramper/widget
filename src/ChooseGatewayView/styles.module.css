@@ -137,7 +137,8 @@
 
 /*gateway collapsed*/
 .receive-diff--collapsed {
-/*     color: red; */
+    --diff-up-color: green;
+    --diff-down-color: red;
 }
 
 .receive-diff--collapsed::before {
@@ -147,25 +148,25 @@
     border-right: calc( 0.57735 * var(--diff-size) ) solid transparent;
     border-left: calc( 0.57735 * var(--diff-size) ) solid transparent;
     right: 100%;
-    top: 20%;
+    top: 23%;
     position: absolute;
     margin-right: 0.33125em;
 }
 
 .diff--down {
-    color: red;
+    color: var(--diff-down-color);
 }
 
 .diff--down::before {
-    border-top: var(--diff-size) solid red;
+    border-top: var(--diff-size) solid var(--diff-down-color);
 }
 
 .diff--up {
-    color: green;
+    color: var(--diff-up-color);
 }
 
 .diff--up::before {
-    border-bottom: var(--diff-size) solid green;
+    border-bottom: var(--diff-size) solid var(--diff-up-color);
 }
 
 .option-container--collapsed {

@@ -43,7 +43,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const handleSymbolChange = useCallback(
         (item: ListItemType | undefined) => {
             if (item) {
-                handleInputChange('amountInCrypto', (item.type === ItemType.Crypto).toString())
+                handleInputChange('amountInCrypto', item.type === ItemType.Crypto)
                 setAmountInCrypto(item.type === ItemType.Crypto)
             }
         }, [handleInputChange],
