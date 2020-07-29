@@ -5,6 +5,8 @@ import { toMaxDecimalsRound } from '../../wrappers/utils'
 
 import { ListItemType } from '../../common/types';
 
+import { CSSTransition } from 'react-transition-group';
+
 type InputTextType = {
     disabled?: boolean,
     symbol?: string
@@ -82,8 +84,20 @@ const InputText: React.FC<InputTextType> = (props) => {
                         disabled={disabled} />
                 </span>
             </div>
-            <span className={`${styles['text-error']}`} >{error}</span>
-        </div>
+            <CSSTransition in={error !== undefined}
+                timeout={500}
+                classNames={{
+                    enter: styles['collapse-enter'],
+                    enterActive: styles['collapse-enter-active'],
+                    exit: styles['collapse-exit'],
+                    exitActive: styles['collapse-exit-active'],
+                }}
+                unmountOnExit={true}
+
+            >
+                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
+            </CSSTransition>
+        </div >
     )
 }
 
