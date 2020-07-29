@@ -11,7 +11,7 @@ export type StateType = {
 export type CollectedStateType = {
     amount: number,
     amountInCrypto: boolean,
-    isCalculatingCrypto: boolean
+    isCalculatingAmount: boolean
     selectedCrypto?: ListItemType,
     selectedCurrency?: ListItemType,
     selectedPaymentMethod?: ListItemType,
@@ -68,7 +68,7 @@ export const initialState: StateType = {
     collected: {
         amount: 100,
         amountInCrypto: false,
-        isCalculatingCrypto: false,
+        isCalculatingAmount: false,
         selectedCrypto: undefined,
         selectedCurrency: undefined,
         selectedPaymentMethod: undefined,

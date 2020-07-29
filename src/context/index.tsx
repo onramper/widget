@@ -38,8 +38,8 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
     (name: string, value: string | number | boolean | ListItemType) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }), [])
 
   useEffect(() => {
-    if (lastCall) handleInputChange('isCalculatingCrypto', true)
-    else handleInputChange('isCalculatingCrypto', false)
+    if (lastCall) handleInputChange('isCalculatingAmount', true)
+    else handleInputChange('isCalculatingAmount', false)
   }, [lastCall, handleInputChange])
 
   const handleFilesAdded = useCallback(

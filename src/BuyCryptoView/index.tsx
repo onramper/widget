@@ -23,23 +23,23 @@ const BuyCryptoView: React.FC = () => {
   const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
 
   useEffect(() => {
-    setCalculatingPrice(true)
+    setCalculatingPrice(collected.isCalculatingAmount)
+  }, [collected.isCalculatingAmount])
+
+  useEffect(() => {
     setSelectedCrypto(collected.selectedCrypto)
   }, [collected.selectedCrypto])
 
   useEffect(() => {
-    setCalculatingPrice(true)
     setSelectedCurrency(collected.selectedCurrency)
   }, [collected.selectedCurrency])
 
   useEffect(() => {
-    setCalculatingPrice(true)
     setSelectedPaymentMethod(collected.selectedPaymentMethod)
   }, [collected.selectedPaymentMethod])
 
   useEffect(() => {
     async function initEffect() {
-      setCalculatingPrice(true)
       await init();
     }
     initEffect()
@@ -64,7 +64,6 @@ const BuyCryptoView: React.FC = () => {
       const err = await handlePaymentMethodChange(selectedPaymentMethod);
       if (err) setErrors(prev => ({ ...prev, ...err }))
       else setErrors(undefined)
-      setCalculatingPrice(false)
     }
     handlePaymentMethodChangeEffect()
   }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors])
@@ -80,7 +79,6 @@ const BuyCryptoView: React.FC = () => {
   }
 
   useEffect(() => {
-    setCalculatingPrice(true)
   }, [collected.amount])
 
   useEffect(() => {
