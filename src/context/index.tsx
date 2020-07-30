@@ -31,7 +31,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [ICONS_MAP, setICONS_MAP] = useState<{ [key: string]: any }>({});
-  const [lastCall, setLastCall] = useState<{ abortController: AbortController, id: string }>();
+  const [lastCall, setLastCall] = useState<AbortController>();
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
@@ -167,11 +167,10 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       const outCurrency = state.collected.selectedCrypto?.id
       if (!inCurrency || !outCurrency || !actualPaymentMethod.id) return
 
-      const controller = { abortController: new AbortController(), id: Date.now().toString() }
-      const { signal } = controller.abortController;
+      const controller = new AbortController()
+      const { signal } = controller;
       setLastCall(lastController => {
-        if (lastController?.id !== controller.id)
-          lastController?.abortController.abort();
+        lastController?.abort();
         return controller
       })
       let response_rate = []

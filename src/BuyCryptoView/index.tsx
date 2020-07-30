@@ -79,9 +79,6 @@ const BuyCryptoView: React.FC = () => {
   }
 
   useEffect(() => {
-  }, [collected.amount])
-
-  useEffect(() => {
     if (selectedCrypto && selectedCurrency && selectedPaymentMethod && collected.amount > 0)
       setIsFilled(true)
     else
