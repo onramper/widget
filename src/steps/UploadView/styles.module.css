@@ -48,6 +48,9 @@
 .file-name {
     flex-grow: 1;
     margin: 0 1rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .file > :first-child {
