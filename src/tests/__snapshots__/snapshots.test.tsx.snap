@@ -282,17 +282,12 @@ exports[`Component snapshots InputText snapshot 1`] = `
   className="input "
 >
   <label>
-    <span
-      className="label__title"
-    >
-      Label
-    </span>
+    Label
   </label>
   <div
     className="input__type input__type--number   "
   >
     <span
-      before-content=""
       className="input__type__child symbol  "
       style={
         Object {
@@ -305,8 +300,6 @@ exports[`Component snapshots InputText snapshot 1`] = `
         min="0"
         name="example"
         onChange={[Function]}
-        onInput={[Function]}
-        step="any"
         type="text"
       />
     </span>
