@@ -75,8 +75,8 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
             <div className={styles['option-container__radio']}>
                 <input type='radio' checked={available && isOpen} readOnly disabled={!available}></input>
             </div>
-            <div className={`${styles['option-container__content']} ${!available || !isOpen ? styles['option-container__content--collapsed'] : ''}`}>
-                <div className={`${styles.content__info} ${!available || !isOpen ? styles['content__info--collapsed'] : ''}`} >
+            <div className={`${styles['option-container__content']}`}>
+                <div className={`${styles.content__info}`} >
                     <span className={`${styles.title}`}>{name}</span>
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div>
@@ -93,7 +93,7 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                         </div>
                     </CSSTransition>
                 </div>
-                <div className={styles.content__price} >
+                <div className={styles.content__price}>
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div className={`${styles['gateway-logo']}`}>
                             {logo ? <img alt="Gateway logo" src={logo} /> : null}
@@ -102,13 +102,13 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                     <div>
                         <CSSTransition in={!available || !isOpen} {...transitionPropsPrice}>
                             {available ?
-                                < span style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${`${styles['receive-diff--collapsed']} ${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
+                                <span style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
                                 : <span>Unavailable</span>
                             }
                         </CSSTransition>
-                        <CSSTransition in={isOpen && available} {...transitionPropsPrice}>
-                            <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You Receive:'}</span>
-                        </CSSTransition>
+                        {/* <CSSTransition in={isOpen && available} {...transitionPropsPrice}> */}
+                        {isOpen && available && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You Receive:'}</span>}
+                        {/* </CSSTransition> */}
                         {available ?
                             <span> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {receivedCrypto}</span>
                             : <span>{!error ? 'Try again later' : error}</span>

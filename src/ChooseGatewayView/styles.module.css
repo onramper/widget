@@ -45,6 +45,7 @@
     box-sizing: border-box;
     --collapsable-height: 4.75rem;
     /* margin-bottom: 0.6rem;  *//*margined to align with crypto-diff*/
+    transition: margin-right 200ms cubic-bezier(0.4, 0, 1, 1);
 }
 
 .content__info .collapsable-section {
@@ -125,6 +126,9 @@
     font-size: 0.75rem;
 }
 
+.content__price :not(.gateway-logo) > span {
+    line-height: 1em;
+}
 
 
 /*------------------- diff receive -------------------*/
@@ -136,12 +140,12 @@
 }
 
 /*gateway collapsed*/
-.receive-diff--collapsed {
+.option-container--collapsed .receive-diff {
     --diff-up-color: green;
     --diff-down-color: red;
 }
 
-.receive-diff--collapsed::before {
+.option-container--collapsed .receive-diff::before {
     content: '';
     height: 0;
 
@@ -170,7 +174,7 @@
 }
 
 .option-container--collapsed {
-    border-style: none;
+  border-color: transparent;
 }
 
 .option-container--collapsed:hover {
@@ -199,8 +203,8 @@
     margin: 0px;
 } */
 
-.content__info--collapsed,
-.content__info--collapsed > * > span:first-of-type {
+.option-container--collapsed .content__info,
+.option-container--collapsed .content__info > * > span:first-of-type {
     margin-bottom: 0px;
 }
 
