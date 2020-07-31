@@ -8,6 +8,7 @@ import { APIContext } from '../context'
 
 import WalletAddressView from '../steps/WalletAddressView'
 
+import { GatewayOptionType } from './GatewayOption'
 
 const ChooseGatewayView = () => {
   const { nextScreen } = useContext(NavContext)
@@ -15,11 +16,17 @@ const ChooseGatewayView = () => {
   const { handleInputChange } = inputInterface
 
   const [selectedGatewayIndex, setSelectedGatewayIndex] = useState(0)
+  const [ratedGateways, setRatedGateways] = useState<GatewayOptionType[]>([])
 
   useEffect(() => {
-    handleInputChange('selectedGateway', data.availableRates[selectedGatewayIndex])
-    handleInputChange('nextStep', data.availableRates[selectedGatewayIndex].nextStep)
-  }, [handleInputChange, selectedGatewayIndex, data.availableRates])
+    const ratedGateways = data.availableRates.filter((g) => g.available)
+    setRatedGateways(ratedGateways)
+  }, [data.availableRates])
+
+  useEffect(() => {
+    handleInputChange('selectedGateway', ratedGateways[selectedGatewayIndex])
+    handleInputChange('nextStep', ratedGateways[selectedGatewayIndex].nextStep)
+  }, [handleInputChange, selectedGatewayIndex, ratedGateways])
 
   return (
     <div className={styles.view}>
