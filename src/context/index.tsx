@@ -117,7 +117,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         if (!filtredGatewaysByCrypto[i].fiatCurrencies) continue
         availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[i].fiatCurrencies)
       }
-      availableCurrencies = arrayUnique(availableCurrencies)
+      availableCurrencies = arrayObjUnique(availableCurrencies, 'code')
       availableCurrencies = availableCurrencies.map(({ code, precision }) => ({ precision: precision, id: code, name: code, symbol: ICONS_MAP[code]?.symbol, info: ICONS_MAP[code]?.name || 'Currency', icon: ICONS_MAP[code]?.icon, type: ItemType.Currency }))
       addData({ availableCurrencies, filtredGatewaysByCrypto })
       handleInputChange('selectedCrypto', actualCrypto)
