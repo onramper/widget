@@ -35,3 +35,13 @@
     margin-left: var(--component-content-spacing);
     opacity: 0.25;
 }
+
+.search-box {
+    margin: 1.125rem var(--padding-rl);
+    height: var(--component-content-height);
+    border-style: none;
+}
+
+.search-box:focus {
+    outline: none;
+}

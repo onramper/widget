@@ -1,25 +1,39 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import styles from './styles.module.css'
 import { ListItemType, _ListItemType } from '../types'
 
 type ListType = {
     items: ListItemType[]
     onItemClick?: (index: number, item: ListItemType) => void
+    searchable?: boolean
 }
 
 const List: React.FC<ListType> = (props) => {
-    const { items } = props
+    const { items, searchable = false } = props
     const { onItemClick = () => null } = props
 
     const handleItemClick = useCallback((index: number, item: ListItemType) => {
         onItemClick(index, item)
     }, [onItemClick])
 
+    const [query, setQuery] = useState('')
+
+    const filterItems = useCallback((item: ListItemType) => {
+        return item.name.toLowerCase().split(' ').some((substring) => substring.toLowerCase().startsWith(query))
+            || item.name.toLowerCase().toLowerCase().startsWith(query)
+            || item.info?.split(' ').some((substring) => substring.toLowerCase().startsWith(query))
+            || item.info?.toLowerCase().startsWith(query)
+            ? true : false
+    }, [query])
+
     return (
         <div className={`${styles.list}`}>
+            {searchable &&
+                <input className={styles['search-box']} type='text' value={query} onChange={(e) => setQuery(e.currentTarget.value.toLowerCase())} placeholder="Search..." autoFocus />
+            }
             {
                 items.map((item, i) =>
-                    <ListItem
+                    filterItems(item) && <ListItem
                         key={i}
                         index={i}
                         name={item.name}
