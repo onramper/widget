@@ -17,6 +17,7 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: 
   const textInfo = `We sent a verification code to ${codeSentTo}. Please enter the verification code below.`
 
   const handleButtonAction = async () => {
+    setIsLoading(true)
     let ns: nextStepType | undefined = undefined
     if (nextStep) {
       let params = nextStep.data.reduce((acc, current) => {
@@ -40,6 +41,7 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: 
         onResendClick={() => backScreen()}
         handleInputChange={inputInterface.handleInputChange}
         isLoading={isLoading}
+        codeId={nextStep.data[0]}
       />
       <Footer />
     </div>
