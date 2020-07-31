@@ -25,7 +25,7 @@ const ChooseGatewayView = () => {
 
   useEffect(() => {
     handleInputChange('selectedGateway', ratedGateways[selectedGatewayIndex])
-    handleInputChange('nextStep', ratedGateways[selectedGatewayIndex].nextStep)
+    handleInputChange('nextStep', ratedGateways[selectedGatewayIndex]?.nextStep)
   }, [handleInputChange, selectedGatewayIndex, ratedGateways])
 
   return (

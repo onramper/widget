@@ -23,7 +23,7 @@ const EmailView: React.FC<{} & { nextStep?: nextStepType }> = ({ nextStep }) => 
         return { ...acc, [current]: collected[current] }
       }, {})
       ns = await apiInterface.executeStep(nextStep.url, params);
-      if (ns) {
+      if (ns?.url) {
         nextScreen(<Step {...ns} />)
       }
     }

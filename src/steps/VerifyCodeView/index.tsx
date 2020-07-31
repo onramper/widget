@@ -24,7 +24,7 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: 
         return { ...acc, [current]: collected[current] }
       }, {})
       ns = await apiInterface.executeStep(nextStep.url, params);
-      if (ns) {
+      if (ns?.url) {
         nextScreen(<Step {...ns} />)
       }
     }
