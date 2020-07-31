@@ -11,21 +11,22 @@ type BodyVerifyCodeType = {
     onResendClick: () => void;
     handleInputChange: (name: string, value: any) => void
     textInfo?: string
+    isLoading?: boolean
 }
 
 const BodyVerifyCode: React.FC<BodyVerifyCodeType> = (props) => {
     const { handleInputChange, onActionButton, onResendClick } = props
-    const { textInfo } = props
+    const { textInfo, isLoading = false } = props
     return (
         <main className={stylesCommon.body}>
             {textInfo ?
                 <div className={`${stylesCommon['body__child']}`}>
                     <InfoBox text={textInfo!} />
                 </div> : null}
-            <InputText name='card-number' onChange={handleInputChange} className={stylesCommon['body__child']} label="Verification code" placeholder="" />
+            <InputText name='verifyEmailCode' onChange={handleInputChange} className={stylesCommon['body__child']} label="Verification code" placeholder="" />
             <span onClick={onResendClick} className={styles['resend']}>Resend code&nbsp;</span>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <ButtonAction onClick={onActionButton} text='Continue' />
+                <ButtonAction onClick={onActionButton} text={isLoading ? 'Verifying code...' : 'Continue'} />
             </div>
         </main>
     )

@@ -2,23 +2,22 @@ import React, { useContext, useState, useEffect } from 'react';
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyWalletAddress from './BodyWalletAddress'
-import AddressView from '../AddressView'
+import Step from '../Step'
 import styles from '../../styles.module.css'
-
-/* import nextStep from '../nextStep' */
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
 const WalletAddressView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
-  const { inputInterface, /* data, */ collected } = useContext(APIContext);
+  const { inputInterface, data, collected } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
 
   const handleButtonAction = () => {
-    /* if (!collected.walletAddress || !data.nextStep) return
-    nextStep(nextScreen, data.nextStep) */
-    nextScreen(<AddressView />)
+    if (!collected.walletAddress || !data.nextStep) return
+    if (collected.selectedGateway?.nextStep)
+      nextScreen(<Step {...collected.selectedGateway?.nextStep} />)
+    console.log('oneTime')
   }
 
   useEffect(() => {

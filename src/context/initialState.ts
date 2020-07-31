@@ -62,6 +62,7 @@ export type InputInterfaceType = {
 
 export type ApiInterfaceType = {
     sendCodeEmail: () => Promise<boolean>
+    executeStep: (url: string, params: { [key: string]: any }) => Promise<any>
 }
 
 export const initialState: StateType = {
@@ -108,6 +109,7 @@ export const initialState: StateType = {
         handleFileDeleted: () => null
     },
     apiInterface: {
-        sendCodeEmail: async () => false
+        sendCodeEmail: async () => false,
+        executeStep: async (url: string, params: { [key: string]: any }) => false
     }
 }

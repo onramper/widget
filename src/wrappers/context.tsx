@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useCallback } from 'react';
 import styles from './styles.module.css'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -11,7 +11,8 @@ export type NavigationStateType = {
 export enum NavigationActionsType {
   Only = 'ONLY',
   Push = 'PUSH',
-  Pop = 'POP'
+  Pop = 'POP',
+  Replace = 'REPLACE'
 }
 
 export type NavigationActions = {
@@ -22,6 +23,9 @@ export type NavigationActions = {
   screen: ScreenType;
 } | {
   type: NavigationActionsType.Pop;
+} | {
+  type: NavigationActionsType.Replace;
+  screen: ScreenType;
 }
 
 const initialState = { screens: [] }
@@ -32,11 +36,13 @@ const NavContext = createContext<{
   onlyScreen: (screen: ScreenType) => void;
   backScreen: () => void;
   nextScreen: (screen: ScreenType) => void;
+  replaceScreen: (screen: ScreenType) => void;
 }>({
   _state: { screens: [] },
   onlyScreen: () => null,
   backScreen: () => null,
-  nextScreen: () => null
+  nextScreen: () => null,
+  replaceScreen: () => null
 });
 
 
@@ -44,12 +50,13 @@ const NavContext = createContext<{
 const NavProvider: React.FC = (props) => {
   const [_state, dispatch] = useReducer(mainReducer, initialState);
 
-  const backScreen = () => dispatch({ type: NavigationActionsType.Pop })
-  const nextScreen = (screen: ScreenType) => dispatch({ type: NavigationActionsType.Push, screen })
-  const onlyScreen = (screen: ScreenType) => dispatch({ type: NavigationActionsType.Only, screen })
+  const backScreen = useCallback(() => dispatch({ type: NavigationActionsType.Pop }), [])
+  const nextScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Push, screen }), [])
+  const onlyScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Only, screen }), [])
+  const replaceScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Replace, screen }), [])
 
   return (
-    <NavContext.Provider value={{ _state, onlyScreen, backScreen, nextScreen }}>
+    <NavContext.Provider value={{ _state, onlyScreen, backScreen, nextScreen, replaceScreen }}>
       {props.children}
     </NavContext.Provider>
   )
@@ -111,6 +118,8 @@ const navigationReducer = (state: NavigationStateType, action: NavigationActions
     case NavigationActionsType.Pop:
       if (screens.length <= 1) return screens
       return [...screens.slice(0, -1)];
+    case NavigationActionsType.Replace:
+      return [...screens.slice(0, -1), action.screen];
     default:
       return screens
   }

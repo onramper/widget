@@ -23,7 +23,7 @@ type rateParams = {
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams, signal?: AbortSignal) => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`, {signal}).then(res => res.json())
+    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`, { signal }).then(res => res.json())
     return gateways
 }
 
@@ -38,11 +38,30 @@ const email = async (url: string, email: string) => {
     console.log(nextStep)
     return nextStep
 }
+/**
+ * Exectue step
+ */
+const executeStep = async (url: string, data: { [key: string]: any }) => {
+    console.log(data)
+    try {
+        const nextStep = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({ ...data })
+        }).then(res => res.json())
+        console.log(nextStep)
+        return nextStep
+    } catch (error) {
+        window.opener = error
+        console.log(error)
+        return 
+    }
+}
 
 export {
     gateways,
     rate,
-    email
+    email,
+    executeStep
 }
 
 window.opener = { ...window.opener, email, gateways }

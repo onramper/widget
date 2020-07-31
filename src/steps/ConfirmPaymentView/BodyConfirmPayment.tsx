@@ -39,7 +39,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
         <main className={stylesCommon.body}>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow} ${styles['container']}`}>
                 <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={<IconPay className={styles['icon']} />} title='Pay' content={`${props.payAmount} ${props.currency}`} onClick={() => setIsExpanded(actual => !actual)} isExpanded={isExpanded} />
+                    <Item type='main' icon={<IconPay className={styles['icon']} />} title='Pay' content={`${props.payAmount} ${props.currency}`} onClick={props.conversionRate || props.fees ? () => setIsExpanded(actual => !actual) : undefined} isExpanded={isExpanded} />
                     <CSSTransition
                         in={isExpanded}
                         timeout={1000}

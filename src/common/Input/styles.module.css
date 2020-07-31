@@ -87,10 +87,19 @@
     color: inherit;
 }
 
-.symbol::after {
+.symbol::before {
     position: relative;
     top: -0.025rem;
     content: attr(before-content);
+    align-self: center;
+    white-space: nowrap;
+    font-size: 0.75em;
+}
+
+.symbol::after {
+    position: relative;
+    top: -0.025rem;
+    content: attr(after-content);
     align-self: center;
     white-space: nowrap;
     font-size: 0.75em;

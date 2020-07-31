@@ -236,6 +236,10 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
     return await API.email(state.data.nextStep.url, state.collected.email)
   }, [state.data.nextStep, state.collected.email])
 
+  const executeStep = useCallback(async (url: string, data: { [key: string]: any }) => {
+    return await API.executeStep(url, data)
+  }, [])
+
   return (
     <APIContext.Provider value={{
       ...state,
@@ -252,7 +256,8 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         handlePaymentMethodChange
       },
       apiInterface: {
-        sendCodeEmail
+        sendCodeEmail,
+        executeStep
       }
     }}>
       {props.children}

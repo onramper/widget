@@ -13,9 +13,9 @@ const nextStep = (nextScreen: any, step: { url?: string, data?: string[] }) => {
         case 'email':
             nextScreen(<EmailView />)
             break
-        case 'verifyEmail':
+/*         case 'verifyEmail':
             nextScreen(<VerifyCodeView name='email' codeType='email' />)
-            break
+            break */
         default:
             break
     }

@@ -8,7 +8,7 @@ import IconDelete from '../../icons/deleteicon.svg'
 type UploadBoxType = {
     onFilesAdded: (name: string, files: File[], maxFiles: number) => boolean
     onFileDeleted: (name: string, fileName: string) => void
-    onError: (err: string) => void
+    onError?: (err: string) => void
     id: string
     filesList: File[]
     maxFiles?: number
@@ -17,7 +17,7 @@ type UploadBoxType = {
 const UploadBox: React.FC<UploadBoxType> = (props) => {
 
     const { filesList, maxFiles = -1, id } = props
-    const { onFilesAdded, onError, onFileDeleted } = props
+    const { onFilesAdded, onError = () => null, onFileDeleted } = props
 
     const [isDragOver, setIsDragOver] = useState(false)
     const handleDragEnter = useCallback(() => setIsDragOver(true), []);

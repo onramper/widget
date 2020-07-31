@@ -15,10 +15,11 @@ type BodyWalletAddressType = {
     onActionButton: () => void
     handleInputChange: (name: string, value: any) => void
     isFilled: boolean
+    isLoading?: boolean
 }
 
 const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
-    const { handleInputChange, onActionButton, isFilled } = props
+    const { handleInputChange, onActionButton, isFilled, isLoading = false } = props
     const { collected } = useContext(APIContext)
     const [selectedAddress, setSelectedAddress] = useState('')
     const { nextScreen, backScreen } = useContext(NavContext);
@@ -51,7 +52,7 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
                 onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
                 name='walletAddress' onChange={onChange} className={stylesCommon['body__child']} label={`RECEIVER ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <ButtonAction onClick={onActionButton} text='Continue' disabled={!isFilled} />
+                <ButtonAction onClick={onActionButton} text={isLoading ? 'Creating transaction...' : 'Continue'} disabled={!isFilled} />
             </div>
         </main>
     )

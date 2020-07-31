@@ -30,7 +30,7 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
                     <InfoBox text={textInfo!} />
                 </div> : null}
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                <InputText symbol={symbol} value={amount} name='wyret-amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+                <InputText symbol={symbol} symbolPosition={'start'} value={amount} name='wyret-amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
                 <InputText value={reference} name='wyret-reference' className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
             </div>
             <InputText value={iban} name='wyret-iban' className={stylesCommon['body__child']} label="IBAN" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
