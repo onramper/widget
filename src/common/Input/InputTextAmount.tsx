@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import styles from './styles.module.css'
 
-import { toMaxDecimalsRound } from '../../wrappers/utils'
+import { toMaxDecimalsFloor } from '../../wrappers/utils'
 
 import { ListItemType } from '../../common/types';
 
@@ -54,6 +54,10 @@ const InputText: React.FC<InputTextType> = (props) => {
     }, [symbols])
 
     useEffect(() => {
+        onChange(name, toMaxDecimalsFloor(value ?? 0, actualSymbol?.precision ?? 1))
+    }, [onChange, name, actualSymbol, value])
+
+    useEffect(() => {
         onSymbolChange(actualSymbol)
     }, [actualSymbol, onSymbolChange])
 
@@ -71,12 +75,12 @@ const InputText: React.FC<InputTextType> = (props) => {
                 {icon ? <img onClick={() => onIconClick(name)} alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} /> : null}
                 <span after-content={actualSymbol?.symbol ?? undefined} className={`${styles['input__type__child']} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} >
                     <input
-                        onInput={(e: React.FormEvent<HTMLInputElement>) => {
+/*                         onInput={(e: React.FormEvent<HTMLInputElement>) => {
                             if (e.currentTarget.value) {
                                 let san = toMaxDecimalsRound(e.currentTarget.value, actualSymbol?.precision ?? 0)
                                 e.currentTarget.value = san.toString()
                             }
-                        }}
+                        }} */
                         step={actualSymbol?.precision !== undefined ? Number('1e-' + actualSymbol.precision) : 'any'}
                         name={name}
                         value={value}

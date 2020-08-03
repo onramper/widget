@@ -23,10 +23,11 @@ export const arrayObjUnique = (array: any[], attrFilter: string) => {
 }
 
 
-export const toMaxDecimalsFloor = (amount: number, decimals: number) => {
+export const toMaxDecimalsFloor = (n: number | string, decimals: number) => {
+    const amount = typeof n === 'string' ? Number(n.replace(',', '.')) : n
     let factor = Number('1e' + decimals)
-    let n = Math.floor((amount) * factor) / factor
-    return !isFinite(n) ? 0 : n
+    let nRound = Math.floor((amount) * factor) / factor
+    return !isFinite(nRound) ? 0 : nRound
 }
 
 export const toMaxDecimalsRound = (n: number | string, decimals: number) => {
