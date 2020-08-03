@@ -53,7 +53,6 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
         className="input__type input__type--number   "
       >
         <span
-          before-content=""
           className="input__type__child symbol  "
           style={
             Object {
