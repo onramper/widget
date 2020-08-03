@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import styles from './styles.module.css'
 
-import { toMaxDecimalsFloor } from '../../wrappers/utils'
+import { toMaxDecimalsRound } from '../../wrappers/utils'
 
 import { ListItemType } from '../../common/types';
 
@@ -36,7 +36,7 @@ const InputText: React.FC<InputTextType> = (props) => {
     const [switchPairEnabled, setSwitchPairEnabled] = useState(true)
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value === '' ? e.target.value : type === 'number' ? toMaxDecimalsFloor(e.target.value ?? 0, actualSymbol?.precision ?? 1) : e.target.value
+        let value = e.target.value === '' ? e.target.value : type === 'number' ? toMaxDecimalsRound(e.target.value ?? 0, actualSymbol?.precision ?? 1) : e.target.value
         onChange(e.target.name, value)
     }, [onChange, type, actualSymbol])
     
