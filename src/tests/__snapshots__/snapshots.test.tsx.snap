@@ -65,7 +65,6 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
             min="0"
             name="amount"
             onChange={[Function]}
-            onInput={[Function]}
             placeholder="100"
             step="any"
             type="number"
