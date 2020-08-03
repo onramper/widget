@@ -12,8 +12,8 @@ type gatewaysParams = {
 const gateways = async (params: gatewaysParams) => {
     const endpoint = '/gateways'
     const urlParams = createUrlParamsFromObject(params)
-    const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`).then(res => res.json())
-    return gateways
+    const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`)
+    return processResponse(gateways)
 }
 
 type rateParams = {
@@ -23,48 +23,31 @@ type rateParams = {
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams, signal?: AbortSignal) => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`, { signal }).then(res => res.json())
-    return gateways
+    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`, { signal })
+    return processResponse(gateways)
 }
 
-/**
- * Remote calls - steps
- */
-const email = async (url: string, email: string) => {
-    const nextStep = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({ email })
-    }).then(res => res.json()).catch(() => undefined)
-    console.log(nextStep)
-    return nextStep
-}
 /**
  * Exectue step
  */
 const executeStep = async (url: string, data: { [key: string]: any }) => {
-    console.log(data)
-    try {
-        const nextStep = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({ ...data })
-        }).then(res => res.json())
-        console.log(nextStep)
-        return nextStep
-    } catch (error) {
-        window.opener = error
-        console.log(error)
-        return 
-    }
+    const nextStep = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ ...data })
+    })
+    return processResponse(nextStep)
 }
 
-export {
-    gateways,
-    rate,
-    email,
-    executeStep
+const processResponse = async (response: Response) => {
+    if (response.status === 200)
+        return response.json()
+    else if (response.status >= 500)
+        throw new Error(await response.text())
+    else if (response.status >= 400)
+        throw new Error("Connection error, try again later")
+    else
+        throw new Error("Unknown error, try again later")
 }
-
-window.opener = { ...window.opener, email, gateways }
 
 const createUrlParamsFromObject = (paramsObj: { [key: string]: any }) =>
     Object.keys(paramsObj).reduce((acc, current, i, arr) => {
@@ -76,3 +59,10 @@ const createUrlParamsFromObject = (paramsObj: { [key: string]: any }) =>
         }
         return ''
     }, '')
+
+
+export {
+    gateways,
+    rate,
+    executeStep
+}

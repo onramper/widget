@@ -231,11 +231,6 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
     addData({ nextStep })
   }, [state.collected.selectedGateway, addData])
 
-  const sendCodeEmail = useCallback(async () => {
-    if (!state.data.nextStep?.url) return false
-    return await API.email(state.data.nextStep.url, state.collected.email)
-  }, [state.data.nextStep, state.collected.email])
-
   const executeStep = useCallback(async (url: string, data: { [key: string]: any }) => {
     return await API.executeStep(url, data)
   }, [])
@@ -256,7 +251,6 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         handlePaymentMethodChange
       },
       apiInterface: {
-        sendCodeEmail,
         executeStep
       }
     }}>
