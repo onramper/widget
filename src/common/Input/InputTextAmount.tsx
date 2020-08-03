@@ -30,15 +30,16 @@ const InputText: React.FC<InputTextType> = (props) => {
     const placeholder = disabled ? '' : props.placeholder
     const clickableIcon = props.onIconClick ? true : false
     const { onChange = (e) => false, onIconClick = (n) => null } = props
-
-    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value === '' ? e.target.value : type === 'number' ? +e.target.value : e.target.value
-        onChange(e.target.name, value)
-    }, [onChange, type])
-
+    
     const [actualSymbol, setActualSymbol] = useState<ListItemType>()
     const [actualSymbolIndex, setActualSymbolIndex] = useState(0)
     const [switchPairEnabled, setSwitchPairEnabled] = useState(true)
+
+    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value === '' ? e.target.value : type === 'number' ? toMaxDecimalsFloor(e.target.value ?? 0, actualSymbol?.precision ?? 1) : e.target.value
+        onChange(e.target.name, value)
+    }, [onChange, type, actualSymbol])
+    
     useEffect(() => {
         if (!symbols || symbols.length <= 0) return
         const nonFungible = symbols.find((symbol: ListItemType) => symbol.precision === 0)
@@ -52,10 +53,6 @@ const InputText: React.FC<InputTextType> = (props) => {
             setSwitchPairEnabled(true)
         }
     }, [symbols])
-
-    useEffect(() => {
-        onChange(name, toMaxDecimalsFloor(value ?? 0, actualSymbol?.precision ?? 1))
-    }, [onChange, name, actualSymbol, value])
 
     useEffect(() => {
         onSymbolChange(actualSymbol)
