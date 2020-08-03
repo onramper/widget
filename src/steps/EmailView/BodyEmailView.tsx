@@ -12,12 +12,14 @@ type BodyEmailViewType = {
     textInfo?: string
     isFilled?: boolean
     isLoading?: boolean
+    errorMsg?: string
+    inputName?: string
 }
 
 const BodyEmailView: React.FC<BodyEmailViewType> = (props) => {
     const { collected } = useContext(APIContext);
     const { handleInputChange, onActionButton } = props
-    const { textInfo, isFilled = false, isLoading = false } = props
+    const { textInfo, isFilled = false, isLoading = false, inputName = 'email' } = props
 
     return (
         <main className={stylesCommon.body}>
@@ -25,16 +27,12 @@ const BodyEmailView: React.FC<BodyEmailViewType> = (props) => {
                 <div className={`${stylesCommon['body__child']}`}>
                     <InfoBox text={textInfo!} />
                 </div> : null}
-            <InputText value={collected.email} type='email' name='email' onChange={handleInputChange} className={stylesCommon['body__child']} label="Email" placeholder="hello@onramper.com" />
+            <InputText value={collected[inputName]} type='email' name={inputName} onChange={handleInputChange} className={stylesCommon['body__child']} label="Email" placeholder="hello@onramper.com" error={props.errorMsg} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Send'} disabled={!isFilled} />
+                <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Send'} disabled={!isFilled || isLoading} />
             </div>
         </main>
     )
-}
-
-BodyEmailView.defaultProps = {
-
 }
 
 export default BodyEmailView

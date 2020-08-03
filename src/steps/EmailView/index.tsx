@@ -8,34 +8,36 @@ import Step, { nextStepType } from '../Step'
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
-const EmailView: React.FC<{} & { nextStep?: nextStepType }> = ({ nextStep }) => {
+const EmailView: React.FC<{ nextStep: nextStepType }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
   const { inputInterface, collected, /* data, */ apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string>()
   const textInfo = 'We will send a code to your email.'
 
   const handleButtonAction = async () => {
     setIsLoading(true)
-    let ns: nextStepType | undefined = undefined
-    if (nextStep) {
-      let params = nextStep.data.reduce((acc, current) => {
-        return { ...acc, [current]: collected[current] }
-      }, {})
-      ns = await apiInterface.executeStep(nextStep.url, params);
-      if (ns?.url) {
-        nextScreen(<Step {...ns} />)
-      }
+    setErrorMsg(undefined)
+
+    let params = nextStep.data.reduce((acc, current) => {
+      return { ...acc, [current.name]: collected[current.name] }
+    }, {})
+    try {
+      const newNextStep = await apiInterface.executeStep(nextStep.url, params);
+      nextScreen(<Step {...newNextStep} />)
+    } catch (error) {
+      setErrorMsg(error.message)
     }
 
     setIsLoading(false)
-
   }
 
   useEffect(() => {
-    const isFilled = collected.email ? true : false
+    const isFilled = collected[nextStep.data[0].name] ? true : false
     setIsFilled(isFilled)
-  }, [collected.email])
+    console.log('happens')
+  }, [collected, nextStep.data])
 
   return (
     <div className={styles.view}>
@@ -46,6 +48,8 @@ const EmailView: React.FC<{} & { nextStep?: nextStepType }> = ({ nextStep }) => 
         handleInputChange={inputInterface.handleInputChange}
         isFilled={isFilled}
         isLoading={isLoading}
+        errorMsg={errorMsg}
+        inputName={nextStep.data[0].name}
       />
       <Footer />
     </div>

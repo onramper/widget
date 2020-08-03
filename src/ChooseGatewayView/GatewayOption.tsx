@@ -48,7 +48,7 @@ export type _GatewayOptionType = {
     index: number
     receivedCrypto: number
     selectedReceivedCrypto: number
-    nextStep: { url: string, data: string[] }
+    nextStep: { type: string, url: string, data: { type: string, name: string }[] }
     available: boolean
     error?: any
 }

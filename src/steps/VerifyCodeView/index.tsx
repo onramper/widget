@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyVerifyCode from './BodyVerifyCode'
@@ -12,25 +12,33 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { inputInterface, collected, apiInterface } = useContext(APIContext);
   const [isLoading, setIsLoading] = useState(false)
+  const [isFilled, setIsFilled] = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string>()
 
   const codeSentTo = collected[codeType]
   const textInfo = `We sent a verification code to ${codeSentTo}. Please enter the verification code below.`
 
   const handleButtonAction = async () => {
     setIsLoading(true)
-    let ns: nextStepType | undefined = undefined
-    if (nextStep) {
-      let params = nextStep.data.reduce((acc, current) => {
-        console.log(current)
-        return { ...acc, [current]: collected[current] }
-      }, {})
-      ns = await apiInterface.executeStep(nextStep.url, params);
-      if (ns?.url) {
-        nextScreen(<Step {...ns} />)
-      }
+    setErrorMsg(undefined)
+
+    let params = nextStep.data.reduce((acc, current) => {
+      return { ...acc, [current.name]: collected[current.name] }
+    }, {})
+    try {
+      const newNextStep = await apiInterface.executeStep(nextStep.url, params);
+      nextScreen(<Step {...newNextStep} />)
+    } catch (error) {
+      setErrorMsg(error.message)
     }
+
     setIsLoading(false)
   }
+
+  useEffect(() => {
+    const isFilled = collected[nextStep.data[0].name] ? true : false
+    setIsFilled(isFilled)
+  }, [collected, nextStep.data])
 
   return (
     <div className={styles.view}>
@@ -41,7 +49,9 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: 
         onResendClick={() => backScreen()}
         handleInputChange={inputInterface.handleInputChange}
         isLoading={isLoading}
-        codeId={nextStep.data[0]}
+        isFilled={isFilled}
+        inputName={nextStep.data[0].name}
+        errorMsg={errorMsg}
       />
       <Footer />
     </div>

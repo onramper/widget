@@ -1,38 +1,47 @@
 import React, { useContext, useEffect } from 'react'
 import stylesCommon from '../../styles.module.css'
 
-import UploadView from '../UploadView'
+/* import UploadView from '../UploadView'
 import CreditCardView from '../CreditCardView'
-import WireTranserView from '../WireTranserView'
+import WireTranserView from '../WireTranserView' */
+import VerifyCodeView from '../VerifyCodeView'
 import EmailView from '../EmailView'
 import FormView from '../FormView'
-import VerifyCodeView from '../VerifyCodeView'
 
 import { NavContext } from '../../wrappers/context'
 
 export type _nextStepType = {
+    type: string
     url: string,
-    data: string[]
+    data: { name: string, type: string }[]
 }
 
 const StepViewContent: React.FC<_nextStepType> = (nextStep) => {
     const { replaceScreen, backScreen } = useContext(NavContext);
 
     useEffect(() => {
-        let urlType = nextStep.url.split('/')[5]
-        console.log('urlType', urlType, urlType === 'verifyEmail')
-        if (urlType === 'email')
-            replaceScreen(<EmailView nextStep={nextStep} />)
-        else if (urlType === 'verifyEmail')
-            replaceScreen(<VerifyCodeView nextStep={nextStep} codeType='email' name='email' />)
-        else if (urlType === 'document')
-            replaceScreen(<UploadView />)
-        else if (urlType === 'creditCard')
-            replaceScreen(<CreditCardView />)
-        else if (urlType === 'wyreTransfer')
-            replaceScreen(<WireTranserView />)
-        else
-            replaceScreen(<FormView fields={nextStep.data} />)
+        switch (nextStep.type) {
+            case ('form'):
+                if (nextStep.data.length === 1) {
+                    if (nextStep.data[0].name === 'email')
+                        replaceScreen(<EmailView nextStep={nextStep} />)
+                    else if (nextStep.data[0].name === 'verifyEmailCode')
+                        replaceScreen(<VerifyCodeView nextStep={nextStep} codeType='email' name='email' />)
+                }
+                else
+                    replaceScreen(<FormView nextStep={nextStep} />)
+                break;
+            /* case ('form'):
+                replaceScreen(<VerifyCodeView nextStep={nextStep} codeType='email' name='email' />)
+            case ('form'):
+                replaceScreen(<UploadView />)
+            case ('form'):
+                replaceScreen(<CreditCardView />)
+            case ('form'):
+                replaceScreen(<WireTranserView />) */
+            default:
+            /* replaceScreen(<FormView fields={nextStep.data[0].name} />) */
+        }
     }, [nextStep, replaceScreen, backScreen])
 
     return (

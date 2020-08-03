@@ -9,16 +9,16 @@ const nextStep = (nextScreen: any, step: { url?: string, data?: string[] }) => {
 
     const splittedURL = step.url.split('/')
     const type = splittedURL[5]
-    switch (type) {
+    /* switch (type) {
         case 'email':
             nextScreen(<EmailView />)
             break
-/*         case 'verifyEmail':
+        case 'verifyEmail':
             nextScreen(<VerifyCodeView name='email' codeType='email' />)
-            break */
+            break 
         default:
             break
-    }
+    } */
     return null
 }
 
