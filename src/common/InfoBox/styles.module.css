@@ -2,6 +2,53 @@
     margin: 0;
     padding: 0.75rem 1.25rem;
     font-size: 0.75rem;
-    background-color: #FCF5EE;
     border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.infobox--info {
+    background-color: #FCF5EE;
+}
+
+.infobox--error {
+    background-color: #E35757;
+    color: white;
+}
+
+.text {
+    flex-grow: 1;
+}
+
+.text + .close-button {
+    margin-left: 1.25rem;
+}
+
+.close-button:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+/********error display transition*********/
+.collapse-enter {
+    max-height: 0px;
+    opacity: 0;
+}
+
+.collapse-enter-active {
+    max-height: 3rem;
+    opacity: 1;
+    transition: max-height 100ms linear, opacity 100ms linear;
+}
+
+.collapse-exit {
+    max-height: 3rem;
+    opacity: 1;
+}
+
+.collapse-exit-active {
+    max-height: 0px;
+    opacity: 0;
+    transition: max-height 100ms linear, opacity 100ms linear;
 }
