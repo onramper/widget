@@ -17,7 +17,8 @@ const BuyCryptoView: React.FC = () => {
   const [selectedCurrency, setSelectedCurrency] = useState<ListItemType>()
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<ListItemType>()
 
-  const [flagEffectPrice, setFlagEffectPrice] = useState(0)
+  const [flagEffectRate, setFlagEffectRate] = useState(0)
+  const [flagEffectGateways, setFlagEffectGateways] = useState(0)
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected } = useContext(APIContext);
@@ -37,10 +38,11 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     async function initEffect() {
-      await init();
+      const err = await init();
+      processErrors(err)
     }
     initEffect()
-  }, [init])
+  }, [init, flagEffectGateways])
 
   useEffect(() => {
     async function handleCryptoChangeEffect() {
@@ -63,9 +65,9 @@ const BuyCryptoView: React.FC = () => {
       processErrors(err)
     }
     handlePaymentMethodChangeEffect()
-  }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors, flagEffectPrice])
+  }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors, flagEffectRate])
 
-  const processErrors = (err: any) => {
+  const processErrors = (err: any, by?: string) => {
     if (err)
       setErrors(prev => ({ ...prev, ...err }))
     else setErrors(undefined)
@@ -102,9 +104,12 @@ const BuyCryptoView: React.FC = () => {
         handleInputChange={inputInterface.handleInputChange}
         errors={errors}
         isFilled={isFilled}
-        onPriceError={() => {
+        onPriceError={(errName: string) => {
+          if (errName === 'rate')
+            setFlagEffectRate(prev => prev + 1)
+          else if (errName === 'gateways')
+            setFlagEffectGateways(prev => prev + 1)
           processErrors(undefined)
-          setFlagEffectPrice(prev => prev + 1)
         }}
       />
       <Footer />

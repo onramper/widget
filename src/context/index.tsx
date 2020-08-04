@@ -68,7 +68,15 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   /* *********** */
   const init = useCallback(
     async (country?: string) => {
-      const response_gateways = await API.gateways({ country, includeIcons: true })
+
+      let response_gateways: any = []
+      try {
+        response_gateways = await API.gateways({ country, includeIcons: true })
+      } catch (error) {
+        return { gateways: error.message }
+      }
+
+      if (response_gateways.gateways.length <= 0) return { gateways: 'No gateways found.' }
 
       const ICONS_MAP = response_gateways.icons
 
@@ -204,17 +212,18 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
       if (response_rate.length <= 0) return { rate: 'No gateways found.' }
       else if (filtredRatesByAviability.length <= 0) {
+        let minMaxErrors: { [key: string]: any } = {}
         const errorsBulk = response_rate.reduce((errorsBulk: { [key: string]: any }, item: any) => {
           if (!item.error) return errorsBulk
           switch (item.error.type) {
             case 'MIN':
-              if (!errorsBulk[item.error.type] || item.error.limit < errorsBulk[item.error.type].limit) {
-                errorsBulk[item.error.type] = { message: item.error.message, limit: item.error.limit }
+              if (!minMaxErrors[item.error.type] || item.error.limit < minMaxErrors[item.error.type].limit) {
+                minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
               return errorsBulk
             case 'MAX':
-              if (!errorsBulk[item.error.type] || item.error.limit > errorsBulk[item.error.type].limit) {
-                errorsBulk[item.error.type] = { message: item.error.message, limit: item.error.limit }
+              if (!minMaxErrors[item.error.type] || item.error.limit > minMaxErrors[item.error.type].limit) {
+                minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
               return errorsBulk
             default:
@@ -222,9 +231,8 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
               return errorsBulk
           }
         }, {})
-        return { ...errorsBulk, amount: errorsBulk.MIN ?? errorsBulk.MAX }
+        return { ...errorsBulk, 'input-amount': minMaxErrors.MIN ?? minMaxErrors.MAX }
       }
-      else return
     }, [handleInputChange, addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.collected.amountInCrypto])
 
   /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
