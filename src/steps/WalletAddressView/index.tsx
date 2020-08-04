@@ -19,7 +19,6 @@ const WalletAddressView: React.FC = () => {
     if (!collected.walletAddress || !data.nextStep) return
     if (collected.selectedGateway?.nextStep)
       nextScreen(<Step {...collected.selectedGateway?.nextStep} />)
-    console.log('oneTime')
   }
 
   useEffect(() => {

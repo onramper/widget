@@ -10,7 +10,7 @@ type gatewaysParams = {
 }
 
 const gateways = async (params: gatewaysParams) => {
-    const endpoint = '/gateways'
+    const endpoint = '/gatedways'
     const urlParams = createUrlParamsFromObject(params)
     const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`)
     return processResponse(gateways)
@@ -44,9 +44,9 @@ const processResponse = async (response: Response) => {
     else if (response.status >= 500)
         throw new Error(await response.text())
     else if (response.status >= 400)
-        throw new Error("Connection error, try again later.")
+        throw new Error("Connection error.")
     else
-        throw new Error("Unknown error, try again later.")
+        throw new Error("Unknown error.")
 }
 
 const createUrlParamsFromObject = (paramsObj: { [key: string]: any }) =>

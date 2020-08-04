@@ -36,7 +36,6 @@ const EmailView: React.FC<{ nextStep: nextStepType }> = ({ nextStep }) => {
   useEffect(() => {
     const isFilled = collected[nextStep.data[0].name] ? true : false
     setIsFilled(isFilled)
-    console.log('happens')
   }, [collected, nextStep.data])
 
   return (
