@@ -7,10 +7,11 @@ type InfoBoxType = {
     onDismissClick?: () => void
     canBeDismissed?: boolean
     in: boolean
+    className?: string
 }
 
 const InfoBox: React.FC<InfoBoxType> = (props) => {
-    const { type = 'info', onDismissClick = () => null, canBeDismissed = false } = props
+    const { type = 'info', onDismissClick = () => null, canBeDismissed = false, className = '' } = props
 
     let classBoxType = ''
     switch (type) {
@@ -35,7 +36,7 @@ const InfoBox: React.FC<InfoBoxType> = (props) => {
 
             }}
             unmountOnExit={true} >
-            <div className={`${styles.infobox} ${styles[classBoxType]}`}>
+            <div className={`${styles.infobox} ${styles[classBoxType]} ${className}`}>
                 <span className={styles['text']}>
                     {props.children}
                 </span>

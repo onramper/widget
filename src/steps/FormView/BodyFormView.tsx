@@ -34,12 +34,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     return (
         <main className={stylesCommon.body}>
             {
-                <div className={`${errmsg ? stylesCommon['body__child'] : ''}`}>
-                    <InfoBox in={errmsg !== undefined} type='error' canBeDismissed onDismissClick={() => setErrorMsg(undefined)} >
-                        {`${errmsg}.`}
-                        <button className={stylesCommon['button--link']} onClick={() => console.log('Try again')} >Try again.</button>
-                    </InfoBox>
-                </div>
+                <InfoBox in={errmsg !== undefined} type='error' canBeDismissed onDismissClick={() => setErrorMsg(undefined)} className={`${stylesCommon['body__child']}`} >
+                    {`${errmsg}.`}
+                    <button className={stylesCommon['button--link']} onClick={() => console.log('Try again')} >Try again.</button>
+                </InfoBox>
             }
             {
                 fields.map((dataName, i) =>

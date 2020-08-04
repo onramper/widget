@@ -25,11 +25,9 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <div className={`${stylesCommon['body__child']}`}>
-                <InfoBox in={textInfo !== undefined} >
-                    {textInfo}
-                </InfoBox>
-            </div>
+            <InfoBox className={`${stylesCommon['body__child']}`} in={textInfo !== undefined} >
+                {textInfo}
+            </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
                 <InputText symbol={symbol} symbolPosition={'start'} value={amount} name='wyret-amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
                 <InputText value={reference} name='wyret-reference' className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />

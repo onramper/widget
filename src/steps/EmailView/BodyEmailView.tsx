@@ -23,11 +23,9 @@ const BodyEmailView: React.FC<BodyEmailViewType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <div className={`${stylesCommon['body__child']}`}>
-                <InfoBox in={textInfo !== undefined} >
-                    {textInfo}
-                </InfoBox>
-            </div>
+            <InfoBox in={textInfo !== undefined} className={`${stylesCommon['body__child']}`}>
+                {textInfo}
+            </InfoBox>
             <InputText value={collected[inputName]} type='email' name={inputName} onChange={handleInputChange} className={stylesCommon['body__child']} label="Email" placeholder="hello@onramper.com" error={props.errorMsg} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Send'} disabled={!isFilled || isLoading} />

@@ -21,11 +21,9 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <div className={`${stylesCommon['body__child']}`}>
-                <InfoBox in={textInfo !== undefined} >
-                    {textInfo}
-                </InfoBox>
-            </div>
+            <InfoBox in={textInfo !== undefined} className={`${stylesCommon['body__child']}`}>
+                {textInfo}
+            </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <UploadBox id='files-id' onFilesAdded={inputInterface.handleFilesAdded} onFileDeleted={inputInterface.handleFileDeleted} filesList={collected['files-id']} maxFiles={2} onError={(err) => console.log(err)} />
             </div>
