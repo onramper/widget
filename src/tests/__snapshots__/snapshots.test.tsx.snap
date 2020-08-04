@@ -144,7 +144,7 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
     <span
       className="expected-crypto__amount"
     >
-      Fetching best price...
+      0 BTC
     </span>
     <span
       className="expected-crypto__info"
