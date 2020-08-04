@@ -1,6 +1,8 @@
 .infobox{
+    --padding-rl: 1.25rem;
+    --padding-tb: 0.75rem;
     margin: 0;
-    padding: 0.75rem 1.25rem;
+    padding: var(--padding-tb) var(--padding-rl);
     font-size: 0.75rem;
     border-radius: 5px;
     display: flex;
@@ -22,7 +24,7 @@
 }
 
 .text + .close-button {
-    margin-left: 1.25rem;
+    margin-left: var(--padding-rl);
 }
 
 .close-button:hover {
@@ -34,12 +36,14 @@
 .collapse-enter {
     max-height: 0px;
     opacity: 0;
+    padding: 0 var(--padding-rl);
 }
 
 .collapse-enter-active {
     max-height: 3rem;
     opacity: 1;
-    transition: max-height 100ms linear, opacity 100ms linear;
+    padding: var(--padding-tb) var(--padding-rl);
+    transition: all 100ms linear;
 }
 
 .collapse-exit {
@@ -50,5 +54,5 @@
 .collapse-exit-active {
     max-height: 0px;
     opacity: 0;
-    transition: max-height 100ms linear, opacity 100ms linear;
+    transition: all 100ms linear;
 }
