@@ -10,7 +10,7 @@ type gatewaysParams = {
 }
 
 const gateways = async (params: gatewaysParams) => {
-    const endpoint = '/gatedways'
+    const endpoint = '/gateways'
     const urlParams = createUrlParamsFromObject(params)
     const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`)
     return processResponse(gateways)

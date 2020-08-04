@@ -202,7 +202,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
       addData({ availableRates, response_rate, filtredRatesByAviability })
 
-      if (response_rate.length <= 0) return { general: 'Try again later' }
+      if (response_rate.length <= 0) return { rate: 'No gateways found.' }
       else if (filtredRatesByAviability.length <= 0) {
         const errorsBulk = response_rate.reduce((errorsBulk: { [key: string]: any }, item: any) => {
           if (!item.error) return errorsBulk

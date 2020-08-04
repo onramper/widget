@@ -66,7 +66,6 @@ const BuyCryptoView: React.FC = () => {
   }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors, flagEffectPrice])
 
   const processErrors = (err: any) => {
-    setIsFilled(!err)
     if (err)
       setErrors(prev => ({ ...prev, ...err }))
     else setErrors(undefined)

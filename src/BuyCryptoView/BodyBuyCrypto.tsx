@@ -55,7 +55,8 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
         <main className={stylesCommon.body}>
             <InfoBox in={errors['rate'] !== undefined} type='error' className={`${stylesCommon['body__child']}`}>
                 {errors['rate']}
-                <button className={stylesCommon['button--link']} onClick={props.onPriceError}> Try again.</button>
+                &nbsp;
+                <button className={stylesCommon['button--link']} onClick={props.onPriceError}>Try again.</button>
             </InfoBox>
             <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
@@ -65,7 +66,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
             <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
             <div className={`${stylesCommon['body__child']}`}>
-                <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled || collected.isCalculatingAmount} />
+                <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled || collected.isCalculatingAmount || errors['rate'] !== undefined} />
             </div>
         </main >
     )
