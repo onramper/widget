@@ -31,7 +31,7 @@ const ChooseGatewayView = () => {
   return (
     <div className={styles.view}>
       <Header title="Choose gateway" backButton />
-      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} availableGateways={data.availableRates} onActionButton={() => nextScreen(<WalletAddressView />)} />
+      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} gatewaysList={data.availableRates} onActionButton={() => nextScreen(<WalletAddressView />)} />
       <Footer />
     </div>
   );

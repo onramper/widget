@@ -10,20 +10,26 @@ import GatewaysList from './GatewaysList'
 type BodyChooseGatewayType = {
     onActionButton?: () => void,
     onItemClick?: (index: number) => void,
-    availableGateways: GatewayOptionType[]
+    gatewaysList: GatewayOptionType[]
 }
 
 const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
     const { onActionButton, onItemClick } = props
-    const { availableGateways } = props
+    const { gatewaysList } = props
+
+    const availableGateways = gatewaysList.filter((el) => el.available)
+    const unavailableGateways = gatewaysList.filter((el) => !el.available)
 
     return (
         <main className={stylesCommon.body}>
-            <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <GatewaysList items={availableGateways} onItemClick={onItemClick} />
-            </div>
-            <div className={`${stylesCommon['body__child']}`}>
-                <ButtonAction onClick={onActionButton} text='Continue' />
+            {gatewaysList.length > 0 ?
+                <div className={`${stylesCommon['body__child']}`}>
+                    <GatewaysList availableGateways={availableGateways} unavailableGateways={unavailableGateways} onItemClick={onItemClick} />
+                </div>
+                : <div className={`${stylesCommon['body__child']}`}>No gateways availables:(</div>
+            }
+            <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+                <ButtonAction onClick={onActionButton} text='Continue' disabled={availableGateways.length < 1} />
             </div>
         </main>
     )
