@@ -38,7 +38,6 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const [amountInCrypto, setAmountInCrypto] = useState(false)
 
     const generalErrors = Object.keys(errors).filter((errName) => !errName.startsWith('input-') && errors[errName])
-    console.log('generralErrors', generalErrors)
 
     useEffect(() => {
         setPairs([selectedCurrency, selectedCrypto])
