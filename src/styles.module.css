@@ -114,3 +114,19 @@ components
 .input-icon {
     height: 0.75rem;
 }
+
+.button--link {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    text-decoration: none;
+    outline:0;
+}
+
+.button--link:hover {
+    text-decoration: underline;
+}

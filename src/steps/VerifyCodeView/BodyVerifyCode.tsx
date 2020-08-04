@@ -22,10 +22,11 @@ const BodyVerifyCode: React.FC<BodyVerifyCodeType> = (props) => {
     const { textInfo, isLoading = false, inputName = 'verifyEmailCode', isFilled = 'false' } = props
     return (
         <main className={stylesCommon.body}>
-            {textInfo ?
-                <div className={`${stylesCommon['body__child']}`}>
-                    <InfoBox text={textInfo!} />
-                </div> : null}
+            <div className={`${stylesCommon['body__child']}`}>
+                <InfoBox in={textInfo !== undefined} >
+                    {textInfo}
+                </InfoBox>
+            </div>
             <InputText name={inputName} onChange={handleInputChange} className={stylesCommon['body__child']} label="Verification code" placeholder="" error={props.errorMsg} />
             <span onClick={onResendClick} className={styles['resend']}>Resend code&nbsp;</span>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
