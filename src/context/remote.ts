@@ -44,9 +44,9 @@ const processResponse = async (response: Response) => {
     else if (response.status >= 500)
         throw new Error(await response.text())
     else if (response.status >= 400)
-        throw new Error("Connection error, try again later")
+        throw new Error("Connection error, try again later.")
     else
-        throw new Error("Unknown error, try again later")
+        throw new Error("Unknown error, try again later.")
 }
 
 const createUrlParamsFromObject = (paramsObj: { [key: string]: any }) =>

@@ -12,19 +12,16 @@ import { ListItemType } from '../common/types';
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
-  const [calculatingPrice, setCalculatingPrice] = useState(true)
   const [errors, setErrors] = useState<{ [key: string]: any } | undefined>({})
   const [selectedCrypto, setSelectedCrypto] = useState<ListItemType>()
   const [selectedCurrency, setSelectedCurrency] = useState<ListItemType>()
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<ListItemType>()
 
+  const [flagEffectPrice, setFlagEffectPrice] = useState(0)
+
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected } = useContext(APIContext);
   const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
-
-  useEffect(() => {
-    setCalculatingPrice(collected.isCalculatingAmount)
-  }, [collected.isCalculatingAmount])
 
   useEffect(() => {
     setSelectedCrypto(collected.selectedCrypto)
@@ -61,12 +58,19 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     async function handlePaymentMethodChangeEffect() {
+      processErrors({ rate: undefined })
       const err = await handlePaymentMethodChange(selectedPaymentMethod);
-      if (err) setErrors(prev => ({ ...prev, ...err }))
-      else setErrors(undefined)
+      processErrors(err)
     }
     handlePaymentMethodChangeEffect()
-  }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors])
+  }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors, flagEffectPrice])
+
+  const processErrors = (err: any) => {
+    setIsFilled(!err)
+    if (err)
+      setErrors(prev => ({ ...prev, ...err }))
+    else setErrors(undefined)
+  }
 
   const handleItemClick = (name: string, index: number, item: ListItemType) => {
     if (name === 'crypto')
@@ -99,7 +103,10 @@ const BuyCryptoView: React.FC = () => {
         handleInputChange={inputInterface.handleInputChange}
         errors={errors}
         isFilled={isFilled}
-        isCalculatingPrice={calculatingPrice}
+        onPriceError={() => {
+          processErrors(undefined)
+          setFlagEffectPrice(prev => prev + 1)
+        }}
       />
       <Footer />
     </div>

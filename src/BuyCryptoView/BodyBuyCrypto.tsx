@@ -10,26 +10,27 @@ import { APIContext } from '../context'
 
 import { ListItemType } from '../common/types'
 import { ItemType } from '../context'
+import InfoBox from '../common/InfoBox'
 
 type BodyBuyCryptoType = {
     onBuyCrypto: () => void,
     openPickCrypto: () => void,
     openPickCurrency: () => void,
     openPickPayment: () => void,
+    onPriceError?: () => void
     selectedCrypto?: ListItemType,
     selectedCurrency?: ListItemType,
     selectedPaymentMethod?: ListItemType
     handleInputChange: (name: string, value: any) => void
     errors?: { [key: string]: any }
     isFilled?: boolean
-    isCalculatingPrice?: boolean
 }
 
 
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
-    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = true, isCalculatingPrice = true } = props
+    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
 
@@ -52,15 +53,19 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
+            <InfoBox in={errors['rate'] !== undefined} type='error' className={`${stylesCommon['body__child']}`}>
+                {errors['rate']}
+                <button className={stylesCommon['button--link']} onClick={props.onPriceError}> Try again.</button>
+            </InfoBox>
             <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
                 <InputTextAmount error={errors['amount']?.message} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} />
                 <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={isCalculatingPrice} />
+            <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
             <div className={`${stylesCommon['body__child']}`}>
-                <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled} />
+                <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled || collected.isCalculatingAmount} />
             </div>
         </main >
     )

@@ -179,8 +179,10 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       } catch (error) {
         if (error.name === 'AbortError')
           return {}
-        return { general: 'Try again later' }
+        setLastCall(undefined)
+        return { rate: error.message }
       }
+
       setLastCall(undefined)
 
       const filtredRatesByAviability = response_rate.filter((item: any) => item.available)
