@@ -57,7 +57,7 @@ const createUrlParamsFromObject = (paramsObj: { [key: string]: any }) =>
             if (i < arr.length - 1) acc += '&'
             return acc
         }
-        return ''
+        return acc
     }, '')
 
 
