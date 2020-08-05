@@ -82,7 +82,7 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                         <div>
                             <div className={styles['collapsable-section']}>
                                 <div className={`${styles['details']}`} >
-                                    {duration && <div className={styles.details__item}><div><img alt='' src={IconDetailTxTime} /></div><span>Tx time: {duration.n}{duration.magnitudeShort}</span></div>}
+                                    {duration && <div className={styles.details__item}><div><img alt='' src={IconDetailTxTime} /></div><span>Tx time: {txTime?.message}{/* {duration.n}{duration.magnitudeShort} */}</span></div>}
                                     {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconDetailKYC} /></div><span>KYC level: {kycLevel}</span></div>}
                                 </div>
                                 {/* <div className={`${styles['fees']}`}>
