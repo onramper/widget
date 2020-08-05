@@ -35,8 +35,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         <main className={stylesCommon.body}>
             {
                 <InfoBox in={errmsg !== undefined} type='error' canBeDismissed onDismissClick={() => setErrorMsg(undefined)} className={`${stylesCommon['body__child']}`} >
-                    {`${errmsg}.`}
-                    <button className={stylesCommon['button--link']} onClick={() => console.log('Try again')} >Try again.</button>
+                    {errmsg}
                 </InfoBox>
             }
             {
