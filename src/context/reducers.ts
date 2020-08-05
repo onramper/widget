@@ -1,5 +1,5 @@
 import { StateType, DataStateType } from './initialState'
-import { ListItemType } from '../common/types';
+import { ItemType } from '../common/types';
 
 export enum CollectedActionsType {
     AddField = 'ADD_FIELD',
@@ -17,7 +17,7 @@ export type DataActions = {
     type: CollectedActionsType.AddField;
     payload: {
         name: string
-        value: number | string | boolean | ListItemType
+        value: number | string | boolean | ItemType
     };
 } | {
     type: CollectedActionsType.AddFile;

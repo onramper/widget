@@ -4,17 +4,17 @@ import Footer from '../common/Footer'
 import List from '../common/List'
 import styles from '../styles.module.css'
 
-import { ListItemType } from '../common/types'
+import { ItemType } from '../common/types'
 
-type PickViewType = {
+interface PickViewProps {
   title: string,
-  items: ListItemType[]
-  onItemClick?: (name: string, index: number, item: ListItemType) => void
+  items: ItemType[]
+  onItemClick?: (name: string, index: number, item: ItemType) => void
   name?: string
   searchable?: boolean
 }
 
-const PickView: React.FC<PickViewType> = (props) => {
+const PickView: React.FC<PickViewProps> = (props) => {
   const { title, items, name = '', searchable = false } = props
   const { onItemClick = () => null } = props
   return (

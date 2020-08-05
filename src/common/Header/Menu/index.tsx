@@ -31,12 +31,15 @@ const Menu: React.FC = () => {
       <Header title="Menu" onMenuClick={() => backScreen()} />
       <List onItemClick={handleItemClick} items={[
         {
+          id: 'faq',
           name: 'FAQ/support',
         },
         {
+          id: 'legal',
           name: 'Privacy Policy',
         },
         {
+          id: 'about',
           name: 'About Onramper',
         }
       ]} />

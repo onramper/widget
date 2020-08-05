@@ -3,14 +3,14 @@ import styles from './styles.module.css'
 
 import { toMaxDecimalsRound } from '../../wrappers/utils'
 
-import { ListItemType } from '../../common/types';
+import { ItemType } from '../../common/types';
 
 import { CSSTransition } from 'react-transition-group';
 
 type InputTextType = {
     disabled?: boolean,
     symbol?: string
-    symbols?: ListItemType[],
+    symbols?: ItemType[],
     placeholder?: string,
     label?: string,
     className?: string,
@@ -22,7 +22,7 @@ type InputTextType = {
     name: string
     onIconClick?: (name: string) => void
     error?: string
-    onSymbolChange?: (symbol: ListItemType | undefined) => void
+    onSymbolChange?: (symbol: ItemType | undefined) => void
 }
 
 const InputText: React.FC<InputTextType> = (props) => {
@@ -31,7 +31,7 @@ const InputText: React.FC<InputTextType> = (props) => {
     const clickableIcon = props.onIconClick ? true : false
     const { onChange = (e) => false, onIconClick = (n) => null } = props
     
-    const [actualSymbol, setActualSymbol] = useState<ListItemType>()
+    const [actualSymbol, setActualSymbol] = useState<ItemType>()
     const [actualSymbolIndex, setActualSymbolIndex] = useState(0)
     const [switchPairEnabled, setSwitchPairEnabled] = useState(true)
 
@@ -42,7 +42,7 @@ const InputText: React.FC<InputTextType> = (props) => {
     
     useEffect(() => {
         if (!symbols || symbols.length <= 0) return
-        const nonFungible = symbols.find((symbol: ListItemType) => symbol.precision === 0)
+        const nonFungible = symbols.find((symbol: ItemType) => symbol.precision === 0)
         if (nonFungible) {
             setActualSymbol(nonFungible)
             setSwitchPairEnabled(false)
@@ -102,10 +102,10 @@ const InputText: React.FC<InputTextType> = (props) => {
     )
 }
 
-const SwitchPairs: React.FC<{ pairs: ListItemType[], onClick: (index: number) => void, indexSelectedNumber: number }> = ({ pairs, indexSelectedNumber, onClick }) => {
+const SwitchPairs: React.FC<{ pairs: ItemType[], onClick: (index: number) => void, indexSelectedNumber: number }> = ({ pairs, indexSelectedNumber, onClick }) => {
     return (
         <>
-            {pairs.map((item: ListItemType, index: number) => {
+            {pairs.map((item: ItemType, index: number) => {
                 const isSelected = indexSelectedNumber === index
                 return (
                     <span key={index}>

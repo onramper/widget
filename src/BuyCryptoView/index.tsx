@@ -8,14 +8,14 @@ import ChooseGatewayView from '../ChooseGatewayView'
 
 import { NavContext } from '../wrappers/context'
 import { APIContext } from '../context'
-import { ListItemType } from '../common/types';
+import { ItemType } from '../common/types';
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: any } | undefined>({})
-  const [selectedCrypto, setSelectedCrypto] = useState<ListItemType>()
-  const [selectedCurrency, setSelectedCurrency] = useState<ListItemType>()
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<ListItemType>()
+  const [selectedCrypto, setSelectedCrypto] = useState<ItemType>()
+  const [selectedCurrency, setSelectedCurrency] = useState<ItemType>()
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<ItemType>()
 
   const [flagEffectRate, setFlagEffectRate] = useState(0)
   const [flagEffectGateways, setFlagEffectGateways] = useState(0)
@@ -73,7 +73,7 @@ const BuyCryptoView: React.FC = () => {
     else setErrors(undefined)
   }
 
-  const handleItemClick = (name: string, index: number, item: ListItemType) => {
+  const handleItemClick = (name: string, index: number, item: ItemType) => {
     if (name === 'crypto')
       setSelectedCrypto(item)
     else if (name === 'currency')

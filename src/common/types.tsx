@@ -1,13 +1,24 @@
-export type _ListItemType = {
-    id?: string
-    icon?: string,
-    name: string,
+interface ItemType {
+    id: string
+    name: string
     info?: string
-    onClick?: (index: number) => void
-    index: number
+    type?: string
+    icon?: string
     symbol?: string
     precision?: number
-    type?: string
+    currencyType?: string
 }
 
-export type ListItemType = Omit<_ListItemType, 'index'>
+enum ItemCategory {
+    Crypto = 'CRYPTO',
+    Currency = 'CURRENCY',
+    PaymentMethod = 'PAYMENT_METHOD'
+}
+
+export type {
+    ItemType
+}
+
+export {
+    ItemCategory
+}

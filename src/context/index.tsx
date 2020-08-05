@@ -7,14 +7,10 @@ import { arrayUnique, arrayObjUnique } from '../wrappers/utils'
 
 import LogoOnramper from '../icons/logo.svg'
 
-import * as API from './remote'
-import { ListItemType } from '../common/types';
+import * as API from './api'
+import { ItemType, ItemCategory } from '../common/types';
+import { IconGatewaysResponse, GatewaysResponse } from './api/types/gateways'
 
-export enum ItemType {
-  Crypto = 'CRYPTO',
-  Currency = 'CURRENCY',
-  PaymentMethod = 'PAYMENT_METHOD'
-}
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -30,12 +26,14 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
     }
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
-  const [ICONS_MAP, setICONS_MAP] = useState<{ [key: string]: any }>({});
+  const [ICONS_MAP, setICONS_MAP] = useState<{ [key: string]: IconGatewaysResponse }>({});
   const [lastCall, setLastCall] = useState<AbortController>();
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
-    (name: string, value: string | number | boolean | ListItemType) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }), [])
+    (name: string, value: string | number | boolean | ItemType) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
+    []
+  )
 
   useEffect(() => {
     if (lastCall) handleInputChange('isCalculatingAmount', true)
@@ -55,7 +53,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
   const handleFileDeleted = useCallback(
     (name: string, fileName: string) => dispatch({ type: CollectedActionsType.DeleteFile, payload: { name, value: fileName } }),
-    [],
+    []
   )
 
   /* *********** */
@@ -69,80 +67,154 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   const init = useCallback(
     async (country?: string) => {
 
-      let response_gateways: any = []
+      // REQUEST AVAILABLE GATEWAYS
+      let response_gateways: GatewaysResponse
       try {
         response_gateways = await API.gateways({ country, includeIcons: true })
       } catch (error) {
         return { gateways: error.message }
       }
-
       if (response_gateways.gateways.length <= 0) return { gateways: 'No gateways found.' }
 
       const ICONS_MAP = response_gateways.icons
 
-      let availableCryptos: any[] = []
+      // GET ALL AVAILABLE CRYPTOS
+      let availableCryptos: GatewaysResponse['gateways'][0]['cryptoCurrencies'] = []
       for (var i in response_gateways.gateways) {
         if (!response_gateways.gateways[i].cryptoCurrencies) continue
         availableCryptos = availableCryptos.concat(response_gateways.gateways[i].cryptoCurrencies)
       }
-      if (availableCryptos.length <= 0) return
       availableCryptos = arrayObjUnique(availableCryptos, 'code')
-      availableCryptos = availableCryptos.map(({ code, precision }) => ({ id: code, name: code, info: ICONS_MAP[code]?.name || 'Cryptocurrency', icon: ICONS_MAP[code]?.icon, precision, symbol: code, type: ItemType.Crypto }))
+      if (availableCryptos.length <= 0) return { gateways: 'No cryptos found.' }
 
-      let selectedCrypto = availableCryptos.find((crypto: any) => (crypto.id === props.defaultCrypto)) || availableCryptos[0]
+      // MAP AVAILABLE CRYPTOS LIST (CURRENCY LIST) TO AN ITEMTYPE LIST
+      const mappedAvailableCryptos: ItemType[] = availableCryptos.map((crypto) => ({
+        id: crypto.code,
+        name: crypto.code,
+        info: ICONS_MAP[crypto.code]?.name || 'Cryptocurrency',
+        icon: ICONS_MAP[crypto.code]?.icon,
+        precision: crypto.precision,
+        symbol: crypto.code,
+        currencyType: ItemCategory.Crypto
+      }))
 
-      const filtredGatewaysByCrypto = response_gateways.gateways.filter((item: any) => item.cryptoCurrencies.some((crypto: any) => crypto.code === selectedCrypto.id))
-      let availableCurrencies: any[] = []
+      // SELECT DEFAULT CRYPTO
+      let selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === props.defaultCrypto)) || mappedAvailableCryptos[0]
+//-----------------START ON CRYPTO CHANGE
+      // FILTER POSIBLE GATEWAYS BY SELECTED CRYPTO
+      const filtredGatewaysByCrypto = response_gateways.gateways.filter((item) => item.cryptoCurrencies.some((crypto) => crypto.code === selectedCrypto.id))
+
+      // GET ALL AVAILABLE FIAT CURRENCIES THAT CAN BE USED TO BUY THE SELECTED CRYPTO
+      let availableCurrencies: GatewaysResponse['gateways'][0]['fiatCurrencies'] = []
       for (var j in filtredGatewaysByCrypto) {
         if (!filtredGatewaysByCrypto[j].fiatCurrencies) continue
         availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[j].fiatCurrencies)
       }
       availableCurrencies = arrayObjUnique(availableCurrencies, 'code')
-      availableCurrencies = availableCurrencies.map(({ code, precision }) => ({ precision: precision, id: code, name: code, symbol: ICONS_MAP[code]?.symbol, info: ICONS_MAP[code]?.name || 'Currency', icon: ICONS_MAP[code]?.icon, type: ItemType.Currency }))
 
-      let selectedCurrency = availableCurrencies.find((currency: any) => currency.id === response_gateways.localization?.currency) || availableCurrencies[0]
+      // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
+      const mappedAvailableCurrencies: ItemType[] = availableCurrencies.map((currency) => ({
+        id: currency.code,
+        name: currency.code,
+        info: ICONS_MAP[currency.code]?.name || 'Currency',
+        icon: ICONS_MAP[currency.code]?.icon,
+        precision: currency.precision,
+        symbol: ICONS_MAP[currency.code]?.symbol,
+        currencyType: ItemCategory.Currency
+      }))
 
+      // SELECT DEFAULT FIAT CURRENCY
+      let selectedCurrency = mappedAvailableCurrencies.find((currency) => currency.id === response_gateways.localization.currency) || mappedAvailableCurrencies[0]
+//-----------------END ON CRYPTO CHANGE
+      // FILTER FILTRED GATEWAYS BY SELECTED CRYPTO BY SELECTED CURRENCY
+      const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) => item.fiatCurrencies.some((currency) => currency.code === selectedCurrency.id))
+
+      // GET ALL AVAILABLE PAUMENT METHODS THAT CAN BE USED TO BUY THE SELECTED CRYPTO WITH THE SELECTED FIAT CURRENCY
+      let availablePaymentMethods: GatewaysResponse['gateways'][0]['paymentMethods'] = []
+      for (let i in filtredGatewaysByCurrency) {
+        if (!filtredGatewaysByCurrency[i].paymentMethods) continue
+        availablePaymentMethods = availablePaymentMethods.concat(filtredGatewaysByCurrency[i].paymentMethods)
+      }
+      availablePaymentMethods = arrayUnique(availablePaymentMethods)
+
+      // MAP AVAILABLE PAYMENT METHODS TO AN ITEMTYPE LIST
+      const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map((item, i) => ({
+        id: item,
+        name: ICONS_MAP[item].name || `Payment method ${i}`,
+        icon: ICONS_MAP[item]?.icon,
+        type: ItemCategory.PaymentMethod
+      }))
+
+      // SELECT DEFAULT PAYMENT METHOD
+      let selectedPaymentMethod = mappedAvailableCurrencies[0]
+
+      // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
       handleInputChange('selectedCurrency', selectedCurrency)
-      addData({ availableCryptos, ICONS_MAP, response_gateways })
+      handleInputChange('selectedPaymentMethod', selectedPaymentMethod)
+      // save to state.date
+      addData({
+        availableCryptos: mappedAvailableCryptos,
+        availableCurrencies: mappedAvailableCurrencies,
+        availablePaymentMethods: mappedAvailablePaymentMethods,
+        ICONS_MAP,
+        response_gateways
+      })
+      //save to local state
       setICONS_MAP(response_gateways.icons)
 
     }, [addData, handleInputChange, props.defaultCrypto])
 
   const handleCryptoChange = useCallback(
-    async (crypto?: ListItemType) => {
+    async (crypto?: ItemType) => {
 
-      let gateways = state.data.response_gateways.gateways
-      if (!gateways) return
-      if (state.data.availableCryptos.length <= 0) return
+      const gateways = state.data.response_gateways?.gateways
+      if (!gateways) return { gateways: 'No gateways found.' }
+      if (state.data.availableCryptos.length <= 0) return { gateways: 'No cryptocurrencies found.' }
 
+      
       const actualCrypto = crypto || state.data.availableCryptos[0]
 
-      const filtredGatewaysByCrypto = gateways.filter((item: any) => item.cryptoCurrencies.some((crypto: any) => crypto.code === actualCrypto.id))
+      // FILTER POSIBLE GATEWAYS BY SELECTED CRYPTO
+      const filtredGatewaysByCrypto = gateways.filter((item) => item.cryptoCurrencies.some((crypto) => crypto.code === actualCrypto.id))
 
-      let availableCurrencies: any[] = []
+      // GET ALL AVAILABLE FIAT CURRENCIES THAT CAN BE USED TO BUY THE SELECTED CRYPTO
+      let availableCurrencies: GatewaysResponse['gateways'][0]['fiatCurrencies'] = []
       for (var i in filtredGatewaysByCrypto) {
         if (!filtredGatewaysByCrypto[i].fiatCurrencies) continue
         availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[i].fiatCurrencies)
       }
       availableCurrencies = arrayObjUnique(availableCurrencies, 'code')
-      availableCurrencies = availableCurrencies.map(({ code, precision }) => ({ precision: precision, id: code, name: code, symbol: ICONS_MAP[code]?.symbol, info: ICONS_MAP[code]?.name || 'Currency', icon: ICONS_MAP[code]?.icon, type: ItemType.Currency }))
-      addData({ availableCurrencies, filtredGatewaysByCrypto })
-      handleInputChange('selectedCrypto', actualCrypto)
 
-    }, [state.data.response_gateways.gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange],
+      // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
+      const mappedAvailableCurrencies: ItemType[] = availableCurrencies.map((currency) => ({
+        id: currency.code,
+        name: currency.code,
+        info: ICONS_MAP[currency.code]?.name || 'Currency',
+        icon: ICONS_MAP[currency.code]?.icon,
+        precision: currency.precision,
+        symbol: ICONS_MAP[currency.code]?.symbol,
+        currencyType: ItemCategory.Currency
+      }))
+
+      // save to state.collected
+      handleInputChange('selectedCrypto', actualCrypto)
+      // save to state.date
+      addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
+
+    }, [state.data.response_gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange, ],
   )
 
   const handleCurrencyChange = useCallback(
-    async (selectedCurrency?: ListItemType) => {
+    async (selectedCurrency?: ItemType) => {
 
       const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
+      //CHECK IF filtredGatewaysByCrypto IS ALREADY SET
+      if (!filtredGatewaysByCrypto) return { gateways: 'No gateways availables for the selected crypto.' }
+      if (state.data.availableCurrencies.length <= 0) return { gateways: 'No fiat currencies found.' }
 
-      if (!filtredGatewaysByCrypto) return
-      if (state.data.availableCurrencies.length <= 0) return
-
-      const actualCurrency = state.data.availableCurrencies.find((currency: any) => currency.id === selectedCurrency?.id) || state.data.availableCurrencies[0]
-      const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item: any) => item.fiatCurrencies.some((currency: any) => currency.code === actualCurrency.id))
+      const actualCurrency = state.data.availableCurrencies.find((currency) => currency.id === selectedCurrency?.id) || state.data.availableCurrencies[0]
+      const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) => item.fiatCurrencies.some((currency) => currency.code === actualCurrency.id))
 
       let availablePaymentMethods: any[] = []
       for (var i in filtredGatewaysByCurrency) {
@@ -151,14 +223,14 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       }
 
       availablePaymentMethods = arrayUnique(availablePaymentMethods)
-      availablePaymentMethods = availablePaymentMethods.map((item, i) => ({ id: item, name: ICONS_MAP[item].name || `Payment method ${i}`, symbol: '', info: '', icon: ICONS_MAP[item]?.icon, type: ItemType.Currency }))
+      availablePaymentMethods = availablePaymentMethods.map((item, i) => ({ id: item, name: ICONS_MAP[item].name || `Payment method ${i}`, symbol: '', info: '', icon: ICONS_MAP[item]?.icon, type: ItemCategory.Currency }))
       addData({ availablePaymentMethods, filtredGatewaysByCurrency, selectedCurrency: actualCurrency })
       handleInputChange('selectedCurrency', actualCurrency)
     }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, ICONS_MAP],
   )
 
   const handlePaymentMethodChange = useCallback(
-    async (selectedPaymentMethod?: ListItemType) => {
+    async (selectedPaymentMethod?: ItemType) => {
 
       if (state.data.availablePaymentMethods.length <= 0) return
 

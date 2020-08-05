@@ -1,4 +1,6 @@
-import { ListItemType } from '../common/types'
+import { ItemType } from '../common/types'
+import { GatewaysResponse } from './api/types/gateways'
+import { RateResponse } from './api/types/rate'
 import { GatewayOptionType } from '../ChooseGatewayView/GatewayOption'
 
 export type StateType = {
@@ -12,9 +14,9 @@ export type CollectedStateType = {
     amount: number,
     amountInCrypto: boolean,
     isCalculatingAmount: boolean
-    selectedCrypto?: ListItemType,
-    selectedCurrency?: ListItemType,
-    selectedPaymentMethod?: ListItemType,
+    selectedCrypto?: ItemType,
+    selectedCurrency?: ItemType,
+    selectedPaymentMethod?: ItemType,
     selectedGateway?: GatewayOptionType,
     walletAddress?: string,
     "files-id": File[],
@@ -34,19 +36,19 @@ export type CollectedStateType = {
 }
 
 export type DataStateType = {
-    availableCryptos: ListItemType[]
-    availableCurrencies: ListItemType[]
-    availablePaymentMethods: ListItemType[]
+    availableCryptos: ItemType[]
+    availableCurrencies: ItemType[]
+    availablePaymentMethods: ItemType[]
     availableRates: GatewayOptionType[]
     init: (country?: string) => void
-    handleCryptoChange: (crypto?: ListItemType) => Promise<any>
-    handleCurrencyChange: (currency?: ListItemType) => void
-    handlePaymentMethodChange: (paymentMehtod?: ListItemType) => any
+    handleCryptoChange: (crypto?: ItemType) => Promise<any>
+    handleCurrencyChange: (currency?: ItemType) => void
+    handlePaymentMethodChange: (paymentMehtod?: ItemType) => any
     //remote responses
-    response_gateways: any
-    filtredGatewaysByCrypto: any[]
-    filtredGatewaysByCurrency: any[]
-    response_rate: any[]
+    response_gateways?: GatewaysResponse
+    filtredGatewaysByCrypto: GatewaysResponse['gateways']
+    filtredGatewaysByCurrency: GatewaysResponse['gateways']
+    response_rate?: RateResponse
     filtredRatesByAviability: any[]
     nextStep: {
         url?: string
@@ -91,13 +93,13 @@ export const initialState: StateType = {
         availableCurrencies: [],
         availablePaymentMethods: [],
         availableRates: [],
-        handleCryptoChange: async (crypto?: ListItemType) => null,
-        handleCurrencyChange: (currency?: ListItemType) => null,
-        handlePaymentMethodChange: (paymentMehtod?: ListItemType) => null,
-        response_gateways: {},
+        handleCryptoChange: async (crypto?: ItemType) => null,
+        handleCurrencyChange: (currency?: ItemType) => null,
+        handlePaymentMethodChange: (paymentMehtod?: ItemType) => null,
+        response_gateways: undefined,
         filtredGatewaysByCrypto: [],
         filtredGatewaysByCurrency: [],
-        response_rate: [],
+        response_rate: undefined,
         filtredRatesByAviability: [],
         init: (country?: string | null) => null,
         nextStep: {}

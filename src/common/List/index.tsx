@@ -1,24 +1,24 @@
 import React, { useCallback, useState } from 'react'
 import styles from './styles.module.css'
-import { ListItemType, _ListItemType } from '../types'
+import { ItemType } from '../types'
 
-type ListType = {
-    items: ListItemType[]
-    onItemClick?: (index: number, item: ListItemType) => void
+type ListProps = {
+    items: ItemType[]
+    onItemClick?: (index: number, item: ItemType) => void
     searchable?: boolean
 }
 
-const List: React.FC<ListType> = (props) => {
+const List: React.FC<ListProps> = (props) => {
     const { items, searchable = false } = props
     const { onItemClick = () => null } = props
 
-    const handleItemClick = useCallback((index: number, item: ListItemType) => {
+    const handleItemClick = useCallback((index: number, item: ItemType) => {
         onItemClick(index, item)
     }, [onItemClick])
 
     const [query, setQuery] = useState('')
 
-    const filterItems = useCallback((item: ListItemType) => {
+    const filterItems = useCallback((item: ItemType) => {
         return item.name.toLowerCase().split(' ').some((substring) => substring.toLowerCase().startsWith(query))
             || item.name.toLowerCase().toLowerCase().startsWith(query)
             || item.info?.split(' ').some((substring) => substring.toLowerCase().startsWith(query))
@@ -34,6 +34,7 @@ const List: React.FC<ListType> = (props) => {
             {
                 items.map((item, i) =>
                     filterItems(item) && <ListItem
+                        id={item.id}
                         key={i}
                         index={i}
                         name={item.name}
@@ -46,7 +47,12 @@ const List: React.FC<ListType> = (props) => {
     )
 }
 
-const ListItem: React.FC<_ListItemType> = (props) => {
+type ListItemProps = {
+    index: number
+    onClick: (index: number) => void
+} & ItemType
+
+const ListItem: React.FC<ListItemProps> = (props) => {
     const { index, name, info, icon } = props
     const { onClick = () => null } = props
     return (

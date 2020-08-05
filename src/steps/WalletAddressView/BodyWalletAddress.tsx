@@ -10,6 +10,7 @@ import IconChevronRight from '../../icons/chevron_right.svg'
 
 import { APIContext } from '../../context'
 import { NavContext } from '../../wrappers/context'
+import { ItemType } from '../../common/types'
 
 type BodyWalletAddressType = {
     onActionButton: () => void
@@ -25,9 +26,9 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
     const { nextScreen, backScreen } = useContext(NavContext);
 
     const selectedCrypto = collected.selectedCrypto
-    let items: { name: string }[] = []
+    let items: ItemType[] = []
     if (selectedCrypto && collected.defaultAddrs[selectedCrypto.name])
-        items = collected.defaultAddrs[selectedCrypto.name].map((item) => ({ name: item }))
+        items = collected.defaultAddrs[selectedCrypto.name].map((addr) => ({ name: addr, id: addr }))
 
     useEffect(() => {
         handleInputChange('walletAddress', selectedAddress)

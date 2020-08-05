@@ -8,19 +8,18 @@ import ExpectedCrypto from './ExpectedCrypto'
 
 import { APIContext } from '../context'
 
-import { ListItemType } from '../common/types'
-import { ItemType } from '../context'
+import { ItemType, ItemCategory } from '../common/types'
 import InfoBox from '../common/InfoBox'
 
-type BodyBuyCryptoType = {
-    onBuyCrypto: () => void,
-    openPickCrypto: () => void,
-    openPickCurrency: () => void,
-    openPickPayment: () => void,
+interface BodyBuyCryptoProps {
+    onBuyCrypto: () => void
+    openPickCrypto: () => void
+    openPickCurrency: () => void
+    openPickPayment: () => void
     onPriceError?: (errName: string) => void
-    selectedCrypto?: ListItemType,
-    selectedCurrency?: ListItemType,
-    selectedPaymentMethod?: ListItemType
+    selectedCrypto?: ItemType
+    selectedCurrency?: ItemType
+    selectedPaymentMethod?: ItemType
     handleInputChange: (name: string, value: any) => void
     errors?: { [key: string]: any }
     isFilled?: boolean
@@ -28,13 +27,13 @@ type BodyBuyCryptoType = {
 
 
 
-const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
+const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment, onPriceError = (s: string) => null } = props
     const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
 
-    const [pairs, setPairs] = useState<ListItemType[]>()
+    const [pairs, setPairs] = useState<ItemType[]>()
     const [amountInCrypto, setAmountInCrypto] = useState(false)
 
     const generalErrors = Object.keys(errors).filter((errName) => !errName.startsWith('input-') && errors[errName])
@@ -44,10 +43,10 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
     }, [selectedCurrency, selectedCrypto])
 
     const handleSymbolChange = useCallback(
-        (item: ListItemType | undefined) => {
+        (item: ItemType | undefined) => {
             if (item) {
-                handleInputChange('amountInCrypto', item.type === ItemType.Crypto)
-                setAmountInCrypto(item.type === ItemType.Crypto)
+                handleInputChange('amountInCrypto', item.type === ItemCategory.Crypto)
+                setAmountInCrypto(item.type === ItemCategory.Crypto)
             }
         }, [handleInputChange],
     )
@@ -83,10 +82,9 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoType> = (props) => {
 }
 
 const LOAGIND_TEXT = 'Loading...'
-const LoadingItem = {
-    name: LOAGIND_TEXT,
-    icon: '',
-    symbol: ''
+const LoadingItem: ItemType = {
+    id: '',
+    name: LOAGIND_TEXT
 }
 
 export default BodyBuyCrypto
