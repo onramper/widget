@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styles from './styles.module.css'
 import IconDetailKYC from '../icons/kyclevelicon.svg'
 import IconDetailTxTime from '../icons/txtimeicon.svg'
-import Range from './Range'
+/* import Range from './Range' */
 import { CSSTransition } from 'react-transition-group';
 
 import { APIContext } from '../context'
@@ -54,7 +54,7 @@ export type _GatewayOptionType = {
 }
 
 const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
-    const { name, txTime, kycLevel, receivedCrypto, feePercent, logo, isOpen, selectedReceivedCrypto = 0, available = false, error = '' } = props //todo change 
+    const { name, txTime, kycLevel, receivedCrypto, /* feePercent, */ logo, isOpen, selectedReceivedCrypto = 0, available = false, error = '' } = props //todo change 
     const { collected } = useContext(APIContext)
 
     const diffPercent = ((1 - (selectedReceivedCrypto / receivedCrypto)) * 100)
@@ -82,13 +82,13 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                         <div>
                             <div className={styles['collapsable-section']}>
                                 <div className={`${styles['details']}`} >
-                                    {duration && <div className={styles.details__item}><img alt='' src={IconDetailTxTime} /><span>Tx time: {duration.n}{duration.magnitudeShort}</span></div>}
-                                    {kycLevel && <div className={styles.details__item}><img alt='' src={IconDetailKYC} /><span>KYC level: {kycLevel}</span></div>}
+                                    {duration && <div className={styles.details__item}><div><img alt='' src={IconDetailTxTime} /></div><span>Tx time: {duration.n}{duration.magnitudeShort}</span></div>}
+                                    {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconDetailKYC} /></div><span>KYC level: {kycLevel}</span></div>}
                                 </div>
-                                <div className={`${styles['fees']}`}>
+                                {/* <div className={`${styles['fees']}`}>
                                     <span>Total fees:</span>
                                     <Range min={3} max={9} actual={feePercent} />
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </CSSTransition>
