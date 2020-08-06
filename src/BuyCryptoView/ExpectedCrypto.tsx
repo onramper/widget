@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from 'react'
 import styles from './styles.module.css'
 
 import { APIContext } from '../context'
-import { GatewayOptionType } from '../ChooseGatewayView/GatewayOption'
+import { GatewayOptionType } from '../common/types'
 
 type ExpectedCryptoType = {
     denom: string,
@@ -22,18 +22,18 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
     const setMaxExpectedCrypto = useCallback(() => {
         let lowest = Number.POSITIVE_INFINITY;
         let index = 0
-        let tmp;
+        let tmp: number;
         let pricedRates = availableRates.filter((item: GatewayOptionType) => item.available)
 
         for (let i = pricedRates.length - 1; i >= 0; i--) {
-            tmp = pricedRates[i].receivedCrypto;
+            tmp = pricedRates[i].receivedCrypto ?? 0;
             if (tmp > lowest) {
                 lowest = tmp;
                 index = i;
             }
         }
 
-        pricedRates.length > 0 ? setExpectedCrypto(pricedRates[index].receivedCrypto) : setExpectedCrypto(0)
+        pricedRates.length > 0 ? setExpectedCrypto(pricedRates[index].receivedCrypto ?? 0) : setExpectedCrypto(0)
     }, [availableRates])
 
     useEffect(() => {

@@ -1,3 +1,6 @@
+import { RateResponse } from './types/rate'
+import { GatewaysResponse } from './types/gateways'
+
 const BASE_API = 'https://api.onramper.dev'
 
 /**
@@ -9,7 +12,8 @@ type gatewaysParams = {
     [key: string]: any
 }
 
-const gateways = async (params: gatewaysParams) => {
+const gateways = async (params: gatewaysParams): Promise<GatewaysResponse> => {
+    await new Promise(resolve => setTimeout(resolve, 2000));
     const endpoint = '/gateways'
     const urlParams = createUrlParamsFromObject(params)
     const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`)
@@ -21,7 +25,7 @@ type rateParams = {
     [key: string]: any
 }
 
-const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams, signal?: AbortSignal) => {
+const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams, signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
     const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`, { signal })
     return processResponse(gateways)

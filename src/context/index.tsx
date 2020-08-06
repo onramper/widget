@@ -8,8 +8,9 @@ import { arrayUnique, arrayObjUnique } from '../wrappers/utils'
 import LogoOnramper from '../icons/logo.svg'
 
 import * as API from './api'
-import { ItemType, ItemCategory } from '../common/types';
+import { ItemType, ItemCategory, GatewayOptionType } from '../common/types';
 import { IconGatewaysResponse, GatewaysResponse } from './api/types/gateways'
+import { RateResponse } from './api/types/rate'
 
 
 //Creating context
@@ -100,63 +101,12 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
       // SELECT DEFAULT CRYPTO
       let selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === props.defaultCrypto)) || mappedAvailableCryptos[0]
-//-----------------START ON CRYPTO CHANGE
-      // FILTER POSIBLE GATEWAYS BY SELECTED CRYPTO
-      const filtredGatewaysByCrypto = response_gateways.gateways.filter((item) => item.cryptoCurrencies.some((crypto) => crypto.code === selectedCrypto.id))
-
-      // GET ALL AVAILABLE FIAT CURRENCIES THAT CAN BE USED TO BUY THE SELECTED CRYPTO
-      let availableCurrencies: GatewaysResponse['gateways'][0]['fiatCurrencies'] = []
-      for (var j in filtredGatewaysByCrypto) {
-        if (!filtredGatewaysByCrypto[j].fiatCurrencies) continue
-        availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[j].fiatCurrencies)
-      }
-      availableCurrencies = arrayObjUnique(availableCurrencies, 'code')
-
-      // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
-      const mappedAvailableCurrencies: ItemType[] = availableCurrencies.map((currency) => ({
-        id: currency.code,
-        name: currency.code,
-        info: ICONS_MAP[currency.code]?.name || 'Currency',
-        icon: ICONS_MAP[currency.code]?.icon,
-        precision: currency.precision,
-        symbol: ICONS_MAP[currency.code]?.symbol,
-        currencyType: ItemCategory.Currency
-      }))
-
-      // SELECT DEFAULT FIAT CURRENCY
-      let selectedCurrency = mappedAvailableCurrencies.find((currency) => currency.id === response_gateways.localization.currency) || mappedAvailableCurrencies[0]
-//-----------------END ON CRYPTO CHANGE
-      // FILTER FILTRED GATEWAYS BY SELECTED CRYPTO BY SELECTED CURRENCY
-      const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) => item.fiatCurrencies.some((currency) => currency.code === selectedCurrency.id))
-
-      // GET ALL AVAILABLE PAUMENT METHODS THAT CAN BE USED TO BUY THE SELECTED CRYPTO WITH THE SELECTED FIAT CURRENCY
-      let availablePaymentMethods: GatewaysResponse['gateways'][0]['paymentMethods'] = []
-      for (let i in filtredGatewaysByCurrency) {
-        if (!filtredGatewaysByCurrency[i].paymentMethods) continue
-        availablePaymentMethods = availablePaymentMethods.concat(filtredGatewaysByCurrency[i].paymentMethods)
-      }
-      availablePaymentMethods = arrayUnique(availablePaymentMethods)
-
-      // MAP AVAILABLE PAYMENT METHODS TO AN ITEMTYPE LIST
-      const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map((item, i) => ({
-        id: item,
-        name: ICONS_MAP[item].name || `Payment method ${i}`,
-        icon: ICONS_MAP[item]?.icon,
-        type: ItemCategory.PaymentMethod
-      }))
-
-      // SELECT DEFAULT PAYMENT METHOD
-      let selectedPaymentMethod = mappedAvailableCurrencies[0]
 
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
-      handleInputChange('selectedCurrency', selectedCurrency)
-      handleInputChange('selectedPaymentMethod', selectedPaymentMethod)
       // save to state.date
       addData({
         availableCryptos: mappedAvailableCryptos,
-        availableCurrencies: mappedAvailableCurrencies,
-        availablePaymentMethods: mappedAvailablePaymentMethods,
         ICONS_MAP,
         response_gateways
       })
@@ -168,12 +118,14 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   const handleCryptoChange = useCallback(
     async (crypto?: ItemType) => {
 
-      const gateways = state.data.response_gateways?.gateways
-      if (!gateways) return { gateways: 'No gateways found.' }
+      // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
+      if (!state.data.response_gateways) return
+      const gateways = state.data.response_gateways.gateways
+
+      if (gateways.length <= 0) return { gateways: 'No gateways found.' }
       if (state.data.availableCryptos.length <= 0) return { gateways: 'No cryptocurrencies found.' }
 
-      
-      const actualCrypto = crypto || state.data.availableCryptos[0]
+      const actualCrypto = state.data.availableCryptos.find((cryptoCurrency) => cryptoCurrency.id === crypto?.id) || state.data.availableCryptos[0]
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CRYPTO
       const filtredGatewaysByCrypto = gateways.filter((item) => item.cryptoCurrencies.some((crypto) => crypto.code === actualCrypto.id))
@@ -202,60 +154,103 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       // save to state.date
       addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.response_gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange, ],
+    }, [state.data.response_gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange,],
   )
 
   const handleCurrencyChange = useCallback(
     async (selectedCurrency?: ItemType) => {
 
-      const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
-      //CHECK IF filtredGatewaysByCrypto IS ALREADY SET
-      if (!filtredGatewaysByCrypto) return { gateways: 'No gateways availables for the selected crypto.' }
-      if (state.data.availableCurrencies.length <= 0) return { gateways: 'No fiat currencies found.' }
+      // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
+      const response_gateways = state.data.response_gateways
+      if (!response_gateways) return
 
-      const actualCurrency = state.data.availableCurrencies.find((currency) => currency.id === selectedCurrency?.id) || state.data.availableCurrencies[0]
+      const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
+      if (!filtredGatewaysByCrypto) return { gateways: 'No gateways availables for the selected crypto.' }
+      if (!state.data.availableCurrencies || state.data.availableCurrencies.length <= 0) return { gateways: 'No fiat currencies found.' }
+
+      const actualCurrency =
+        state.data.availableCurrencies.find((currency) => currency.id === selectedCurrency?.id)
+        || state.data.availableCurrencies.find((currency) => currency.id === response_gateways.localization.currency)
+        || state.data.availableCurrencies[0]
+
+      // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) => item.fiatCurrencies.some((currency) => currency.code === actualCurrency.id))
 
-      let availablePaymentMethods: any[] = []
+      // GET ALL AVAILABLE PAYMENT METHODS THAT CAN BE USED TO BUY THE SELECTED CRYPTO WITH THE SELECTED CURRENCY
+      let availablePaymentMethods: GatewaysResponse['gateways'][0]['paymentMethods'] = []
       for (var i in filtredGatewaysByCurrency) {
         if (!filtredGatewaysByCurrency[i].paymentMethods) continue
         availablePaymentMethods = availablePaymentMethods.concat(filtredGatewaysByCurrency[i].paymentMethods)
       }
-
       availablePaymentMethods = arrayUnique(availablePaymentMethods)
-      availablePaymentMethods = availablePaymentMethods.map((item, i) => ({ id: item, name: ICONS_MAP[item].name || `Payment method ${i}`, symbol: '', info: '', icon: ICONS_MAP[item]?.icon, type: ItemCategory.Currency }))
-      addData({ availablePaymentMethods, filtredGatewaysByCurrency, selectedCurrency: actualCurrency })
+
+      // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
+      const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map((item, i) => ({
+        id: item,
+        name: ICONS_MAP[item].name || `Payment method ${i}`,
+        symbol: '',
+        info: '',
+        icon: ICONS_MAP[item]?.icon,
+        type: ItemCategory.PaymentMethod
+      }))
+
+      // save to state.collected
       handleInputChange('selectedCurrency', actualCurrency)
-    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, ICONS_MAP],
+      // save to state.date
+      addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
+
+    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, ICONS_MAP, state.data.response_gateways],
   )
 
   const handlePaymentMethodChange = useCallback(
     async (selectedPaymentMethod?: ItemType) => {
+      console.log('Called', state.collected.amountInCrypto)
+      // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
+      if (!state.data.response_gateways) return
+      if (!state.data.availablePaymentMethods || state.data.availablePaymentMethods.length <= 0) return { gateways: 'No payment methods found.' }
 
-      if (state.data.availablePaymentMethods.length <= 0) return
+      const actualPaymentMethod = state.data.availablePaymentMethods.find((currency) => currency.id === selectedPaymentMethod?.id) || state.data.availablePaymentMethods[0]
 
-      const actualPaymentMethod = state.data.availablePaymentMethods.find((currency: any) => currency.id === selectedPaymentMethod?.id) || state.data.availablePaymentMethods[0]
+      // save to state.collected
       handleInputChange('selectedPaymentMethod', actualPaymentMethod)
 
-      const actualAmount = state.collected.amount || 0
+    }, [handleInputChange, state.data.availablePaymentMethods, state.collected.amountInCrypto, state.data.response_gateways])
 
-      if (actualAmount <= 0) {
+  const getRates = useCallback(
+    async () => {
+      console.log('Called 2', state.collected.amountInCrypto)
+      // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
+      if (!state.data.response_gateways) return
+
+      // IF THE AMOUNT IS NOT SET OR IT'S ===0 THEN NO AVAILABLE RATES
+      if (!state.collected.amount) {
         addData({ availableRates: [] })
-        return {}
+        return
       }
+
+      // CHECK IF REQUEST PARAMETERS ARE SET
+      const actualAmount = state.collected.amount
       const inCurrency = state.collected.selectedCurrency?.id
       const outCurrency = state.collected.selectedCrypto?.id
-      if (!inCurrency || !outCurrency || !actualPaymentMethod.id) return
+      const actualPaymentMethod = state.collected.selectedPaymentMethod?.id
+      if (!inCurrency || !outCurrency || !actualPaymentMethod) return
 
+      // CREATE NEW ABORT CONTROLLER FOR EACH REQUEST AND STORE IT IN THE LOCAL STATE
+      // IF THERE'S ANY PENDING REQUEST THEN ABORT IT BEFORE STORE THE NEW ABORT CONTROLLER
       const controller = new AbortController()
       const { signal } = controller;
+
       setLastCall(lastController => {
         lastController?.abort();
         return controller
       })
-      let response_rate = []
+
+      // QUERY AVAILABLE RATES
+      // IF THE CATCHED EXCEPTION WAS THROWN BY OUR ABORT CONTROLLER THEN RETURN EMPTY ERROR
+      // ELSE, CLEAR THE ABORT CONTROLLER AND RETURN ERROR
+      let response_rate: RateResponse
       try {
-        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod.id, { amountInCrypto: state.collected.amountInCrypto }, signal)
+        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { amountInCrypto: state.collected.amountInCrypto }, signal)
       } catch (error) {
         if (error.name === 'AbortError')
           return {}
@@ -263,50 +258,57 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         return { rate: error.message }
       }
 
+      // IF THE REQUEST DIDN'T THROW ANY ERROR, CLEAR THE ABOURT CONTROLLER FROM THE STATE
       setLastCall(undefined)
 
       if (response_rate.length <= 0) return { rate: 'No gateways found.' }
 
-      const filtredRatesByAviability = response_rate.filter((item: any) => item.available)
-      const availableRates = response_rate.map((item: any) => ({
-        receivedCrypto: item.receivedCrypto,
-        fees: item.fees,
+      // MAP RATES TO GatewayOptionType
+      const mappedAvailableRates: GatewayOptionType[] = response_rate.map((item) => ({
+        id: item.identifier,
         name: item.identifier,
-        txTime: { seconds: item.duration.seconds, message: item.duration.message },
-        kycLevel: `${item.requiredKYC?.length}`,
-        rate: item.rate,
-        feePercent: (item.fees / (state.collected.amountInCrypto ? item.receivedCrypto : state.collected.amount) * 100),
-        logo: LogoOnramper,
-        nextStep: item.nextStep,
+        duration: item.duration,
         available: item.available,
-        error: item.error?.message
+        rate: item.rate,
+        fees: item.fees,
+        requiredKYC: item.requiredKYC,
+        receivedCrypto: item.receivedCrypto,
+        nextStep: item.nextStep,
+        error: item.error?.message,
+        logo: LogoOnramper,
       }))
 
-      addData({ availableRates, response_rate, filtredRatesByAviability })
+      // save to state.date
+      addData({ availableRates: mappedAvailableRates, response_rate })
 
+      // IF THERE ARE NO RATES AVAILABLES THEN REDUCE UNAVAILABLE RATES TO AN ERRORS OBJECT
+      const filtredRatesByAviability = response_rate.filter((item) => item.available)
       if (filtredRatesByAviability.length <= 0) {
-        let minMaxErrors: { [key: string]: any } = {}
-        const errorsBulk = response_rate.reduce((errorsBulk: { [key: string]: any }, item: any) => {
-          if (!item.error) return errorsBulk
+        const minMaxErrors = response_rate.reduce((minMaxErrors: { [key: string]: any }, item) => {
+          console.log('item.error', item.error)
+          if (!item.error) return minMaxErrors
           switch (item.error.type) {
             case 'MIN':
-              if (!minMaxErrors[item.error.type] || item.error.limit < minMaxErrors[item.error.type].limit) {
+              if (!minMaxErrors[item.error.type] || (item.error.limit ?? Number.POSITIVE_INFINITY < minMaxErrors[item.error.type].limit)) {
                 minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
-              return errorsBulk
+              return minMaxErrors
             case 'MAX':
-              if (!minMaxErrors[item.error.type] || item.error.limit > minMaxErrors[item.error.type].limit) {
+              if (!minMaxErrors[item.error.type] || (item.error.limit ?? Number.NEGATIVE_INFINITY > minMaxErrors[item.error.type].limit)) {
                 minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
-              return errorsBulk
+              return minMaxErrors
             default:
-              errorsBulk[item.error.type] = item.error.message
-              return errorsBulk
+              minMaxErrors[item.error.type] = item.error.message
+              return minMaxErrors
           }
         }, {})
-        return { ...errorsBulk, 'input-amount': minMaxErrors.MIN ?? minMaxErrors.MAX }
+        return { 'input-amount': minMaxErrors.MIN?.message ?? minMaxErrors.MAX?.message }
       }
-    }, [handleInputChange, addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.data.availablePaymentMethods, state.collected.amount, state.collected.amountInCrypto])
+
+      // IF NO ERRORS, RETURN UNDEFINED
+      return
+    }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod])
 
   /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
   useEffect(() => {
@@ -331,10 +333,11 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         init,
         handleCryptoChange,
         handleCurrencyChange,
-        handlePaymentMethodChange
+        handlePaymentMethodChange,
       },
       apiInterface: {
-        executeStep
+        executeStep,
+        getRates
       }
     }}>
       {props.children}

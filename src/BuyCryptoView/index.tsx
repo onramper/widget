@@ -21,8 +21,9 @@ const BuyCryptoView: React.FC = () => {
   const [flagEffectGateways, setFlagEffectGateways] = useState(0)
 
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { data, inputInterface, collected } = useContext(APIContext);
+  const { data, inputInterface, collected, apiInterface } = useContext(APIContext);
   const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
+  const { getRates } = apiInterface
 
   useEffect(() => {
     setSelectedCrypto(collected.selectedCrypto)
@@ -66,6 +67,16 @@ const BuyCryptoView: React.FC = () => {
     }
     handlePaymentMethodChangeEffect()
   }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors, flagEffectRate])
+
+  useEffect(() => {
+    async function getRateEffect() {
+      processErrors({ rate: undefined })
+      const err = await getRates();
+      console.log('called here', err)
+      processErrors(err)
+    }
+    getRateEffect()
+  }, [setErrors, flagEffectRate, getRates, collected.amountInCrypto])
 
   const processErrors = (err: any, by?: string) => {
     if (err)

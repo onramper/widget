@@ -2,7 +2,6 @@ interface ItemType {
     id: string
     name: string
     info?: string
-    type?: string
     icon?: string
     symbol?: string
     precision?: number
@@ -15,8 +14,33 @@ enum ItemCategory {
     PaymentMethod = 'PAYMENT_METHOD'
 }
 
+interface GatewayOptionType {
+    id: string
+    name: string
+    duration: {
+        seconds: number
+        message: string
+    }
+    available: boolean
+    rate?: number
+    fees?: number
+    requiredKYC?: (string | string[])[]
+    receivedCrypto?: number
+    nextStep?: {
+        type: string
+        url: string
+        data: {
+            type: string
+            name: string
+        }[]
+    }
+    error?: string
+    logo?: string
+}
+
 export type {
-    ItemType
+    ItemType,
+    GatewayOptionType
 }
 
 export {

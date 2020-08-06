@@ -1,7 +1,6 @@
-import { ItemType } from '../common/types'
+import { ItemType, GatewayOptionType } from '../common/types'
 import { GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
-import { GatewayOptionType } from '../ChooseGatewayView/GatewayOption'
 
 export type StateType = {
     data: DataStateType,
@@ -49,7 +48,7 @@ export type DataStateType = {
     filtredGatewaysByCrypto: GatewaysResponse['gateways']
     filtredGatewaysByCurrency: GatewaysResponse['gateways']
     response_rate?: RateResponse
-    filtredRatesByAviability: any[]
+    filtredRatesByAviability: RateResponse
     nextStep: {
         url?: string
         data?: string[]
@@ -64,6 +63,7 @@ export type InputInterfaceType = {
 
 export type ApiInterfaceType = {
     executeStep: (url: string, params: { [key: string]: any }) => Promise<any>
+    getRates: () => { [key: string]: any } | undefined
 }
 
 export const initialState: StateType = {
@@ -101,7 +101,7 @@ export const initialState: StateType = {
         filtredGatewaysByCurrency: [],
         response_rate: undefined,
         filtredRatesByAviability: [],
-        init: (country?: string | null) => null,
+        init: (country?: string) => null,
         nextStep: {}
     },
     inputInterface: {
@@ -110,6 +110,7 @@ export const initialState: StateType = {
         handleFileDeleted: () => null
     },
     apiInterface: {
-        executeStep: async (url: string, params: { [key: string]: any }) => false
+        executeStep: async (url: string, params: { [key: string]: any }) => false,
+        getRates: () => undefined
     }
 }

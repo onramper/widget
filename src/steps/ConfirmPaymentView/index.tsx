@@ -26,7 +26,7 @@ const ConfirmPaymentView: React.FC = () => {
         currency={selectedCurrency?.name}
         cryptoAmount={selectedGateway?.receivedCrypto || 0}
         cryptoDenom={selectedCrypto?.name || ''} //: string
-        txTime={selectedGateway?.txTime} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
+        txTime={selectedGateway?.duration} //: string //todo MAKE IT BETTER, ONLY FOR DEMO PURPOSES
         cryptoAddr={collected?.walletAddress} //: string
         cryptoIcon={selectedCrypto?.icon}
         paymentMethod={selectedPaymentMethod?.name}

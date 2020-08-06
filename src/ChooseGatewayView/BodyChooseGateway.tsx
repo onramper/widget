@@ -3,7 +3,7 @@ import stylesCommon from '../styles.module.css'
 
 import ButtonAction from '../common/ButtonAction'
 
-import { GatewayOptionType } from './GatewayOption'
+import { GatewayOptionType } from '../common/types'
 
 import GatewaysList from './GatewaysList'
 

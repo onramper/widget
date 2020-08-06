@@ -1,21 +1,22 @@
 import React, { useState, useCallback } from 'react'
 import styles from './styles.module.css'
-import GatewayOption, { GatewayOptionType } from './GatewayOption'
+import GatewayOption from './GatewayOption'
+import { GatewayOptionType } from '../common/types'
 
-type GatewaysListType = {
-    availableGateways: Omit<GatewayOptionType, 'index'>[],
-    unavailableGateways: Omit<GatewayOptionType, 'index'>[],
+interface GatewaysListProps {
+    availableGateways: GatewayOptionType[],
+    unavailableGateways: GatewayOptionType[],
     onItemClick?: (index: number) => void
 }
 
-const GatewaysList: React.FC<GatewaysListType> = (props) => {
+const GatewaysList: React.FC<GatewaysListProps> = (props) => {
     const { availableGateways, unavailableGateways } = props //const
     const { onItemClick = () => null } = props
 
-    const [selectedGateway, setSelectedGateway] = useState(0)
+    const [selectedGatewayIndex, setSelectedGatewayIndex] = useState(0)
 
     const handleItemClick = useCallback((index: number) => {
-        setSelectedGateway(index)
+        setSelectedGatewayIndex(index)
         onItemClick(index)
     }, [onItemClick])
 
@@ -26,20 +27,21 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
                     <GatewayOption
                         key={i}
                         index={i}
-                        isOpen={i === selectedGateway}
+                        isOpen={i === selectedGatewayIndex}
+                        selectedReceivedCrypto={availableGateways[selectedGatewayIndex].receivedCrypto}
                         onClick={handleItemClick}
-                        selectedReceivedCrypto={availableGateways[selectedGateway].receivedCrypto}
+
+                        id={item.id}
                         name={item.name}
-                        kycLevel={item.kycLevel}
+                        duration={item.duration}
+                        available={item.available}
                         rate={item.rate}
-                        feePercent={item.feePercent}
                         fees={item.fees}
+                        requiredKYC={item.requiredKYC}
                         receivedCrypto={item.receivedCrypto}
                         nextStep={item.nextStep}
-                        available={item.available}
-                        txTime={item.txTime}
                         logo={item.logo}
-                        error={item.error?.message} />
+                    />
                 )
             }
             {
@@ -47,20 +49,16 @@ const GatewaysList: React.FC<GatewaysListType> = (props) => {
                     <GatewayOption
                         key={i}
                         index={i}
-                        isOpen={i === selectedGateway}
-                        onClick={handleItemClick}
-                        selectedReceivedCrypto={unavailableGateways[selectedGateway].receivedCrypto}
+                        isOpen={i === selectedGatewayIndex}
+                        selectedReceivedCrypto={unavailableGateways[selectedGatewayIndex].receivedCrypto}
+
+                        id={item.id}
                         name={item.name}
-                        kycLevel={item.kycLevel}
-                        rate={item.rate}
-                        feePercent={item.feePercent}
-                        fees={item.fees}
-                        receivedCrypto={item.receivedCrypto}
-                        nextStep={item.nextStep}
+                        duration={item.duration}
                         available={item.available}
-                        txTime={item.txTime}
+                        error={item.error}
                         logo={item.logo}
-                        error={item.error} />
+                    />
                 )
             }
         </div>

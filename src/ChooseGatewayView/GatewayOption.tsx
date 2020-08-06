@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 import styles from './styles.module.css'
 import IconDetailKYC from '../icons/kyclevelicon.svg'
 import IconDetailTxTime from '../icons/txtimeicon.svg'
-/* import Range from './Range' */
+
 import { CSSTransition } from 'react-transition-group';
 
-import { APIContext } from '../context'
-import { formatSeconds } from '../wrappers/utils'
+import { GatewayOptionType } from '../common/types'
 
-export type GatewayOptionType = Omit<_GatewayOptionType, 'index'>
+import { APIContext } from '../context'
+
 
 const transitionPropsCollapse = {
     timeout: 500,
@@ -35,35 +35,24 @@ const transitionPropsPrice = {
     unmountOnExit: true
 }
 
-export type _GatewayOptionType = {
-    name: string,
-    txTime?: { seconds: number, message: string },
-    kycLevel: string,
-    rate: number,
-    feePercent: number,
-    fees: number,
-    logo?: string,
-    isOpen?: boolean
-    onClick?: (index: number) => void
-    index: number
-    receivedCrypto: number
-    selectedReceivedCrypto: number
-    nextStep: { type: string, url: string, data: { type: string, name: string }[] }
-    available: boolean
-    error?: any
-}
 
-const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
-    const { name, txTime, kycLevel, receivedCrypto, /* feePercent, */ logo, isOpen, selectedReceivedCrypto = 0, available = false, error = '' } = props //todo change 
+type GateWayOptionProps = {
+    index: number
+    isOpen: boolean
+    selectedReceivedCrypto?: number
+    onClick?: (index: number) => void
+} & GatewayOptionType
+
+const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { collected } = useContext(APIContext)
+    const { name, duration, receivedCrypto = 0, logo, isOpen, selectedReceivedCrypto = 0, available, error, requiredKYC } = props //todo change 
+    const { onClick = (i) => null } = props
 
     const diffPercent = ((1 - (selectedReceivedCrypto / receivedCrypto)) * 100)
     const isDiffPositive = diffPercent >= 0 ? true : false
     const diff2Render = Math.abs(diffPercent).toFixed(2)
 
-    let duration = txTime ? { ...formatSeconds(txTime.seconds) } : undefined
-
-    const { onClick = (i) => null } = props
+    const kycLevel = requiredKYC?.length
 
     var styleColorUpDownDiff = {
         "--diff-up-color": collected.amountInCrypto ? 'red' : 'green',
@@ -82,13 +71,9 @@ const GatewayOption: React.FC<_GatewayOptionType> = (props) => {
                         <div>
                             <div className={styles['collapsable-section']}>
                                 <div className={`${styles['details']}`} >
-                                    {duration && <div className={styles.details__item}><div><img alt='' src={IconDetailTxTime} /></div><span>Tx time: {txTime?.message}{/* {duration.n}{duration.magnitudeShort} */}</span></div>}
+                                    {duration && <div className={styles.details__item}><div><img alt='' src={IconDetailTxTime} /></div><span>Tx time: {duration.message}</span></div>}
                                     {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconDetailKYC} /></div><span>KYC level: {kycLevel}</span></div>}
                                 </div>
-                                {/* <div className={`${styles['fees']}`}>
-                                    <span>Total fees:</span>
-                                    <Range min={3} max={9} actual={feePercent} />
-                                </div> */}
                             </div>
                         </div>
                     </CSSTransition>

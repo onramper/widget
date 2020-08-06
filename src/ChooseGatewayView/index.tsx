@@ -8,7 +8,7 @@ import { APIContext } from '../context'
 
 import WalletAddressView from '../steps/WalletAddressView'
 
-import { GatewayOptionType } from './GatewayOption'
+import { GatewayOptionType } from '../common/types'
 
 const ChooseGatewayView = () => {
   const { nextScreen } = useContext(NavContext)
