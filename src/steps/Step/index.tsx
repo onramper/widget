@@ -1,10 +1,10 @@
 import React from 'react';
-import StepViewContent, { _nextStepType } from './StepViewContent'
+import StepViewContent from './StepViewContent'
 import styles from '../../styles.module.css'
 
-export type nextStepType = _nextStepType
+import { NextStep } from '../../common/types'
 
-const StepView: React.FC<nextStepType> = (props) => {
+const StepView: React.FC<NextStep> = (props) => {
 
   return (
     <div className={styles.view}>

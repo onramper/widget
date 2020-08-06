@@ -5,7 +5,6 @@ interface NextStep {
         type: string
         name: string
     }[]
-
 }
 
 export type {

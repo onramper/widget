@@ -27,21 +27,31 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
     const [errmsg, setErrorMsg] = useState(errorMsg)
 
+    const onChange = (name: string, value: any, type?: string) => {
+        let v = value
+        if (type === 'date') {
+            v = {
+                year: Number(value.split('-')[0]),
+                month: Number(value.split('-')[1]),
+                day: Number(value.split('-')[2])
+            }
+        }
+        handleInputChange(name, v)
+    }
+
     useEffect(() => {
         setErrorMsg(errorMsg)
     }, [errorMsg])
 
     return (
         <main className={stylesCommon.body}>
-            {
-                <InfoBox in={errmsg !== undefined} type='error' canBeDismissed onDismissClick={() => setErrorMsg(undefined)} className={`${stylesCommon['body__child']}`} >
-                    {errmsg}
-                </InfoBox>
-            }
+            <InfoBox in={errmsg !== undefined} type='error' canBeDismissed onDismissClick={() => setErrorMsg(undefined)} className={`${stylesCommon['body__child']}`} >
+                {errmsg}
+            </InfoBox>
             {
                 fields.map((dataName, i) =>
                     <div key={i} className={`${stylesCommon['body__child']}`}>
-                        <InputText name={dataName.name} value={collected[dataName.name]} onChange={handleInputChange} className={stylesCommon['body__child']} label={dataName.name.charAt(0).toUpperCase() + dataName.name.slice(1)} type={dataName.type} />
+                        <InputText name={dataName.name} value={collected[dataName.name]} onChange={onChange} className={stylesCommon['body__child']} label={dataName.name.charAt(0).toUpperCase() + dataName.name.slice(1)} type={dataName.type} />
                     </div>
                 )
             }

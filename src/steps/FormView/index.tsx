@@ -3,12 +3,14 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyForm from './BodyFormView'
 import styles from '../../styles.module.css'
-import Step, { nextStepType } from '../Step'
+import Step from '../Step'
+
+import { NextStep } from '../../common/types'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
-const FormView: React.FC<{ nextStep: nextStepType }> = ({ nextStep }) => {
+const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
   const { inputInterface, collected, apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)

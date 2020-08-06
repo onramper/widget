@@ -12,7 +12,7 @@ type InputTextType = {
     icon?: string,
     iconPosition?: 'start' | 'end',
     symbolPosition?: 'start' | 'end',
-    onChange?: (name: string, value: any) => void
+    onChange?: (name: string, value: any, type?: string) => void
     value?: number | string
     type?: string
     name: string
@@ -27,9 +27,20 @@ const InputText: React.FC<InputTextType> = (props) => {
     const { onChange = (e) => false, onIconClick = (n) => null } = props
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value === '' ? e.target.value : type === 'number' ? +e.target.value : e.target.value
-        onChange(e.target.name, value)
+        let value = e.currentTarget.value === '' ? e.currentTarget.value : type === 'number' ? +e.currentTarget.value : e.currentTarget.value
+        onChange(e.currentTarget.name, value, e.currentTarget.type)
     }, [onChange, type])
+
+    const formatValue = useCallback((value?: any, type?: string) => {
+        if (value)
+            if (type === 'date') {
+                const year = ("0000" + value.year).slice(-4);
+                const month = ("00" + value.month).slice(-2);
+                const day = ("00" + value.day).slice(-2);
+                return `${year}-${month}-${day}`
+            }
+        return value
+    }, [])
 
     return (
         <div className={`${styles['input']} ${className}`}>
@@ -37,7 +48,7 @@ const InputText: React.FC<InputTextType> = (props) => {
             <div className={`${styles['input__type']} ${styles['input__type--number']}  ${error || error === '' ? styles['input__type--number--error'] : ''} ${disabled ? styles['input__type--number--disabled'] : ''}`}>
                 {icon ? <img onClick={() => onIconClick(name)} alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} /> : null}
                 <span before-content={symbolPosition === 'start' ? symbol : undefined} after-content={symbolPosition === 'end' ? symbol : undefined} className={`${styles['input__type__child']} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} >
-                    <input name={name} value={value} onChange={(e) => handleInputChange(e)} type={type} min="0" placeholder={placeholder} disabled={disabled} />
+                    <input name={name} value={formatValue(value, type)} onChange={(e) => handleInputChange(e)} type={type} min="0" placeholder={placeholder} disabled={disabled} />
                 </span>
             </div>
             <CSSTransition in={error !== undefined}

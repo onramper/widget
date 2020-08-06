@@ -43,7 +43,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
   const handleFilesAdded = useCallback(
     (name: string, files: File[], maxFiles: number) => {
-      const existingFiles = state.collected['files-id'].map(f => f.name)
+      const existingFiles = state.collected['files'].map(f => f.name)
       files = files.filter(f => !existingFiles.includes(f.name))
       if (existingFiles.length + files.length > maxFiles) return false
       dispatch({ type: CollectedActionsType.AddFile, payload: { name, value: files } })

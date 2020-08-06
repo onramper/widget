@@ -26,21 +26,24 @@ interface GatewayOptionType {
     fees?: number
     requiredKYC?: (string | string[])[]
     receivedCrypto?: number
-    nextStep?: {
-        type: string
-        url: string
-        data: {
-            type: string
-            name: string
-        }[]
-    }
+    nextStep?: NextStep
     error?: string
     logo?: string
 }
 
+interface NextStep {
+    type: string
+    url: string
+    data: {
+        type: string
+        name: string
+    }[]
+}
+
 export type {
     ItemType,
-    GatewayOptionType
+    GatewayOptionType,
+    NextStep
 }
 
 export {

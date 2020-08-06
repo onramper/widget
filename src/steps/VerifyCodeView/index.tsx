@@ -3,12 +3,14 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyVerifyCode from './BodyVerifyCode'
 import styles from '../../styles.module.css'
-import Step, { nextStepType } from '../Step'
+import Step from '../Step'
+
+import { NextStep } from '../../common/types'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
-const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: nextStepType }> = ({ name, codeType, nextStep }) => {
+const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: NextStep }> = ({ name, codeType, nextStep }) => {
   const { nextScreen, backScreen } = useContext(NavContext);
   const { inputInterface, collected, apiInterface } = useContext(APIContext);
   const [isLoading, setIsLoading] = useState(false)

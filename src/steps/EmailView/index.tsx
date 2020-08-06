@@ -3,12 +3,14 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyVerifyCode from './BodyEmailView'
 import styles from '../../styles.module.css'
-import Step, { nextStepType } from '../Step'
+import Step from '../Step'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
-const EmailView: React.FC<{ nextStep: nextStepType }> = ({ nextStep }) => {
+import { NextStep } from '../../common/types'
+
+const EmailView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
   const { inputInterface, collected, /* data, */ apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)

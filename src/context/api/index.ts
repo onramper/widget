@@ -13,7 +13,6 @@ type gatewaysParams = {
 }
 
 const gateways = async (params: gatewaysParams): Promise<GatewaysResponse> => {
-    await new Promise(resolve => setTimeout(resolve, 2000));
     const endpoint = '/gateways'
     const urlParams = createUrlParamsFromObject(params)
     const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`)

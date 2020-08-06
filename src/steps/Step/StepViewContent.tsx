@@ -1,22 +1,17 @@
 import React, { useContext, useEffect } from 'react'
 import stylesCommon from '../../styles.module.css'
 
-/* import UploadView from '../UploadView'
-import CreditCardView from '../CreditCardView'
-import WireTranserView from '../WireTranserView' */
+import ConfirmPaymentView from '../ConfirmPaymentView'
+import UploadView from '../UploadView'
 import VerifyCodeView from '../VerifyCodeView'
 import EmailView from '../EmailView'
 import FormView from '../FormView'
 
 import { NavContext } from '../../wrappers/context'
 
-export type _nextStepType = {
-    type: string
-    url: string,
-    data: { name: string, type: string }[]
-}
+import { NextStep } from '../../common/types'
 
-const StepViewContent: React.FC<_nextStepType> = (nextStep) => {
+const StepViewContent: React.FC<NextStep> = (nextStep) => {
     const { replaceScreen, backScreen } = useContext(NavContext);
 
     useEffect(() => {
@@ -31,23 +26,21 @@ const StepViewContent: React.FC<_nextStepType> = (nextStep) => {
                 else
                     replaceScreen(<FormView nextStep={nextStep} />)
                 break;
-            /* case ('form'):
-                replaceScreen(<VerifyCodeView nextStep={nextStep} codeType='email' name='email' />)
-            case ('form'):
-                replaceScreen(<UploadView />)
-            case ('form'):
-                replaceScreen(<CreditCardView />)
-            case ('form'):
-                replaceScreen(<WireTranserView />) */
+            case ('iframe'):
+                replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
+                break;
+            case ('file'):
+                replaceScreen(<UploadView nextStep={nextStep} />)
+                break;
             default:
-            /* replaceScreen(<FormView fields={nextStep.data[0].name} />) */
+                break;
         }
     }, [nextStep, replaceScreen, backScreen])
 
     return (
         <main className={stylesCommon.body}>
             <span>
-                Oops... that shouldn't happen, please contact us.
+                Oops... that shouldn't happen, please contact us (onramper.com).
             </span>
         </main>
     )

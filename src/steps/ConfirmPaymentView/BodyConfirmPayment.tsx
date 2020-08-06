@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
 import IconChevron from '../../icons/chevron_right.svg'
 import { ReactComponent as IconPay } from '../../icons/payicon.svg'
-/* import { ReactComponent as IconFees } from '../../icons/feesicon.svg' */
 import { ReactComponent as IconWallet } from '../../icons/walleticon.svg'
 import { ReactComponent as IconExpectedtime } from '../../icons/expectedtimeicon.svg'
-/* import { ReactComponent as IconPaymentMethod } from '../../icons/paymentmethodicon.svg' */
 
 import { CSSTransition } from 'react-transition-group';
 
 import ButtonAction from '../../common/ButtonAction'
+
+import { APIContext } from '../../context'
 
 type BodyConfirmPaymentViewType = {
     onActionButton: () => void
@@ -24,13 +24,13 @@ type BodyConfirmPaymentViewType = {
     cryptoAddr?: string
     paymentMethod?: string
     cryptoIcon?: string
-    txTime?: { seconds: number, message: string },
-
+    txTime?: { seconds: number, message: string }
+    isFilled?: boolean
     conversionRate?: number
 }
 
 const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => {
-
+    const { inputInterface } = useContext(APIContext);
     const [isExpanded, setIsExpanded] = useState(false)
 
     const { onActionButton } = props
@@ -69,10 +69,10 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 <ul className={`${styles['wrapper']}`}>
                     {props.txTime && <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime.message} single />}
                 </ul>
-                <label className={styles['terms']}><input type="checkbox" name='agreement-wyre' /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
+                <label className={styles['terms']}><input type="checkbox" name='agreementCheckbox' onChange={(e) => inputInterface.handleInputChange(e.currentTarget.name, e.currentTarget.checked)} /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label>
             </div>
             <div className={`${stylesCommon['body__child']}`}>
-                <ButtonAction onClick={onActionButton} text='Confirm' />
+                <ButtonAction onClick={onActionButton} text='Confirm' disabled={!props.isFilled} />
             </div>
         </main >
     )
