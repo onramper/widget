@@ -72,7 +72,6 @@ const BuyCryptoView: React.FC = () => {
     async function getRateEffect() {
       processErrors({ rate: undefined })
       const err = await getRates();
-      console.log('called here', err)
       processErrors(err)
     }
     getRateEffect()

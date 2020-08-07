@@ -204,7 +204,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
   const handlePaymentMethodChange = useCallback(
     async (selectedPaymentMethod?: ItemType) => {
-      console.log('Called', state.collected.amountInCrypto)
+
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       if (!state.data.response_gateways) return
       if (!state.data.availablePaymentMethods || state.data.availablePaymentMethods.length <= 0) return { gateways: 'No payment methods found.' }
@@ -214,11 +214,11 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       // save to state.collected
       handleInputChange('selectedPaymentMethod', actualPaymentMethod)
 
-    }, [handleInputChange, state.data.availablePaymentMethods, state.collected.amountInCrypto, state.data.response_gateways])
+    }, [handleInputChange, state.data.availablePaymentMethods, state.data.response_gateways])
 
   const getRates = useCallback(
     async () => {
-      console.log('Called 2', state.collected.amountInCrypto)
+
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       if (!state.data.response_gateways) return
 
