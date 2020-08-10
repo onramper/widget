@@ -19,19 +19,10 @@ export type CollectedStateType = {
     selectedGateway?: GatewayOptionType,
     walletAddress?: string,
     "files": File[],
-    "personal-fname": string,
-    "personal-lname": string,
-    "personal-birth": string,
-    'personal-address': string
-    'personal-address2': string
-    'personal-city': string
-    'personal-postalcode': string
-    'personal-country': string
-    email: string
     defaultAddrs: {
         [key: string]: string[]
     }
-    [key: string]: any//todo, add all inputs
+    [key: string]: any
 }
 
 export type DataStateType = {
@@ -39,7 +30,7 @@ export type DataStateType = {
     availableCurrencies: ItemType[]
     availablePaymentMethods: ItemType[]
     availableRates: GatewayOptionType[]
-    init: (country?: string) => void
+    gateways: (country?: string) => void
     handleCryptoChange: (crypto?: ItemType) => Promise<any>
     handleCurrencyChange: (currency?: ItemType) => void
     handlePaymentMethodChange: (paymentMehtod?: ItemType) => any
@@ -101,7 +92,7 @@ export const initialState: StateType = {
         filtredGatewaysByCurrency: [],
         response_rate: undefined,
         filtredRatesByAviability: [],
-        init: (country?: string) => null,
+        gateways: (country?: string) => null,
         nextStep: {}
     },
     inputInterface: {

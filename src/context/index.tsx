@@ -65,7 +65,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
   )
 
   /* *********** */
-  const init = useCallback(
+  const gateways = useCallback(
     async (country?: string) => {
 
       // REQUEST AVAILABLE GATEWAYS
@@ -77,7 +77,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       }
       if (response_gateways.gateways.length <= 0) return { gateways: 'No gateways found.' }
 
-      const ICONS_MAP = response_gateways.icons
+      const ICONS_MAP = response_gateways.icons || {}
 
       // GET ALL AVAILABLE CRYPTOS
       let availableCryptos: GatewaysResponse['gateways'][0]['cryptoCurrencies'] = []
@@ -104,6 +104,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
 
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
+      handleInputChange('selectedCountry', response_gateways.localization.country)
       // save to state.date
       addData({
         availableCryptos: mappedAvailableCryptos,
@@ -111,7 +112,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         response_gateways
       })
       //save to local state
-      setICONS_MAP(response_gateways.icons)
+      setICONS_MAP(response_gateways.icons ?? {})
 
     }, [addData, handleInputChange, props.defaultCrypto])
 
@@ -258,7 +259,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         return { rate: error.message }
       }
 
-      // IF THE REQUEST DIDN'T THROW ANY ERROR, CLEAR THE ABOURT CONTROLLER FROM THE STATE
+      // IF THE REQUEST DIDN'T THROW ANY ERROR, CLEAR THE ABORT CONTROLLER FROM THE STATE
       setLastCall(undefined)
 
       if (response_rate.length <= 0) return { rate: 'No gateways found.' }
@@ -309,12 +310,6 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       return
     }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod])
 
-  /* SET NEXTSTEP ON SELECTEDGATEWAY CHANGE */
-  useEffect(() => {
-    const nextStep = state.collected.selectedGateway?.nextStep
-    addData({ nextStep })
-  }, [state.collected.selectedGateway, addData])
-
   const executeStep = useCallback(async (url: string, data: { [key: string]: any }) => {
     return await API.executeStep(url, data)
   }, [])
@@ -329,7 +324,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       },
       data: {
         ...state.data,
-        init,
+        gateways,
         handleCryptoChange,
         handleCurrencyChange,
         handlePaymentMethodChange,

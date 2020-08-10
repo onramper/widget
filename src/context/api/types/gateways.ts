@@ -9,7 +9,7 @@ interface GatewaysResponse {
         state: string,
         currency: string
     }
-    icons: {
+    icons?: {
         [key: string]: IconGatewaysResponse
     }
 }

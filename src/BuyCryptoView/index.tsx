@@ -22,7 +22,7 @@ const BuyCryptoView: React.FC = () => {
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } = useContext(APIContext);
-  const { init, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
+  const { gateways, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
   const { getRates } = apiInterface
 
   useEffect(() => {
@@ -38,12 +38,12 @@ const BuyCryptoView: React.FC = () => {
   }, [collected.selectedPaymentMethod])
 
   useEffect(() => {
-    async function initEffect() {
-      const err = await init();
+    async function gatewaysEffect() {
+      const err = await gateways();
       processErrors(err)
     }
-    initEffect()
-  }, [init, flagEffectGateways])
+    gatewaysEffect()
+  }, [gateways, flagEffectGateways])
 
   useEffect(() => {
     async function handleCryptoChangeEffect() {
