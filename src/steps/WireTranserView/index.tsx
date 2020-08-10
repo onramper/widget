@@ -15,30 +15,30 @@ const CreditCardView: React.FC = () => {
 
   const textInfo = 'Go to your online banking and make a manual payment with the following wire transfer details.'
 
-  const wyreDetails: { [key: string]: string } = {
-    'wyret-amount': '100,00',
-    'wyret-reference': 'Text',
-    'wyret-iban': 'NL12 INGB 0123 4567 89',
-    'wyret-bicswift': 'INGBNL2A',
-    'wyret-name': 'Onramper',
-    'wyret-currency': '$'
+  const wireDetails: { [key: string]: string } = {
+    'wiret-amount': '100,00',
+    'wiret-reference': 'Text',
+    'wiret-iban': 'NL12 INGB 0123 4567 89',
+    'wiret-bicswift': 'INGBNL2A',
+    'wiret-name': 'Onramper',
+    'wiret-currency': '$'
   }
 
   const handleIconClick = useCallback((name: string) => {
-    copyToClipBoard(wyreDetails[name], () => null)
-  }, [wyreDetails])
+    copyToClipBoard(wireDetails[name], () => null)
+  }, [wireDetails])
 
   return (
     <div className={styles.view}>
       <Header title="Wire transfer details" backButton />
       <BodyWireTransfer
         onActionButton={() => nextScreen(<SuccessView />)}
-        amount={wyreDetails['wyret-amount']}
-        reference={wyreDetails['wyret-reference']}
-        iban={wyreDetails['wyret-iban']}
-        bicswift={wyreDetails['wyret-bicswift']}
-        namne={wyreDetails['wyret-name']}
-        symbol={wyreDetails['wyret-currency']}
+        amount={wireDetails['wiret-amount']}
+        reference={wireDetails['wiret-reference']}
+        iban={wireDetails['wiret-iban']}
+        bicswift={wireDetails['wiret-bicswift']}
+        namne={wireDetails['wiret-name']}
+        symbol={wireDetails['wiret-currency']}
         textInfo={textInfo}
         onIconClick={handleIconClick}
       />

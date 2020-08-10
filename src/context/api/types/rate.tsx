@@ -17,6 +17,7 @@ interface Gateway {
         message: string
         limit?: number
     }
+    icon?: string
 }
 
 type RateResponse = Gateway[]

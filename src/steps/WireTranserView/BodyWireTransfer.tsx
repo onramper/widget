@@ -29,13 +29,13 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
                 {textInfo}
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                <InputText symbol={symbol} symbolPosition={'start'} value={amount} name='wyret-amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
-                <InputText value={reference} name='wyret-reference' className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+                <InputText symbol={symbol} symbolPosition={'start'} value={amount} name='wiret-amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+                <InputText value={reference} name='wiret-reference' className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
             </div>
-            <InputText value={iban} name='wyret-iban' className={stylesCommon['body__child']} label="IBAN" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+            <InputText value={iban} name='wiret-iban' className={stylesCommon['body__child']} label="IBAN" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                <InputText value={bicswift} name='wyret-bicswift' className={stylesCommon['row-fields__child']} label="BIC / SWIFT" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
-                <InputText value={namne} name='wyret-name' className={stylesCommon['row-fields__child']} label="Name" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+                <InputText value={bicswift} name='wiret-bicswift' className={stylesCommon['row-fields__child']} label="BIC / SWIFT" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+                <InputText value={namne} name='wiret-name' className={stylesCommon['row-fields__child']} label="Name" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
             </div>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text='Continue' />

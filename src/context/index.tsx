@@ -250,7 +250,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       // ELSE, CLEAR THE ABORT CONTROLLER AND RETURN ERROR
       let response_rate: RateResponse
       try {
-        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { amountInCrypto: state.collected.amountInCrypto }, signal)
+        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { amountInCrypto: state.collected.amountInCrypto, includeIcons: true }, signal)
       } catch (error) {
         if (error.name === 'AbortError')
           return {}
@@ -275,7 +275,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
         receivedCrypto: item.receivedCrypto,
         nextStep: item.nextStep,
         error: item.error?.message,
-        logo: LogoOnramper,
+        logo: item.icon || LogoOnramper
       }))
 
       // save to state.date
@@ -285,7 +285,6 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       const filtredRatesByAviability = response_rate.filter((item) => item.available)
       if (filtredRatesByAviability.length <= 0) {
         const minMaxErrors = response_rate.reduce((minMaxErrors: { [key: string]: any }, item) => {
-          console.log('item.error', item.error)
           if (!item.error) return minMaxErrors
           switch (item.error.type) {
             case 'MIN':

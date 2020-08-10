@@ -122,12 +122,12 @@
 }
 
 .content__price .gateway-logo img {
-    /* max-width: 5rem;
-    width: 100%; */
-    max-height: var(--collapsable-height);
+    max-width: 5rem;
     /* width: 100%; */
-    max-height: var(--collapsable-height);
-    max-width: 7rem;
+    /* width: 100%; */
+    /* max-height: var(--collapsable-height); */
+    max-width: 9rem;
+    max-height: 2rem;
     position: absolute;
 }
 
