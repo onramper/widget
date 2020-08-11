@@ -12,6 +12,12 @@
 
 .infobox--info {
     background-color: #FCF5EE;
+    color: black;
+}
+
+.infobox--notification {
+    background-color: #82b8ff;
+    color: white;
 }
 
 .infobox--error {

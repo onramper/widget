@@ -15,17 +15,36 @@ const CreditCardView: React.FC = () => {
 
   const textInfo = 'Go to your online banking and make a manual payment with the following wire transfer details.'
 
-  const wireDetails: { [key: string]: string } = {
-    'wiret-amount': '100,00',
-    'wiret-reference': 'Text',
-    'wiret-iban': 'NL12 INGB 0123 4567 89',
-    'wiret-bicswift': 'INGBNL2A',
-    'wiret-name': 'Onramper',
-    'wiret-currency': '$'
+  const wireDetails: { [key: string]: { name: string, value: string } } = {
+    'Amount': {
+      name: 'Amount',
+      value: '100,00',
+    },
+    'Reference': {
+      name: 'Reference',
+      value: 'Text',
+    },
+    'IBAN': {
+      name: 'IBAN',
+      value: 'NL12 INGB 0123 4567 89',
+    },
+    'BIC / SWIFT': {
+      name: 'BIC / SWIFT',
+      value: 'INGBNL2A',
+    },
+    'Name': {
+      name: 'Name',
+      value: 'Onramper',
+    },
+    'wiret-currency': {
+      name: '',
+      value: '$',
+    }
   }
 
   const handleIconClick = useCallback((name: string) => {
-    copyToClipBoard(wireDetails[name], () => null)
+    console.log(name)
+    copyToClipBoard(wireDetails[name].value, () => null)
   }, [wireDetails])
 
   return (
@@ -33,11 +52,11 @@ const CreditCardView: React.FC = () => {
       <Header title="Wire transfer details" backButton />
       <BodyWireTransfer
         onActionButton={() => nextScreen(<SuccessView />)}
-        amount={wireDetails['wiret-amount']}
-        reference={wireDetails['wiret-reference']}
-        iban={wireDetails['wiret-iban']}
-        bicswift={wireDetails['wiret-bicswift']}
-        namne={wireDetails['wiret-name']}
+        amount={wireDetails['Amount']}
+        reference={wireDetails['Reference']}
+        iban={wireDetails['IBAN']}
+        bicswift={wireDetails['BIC / SWIFT']}
+        name={wireDetails['Name']}
         symbol={wireDetails['wiret-currency']}
         textInfo={textInfo}
         onIconClick={handleIconClick}

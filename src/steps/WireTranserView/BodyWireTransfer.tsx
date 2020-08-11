@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
@@ -10,32 +10,45 @@ import IconCopy from '../../icons/copyicon.svg'
 type BodyWireTransferType = {
     onActionButton?: () => void,
     onIconClick?: (id: string) => void,
-    amount: string
-    reference: string
-    iban: string
-    bicswift: string
-    namne: string
-    symbol: string
+    amount: { name: string, value: string }
+    reference: { name: string, value: string }
+    iban: { name: string, value: string }
+    bicswift: { name: string, value: string }
+    name: { name: string, value: string }
+    symbol: { name: string, value: string }
     textInfo?: string
 }
 
 const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
-    const { amount, reference, iban, bicswift, namne, symbol, textInfo } = props
+    const { amount, reference, iban, bicswift, name, symbol, textInfo } = props
     const { onActionButton, onIconClick } = props
+
+    const [copiedText, setCopiedText] = useState<string>()
+
+    const onClick = (id: string) => {
+        console.log(id)
+        if (onIconClick) {
+            onIconClick(id)
+            setCopiedText(`${id} copied to clipboard.`)
+        }
+    }
 
     return (
         <main className={stylesCommon.body}>
             <InfoBox className={`${stylesCommon['body__child']}`} in={textInfo !== undefined} >
                 {textInfo}
             </InfoBox>
+            <InfoBox type='notification' className={`${stylesCommon['body__child']}`} in={copiedText !== undefined} canBeDismissed onDismissClick={() => setCopiedText(undefined)}>
+                {copiedText}
+            </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                <InputText symbol={symbol} symbolPosition={'start'} value={amount} name='wiret-amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
-                <InputText value={reference} name='wiret-reference' className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+                <InputText symbol={symbol.value} symbolPosition={'start'} value={amount.value} name={amount.name} className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+                <InputText value={reference.value} name={reference.name} className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             </div>
-            <InputText value={iban} name='wiret-iban' className={stylesCommon['body__child']} label="IBAN" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+            <InputText value={iban.value} name={iban.name} className={stylesCommon['body__child']} label="IBAN" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                <InputText value={bicswift} name='wiret-bicswift' className={stylesCommon['row-fields__child']} label="BIC / SWIFT" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
-                <InputText value={namne} name='wiret-name' className={stylesCommon['row-fields__child']} label="Name" disabled icon={IconCopy} iconPosition='end' onIconClick={onIconClick} />
+                <InputText value={bicswift.value} name={bicswift.name} className={stylesCommon['row-fields__child']} label="BIC / SWIFT" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+                <InputText value={name.value} name={name.name} className={stylesCommon['row-fields__child']} label="Name" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             </div>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text='Continue' />

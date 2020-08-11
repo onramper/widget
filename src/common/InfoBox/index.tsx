@@ -3,7 +3,7 @@ import styles from './styles.module.css'
 import { CSSTransition } from 'react-transition-group';
 
 type InfoBoxType = {
-    type?: 'info' | 'error'
+    type?: 'info' | 'error' | 'notification'
     onDismissClick?: () => void
     canBeDismissed?: boolean
     in: boolean
@@ -17,6 +17,9 @@ const InfoBox: React.FC<InfoBoxType> = (props) => {
     switch (type) {
         case 'error':
             classBoxType = 'infobox--error'
+            break;
+        case 'notification':
+            classBoxType = 'infobox--notification'
             break;
         case 'info':
         default:
