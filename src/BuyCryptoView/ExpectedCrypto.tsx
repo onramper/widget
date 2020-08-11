@@ -16,8 +16,9 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
 
     const [expectedCrypto, setExpectedCrypto] = useState(0)
 
-    const { data } = useContext(APIContext);
+    const { data, inputInterface } = useContext(APIContext);
     const { availableRates } = data
+    const { handleInputChange } = inputInterface
 
     const setMaxExpectedCrypto = useCallback(() => {
         let lowest = Number.POSITIVE_INFINITY;
@@ -33,12 +34,16 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
             }
         }
 
-        pricedRates.length > 0 ? setExpectedCrypto(pricedRates[index].receivedCrypto ?? 0) : setExpectedCrypto(0)
+        setExpectedCrypto(pricedRates[index]?.receivedCrypto ?? 0)
     }, [availableRates])
 
     useEffect(() => {
         setMaxExpectedCrypto()
     }, [setMaxExpectedCrypto])
+
+    useEffect(() => {
+        handleInputChange('bestExpectedCrypto', expectedCrypto)
+    }, [expectedCrypto, handleInputChange])
 
     return (
         <div className={`${styles['expected-crypto']} ${className}`}>

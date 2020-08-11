@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react'
+import React, { useContext, useEffect, useState, useCallback, useRef } from 'react'
 import stylesCommon from '../styles.module.css'
 
 import InputButton from '../common/Input/InputButton'
@@ -35,6 +35,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
 
     const [pairs, setPairs] = useState<ItemType[]>()
     const [amountInCrypto, setAmountInCrypto] = useState(false)
+    const [symbolRecentlyChanged, setSymbolRecentlyChanged] = useState(false)
 
     const generalErrors = Object.keys(errors).filter((errName) => !errName.startsWith('input-') && errors[errName])
 
@@ -45,12 +46,24 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     const handleSymbolChange = useCallback(
         (item: ItemType | undefined) => {
             if (item) {
+                if (symbolRecentlyChanged) {
+                    handleInputChange('amount', collected.bestExpectedCrypto)
+                    setSymbolRecentlyChanged(false)
+                }
                 handleInputChange('amountInCrypto', item.currencyType === ItemCategory.Crypto)
                 setAmountInCrypto(item.currencyType === ItemCategory.Crypto)
             }
-        }, [handleInputChange],
+        }, [handleInputChange, collected.bestExpectedCrypto, symbolRecentlyChanged],
     )
 
+    const firstRender = useRef(true)
+    useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false
+            return
+        }
+        setSymbolRecentlyChanged(true)
+    }, [collected.amountInCrypto])
 
     return (
         <main className={stylesCommon.body}>
