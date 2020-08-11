@@ -4,6 +4,7 @@ import stylesCommon from '../styles.module.css'
 import ButtonAction from '../common/ButtonAction'
 
 import { GatewayOptionType } from '../common/types'
+import InfoBox from '../common/InfoBox'
 
 import GatewaysList from './GatewaysList'
 
@@ -26,7 +27,11 @@ const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
                 <div className={`${stylesCommon['body__child']}`}>
                     <GatewaysList availableGateways={availableGateways} unavailableGateways={unavailableGateways} onItemClick={onItemClick} />
                 </div>
-                : <div className={`${stylesCommon['body__child']}`}>No gateways availables:(</div>
+                : (
+                    <InfoBox in={true} type='info' className={`${stylesCommon['body__child']}`}>
+                        Something went wrong, try again.
+                    </InfoBox>
+                )
             }
             <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
                 <ButtonAction onClick={onActionButton} text='Continue' disabled={availableGateways.length < 1} />
