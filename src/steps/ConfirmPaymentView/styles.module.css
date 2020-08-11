@@ -132,6 +132,7 @@
 
 .item.item--main .content * {
     display: block;
+    word-break: break-all;
 }
 
 .item--main .title {
