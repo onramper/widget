@@ -289,12 +289,12 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
           if (!item.error) return minMaxErrors
           switch (item.error.type) {
             case 'MIN':
-              if (!minMaxErrors[item.error.type] || (item.error.limit ?? Number.POSITIVE_INFINITY < minMaxErrors[item.error.type].limit)) {
+              if (!minMaxErrors[item.error.type] || ((item.error.limit ?? Number.POSITIVE_INFINITY) < minMaxErrors[item.error.type].limit)) {
                 minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
               return minMaxErrors
             case 'MAX':
-              if (!minMaxErrors[item.error.type] || (item.error.limit ?? Number.NEGATIVE_INFINITY > minMaxErrors[item.error.type].limit)) {
+              if (!minMaxErrors[item.error.type] || ((item.error.limit ?? Number.NEGATIVE_INFINITY) > minMaxErrors[item.error.type].limit)) {
                 minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
               return minMaxErrors
