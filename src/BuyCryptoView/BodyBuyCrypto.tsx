@@ -47,7 +47,8 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         (item: ItemType | undefined) => {
             if (item) {
                 if (symbolRecentlyChanged) {
-                    handleInputChange('amount', collected.bestExpectedCrypto)
+                    if (collected.bestExpectedCrypto !== 0)
+                        handleInputChange('amount', collected.bestExpectedCrypto)
                     setSymbolRecentlyChanged(false)
                 }
                 handleInputChange('amountInCrypto', item.currencyType === ItemCategory.Crypto)
