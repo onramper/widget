@@ -6,13 +6,13 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
 >
   <div
     className="input body__child"
-    onClick={[Function]}
   >
     <label>
       I want to buy
     </label>
     <div
       className="input__type input__type--selector"
+      onClick={[Function]}
     >
       <img
         alt="Icon"
@@ -75,13 +75,13 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
     </div>
     <div
       className="input row-fields__child"
-      onClick={[Function]}
     >
       <label>
         Currency
       </label>
       <div
         className="input__type input__type--selector"
+        onClick={[Function]}
       >
         <img
           alt="Icon"
@@ -108,13 +108,13 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
   </div>
   <div
     className="input body__child"
-    onClick={[Function]}
   >
     <label>
       Payment method
     </label>
     <div
       className="input__type input__type--selector"
+      onClick={[Function]}
     >
       <img
         alt="Icon"
