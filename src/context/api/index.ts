@@ -38,7 +38,7 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File) 
 
     const { url = '' } = step
     const method = step.type === 'file' ? 'PUT' : 'POST'
-    const body = step.type === 'file' ? await data.arrayBuffer() : JSON.stringify({ ...data })
+    const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
 
     const nextStep = await fetch(url, { method, body })
     return processResponse(nextStep)
