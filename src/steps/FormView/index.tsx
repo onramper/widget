@@ -17,15 +17,17 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
 
+  const nextStepData = nextStep.data || []
+
   const handleButtonAction = async () => {
     setIsLoading(true)
     setErrorMsg(undefined)
 
-    let params = nextStep.data.reduce((acc, current) => {
+    let params = nextStepData.reduce((acc, current) => {
       return { ...acc, [current.name]: collected[current.name] }
     }, {})
     try {
-      const newNextStep = await apiInterface.executeStep(nextStep.url, params);
+      const newNextStep = await apiInterface.executeStep(nextStep, params);
       nextScreen(<Step {...newNextStep} />)
     } catch (error) {
       setErrorMsg(error.message)
@@ -35,15 +37,15 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   }
 
   useEffect(() => {
-    const someEmpty = nextStep.data.some((item) => !collected[item.name])
+    const someEmpty = nextStepData.some((item) => !collected[item.name])
     setIsFilled(!someEmpty)
-  }, [collected, nextStep.data])
+  }, [collected, nextStepData])
 
   return (
     <div className={styles.view}>
       <Header title="Purchase form" backButton />
       <BodyForm
-        fields={nextStep.data}
+        fields={nextStepData}
         onActionButton={handleButtonAction}
         handleInputChange={inputInterface.handleInputChange}
         isLoading={isLoading}

@@ -1,4 +1,4 @@
-import { ItemType, GatewayOptionType } from '../common/types'
+import { ItemType, GatewayOptionType, NextStep } from '../common/types'
 import { GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
 
@@ -53,7 +53,7 @@ export type InputInterfaceType = {
 }
 
 export type ApiInterfaceType = {
-    executeStep: (url: string, params: { [key: string]: any }) => Promise<any>
+    executeStep: (step: NextStep, params: { [key: string]: any }) => Promise<any>
     getRates: () => { [key: string]: any } | undefined
 }
 
@@ -101,7 +101,7 @@ export const initialState: StateType = {
         handleFileDeleted: () => null
     },
     apiInterface: {
-        executeStep: async (url: string, params: { [key: string]: any }) => false,
+        executeStep: async (step: NextStep, params: { [key: string]: any }) => false,
         getRates: () => undefined
     }
 }

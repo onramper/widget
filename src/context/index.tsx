@@ -11,6 +11,7 @@ import * as API from './api'
 import { ItemType, ItemCategory, GatewayOptionType } from '../common/types';
 import { IconGatewaysResponse, GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
+import { NextStep } from './api/types/nextStep';
 
 
 //Creating context
@@ -310,8 +311,8 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       return
     }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod])
 
-  const executeStep = useCallback(async (url: string, data: { [key: string]: any }) => {
-    return await API.executeStep(url, data)
+  const executeStep = useCallback(async (step: NextStep, data: { [key: string]: any }) => {
+    return await API.executeStep(step, data)
   }, [])
 
   return (

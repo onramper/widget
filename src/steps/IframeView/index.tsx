@@ -29,7 +29,7 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
       <Header title="Email" backButton />
       <BodyVerifyCode
         textInfo={textInfo}
-        src={nextStep.url}
+        src={nextStep.url ?? ''}
       />
       <Footer />
     </div>

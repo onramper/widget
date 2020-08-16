@@ -20,15 +20,17 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: 
   const codeSentTo = collected[codeType]
   const textInfo = `We sent a verification code to ${codeSentTo}. Please enter the verification code below.`
 
+  const nextStepData = nextStep.data || []
+
   const handleButtonAction = async () => {
     setIsLoading(true)
     setErrorMsg(undefined)
 
-    let params = nextStep.data.reduce((acc, current) => {
+    let params = nextStepData.reduce((acc, current) => {
       return { ...acc, [current.name]: collected[current.name] }
     }, {})
     try {
-      const newNextStep = await apiInterface.executeStep(nextStep.url, params);
+      const newNextStep = await apiInterface.executeStep(nextStep, params);
       nextScreen(<Step {...newNextStep} />)
     } catch (error) {
       setErrorMsg(error.message)
@@ -38,9 +40,9 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: 
   }
 
   useEffect(() => {
-    const isFilled = collected[nextStep.data[0].name] ? true : false
+    const isFilled = collected[nextStepData[0].name] ? true : false
     setIsFilled(isFilled)
-  }, [collected, nextStep.data])
+  }, [collected, nextStepData])
 
   return (
     <div className={styles.view}>
@@ -52,7 +54,7 @@ const VerifyCodeView: React.FC<{ name: string, codeType: string } & { nextStep: 
         handleInputChange={inputInterface.handleInputChange}
         isLoading={isLoading}
         isFilled={isFilled}
-        inputName={nextStep.data[0].name}
+        inputName={nextStepData[0].name}
         errorMsg={errorMsg}
       />
       <Footer />

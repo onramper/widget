@@ -1,5 +1,6 @@
 import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
+import { NextStep } from '../../common/types'
 
 const BASE_API = 'https://api.onramper.dev'
 
@@ -33,11 +34,13 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
 /**
  * Exectue step
  */
-const executeStep = async (url: string, data: { [key: string]: any }) => {
-    const nextStep = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({ ...data })
-    })
+const executeStep = async (step: NextStep, data: { [key: string]: any } | File) => {
+
+    const { url = '' } = step
+    const method = step.type === 'file' ? 'PUT' : 'POST'
+    const body = step.type === 'file' ? await data.arrayBuffer() : JSON.stringify({ ...data })
+
+    const nextStep = await fetch(url, { method, body })
     return processResponse(nextStep)
 }
 

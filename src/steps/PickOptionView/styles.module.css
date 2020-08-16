@@ -1,0 +1,7 @@
+.option {
+    padding: 0.625rem 0;
+}
+
+input[type="radio"] {
+    margin-right: 1rem;
+}

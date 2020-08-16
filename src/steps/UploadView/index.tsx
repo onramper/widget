@@ -1,23 +1,45 @@
-import React/* , { useContext } */ from 'react';
+import React, { useContext, useState } from 'react';
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyUpload from './BodyUpload'
 import styles from '../../styles.module.css'
-/* import ConfirmPaymentView from '../ConfirmPaymentView'
 
-import { NavContext } from '../../wrappers/context' */
+import { NavContext } from '../../wrappers/context'
+import { APIContext } from '../../context'
+
 import { NextStep } from '../../common/types';
+import Step from '../Step'
 
-const UploadView: React.FC<{ nextStep: NextStep }> = () => {
-  /* const { nextScreen } = useContext(NavContext); */
-  const textInfo = 'Take a photo of the front and back of your passport and attach it here so we can verify your address (one file for each side).'
+const UploadView: React.FC<{ nextStep: NextStep }> = (props) => {
+  const { nextScreen } = useContext(NavContext);
+  const textInfo = `Attach your ${props.nextStep.humanName} here so we can verify your identity.`
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string>()
+  const { apiInterface } = useContext(APIContext);
+
+  const handleButtonAction = async (file: File) => {
+    setIsLoading(true)
+    setErrorMsg(undefined)
+
+    try {
+      const newNextStep = await apiInterface.executeStep(props.nextStep, file);
+      nextScreen(<Step {...newNextStep} />)
+    } catch (error) {
+      setErrorMsg(error.message)
+    }
+
+    setIsLoading(false)
+  }
 
   return (
     <div className={styles.view}>
-      <Header title="Upload document" backButton />
+      <Header title={`Upload ${props.nextStep.humanName}`} backButton />
       <BodyUpload
-        /* onActionButton={() => nextScreen(<ConfirmPaymentView nextStep={{ type: '', data: [], url: '' }} />)} */
+        onActionButton={handleButtonAction}
         textInfo={textInfo}
+        isLoading={isLoading}
+        errorMsg={errorMsg}
       />
       <Footer />
     </div>

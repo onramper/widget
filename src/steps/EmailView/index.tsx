@@ -18,15 +18,17 @@ const EmailView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const [errorMsg, setErrorMsg] = useState<string>()
   const textInfo = 'We will send a code to your email.'
 
+  const nextStepData = nextStep.data || []
+
   const handleButtonAction = async () => {
     setIsLoading(true)
     setErrorMsg(undefined)
 
-    let params = nextStep.data.reduce((acc, current) => {
+    let params = nextStep.data?.reduce((acc, current) => {
       return { ...acc, [current.name]: collected[current.name] }
-    }, {})
+    }, {}) || {}
     try {
-      const newNextStep = await apiInterface.executeStep(nextStep.url, params);
+      const newNextStep = await apiInterface.executeStep(nextStep, params);
       nextScreen(<Step {...newNextStep} />)
     } catch (error) {
       setErrorMsg(error.message)
@@ -36,9 +38,9 @@ const EmailView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   }
 
   useEffect(() => {
-    const isFilled = collected[nextStep.data[0].name] ? true : false
+    const isFilled = collected[nextStepData[0].name] ? true : false
     setIsFilled(isFilled)
-  }, [collected, nextStep.data])
+  }, [collected, nextStepData])
 
   return (
     <div className={styles.view}>
@@ -50,7 +52,7 @@ const EmailView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
         isFilled={isFilled}
         isLoading={isLoading}
         errorMsg={errorMsg}
-        inputName={nextStep.data[0].name}
+        inputName={nextStepData[0].name}
       />
       <Footer />
     </div>
