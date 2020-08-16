@@ -19,7 +19,10 @@ const Menu: React.FC = () => {
         window.open("https://onramper.com/privacy-policy")
         break;
       case 2:
-        window.open("https://onramper.com/")
+        window.open("https://onramper.com/terms-of-use/")
+        break;
+      case 3:
+        window.open("https://onramper.com/about")
         break;
       default:
         break;
@@ -37,6 +40,10 @@ const Menu: React.FC = () => {
         {
           id: 'legal',
           name: 'Privacy Policy',
+        },
+        {
+          id: 'terms',
+          name: 'Terms of use'
         },
         {
           id: 'about',
