@@ -3,7 +3,7 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyConfirmPayment from './BodyConfirmPayment'
 import styles from '../../styles.module.css'
-import CreditCardView from '../CreditCardView'
+import IframeView from '../IframeView'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
@@ -23,7 +23,7 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
     <div className={styles.view}>
       <Header title="Payment confirmation" backButton />
       <BodyConfirmPayment
-        onActionButton={() => nextScreen(<CreditCardView  />)}
+        onActionButton={() => nextScreen(<IframeView nextStep={props.nextStep} />)}
         payAmount={collected.amount.toString()}
         fees={collected.selectedGateway?.fees}
         currency={collected.selectedCurrency?.name}
