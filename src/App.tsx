@@ -4,14 +4,15 @@ import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './wrappers/context';
 import { APIProvider } from './context'
 
-const defaultColor = '#31a5ff'
-const defaultAddrs = {
+const defaultColor = `#${getParam('color', '31a5ff')}`
+const defaultAddrs = JSON.stringify({
   BTC: ['btcAddr1', 'btcAddr2'],
   ETH: ['ethAddr1'],
   NEO: ['neoAddr1', 'neoAddr2', 'neoAddr3', 'neoAddr4']
-}
-const defaultAmount = 100
-const defaultCrypto = ''
+})
+const addresses = JSON.parse(getParam('addresses', defaultAddrs))
+const defaultAmount = Number(getParam('defaultAmount', '100'))
+const defaultCrypto = getParam('defaultCrypto', 'ETH')
 
 function App() {
   const [color, setColor] = useState(defaultColor)
@@ -19,7 +20,7 @@ function App() {
     <>
       <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
       <div className={`${styles['views-container']}`}>
-        <OnramperWidget color={color} defaultAddrs={defaultAddrs} defaultAmount={defaultAmount} defaultCrypto={defaultCrypto} />
+        <OnramperWidget color={color} defaultAddrs={addresses} defaultAmount={defaultAmount} defaultCrypto={defaultCrypto} />
       </div>
     </>
   );
@@ -45,6 +46,18 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = ({ color, defaultAddrs, de
       </APIProvider>
     </div>
   )
+}
+
+function getParam(name: string, defaultValue?: string): string {
+  const value = new URLSearchParams(window.location.search).get(name)
+  if (value === null) {
+    if (defaultValue !== undefined) {
+      return defaultValue
+    } else {
+      throw new Error(`Parameter ${name} has not been provided in the query string`)
+    }
+  }
+  return value
 }
 
 export default App;
