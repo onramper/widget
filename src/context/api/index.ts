@@ -66,9 +66,31 @@ const createUrlParamsFromObject = (paramsObj: { [key: string]: any }) =>
         return acc
     }, '')
 
+interface Filters {
+    onlyCryptos?: string[],
+    excludeCryptos?: string[]
+}
+const filterGatewaysResponseByCrypto = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos }: Filters): GatewaysResponse => {
+    const filtredGateways = gatewaysResponse.gateways.map(gateway => {
+        let cryptosList = gateway.cryptoCurrencies
+        if (onlyCryptos && onlyCryptos?.length > 0)
+            cryptosList = gateway.cryptoCurrencies.filter(crypto => onlyCryptos.includes(crypto.code))
+        if (excludeCryptos && excludeCryptos?.length > 0)
+            cryptosList = cryptosList.filter(crypto => !excludeCryptos.includes(crypto.code))
+        return {
+            ...gateway,
+            cryptoCurrencies: cryptosList
+        }
+    })
+    return {
+        ...gatewaysResponse,
+        gateways: filtredGateways
+    }
+}
 
 export {
     gateways,
     rate,
-    executeStep
+    executeStep,
+    filterGatewaysResponseByCrypto
 }

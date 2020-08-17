@@ -17,7 +17,13 @@ import { NextStep } from './api/types/nextStep';
 //Creating context
 const APIContext = createContext<StateType>(initialState);
 
-const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: string]: string[] }, defaultCrypto?: string }> = (props) => {
+const APIProvider: React.FC<{
+  defaultAmount?: number
+  defaultAddrs?: { [key: string]: string[] }
+  defaultCrypto?: string
+  onlyCryptos?: string[]
+  excludeCryptos?: string[]
+}> = (props) => {
   const { defaultAmount = 100, defaultAddrs = {} } = props
   const iniState = {
     ...initialState,
@@ -73,6 +79,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       let response_gateways: GatewaysResponse
       try {
         response_gateways = await API.gateways({ country, includeIcons: true })
+        response_gateways = API.filterGatewaysResponseByCrypto(response_gateways, { onlyCryptos: props.onlyCryptos, excludeCryptos: props.excludeCryptos })
       } catch (error) {
         return { gateways: error.message }
       }
@@ -115,7 +122,7 @@ const APIProvider: React.FC<{ defaultAmount?: number, defaultAddrs?: { [key: str
       //save to local state
       setICONS_MAP(response_gateways.icons ?? {})
 
-    }, [addData, handleInputChange, props.defaultCrypto])
+    }, [addData, handleInputChange, props.defaultCrypto, props.excludeCryptos, props.onlyCryptos])
 
   const handleCryptoChange = useCallback(
     async (crypto?: ItemType) => {
