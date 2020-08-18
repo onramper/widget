@@ -17,7 +17,7 @@ import { NextStep } from './api/types/nextStep';
 //Creating context
 const APIContext = createContext<StateType>(initialState);
 
-const APIProvider: React.FC<{
+interface APIProvider {
   defaultAmount?: number
   defaultAddrs?: { [key: string]: string[] }
   defaultCrypto?: string
@@ -25,7 +25,9 @@ const APIProvider: React.FC<{
     onlyCryptos?: string[]
     excludeCryptos?: string[]
   }
-}> = (props) => {
+}
+
+const APIProvider: React.FC<APIProvider> = (props) => {
   const { defaultAmount = 100, defaultAddrs = {} } = props
   const iniState = {
     ...initialState,
@@ -50,22 +52,7 @@ const APIProvider: React.FC<{
     else handleInputChange('isCalculatingAmount', false)
   }, [lastCall, handleInputChange])
 
-  const handleFilesAdded = useCallback(
-    (name: string, files: File[], maxFiles: number) => {
-      const existingFiles = state.collected['files'].map(f => f.name)
-      files = files.filter(f => !existingFiles.includes(f.name))
-      if (existingFiles.length + files.length > maxFiles) return false
-      dispatch({ type: CollectedActionsType.AddFile, payload: { name, value: files } })
-      return true;
-    },
-    [state.collected],
-  )
-
-  const handleFileDeleted = useCallback(
-    (name: string, fileName: string) => dispatch({ type: CollectedActionsType.DeleteFile, payload: { name, value: fileName } }),
-    []
-  )
-
+  
   /* *********** */
 
   const addData = useCallback(
@@ -327,9 +314,7 @@ const APIProvider: React.FC<{
     <APIContext.Provider value={{
       ...state,
       inputInterface: {
-        handleInputChange,
-        handleFilesAdded,
-        handleFileDeleted
+        handleInputChange
       },
       data: {
         ...state.data,

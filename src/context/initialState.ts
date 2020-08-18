@@ -48,8 +48,6 @@ export type DataStateType = {
 
 export type InputInterfaceType = {
     handleInputChange: (name: string, value: any) => void
-    handleFilesAdded: (name: string, files: File[], maxFiles: number) => boolean,
-    handleFileDeleted: (name: string, fileName: string) => void
 }
 
 export type ApiInterfaceType = {
@@ -96,9 +94,7 @@ export const initialState: StateType = {
         nextStep: {}
     },
     inputInterface: {
-        handleInputChange: () => null,
-        handleFilesAdded: () => false,
-        handleFileDeleted: () => null
+        handleInputChange: () => null
     },
     apiInterface: {
         executeStep: async (step: NextStep, params: { [key: string]: any }) => false,
