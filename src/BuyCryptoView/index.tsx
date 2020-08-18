@@ -22,8 +22,8 @@ const BuyCryptoView: React.FC = () => {
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } = useContext(APIContext);
-  const { gateways, handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
-  const { getRates } = apiInterface
+  const { handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
+  const { gateways, getRates } = apiInterface
 
   useEffect(() => {
     setSelectedCrypto(collected.selectedCrypto)
@@ -46,26 +46,19 @@ const BuyCryptoView: React.FC = () => {
   }, [gateways, flagEffectGateways])
 
   useEffect(() => {
-    async function handleCryptoChangeEffect() {
-      await handleCryptoChange(selectedCrypto);
-    }
-    handleCryptoChangeEffect()
+    processErrors({ gateways: undefined })
+    const err = handleCryptoChange(selectedCrypto);
+    processErrors(err)
   }, [handleCryptoChange, selectedCrypto])
 
   useEffect(() => {
-    async function handleCurrencyChangeEffect() {
-      await handleCurrencyChange(selectedCurrency);
-    }
-    handleCurrencyChangeEffect()
+    handleCurrencyChange(selectedCurrency);
   }, [handleCurrencyChange, selectedCurrency])
 
   useEffect(() => {
-    async function handlePaymentMethodChangeEffect() {
-      processErrors({ rate: undefined })
-      const err = await handlePaymentMethodChange(selectedPaymentMethod);
-      processErrors(err)
-    }
-    handlePaymentMethodChangeEffect()
+    processErrors({ rate: undefined })
+    const err = handlePaymentMethodChange(selectedPaymentMethod);
+    processErrors(err)
   }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors, flagEffectRate])
 
   useEffect(() => {

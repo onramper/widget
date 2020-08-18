@@ -12,11 +12,11 @@ import { APIContext } from '../../context'
 
 const WalletAddressView: React.FC = () => {
   const { nextScreen } = useContext(NavContext);
-  const { inputInterface, data, collected } = useContext(APIContext);
+  const { inputInterface, collected } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
 
   const handleButtonAction = () => {
-    if (!collected.walletAddress || !data.nextStep) return
+    if (!collected.walletAddress) return
     if (collected.selectedGateway?.nextStep)
       nextScreen(<Step {...collected.selectedGateway?.nextStep} />)
   }

@@ -37,7 +37,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     const [amountInCrypto, setAmountInCrypto] = useState(false)
     const [symbolRecentlyChanged, setSymbolRecentlyChanged] = useState(false)
 
-    const generalErrors = Object.keys(errors).filter((errName) => !errName.startsWith('input-') && errors[errName])
+    const generalErrors = Object.keys(errors).filter((errName) => !errName.startsWith('field-') && errors[errName])
 
     useEffect(() => {
         setPairs([selectedCurrency, selectedCrypto])
@@ -81,7 +81,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                 !errors['gateways'] && <>
                     <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
                     <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                        <InputTextAmount error={errors['input-amount']} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} />
+                        <InputTextAmount error={errors['field-amount']} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} />
                         <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
                     </div>
                     <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />

@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useCallback, useEffect, useState } from 'react';
 
-import { StateType, initialState } from './initialState'
+import { StateType, initialState, ErrorObjectType } from './initialState'
 import { mainReducer, CollectedActionsType, DataActionsType } from './reducers'
 
 import { arrayUnique, arrayObjUnique } from '../wrappers/utils'
@@ -49,10 +49,10 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
   useEffect(() => {
     if (lastCall) handleInputChange('isCalculatingAmount', true)
-    else handleInputChange('isCalculatingAmount', false)
-  }, [lastCall, handleInputChange])
+    else handleInputChange('isCalculatingAmount', state.data.response_rate === undefined ? true : false)
+  }, [lastCall, handleInputChange, state.data.response_rate])
 
-  
+
   /* *********** */
 
   const addData = useCallback(
@@ -62,7 +62,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
   /* *********** */
   const gateways = useCallback(
-    async (country?: string) => {
+    async (country?: string): Promise<ErrorObjectType> => {
 
       // REQUEST AVAILABLE GATEWAYS
       let response_gateways: GatewaysResponse
@@ -113,10 +113,10 @@ const APIProvider: React.FC<APIProvider> = (props) => {
     }, [addData, handleInputChange, props.defaultCrypto, props.filters])
 
   const handleCryptoChange = useCallback(
-    async (crypto?: ItemType) => {
+    (crypto?: ItemType): ErrorObjectType => {
 
-      // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
-      if (!state.data.response_gateways) return
+      // IF RESPONSE IS NOT SET YET, DON'T DO ANYTHING
+      if (!state.data.response_gateways) return {}
       const gateways = state.data.response_gateways.gateways
 
       if (gateways.length <= 0) return { gateways: 'No gateways found.' }
@@ -151,15 +151,15 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.date
       addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.response_gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange,],
+    }, [state.data.response_gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange],
   )
 
   const handleCurrencyChange = useCallback(
-    async (selectedCurrency?: ItemType) => {
+    (selectedCurrency?: ItemType): ErrorObjectType => {
 
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       const response_gateways = state.data.response_gateways
-      if (!response_gateways) return
+      if (!response_gateways) return {}
 
       const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
       if (!filtredGatewaysByCrypto) return { gateways: 'No gateways availables for the selected crypto.' }
@@ -200,7 +200,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
   )
 
   const handlePaymentMethodChange = useCallback(
-    async (selectedPaymentMethod?: ItemType) => {
+    (selectedPaymentMethod?: ItemType): ErrorObjectType => {
 
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       if (!state.data.response_gateways) return
@@ -214,7 +214,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
     }, [handleInputChange, state.data.availablePaymentMethods, state.data.response_gateways])
 
   const getRates = useCallback(
-    async () => {
+    async (): Promise<ErrorObjectType> => {
 
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       if (!state.data.response_gateways) return
@@ -299,34 +299,32 @@ const APIProvider: React.FC<APIProvider> = (props) => {
               return minMaxErrors
           }
         }, {})
-        return { 'input-amount': minMaxErrors.MIN?.message ?? minMaxErrors.MAX?.message }
+        return { 'field-amount': minMaxErrors.MIN?.message ?? minMaxErrors.MAX?.message }
       }
 
       // IF NO ERRORS, RETURN UNDEFINED
       return
     }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod])
 
-  const executeStep = useCallback(async (step: NextStep, data: { [key: string]: any }) => {
-    return await API.executeStep(step, data)
-  }, [])
+  const executeStep = useCallback(
+    async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
+      return await API.executeStep(step, data)
+    }, [])
 
   return (
     <APIContext.Provider value={{
       ...state,
       inputInterface: {
+        ...state.inputInterface,
         handleInputChange
       },
       data: {
         ...state.data,
-        gateways,
         handleCryptoChange,
         handleCurrencyChange,
         handlePaymentMethodChange,
       },
-      apiInterface: {
-        executeStep,
-        getRates
-      }
+      apiInterface: { gateways, executeStep, getRates }
     }}>
       {props.children}
     </APIContext.Provider>

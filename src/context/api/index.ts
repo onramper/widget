@@ -35,7 +35,7 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
  * Exectue step
  */
 const executeStep = async (step: NextStep, data: { [key: string]: any } | File): Promise<NextStep> => {
-    if (!step.url) throw Error('Unexpected error: Invalid step.')
+    if (!step.url) throw new Error('Unexpected error: Invalid step end.')
     const method = step.type === 'file' ? 'PUT' : 'POST'
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
 
@@ -48,7 +48,7 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File):
  */
 const processResponse = async (response: Response): Promise<any> => {
     if (response.status === 200)
-        return response.json()
+        return await response.json()
     else {
         let error_response
         try {

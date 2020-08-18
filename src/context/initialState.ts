@@ -18,32 +18,27 @@ export type CollectedStateType = {
     selectedPaymentMethod?: ItemType,
     selectedGateway?: GatewayOptionType,
     walletAddress?: string,
-    "files": File[],
     defaultAddrs: {
         [key: string]: string[]
     }
     [key: string]: any
 }
 
+export type ErrorObjectType = { [key: string]: string } | undefined
+
 export type DataStateType = {
     availableCryptos: ItemType[]
     availableCurrencies: ItemType[]
     availablePaymentMethods: ItemType[]
     availableRates: GatewayOptionType[]
-    gateways: (country?: string) => void
-    handleCryptoChange: (crypto?: ItemType) => Promise<any>
-    handleCurrencyChange: (currency?: ItemType) => void
-    handlePaymentMethodChange: (paymentMehtod?: ItemType) => any
+    handleCryptoChange: (crypto?: ItemType) => ErrorObjectType
+    handleCurrencyChange: (currency?: ItemType) => ErrorObjectType
+    handlePaymentMethodChange: (paymentMehtod?: ItemType) => ErrorObjectType
     //remote responses
     response_gateways?: GatewaysResponse
     filtredGatewaysByCrypto: GatewaysResponse['gateways']
     filtredGatewaysByCurrency: GatewaysResponse['gateways']
     response_rate?: RateResponse
-    filtredRatesByAviability: RateResponse
-    nextStep: {
-        url?: string
-        data?: string[]
-    }
 }
 
 export type InputInterfaceType = {
@@ -51,30 +46,21 @@ export type InputInterfaceType = {
 }
 
 export type ApiInterfaceType = {
-    executeStep: (step: NextStep, params: { [key: string]: any }) => Promise<any>
-    getRates: () => { [key: string]: any } | undefined
+    gateways: (country?: string) => Promise<ErrorObjectType>
+    executeStep: (step: NextStep, params: { [key: string]: any }) => Promise<NextStep>
+    getRates: () => Promise<ErrorObjectType>
 }
 
 export const initialState: StateType = {
     collected: {
         amount: 100,
         amountInCrypto: false,
-        isCalculatingAmount: false,
+        isCalculatingAmount: true,
         selectedCrypto: undefined,
         selectedCurrency: undefined,
         selectedPaymentMethod: undefined,
         selectedGateway: undefined,
         walletAddress: undefined,
-        'files': [],
-        "personal-fname": '',
-        "personal-lname": '',
-        "personal-birth": '',
-        'personal-address': '',
-        'personal-address2': '',
-        'personal-city': '',
-        'personal-postalcode': '',
-        'personal-country': '',
-        email: '',
         defaultAddrs: {}
     },
     data: {
@@ -82,22 +68,20 @@ export const initialState: StateType = {
         availableCurrencies: [],
         availablePaymentMethods: [],
         availableRates: [],
-        handleCryptoChange: async (crypto?: ItemType) => null,
-        handleCurrencyChange: (currency?: ItemType) => null,
-        handlePaymentMethodChange: (paymentMehtod?: ItemType) => null,
+        handleCryptoChange: () => undefined,
+        handleCurrencyChange: () => undefined,
+        handlePaymentMethodChange: () => undefined,
         response_gateways: undefined,
         filtredGatewaysByCrypto: [],
         filtredGatewaysByCurrency: [],
-        response_rate: undefined,
-        filtredRatesByAviability: [],
-        gateways: (country?: string) => null,
-        nextStep: {}
+        response_rate: undefined
     },
     inputInterface: {
         handleInputChange: () => null
     },
     apiInterface: {
-        executeStep: async (step: NextStep, params: { [key: string]: any }) => false,
-        getRates: () => undefined
+        gateways: async () => undefined,
+        executeStep: async (nextStep: NextStep) => nextStep,
+        getRates: async () => undefined
     }
 }
