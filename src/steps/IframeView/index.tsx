@@ -12,7 +12,7 @@ import { NavContext } from '../../wrappers/context'
 
 const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const { replaceScreen } = useContext(NavContext);
-  const textInfo = 'Complete your payment. The form below is in a sandbox.'
+  const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
 
   useEffect(() => {
     const receiveMessage = (event: MessageEvent) => {
@@ -26,7 +26,7 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
 
   return (
     <div className={styles.view}>
-      <Header title="Email" backButton />
+      <Header title="Payment" backButton />
       <BodyVerifyCode
         textInfo={textInfo}
         src={nextStep.url ?? ''}
