@@ -52,7 +52,7 @@ const EmailView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
         isFilled={isFilled}
         isLoading={isLoading}
         errorMsg={errorMsg}
-        inputName={nextStepData[0].name}
+        field={nextStepData[0]}
       />
       <Footer />
     </div>

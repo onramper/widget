@@ -11,8 +11,9 @@ type BodyFormViewType = {
     onActionButton: () => void
     handleInputChange: (name: string, value: any) => void
     fields: {
-        name: string;
+        name: string
         type: string
+        humanName: string
     }[]
     isFilled?: boolean
     isLoading?: boolean
@@ -51,7 +52,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             {
                 fields.map((dataName, i) =>
                     <div key={i} className={`${stylesCommon['body__child']}`}>
-                        <InputText name={dataName.name} value={collected[dataName.name]} onChange={onChange} className={stylesCommon['body__child']} label={dataName.name.charAt(0).toUpperCase() + dataName.name.slice(1)} type={dataName.type} />
+                        <InputText name={dataName.name} value={collected[dataName.name]} onChange={onChange} className={stylesCommon['body__child']} label={dataName.humanName} type={dataName.type} />
                     </div>
                 )
             }
