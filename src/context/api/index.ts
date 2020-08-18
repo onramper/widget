@@ -5,60 +5,64 @@ import { NextStep } from '../../common/types'
 const BASE_API = 'https://api.onramper.dev'
 
 /**
- * Remote calls
+ * API calls
  */
-type gatewaysParams = {
+interface GatewaysParams {
     country?: string
     includeIcons?: boolean
     [key: string]: any
 }
 
-const gateways = async (params: gatewaysParams): Promise<GatewaysResponse> => {
-    const endpoint = '/gateways'
+const gateways = async (params: GatewaysParams, filter?: Filters): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
-    const gateways = await fetch(`${BASE_API}${endpoint}${urlParams}`)
-    return processResponse(gateways)
+    const gateways_res = await fetch(`${BASE_API}/gateways?${urlParams}`)
+    const gateways: GatewaysResponse = await processResponse(gateways_res)
+    return filterGatewaysResponse(gateways, filter ?? {})
 }
 
-type rateParams = {
+interface rateParams {
     amountInCrypto?: boolean
     [key: string]: any
 }
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams, signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}${urlParams}`, { signal })
+    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, { signal })
     return processResponse(gateways)
 }
 
 /**
  * Exectue step
  */
-const executeStep = async (step: NextStep, data: { [key: string]: any } | File) => {
-
-    const { url = '' } = step
+const executeStep = async (step: NextStep, data: { [key: string]: any } | File): Promise<NextStep> => {
+    if (!step.url) throw Error('Unexpected error: Invalid step.')
     const method = step.type === 'file' ? 'PUT' : 'POST'
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
 
-    const nextStep = await fetch(url, { method, body })
+    const nextStep = await fetch(step.url, { method, body })
     return processResponse(nextStep)
 }
 
-const processResponse = async (response: Response) => {
+/**
+ * Utils
+ */
+const processResponse = async (response: Response): Promise<any> => {
     if (response.status === 200)
         return response.json()
-    else if (response.status >= 500)
-        throw new Error(await response.text())
-    else if (response.status >= 400)
-        throw new Error("Connection error.")
-    else
-        throw new Error("Unknown error.")
+    else {
+        let error_response
+        try {
+            error_response = await response.json()
+        } catch (error) {
+            throw new Error(await response.text())
+        }
+        throw new Error(error_response.message)
+    }
 }
 
-const createUrlParamsFromObject = (paramsObj: { [key: string]: any }) =>
+const createUrlParamsFromObject = (paramsObj: { [key: string]: any }): string =>
     Object.keys(paramsObj).reduce((acc, current, i, arr) => {
         if (paramsObj[current] !== undefined) {
-            if (!acc) acc += '?'
             acc += `${current}=${paramsObj[current]}`
             if (i < arr.length - 1) acc += '&'
             return acc
@@ -70,13 +74,15 @@ interface Filters {
     onlyCryptos?: string[],
     excludeCryptos?: string[]
 }
-const filterGatewaysResponseByCrypto = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos }: Filters): GatewaysResponse => {
+const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos }: Filters): GatewaysResponse => {
+    const _onlyCryptos = onlyCryptos?.map(code => code.toUpperCase())
+    const _excludeCryptos = excludeCryptos?.map(code => code.toUpperCase())
     const filtredGateways = gatewaysResponse.gateways.map(gateway => {
         let cryptosList = gateway.cryptoCurrencies
-        if (onlyCryptos && onlyCryptos?.length > 0)
-            cryptosList = gateway.cryptoCurrencies.filter(crypto => onlyCryptos.includes(crypto.code))
-        if (excludeCryptos && excludeCryptos?.length > 0)
-            cryptosList = cryptosList.filter(crypto => !excludeCryptos.includes(crypto.code))
+        if (_onlyCryptos && _onlyCryptos?.length > 0)
+            cryptosList = gateway.cryptoCurrencies.filter(crypto => _onlyCryptos.includes(crypto.code))
+        if (_excludeCryptos && _excludeCryptos?.length > 0)
+            cryptosList = cryptosList.filter(crypto => !_excludeCryptos.includes(crypto.code))
         return {
             ...gateway,
             cryptoCurrencies: cryptosList
@@ -91,6 +97,5 @@ const filterGatewaysResponseByCrypto = (gatewaysResponse: GatewaysResponse, { on
 export {
     gateways,
     rate,
-    executeStep,
-    filterGatewaysResponseByCrypto
+    executeStep
 }

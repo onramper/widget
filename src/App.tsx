@@ -16,6 +16,7 @@ const defaultCrypto = getParam('defaultCrypto', '')
 
 const onlyCryptos = JSON.parse(getParam('onlyCryptos', JSON.stringify([])))
 const excludeCryptos = JSON.parse(getParam('excludeCryptos', JSON.stringify([])))
+const filters = { onlyCryptos, excludeCryptos }
 
 function App() {
   const [color, setColor] = useState(defaultColor)
@@ -23,7 +24,7 @@ function App() {
     <>
       <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
       <div className={`${styles['views-container']}`}>
-        <OnramperWidget color={color} defaultAddrs={addresses} defaultAmount={defaultAmount} defaultCrypto={defaultCrypto} onlyCryptos={onlyCryptos} excludeCryptos={excludeCryptos} />
+        <OnramperWidget color={color} defaultAddrs={addresses} defaultAmount={defaultAmount} defaultCrypto={defaultCrypto} filters={filters} />
       </div>
     </>
   );
@@ -36,15 +37,17 @@ type OnramperWidgetProps = {
   defaultAddrs?: {
     [key: string]: string[]
   }
-  onlyCryptos?: string[]
-  excludeCryptos?: string[]
+  filters?: {
+    onlyCryptos?: string[]
+    excludeCryptos?: string[]
+  }
 }
 
-const OnramperWidget: React.FC<OnramperWidgetProps> = ({ color, defaultAddrs, defaultAmount, defaultCrypto, excludeCryptos, onlyCryptos }) => {
+const OnramperWidget: React.FC<OnramperWidgetProps> = ({ color, defaultAddrs, defaultAmount, defaultCrypto, filters }) => {
   var style = { "--primary-color": color } as React.CSSProperties;
   return (
     <div style={style} className={`${styles['theme']}`}>
-      <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} onlyCryptos={onlyCryptos} excludeCryptos={excludeCryptos} >
+      <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} filters={filters} >
         <NavProvider>
           <NavContainer home={<BuyCryptoView />} />
         </NavProvider>

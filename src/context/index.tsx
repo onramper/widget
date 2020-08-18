@@ -21,8 +21,10 @@ const APIProvider: React.FC<{
   defaultAmount?: number
   defaultAddrs?: { [key: string]: string[] }
   defaultCrypto?: string
-  onlyCryptos?: string[]
-  excludeCryptos?: string[]
+  filters?: {
+    onlyCryptos?: string[]
+    excludeCryptos?: string[]
+  }
 }> = (props) => {
   const { defaultAmount = 100, defaultAddrs = {} } = props
   const iniState = {
@@ -78,8 +80,7 @@ const APIProvider: React.FC<{
       // REQUEST AVAILABLE GATEWAYS
       let response_gateways: GatewaysResponse
       try {
-        response_gateways = await API.gateways({ country, includeIcons: true })
-        response_gateways = API.filterGatewaysResponseByCrypto(response_gateways, { onlyCryptos: props.onlyCryptos, excludeCryptos: props.excludeCryptos })
+        response_gateways = await API.gateways({ country, includeIcons: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos })
       } catch (error) {
         return { gateways: error.message }
       }
@@ -122,7 +123,7 @@ const APIProvider: React.FC<{
       //save to local state
       setICONS_MAP(response_gateways.icons ?? {})
 
-    }, [addData, handleInputChange, props.defaultCrypto, props.excludeCryptos, props.onlyCryptos])
+    }, [addData, handleInputChange, props.defaultCrypto, props.filters])
 
   const handleCryptoChange = useCallback(
     async (crypto?: ItemType) => {
@@ -196,7 +197,7 @@ const APIProvider: React.FC<{
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
       const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map((item, i) => ({
         id: item,
-        name: ICONS_MAP[item].name || `Payment method ${i}`,
+        name: ICONS_MAP[item]?.name || item,
         symbol: '',
         info: '',
         icon: ICONS_MAP[item]?.icon,
