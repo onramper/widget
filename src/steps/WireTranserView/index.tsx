@@ -43,7 +43,6 @@ const CreditCardView: React.FC = () => {
   }
 
   const handleIconClick = useCallback((name: string) => {
-    console.log(name)
     copyToClipBoard(wireDetails[name].value, () => null)
   }, [wireDetails])
 

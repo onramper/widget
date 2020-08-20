@@ -26,7 +26,6 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
     const [copiedText, setCopiedText] = useState<string>()
 
     const onClick = (id: string) => {
-        console.log(id)
         if (onIconClick) {
             onIconClick(id)
             setCopiedText(`${id} copied to clipboard.`)
