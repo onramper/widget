@@ -33,8 +33,8 @@ const APIProvider: React.FC<APIProvider> = (props) => {
     ...initialState,
     collected: {
       ...initialState.collected,
-      amount: defaultAmount,
-      defaultAddrs: defaultAddrs
+      amount: defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
+      defaultAddrs: Object.entries(defaultAddrs).reduce((acc, [key, value]) => ({ ...acc, [key.toUpperCase()]: value }), {})
     }
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
@@ -43,7 +43,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
-    (name: string, value: string | number | boolean | ItemType) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
+    (name: string, value: string | number | boolean | ItemType | ErrorObjectType[]) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
     []
   )
 
@@ -60,18 +60,35 @@ const APIProvider: React.FC<APIProvider> = (props) => {
     [],
   )
 
-  /* *********** */
-  const gateways = useCallback(
-    async (country?: string): Promise<ErrorObjectType> => {
+  const processErrors = useCallback((name: string, type: string, message: string) => {
+    const error = {
+      [name]: {
+        type: type,
+        message: message
+      }
+    }
+    dispatch({ type: CollectedActionsType.AddError, payload: { value: error } })
+    return error
+  }, [])
 
+  const clearErrors = useCallback(() => {
+    dispatch({ type: CollectedActionsType.AddError, payload: { value: undefined } })
+  }, [])
+
+  /* *********** */
+  const init = useCallback(
+    async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
+      clearErrors()
       // REQUEST AVAILABLE GATEWAYS
       let response_gateways: GatewaysResponse
       try {
         response_gateways = await API.gateways({ country, includeIcons: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos })
       } catch (error) {
-        return { gateways: error.message }
+        return processErrors("GATEWAYS", "API", error.message)
       }
-      if (response_gateways.gateways.length <= 0) return { gateways: 'No gateways found.' }
+      if (response_gateways.gateways.length <= 0) {
+        return processErrors("GATEWAYS", "NO_GATEWAYS", "No gateways found.")
+      }
 
       const ICONS_MAP = response_gateways.icons || {}
 
@@ -82,7 +99,9 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         availableCryptos = availableCryptos.concat(response_gateways.gateways[i].cryptoCurrencies)
       }
       availableCryptos = arrayObjUnique(availableCryptos, 'code')
-      if (availableCryptos.length <= 0) return { gateways: 'No cryptos found.' }
+      if (availableCryptos.length <= 0) {
+        return processErrors("GATEWAYS", "NO_CRYPTOS", "No cryptos found.")
+      }
 
       // MAP AVAILABLE CRYPTOS LIST (CURRENCY LIST) TO AN ITEMTYPE LIST
       const mappedAvailableCryptos: ItemType[] = availableCryptos.map((crypto) => ({
@@ -110,17 +129,18 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       //save to local state
       setICONS_MAP(response_gateways.icons ?? {})
 
-    }, [addData, handleInputChange, props.defaultCrypto, props.filters])
+    }, [addData, handleInputChange, props.defaultCrypto, props.filters, processErrors, clearErrors])
 
   const handleCryptoChange = useCallback(
-    (crypto?: ItemType): ErrorObjectType => {
+    (crypto?: ItemType): ErrorObjectType | undefined | {} => {
+      crypto = crypto ?? state.collected.selectedCrypto
 
       // IF RESPONSE IS NOT SET YET, DON'T DO ANYTHING
       if (!state.data.response_gateways) return {}
       const gateways = state.data.response_gateways.gateways
 
-      if (gateways.length <= 0) return { gateways: 'No gateways found.' }
-      if (state.data.availableCryptos.length <= 0) return { gateways: 'No cryptocurrencies found.' }
+      if (gateways.length <= 0) return {}
+      if (state.data.availableCryptos.length <= 0) return {}
 
       const actualCrypto = state.data.availableCryptos.find((cryptoCurrency) => cryptoCurrency.id === crypto?.id) || state.data.availableCryptos[0]
 
@@ -151,19 +171,21 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.date
       addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.response_gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange],
+    }, [state.data.response_gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange, state.collected.selectedCrypto],
   )
 
   const handleCurrencyChange = useCallback(
-    (selectedCurrency?: ItemType): ErrorObjectType => {
+    (selectedCurrency?: ItemType): ErrorObjectType | undefined | {} => {
+      selectedCurrency = selectedCurrency ?? state.collected.selectedCurrency
 
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       const response_gateways = state.data.response_gateways
       if (!response_gateways) return {}
 
+      // IF LIST IS EMPTY, DON'T DO ANYTHING
       const filtredGatewaysByCrypto = state.data.filtredGatewaysByCrypto
-      if (!filtredGatewaysByCrypto) return { gateways: 'No gateways availables for the selected crypto.' }
-      if (!state.data.availableCurrencies || state.data.availableCurrencies.length <= 0) return { gateways: 'No fiat currencies found.' }
+      if (!filtredGatewaysByCrypto || filtredGatewaysByCrypto.length <= 0) return {}
+      if (!state.data.availableCurrencies || state.data.availableCurrencies.length <= 0) return {}
 
       const actualCurrency =
         state.data.availableCurrencies.find((currency) => currency.id === selectedCurrency?.id)
@@ -196,26 +218,28 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.date
       addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
-    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, ICONS_MAP, state.data.response_gateways],
+    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, ICONS_MAP, state.data.response_gateways, state.collected.selectedCurrency],
   )
 
   const handlePaymentMethodChange = useCallback(
-    (selectedPaymentMethod?: ItemType): ErrorObjectType => {
+    (selectedPaymentMethod?: ItemType): ErrorObjectType | undefined | {} => {
+
+      selectedPaymentMethod = selectedPaymentMethod ?? state.collected.selectedPaymentMethod
 
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
-      if (!state.data.response_gateways) return
-      if (!state.data.availablePaymentMethods || state.data.availablePaymentMethods.length <= 0) return { gateways: 'No payment methods found.' }
+      if (!state.data.response_gateways) return {}
+      if (!state.data.availablePaymentMethods || state.data.availablePaymentMethods.length <= 0) return {}
 
       const actualPaymentMethod = state.data.availablePaymentMethods.find((currency) => currency.id === selectedPaymentMethod?.id) || state.data.availablePaymentMethods[0]
 
       // save to state.collected
       handleInputChange('selectedPaymentMethod', actualPaymentMethod)
 
-    }, [handleInputChange, state.data.availablePaymentMethods, state.data.response_gateways])
+    }, [handleInputChange, state.data.availablePaymentMethods, state.data.response_gateways, state.collected.selectedPaymentMethod])
 
   const getRates = useCallback(
-    async (): Promise<ErrorObjectType> => {
-
+    async (): Promise<ErrorObjectType | undefined | {}> => {
+      clearErrors()
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       if (!state.data.response_gateways) return
 
@@ -252,13 +276,13 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         if (error.name === 'AbortError')
           return {}
         setLastCall(undefined)
-        return { rate: error.message }
+        return processErrors("RATE", "API", error.message)
       }
 
       // IF THE REQUEST DIDN'T THROW ANY ERROR, CLEAR THE ABORT CONTROLLER FROM THE STATE
       setLastCall(undefined)
 
-      if (response_rate.length <= 0) return { rate: 'No gateways found.' }
+      if (response_rate.length <= 0) return processErrors("RATE", "NO_RATES", "No rates found")
 
       // MAP RATES TO GatewayOptionType
       const mappedAvailableRates: GatewayOptionType[] = response_rate.map((item) => ({
@@ -299,17 +323,37 @@ const APIProvider: React.FC<APIProvider> = (props) => {
               return minMaxErrors
           }
         }, {})
-        return { 'field-amount': minMaxErrors.MIN?.message ?? minMaxErrors.MAX?.message }
+        return processErrors("PARAM-amount", "INVALID", minMaxErrors.MIN?.message ?? minMaxErrors.MAX?.message)
       }
 
       // IF NO ERRORS, RETURN UNDEFINED
       return
-    }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod])
+    }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod, processErrors, clearErrors])
+
+  useEffect(() => {
+    handleCryptoChange()
+  }, [handleCryptoChange])
+
+  useEffect(() => {
+    handleCurrencyChange()
+  }, [handleCurrencyChange])
+
+  useEffect(() => {
+    handlePaymentMethodChange()
+  }, [handlePaymentMethodChange])
+
+  useEffect(() => {
+    const getRatesEffect = async () => {
+      await getRates()
+    }
+    getRatesEffect()
+  }, [getRates])
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
       return await API.executeStep(step, data)
-    }, [])
+    }, []
+  )
 
   return (
     <APIContext.Provider value={{
@@ -324,7 +368,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         handleCurrencyChange,
         handlePaymentMethodChange,
       },
-      apiInterface: { gateways, executeStep, getRates }
+      apiInterface: { init, executeStep, getRates }
     }}>
       {props.children}
     </APIContext.Provider>

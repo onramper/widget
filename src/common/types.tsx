@@ -1,3 +1,5 @@
+import { NextStep } from '../context/api/types/nextStep'
+
 interface ItemType {
     id: string
     name: string
@@ -29,18 +31,6 @@ interface GatewayOptionType {
     nextStep?: NextStep
     error?: string
     logo?: string
-}
-
-type NextStep = {
-    type: string,
-    url?: string
-    humanName?: string
-    data?: {
-        type: string
-        humanName: string
-        name: string
-    }[]
-    options?: NextStep[]
 }
 
 export type {

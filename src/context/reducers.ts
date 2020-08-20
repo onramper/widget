@@ -1,10 +1,12 @@
 import { StateType, DataStateType } from './initialState'
 import { ItemType } from '../common/types';
+import { ErrorObjectType } from './initialState'
 
 export enum CollectedActionsType {
     AddField = 'ADD_FIELD',
     AddFile = 'ADD_FILE',
-    DeleteFile = 'DELETE_FILE'
+    DeleteFile = 'DELETE_FILE',
+    AddError = 'ADD_ERROR'
 }
 
 export enum DataActionsType {
@@ -17,7 +19,7 @@ export type DataActions = {
     type: CollectedActionsType.AddField;
     payload: {
         name: string
-        value: number | string | boolean | ItemType
+        value: number | string | boolean | ItemType | any
     };
 } | {
     type: CollectedActionsType.AddFile;
@@ -36,13 +38,12 @@ export type DataActions = {
     payload: {
         value: DataStateType
     };
+} | {
+    type: CollectedActionsType.AddError;
+    payload: {
+        value: { [key: string]: ErrorObjectType } | undefined
+    };
 }
-    | {
-        type: DataActionsType.AddData;
-        payload: {
-            value: DataStateType
-        };
-    }
 
 export const mainReducer = (state: StateType, action: DataActions) => ({
     ...state,
@@ -74,6 +75,17 @@ export const collectedReducer = (state: StateType, action: DataActions) => {
                 ...state.collected,
                 [action.payload.name]: [...newList]
             }
+        case CollectedActionsType.AddError:
+            let error = action.payload.value
+            if (!error) return {
+                ...state.collected,
+                errors: undefined
+            }
+            else if (Object.entries(error).length > 0) return {
+                ...state.collected,
+                errors: { ...state.collected.errors, ...error }
+            }
+            else return state.collected
         default:
             return state.collected
     }

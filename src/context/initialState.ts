@@ -7,6 +7,7 @@ export type StateType = {
     collected: CollectedStateType
     inputInterface: InputInterfaceType
     apiInterface: ApiInterfaceType
+    [key: string]: any
 }
 
 export type CollectedStateType = {
@@ -21,19 +22,23 @@ export type CollectedStateType = {
     defaultAddrs: {
         [key: string]: string[]
     }
+    errors?: { [key: string]: ErrorObjectType }
     [key: string]: any
 }
 
-export type ErrorObjectType = { [key: string]: string } | undefined
+export type ErrorObjectType = {
+    type: string,
+    message: string
+}
 
 export type DataStateType = {
     availableCryptos: ItemType[]
     availableCurrencies: ItemType[]
     availablePaymentMethods: ItemType[]
     availableRates: GatewayOptionType[]
-    handleCryptoChange: (crypto?: ItemType) => ErrorObjectType
-    handleCurrencyChange: (currency?: ItemType) => ErrorObjectType
-    handlePaymentMethodChange: (paymentMehtod?: ItemType) => ErrorObjectType
+    handleCryptoChange: (crypto?: ItemType) => | undefined | {}
+    handleCurrencyChange: (currency?: ItemType) => | undefined | {}
+    handlePaymentMethodChange: (paymentMehtod?: ItemType) => | undefined | {}
     //remote responses
     response_gateways?: GatewaysResponse
     filtredGatewaysByCrypto: GatewaysResponse['gateways']
@@ -46,9 +51,9 @@ export type InputInterfaceType = {
 }
 
 export type ApiInterfaceType = {
-    gateways: (country?: string) => Promise<ErrorObjectType>
+    init: (country?: string) => Promise<ErrorObjectType | undefined | {}>
     executeStep: (step: NextStep, params: { [key: string]: any }) => Promise<NextStep>
-    getRates: () => Promise<ErrorObjectType>
+    getRates: () => Promise<ErrorObjectType | undefined | {}>
 }
 
 export const initialState: StateType = {
@@ -61,7 +66,8 @@ export const initialState: StateType = {
         selectedPaymentMethod: undefined,
         selectedGateway: undefined,
         walletAddress: undefined,
-        defaultAddrs: {}
+        defaultAddrs: {},
+        errors: undefined
     },
     data: {
         availableCryptos: [],
@@ -80,7 +86,7 @@ export const initialState: StateType = {
         handleInputChange: () => null
     },
     apiInterface: {
-        gateways: async () => undefined,
+        init: async () => undefined,
         executeStep: async (nextStep: NextStep) => nextStep,
         getRates: async () => undefined
     }

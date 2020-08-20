@@ -13,106 +13,60 @@ import { ItemType } from '../common/types';
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: any } | undefined>({})
-  const [selectedCrypto, setSelectedCrypto] = useState<ItemType>()
-  const [selectedCurrency, setSelectedCurrency] = useState<ItemType>()
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<ItemType>()
 
-  const [flagEffectRate, setFlagEffectRate] = useState(0)
-  const [flagEffectGateways, setFlagEffectGateways] = useState(0)
+  const [flagEffectInit, setFlagEffectInit] = useState(0)
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } = useContext(APIContext);
   const { handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
-  const { gateways, getRates } = apiInterface
+  const { init, getRates } = apiInterface
 
+  //flagEffectInit used to call init again
   useEffect(() => {
-    setSelectedCrypto(collected.selectedCrypto)
-  }, [collected.selectedCrypto])
-
-  useEffect(() => {
-    setSelectedCurrency(collected.selectedCurrency)
-  }, [collected.selectedCurrency])
-
-  useEffect(() => {
-    setSelectedPaymentMethod(collected.selectedPaymentMethod)
-  }, [collected.selectedPaymentMethod])
-
-  useEffect(() => {
-    async function gatewaysEffect() {
-      const err = await gateways();
-      processErrors(err)
-    }
-    gatewaysEffect()
-  }, [gateways, flagEffectGateways])
-
-  useEffect(() => {
-    processErrors({ gateways: undefined })
-    const err = handleCryptoChange(selectedCrypto);
-    processErrors(err)
-  }, [handleCryptoChange, selectedCrypto])
-
-  useEffect(() => {
-    handleCurrencyChange(selectedCurrency);
-  }, [handleCurrencyChange, selectedCurrency])
-
-  useEffect(() => {
-    processErrors({ rate: undefined })
-    const err = handlePaymentMethodChange(selectedPaymentMethod);
-    processErrors(err)
-  }, [handlePaymentMethodChange, selectedPaymentMethod, setErrors, flagEffectRate])
-
-  useEffect(() => {
-    async function getRateEffect() {
-      processErrors({ rate: undefined })
-      const err = await getRates();
-      processErrors(err)
-    }
-    getRateEffect()
-  }, [setErrors, flagEffectRate, getRates, collected.amountInCrypto])
-
-  const processErrors = (err: any, by?: string) => {
-    if (err)
-      setErrors(prev => ({ ...prev, ...err }))
-    else setErrors(undefined)
-  }
+    init();
+  }, [init, flagEffectInit])
 
   const handleItemClick = (name: string, index: number, item: ItemType) => {
     if (name === 'crypto')
-      setSelectedCrypto(item)
+      handleCryptoChange(item)
     else if (name === 'currency')
-      setSelectedCurrency(item)
+      handleCurrencyChange(item)
     else if (name === 'paymentMethod')
-      setSelectedPaymentMethod(item)
+      handlePaymentMethodChange(item)
+
     backScreen()
   }
 
   useEffect(() => {
-    if (selectedCrypto && selectedCurrency && selectedPaymentMethod && collected.amount > 0)
+    setErrors(collected.errors)
+  }, [collected.errors])
+
+  useEffect(() => {
+    if (collected.selectedCrypto && collected.selectedCurrency && collected.selectedPaymentMethod && collected.amount > 0)
       setIsFilled(true)
     else
       setIsFilled(false)
-  }, [setIsFilled, selectedCrypto, selectedCurrency, selectedPaymentMethod, collected.amount])
+  }, [setIsFilled, collected.selectedCrypto, collected.selectedCurrency, collected.selectedPaymentMethod, collected.amount])
 
   return (
     <div className={styles.view}>
       <Header title="Buy crypto" />
       <BodyBuyCrypto
         onBuyCrypto={() => nextScreen(<ChooseGatewayView />)}
-        openPickCrypto={() => nextScreen(<PickView name='crypto' title="Select cryptocurrency" items={data.availableCryptos} onItemClick={handleItemClick} searchable />)}
-        openPickCurrency={() => nextScreen(<PickView name='currency' title="Select fiat currency" items={data.availableCurrencies} onItemClick={handleItemClick} searchable />)}
-        openPickPayment={() => nextScreen(<PickView name='paymentMethod' title="Select payment method" items={data.availablePaymentMethods} onItemClick={handleItemClick} />)}
-        selectedCrypto={selectedCrypto}
-        selectedCurrency={selectedCurrency}
-        selectedPaymentMethod={selectedPaymentMethod}
+        openPickCrypto={data.availableCryptos.length > 1 ? () => nextScreen(<PickView name='crypto' title="Select cryptocurrency" items={data.availableCryptos} onItemClick={handleItemClick} searchable />) : undefined}
+        openPickCurrency={data.availableCurrencies.length > 1 ? () => nextScreen(<PickView name='currency' title="Select fiat currency" items={data.availableCurrencies} onItemClick={handleItemClick} searchable />) : undefined}
+        openPickPayment={data.availablePaymentMethods.length > 1 ? () => nextScreen(<PickView name='paymentMethod' title="Select payment method" items={data.availablePaymentMethods} onItemClick={handleItemClick} />) : undefined}
+        selectedCrypto={collected.selectedCrypto}
+        selectedCurrency={collected.selectedCurrency}
+        selectedPaymentMethod={collected.selectedPaymentMethod}
         handleInputChange={inputInterface.handleInputChange}
         errors={errors}
         isFilled={isFilled}
         onPriceError={(errName: string) => {
-          if (errName === 'rate')
-            setFlagEffectRate(prev => prev + 1)
-          else if (errName === 'gateways')
-            setFlagEffectGateways(prev => prev + 1)
-          processErrors(undefined)
+          if (errName === 'RATE')
+            getRates()
+          else if (errName === 'GATEWAYS')
+            setFlagEffectInit(prev => prev + 1)
         }}
       />
       <Footer />

@@ -8,6 +8,7 @@ type NextStep = {
         name: string
     }[]
     options?: NextStep[]
+    acceptedContentTypes?: string[]
 }
 
 export type {

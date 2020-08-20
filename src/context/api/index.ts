@@ -40,6 +40,7 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File):
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
 
     const nextStep = await fetch(step.url, { method, body })
+    console.log('response', nextStep)
     return processResponse(nextStep)
 }
 
@@ -47,8 +48,11 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File):
  * Utils
  */
 const processResponse = async (response: Response): Promise<any> => {
-    if (response.status === 200)
-        return await response.json()
+    if (response.ok) {
+        const r = await response.json()
+        console.log('response.json()', r)
+        return r
+    }
     else {
         let error_response
         try {
