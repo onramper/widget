@@ -7,12 +7,12 @@ import styles from '../../styles.module.css'
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
-import { NextStep } from '../../common/types';
+import { NextStep } from '../../context/api/types/nextStep'
 import Step from '../Step'
 
 const UploadView: React.FC<{ nextStep: NextStep }> = (props) => {
   const { nextScreen } = useContext(NavContext);
-  const textInfo = `Attach your ${props.nextStep.humanName} here so we can verify your identity.`
+  const textInfo = `Attach your ${props.nextStep.humanName ?? props.nextStep.data?.[0].name} here so we can verify your identity.`
 
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
@@ -34,12 +34,13 @@ const UploadView: React.FC<{ nextStep: NextStep }> = (props) => {
 
   return (
     <div className={styles.view}>
-      <Header title={`Upload ${props.nextStep.humanName}`} backButton />
+      <Header title={`Upload ${props.nextStep.humanName ?? ''}`} backButton />
       <BodyUpload
         onActionButton={handleButtonAction}
         textInfo={textInfo}
         isLoading={isLoading}
         errorMsg={errorMsg}
+        acceptedContentTypes={props.nextStep.acceptedContentTypes}
       />
       <Footer />
     </div>

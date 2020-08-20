@@ -8,7 +8,6 @@ import IconDelete from '../../icons/deleteicon.svg'
 type UploadBoxType = {
     onFilesAdded: (name: string, files: File[], maxFiles: number) => boolean
     onFileDeleted: (name: string, fileName: string) => void
-    onError?: (err: string) => void
     id: string
     filesList: File[]
     maxFiles?: number
@@ -17,7 +16,7 @@ type UploadBoxType = {
 const UploadBox: React.FC<UploadBoxType> = (props) => {
 
     const { filesList, maxFiles = -1, id } = props
-    const { onFilesAdded, onError = () => null, onFileDeleted } = props
+    const { onFilesAdded, onFileDeleted } = props
 
     const [isDragOver, setIsDragOver] = useState(false)
     const handleDragEnter = useCallback(() => setIsDragOver(true), []);
@@ -27,21 +26,19 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
         e.preventDefault()
         let newFiles = [...e.dataTransfer.files]
 
-        const ok = onFilesAdded(id, [...newFiles], maxFiles)
-        if (!ok) onError(`You only can upload ${maxFiles} files`)
+        onFilesAdded(id, [...newFiles], maxFiles)
         setIsDragOver(false)
-    }, [maxFiles, id, onError, onFilesAdded]);
+    }, [maxFiles, id, onFilesAdded]);
 
     const handleOnSelectFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
         let currentFiles = e.currentTarget.files || []
         let newFiles = [...currentFiles]
 
-        const ok = onFilesAdded(id, [...newFiles], maxFiles)
-        if (!ok) onError(`You only can upload ${maxFiles} files`)
+        onFilesAdded(id, [...newFiles], maxFiles)
 
         e.currentTarget.value = '';
-    }, [maxFiles, id, onFilesAdded, onError]);
+    }, [maxFiles, id, onFilesAdded]);
 
     const handleDeleteClick = useCallback((e: React.MouseEvent<HTMLImageElement>) => {
         const name2delete = e.currentTarget.getAttribute('data-name')
@@ -58,11 +55,7 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
                     <input type='file' multiple onChange={handleOnSelectFiles} />
                     <img alt='Upload icon' className={styles['drag-info']} src={IconUpload} />
                     <span className={styles['drag-info']} >
-                        <strong>Drag and Drop</strong>
-                        <br />
-                                your address proof<br />
-                                or click here<br />
-                                [ Jpeg or Png ]
+                        {props.children}
                     </span>
                 </div>
             }

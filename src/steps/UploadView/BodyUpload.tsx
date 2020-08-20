@@ -11,6 +11,7 @@ type BodyUploadType = {
     textInfo?: string
     isLoading?: boolean
     errorMsg?: string
+    acceptedContentTypes?: string[]
 }
 
 const BodyUpload: React.FC<BodyUploadType> = (props) => {
@@ -25,9 +26,22 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
     }, [errorMsg])
 
     const handleFilesAdd = (name: string, files: File[], maxFiles: number) => {
+        setErrorControlMsg(undefined)
+        if (!files.every(file => props.acceptedContentTypes?.some(t => file.type === t))) {
+            const erros_message = `Type not valid. Please upload a ${props.acceptedContentTypes?.reduce((acc, actual, index) => {
+                if (index === 0) return actual
+                return `${acc}, ${actual}`
+            }, '')}.`
+            setErrorControlMsg(erros_message)
+            return false
+        }
+
         const existingFilesNames = existingFiles.map(f => f.name)
         files = files.filter(f => !existingFilesNames.includes(f.name))
-        if (existingFilesNames.length + files.length > maxFiles) return false
+        if (existingFilesNames.length + files.length > maxFiles) {
+            setErrorControlMsg(`Upload only ${maxFiles} files.`)
+            return false
+        }
         setExistingFiles(prev => ([...prev, ...files]))
         return true;
     }
@@ -46,7 +60,14 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
                 {errorControlMsg}
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                <UploadBox id='files' onFilesAdded={handleFilesAdd} onFileDeleted={handleFilesDelete} filesList={existingFiles} maxFiles={1} onError={(err) => console.log(err)} />
+                <UploadBox id='files' onFilesAdded={handleFilesAdd} onFileDeleted={handleFilesDelete} filesList={existingFiles} maxFiles={1} >
+                    <strong>Drag and Drop</strong><br />
+                    a file or click here<br />
+                    [ {props.acceptedContentTypes?.map(type => type.split('/')[1])?.reduce((acc, actual, index) => {
+                        if (index === 0) return actual
+                        return `${acc} or ${actual}`
+                    }, '')} ]
+                </UploadBox>
             </div>
             <div className={`${stylesCommon['body__child']}`}>
                 <ButtonAction onClick={() => onActionButton(existingFiles[0])} text={isLoading ? 'Verifying...' : 'Continue'} disabled={existingFiles.length !== 1 || isLoading} />
