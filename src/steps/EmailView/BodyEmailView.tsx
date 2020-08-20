@@ -30,7 +30,7 @@ const BodyEmailView: React.FC<BodyEmailViewType> = (props) => {
             <InfoBox in={textInfo !== undefined} className={`${stylesCommon['body__child']}`}>
                 {textInfo}
             </InfoBox>
-            <InputText value={collected[props.field.name]} type={props.field.type} name={props.field.name} onChange={handleInputChange} className={stylesCommon['body__child']} label={props.field.humanName} placeholder="hello@onramper.com" error={props.errorMsg} />
+            <InputText value={collected[props.field.name] ?? ''} type={props.field.type} name={props.field.name} onChange={handleInputChange} className={stylesCommon['body__child']} label={props.field.humanName} placeholder="hello@onramper.com" error={props.errorMsg} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Send'} disabled={!isFilled || isLoading} />
             </div>

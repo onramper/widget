@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
-import BodyVerifyCode from './BodyEmailView'
+import BodyEmailView from './BodyEmailView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
 
@@ -12,7 +12,7 @@ import { NextStep } from '../../common/types'
 
 const EmailView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
-  const { inputInterface, collected, /* data, */ apiInterface } = useContext(APIContext);
+  const { inputInterface, collected, apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
@@ -45,7 +45,7 @@ const EmailView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   return (
     <div className={styles.view}>
       <Header title="Email" backButton />
-      <BodyVerifyCode
+      <BodyEmailView
         textInfo={textInfo}
         onActionButton={handleButtonAction}
         handleInputChange={inputInterface.handleInputChange}

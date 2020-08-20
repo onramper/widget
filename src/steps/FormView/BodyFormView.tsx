@@ -52,7 +52,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             {
                 fields.map((dataName, i) =>
                     <div key={i} className={`${stylesCommon['body__child']}`}>
-                        <InputText name={dataName.name} value={collected[dataName.name]} onChange={onChange} className={stylesCommon['body__child']} label={dataName.humanName} type={dataName.type} />
+                        <InputText name={dataName.name} value={collected[dataName.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={dataName.humanName} type={dataName.type} />
                     </div>
                 )
             }
