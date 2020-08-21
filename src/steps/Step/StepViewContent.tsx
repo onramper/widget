@@ -28,8 +28,7 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
                     else if (nextStepData[0].name === 'verifyEmailCode')
                         replaceScreen(<VerifyCodeView nextStep={nextStep} codeType='email' name='email' />)
                 }
-                else
-                    replaceScreen(<FormView nextStep={nextStep} />)
+                replaceScreen(<FormView nextStep={nextStep} />)
                 break;
             case 'iframe':
                 replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
