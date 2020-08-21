@@ -50,7 +50,7 @@ const CreditCardView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Wire transfer details" backButton />
       <BodyWireTransfer
-        onActionButton={() => nextScreen(<SuccessView />)}
+        onActionButton={() => nextScreen(<SuccessView txType='pending' />)}
         amount={wireDetails['Amount']}
         reference={wireDetails['Reference']}
         iban={wireDetails['IBAN']}

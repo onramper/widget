@@ -18,7 +18,7 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
     const receiveMessage = (event: MessageEvent) => {
       if (event.origin !== "https://sandbox.onramper.dev/")
         return;
-      replaceScreen(<SuccessView />)
+      replaceScreen(<SuccessView txType={'instant'} />)
     }
     window.removeEventListener("message", receiveMessage);
     window.addEventListener("message", receiveMessage);

@@ -1,13 +1,9 @@
 .body {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    padding: 1.5rem 0;
-    border-radius: 5px;
     justify-content: center;
     align-items: center;
     text-align: center;
-    flex-grow: 1;
 }
 
 .body img {
@@ -23,4 +19,16 @@
     font-size: 0.875rem;
     color: grey;
     margin-top: 1rem;
+}
+
+.button--link {
+    color: black;
+    margin-top: 1rem;
+    text-decoration: underline;
+    
+}
+
+.button--link:hover {
+    cursor: pointer;
+    color: grey;
 }
