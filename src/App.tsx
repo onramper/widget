@@ -4,18 +4,18 @@ import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './wrappers/context';
 import { APIProvider } from './context'
 
-const defaultColor = `#${getParam('color', '31a5ff')}`
 const defaultAddrs = JSON.stringify({
   BTC: ['btcAddr1', 'btcAddr2'],
   ETH: ['ethAddr1'],
   NEO: ['neoAddr1', 'neoAddr2', 'neoAddr3', 'neoAddr4']
 })
-const addresses = JSON.parse(getParam('addresses', defaultAddrs))
+
+const defaultColor = `#${getParam('color', '31a5ff')}`
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', '')
-
-const onlyCryptos = JSON.parse(getParam('onlyCryptos', JSON.stringify([])))
-const excludeCryptos = JSON.parse(getParam('excludeCryptos', JSON.stringify([])))
+const addresses = JSON.parse(getParam('addresses', defaultAddrs) ?? JSON.stringify({}))
+const onlyCryptos = getParam('onlyCryptos', undefined)?.split(',')
+const excludeCryptos = getParam('excludeCryptos', undefined)?.split(',')
 const filters = { onlyCryptos, excludeCryptos }
 
 function App() {
@@ -56,13 +56,14 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = ({ color, defaultAddrs, de
   )
 }
 
-function getParam(name: string, defaultValue?: string): string {
+function getParam(name: string, defaultValue?: string): string | undefined {
   const value = new URLSearchParams(window.location.search).get(name)
   if (value === null) {
     if (defaultValue !== undefined) {
       return defaultValue
     } else {
-      throw new Error(`Parameter ${name} has not been provided in the query string`)
+      //throw new Error(`Parameter ${name} has not been provided in the query string`)
+      return undefined
     }
   }
   return value
