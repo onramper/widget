@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import stylesCommon from '../../styles.module.css'
 
+import ErrorVisual from '../../common/ErrorVisual'
+
 import ConfirmPaymentView from '../ConfirmPaymentView'
 import UploadView from '../UploadView'
 import PickOptionView from '../PickOptionView'
@@ -45,9 +47,9 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
 
     return (
         <main className={stylesCommon.body}>
-            <span>
-                Oops... that shouldn't happen, please contact us (onramper.com).
-            </span>
+            <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+                <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
+            </div>
         </main>
     )
 }

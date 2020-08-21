@@ -10,6 +10,7 @@ import { APIContext } from '../context'
 
 import { ItemType, ItemCategory } from '../common/types'
 import InfoBox from '../common/InfoBox'
+import ErrorVisual from '../common/ErrorVisual'
 
 interface BodyBuyCryptoProps {
     onBuyCrypto: () => void
@@ -78,18 +79,23 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                 )
             }
             {
-                !generalErrors.some(errName => errName === "GATEWAYS") && <>
-                    <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
-                    <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                        <InputTextAmount error={errors['PARAM-amount']?.message} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} />
-                        <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
+                !generalErrors.some(errName => errName === "GATEWAYS") ?
+                    <>
+                        <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
+                        <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
+                            <InputTextAmount error={errors['PARAM-amount']?.message} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} />
+                            <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
+                        </div>
+                        <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
+                        <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
+                        <div className={`${stylesCommon['body__child']}`}>
+                            <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled || collected.isCalculatingAmount || Object.keys(generalErrors).length > 0} />
+                        </div>
+                    </>
+                    :
+                    <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+                        <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
                     </div>
-                    <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-                    <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
-                    <div className={`${stylesCommon['body__child']}`}>
-                        <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled || collected.isCalculatingAmount || Object.keys(generalErrors).length > 0} />
-                    </div>
-                </>
             }
         </main >
     )
