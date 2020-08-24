@@ -6,7 +6,7 @@ import { APIProvider } from './context'
 
 const defaultAddrs = JSON.stringify({
   BTC: ['btcAddr1', 'btcAddr2'],
-  ETH: ['ethAddr1'],
+  ETH: ['0xab0aFC6F0c1d3b2E0F3650eE9b92e1C6F0098bC1'],
   NEO: ['neoAddr1', 'neoAddr2', 'neoAddr3', 'neoAddr4']
 })
 

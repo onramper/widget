@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
-import BodyVerifyCode from './BodyIframeView'
+import BodyIframeView from './BodyIframeView'
 import styles from '../../styles.module.css'
 
-import SuccessView from '../SuccessView'
+import Step from '../Step'
 
 import { NextStep } from '../../context'
 
@@ -16,20 +16,22 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
 
   useEffect(() => {
     const receiveMessage = (event: MessageEvent) => {
-      if (event.origin !== "https://sandbox.onramper.dev/")
+      console.log(event)
+      if (event.origin !== "https://sandbox.onramper.dev")
         return;
-      replaceScreen(<SuccessView txType={'instant'} />)
+      replaceScreen(<Step {...(event.data as NextStep)} />)
     }
-    window.removeEventListener("message", receiveMessage);
     window.addEventListener("message", receiveMessage);
+    return () => window.removeEventListener("message", receiveMessage);
   }, [replaceScreen])
 
   return (
     <div className={styles.view}>
       <Header title="Payment" backButton />
-      <BodyVerifyCode
+      <BodyIframeView
         textInfo={textInfo}
         src={nextStep.url ?? ''}
+        type={nextStep.type}
       />
       <Footer />
     </div>

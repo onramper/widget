@@ -9,6 +9,8 @@ import PickOptionView from '../PickOptionView'
 import VerifyCodeView from '../VerifyCodeView'
 import EmailView from '../EmailView'
 import FormView from '../FormView'
+import SuccessView from '../SuccessView'
+import IframeView from '../IframeView'
 
 import { NavContext } from '../../wrappers/context'
 
@@ -42,6 +44,12 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
                 break;
             case 'pickOne':
                 replaceScreen(<PickOptionView nextStep={nextStep} />)
+                break;
+            case 'redirect':
+                replaceScreen(<IframeView nextStep={nextStep} />)
+                break;
+            case 'completed':
+                replaceScreen(<SuccessView txType='instant' />)
                 break;
             default:
                 break;
