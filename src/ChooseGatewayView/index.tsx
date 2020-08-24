@@ -8,7 +8,7 @@ import { APIContext } from '../context'
 
 import WalletAddressView from '../steps/WalletAddressView'
 
-import { GatewayOptionType } from '../common/types'
+import { GatewayRateOption } from '../context'
 
 const ChooseGatewayView = () => {
   const { nextScreen } = useContext(NavContext)
@@ -16,22 +16,21 @@ const ChooseGatewayView = () => {
   const { handleInputChange } = inputInterface
 
   const [selectedGatewayIndex, setSelectedGatewayIndex] = useState(0)
-  const [ratedGateways, setRatedGateways] = useState<GatewayOptionType[]>([])
+  const [availableRates, setAvailableRates] = useState<GatewayRateOption[]>([])
 
   useEffect(() => {
-    const ratedGateways = data.availableRates.filter((g) => g.available)
-    setRatedGateways(ratedGateways)
-  }, [data.availableRates])
+    const availableRates = data.allRates.filter(g => g.available)
+    setAvailableRates(availableRates)
+  }, [data.allRates])
 
   useEffect(() => {
-    handleInputChange('selectedGateway', ratedGateways[selectedGatewayIndex])
-    handleInputChange('nextStep', ratedGateways[selectedGatewayIndex]?.nextStep)
-  }, [handleInputChange, selectedGatewayIndex, ratedGateways])
+    handleInputChange('selectedGateway', availableRates[selectedGatewayIndex])
+  }, [handleInputChange, selectedGatewayIndex, availableRates])
 
   return (
     <div className={styles.view}>
       <Header title="Choose gateway" backButton />
-      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} gatewaysList={data.availableRates} onActionButton={() => nextScreen(<WalletAddressView />)} />
+      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} ratesList={data.allRates} onActionButton={() => nextScreen(<WalletAddressView />)} />
       <Footer />
     </div>
   );

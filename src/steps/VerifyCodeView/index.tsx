@@ -5,7 +5,7 @@ import BodyVerifyCode from './BodyVerifyCode'
 import styles from '../../styles.module.css'
 import Step from '../Step'
 
-import { NextStep } from '../../common/types'
+import { NextStep } from '../../context'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'

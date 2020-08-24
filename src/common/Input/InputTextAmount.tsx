@@ -3,7 +3,7 @@ import styles from './styles.module.css'
 
 import { toMaxDecimalsRound } from '../../wrappers/utils'
 
-import { ItemType } from '../../common/types';
+import { ItemType } from '../../context';
 
 import { CSSTransition } from 'react-transition-group';
 

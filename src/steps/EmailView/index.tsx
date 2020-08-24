@@ -8,7 +8,7 @@ import Step from '../Step'
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
-import { NextStep } from '../../common/types'
+import { NextStep } from '../../context'
 
 const EmailView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);

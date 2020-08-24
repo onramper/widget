@@ -7,7 +7,7 @@ import IframeView from '../IframeView'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
-import { NextStep } from '../../common/types';
+import { NextStep } from '../../context';
 
 const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
   const { nextScreen } = useContext(NavContext);

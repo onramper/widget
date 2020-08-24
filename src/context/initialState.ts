@@ -1,6 +1,24 @@
-import { ItemType, GatewayOptionType, NextStep } from '../common/types'
 import { GatewaysResponse } from './api/types/gateways'
-import { RateResponse } from './api/types/rate'
+import { RateResponse, GatewayRate } from './api/types/rate'
+import { NextStep } from './api/types/nextStep'
+
+export type GatewayRateOption = { id: string, name: string } & GatewayRate
+
+export interface ItemType {
+    id: string
+    name: string
+    info?: string
+    icon?: string
+    symbol?: string
+    precision?: number
+    currencyType?: string
+}
+
+export enum ItemCategory {
+    Crypto = 'CRYPTO',
+    Currency = 'CURRENCY',
+    PaymentMethod = 'PAYMENT_METHOD'
+}
 
 export type StateType = {
     data: DataStateType,
@@ -17,7 +35,7 @@ export type CollectedStateType = {
     selectedCrypto?: ItemType,
     selectedCurrency?: ItemType,
     selectedPaymentMethod?: ItemType,
-    selectedGateway?: GatewayOptionType,
+    selectedGateway?: GatewayRateOption,
     walletAddress?: string,
     defaultAddrs: {
         [key: string]: string[]
@@ -35,7 +53,7 @@ export type DataStateType = {
     availableCryptos: ItemType[]
     availableCurrencies: ItemType[]
     availablePaymentMethods: ItemType[]
-    availableRates: GatewayOptionType[]
+    allRates: GatewayRateOption[]
     handleCryptoChange: (crypto?: ItemType) => | undefined | {}
     handleCurrencyChange: (currency?: ItemType) => | undefined | {}
     handlePaymentMethodChange: (paymentMehtod?: ItemType) => | undefined | {}
@@ -73,7 +91,7 @@ export const initialState: StateType = {
         availableCryptos: [],
         availableCurrencies: [],
         availablePaymentMethods: [],
-        availableRates: [],
+        allRates: [],
         handleCryptoChange: () => undefined,
         handleCurrencyChange: () => undefined,
         handlePaymentMethodChange: () => undefined,

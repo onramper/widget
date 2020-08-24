@@ -3,29 +3,29 @@ import stylesCommon from '../styles.module.css'
 
 import ButtonAction from '../common/ButtonAction'
 
-import { GatewayOptionType } from '../common/types'
+import { GatewayRateOption } from '../context'
 import InfoBox from '../common/InfoBox'
 import ErrorVisual from '../common/ErrorVisual'
-import GatewaysList from './GatewaysList'
+import RatesList from './RatesList'
 
 type BodyChooseGatewayType = {
     onActionButton?: () => void,
     onItemClick?: (index: number) => void,
-    gatewaysList: GatewayOptionType[]
+    ratesList: GatewayRateOption[]
 }
 
 const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
     const { onActionButton, onItemClick } = props
-    const { gatewaysList } = props
+    const { ratesList } = props
 
-    const availableGateways = gatewaysList.filter((el) => el.available)
-    const unavailableGateways = gatewaysList.filter((el) => !el.available)
+    const availableRates = ratesList.filter(el => el.available)
+    const unavailableRates = ratesList.filter(el => !el.available)
 
     return (
         <main className={stylesCommon.body}>
-            {gatewaysList.length > 0 ?
+            {ratesList.length > 0 ?
                 <div className={`${stylesCommon['body__child']}`}>
-                    <GatewaysList availableGateways={availableGateways} unavailableGateways={unavailableGateways} onItemClick={onItemClick} />
+                    <RatesList availableRates={availableRates} unavailableRates={unavailableRates} onItemClick={onItemClick} />
                 </div>
                 : (
                     <>
@@ -39,7 +39,7 @@ const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
                 )
             }
             <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
-                <ButtonAction onClick={onActionButton} text='Continue' disabled={availableGateways.length < 1} />
+                <ButtonAction onClick={onActionButton} text='Continue' disabled={availableRates.length < 1} />
             </div>
         </main>
     )

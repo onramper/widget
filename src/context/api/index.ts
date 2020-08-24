@@ -1,6 +1,6 @@
 import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
-import { NextStep } from '../../common/types'
+import { NextStep } from '../../context'
 
 const BASE_API = 'https://api.onramper.dev'
 

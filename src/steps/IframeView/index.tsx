@@ -6,7 +6,7 @@ import styles from '../../styles.module.css'
 
 import SuccessView from '../SuccessView'
 
-import { NextStep } from '../../common/types'
+import { NextStep } from '../../context'
 
 import { NavContext } from '../../wrappers/context'
 

@@ -2,7 +2,7 @@ import React from 'react';
 import StepViewContent from './StepViewContent'
 import styles from '../../styles.module.css'
 
-import { NextStep } from '../../common/types'
+import { NextStep } from '../../context'
 
 const StepView: React.FC<NextStep> = (props) => {
 

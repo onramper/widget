@@ -1,5 +1,5 @@
 import { StateType, DataStateType } from './initialState'
-import { ItemType } from '../common/types';
+import { ItemType } from '../context';
 import { ErrorObjectType } from './initialState'
 
 export enum CollectedActionsType {

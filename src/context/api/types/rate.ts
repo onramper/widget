@@ -1,6 +1,6 @@
 import { NextStep } from './nextStep'
 
-interface Gateway {
+interface GatewayRate {
     identifier: string
     duration: {
         seconds: number
@@ -20,8 +20,9 @@ interface Gateway {
     icon?: string
 }
 
-type RateResponse = Gateway[]
+type RateResponse = GatewayRate[]
 
 export type {
-    RateResponse
+    RateResponse,
+    GatewayRate
 }

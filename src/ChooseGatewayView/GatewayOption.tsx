@@ -5,7 +5,7 @@ import IconDetailTxTime from '../icons/txtimeicon.svg'
 
 import { CSSTransition } from 'react-transition-group';
 
-import { GatewayOptionType } from '../common/types'
+import { GatewayRateOption } from '../context'
 
 import { APIContext } from '../context'
 
@@ -41,11 +41,12 @@ type GateWayOptionProps = {
     isOpen: boolean
     selectedReceivedCrypto?: number
     onClick?: (index: number) => void
-} & GatewayOptionType
+} & GatewayRateOption
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { collected } = useContext(APIContext)
-    const { name, duration, receivedCrypto = 0, logo, isOpen, selectedReceivedCrypto = 0, available, error, requiredKYC } = props //todo change 
+
+    const { name, duration, receivedCrypto = 0, icon, isOpen, selectedReceivedCrypto = 0, available, error, requiredKYC } = props //todo change 
     const { onClick = (i) => null } = props
 
     const diffPercent = ((1 - (selectedReceivedCrypto / receivedCrypto)) * 100)
@@ -81,7 +82,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                 <div className={styles.content__price}>
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div className={`${styles['gateway-logo']}`}>
-                            {logo ? <img alt="Gateway logo" src={logo} /> : null}
+                            {icon ? <img alt="Gateway logo" src={icon} /> : null}
                         </div>
                     </CSSTransition>
                     <div>
@@ -96,7 +97,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         {/* </CSSTransition> */}
                         {available ?
                             <span> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {receivedCrypto}</span>
-                            : <span>{!error ? 'Try again later' : error}</span>
+                            : <span>{!error?.message ? 'Try again later' : error?.message}</span>
                         }
                     </div>
                 </div>

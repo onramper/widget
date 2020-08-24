@@ -10,7 +10,7 @@ import IconChevronRight from '../../icons/chevron_right.svg'
 
 import { APIContext } from '../../context'
 import { NavContext } from '../../wrappers/context'
-import { ItemType } from '../../common/types'
+import { ItemType } from '../../context'
 
 type BodyWalletAddressType = {
     onActionButton: () => void

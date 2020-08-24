@@ -8,7 +8,7 @@ import { arrayUnique, arrayObjUnique } from '../wrappers/utils'
 import LogoOnramper from '../icons/logo.svg'
 
 import * as API from './api'
-import { ItemType, ItemCategory, GatewayOptionType } from '../common/types';
+import { ItemType, ItemCategory, GatewayRateOption } from './initialState';
 import { IconGatewaysResponse, GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
 import { NextStep } from './api/types/nextStep';
@@ -245,7 +245,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
       // IF THE AMOUNT IS NOT SET OR IT'S ===0 THEN NO AVAILABLE RATES
       if (!state.collected.amount) {
-        addData({ availableRates: [] })
+        addData({ allRates: [] })
         return
       }
 
@@ -282,12 +282,13 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // IF THE REQUEST DIDN'T THROW ANY ERROR, CLEAR THE ABORT CONTROLLER FROM THE STATE
       setLastCall(undefined)
 
-      if (response_rate.length <= 0) return processErrors("RATE", "NO_RATES", "No rates found")
+      if (!response_rate || response_rate.length <= 0) return processErrors("RATE", "NO_RATES", "No rates found")
 
       // MAP RATES TO GatewayOptionType
-      const mappedAvailableRates: GatewayOptionType[] = response_rate.map((item) => ({
+      const mappedAllRates: GatewayRateOption[] = response_rate.map((item) => ({
         id: item.identifier,
         name: item.identifier,
+        identifier: item.identifier,
         duration: item.duration,
         available: item.available,
         rate: item.rate,
@@ -295,17 +296,17 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         requiredKYC: item.requiredKYC,
         receivedCrypto: item.receivedCrypto,
         nextStep: item.nextStep,
-        error: item.error?.message,
-        logo: item.icon || LogoOnramper
+        error: item.error,
+        icon: item.icon || LogoOnramper
       }))
 
       // save to state.date
-      addData({ availableRates: mappedAvailableRates, response_rate })
+      addData({ allRates: mappedAllRates, response_rate })
 
       // IF THERE ARE NO RATES AVAILABLES THEN REDUCE UNAVAILABLE RATES TO AN ERRORS OBJECT
-      const filtredRatesByAviability = response_rate.filter((item) => item.available)
-      if (filtredRatesByAviability.length <= 0) {
-        const minMaxErrors = response_rate.reduce((minMaxErrors: { [key: string]: any }, item) => {
+      const unavailableRates = response_rate.filter(item => !item.available)
+      if (response_rate.length - unavailableRates.length <= 0) {
+        const minMaxErrors = unavailableRates.reduce((minMaxErrors: { [key: string]: any }, item) => {
           if (!item.error) return minMaxErrors
           switch (item.error.type) {
             case 'MIN':
@@ -323,7 +324,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
               return minMaxErrors
           }
         }, {})
-        return processErrors("PARAM-amount", "INVALID", minMaxErrors.MIN?.message ?? minMaxErrors.MAX?.message)
+        return processErrors("amount", "PARAM", minMaxErrors.MIN?.message ?? minMaxErrors.MAX?.message)
       }
 
       // IF NO ERRORS, RETURN UNDEFINED
@@ -376,3 +377,11 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 }
 
 export { APIProvider, APIContext };
+
+export { ItemCategory }
+
+export type {
+  ItemType,
+  GatewayRateOption,
+  NextStep
+}

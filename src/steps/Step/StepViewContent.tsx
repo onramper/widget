@@ -12,7 +12,7 @@ import FormView from '../FormView'
 
 import { NavContext } from '../../wrappers/context'
 
-import { NextStep } from '../../common/types'
+import { NextStep } from '../../context'
 
 const StepViewContent: React.FC<NextStep> = (nextStep) => {
     const { replaceScreen, backScreen } = useContext(NavContext);

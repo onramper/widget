@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import styles from './styles.module.css'
-import { ItemType } from '../types'
+import { ItemType } from '../../context'
 
 type ListProps = {
     items: ItemType[]
