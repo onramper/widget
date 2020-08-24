@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
+import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
@@ -52,7 +53,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             {
                 fields.map((dataName, i) =>
                     <div key={i} className={`${stylesCommon['body__child']}`}>
-                        <InputText name={dataName.name} value={collected[dataName.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={dataName.humanName} type={dataName.type} />
+                        {
+                            dataName.name === 'cryptocurrencyAddress' ?
+                                <InputCryptoAddr handleInputChange={handleInputChange} />
+                                : <InputText name={dataName.name} value={collected[dataName.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={dataName.humanName} type={dataName.type} />
+                        }
                     </div>
                 )
             }

@@ -23,10 +23,14 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
         switch (nextStep.type) {
             case 'form':
                 if (nextStepData.length === 1) {
-                    if (nextStepData[0].name === 'email')
+                    if (nextStepData[0].name === 'email') {
                         replaceScreen(<EmailView nextStep={nextStep} />)
-                    else if (nextStepData[0].name === 'verifyEmailCode')
+                        break;
+                    }
+                    else if (nextStepData[0].name === 'verifyEmailCode') {
                         replaceScreen(<VerifyCodeView nextStep={nextStep} codeType='email' name='email' />)
+                        break;
+                    }
                 }
                 replaceScreen(<FormView nextStep={nextStep} />)
                 break;
