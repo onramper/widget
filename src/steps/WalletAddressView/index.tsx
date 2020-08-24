@@ -16,15 +16,15 @@ const WalletAddressView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
 
   const handleButtonAction = () => {
-    if (!collected.walletAddress) return
+    if (!collected.cryptocurrencyAddress) return
     if (collected.selectedGateway?.nextStep)
       nextScreen(<Step {...collected.selectedGateway?.nextStep} />)
   }
 
   useEffect(() => {
-    const isFilled = collected.walletAddress ? true : false
+    const isFilled = collected.cryptocurrencyAddress ? true : false
     setIsFilled(isFilled)
-  }, [collected.walletAddress])
+  }, [collected.cryptocurrencyAddress])
 
   return (
     <div className={styles.view}>

@@ -36,7 +36,7 @@ export type CollectedStateType = {
     selectedCurrency?: ItemType,
     selectedPaymentMethod?: ItemType,
     selectedGateway?: GatewayRateOption,
-    walletAddress?: string,
+    cryptocurrencyAddress?: string,
     defaultAddrs: {
         [key: string]: string[]
     }
@@ -83,7 +83,7 @@ export const initialState: StateType = {
         selectedCurrency: undefined,
         selectedPaymentMethod: undefined,
         selectedGateway: undefined,
-        walletAddress: undefined,
+        cryptocurrencyAddress: undefined,
         defaultAddrs: {},
         errors: undefined
     },

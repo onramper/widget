@@ -31,7 +31,7 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
         items = collected.defaultAddrs[selectedCrypto.name].map((addr) => ({ name: addr, id: addr }))
 
     useEffect(() => {
-        handleInputChange('walletAddress', selectedAddress)
+        handleInputChange('cryptocurrencyAddress', selectedAddress)
     }, [selectedAddress, handleInputChange])
 
     const handleAddressSelection = (name: string, index: number) => {
@@ -51,7 +51,7 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
                 icon={items.length > 0 ? IconChevronRight : undefined}
                 iconPosition='end'
                 onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
-                name='walletAddress' onChange={onChange} className={stylesCommon['body__child']} label={`RECEIVER ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
+                name='cryptocurrencyAddress' onChange={onChange} className={stylesCommon['body__child']} label={`RECEIVER ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? 'Creating transaction...' : 'Continue'} disabled={!isFilled} />
             </div>

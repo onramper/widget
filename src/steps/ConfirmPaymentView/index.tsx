@@ -30,7 +30,7 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
         cryptoAmount={collected.selectedGateway?.receivedCrypto || 0}
         cryptoDenom={collected.selectedCrypto?.name || ''}
         txTime={collected.selectedGateway?.duration}
-        cryptoAddr={collected?.walletAddress}
+        cryptoAddr={collected?.cryptocurrencyAddress}
         cryptoIcon={collected.selectedCrypto?.icon}
         paymentMethod={collected.selectedPaymentMethod?.name}
         conversionRate={collected.selectedGateway?.rate}
