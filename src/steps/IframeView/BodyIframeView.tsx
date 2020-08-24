@@ -7,6 +7,7 @@ interface BodyIframeViewType {
     src: string
     type: string
     textInfo?: string
+    error?: string
 }
 
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
@@ -21,6 +22,9 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
         <main className={stylesCommon.body}>
             <InfoBox in={textInfo !== undefined} className={`${stylesCommon['body__child']}`}>
                 {textInfo}
+            </InfoBox>
+            <InfoBox in={props.error !== undefined} className={`${stylesCommon['body__child']}`} type='error' >
+                {props.error}
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 {

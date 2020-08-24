@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyIframeView from './BodyIframeView'
@@ -13,12 +13,15 @@ import { NavContext } from '../../wrappers/context'
 const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const { replaceScreen } = useContext(NavContext);
   const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
+  const [error, setError] = useState<string>()
 
   useEffect(() => {
     const receiveMessage = (event: MessageEvent) => {
       console.log(event)
       if (event.origin !== "https://sandbox.onramper.dev")
         return;
+      if (typeof event.data === 'string')
+        setError(event.data)
       replaceScreen(<Step {...(event.data as NextStep)} />)
     }
     window.addEventListener("message", receiveMessage);
@@ -30,6 +33,7 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
       <Header title="Payment" backButton />
       <BodyIframeView
         textInfo={textInfo}
+        error={error}
         src={nextStep.url ?? ''}
         type={nextStep.type}
       />
