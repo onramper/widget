@@ -20,9 +20,12 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
       console.log(event)
       if (event.origin !== "https://sandbox.onramper.dev")
         return;
-      if (!event.data.type)
+      if (event.data.type)
+        replaceScreen(<Step {...(event.data as NextStep)} />)
+      else if (typeof event.data === 'string')
         setError(event.data)
-      replaceScreen(<Step {...(event.data as NextStep)} />)
+      else
+        setError('Unknow error. Please, contact help@onramper.com')
     }
     window.addEventListener("message", receiveMessage);
     return () => window.removeEventListener("message", receiveMessage);
@@ -36,6 +39,7 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
         error={error}
         src={nextStep.url ?? ''}
         type={nextStep.type}
+        onErrorDismissClick={() => setError(undefined)}
       />
       <Footer />
     </div>

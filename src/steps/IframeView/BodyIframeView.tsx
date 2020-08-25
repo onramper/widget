@@ -8,10 +8,11 @@ interface BodyIframeViewType {
     type: string
     textInfo?: string
     error?: string
+    onErrorDismissClick: () => void
 }
 
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
-    const { textInfo, type } = props
+    const { textInfo, type, error } = props
 
     useEffect(() => {
         if (type === 'redirect')
@@ -23,8 +24,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             <InfoBox in={textInfo !== undefined} className={`${stylesCommon['body__child']}`}>
                 {textInfo}
             </InfoBox>
-            <InfoBox in={props.error !== undefined} className={`${stylesCommon['body__child']}`} type='error' >
-                {props.error}
+            <InfoBox in={error !== undefined} className={`${stylesCommon['body__child']}`} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} >
+                {error}
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 {
