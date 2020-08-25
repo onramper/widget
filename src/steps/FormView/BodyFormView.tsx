@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InputText from '../../common/Input/InputText'
@@ -20,14 +20,13 @@ type BodyFormViewType = {
     isLoading?: boolean
     errorMsg?: string
     inputName?: string
+    onErrorDismissClick: () => void
 }
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { handleInputChange, onActionButton, fields = [] } = props
     const { collected } = useContext(APIContext);
     const { isFilled = false, isLoading = false, errorMsg } = props
-
-    const [errmsg, setErrorMsg] = useState(errorMsg)
 
     const onChange = (name: string, value: any, type?: string) => {
         let v = value
@@ -41,14 +40,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         handleInputChange(name, v)
     }
 
-    useEffect(() => {
-        setErrorMsg(errorMsg)
-    }, [errorMsg])
-
     return (
         <main className={stylesCommon.body}>
-            <InfoBox in={errmsg !== undefined} type='error' canBeDismissed onDismissClick={() => setErrorMsg(undefined)} className={`${stylesCommon['body__child']}`} >
-                {errmsg}
+            <InfoBox in={errorMsg !== undefined} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} className={`${stylesCommon['body__child']}`} >
+                {errorMsg}
             </InfoBox>
             {
                 fields.map((dataName, i) =>

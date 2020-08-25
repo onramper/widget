@@ -51,6 +51,7 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
         isLoading={isLoading}
         errorMsg={errorMsg}
         isFilled={isFilled}
+        onErrorDismissClick={() => setErrorMsg(undefined)}
       />
       <Footer />
     </div>
