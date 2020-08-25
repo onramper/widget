@@ -11,6 +11,7 @@ import EmailView from '../EmailView'
 import FormView from '../FormView'
 import SuccessView from '../SuccessView'
 import IframeView from '../IframeView'
+import WireTranserView from '../WireTranserView'
 
 import { NavContext } from '../../wrappers/context'
 
@@ -50,6 +51,9 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
                 break;
             case 'completed':
                 replaceScreen(<SuccessView txType='instant' />)
+                break;
+            case 'requestBankTransaction':
+                replaceScreen(<WireTranserView nextStep={nextStep} />)
                 break;
             default:
                 break;

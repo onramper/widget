@@ -5,60 +5,32 @@ import BodyWireTransfer from './BodyWireTransfer'
 import styles from '../../styles.module.css'
 
 import SuccessView from '../SuccessView'
+import { NextStep } from '../../context'
 
 import { copyToClipBoard } from './utils'
 import { NavContext } from '../../wrappers/context'
+import { APIContext } from '../../context'
 
 
-const CreditCardView: React.FC = () => {
+const CreditCardView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
+  const { collected } = useContext(APIContext);
 
-  const textInfo = 'Go to your online banking and make a manual payment with the following wire transfer details.'
-
-  const wireDetails: { [key: string]: { name: string, value: string } } = {
-    'Amount': {
-      name: 'Amount',
-      value: '100,00',
-    },
-    'Reference': {
-      name: 'Reference',
-      value: 'Text',
-    },
-    'IBAN': {
-      name: 'IBAN',
-      value: 'NL12 INGB 0123 4567 89',
-    },
-    'BIC / SWIFT': {
-      name: 'BIC / SWIFT',
-      value: 'INGBNL2A',
-    },
-    'Name': {
-      name: 'Name',
-      value: 'Onramper',
-    },
-    'wiret-currency': {
-      name: '',
-      value: '$',
-    }
-  }
-
-  const handleIconClick = useCallback((name: string) => {
-    copyToClipBoard(wireDetails[name].value, () => null)
-  }, [wireDetails])
+  const handleIconClick = useCallback((value: string) => {
+    copyToClipBoard(value, () => null)
+  }, [])
 
   return (
     <div className={styles.view}>
       <Header title="Wire transfer details" backButton />
       <BodyWireTransfer
-        onActionButton={() => nextScreen(<SuccessView txType='pending' />)}
-        amount={wireDetails['Amount']}
-        reference={wireDetails['Reference']}
-        iban={wireDetails['IBAN']}
-        bicswift={wireDetails['BIC / SWIFT']}
-        name={wireDetails['Name']}
-        symbol={wireDetails['wiret-currency']}
-        textInfo={textInfo}
+        onActionButton={nextStep.url ? () => nextScreen(<SuccessView txType='pending' />) : undefined}
+        amount={collected.amount.toString()}
+        bankDetails={nextStep.depositBankAccount}
+        symbol={collected.selectedCurrency?.symbol ?? ''}
+        textInfo={nextStep.hint ?? ''}
         onIconClick={handleIconClick}
+        reference={nextStep.reference ?? 'No reference'}
       />
       <Footer />
     </div>

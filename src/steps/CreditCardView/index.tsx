@@ -17,7 +17,7 @@ const CreditCardView: React.FC = () => {
     <div className={styles.view}>
       <Header title="Card details" backButton />
       <BodyCreditCard
-        onActionButton={() => nextScreen(<WireTranserView />)}
+        onActionButton={() => nextScreen(<WireTranserView nextStep={{ type: 'none' }} />)}
         handleInputChange={inputInterface.handleInputChange}
       />
       <Footer />
