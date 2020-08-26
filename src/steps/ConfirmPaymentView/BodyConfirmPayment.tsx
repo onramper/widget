@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
@@ -11,7 +11,6 @@ import { CSSTransition } from 'react-transition-group';
 
 import ButtonAction from '../../common/ButtonAction'
 
-import { APIContext } from '../../context'
 
 type BodyConfirmPaymentViewType = {
     onActionButton: () => void
@@ -30,7 +29,6 @@ type BodyConfirmPaymentViewType = {
 }
 
 const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => {
-    const { inputInterface } = useContext(APIContext);
     const [isExpanded, setIsExpanded] = useState(false)
 
     const { onActionButton } = props

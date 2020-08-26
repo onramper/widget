@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react'
-import stylesCommon from '../../styles.module.css'
 
 import PickView from '../../PickView'
 

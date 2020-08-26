@@ -25,10 +25,10 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
 
     const [copiedText, setCopiedText] = useState<string>()
 
-    const onClick = (id: string, value: string) => {
+    const onClick = (id: string, value: string, humanName: string) => {
         if (onIconClick) {
             onIconClick(value)
-            setCopiedText(`${id} copied to clipboard.`)
+            setCopiedText(`${humanName} copied to clipboard.`)
         }
     }
 

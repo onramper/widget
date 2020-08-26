@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyConfirmPayment from './BodyConfirmPayment'
