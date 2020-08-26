@@ -70,7 +70,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 {/* <label className={styles['terms']}><input type="checkbox" name='agreementCheckbox' onChange={(e) => inputInterface.handleInputChange(e.currentTarget.name, e.currentTarget.checked)} /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label> */}
             </div>
             <div className={`${stylesCommon['body__child']}`}>
-                <ButtonAction onClick={onActionButton} text='Confirm' disabled={!props.isFilled} />
+                <ButtonAction onClick={onActionButton} text='Continue' disabled={!props.isFilled} />
             </div>
         </main >
     )

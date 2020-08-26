@@ -3,7 +3,7 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import BodyConfirmPayment from './BodyConfirmPayment'
 import styles from '../../styles.module.css'
-import IframeView from '../IframeView'
+import Step from '../Step'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
@@ -17,7 +17,7 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
     <div className={styles.view}>
       <Header title="Payment review" backButton />
       <BodyConfirmPayment
-        onActionButton={() => nextScreen(<IframeView nextStep={props.nextStep} />)}
+        onActionButton={() => nextScreen(<Step {...props.nextStep} type={`${props.nextStep.type}-after_review`} />)}
         payAmount={collected.amount.toString()}
         fees={collected.selectedGateway?.fees}
         currency={collected.selectedCurrency?.name}

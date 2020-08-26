@@ -37,9 +37,6 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
                 }
                 replaceScreen(<FormView nextStep={nextStep} />)
                 break;
-            case 'iframe':
-                replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
-                break;
             case 'file':
                 replaceScreen(<UploadView nextStep={nextStep} />)
                 break;
@@ -52,7 +49,14 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
             case 'completed':
                 replaceScreen(<SuccessView txType='instant' />)
                 break;
+            case 'iframe':
             case 'requestBankTransaction':
+                replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
+                break;
+            case 'iframe-after_review':
+                replaceScreen(<IframeView nextStep={nextStep} />)
+                break;
+            case 'requestBankTransaction-after_review':
                 replaceScreen(<WireTranserView nextStep={nextStep} />)
                 break;
             default:
