@@ -6,3 +6,18 @@
 .terms:first-of-type {
     margin-top: auto;
 }
+
+/***********************************/
+
+.resend {
+    display: flex;
+    align-self: flex-end;
+    font-size: 0.75rem;
+    margin-top: 0.56rem;
+    text-transform: uppercase;
+    color: #808080;
+}
+
+.resend:hover {
+    cursor: pointer;
+}
