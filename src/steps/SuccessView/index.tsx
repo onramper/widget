@@ -8,7 +8,7 @@ const SuccessView: React.FC<{ txType: "instant" | "pending" }> = ({ txType }) =>
 
   return (
     <div className={styles.view}>
-      <Header title="Purchase completed" backButton />
+      <Header title="Purchase completed" />
       <BodySuccessView txType={txType} />
       <Footer />
     </div>
