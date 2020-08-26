@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
@@ -24,7 +24,7 @@ type BodyFormViewType = {
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { handleInputChange, onActionButton, fields = [] } = props
-    const { collected, inputInterface } = useContext(APIContext);
+    const { collected } = useContext(APIContext);
     const { backScreen } = useContext(NavContext)
     const { isFilled = false, isLoading = false, errorObj, errorMsg } = props
 
@@ -36,7 +36,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         setPush2Bottom(fields.some(field => field.name === 'termsOfUse'))
     }, [fields])
 
-    const onChange = (name: string, value: any, type?: string) => {
+    const onChange = useCallback((name: string, value: any, type?: string) => {
         let v = value
         if (type === 'date') {
             v = {
@@ -46,7 +46,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             }
         }
         handleInputChange(name, v)
-    }
+    }, [handleInputChange])
 
     return (
         <main className={stylesCommon.body}>
@@ -57,16 +57,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 fields.map((field, i) =>
                     <div key={i} className={`${stylesCommon['body__child']} ${push2Bottom === true && field.name === 'termsOfUse' ? stylesCommon['push-bottom'] : ''}`}>
                         {
-                            (field.name === 'cryptocurrencyAddress' && <InputCryptoAddr className={stylesCommon['body__child']} handleInputChange={handleInputChange} error={errorObj?.[field.name]} />)
+                            (field.name === 'cryptocurrencyAddress' && <InputCryptoAddr className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />)
                             || (field.type === 'string' && field.name === 'verifyEmailCode' && (
                                 <>
-                                    <InputText name={field.name} onChange={handleInputChange} className={stylesCommon['body__child']} label={field.humanName} placeholder="" error={errorObj?.[field.name]} />
+                                    <InputText name={field.name} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} placeholder="" error={errorObj?.[field.name]} />
                                     <span onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
                                 </>
                             ))
                             || (field.type === 'boolean' && field.name === 'termsOfUse'
                                 && <label className={`${styles['terms']}`}>
-                                    <input type="checkbox" name={field.name} onChange={(e) => inputInterface.handleInputChange(e.currentTarget.name, e.currentTarget.checked)} /> I accept {
+                                    <input type="checkbox" checked={collected[field.name]} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} /> I accept {
                                         field.terms?.map<React.ReactNode>(term => <a href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
                                             .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                                     }.
