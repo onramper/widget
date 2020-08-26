@@ -31,8 +31,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const [push2Bottom, setPush2Bottom] = useState(false)
 
     useEffect(() => {
-        console.log(stylesCommon['push-bottom'])
-        console.log(fields.some(field => field.name === 'termsOfUse'))
         setPush2Bottom(fields.some(field => field.name === 'termsOfUse'))
     }, [fields])
 
@@ -55,25 +53,23 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             </InfoBox>
             {
                 fields.map((field, i) =>
-                    <div key={i} className={`${stylesCommon['body__child']} ${push2Bottom === true && field.name === 'termsOfUse' ? stylesCommon['push-bottom'] : ''}`}>
-                        {
-                            (field.name === 'cryptocurrencyAddress' && <InputCryptoAddr className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />)
-                            || (field.type === 'string' && field.name === 'verifyEmailCode' && (
-                                <>
-                                    <InputText name={field.name} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} placeholder="" error={errorObj?.[field.name]} />
-                                    <span onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
-                                </>
-                            ))
-                            || (field.type === 'boolean' && field.name === 'termsOfUse'
-                                && <label className={`${styles['terms']}`}>
-                                    <input type="checkbox" checked={collected[field.name]} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} /> I accept {
-                                        field.terms?.map<React.ReactNode>(term => <a href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
-                                            .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
-                                    }.
-                                </label>)
-                            || <InputText error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type} />
-                        }
-                    </div>
+                    (field.name === 'cryptocurrencyAddress' && (
+                        <InputCryptoAddr key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
+                    ))
+                    || (field.type === 'string' && field.name === 'verifyEmailCode' && (
+                        <>
+                            <InputText name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} />
+                            <span onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
+                        </>
+                    ))
+                    || (field.type === 'boolean' && field.name === 'termsOfUse' && (
+                        <label key={i} className={`${stylesCommon['body__child']} ${stylesCommon['push-bottom']} ${styles['terms']}`}>
+                            <input type="checkbox" checked={collected[field.name]} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} /> I accept {
+                                field.terms?.map<React.ReactNode>(term => <a href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
+                                    .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
+                            }.</label>
+                    ))
+                    || <InputText error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type} />
                 )
             }
             <div className={`${stylesCommon['body__child']} ${push2Bottom ? '' : stylesCommon['grow']}`}>
