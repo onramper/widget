@@ -38,7 +38,7 @@ const NavContext = createContext<{
   nextScreen: (screen: ScreenType) => void;
   replaceScreen: (screen: ScreenType) => void;
 }>({
-  _state: { screens: [] },
+  _state: initialState,
   onlyScreen: () => null,
   backScreen: () => null,
   nextScreen: () => null,
@@ -66,7 +66,7 @@ class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStat
   constructor(props: { home?: ScreenType }) {
     super(props);
 
-    this.state = { screens: [] };
+    this.state = initialState;
   }
 
   componentDidMount() {

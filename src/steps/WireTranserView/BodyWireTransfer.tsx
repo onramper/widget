@@ -55,7 +55,7 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
             {
                 onActionButton ?
                     <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
-                        <ButtonAction onClick={onActionButton} text='Download data' />
+                        <ButtonAction onClick={onActionButton} text='Finish' />
                     </div> : null
             }
         </main>

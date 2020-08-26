@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import ErrorVisual from '../../common/ErrorVisual'
@@ -18,8 +18,8 @@ import { NavContext } from '../../wrappers/context'
 import { NextStep } from '../../context'
 
 const StepViewContent: React.FC<NextStep> = (nextStep) => {
-    const { replaceScreen, backScreen } = useContext(NavContext);
-
+    const { replaceScreen, backScreen/* , onlyScreen */ } = useContext(NavContext);
+    const [isProcessingStep, setIsProcessingStep] = useState(true)
 
     useEffect(() => {
         const nextStepData = nextStep.data || []
@@ -47,7 +47,7 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
                 replaceScreen(<IframeView nextStep={nextStep} />)
                 break;
             case 'completed':
-                replaceScreen(<SuccessView txType='instant' />)
+                replaceScreen(<SuccessView txType='instant' />)//onlyScreen(<SuccessView txType='instant' />)
                 break;
             case 'iframe':
             case 'requestBankTransaction':
@@ -57,18 +57,19 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
                 replaceScreen(<IframeView nextStep={nextStep} />)
                 break;
             case 'requestBankTransaction-after_review':
-                replaceScreen(<WireTranserView nextStep={nextStep} />)
+                replaceScreen(<WireTranserView nextStep={nextStep} />)//onlyScreen(<WireTranserView nextStep={nextStep} />)
                 break;
             default:
                 break;
         }
+        setIsProcessingStep(false)
     }, [nextStep, replaceScreen, backScreen])
 
     return (
         <main className={stylesCommon.body}>
-            <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+            {isProcessingStep && <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
                 <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
-            </div>
+            </div>}
         </main>
     )
 }

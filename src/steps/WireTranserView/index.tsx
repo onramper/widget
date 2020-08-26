@@ -22,9 +22,9 @@ const CreditCardView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
 
   return (
     <div className={styles.view}>
-      <Header title="Wire transfer details" backButton />
+      <Header title="Wire transfer details" />
       <BodyWireTransfer
-        onActionButton={nextStep.url ? () => nextScreen(<SuccessView txType='pending' />) : undefined}
+        onActionButton={() => nextScreen(<SuccessView txType='pending' />)}
         amount={collected.amount.toString()}
         bankDetails={nextStep.depositBankAccount}
         symbol={collected.selectedCurrency?.symbol ?? ''}
