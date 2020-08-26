@@ -13,6 +13,8 @@ import { IconGatewaysResponse, GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
 import { NextStep } from './api/types/nextStep';
 
+import { NextStepError } from './api'
+
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -378,7 +380,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
 export { APIProvider, APIContext };
 
-export { ItemCategory }
+export { ItemCategory, NextStepError }
 
 export type {
   ItemType,

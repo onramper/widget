@@ -14,6 +14,7 @@ import { ItemType } from '../../context'
 type InputCryptoAddrType = {
     handleInputChange: (name: string, value: any) => void
     error?: string
+    className: string
 }
 
 const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
@@ -48,7 +49,7 @@ const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
             icon={items.length > 0 ? IconChevronRight : undefined}
             iconPosition='end'
             onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
-            name='cryptocurrencyAddress' onChange={onChange} className={stylesCommon['body__child']} label={`RECEIVER ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
+            name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`RECEIVER ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
     )
 }
 

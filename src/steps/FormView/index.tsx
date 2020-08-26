@@ -5,7 +5,7 @@ import BodyForm from './BodyFormView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
 
-import { NextStep } from '../../context'
+import { NextStep, NextStepError, } from '../../context'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
@@ -16,12 +16,13 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const [isFilled, setIsFilled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
+  const [errorObj, setErrorObj] = useState<{ [key: string]: string }>()
 
   const nextStepData = nextStep.data || []
 
   const handleButtonAction = async () => {
     setIsLoading(true)
-    setErrorMsg(undefined)
+    setErrorObj(undefined)
 
     let params = nextStepData.reduce((acc, current) => {
       return { ...acc, [current.name]: collected[current.name] }
@@ -30,7 +31,13 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
       const newNextStep = await apiInterface.executeStep(nextStep, params);
       nextScreen(<Step {...newNextStep} />)
     } catch (error) {
-      setErrorMsg(error.message)
+      if (error instanceof NextStepError) {
+        if (error.fields)
+          setErrorObj(error.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
+        if (error.message)
+          setErrorMsg(error.message)
+      }
+      console.log(error)
     }
 
     setIsLoading(false)
@@ -52,6 +59,7 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
         errorMsg={errorMsg}
         isFilled={isFilled}
         onErrorDismissClick={() => setErrorMsg(undefined)}
+        errorObj={errorObj}
       />
       <Footer />
     </div>

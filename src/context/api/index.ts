@@ -1,5 +1,6 @@
 import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
+import { NextStepErr, FieldError } from './types/nextStep'
 import { NextStep } from '../../context'
 
 const BASE_API = 'https://api.onramper.dev'
@@ -58,9 +59,21 @@ const processResponse = async (response: Response): Promise<any> => {
         try {
             error_response = await response.json()
         } catch (error) {
-            throw new Error(await response.text())
+            throw new NextStepError({ message: await response.text() })
         }
-        throw new Error(error_response.message)
+        throw new NextStepError(error_response)
+    }
+}
+
+class NextStepError extends Error {
+    fields: FieldError[] = []
+    constructor(error: NextStepErr) {
+        super("NextStep error");
+        this.name = "NextStepError";
+        if (Array.isArray(error))
+            this.fields = error
+        else
+            this.message = error.message
     }
 }
 
@@ -101,5 +114,6 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCrypto
 export {
     gateways,
     rate,
-    executeStep
+    executeStep,
+    NextStepError
 }

@@ -6,6 +6,7 @@ type NextStep = {
         type: string
         humanName: string
         name: string
+        terms?: { humanName: string, url: string }[]
     }[]
     options?: NextStep[]
     acceptedContentTypes?: string[]
@@ -21,6 +22,15 @@ type NextStep = {
     reference?: string;
 }
 
+interface FieldError {
+    field: string
+    message: string
+}
+
+type NextStepErr = FieldError[] | { message: string }
+
 export type {
-    NextStep
+    NextStep,
+    NextStepErr,
+    FieldError
 }

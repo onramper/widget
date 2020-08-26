@@ -17,7 +17,7 @@ const BodyWalletAddress: React.FC<BodyWalletAddressType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <InputCryptoAddr handleInputChange={handleInputChange} />
+            <InputCryptoAddr className={stylesCommon['body__child']} handleInputChange={handleInputChange} />
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? 'Creating transaction...' : 'Continue'} disabled={!isFilled} />
             </div>

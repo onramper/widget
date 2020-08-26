@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import BuyCryptoView from './BuyCryptoView'
+import WireTranserView from './steps/WireTranserView'
 import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './wrappers/context';
 import { APIProvider } from './context'
@@ -49,7 +50,21 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = ({ color, defaultAddrs, de
     <div style={style} className={`${styles['theme']}`}>
       <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} filters={filters} >
         <NavProvider>
-          <NavContainer home={<BuyCryptoView />} />
+          <NavContainer home={<BuyCryptoView
+            /* nextStep={
+              {
+                type: 'ld',
+                depositBankAccount: {
+                  accountAddress: 'dd',
+                  accountName: 'dd',
+                  bankAddress: 'dd',
+                  bankName: 'dd',
+                  bic: 'dd',
+                  iban: 'dd',
+                }
+              }
+            } */
+          />} />
         </NavProvider>
       </APIProvider>
     </div>
