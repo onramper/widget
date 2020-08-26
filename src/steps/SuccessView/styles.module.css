@@ -32,3 +32,20 @@
     cursor: pointer;
     color: grey;
 }
+
+.button--basic {
+    font-size: 1rem;
+    margin-top: 1rem;
+    background-color: #41ad49;
+    outline: none;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 5px;
+    border-width: 0px;
+    padding: 0.78rem;
+    color: white;
+}
+
+.button--pending {
+    background-color: #006bb3;
+}
