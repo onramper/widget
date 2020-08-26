@@ -81,10 +81,13 @@ const APIProvider: React.FC<APIProvider> = (props) => {
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       clearErrors()
+
+      const actualCountry = country || state.collected.selectedCountry
+
       // REQUEST AVAILABLE GATEWAYS
       let response_gateways: GatewaysResponse
       try {
-        response_gateways = await API.gateways({ country, includeIcons: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos })
+        response_gateways = await API.gateways({ country: actualCountry, includeIcons: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos })
       } catch (error) {
         return processErrors("GATEWAYS", "API", error.message)
       }
@@ -131,7 +134,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       //save to local state
       setICONS_MAP(response_gateways.icons ?? {})
 
-    }, [addData, handleInputChange, props.defaultCrypto, props.filters, processErrors, clearErrors])
+    }, [addData, handleInputChange, props.defaultCrypto, props.filters, processErrors, clearErrors, state.collected.selectedCountry])
 
   const handleCryptoChange = useCallback(
     (crypto?: ItemType): ErrorObjectType | undefined | {} => {
@@ -273,7 +276,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // ELSE, CLEAR THE ABORT CONTROLLER AND RETURN ERROR
       let response_rate: RateResponse
       try {
-        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { amountInCrypto: state.collected.amountInCrypto, includeIcons: true }, signal)
+        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { country: state.collected.selectedCountry, amountInCrypto: state.collected.amountInCrypto, includeIcons: true }, signal)
       } catch (error) {
         if (error.name === 'AbortError')
           return {}
@@ -331,7 +334,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
       // IF NO ERRORS, RETURN UNDEFINED
       return
-    }, [addData, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod, processErrors, clearErrors])
+    }, [addData, state.collected.selectedCountry, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod, processErrors, clearErrors])
 
   useEffect(() => {
     handleCryptoChange()
@@ -354,9 +357,8 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
-      return await API.executeStep(step, data)
-    }, []
-  )
+      return await API.executeStep(step, data, { country: state.collected.selectedCountry })
+    }, [state.collected.selectedCountry])
 
   return (
     <APIContext.Provider value={{

@@ -21,12 +21,13 @@ const gateways = async (params: GatewaysParams, filter?: Filters): Promise<Gatew
     return filterGatewaysResponse(gateways, filter ?? {})
 }
 
-interface rateParams {
+interface RateParams {
+    country?: string
     amountInCrypto?: boolean
     [key: string]: any
 }
 
-const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: rateParams, signal?: AbortSignal): Promise<RateResponse> => {
+const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
     const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, { signal })
     return processResponse(gateways)
@@ -35,12 +36,20 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
 /**
  * Exectue step
  */
-const executeStep = async (step: NextStep, data: { [key: string]: any } | File): Promise<NextStep> => {
+interface ExecuteStepParams {
+    country?: string
+    amountInCrypto?: boolean
+    [key: string]: any
+}
+
+const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
     if (!step.url) throw new Error('Unexpected error: Invalid step end.')
     const method = step.type === 'file' ? 'PUT' : 'POST'
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
 
-    const nextStep = await fetch(step.url, { method, body })
+    const urlParams = createUrlParamsFromObject(params ?? {})
+
+    const nextStep = await fetch(`${step.url}?${urlParams}`, { method, body })
     console.log('response', nextStep)
     return processResponse(nextStep)
 }
