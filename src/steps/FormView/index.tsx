@@ -44,7 +44,7 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   }
 
   useEffect(() => {
-    const someEmpty = nextStepData.some((item) => !collected[item.name])
+    const someEmpty = nextStepData.some((item) => (!collected[item.name] && (item.type !== 'boolean' || item.name === 'termsOfUse')))
     setIsFilled(!someEmpty)
   }, [collected, nextStepData])
 

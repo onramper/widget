@@ -15,7 +15,7 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
 
   return (
     <div className={styles.view}>
-      <Header title="Payment confirmation" backButton />
+      <Header title="Payment review" backButton />
       <BodyConfirmPayment
         onActionButton={() => nextScreen(<IframeView nextStep={props.nextStep} />)}
         payAmount={collected.amount.toString()}
