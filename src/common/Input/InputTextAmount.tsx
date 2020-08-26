@@ -85,7 +85,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                         disabled={disabled} />
                 </span>
             </div>
-            <CSSTransition in={error !== undefined}
+            <CSSTransition in={!!error}
                 timeout={500}
                 classNames={{
                     enter: styles['collapse-enter'],

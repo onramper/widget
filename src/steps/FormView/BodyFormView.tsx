@@ -48,7 +48,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <InfoBox in={errorMsg !== undefined} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} className={`${stylesCommon['body__child']}`} >
+            <InfoBox in={!!errorMsg} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} className={`${stylesCommon['body__child']}`} >
                 {errorMsg}
             </InfoBox>
             {

@@ -23,7 +23,7 @@ const BodyPickOption: React.FC<BodyPickOptionType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <InfoBox in={infoMsg !== undefined} type='info' className={`${stylesCommon['body__child']}`} >
+            <InfoBox in={!!infoMsg} type='info' className={`${stylesCommon['body__child']}`} >
                 {infoMsg}
             </InfoBox>
             <div className={`${stylesCommon['body__child']}`}>

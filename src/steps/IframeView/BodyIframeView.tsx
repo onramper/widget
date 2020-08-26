@@ -21,10 +21,10 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <InfoBox in={textInfo !== undefined} className={`${stylesCommon['body__child']}`}>
+            <InfoBox in={!!textInfo} className={`${stylesCommon['body__child']}`}>
                 {textInfo}
             </InfoBox>
-            <InfoBox in={error !== undefined} className={`${stylesCommon['body__child']}`} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} >
+            <InfoBox in={!!error} className={`${stylesCommon['body__child']}`} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} >
                 {error}
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>

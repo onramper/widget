@@ -71,7 +71,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         <main className={stylesCommon.body}>
             {
                 generalErrors.map((errName, i) =>
-                    <InfoBox key={i} in={errors[errName] !== undefined} type='error' className={`${stylesCommon['body__child']}`}>
+                    <InfoBox key={i} in={!!errors[errName]} type='error' className={`${stylesCommon['body__child']}`}>
                         {errors[errName].message}
                         &nbsp;
                         {<button className={stylesCommon['button--link']} onClick={() => onPriceError(errName)}>Try again.</button>}

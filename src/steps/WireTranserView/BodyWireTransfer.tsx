@@ -37,7 +37,7 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
             <InfoBox className={`${stylesCommon['body__child']}`} in={!!textInfo} >
                 {textInfo}
             </InfoBox>
-            <InfoBox type='notification' className={`${stylesCommon['body__child']}`} in={copiedText !== undefined} canBeDismissed onDismissClick={() => setCopiedText(undefined)}>
+            <InfoBox type='notification' className={`${stylesCommon['body__child']}`} in={!!copiedText} canBeDismissed onDismissClick={() => setCopiedText(undefined)}>
                 {copiedText}
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>

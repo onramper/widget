@@ -51,7 +51,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                     <input name={name} value={formatValue(value, type)} onChange={(e) => handleInputChange(e)} type={type} min="0" placeholder={placeholder} disabled={disabled} />
                 </span>
             </div>
-            <CSSTransition in={error !== undefined}
+            <CSSTransition in={!!error}
                 timeout={500}
                 classNames={{
                     enter: styles['collapse-enter'],

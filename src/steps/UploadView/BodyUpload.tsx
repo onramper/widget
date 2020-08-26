@@ -53,10 +53,10 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <InfoBox in={textInfo !== undefined} className={`${stylesCommon['body__child']}`}>
+            <InfoBox in={!!textInfo} className={`${stylesCommon['body__child']}`}>
                 {textInfo}
             </InfoBox>
-            <InfoBox type='error' in={errorControlMsg !== undefined} className={`${stylesCommon['body__child']}`} canBeDismissed onDismissClick={() => setErrorControlMsg(undefined)}>
+            <InfoBox type='error' in={!!errorControlMsg} className={`${stylesCommon['body__child']}`} canBeDismissed onDismissClick={() => setErrorControlMsg(undefined)}>
                 {errorControlMsg}
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
