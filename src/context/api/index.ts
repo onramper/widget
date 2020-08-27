@@ -1,6 +1,6 @@
 import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
-import { NextStepErr, FieldError } from './types/nextStep'
+import { FieldError } from './types/nextStep'
 import { NextStep } from '../../context'
 
 const BASE_API = 'https://api.onramper.dev'
@@ -75,12 +75,19 @@ const processResponse = async (response: Response): Promise<any> => {
 }
 
 class NextStepError extends Error {
-    fields: FieldError[] = []
-    constructor(error: NextStepErr) {
+    fields?: FieldError[] = []
+    field?: string = undefined
+    constructor(error: any) {
         super("NextStep error");
+        console.log('error', error)
         this.name = "NextStepError";
         if (Array.isArray(error))
             this.fields = error
+        else if (error.field) {
+            console.log('ididiido')
+            this.field = error.field
+            this.message = error.message
+        }
         else
             this.message = error.message
     }

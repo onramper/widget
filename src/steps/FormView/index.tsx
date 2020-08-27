@@ -32,9 +32,12 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
       nextScreen(<Step {...newNextStep} />)
     } catch (error) {
       if (error instanceof NextStepError) {
-        if (error.fields)
+        console.log(error.field, error.fields, error.message)
+        if (error.field)
+          setErrorObj({ [error.field]: error.message })
+        else if (error.fields)
           setErrorObj(error.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
-        if (error.message)
+        else
           setErrorMsg(error.message)
       }
       console.log(error)
