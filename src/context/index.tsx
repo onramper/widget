@@ -9,7 +9,7 @@ import LogoOnramper from '../icons/logo.svg'
 
 import * as API from './api'
 import { ItemType, ItemCategory, GatewayRateOption } from './initialState';
-import { IconGatewaysResponse, GatewaysResponse } from './api/types/gateways'
+import { GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
 import { NextStep } from './api/types/nextStep';
 
@@ -40,7 +40,6 @@ const APIProvider: React.FC<APIProvider> = (props) => {
     }
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
-  const [ICONS_MAP, setICONS_MAP] = useState<{ [key: string]: IconGatewaysResponse }>({});
   const [lastCall, setLastCall] = useState<AbortController>();
 
   /* DEFINING INPUT INTERFACES */
@@ -87,7 +86,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // REQUEST AVAILABLE GATEWAYS
       let response_gateways: GatewaysResponse
       try {
-        response_gateways = await API.gateways({ country: actualCountry, includeIcons: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos })
+        response_gateways = await API.gateways({ country: actualCountry, includeIcons: true, includeDefaultAmounts: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos })
       } catch (error) {
         return processErrors("GATEWAYS", "API", error.message)
       }
@@ -131,8 +130,6 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         ICONS_MAP,
         response_gateways
       })
-      //save to local state
-      setICONS_MAP(response_gateways.icons ?? {})
 
     }, [addData, handleInputChange, props.defaultCrypto, props.filters, processErrors, clearErrors, state.collected.selectedCountry])
 
@@ -161,6 +158,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       availableCurrencies = arrayObjUnique(availableCurrencies, 'code')
 
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
+      const ICONS_MAP = state.data.response_gateways.icons || {}
       const mappedAvailableCurrencies: ItemType[] = availableCurrencies.map((currency) => ({
         id: currency.code,
         name: currency.code,
@@ -176,7 +174,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.date
       addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.response_gateways, state.data.availableCryptos, addData, ICONS_MAP, handleInputChange, state.collected.selectedCrypto],
+    }, [state.data.response_gateways, state.data.availableCryptos, addData, handleInputChange, state.collected.selectedCrypto],
   )
 
   const handleCurrencyChange = useCallback(
@@ -197,6 +195,9 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         || state.data.availableCurrencies.find((currency) => currency.id === response_gateways.localization.currency)
         || state.data.availableCurrencies[0]
 
+      const DEFAULT_AMOUNTS_MAP = response_gateways.defaultAmounts ?? {}
+      handleInputChange('amount', DEFAULT_AMOUNTS_MAP[actualCurrency.id])
+
       // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) => item.fiatCurrencies.some((currency) => currency.code === actualCurrency.id))
 
@@ -209,6 +210,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       availablePaymentMethods = arrayUnique(availablePaymentMethods)
 
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
+      const ICONS_MAP = response_gateways.icons || {}
       const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map((item, i) => ({
         id: item,
         name: ICONS_MAP[item]?.name || item,
@@ -223,7 +225,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.date
       addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
-    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, ICONS_MAP, state.data.response_gateways, state.collected.selectedCurrency],
+    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.response_gateways, state.collected.selectedCurrency],
   )
 
   const handlePaymentMethodChange = useCallback(

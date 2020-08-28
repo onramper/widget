@@ -12,6 +12,9 @@ interface GatewaysResponse {
     icons?: {
         [key: string]: IconGatewaysResponse
     }
+    defaultAmounts?: {
+        [key: string]: number
+    }
 }
 
 interface Currency {

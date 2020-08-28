@@ -11,6 +11,7 @@ const BASE_API = 'https://api.onramper.dev'
 interface GatewaysParams {
     country?: string
     includeIcons?: boolean
+    includeDefaultAmounts?: boolean
     [key: string]: any
 }
 
