@@ -10,6 +10,31 @@ import { NextStep, NextStepError, } from '../../context'
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
+const processError = (error: NextStepError, nextStepData: NextStep['data']) => {
+  let newErr = new NextStepError('NextStep error')
+  if (error.fields) {
+    newErr.message = error.fields.filter((err) => !nextStepData?.find(data => data.name === err.field))[0]?.message + '  Go back and fix it.'
+    if (!newErr.message)
+      newErr.fields = error.fields
+  }
+  else if (error.field) {
+    console.log('process', nextStepData?.find(data => (data.name === error.field)))
+    if (nextStepData?.find(data => (data.name === error.field))) {
+      newErr = error
+      console.log('error.field', newErr.field, newErr.fields, newErr.message)
+    }
+    else {
+      newErr.message = `${error.message} Go back and fix it.`
+      console.log(' else error.field', newErr.field, newErr.fields, newErr.message)
+    }
+  }
+  else if (error.message)
+    newErr.message = error.message
+
+  console.log(' else error.field', newErr.field, newErr.fields, newErr.message)
+  return newErr
+}
+
 const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
   const { inputInterface, collected, apiInterface } = useContext(APIContext);
@@ -32,13 +57,14 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
       nextScreen(<Step {...newNextStep} />)
     } catch (error) {
       if (error instanceof NextStepError) {
-        console.log(error.field, error.fields, error.message)
-        if (error.field)
-          setErrorObj({ [error.field]: error.message })
-        else if (error.fields)
-          setErrorObj(error.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
+        const processedError = processError(error, nextStepData)
+        console.log(processedError.field, processedError.fields, processedError.message)
+        if (processedError.field)
+          setErrorObj({ [processedError.field]: processedError.message })
+        else if (processedError.fields)
+          setErrorObj(processedError.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
         else
-          setErrorMsg(error.message)
+          setErrorMsg(processedError.message)
       }
       console.log(error)
     }

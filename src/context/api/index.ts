@@ -76,7 +76,7 @@ const processResponse = async (response: Response): Promise<any> => {
 }
 
 class NextStepError extends Error {
-    fields?: FieldError[] = []
+    fields?: FieldError[] = undefined
     field?: string = undefined
     constructor(error: any) {
         super("NextStep error");
