@@ -17,7 +17,6 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
 
   useEffect(() => {
     const receiveMessage = (event: MessageEvent) => {
-      console.log(event)
       if (event.origin !== "https://sandbox.onramper.dev")
         return;
       if (event.data.type)

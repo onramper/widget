@@ -51,7 +51,6 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
     const urlParams = createUrlParamsFromObject(params ?? {})
 
     const nextStep = await fetch(`${step.url}?${urlParams}`, { method, body })
-    console.log('response', nextStep)
     return processResponse(nextStep)
 }
 
@@ -80,12 +79,10 @@ class NextStepError extends Error {
     field?: string = undefined
     constructor(error: any) {
         super("NextStep error");
-        console.log('error', error)
         this.name = "NextStepError";
         if (Array.isArray(error))
             this.fields = error
         else if (error.field) {
-            console.log('ididiido')
             this.field = error.field
             this.message = error.message
         }

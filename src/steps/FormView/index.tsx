@@ -18,20 +18,14 @@ const processError = (error: NextStepError, nextStepData: NextStep['data']) => {
       newErr.fields = error.fields
   }
   else if (error.field) {
-    console.log('process', nextStepData?.find(data => (data.name === error.field)))
-    if (nextStepData?.find(data => (data.name === error.field))) {
+    if (nextStepData?.find(data => (data.name === error.field)))
       newErr = error
-      console.log('error.field', newErr.field, newErr.fields, newErr.message)
-    }
-    else {
+    else
       newErr.message = `${error.message} Go back and fix it.`
-      console.log(' else error.field', newErr.field, newErr.fields, newErr.message)
-    }
   }
   else if (error.message)
     newErr.message = error.message
 
-  console.log(' else error.field', newErr.field, newErr.fields, newErr.message)
   return newErr
 }
 
@@ -58,7 +52,6 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
     } catch (error) {
       if (error instanceof NextStepError) {
         const processedError = processError(error, nextStepData)
-        console.log(processedError.field, processedError.fields, processedError.message)
         if (processedError.field)
           setErrorObj({ [processedError.field]: processedError.message })
         else if (processedError.fields)
@@ -66,7 +59,6 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
         else
           setErrorMsg(processedError.message)
       }
-      console.log(error)
     }
 
     setIsLoading(false)

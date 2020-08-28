@@ -37,7 +37,6 @@ const InputText: React.FC<InputTextType> = (props) => {
                 const year = ("0000" + value.year).slice(-4);
                 const month = ("00" + value.month).slice(-2);
                 const day = ("00" + value.day).slice(-2);
-                console.log(`${year}-${month}-${day}`)
                 return `${year}-${month}-${day}`
             }
         return value

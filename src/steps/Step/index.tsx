@@ -9,7 +9,7 @@ const StepView: React.FC<NextStep> = (props) => {
 
   return (
     <div className={styles.view}>
-      <Header title="Purchase step" backButton />
+      <Header title="" backButton />
       <StepViewContent {...props} />
       <Footer />
     </div>
