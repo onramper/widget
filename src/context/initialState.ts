@@ -77,7 +77,7 @@ export type ApiInterfaceType = {
 
 export const initialState: StateType = {
     collected: {
-        amount: 101,
+        amount: 100,
         amountInCrypto: false,
         isCalculatingAmount: true,
         selectedCrypto: undefined,
