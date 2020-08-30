@@ -13,11 +13,11 @@ interface BodyIframeViewType {
 
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const { textInfo, type, error } = props
-    const [autoRedirect, setAutoRedirect] = useState(type === 'redirect')
+    const [autoRedirect, setAutoRedirect] = useState(true)
 
     const redirect = useCallback(() => {
         //try to open popup
-        let windowObjectReference = window.open(props.src, '_blank', 'location=yes,height=595,width=440,scrollbars=yes,status=yes')//add configF
+        let windowObjectReference = window.open(props.src, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
         //if opened -> all is ok
         if (windowObjectReference) return true
         //if not opened -> warn user about popup blocked + ask user for click a button
@@ -43,8 +43,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 {
-                    ((autoRedirect) && <span>Loading...</span>)
-                    || ((!autoRedirect) && <button onClick={redirect} >Redirect</button>)
+                    ((type === 'redirect' && autoRedirect) && <span>Loading...</span>)
+                    || ((type === 'redirect' && !autoRedirect) && <button onClick={redirect} >Redirect</button>)
                     || <iframe
                         title='Sandbox'
                         src={props.src}
