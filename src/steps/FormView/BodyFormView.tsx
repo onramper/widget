@@ -69,6 +69,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                             }.</label>
                     ))
+                    || (field.type === 'boolean' && (
+                        <label key={i} className={`${stylesCommon['body__child']} ${stylesCommon['push-bottom']} ${styles['terms']}`}>
+                            <input type="checkbox" checked={collected[field.name]} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;{field.humanName}</label>
+                    ))
                     || <InputText error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type === 'integer' ? 'number' : field.type} />
                 )
             }
