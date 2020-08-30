@@ -14,10 +14,11 @@ type InputCryptoAddrType = {
     handleInputChange: (name: string, value: any) => void
     error?: string
     className: string
+    type?: string
 }
 
 const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
-    const { handleInputChange, error } = props
+    const { handleInputChange, error, type } = props
     const { collected } = useContext(APIContext)
     const [selectedAddress, setSelectedAddress] = useState('')
     const { nextScreen, backScreen } = useContext(NavContext);
@@ -43,6 +44,7 @@ const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
 
     return (
         <InputText
+            type={type}
             error={error}
             value={selectedAddress}
             icon={items.length > 0 ? IconChevronRight : undefined}

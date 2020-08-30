@@ -54,7 +54,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             {
                 fields.map((field, i) =>
                     (field.name === 'cryptocurrencyAddress' && (
-                        <InputCryptoAddr key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
+                        <InputCryptoAddr type={field.type} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
                     ))
                     || (field.type === 'string' && field.name === 'verifyEmailCode' && (
                         <>
