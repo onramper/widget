@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import stylesCommon from '../../styles.module.css'
 
 import InfoBox from '../../common/InfoBox'
@@ -13,11 +13,25 @@ interface BodyIframeViewType {
 
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const { textInfo, type, error } = props
+    const [autoRedirect, setAutoRedirect] = useState(type === 'redirect')
+
+    const redirect = useCallback(() => {
+        //try to open popup
+        let windowObjectReference = window.open(props.src, '_blank', 'location=yes,height=595,width=440,scrollbars=yes,status=yes')//add configF
+        //if opened -> all is ok
+        if (windowObjectReference) return true
+        //if not opened -> warn user about popup blocked + ask user for click a button
+        console.log('not opened:(')
+        return false
+    }, [props.src])
 
     useEffect(() => {
         if (type === 'redirect')
-            window.open(props.src, '_blank', 'location=yes,height=595,width=440,scrollbars=yes,status=yes')
-    }, [props.src, type])
+            if (!redirect())
+                setAutoRedirect(false)
+
+
+    }, [props.src, type, redirect])
 
     return (
         <main className={stylesCommon.body}>
@@ -29,16 +43,17 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             </InfoBox>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                 {
-                    (type === 'redirect') ? <span>Loading...</span>
-                        : <iframe
-                            title='Sandbox'
-                            src={props.src}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                borderStyle: 'none'
-                            }}
-                        />
+                    ((autoRedirect) && <span>Loading...</span>)
+                    || ((!autoRedirect) && <button onClick={redirect} >Redirect</button>)
+                    || <iframe
+                        title='Sandbox'
+                        src={props.src}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            borderStyle: 'none'
+                        }}
+                    />
                 }
             </div>
         </main>
