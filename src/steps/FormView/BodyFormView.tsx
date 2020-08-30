@@ -56,9 +56,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     (field.name === 'cryptocurrencyAddress' && (
                         <InputCryptoAddr type={field.type} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
                     ))
-                    || (field.type === 'string' && field.name === 'verifyEmailCode' && (
+                    || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
                         <>
-                            <InputText name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} />
+                            <InputText name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={field.type === 'integer' ? 'number' : field.type} />
                             <span onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
                         </>
                     ))
