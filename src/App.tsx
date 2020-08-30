@@ -1,4 +1,4 @@
-import React/* , { useState } */ from 'react';
+import React from 'react';
 import BuyCryptoView from './BuyCryptoView'
 import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './wrappers/context';
@@ -19,10 +19,8 @@ const excludeCryptos = getParam('excludeCryptos', undefined)?.split(',').map(cod
 const filters = { onlyCryptos, excludeCryptos }
 
 function App() {
-/*   const [color, setColor] = useState(defaultColor) */
   return (
     <>
-      {/* <input type="color" value={color} onChange={(e) => setColor(e.target.value)} /> */}
       <div style={{ display: 'flex', height: '100%' }}>
         <div className={`${styles['views-container']}`}>
           <OnramperWidget color={defaultColor} defaultAddrs={addresses} defaultAmount={defaultAmount} defaultCrypto={defaultCrypto} filters={filters} />
