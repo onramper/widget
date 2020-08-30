@@ -69,7 +69,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                             }.</label>
                     ))
-                    || <InputText error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type} />
+                    || <InputText error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type === 'integer' ? 'number' : field.type} />
                 )
             }
             <div className={`${stylesCommon['body__child']} ${push2Bottom ? '' : stylesCommon['grow']}`}>
