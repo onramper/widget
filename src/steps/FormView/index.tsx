@@ -42,6 +42,7 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const handleButtonAction = async () => {
     setIsLoading(true)
     setErrorObj(undefined)
+    setErrorMsg(undefined)
 
     let params = nextStepData.reduce((acc, current) => {
       return { ...acc, [current.name]: collected[current.name] }
