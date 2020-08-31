@@ -1,11 +1,12 @@
-.resend {
-    align-self: flex-end;
-    font-size: 0.75rem;
-    margin-top: 0.56rem;
-    text-transform: uppercase;
-    color: #808080;
+.center {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    text-align: center;
 }
 
-.resend:hover {
+button {
     cursor: pointer;
+    padding: 0.5rem;
 }
