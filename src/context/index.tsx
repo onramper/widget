@@ -15,6 +15,7 @@ import { NextStep } from './api/types/nextStep';
 
 import { NextStepError } from './api'
 
+const BASE_DEFAULT_AMOUNT_IN_USD = 100
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -196,7 +197,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         || state.data.availableCurrencies[0]
 
       const DEFAULT_AMOUNTS_MAP = response_gateways.defaultAmounts ?? {}
-      handleInputChange('amount', DEFAULT_AMOUNTS_MAP[actualCurrency.id])
+      handleInputChange('amount', DEFAULT_AMOUNTS_MAP[actualCurrency.id] * defaultAmount / BASE_DEFAULT_AMOUNT_IN_USD)
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) => item.fiatCurrencies.some((currency) => currency.code === actualCurrency.id))
@@ -225,7 +226,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.date
       addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
-    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.response_gateways, state.collected.selectedCurrency],
+    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.response_gateways, state.collected.selectedCurrency, defaultAmount],
   )
 
   const handlePaymentMethodChange = useCallback(
