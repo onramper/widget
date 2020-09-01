@@ -5,12 +5,12 @@ import styles from './styles.module.css'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
-import { NextStep } from '../../context'
+import { FileStep } from '../../context'
 
 type BodyPickOptionType = {
     onActionButton: () => void
     handleOptionChange: (i: number) => void
-    steps?: NextStep['options']
+    steps?: FileStep[]
     isFilled?: boolean
     isLoading?: boolean
     infoMsg?: string

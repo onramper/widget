@@ -7,14 +7,14 @@ import InfoBox from '../../common/InfoBox'
 
 import IconCopy from '../../icons/copyicon.svg'
 
-import { NextStep } from '../../context'
+import { InfoDepositBankAccount } from '../../context'
 
 type BodyWireTransferType = {
     onActionButton?: () => void,
     onIconClick?: (id: string) => void,
     amount: string
     symbol: string
-    bankDetails: NextStep['depositBankAccount']
+    bankDetails: InfoDepositBankAccount
     textInfo?: string
     reference: string
 }

@@ -18,7 +18,7 @@ const WalletAddressView: React.FC = () => {
   const handleButtonAction = () => {
     if (!collected.cryptocurrencyAddress) return
     if (collected.selectedGateway?.nextStep)
-      nextScreen(<Step {...collected.selectedGateway?.nextStep} />)
+      nextScreen(<Step step={collected.selectedGateway.nextStep} />)
   }
 
   useEffect(() => {

@@ -6,8 +6,6 @@ import ErrorVisual from '../../common/ErrorVisual'
 import ConfirmPaymentView from '../ConfirmPaymentView'
 import UploadView from '../UploadView'
 import PickOptionView from '../PickOptionView'
-import VerifyCodeView from '../VerifyCodeView'
-import EmailView from '../EmailView'
 import FormView from '../FormView'
 import SuccessView from '../SuccessView'
 import IframeView from '../IframeView'
@@ -17,24 +15,14 @@ import { NavContext } from '../../wrappers/context'
 
 import { NextStep } from '../../context'
 
-const StepViewContent: React.FC<NextStep> = (nextStep) => {
+const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }> = ({ nextStep, needsConfirm = false }) => {
     const { replaceScreen, backScreen/* , onlyScreen */ } = useContext(NavContext);
     const [isProcessingStep, setIsProcessingStep] = useState(true)
 
     useEffect(() => {
-        const nextStepData = nextStep.data || []
+        if (!nextStep) return
         switch (nextStep.type) {
             case 'form':
-                if (nextStepData.length === 1) {
-                    if (nextStepData[0].name === 'email') {
-                        replaceScreen(<EmailView nextStep={nextStep} />)
-                        break;
-                    }
-                    else if (nextStepData[0].name === 'verifyEmailCode') {
-                        replaceScreen(<VerifyCodeView nextStep={nextStep} codeType='email' name='email' />)
-                        break;
-                    }
-                }
                 replaceScreen(<FormView nextStep={nextStep} />)
                 break;
             case 'file':
@@ -50,20 +38,22 @@ const StepViewContent: React.FC<NextStep> = (nextStep) => {
                 replaceScreen(<SuccessView txType='instant' />)//onlyScreen(<SuccessView txType='instant' />)
                 break;
             case 'iframe':
+                if (needsConfirm)
+                    replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
+                else
+                    replaceScreen(<IframeView nextStep={nextStep} />)
+                break;
             case 'requestBankTransaction':
-                replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
-                break;
-            case 'iframe-after_review':
-                replaceScreen(<IframeView nextStep={nextStep} />)
-                break;
-            case 'requestBankTransaction-after_review':
-                replaceScreen(<WireTranserView nextStep={nextStep} />)//onlyScreen(<WireTranserView nextStep={nextStep} />)
+                if (needsConfirm)
+                    replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
+                else
+                    replaceScreen(<WireTranserView nextStep={nextStep} />)//onlyScreen(<WireTranserView nextStep={nextStep} />)
                 break;
             default:
                 break;
         }
         setIsProcessingStep(false)
-    }, [nextStep, replaceScreen, backScreen])
+    }, [nextStep, replaceScreen, backScreen, needsConfirm])
 
     return (
         <main className={stylesCommon.body}>

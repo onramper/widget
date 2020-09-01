@@ -32,7 +32,7 @@ const ChooseGatewayView = () => {
   return (
     <div className={styles.view}>
       <Header title="Choose gateway" backButton />
-      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} ratesList={data.allRates} onActionButton={() => nextScreen(<Step {...availableRates[selectedGatewayIndex].nextStep ?? { type: 'none' }} />)} />
+      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} ratesList={data.allRates} onActionButton={() => nextScreen(<Step step={availableRates[selectedGatewayIndex].nextStep!} />)} />
       <Footer />
     </div>
   );

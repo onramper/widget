@@ -9,7 +9,7 @@ import { NextStep } from '../../context'
 
 import { NavContext } from '../../wrappers/context'
 
-const PickOptionView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
+const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
   const [isFilled, setIsFilled] = useState(false)
 
@@ -19,7 +19,7 @@ const PickOptionView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   const infoMsg = 'Choose one option'
 
   const handleButtonAction = async () => {
-    nextScreen(<Step {...selectedOption} />)
+    nextScreen(<Step step={selectedOption} />)
   }
 
   const handleOptionChange = (i: number) => {

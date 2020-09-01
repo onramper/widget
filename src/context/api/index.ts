@@ -44,7 +44,9 @@ interface ExecuteStepParams {
 }
 
 const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
-    if (!step.url) throw new Error('Unexpected error: Invalid step end.')
+
+    if (step.type !== 'form' && step.type !== 'file') throw new Error('Unexpected error: Invalid step end.')
+
     const method = step.type === 'file' ? 'PUT' : 'POST'
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
 

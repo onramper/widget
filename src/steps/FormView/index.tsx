@@ -5,12 +5,12 @@ import BodyForm from './BodyFormView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
 
-import { NextStep, NextStepError, } from '../../context'
+import { NextStep, NextStepError, StepDataItems } from '../../context'
 
 import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
-const processError = (error: NextStepError, nextStepData: NextStep['data']) => {
+const processError = (error: NextStepError, nextStepData: StepDataItems) => {
   let newErr = new NextStepError('NextStep error')
   if (error.fields) {
     newErr.message = error.fields.filter((err) => !nextStepData?.find(data => data.name === err.field))[0]?.message + '  Go back and fix it.'
@@ -29,7 +29,7 @@ const processError = (error: NextStepError, nextStepData: NextStep['data']) => {
   return newErr
 }
 
-const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
+const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
   const { inputInterface, collected, apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
@@ -49,7 +49,7 @@ const FormView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
     }, {})
     try {
       const newNextStep = await apiInterface.executeStep(nextStep, params);
-      nextScreen(<Step {...newNextStep} />)
+      nextScreen(<Step step={newNextStep} />)
     } catch (error) {
       if (error instanceof NextStepError) {
         const processedError = processError(error, nextStepData)

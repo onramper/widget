@@ -12,7 +12,7 @@ import { NavContext } from '../../wrappers/context'
 import { APIContext } from '../../context'
 
 
-const CreditCardView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
+const WireTransferView: React.FC<{ nextStep: NextStep & { type: 'requestBankTransaction' } }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
   const { collected } = useContext(APIContext);
 
@@ -37,4 +37,4 @@ const CreditCardView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
   );
 };
 
-export default CreditCardView;
+export default WireTransferView;

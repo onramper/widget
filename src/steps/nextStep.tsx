@@ -1,7 +1,5 @@
 import React from 'react';
 
-import EmailView from './EmailView'
-import VerifyCodeView from './VerifyCodeView'
 
 const nextStep = (nextScreen: any, step: { url?: string, data?: string[] }) => {
 

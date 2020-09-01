@@ -11,7 +11,7 @@ import * as API from './api'
 import { ItemType, ItemCategory, GatewayRateOption } from './initialState';
 import { GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
-import { NextStep } from './api/types/nextStep';
+import { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from './api/types/nextStep';
 
 import { NextStepError } from './api'
 
@@ -390,5 +390,8 @@ export { ItemCategory, NextStepError }
 export type {
   ItemType,
   GatewayRateOption,
-  NextStep
+  NextStep,
+  StepDataItems,
+  FileStep,
+  InfoDepositBankAccount
 }

@@ -7,13 +7,13 @@ import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
-import { APIContext, NextStep } from '../../context'
+import { APIContext, StepDataItems } from '../../context'
 import { NavContext } from '../../wrappers/context'
 
 type BodyFormViewType = {
     onActionButton: () => void
     handleInputChange: (name: string, value: any) => void
-    fields: NonNullable<NextStep['data'][]>[0]
+    fields: StepDataItems
     isFilled?: boolean
     isLoading?: boolean
     errorObj?: { [key: string]: string }
@@ -69,11 +69,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                             }.</label>
                     ))
-                    || (field.type === 'boolean' && (
-                        <label key={i} className={`${stylesCommon['body__child']} ${stylesCommon['push-bottom']} ${styles['terms']}`}>
-                            <input type="checkbox" checked={collected[field.name]} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;{field.humanName}</label>
+                    || ((field.type !== 'boolean') && (
+                        <InputText error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type === 'integer' ? 'number' : field.type} />
                     ))
-                    || <InputText error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type === 'integer' ? 'number' : field.type} />
                 )
             }
             <div className={`${stylesCommon['body__child']} ${push2Bottom ? '' : stylesCommon['grow']}`}>

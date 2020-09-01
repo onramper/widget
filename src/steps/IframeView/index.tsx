@@ -10,7 +10,7 @@ import { NextStep } from '../../context'
 
 import { NavContext } from '../../wrappers/context'
 
-const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
+const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" } }> = ({ nextStep }) => {
   const { replaceScreen } = useContext(NavContext);
   const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
   const [error, setError] = useState<string>()
@@ -20,7 +20,7 @@ const IframeView: React.FC<{ nextStep: NextStep }> = ({ nextStep }) => {
       if (event.origin !== "https://sandbox.onramper.dev")
         return;
       if (event.data.type)
-        replaceScreen(<Step {...(event.data as NextStep)} />)
+        replaceScreen(<Step step={(event.data as NextStep)} />)
       else if (typeof event.data === 'string')
         setError(event.data)
       else

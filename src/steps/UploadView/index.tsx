@@ -10,9 +10,9 @@ import { APIContext } from '../../context'
 import { NextStep } from '../../context/api/types/nextStep'
 import Step from '../Step'
 
-const UploadView: React.FC<{ nextStep: NextStep }> = (props) => {
+const UploadView: React.FC<{ nextStep: NextStep & { type: 'file' } }> = (props) => {
   const { nextScreen } = useContext(NavContext);
-  const textInfo = `Attach your ${props.nextStep.humanName ?? props.nextStep.data?.[0].name} here so we can verify your identity.`
+  const textInfo = `Attach your ${props.nextStep.humanName} here so we can verify your identity.`
 
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
@@ -24,7 +24,7 @@ const UploadView: React.FC<{ nextStep: NextStep }> = (props) => {
 
     try {
       const newNextStep = await apiInterface.executeStep(props.nextStep, file);
-      nextScreen(<Step {...newNextStep} />)
+      nextScreen(<Step step={newNextStep} />)
     } catch (error) {
       setErrorMsg(error.message)
     }
