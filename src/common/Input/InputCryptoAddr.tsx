@@ -6,9 +6,9 @@ import InputText from '../../common/Input/InputText'
 
 import IconChevronRight from '../../icons/chevron_right.svg'
 
-import { APIContext } from '../../context'
-import { NavContext } from '../../wrappers/context'
-import { ItemType } from '../../context'
+import { APIContext } from '../../ApiContext'
+import { NavContext } from '../../NavContext'
+import { ItemType } from '../../ApiContext'
 
 type InputCryptoAddrType = {
     handleInputChange: (name: string, value: any) => void

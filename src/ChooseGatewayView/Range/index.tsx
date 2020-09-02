@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.module.css'
-import { toMaxDecimalsFloor } from '../../wrappers/utils'
+import { toMaxDecimalsFloor } from '../../utils'
 
 const LEVEL_COLORS_CLASS = {
     LOW: styles['color--low'],

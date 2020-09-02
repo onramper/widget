@@ -7,8 +7,8 @@ import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
-import { APIContext, StepDataItems } from '../../context'
-import { NavContext } from '../../wrappers/context'
+import { APIContext, StepDataItems } from '../../ApiContext'
+import { NavContext } from '../../NavContext'
 
 type BodyFormViewType = {
     onActionButton: () => void

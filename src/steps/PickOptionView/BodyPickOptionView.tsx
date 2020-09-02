@@ -5,7 +5,7 @@ import styles from './styles.module.css'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
-import { FileStep } from '../../context'
+import { FileStep } from '../../ApiContext'
 
 type BodyPickOptionType = {
     onActionButton: () => void

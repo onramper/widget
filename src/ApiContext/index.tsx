@@ -3,7 +3,7 @@ import React, { createContext, useReducer, useCallback, useEffect, useState } fr
 import { StateType, initialState, ErrorObjectType } from './initialState'
 import { mainReducer, CollectedActionsType, DataActionsType } from './reducers'
 
-import { arrayUnique, arrayObjUnique } from '../wrappers/utils'
+import { arrayUnique, arrayObjUnique } from '../utils'
 
 import LogoOnramper from '../icons/logo.svg'
 

@@ -1,9 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import styles from './styles.module.css'
 
-import { toMaxDecimalsRound } from '../../wrappers/utils'
+import { toMaxDecimalsRound } from '../../utils'
 
-import { ItemType } from '../../context';
+import { ItemType } from '../../ApiContext';
 
 import { CSSTransition } from 'react-transition-group';
 

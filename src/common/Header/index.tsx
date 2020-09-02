@@ -5,7 +5,7 @@ import IconMenu from '../../icons/burger_menu.svg'
 import IconLeftArrow from '../../icons/left_arrow.svg'
 import IconClose from '../../icons/nav_close.svg'
 
-import { NavContext } from '../../wrappers/context'
+import { NavContext } from '../../NavContext'
 import Menu from './Menu'
 
 type HeaderType = {

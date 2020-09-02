@@ -5,9 +5,9 @@ import IconDetailTxTime from '../icons/txtimeicon.svg'
 
 import { CSSTransition } from 'react-transition-group';
 
-import { GatewayRateOption } from '../context'
+import { GatewayRateOption } from '../ApiContext'
 
-import { APIContext } from '../context'
+import { APIContext } from '../ApiContext'
 
 
 const transitionPropsCollapse = {

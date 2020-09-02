@@ -5,9 +5,9 @@ import BodyConfirmPayment from './BodyConfirmPayment'
 import styles from '../../styles.module.css'
 import Step from '../Step'
 
-import { NavContext } from '../../wrappers/context'
-import { APIContext } from '../../context'
-import { NextStep } from '../../context';
+import { NavContext } from '../../NavContext'
+import { APIContext } from '../../ApiContext'
+import { NextStep } from '../../ApiContext';
 
 const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
   const { nextScreen } = useContext(NavContext);

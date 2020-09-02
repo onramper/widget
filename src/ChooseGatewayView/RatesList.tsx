@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styles from './styles.module.css'
 import GatewayOption from './GatewayOption'
-import { GatewayRateOption } from '../context'
+import { GatewayRateOption } from '../ApiContext'
 
 interface RatesListProps {
     availableRates: GatewayRateOption[],

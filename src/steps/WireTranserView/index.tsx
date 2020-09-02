@@ -5,11 +5,11 @@ import BodyWireTransfer from './BodyWireTransfer'
 import styles from '../../styles.module.css'
 
 import SuccessView from '../SuccessView'
-import { NextStep } from '../../context'
+import { NextStep } from '../../ApiContext'
 
 import { copyToClipBoard } from './utils'
-import { NavContext } from '../../wrappers/context'
-import { APIContext } from '../../context'
+import { NavContext } from '../../NavContext'
+import { APIContext } from '../../ApiContext'
 
 
 const WireTransferView: React.FC<{ nextStep: NextStep & { type: 'requestBankTransaction' } }> = ({ nextStep }) => {

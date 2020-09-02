@@ -5,10 +5,10 @@ import BodyForm from './BodyFormView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
 
-import { NextStep, NextStepError, StepDataItems } from '../../context'
+import { NextStep, NextStepError, StepDataItems } from '../../ApiContext'
 
-import { NavContext } from '../../wrappers/context'
-import { APIContext } from '../../context'
+import { NavContext } from '../../NavContext'
+import { APIContext } from '../../ApiContext'
 
 const processError = (error: NextStepError, nextStepData: StepDataItems) => {
   let newErr = new NextStepError('NextStep error')

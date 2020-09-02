@@ -7,7 +7,7 @@ import InfoBox from '../../common/InfoBox'
 
 import IconCopy from '../../icons/copyicon.svg'
 
-import { InfoDepositBankAccount } from '../../context'
+import { InfoDepositBankAccount } from '../../ApiContext'
 
 type BodyWireTransferType = {
     onActionButton?: () => void,

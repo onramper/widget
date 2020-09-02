@@ -5,9 +5,9 @@ import BodyPickOption from './BodyPickOptionView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
 
-import { NextStep } from '../../context'
+import { NextStep } from '../../ApiContext'
 
-import { NavContext } from '../../wrappers/context'
+import { NavContext } from '../../NavContext'
 
 const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);

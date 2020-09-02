@@ -4,7 +4,7 @@ import Footer from '../../Footer'
 import List from '../../List'
 import styles from '../../../styles.module.css'
 
-import { NavContext } from '../../../wrappers/context'
+import { NavContext } from '../../../NavContext'
 
 
 const Menu: React.FC = () => {

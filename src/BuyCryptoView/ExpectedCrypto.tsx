@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react'
 import styles from './styles.module.css'
 
-import { APIContext } from '../context'
+import { APIContext } from '../ApiContext'
 
 type ExpectedCryptoType = {
     denom: string,

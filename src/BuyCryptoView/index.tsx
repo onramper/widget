@@ -6,8 +6,8 @@ import styles from '../styles.module.css'
 import PickView from '../PickView'
 import ChooseGatewayView from '../ChooseGatewayView'
 
-import { NavContext } from '../wrappers/context'
-import { APIContext, ItemType } from '../context'
+import { NavContext } from '../NavContext'
+import { APIContext, ItemType } from '../ApiContext'
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)

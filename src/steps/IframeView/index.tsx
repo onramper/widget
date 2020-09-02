@@ -6,9 +6,9 @@ import styles from '../../styles.module.css'
 
 import Step from '../Step'
 
-import { NextStep } from '../../context'
+import { NextStep } from '../../ApiContext'
 
-import { NavContext } from '../../wrappers/context'
+import { NavContext } from '../../NavContext'
 
 const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" } }> = ({ nextStep }) => {
   const { replaceScreen } = useContext(NavContext);

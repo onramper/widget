@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
-import { NavContext } from '../../wrappers/context'
+import { NavContext } from '../../NavContext'
 import BuyCryptoView from '../../BuyCryptoView'
 
 import TICK_GREEN from '../../icons/txsuccessful.jpg'

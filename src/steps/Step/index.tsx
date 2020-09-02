@@ -3,7 +3,7 @@ import StepViewContent from './StepViewContent'
 import styles from '../../styles.module.css'
 import Header from '../../common/Header'
 import Footer from '../../common/Footer'
-import { NextStep } from '../../context'
+import { NextStep } from '../../ApiContext'
 
 const StepView: React.FC<{ nextStep: NextStep, needsConfirm?: boolean }> = (props) => {
 

@@ -3,7 +3,7 @@ import stylesCommon from '../styles.module.css'
 
 import ButtonAction from '../common/ButtonAction'
 
-import { GatewayRateOption } from '../context'
+import { GatewayRateOption } from '../ApiContext'
 import InfoBox from '../common/InfoBox'
 import ErrorVisual from '../common/ErrorVisual'
 import RatesList from './RatesList'

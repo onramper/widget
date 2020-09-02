@@ -11,9 +11,9 @@ import SuccessView from '../SuccessView'
 import IframeView from '../IframeView'
 import WireTranserView from '../WireTranserView'
 
-import { NavContext } from '../../wrappers/context'
+import { NavContext } from '../../NavContext'
 
-import { NextStep } from '../../context'
+import { NextStep } from '../../ApiContext'
 
 const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }> = ({ nextStep, needsConfirm = false }) => {
     const { replaceScreen, backScreen/* , onlyScreen */ } = useContext(NavContext);

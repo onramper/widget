@@ -1,7 +1,7 @@
 import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
-import { NextStep } from '../../context'
+import { NextStep } from '..'
 
 const BASE_API = 'https://api.onramper.dev'
 

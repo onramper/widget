@@ -4,7 +4,7 @@ import Footer from '../common/Footer'
 import List from '../common/List'
 import styles from '../styles.module.css'
 
-import { ItemType } from '../context'
+import { ItemType } from '../ApiContext'
 
 interface PickViewProps {
   title: string,

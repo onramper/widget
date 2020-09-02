@@ -4,10 +4,10 @@ import Footer from '../../common/Footer'
 import BodyUpload from './BodyUpload'
 import styles from '../../styles.module.css'
 
-import { NavContext } from '../../wrappers/context'
-import { APIContext } from '../../context'
+import { NavContext } from '../../NavContext'
+import { APIContext } from '../../ApiContext'
 
-import { NextStep } from '../../context/api/types/nextStep'
+import { NextStep } from '../../ApiContext/api/types/nextStep'
 import Step from '../Step'
 
 const UploadView: React.FC<{ nextStep: NextStep & { type: 'file' } }> = (props) => {
