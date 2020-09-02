@@ -20,7 +20,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
       if (event.origin !== "https://sandbox.onramper.dev")
         return;
       if (event.data.type)
-        replaceScreen(<Step step={(event.data as NextStep)} />)
+        replaceScreen(<Step nextStep={(event.data as NextStep)} />)
       else if (typeof event.data === 'string')
         setError(event.data)
       else

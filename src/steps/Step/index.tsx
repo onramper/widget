@@ -5,7 +5,7 @@ import Header from '../../common/Header'
 import Footer from '../../common/Footer'
 import { NextStep } from '../../context'
 
-const StepView: React.FC<{ step: NextStep, needsConfirm?:boolean }> = (props) => {
+const StepView: React.FC<{ nextStep: NextStep, needsConfirm?: boolean }> = (props) => {
 
   return (
     <div className={styles.view}>

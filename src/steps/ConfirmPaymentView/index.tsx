@@ -17,7 +17,7 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
     <div className={styles.view}>
       <Header title="Payment review" backButton />
       <BodyConfirmPayment
-        onActionButton={() => nextScreen(<Step step={props.nextStep} needsConfirm={false} />)}
+        onActionButton={() => nextScreen(<Step nextStep={props.nextStep} needsConfirm={false} />)}
         payAmount={collected.amount.toString()}
         fees={collected.selectedGateway?.fees}
         currency={collected.selectedCurrency?.name}

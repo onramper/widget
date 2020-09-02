@@ -49,7 +49,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
     }, {})
     try {
       const newNextStep = await apiInterface.executeStep(nextStep, params);
-      nextScreen(<Step step={newNextStep} />)
+      nextScreen(<Step nextStep={newNextStep} />)
     } catch (error) {
       if (error instanceof NextStepError) {
         const processedError = processError(error, nextStepData)

@@ -19,7 +19,7 @@ const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = (
   const infoMsg = 'Choose one option'
 
   const handleButtonAction = async () => {
-    nextScreen(<Step step={selectedOption} />)
+    nextScreen(<Step nextStep={selectedOption} />)
   }
 
   const handleOptionChange = (i: number) => {
