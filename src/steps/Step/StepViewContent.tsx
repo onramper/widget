@@ -21,6 +21,8 @@ const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }>
 
     useEffect(() => {
         if (!nextStep) return
+        if (needsConfirm)
+            replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
         switch (nextStep.type) {
             case 'form':
                 replaceScreen(<FormView nextStep={nextStep} />)
@@ -38,16 +40,10 @@ const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }>
                 replaceScreen(<SuccessView txType='instant' />)//onlyScreen(<SuccessView txType='instant' />)
                 break;
             case 'iframe':
-                if (needsConfirm)
-                    replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
-                else
-                    replaceScreen(<IframeView nextStep={nextStep} />)
+                replaceScreen(<IframeView nextStep={nextStep} />)
                 break;
             case 'requestBankTransaction':
-                if (needsConfirm)
-                    replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
-                else
-                    replaceScreen(<WireTranserView nextStep={nextStep} />)//onlyScreen(<WireTranserView nextStep={nextStep} />)
+                replaceScreen(<WireTranserView nextStep={nextStep} />)//onlyScreen(<WireTranserView nextStep={nextStep} />)
                 break;
             default:
                 break;
