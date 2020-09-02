@@ -20,7 +20,10 @@ const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }>
     const [isProcessingStep, setIsProcessingStep] = useState(true)
 
     useEffect(() => {
-        if (!nextStep) return
+        if (!nextStep) {
+            setIsProcessingStep(false)
+            return
+        }
         if (needsConfirm)
             replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
         switch (nextStep.type) {
@@ -53,7 +56,7 @@ const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }>
 
     return (
         <main className={stylesCommon.body}>
-            {isProcessingStep && <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+            {!isProcessingStep && <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
                 <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
             </div>}
         </main>
