@@ -15,7 +15,11 @@ import { NavContext } from '../../NavContext'
 
 import { NextStep } from '../../ApiContext'
 
-const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }> = ({ nextStep, needsConfirm = false }) => {
+export interface NewStepProps {
+    nextStep?: NextStep
+    isConfirmed?: boolean
+}
+const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
     const { replaceScreen, backScreen/* , onlyScreen */ } = useContext(NavContext);
     const [isProcessingStep, setIsProcessingStep] = useState(true)
 
@@ -24,8 +28,10 @@ const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }>
             setIsProcessingStep(false)
             return
         }
-        if (needsConfirm)
+        if ((isConfirmed !== undefined && !isConfirmed) || (!isConfirmed && (nextStep.type === 'iframe' || nextStep.type === 'requestBankTransaction'))) {
             replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
+            return
+        }
         switch (nextStep.type) {
             case 'form':
                 replaceScreen(<FormView nextStep={nextStep} />)
@@ -52,7 +58,7 @@ const StepViewContent: React.FC<{ nextStep?: NextStep, needsConfirm?: boolean }>
                 break;
         }
         setIsProcessingStep(false)
-    }, [nextStep, replaceScreen, backScreen, needsConfirm])
+    }, [nextStep, replaceScreen, backScreen, isConfirmed])
 
     return (
         <main className={stylesCommon.body}>
