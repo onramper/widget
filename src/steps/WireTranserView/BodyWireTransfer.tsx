@@ -5,7 +5,7 @@ import InputText from '../../common/Input/InputText'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
-import IconCopy from '../../icons/copyicon.svg'
+import IconCopy from '../../icons/copy.svg'
 
 import { InfoDepositBankAccount } from '../../ApiContext'
 

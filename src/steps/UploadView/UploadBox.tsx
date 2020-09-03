@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react'
 import styles from './styles.module.css'
 
-import IconUpload from '../../icons/uploadicon.svg'
-import IconDocument from '../../icons/document.svg'
-import IconDelete from '../../icons/deleteicon.svg'
+import IconUpload from '../../icons/upload_file.svg'
+import IconDocument from '../../icons/file.svg'
+import IconDelete from '../../icons/delete.svg'
 
 type UploadBoxType = {
     onFilesAdded: (name: string, files: File[], maxFiles: number) => boolean

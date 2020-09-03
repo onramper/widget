@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styles from './styles.module.css'
-import IconDetailKYC from '../icons/kyclevelicon.svg'
-import IconDetailTxTime from '../icons/txtimeicon.svg'
+import IconDetailKYC from '../icons/kyc_level.svg'
+import IconDetailTxTime from '../icons/tx_time.svg'
 
 import { CSSTransition } from 'react-transition-group';
 

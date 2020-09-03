@@ -4,7 +4,7 @@ import PickView from '../../PickView'
 
 import InputText from '../../common/Input/InputText'
 
-import IconChevronRight from '../../icons/chevron_right.svg'
+import IconChevronRight from '../../icons/chevron-right.svg'
 
 import { APIContext } from '../../ApiContext'
 import { NavContext } from '../../NavContext'

@@ -5,7 +5,7 @@ import { mainReducer, CollectedActionsType, DataActionsType } from './reducers'
 
 import { arrayUnique, arrayObjUnique } from '../utils'
 
-import LogoOnramper from '../icons/logo.svg'
+import LogoOnramper from '../icons/onramper_logo.svg'
 
 import * as API from './api'
 import { ItemType, ItemCategory, GatewayRateOption } from './initialState';

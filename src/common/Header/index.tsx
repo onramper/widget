@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import styles from './styles.module.css'
 
-import IconMenu from '../../icons/burger_menu.svg'
-import IconLeftArrow from '../../icons/left_arrow.svg'
-import IconClose from '../../icons/nav_close.svg'
+import IconMenu from '../../icons/menu.svg'
+import IconLeftArrow from '../../icons/arrow-left.svg'
+import IconClose from '../../icons/close.svg'
 
 import { NavContext } from '../../NavContext'
 import Menu from './Menu'

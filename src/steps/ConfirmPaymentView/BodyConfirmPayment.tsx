@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
-import IconChevron from '../../icons/chevron_right.svg'
-import { ReactComponent as IconPay } from '../../icons/payicon.svg'
-import { ReactComponent as IconWallet } from '../../icons/walleticon.svg'
-import { ReactComponent as IconExpectedtime } from '../../icons/expectedtimeicon.svg'
+import IconChevron from '../../icons/chevron-right.svg'
+import { ReactComponent as IconPay } from '../../icons/payment.svg'
+import { ReactComponent as IconWallet } from '../../icons/wallet.svg'
+import { ReactComponent as IconExpectedtime } from '../../icons/expected_time.svg'
 
 import { CSSTransition } from 'react-transition-group';
 

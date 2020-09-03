@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.module.css'
 
-import IconChevronRight from '../../icons/chevron_right.svg'
+import IconChevronRight from '../../icons/chevron-right.svg'
 
 type InputButtonType = {
     selectedOption: string,
