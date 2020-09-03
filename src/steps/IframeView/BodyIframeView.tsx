@@ -17,20 +17,19 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const [autoRedirect, setAutoRedirect] = useState(true)
 
     const redirect = useCallback(() => {
+        setAutoRedirect(true)
         //try to open popup
         let windowObjectReference = window.open(props.src, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
         //if opened -> all is ok
-        if (windowObjectReference) return true
+        if (windowObjectReference) return
         //if not opened -> warn user about popup blocked + ask user for click a button
-        console.log('not opened:(')
-        return false
+        setAutoRedirect(false)
+        return
     }, [props.src])
 
     useEffect(() => {
         if (type === 'redirect')
-            if (!redirect())
-                setAutoRedirect(false)
-
+            redirect()
 
     }, [props.src, type, redirect])
 
@@ -49,8 +48,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                 {
                     ((type === 'redirect' && autoRedirect) && (
                         <div className={`${styles['center']}`}>
-                            <span>Automatically redirecting you to finish the process...</span>
-                            <span>A new window should open, if not, <a href="https://google.es">click here</a>.</span>
+                            <span>Redirecting you to finish the process...</span>
+                            {/* <span>A new window should be opened, if not, <span className={stylesCommon['text--link']} onClick={redirect}>click here</span>.</span> */}
                         </div>
                     ))
                     || ((type === 'redirect' && !autoRedirect) && (

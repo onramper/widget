@@ -24,11 +24,11 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
       else if (typeof event.data === 'string')
         setError(event.data)
       else
-        setError('Unknow error. Please, contact help@onramper.com')
+        setError('Unknow error. Please, contact help@onramper.com and provide the following info: ' + nextStep.url)
     }
     window.addEventListener("message", receiveMessage);
     return () => window.removeEventListener("message", receiveMessage);
-  }, [replaceScreen])
+  }, [replaceScreen, nextStep.type, nextStep.url])
 
   return (
     <div className={styles.view}>
@@ -36,7 +36,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
       <BodyIframeView
         textInfo={textInfo}
         error={error}
-        src={nextStep.url ?? ''}
+        src={nextStep.url}
         type={nextStep.type}
         onErrorDismissClick={() => setError(undefined)}
       />
