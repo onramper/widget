@@ -132,6 +132,12 @@
     margin-top: 0.2727em;
 }
 
+.text-hint {
+    color: inherit;
+    font-size: 0.75em;
+    margin-top: 0.2727em;
+}
+
 /********error display transition*********/
 .collapse-enter {
     max-height: 0px;

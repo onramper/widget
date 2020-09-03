@@ -12,7 +12,7 @@ import Step from '../Step'
 
 const UploadView: React.FC<{ nextStep: NextStep & { type: 'file' } }> = (props) => {
   const { nextScreen } = useContext(NavContext);
-  const textInfo = `Attach your ${props.nextStep.humanName} here so we can verify your identity.`
+  /* const textInfo = `Attach your ${props.nextStep.humanName} here so we can verify your identity.` */
 
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
@@ -37,7 +37,7 @@ const UploadView: React.FC<{ nextStep: NextStep & { type: 'file' } }> = (props) 
       <Header title={`Upload ${props.nextStep.humanName ?? ''}`} backButton />
       <BodyUpload
         onActionButton={handleButtonAction}
-        textInfo={textInfo}
+        textInfo={props.nextStep.hint}
         isLoading={isLoading}
         errorMsg={errorMsg}
         acceptedContentTypes={props.nextStep.acceptedContentTypes}

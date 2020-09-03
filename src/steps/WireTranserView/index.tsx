@@ -28,7 +28,7 @@ const WireTransferView: React.FC<{ nextStep: NextStep & { type: 'requestBankTran
         amount={collected.amount.toString()}
         bankDetails={nextStep.depositBankAccount}
         symbol={collected.selectedCurrency?.symbol ?? ''}
-        textInfo={nextStep.hint ?? ''}
+        textInfo={nextStep.hint}
         onIconClick={handleIconClick}
         reference={nextStep.reference ?? 'No reference'}
       />

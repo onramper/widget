@@ -18,10 +18,11 @@ type InputTextType = {
     name: string
     onIconClick?: (name: string, value: string, label: string) => void
     error?: string
+    hint?: string
 }
 
 const InputText: React.FC<InputTextType> = (props) => {
-    const { symbol, label, className, icon, iconPosition, disabled, value, type, name, error, symbolPosition = 'end' } = props
+    const { symbol, label, className, icon, iconPosition, disabled, value, type, name, error, symbolPosition = 'end', hint } = props
     const placeholder = disabled ? '' : props.placeholder
     const clickableIcon = props.onIconClick ? true : false
     const { onChange = (e) => false, onIconClick = (n, v, l) => null } = props
@@ -64,6 +65,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                 unmountOnExit={true}>
                 {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
             </CSSTransition>
+            {hint ? <span className={`${styles['text-hint']}`} >{hint}</span> : <></>}
         </div>
     )
 }
