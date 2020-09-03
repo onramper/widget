@@ -2,7 +2,8 @@
 theme styles
 *********/
 .theme {
-    --primary-color:#31a5ff;
+    --primary-color:#31a5ff; /* default color*/
+    width: 100%;
     height: 100%;
 }
 
@@ -33,14 +34,6 @@ theme styles
 /*********
 general styles
 *********/
-
-.views-container {
-    margin: auto;
-    max-width: 440px;
-    max-height: 595px;
-    height: 100%;
-    width: 100%;
-}
 
 .view {
     --padding-top: 1.75rem;

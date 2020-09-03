@@ -1,8 +1,5 @@
 import React from 'react';
-import BuyCryptoView from './BuyCryptoView'
-import styles from './styles.module.css'
-import { NavProvider, NavContainer } from './NavContext';
-import { APIProvider } from './ApiContext'
+import OnramperWidget from './OnramperWidget'
 
 const defaultAddrs = JSON.stringify({
   BTC: ['btcAddr1', 'btcAddr2'],
@@ -22,38 +19,12 @@ function App() {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
-        <div className={`${styles['views-container']}`}>
+        <div className={'widget-container'}>
           <OnramperWidget color={defaultColor} defaultAddrs={addresses} defaultAmount={defaultAmount} defaultCrypto={defaultCrypto} filters={filters} />
         </div>
       </div>
     </>
   );
-}
-
-type OnramperWidgetProps = {
-  color?: string
-  defaultAmount?: number
-  defaultCrypto?: string
-  defaultAddrs?: {
-    [key: string]: string[]
-  }
-  filters?: {
-    onlyCryptos?: string[]
-    excludeCryptos?: string[]
-  }
-}
-
-const OnramperWidget: React.FC<OnramperWidgetProps> = ({ color, defaultAddrs, defaultAmount, defaultCrypto, filters }) => {
-  var style = { "--primary-color": color } as React.CSSProperties;
-  return (
-    <div style={style} className={`${styles['theme']}`}>
-      <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} filters={filters} >
-        <NavProvider>
-          <NavContainer home={<BuyCryptoView />} />
-        </NavProvider>
-      </APIProvider>
-    </div>
-  )
 }
 
 function getParam(name: string, defaultValue?: string): string | undefined {

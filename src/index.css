@@ -15,3 +15,11 @@ html, body {
 html, body, #root {
   height: 100%;
 }
+
+.widget-container {
+  margin: auto;
+  max-width: 440px;
+  max-height: 595px;
+  height: 100%;
+  width: 100%;
+}
