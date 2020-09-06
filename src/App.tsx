@@ -1,5 +1,5 @@
 import React from 'react';
-import OnramperWidget from './OnramperWidget/OnramperWidget'
+import OnramperWidget from './OnramperWidget'
 
 const defaultAddrs = JSON.stringify({
   BTC: ['btcAddr1', 'btcAddr2'],
