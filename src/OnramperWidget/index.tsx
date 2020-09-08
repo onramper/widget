@@ -38,4 +38,4 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = ({ color, defaultAddrs, de
     )
 }
 
-export default OnramperWidget;
+export default (props: OnramperWidgetProps) => <OnramperWidget {...props} />;
