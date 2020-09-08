@@ -58,8 +58,6 @@ export const formatSeconds = (s: number) => {
     }
 }
 
-window.opener = { ...window.opener, formatSeconds }
-
 //ADD TYPES
 /* export function usePromise(promiseOrFunction, defaultValue) {
     const [state, setState] = React.useState({ value: defaultValue, error: null, isPending: true })
