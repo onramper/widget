@@ -8,10 +8,11 @@ import { arrayUnique, arrayObjUnique } from '../utils'
 import LogoOnramper from '../icons/onramper_logo.svg'
 
 import * as API from './api'
-import { ItemType, ItemCategory, GatewayRateOption } from './initialState';
+import type { ItemType, GatewayRateOption } from './initialState';
+import { ItemCategory } from './initialState';
 import { GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
-import { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from './api/types/nextStep';
+import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from './api/types/nextStep';
 
 import { NextStepError } from './api'
 
