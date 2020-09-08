@@ -5,8 +5,8 @@ import styles from './styles.module.css'
 import { NavContext } from '../../NavContext'
 import BuyCryptoView from '../../BuyCryptoView'
 
-import TICK_GREEN from '../../icons/success_green.jpg'
-import TICK_BLUE from '../../icons/success_blue.png'
+import TICK_GREEN from '../../icons/success_green.svg'
+import TICK_BLUE from '../../icons/success_blue.svg'
 
 type BodySuccessViewType = {
     txType: "instant" | "pending"
