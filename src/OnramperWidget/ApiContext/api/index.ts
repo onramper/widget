@@ -60,11 +60,8 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
  * Utils
  */
 const processResponse = async (response: Response): Promise<any> => {
-    if (response.ok) {
-        const r = await response.json()
-        console.log('response.json()', r)
-        return r
-    }
+    if (response.ok)
+        return await response.json()
     else {
         let error_response
         try {
