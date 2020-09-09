@@ -13,14 +13,19 @@ const defaultCrypto = getParam('defaultCrypto', '')
 const addresses = JSON.parse(getParam('addresses', defaultAddrs) ?? JSON.stringify({}))
 const onlyCryptos = getParam('onlyCryptos', undefined)?.split(',').map(code => code.trim())
 const excludeCryptos = getParam('excludeCryptos', undefined)?.split(',').map(code => code.trim())
-const filters = { onlyCryptos, excludeCryptos }
 
 function App() {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
         <div className={'widget-container'}>
-          <OnramperWidget color={defaultColor} defaultAddrs={addresses} defaultAmount={defaultAmount} defaultCrypto={defaultCrypto} filters={filters} />
+          <OnramperWidget
+            color={defaultColor}
+            defaultAddrs={addresses}
+            defaultAmount={defaultAmount}
+            defaultCrypto={defaultCrypto}
+            onlyCryptos={onlyCryptos}
+            excludeCryptos={excludeCryptos} />
         </div>
       </div>
     </>

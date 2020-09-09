@@ -6,30 +6,27 @@ import { APIProvider } from './ApiContext'
 
 
 type OnramperWidgetProps = {
-    maxWidth?: string
-    maxHeight?: string
     color?: string
     defaultAmount?: number
     defaultCrypto?: string
     defaultAddrs?: {
         [key: string]: string[]
     }
-    filters?: {
-        onlyCryptos?: string[]
-        excludeCryptos?: string[]
-    }
+    onlyCryptos?: string[]
+    excludeCryptos?: string[]
+    className?: string
 }
 
-const OnramperWidget: React.FC<OnramperWidgetProps> = ({ color, defaultAddrs, defaultAmount, defaultCrypto, filters, maxWidth, maxHeight }) => {
-    var style = {
+const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
+    const { color = '#31a5ff', defaultAddrs = {}, defaultAmount = 100, defaultCrypto, onlyCryptos, excludeCryptos, className='' } = props
+
+    const style = {
         "--primary-color": color,
-        "--max-width": maxWidth,
-        "--max-height": maxHeight
     } as React.CSSProperties;
 
     return (
-        <div style={style} className={`${styles['theme']}`}>
-            <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} filters={filters} >
+        <div style={style} className={`${styles['theme']} ${className}`}>
+            <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} filters={{ onlyCryptos, excludeCryptos }} >
                 <NavProvider>
                     <NavContainer home={<BuyCryptoView />} />
                 </NavProvider>
