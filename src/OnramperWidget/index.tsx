@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 import BuyCryptoView from './BuyCryptoView'
 import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './NavContext';
@@ -18,7 +19,7 @@ type OnramperWidgetProps = {
 }
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
-    const { color = '#31a5ff', defaultAddrs = {}, defaultAmount = 100, defaultCrypto, onlyCryptos, excludeCryptos, className='' } = props
+    const { color = '#31a5ff', defaultAddrs = {}, defaultAmount = 100, defaultCrypto, onlyCryptos, excludeCryptos, className = '' } = props
 
     const style = {
         "--primary-color": color,
@@ -35,4 +36,10 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     )
 }
 
+const initialize = (selector: string, props: OnramperWidgetProps) => {
+    let domContainer = document.querySelector(selector);
+    ReactDOM.render(<OnramperWidget {...props} />, domContainer);
+}
+
 export default (props: OnramperWidgetProps) => <OnramperWidget {...props} />;
+export { initialize }
