@@ -16,7 +16,7 @@
     "build:prod": "export REACT_APP_STAGE=prod && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:component": "rm -f -r dist && webpack && npx copyfiles -u 2 \"./src/OnramperWidget/package.json\" \"./src/OnramperWidget/README.md\" ./dist && npx copyfiles \"./LICENSE\" dist && rm -r dist/*/",
+    "build:component": "rm -f -r dist && webpack && npx copyfiles -u 2 \"./src/OnramperWidget/package.json\" \"./src/OnramperWidget/README.md\" ./dist && npx copyfiles \"./LICENSE\" dist && rm -r dist/*/ && rm ./dist/utils.d.ts",
     "publish:component": "cd dist && npm publish"
   },
   "eslintConfig": {
@@ -35,6 +35,7 @@
     ]
   },
   "devDependencies": {
+    "@svgr/webpack": "^5.4.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -44,16 +45,16 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-test-renderer": "^16.9.2",
     "@types/react-transition-group": "^4.4.0",
+    "css-loader": "^4.3.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.9",
     "react-scripts": "3.4.1",
     "react-test-renderer": "^16.13.1",
-    "ts-jest": "^24.3.0",
-    "typescript": "^3.9.5",
-    "ts-loader": "^8.0.3",
     "style-loader": "^1.2.1",
-    "css-loader": "^4.3.0",
     "svg-url-loader": "^6.0.0",
+    "ts-jest": "^24.3.0",
+    "ts-loader": "^8.0.3",
+    "typescript": "^3.9.5",
     "webpack-cli": "^3.3.12"
   },
   "husky": {
