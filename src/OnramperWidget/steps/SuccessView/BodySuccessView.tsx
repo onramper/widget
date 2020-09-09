@@ -5,8 +5,8 @@ import styles from './styles.module.css'
 import { NavContext } from '../../NavContext'
 import BuyCryptoView from '../../BuyCryptoView'
 
-import TICK_GREEN from '../../icons/success_green.svg'
-import TICK_BLUE from '../../icons/success_blue.svg'
+import { ReactComponent as TICK_GREEN } from '../../icons/success_green.svg'
+import { ReactComponent as TICK_BLUE } from '../../icons/success_blue.svg'
 
 type BodySuccessViewType = {
     txType: "instant" | "pending"
@@ -19,7 +19,7 @@ const BodySuccessView: React.FC<BodySuccessViewType> = (props) => {
     return (
         <main className={`${stylesCommon.body}`}>
             <div className={`${stylesCommon['body__child']} ${stylesCommon.grow} ${styles.body}`}>
-                <img alt="Success icon" src={props.txType === 'instant' ? TICK_GREEN : TICK_BLUE} />
+                {props.txType === 'instant' ? <TICK_GREEN className={styles['success-icon']} /> : <TICK_BLUE className={styles['success-icon']} />}
                 <span className={styles['title']}>{props.txType === 'instant' ? 'Your transaction is being processed' : 'Your transaction is waiting for payment'}</span>
                 <span className={styles['info']}>{props.txType === 'instant' ? 'You will receive your cryptos soon' : 'Complete the payment to get your cryptos. We sent you the instructions and the payment info to your email.'}</span>
                 {props.txType === 'pending' && false && <span className={styles['button--link']}>Download your payment info</span>}

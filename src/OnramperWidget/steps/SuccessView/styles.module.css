@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-.body img {
+.body img, .success-icon {
     margin: 2rem 0;
     height: 5rem;
 }
