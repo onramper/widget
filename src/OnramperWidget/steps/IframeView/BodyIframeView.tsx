@@ -55,7 +55,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     || ((type === 'redirect' && !autoRedirect) && (
                         <div className={`${styles['center']}`}>
                             <span className={`${stylesCommon['body__child']} `}>Please, click the button below to finish the process.</span>
-                            <button className={`${stylesCommon['body__child']} `} onClick={redirect} >Finish process</button>
+                            <button className={`${stylesCommon['body__child']} ${styles['button--redirect']}`} onClick={redirect} >Finish process</button>
                         </div>
                     ))
                     || <iframe

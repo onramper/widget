@@ -2,7 +2,9 @@
 .range {
     --spacing: 0.125rem;
     display: flex;
+    flex-direction: row;
     margin: var(--spacing) 0px;
+    font-size: 1rem;
 }
 
 .range__section{

@@ -5,6 +5,7 @@ import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './NavContext';
 import { APIProvider } from './ApiContext'
 
+import './normalize.min.css'
 
 type OnramperWidgetProps = {
     color?: string

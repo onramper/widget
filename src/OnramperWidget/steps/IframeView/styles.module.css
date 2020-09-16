@@ -4,9 +4,10 @@
     margin: auto;
     align-items: center;
     text-align: center;
+    font-size: 1rem;
 }
 
-button {
+.button--redirect {
     cursor: pointer;
     padding: 0.5rem;
 }

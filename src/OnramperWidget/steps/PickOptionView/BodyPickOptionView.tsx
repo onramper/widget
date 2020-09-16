@@ -56,7 +56,7 @@ const InputRadio: React.FC<InputRadio> = ({ options, onItemClick = () => null })
             {
                 options.map((item, i) =>
                     <div className={styles['option']} key={i}>
-                        <label><input type="radio" value={item.value ?? ('Item ' + i)} checked={i === itemClicked} onChange={(e) => onClick(i)} />{item.name ?? ('Item ' + i)}</label>
+                        <label><input className={styles['input--radio']} type="radio" value={item.value ?? ('Item ' + i)} checked={i === itemClicked} onChange={(e) => onClick(i)} />{item.name ?? ('Item ' + i)}</label>
                     </div>
                 )
             }

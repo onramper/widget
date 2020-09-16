@@ -8,6 +8,7 @@
     --icon-padding: 0.5625rem;
     --icon-size: calc(var(--icon-width) + var(--icon-padding) * 2);
     --item-padding: 0.9375rem;
+    font-size: 1rem;
 } 
 
 /**items wrapper**/
@@ -27,6 +28,7 @@
 /**************************item**************************/
 .item {
     display: flex;
+    flex-direction: row;
     align-items: center;
     position: relative;
     list-style-type: none;

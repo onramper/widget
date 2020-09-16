@@ -2,6 +2,7 @@
 /*-------------------gateway list-------------------*/
 .rates-list {
     width: 100%;
+    font-size: 1rem;
 }
 
 /*-------------------gateway option-------------------*/
@@ -9,7 +10,7 @@
 .option-container {
     --oc-padding: 0px 0.71875rem;
     display: flex;
-
+    flex-direction: row;
     border-style: solid;
     border-radius: 5px;
     border-width: 1px;
@@ -28,6 +29,7 @@
 
 .option-container__content {
     display: flex;
+    flex-direction: row;
     flex-grow: 1;
     padding: var(--oc-padding);
     /* margin-bottom: 0.5rem; */
@@ -58,6 +60,7 @@
 .content__info .title {
     margin-bottom: 0.4375rem;
     display: inline-block;
+    font-size: 1rem;
 }
 
 /* .content__info > :last-child {

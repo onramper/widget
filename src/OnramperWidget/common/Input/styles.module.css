@@ -3,12 +3,14 @@
 .input {
     display: flex;
     flex-direction: column;
+    font-size: 1rem;
 }
 
 .input > label {
     margin-bottom: 0.56rem;
     font-size: 0.875rem;
     display: flex;
+    flex-direction: row;
 }
 
 .label__title {
@@ -42,6 +44,7 @@
     border-color: #DEDEDE;
     padding: var(--component-padding);
     display: flex;
+    flex-direction: row;
     height: var(--component-content-height);
     align-items: center;
 }

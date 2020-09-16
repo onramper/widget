@@ -5,10 +5,12 @@
     flex-direction: column;
     overflow: auto;
     flex-grow: 1;
+    font-size: 1rem;
 }
 
 .list-item {
     display: flex;
+    flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     padding: 1.125rem var(--padding-rl);

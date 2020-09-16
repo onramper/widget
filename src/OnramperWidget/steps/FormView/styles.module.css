@@ -12,6 +12,7 @@
 
 .resend {
     display: flex;
+    flex-direction: row;
     align-self: flex-end;
     font-size: 0.75rem;
     margin-top: 0.56rem;
