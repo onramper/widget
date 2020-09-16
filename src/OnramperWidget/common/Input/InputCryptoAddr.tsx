@@ -52,7 +52,7 @@ const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
             icon={items.length > 0 ? IconChevronRight : undefined}
             iconPosition='end'
             onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
-            name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`RECEIVER ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
+            name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`YOUR ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
     )
 }
 
