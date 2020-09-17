@@ -3,7 +3,9 @@ import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
 
-const BASE_API = 'https://api.onramper.dev'
+const BASE_API = process.env.REACT_APP_STAGE === 'prod'
+      ? 'https://api.onramper.com'
+      : 'https://api.onramper.dev';
 
 /**
  * API calls
