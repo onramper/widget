@@ -1,7 +1,7 @@
 import { nextStep, stepDataItems } from '../utils/lambda-response';
 import { moonpayBaseAPI, identifier, publishableApiKey, baseAPIUrl } from '../constants';
 import { verifyEmailAPIResponse } from './api';
-import { StepError, ApiError } from '../errors';
+import { StepError } from '../errors';
 import { encodeToken } from '../utils/token';
 import { emailVerifiedTx } from './dynamoTxs';
 import ddb from '../utils/dynamodb';

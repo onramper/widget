@@ -3,8 +3,7 @@ import { stepDataItems } from '../lambda-response';
 import {
   encodeToken,
   safeEncode,
-  decodedTokenType,
-  replaceAll,
+  decodedTokenType
 } from './encodeToken';
 
 export { encodeToken };

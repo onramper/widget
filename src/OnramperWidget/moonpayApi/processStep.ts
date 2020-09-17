@@ -1,6 +1,4 @@
 import {
-  randomId,
-  encodeToken,
   decodeToken,
   checkTokenTypes,
   checkBodyParams,
@@ -13,8 +11,6 @@ import {
   verifyPhone,
   registerIdentity,
 } from './KYC';
-import { baseAPIUrl } from './constants';
-import { identifier } from './constants';
 import { nextStep } from './utils/lambda-response';
 import * as items from './KYC/items';
 import getNextKYCStepFromTxIdAndToken from './KYC/getNextKYCStepFromTxIdAndToken';
