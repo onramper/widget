@@ -37,22 +37,7 @@ export default async function (
     );
   }
   const customer = ((await res.json()) as verifyEmailAPIResponse).customer;
-  let token = res.headers.get('set-cookie');
-  if (token === null) {
-    throw new ApiError(
-      'Moonpay API has changed and no longer sets cookies on the /customers/email_login endpoint.'
-    );
-  }
-  try {
-    token = token.split('customerToken=')[1].split('; ')[0];
-    if (typeof token !== 'string' || token.length <= 0) {
-      throw new Error();
-    }
-  } catch (e) {
-    throw new ApiError(
-      'Moonpay API has changed and no longer sets the customerToken cookie.'
-    );
-  }
+  let token = 'not needed, this is done through cookies';
   // There's a weird thing going on with csrf vs jwt tokens, it seems like only JWT tokens work
   await ddb.put({
     PK: `tx#${id}`,
