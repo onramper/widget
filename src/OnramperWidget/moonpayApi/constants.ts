@@ -8,15 +8,15 @@ export const acceptedContentTypes = [
   'application/pdf',
 ];
 export const baseCreditCardSandboxUrl =
-  process.env.REACT_APP_STAGE !== 'prod'
+  process.env.REACT_APP_STAGE === 'prod'
     ? 'https://sandbox.onramper.com'
     : 'https://sandbox.onramper.dev';
 export const baseAPIUrl =
-    process.env.REACT_APP_STAGE !== 'prod'
+    process.env.REACT_APP_STAGE === 'prod'
       ? 'https://api.onramper.com'
       : 'https://api.onramper.dev';
 export const baseUploadsUrl =
-    process.env.REACT_APP_STAGE !== 'prod'
+    process.env.REACT_APP_STAGE === 'prod'
       ? 'https://upload.onramper.com'
       : 'https://upload.onramper.dev';
   
