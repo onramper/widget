@@ -2,6 +2,7 @@ import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
+import processMoonpayStep from '../../moonpayApi'
 
 const BASE_API = process.env.REACT_APP_STAGE === 'prod'
       ? 'https://api.onramper.com'
@@ -45,6 +46,12 @@ interface ExecuteStepParams {
     [key: string]: any
 }
 
+interface FetchResponse {
+    ok:boolean,
+    json: ()=>Promise<any>,
+    text: ()=>Promise<string>
+}
+
 const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
 
     if (step.type !== 'form' && step.type !== 'file') throw new Error('Unexpected error: Invalid step end.')
@@ -53,15 +60,20 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
 
     const urlParams = createUrlParamsFromObject(params ?? {})
-
-    const nextStep = await fetch(`${step.url}?${urlParams}`, { method, body })
+    
+    let nextStep: FetchResponse;
+    if(/https:\/\/(api|upload).onramper.(dev|com)\/transaction\/Moonpay.*/.test(step.url)){
+        nextStep = await processMoonpayStep(step.url, body);
+    } else {
+        nextStep = await fetch(`${step.url}?${urlParams}`, { method, body })
+    }
     return processResponse(nextStep)
 }
 
 /**
  * Utils
  */
-const processResponse = async (response: Response): Promise<any> => {
+const processResponse = async (response: FetchResponse): Promise<any> => {
     if (response.ok)
         return await response.json()
     else {
