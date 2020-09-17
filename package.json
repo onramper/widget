@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "iso3166-alpha-converter": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-transition-group": "^4.4.1"
@@ -48,6 +49,7 @@
     "css-loader": "^4.3.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.9",
+    "prettier": "^2.1.2",
     "react-scripts": "3.4.1",
     "react-test-renderer": "^16.13.1",
     "style-loader": "^1.2.1",

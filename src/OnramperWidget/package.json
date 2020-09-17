@@ -24,6 +24,7 @@
   "homepage": "https://onramper.com",
   "main": "./index.js",
   "dependencies": {
+    "iso3166-alpha-converter": "^1.0.0",
     "react-transition-group": "^4.4.1"
   },
   "peerDependencies": {
