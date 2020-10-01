@@ -2,7 +2,7 @@
 
 [Instructions of how to integrate the widget in your website here.](https://docs.onramper.dev/widget)
 
-This project is created using create-react-app with typescript, here you will find some notes about how to customize or build the widget from the source files. In this repo you will find the source files of Onramper's buy page (`https://widget.onramper.com`) and the source files of the widget component (`https://npm.org/package/@onramper/widget`)
+This project is created using create-react-app with typescript, here you will find some notes about how to customize or build the widget from the source files. In this repo you will find the source files of Onramper's buy page ([`https://widget.onramper.com`](https://widget.onramper.com)) and the source files of the widget component ([`https://npm.org/package/@onramper/widget`](https://npm.org/package/@onramper/widget))
 
 Directory structure (only main files listed):  
 
