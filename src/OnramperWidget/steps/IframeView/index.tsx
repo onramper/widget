@@ -7,6 +7,7 @@ import styles from '../../styles.module.css'
 import Step from '../Step'
 
 import { NextStep } from '../../ApiContext'
+import finishCCTransaction from '../../moonpayApi/finishCCTransaction'
 
 import { NavContext } from '../../NavContext'
 
@@ -16,15 +17,17 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
   const [error, setError] = useState<string>()
 
   useEffect(() => {
-    const receiveMessage = (event: MessageEvent) => {
+    const receiveMessage = async (event: MessageEvent) => {
       if (event.origin !== "https://sandbox.onramper.dev")
         return;
-      if (event.data.type)
-        replaceScreen(<Step nextStep={(event.data as NextStep)} />)
-      else if (typeof event.data === 'string')
+      if (event.data.transactionId){
+        const returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
+        replaceScreen(<Step nextStep={(returnedNextStep as NextStep)} />)
+      } else if (typeof event.data === 'string'){
         setError(event.data)
-      else
+      } else{
         setError('Unknow error. Please, contact help@onramper.com and provide the following info: ' + nextStep.url)
+      }
     }
     window.addEventListener("message", receiveMessage);
     return () => window.removeEventListener("message", receiveMessage);
