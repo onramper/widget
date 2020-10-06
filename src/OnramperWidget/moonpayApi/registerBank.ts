@@ -56,7 +56,7 @@ interface CreateBankTransactionResponse {
 
 export default async function (
   txId: string,
-  jwtToken: string,
+  csrfToken: string,
   bankInfo:
     | {
         currencyCode: 'eur';
@@ -73,7 +73,7 @@ export default async function (
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: `Bearer ${jwtToken}`,
+        'X-CSRF-TOKEN': csrfToken,
       },
       body: JSON.stringify(bankInfo),
     }).then((res) => res.json())) as CreateBankResponse;
@@ -82,7 +82,7 @@ export default async function (
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: `Bearer ${jwtToken}`,
+        'X-CSRF-TOKEN': csrfToken,
       },
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,

@@ -2,7 +2,7 @@ import { moonpayBaseAPI, identifier, baseAPIUrl } from '../constants';
 import { nextStep, dateInfo } from '../utils/lambda-response';
 import ddb from '../utils/dynamodb';
 import { encodeToken } from '../utils/token';
-import { identityTX, getCreationTx, getTxJwtToken } from './dynamoTxs';
+import { identityTX, getCreationTx, getTxAuthToken } from './dynamoTxs';
 import countryAlpha2To3 from '../utils/isoAlpha2ToAlpha3';
 import { customerIdentityData, customerAPIResponse } from './api';
 import {
@@ -34,7 +34,7 @@ export default async function (
   state: string | undefined,
   providedCountry: string
 ): Promise<nextStep> {
-  const tokenTx = getTxJwtToken(id);
+  const tokenTx = getTxAuthToken(id);
   const creationTx = getCreationTx(id);
   const country = countryAlpha2To3(providedCountry, countryItem.name); // May throw if country is not found
   const customerData: customerIdentityData = {
@@ -110,13 +110,13 @@ export default async function (
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        authorization: `Bearer ${(await tokenTx).jwtToken}`,
+        'X-CSRF-TOKEN': (await tokenTx).csrfToken,
       },
       body: JSON.stringify(customerData),
     }).then((res) => res.json())) as customerAPIResponse;
     return getNextKYCStep(
       await creationTx,
-      (await tokenTx).jwtToken,
+      (await tokenTx).csrfToken,
       updatedCustomerData
     );
   } catch (e) {

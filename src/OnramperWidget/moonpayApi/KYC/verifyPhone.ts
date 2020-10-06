@@ -17,7 +17,7 @@ export default async function (
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`,
+          'X-CSRF-TOKEN': token,
         },
         body: JSON.stringify({
           verificationCode: phoneCode,

@@ -40,7 +40,7 @@ export default async function (
   // Essentially only the first call to the /limits endpoint is needed
   const limits = (await fetch(`${moonpayBaseAPI}/customers/me/limits`, {
     headers: {
-      authorization: `Bearer ${token}`,
+      'X-CSRF-TOKEN':token,
     },
   }).then((res) => res.json())) as limitAPIResponse;
   let txType: string;

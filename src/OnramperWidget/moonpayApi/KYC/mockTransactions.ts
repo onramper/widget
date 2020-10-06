@@ -15,17 +15,17 @@ export async function createMockCreationTx(tx: Partial<creationTxType>) {
     ...tx,
   });
 }
-export async function createMockTxJwtToken(tx: Partial<emailVerifiedTx>) {
+export async function createMockTxAuthToken(tx: Partial<emailVerifiedTx>) {
   await ddb.put({
     PK: `tx#123`,
     SK: `verifyEmail`,
     Timestamp: 12345,
-    jwtToken: 'moonpayJwtToken',
+    csrfToken: 'moonpayCsrfToken',
     ...tx,
   });
 }
 
 export async function createAllMockTxs(id: string = '123') {
   await createMockCreationTx({ PK: `tx#${id}` });
-  await createMockTxJwtToken({ PK: `tx#${id}` });
+  await createMockTxAuthToken({ PK: `tx#${id}` });
 }

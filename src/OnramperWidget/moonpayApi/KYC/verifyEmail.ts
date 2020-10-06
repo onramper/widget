@@ -1,7 +1,7 @@
 import { nextStep, stepDataItems } from '../utils/lambda-response';
 import { moonpayBaseAPI, identifier, publishableApiKey, baseAPIUrl } from '../constants';
 import { verifyEmailAPIResponse } from './api';
-import { StepError } from '../errors';
+import { StepError, ApiError } from '../errors';
 import { encodeToken } from '../utils/token';
 import { emailVerifiedTx } from './dynamoTxs';
 import ddb from '../utils/dynamodb';
@@ -15,7 +15,7 @@ export default async function (
   code: string,
   country: string
 ): Promise<nextStep> {
-  let res: Response;
+  let res: verifyEmailAPIResponse;
   try {
     res = await fetch(
       `${moonpayBaseAPI}/customers/email_login?apiKey=${publishableApiKey}`,
@@ -29,21 +29,25 @@ export default async function (
           securityCode: code,
         }),
       }
-    );
+    ).then(response => response.json())
   } catch (e) {
     throw new StepError(
       'The email code has been rejected.',
       items.verifyEmailCodeItem.name
     );
   }
-  const customer = ((await res.json()) as verifyEmailAPIResponse).customer;
-  let token = 'not needed, this is done through cookies';
-  // There's a weird thing going on with csrf vs jwt tokens, it seems like only JWT tokens work
+  const customer = res.customer;
+  let token = res.csrfToken;
+  if (token === undefined) {
+    throw new ApiError(
+      'Moonpay API has changed and no longer sets cookies on the /customers/email_login endpoint.'
+    );
+  }
   await ddb.put({
     PK: `tx#${id}`,
     SK: `verifyEmail`,
     Timestamp: Date.now(),
-    jwtToken: token,
+    csrfToken: token,
   } as emailVerifiedTx);
   if (
     customer.firstName === null ||

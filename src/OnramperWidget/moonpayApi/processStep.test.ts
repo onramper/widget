@@ -2,7 +2,7 @@ import processStep from './processStep';
 import { encodeToken } from './utils/token';
 import {
   createMockCreationTx,
-  createMockTxJwtToken,
+  createMockTxAuthToken,
 } from './KYC/mockTransactions';
 
 test("processStep() fails if the token is incorrect or doesn't carry the right data", () => {
@@ -42,7 +42,7 @@ test('missing identity data on body results in an error that reports on the miss
 
 test('wrong country triggers an error on /identity', async () => {
   await createMockCreationTx({});
-  await createMockTxJwtToken({});
+  await createMockTxAuthToken({});
   expect(
     processStep(
       'identity',

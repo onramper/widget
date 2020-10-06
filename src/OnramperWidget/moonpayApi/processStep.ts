@@ -159,18 +159,18 @@ export default function (
     if (!checkTokenTypes<[string, string]>(tokenValues, ['', ''])) {
       throw new StepError('URL is incorrect.', null);
     }
-    const [id, jwtToken] = tokenValues;
-    return getNextKYCStepFromTxIdAndToken(id, jwtToken);
+    const [id, csrfToken] = tokenValues;
+    return getNextKYCStepFromTxIdAndToken(id, csrfToken);
   }
   if (step === 'registerPhone') {
     if (!checkTokenTypes<[string, string]>(tokenValues, ['', ''])) {
       throw new StepError('URL is incorrect.', null);
     }
-    const [id, jwtToken] = tokenValues;
+    const [id, csrfToken] = tokenValues;
     checkBodyParams(body, [items.phoneCountryCodeItem, items.phoneNumberItem]);
     return registerPhone(
       id,
-      jwtToken,
+      csrfToken,
       body[items.phoneCountryCodeItem.name],
       body[items.phoneNumberItem.name]
     );
@@ -179,18 +179,18 @@ export default function (
     if (!checkTokenTypes<[string, string]>(tokenValues, ['', ''])) {
       throw new StepError('URL is incorrect.', null);
     }
-    const [id, jwtToken] = tokenValues;
+    const [id, csrfToken] = tokenValues;
     checkBodyParams(body, [items.verifyPhoneCodeItem]);
-    return verifyPhone(id, jwtToken, body[items.verifyPhoneCodeItem.name]);
+    return verifyPhone(id, csrfToken, body[items.verifyPhoneCodeItem.name]);
   }
   if (step === 'registerBank') {
     if (!checkTokenTypes<[string, string, string]>(tokenValues, ['', '', ''])) {
       throw new StepError('URL is incorrect.', null);
     }
-    const [id, jwtToken, fiatCurrency] = tokenValues;
+    const [id, csrfToken, fiatCurrency] = tokenValues;
     if (fiatCurrency === 'EUR') {
       checkBodyParams(body, [items.bankIbanItem]);
-      return registerBank(id, jwtToken, {
+      return registerBank(id, csrfToken, {
         currencyCode: 'eur',
         iban: body[items.bankIbanItem.name],
       });
@@ -200,7 +200,7 @@ export default function (
         items.bankSortCodeItem,
         items.bankAccountNumberItem,
       ]);
-      return registerBank(id, jwtToken, {
+      return registerBank(id, csrfToken, {
         currencyCode: 'gbp',
         accountNumber: body[items.bankAccountNumberItem.name],
         sortCode: body[items.bankSortCodeItem.name],

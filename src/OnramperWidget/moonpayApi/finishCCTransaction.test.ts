@@ -3,7 +3,7 @@ import {
   simulateSingleFetchFailure,
   setFetchReturn,
 } from './utils/fetch';
-import { createAllMockTxs, createMockTxJwtToken } from './KYC/mockTransactions';
+import { createAllMockTxs, createMockTxAuthToken } from './KYC/mockTransactions';
 jest.mock('./utils/fetch');
 
 beforeEach(()=>{
@@ -24,7 +24,7 @@ test('Address error is properly propagated', async () => {
 });
 
 test("Returns descriptive error when transaction doesn't exist", async () => {
-  await createMockTxJwtToken({});
+  await createMockTxAuthToken({});
   return expect(
     finishCCTransaction('123', 'mock-cc-token')
   ).rejects.toMatchInlineSnapshot(

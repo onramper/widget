@@ -47,7 +47,7 @@ export default async function (
     await fetch(`${moonpayBaseAPI}/files`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'X-CSRF-TOKEN': token,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

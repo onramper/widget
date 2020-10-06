@@ -17,7 +17,7 @@ export interface emailVerifiedTx {
   PK: string;
   SK: `verifyEmail`;
   Timestamp: number;
-  jwtToken: string;
+  csrfToken: string;
 }
 
 export interface identityTX {
@@ -46,7 +46,7 @@ export async function getCreationTx(id: string): Promise<creationTxType> {
   return tx as creationTxType;
 }
 
-export async function getTxJwtToken(id: string): Promise<emailVerifiedTx> {
+export async function getTxAuthToken(id: string): Promise<emailVerifiedTx> {
   const tx = await ddb.get({
       PK: `tx#${id}`,
       SK: `verifyEmail`,

@@ -2,7 +2,7 @@ import { moonpayBaseAPI, baseCreditCardSandboxUrl } from './constants';
 import { nextStep } from './utils/lambda-response';
 import fetch from './utils/fetch';
 import ddb from './utils/dynamodb';
-import { getCreationTx, getTxJwtToken } from './KYC/dynamoTxs';
+import { getCreationTx, getTxAuthToken } from './KYC/dynamoTxs';
 import { StepError, FetchError } from './errors';
 
 interface TransactionResponse {
@@ -39,13 +39,13 @@ export default async function (
   ccTokenId: string
 ): Promise<nextStep> {
   try {
-    const jwtTx = getTxJwtToken(txId);
+    const authTx = getTxAuthToken(txId);
     const creationTx = await getCreationTx(txId);
     const moonpayTx = (await fetch(`${moonpayBaseAPI}/transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: `Bearer ${(await jwtTx).jwtToken}`,
+        'X-CSRF-TOKEN': (await authTx).csrfToken,
       },
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,

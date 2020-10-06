@@ -16,7 +16,7 @@ export default async function (
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
+        'X-CSRF-TOKEN': token,
       },
       body: JSON.stringify({
         phoneNumber: `+${phoneCountryCode}${phoneNumber}`,
