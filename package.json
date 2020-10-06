@@ -7,7 +7,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-transition-group": "^4.4.1",
-    "rendered-country-flags": "^1.0.1"
+    "rendered-country-flags": "^1.2.0"
   },
   "scripts": {
     "lint": "eslint src --ext ts,js,tsx --no-ignore --fix",
