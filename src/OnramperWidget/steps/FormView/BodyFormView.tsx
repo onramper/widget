@@ -7,7 +7,7 @@ import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
 import InputButton from '../../common/Input/InputButton'
 import InfoBox from '../../common/InfoBox'
-import List from '../../common/List'
+import PickView from '../../PickView'
 
 import { APIContext, StepDataItems } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
@@ -29,11 +29,10 @@ type BodyFormViewType = {
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { handleInputChange, onActionButton, fields = [] } = props
     const { collected } = useContext(APIContext);
-    const { backScreen } = useContext(NavContext)
+    const { backScreen, nextScreen } = useContext(NavContext)
     const { isFilled = false, isLoading = false, errorObj, errorMsg } = props
 
     const [push2Bottom, setPush2Bottom] = useState(false)
-    const [ countryPickerOpen, setCountryPickerOpen ] = useState(false)
 
     useEffect(() => {
         setPush2Bottom(fields.some(field => field.name === 'termsOfUse'))
@@ -51,20 +50,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         handleInputChange(name, v)
     }, [handleInputChange])
 
-    if (countryPickerOpen) {
-        return <List
-            searchable={true}
-            items={Object.entries(countryNames).map(([code, name]) => ({
-                id: code,
-                name,
-                icon: icons[code]
-            }))}
-            onItemClick={(_, { id }) => {
-                onChange("country", id.toLowerCase())
-                setCountryPickerOpen(false)
-            }}
-        />
-    }
+    useEffect(() => {
+        if (!collected['country'])
+            onChange('country', collected['selectedCountry'])
+    }, [onChange, collected])
 
     return (
         <main className={stylesCommon.body}>
@@ -90,7 +79,24 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             }.</label>
                     ))
                     || ((field.name === 'country') && (
-                        <InputButton onClick={()=>setCountryPickerOpen(true)} label={field.humanName} selectedOption={countryNames[(collected[field.name]??'gb').toUpperCase()]} icon={icons[(collected[field.name]??'gb').toUpperCase()]} />
+                        <InputButton className={stylesCommon['body__child']} onClick={
+                            () => nextScreen(
+                                <PickView
+                                    title={field.humanName}
+                                    name={field.name}
+                                    onItemClick={(name, index, item) => {
+                                        onChange(name, item.id.toLowerCase())
+                                        backScreen()
+                                    }}
+                                    items={Object.entries(countryNames).map(([code, name]) => ({
+                                        id: code,
+                                        name,
+                                        icon: icons[code]
+                                    }))}
+                                    searchable
+                                />
+                            )}
+                            label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? 'gb').toUpperCase()]} icon={icons[(collected[field.name] ?? 'gb').toUpperCase()]} />
                     ))
                     || ((field.type !== 'boolean') && (
                         <InputText hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type === 'integer' ? 'number' : field.type} />
