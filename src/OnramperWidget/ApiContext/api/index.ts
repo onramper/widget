@@ -62,7 +62,7 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
     const urlParams = createUrlParamsFromObject(params ?? {})
     
     let nextStep: FetchResponse;
-    if(/https:\/\/(api|upload).onramper.(dev|com)\/transaction\/Moonpay.*/.test(step.url)){
+    if(/https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/.test(step.url)){
         nextStep = await processMoonpayStep(step.url, body);
     } else {
         nextStep = await fetch(`${step.url}?${urlParams}`, { method, body })
