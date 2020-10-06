@@ -42,6 +42,7 @@ export default async function (
     headers: {
       'X-CSRF-TOKEN':token,
     },
+    credentials: 'include',
   }).then((res) => res.json())) as limitAPIResponse;
   let txType: string;
   if (creationTx.paymentMethod === 'creditCard') {

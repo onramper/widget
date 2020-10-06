@@ -18,6 +18,7 @@ export default async function (
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': token,
       },
+      credentials: 'include',
       body: JSON.stringify({
         phoneNumber: `+${phoneCountryCode}${phoneNumber}`,
       }),

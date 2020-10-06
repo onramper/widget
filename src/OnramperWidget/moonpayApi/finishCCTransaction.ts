@@ -47,6 +47,7 @@ export default async function (
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': (await authTx).csrfToken,
       },
+      credentials: 'include',
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,
         extraFeePercentage: 0, // TODO

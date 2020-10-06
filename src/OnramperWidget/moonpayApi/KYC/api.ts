@@ -103,6 +103,7 @@ export async function setFiatCurrency(
       'Content-Type': 'application/json',
       'X-CSRF-TOKEN': token,
     },
+    credentials: 'include',
     body: JSON.stringify({
       defaultCurrencyId: fiatData[fiatCurrency].id,
     }),

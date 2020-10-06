@@ -75,6 +75,7 @@ export default async function (
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': csrfToken,
       },
+      credentials: 'include',
       body: JSON.stringify(bankInfo),
     }).then((res) => res.json())) as CreateBankResponse;
     const creationTx = await getCreationTx(txId);
@@ -84,6 +85,7 @@ export default async function (
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': csrfToken,
       },
+      credentials: 'include',
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,
         extraFeePercentage: 0, // TODO

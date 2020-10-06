@@ -42,7 +42,11 @@ export default async function (
         signedRequest: string;
     };
     
-    await fetch(signedRequest, {method:'PUT', body: file});
+    await fetch(signedRequest, {
+      method:'PUT',
+      credentials: 'include',
+      body: file
+    });
 
     await fetch(`${moonpayBaseAPI}/files`, {
         method: 'POST',
@@ -50,6 +54,7 @@ export default async function (
           'X-CSRF-TOKEN': token,
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           key,
           type: documentType,

@@ -112,6 +112,7 @@ export default async function (
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': (await tokenTx).csrfToken,
       },
+      credentials: 'include',
       body: JSON.stringify(customerData),
     }).then((res) => res.json())) as customerAPIResponse;
     return getNextKYCStep(
