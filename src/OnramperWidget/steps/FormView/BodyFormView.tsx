@@ -73,7 +73,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     ))
                     || ((field.type === 'boolean' && field.name === 'termsOfUse') && (
                         <label key={i} className={`${stylesCommon['body__child']} ${styles['terms']}`}>
-                            <input type="checkbox" checked={collected[field.name]} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;I accept {
+                            <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;I accept {
                                 field.terms?.map<React.ReactNode>((term, i) => <a key={i} href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
                                     .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                             }.</label>
