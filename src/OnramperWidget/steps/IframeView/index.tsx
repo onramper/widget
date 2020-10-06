@@ -20,7 +20,9 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
     const receiveMessage = async (event: MessageEvent) => {
       if (event.origin !== "https://sandbox.onramper.dev")
         return;
-      if (event.data.transactionId){
+      if (event.data.type){
+        replaceScreen(<Step nextStep={(event.data as NextStep)} />)
+      } else if (event.data.transactionId){
         const returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
         replaceScreen(<Step nextStep={(returnedNextStep as NextStep)} />)
       } else if (typeof event.data === 'string'){
