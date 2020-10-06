@@ -44,7 +44,6 @@ export default async function (
     
     await fetch(signedRequest, {
       method:'PUT',
-      credentials: 'include',
       body: file
     });
 
