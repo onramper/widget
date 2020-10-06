@@ -5,10 +5,14 @@ import styles from './styles.module.css'
 import InputText from '../../common/Input/InputText'
 import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
+import InputButton from '../../common/Input/InputButton'
 import InfoBox from '../../common/InfoBox'
+import List from '../../common/List'
 
 import { APIContext, StepDataItems } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
+import icons from 'rendered-country-flags'
+import countryNames from './contryNames'
 
 type BodyFormViewType = {
     onActionButton: () => void
@@ -29,6 +33,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { isFilled = false, isLoading = false, errorObj, errorMsg } = props
 
     const [push2Bottom, setPush2Bottom] = useState(false)
+    const [ countryPickerOpen, setCountryPickerOpen ] = useState(false)
 
     useEffect(() => {
         setPush2Bottom(fields.some(field => field.name === 'termsOfUse'))
@@ -45,6 +50,21 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         }
         handleInputChange(name, v)
     }, [handleInputChange])
+
+    if (countryPickerOpen) {
+        return <List
+            searchable={true}
+            items={Object.entries(countryNames).map(([code, name]) => ({
+                id: code,
+                name,
+                icon: icons[code]
+            }))}
+            onItemClick={(_, { id }) => {
+                onChange("country", id.toLowerCase())
+                setCountryPickerOpen(false)
+            }}
+        />
+    }
 
     return (
         <main className={stylesCommon.body}>
@@ -68,6 +88,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                 field.terms?.map<React.ReactNode>(term => <a href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
                                     .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                             }.</label>
+                    ))
+                    || ((field.name === 'country') && (
+                        <InputButton onClick={()=>setCountryPickerOpen(true)} label={field.humanName} selectedOption={countryNames[(collected[field.name]??'gb').toUpperCase()]} icon={icons[(collected[field.name]??'gb').toUpperCase()]} />
                     ))
                     || ((field.type !== 'boolean') && (
                         <InputText hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type === 'integer' ? 'number' : field.type} />
