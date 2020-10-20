@@ -63,11 +63,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             {
                 fields.map((field, i) =>
                     (field.name === 'cryptocurrencyAddress' && (
-                        <InputCryptoAddr hint={field.hint} type={field.type} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
+                        <InputCryptoAddr hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
                     ))
                     || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
                         <React.Fragment key={i}>
-                            <InputText hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={field.type === 'integer' ? 'number' : field.type} />
+                            <InputText hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={getInputType(field)} />
                             <span key={999} onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
                         </React.Fragment>
                     ))
@@ -99,7 +99,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? 'gb').toUpperCase()]} icon={icons[(collected[field.name] ?? 'gb').toUpperCase()]} />
                     ))
                     || ((field.type !== 'boolean') && (
-                        <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={field.type === 'integer' ? 'number' : field.type} />
+                        <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
                     ))
                 )
             }
@@ -108,6 +108,19 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             </div>
         </main >
     )
+}
+
+const getInputType = (field: BodyFormViewType['fields'][0]) => {
+    if (field.type === 'integer')
+        return 'number'
+    else if (field.type === 'string')
+        return 'text'
+    else if (field.type === 'boolean')
+        return 'checkbox'
+    else if (field.name === 'email')
+        return 'email'
+    else
+        return field.type
 }
 
 BodyFormView.defaultProps = {
