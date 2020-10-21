@@ -119,6 +119,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             !ccCheck ?
                                 <CreditCardInput key={i} handleInputChange={onChange} errorObj={errorObj} />
                                 : <></>
+                        )) || ((field.name === 'state') && (
+                            collected['country'] === 'us' ?
+                                <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
+                                : <></>
                         )) || ((field.type !== 'boolean') && (
                             <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
                         ))
