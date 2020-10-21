@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useCallback } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
+import CreditCardInput from './renderers/creditCard'
 import InputText from '../../common/Input/InputText'
 import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
@@ -50,10 +51,25 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         handleInputChange(name, v)
     }, [handleInputChange])
 
+    const isCreditCardRequired = useCallback((fields: StepDataItems, isReq: boolean, isReqCB: () => void) => {
+        const isCcPresent = fields.some((field) => field.name === 'ccNumber')
+            && fields.some((field) => field.name === 'ccMonth')
+            && fields.some((field) => field.name === 'ccYear')
+            && fields.some((field) => field.name === 'ccCVV')
+
+        if (isCcPresent && !isReq) {
+            isReqCB()
+        }
+
+        return isCcPresent
+    }, [])
+
     useEffect(() => {
         if (!collected['country'])
             onChange('country', collected['selectedCountry'])
     }, [onChange, collected])
+
+    let isCreditCardAdded = false
 
     return (
         <main className={stylesCommon.body}>
@@ -61,47 +77,53 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 {errorMsg}
             </InfoBox>
             {
-                fields.map((field, i) =>
-                    (field.name === 'cryptocurrencyAddress' && (
-                        <InputCryptoAddr hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
-                    ))
-                    || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode' || field.name === 'verifyCreditCard') && (
-                        <React.Fragment key={i}>
-                            <InputText hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={getInputType(field)} />
-                            <span key={999} onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
-                        </React.Fragment>
-                    ))
-                    || ((field.type === 'boolean' && field.name === 'termsOfUse') && (
-                        <label key={i} className={`${stylesCommon['body__child']} ${styles['terms']}`}>
-                            <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;I accept {
-                                field.terms?.map<React.ReactNode>((term, i) => <a key={i} href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
-                                    .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
-                            }.</label>
-                    ))
-                    || ((field.name === 'country') && (
-                        <InputButton key={i} className={stylesCommon['body__child']} onClick={
-                            () => nextScreen(
-                                <PickView
-                                    title={field.humanName}
-                                    name={field.name}
-                                    onItemClick={(name, index, item) => {
-                                        onChange(name, item.id.toLowerCase())
-                                        backScreen()
-                                    }}
-                                    items={Object.entries(countryNames).map(([code, name]) => ({
-                                        id: code,
-                                        name,
-                                        icon: icons[code]
-                                    }))}
-                                    searchable
-                                />
-                            )}
-                            label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? 'gb').toUpperCase()]} icon={icons[(collected[field.name] ?? 'gb').toUpperCase()]} />
-                    ))
-                    || ((field.type !== 'boolean') && (
-                        <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
-                    ))
-                )
+                fields.map((field, i) => {
+                    const ccCheck = isCreditCardAdded
+                    return (
+                        (field.name === 'cryptocurrencyAddress' && (
+                            <InputCryptoAddr hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
+                        ))
+                        || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode' || field.name === 'verifyCreditCard') && (
+                            <React.Fragment key={i}>
+                                <InputText hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={getInputType(field)} />
+                                <span key={999} onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
+                            </React.Fragment>
+                        ))
+                        || ((field.type === 'boolean' && field.name === 'termsOfUse') && (
+                            <label key={i} className={`${stylesCommon['body__child']} ${styles['terms']}`}>
+                                <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;I accept {
+                                    field.terms?.map<React.ReactNode>((term, i) => <a key={i} href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
+                                        .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
+                                }.</label>
+                        ))
+                        || ((field.name === 'country') && (
+                            <InputButton key={i} className={stylesCommon['body__child']} onClick={
+                                () => nextScreen(
+                                    <PickView
+                                        title={field.humanName}
+                                        name={field.name}
+                                        onItemClick={(name, index, item) => {
+                                            onChange(name, item.id.toLowerCase())
+                                            backScreen()
+                                        }}
+                                        items={Object.entries(countryNames).map(([code, name]) => ({
+                                            id: code,
+                                            name,
+                                            icon: icons[code]
+                                        }))}
+                                        searchable
+                                    />
+                                )}
+                                label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? 'gb').toUpperCase()]} icon={icons[(collected[field.name] ?? 'gb').toUpperCase()]} />
+                        )) || (((field.name === 'ccNumber' || field.name === 'ccMonth' || field.name === 'ccYear' || field.name === 'ccCVV') && isCreditCardRequired(fields, isCreditCardAdded, () => isCreditCardAdded = true)) && (
+                            !ccCheck ?
+                                <CreditCardInput key={i} handleInputChange={onChange} errorObj={errorObj} />
+                                : <></>
+                        )) || ((field.type !== 'boolean') && (
+                            <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
+                        ))
+                    )
+                })
             }
             <div className={`${stylesCommon['body__child']} ${push2Bottom ? '' : stylesCommon['grow']}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled || isLoading} />
