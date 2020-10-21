@@ -12,6 +12,7 @@ export interface ItemType {
     symbol?: string
     precision?: number
     currencyType?: string
+    searchWords?: string //format "word1 word2"
 }
 
 export enum ItemCategory {

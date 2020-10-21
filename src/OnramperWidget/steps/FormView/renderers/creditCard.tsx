@@ -36,14 +36,14 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
                 <InputText
                     className={stylesCommon["row-fields__child"]}
                     label="Expiry date"
-                    name="cc-expiration"
+                    name="ccExpiration"
                     error={props.errorObj?.['ccMonth'] || props.errorObj?.['ccYear']}
                     onChange={onChange}
                 />
                 <InputText
                     className={stylesCommon["row-fields__child"]}
                     label="CCV"
-                    name="cc-cvc"
+                    name="ccCVV"
                     error={props.errorObj?.['ccCVV']}
                     onChange={onChange}
                 />

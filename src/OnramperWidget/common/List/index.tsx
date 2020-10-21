@@ -19,10 +19,13 @@ const List: React.FC<ListProps> = (props) => {
     const [query, setQuery] = useState('')
 
     const filterItems = useCallback((item: ItemType) => {
+        const searchWords = item.searchWords?.replace(/[+/-]/g, ' ')
         return item.name.toLowerCase().split(' ').some((substring) => substring.toLowerCase().startsWith(query))
             || item.name.toLowerCase().toLowerCase().startsWith(query)
             || item.info?.split(' ').some((substring) => substring.toLowerCase().startsWith(query))
             || item.info?.toLowerCase().startsWith(query)
+            || searchWords?.split(' ').some((substring) => substring.toLowerCase().startsWith(query))
+            || searchWords?.toLowerCase().startsWith(query)
             ? true : false
     }, [query])
 

@@ -13,7 +13,8 @@ import PickView from '../../PickView'
 import { APIContext, StepDataItems } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
-import countryNames from './contryNames'
+import countryNames from './utils/contryNames'
+import phoneCodes from './utils/phoneCodes'
 
 type BodyFormViewType = {
     onActionButton: () => void
@@ -51,25 +52,25 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         handleInputChange(name, v)
     }, [handleInputChange])
 
-    const isCreditCardRequired = useCallback((fields: StepDataItems, isReq: boolean, isReqCB: () => void) => {
-        const isCcPresent = fields.some((field) => field.name === 'ccNumber')
-            && fields.some((field) => field.name === 'ccMonth')
-            && fields.some((field) => field.name === 'ccYear')
-            && fields.some((field) => field.name === 'ccCVV')
-
-        if (isCcPresent && !isReq) {
-            isReqCB()
+    const isRequired = (fields2Check: string[], isReq: boolean, isReqCB: () => void) => {
+        for (const index in fields2Check) {
+            if (!fields.some((f) => f.name === fields2Check[index])) {
+                return false
+            }
         }
+        if (!isReq)
+            isReqCB()
 
-        return isCcPresent
-    }, [])
+        return true
+    }
 
     useEffect(() => {
         if (!collected['country'])
             onChange('country', collected['selectedCountry'])
     }, [onChange, collected])
 
-    let isCreditCardAdded = false
+    let isCreditCardAdded = false,
+        isPhoneNumberAdded = false
 
     return (
         <main className={stylesCommon.body}>
@@ -79,6 +80,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             {
                 fields.map((field, i) => {
                     const ccCheck = isCreditCardAdded
+                    const phoneNumberCheck = isPhoneNumberAdded
                     return (
                         (field.name === 'cryptocurrencyAddress' && (
                             <InputCryptoAddr hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
@@ -115,9 +117,37 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     />
                                 )}
                                 label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? 'gb').toUpperCase()]} icon={icons[(collected[field.name] ?? 'gb').toUpperCase()]} />
-                        )) || (((field.name === 'ccNumber' || field.name === 'ccMonth' || field.name === 'ccYear' || field.name === 'ccCVV') && isCreditCardRequired(fields, isCreditCardAdded, () => isCreditCardAdded = true)) && (
+                        )) || (((field.name === 'ccNumber' || field.name === 'ccMonth' || field.name === 'ccYear' || field.name === 'ccCVV') && isRequired(['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'], isCreditCardAdded, () => isCreditCardAdded = true)) && (
                             !ccCheck ?
                                 <CreditCardInput key={i} handleInputChange={onChange} errorObj={errorObj} />
+                                : <></>
+                        )) || (((field.name === 'phoneCountryCode' || field.name === 'phoneNumber') && isRequired(['phoneCountryCode', 'phoneNumber'], isPhoneNumberAdded, () => isPhoneNumberAdded = true)) && (
+                            !phoneNumberCheck ?
+                                <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
+                                    <InputButton onClick={
+                                        () => nextScreen(
+                                            <PickView
+                                                title={field.humanName}
+                                                name={field.name}
+                                                onItemClick={(name, index, item) => {
+                                                    onChange(name, item.id.toLowerCase())
+                                                    onChange('country', item.id.toLowerCase())
+                                                    backScreen()
+                                                }}
+                                                items={Object.entries(phoneCodes).map(([code, infoObj]) => ({
+                                                    id: code,
+                                                    name: infoObj['phoneCode'],
+                                                    info: infoObj['name'],
+                                                    searchWords: infoObj['searchWords']
+                                                }))}
+                                                searchable
+                                            />
+                                        )}
+                                        className={stylesCommon['row-fields__child']} label="Phone country code"
+                                        selectedOption={phoneCodes[(collected[field.name] ?? collected['country'] ?? 'gb').toUpperCase()].phoneCode}
+                                        icon={''} />
+                                    <InputText name='phoneNumber' type='number' value={collected['phoneNumber']} onChange={onChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Phone number" placeholder="654 56 84 56" />
+                                </div>
                                 : <></>
                         )) || ((field.name === 'state') && (
                             collected['country'] === 'us' ?
