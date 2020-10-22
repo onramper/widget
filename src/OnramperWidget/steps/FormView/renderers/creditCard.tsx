@@ -10,7 +10,7 @@ type CreditCardInputType = {
 const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
 
     const onChange = (name: string, value: string) => {
-        if (name === 'cc-expiration') {
+        if (name === 'ccExpiration') {
             const month = value.split('/')[0]
             const year = value.split('/')[1]
             props.handleInputChange('ccMonth', month)

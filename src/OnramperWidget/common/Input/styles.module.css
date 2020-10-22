@@ -77,7 +77,8 @@
 }
 
 /***input type=number***/
-.input__type--number--error {
+.input__type--number--error,
+.input__type--selector--error {
     border-color: #E35757;
 }
 
