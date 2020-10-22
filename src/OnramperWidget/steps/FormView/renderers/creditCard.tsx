@@ -29,6 +29,7 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
                 name="ccNumber"
                 error={props.errorObj?.['ccNumber']}
                 onChange={onChange}
+                placeholder='411111111111'
             />
             <div
                 className={`${stylesCommon["body__child"]} ${stylesCommon["row-fields"]}`}
@@ -39,6 +40,7 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
                     name="ccExpiration"
                     error={props.errorObj?.['ccMonth'] || props.errorObj?.['ccYear']}
                     onChange={onChange}
+                    placeholder='MM/YYY'
                 />
                 <InputText
                     className={stylesCommon["row-fields__child"]}
@@ -46,6 +48,7 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
                     name="ccCVV"
                     error={props.errorObj?.['ccCVV']}
                     onChange={onChange}
+                    placeholder='123'
                 />
             </div>
         </>
