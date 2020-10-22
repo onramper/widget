@@ -5,20 +5,54 @@ import InputText from '../../../common/Input/InputText'
 type CreditCardInputType = {
     handleInputChange: (name: string, value: any) => void
     errorObj?: { [key: string]: string }
+    ccNumberValue?: string
+    ccMonthValue?: string
+    ccYearValue?: string
+    ccCVVValue?: string
 }
 
 const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
 
+    const { ccNumberValue = '', ccMonthValue = '', ccYearValue = '', ccCVVValue = '' } = props
+
     const onChange = (name: string, value: string) => {
+        console.log(name, value)
         if (name === 'ccExpiration') {
-            const month = value.split('/')[0]
-            const year = value.split('/')[1]
+            console.log(value)
+            let month = value.split('/')[0].replace(' ', '')
+            let year = (value.split('/')[1] ?? '').replace(' ', '')
+            if (year.length > 2) return
             props.handleInputChange('ccMonth', month)
-            props.handleInputChange('ccYear', year)
+            props.handleInputChange('ccYear', '20' + year)
+        }
+        else if (name === 'ccNumber') {
+            const ccNumberValue = formatCardNumber(value.replace(/ /g, '')).replace(/ /g, '')
+            console.log('here', ccNumberValue)
+            if (ccNumberValue.length > 16) return
+            console.log('heres', ccNumberValue.length)
+            props.handleInputChange(name, ccNumberValue)
         }
         else {
             props.handleInputChange(name, value)
         }
+    }
+
+    const formatCardNumber = (value: string) => {
+        const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g
+        const onlyNumbers = value.replace(/[^\d]/g, '')
+
+        return onlyNumbers.replace(regex, (regex, $1, $2, $3, $4) =>
+            [$1, $2, $3, $4].filter(group => !!group).join(' ')
+        )
+    }
+
+    const formatExpiryDate = (value: string) => {
+        const regex = /^(\d{0,2})(\d{0,2})$/g
+        const onlyNumbers = value.replace(/[^\d]/g, '')
+
+        return onlyNumbers.replace(regex, (regex, $1, $2) =>
+            [$1, $2].filter(group => !!group).join(' / ')
+        )
     }
 
     return (
@@ -29,7 +63,8 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
                 name="ccNumber"
                 error={props.errorObj?.['ccNumber']}
                 onChange={onChange}
-                placeholder='411111111111'
+                placeholder='4111 1111 1111 1111'
+                value={formatCardNumber(ccNumberValue)}
             />
             <div
                 className={`${stylesCommon["body__child"]} ${stylesCommon["row-fields"]}`}
@@ -40,7 +75,9 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
                     name="ccExpiration"
                     error={props.errorObj?.['ccMonth'] || props.errorObj?.['ccYear']}
                     onChange={onChange}
-                    placeholder='MM/YYY'
+                    placeholder='MM/YY'
+                    value={formatExpiryDate(`${ccMonthValue}${ccYearValue.substring(2, 4)}`)}
+                /* value={formatExpiryDate('1111')} */
                 />
                 <InputText
                     className={stylesCommon["row-fields__child"]}
@@ -49,6 +86,7 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
                     error={props.errorObj?.['ccCVV']}
                     onChange={onChange}
                     placeholder='123'
+                    value={ccCVVValue}
                 />
             </div>
         </>
