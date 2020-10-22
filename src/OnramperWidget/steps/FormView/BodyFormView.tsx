@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react'
+import React, { useContext, useState, useEffect, useCallback, useRef } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
@@ -37,6 +37,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { isFilled = false, isLoading = false, errorObj, errorMsg } = props
 
     const [push2Bottom, setPush2Bottom] = useState(false)
+
+    const firstRender = useRef(true)
+    useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false
+            handleInputChange("phoneCountryCode", +phoneCodes[collected['selectedCountry']?.toUpperCase() ?? 'GB']?.phoneCode)
+            handleInputChange("state", collected['state'] ?? '0')
+            return
+        }
+    }, [handleInputChange, collected])
 
     useEffect(() => {
         setPush2Bottom(fields.some(field => field.name === 'termsOfUse'))
@@ -156,7 +166,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                 title={field.humanName}
                                                 name={field.name}
                                                 onItemClick={(name, index, item) => {
-                                                    onChange(name, item.id.toLowerCase())
+                                                    onChange(name, +item.name)
                                                     onChange('country', item.id.toLowerCase())
                                                     backScreen()
                                                 }}
@@ -170,9 +180,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             />
                                         )}
                                         className={stylesCommon['row-fields__child']} label="Phone country code"
-                                        selectedOption={phoneCodes[(collected[field.name] ?? collected['country'] ?? 'gb').toUpperCase()].phoneCode}
-                                        icon={''} />
-                                    <InputText name='phoneNumber' type='number' value={collected['phoneNumber']} onChange={onChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Phone number" placeholder="654 56 84 56" />
+                                        selectedOption={'+' + collected[field.name] ?? phoneCodes[(collected['country'] ?? 'gb').toUpperCase()].phoneCode}
+                                        error={errorObj?.[field.name]}
+                                    />
+                                    <InputText name='phoneNumber' type='number' value={collected['phoneNumber'] ?? ''} onChange={onChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Phone number" placeholder="654 56 84 56" />
                                 </div>
                                 : <></>
                         )) || ((field.type !== 'boolean') && (
