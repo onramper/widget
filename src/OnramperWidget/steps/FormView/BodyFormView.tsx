@@ -113,7 +113,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         items={Object.entries(countryNames).map(([code, name]) => ({
                                             id: code,
                                             name,
-                                            icon: icons[code]
+                                            icon: icons[code],
+                                            info: code
                                         }))}
                                         searchable
                                     />
