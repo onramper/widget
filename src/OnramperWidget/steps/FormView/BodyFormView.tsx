@@ -13,8 +13,10 @@ import PickView from '../../PickView'
 import { APIContext, StepDataItems } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
+
 import countryNames from './utils/contryNames'
 import phoneCodes from './utils/phoneCodes'
+import usStates from './utils/usStates'
 
 type BodyFormViewType = {
     onActionButton: () => void
@@ -117,6 +119,29 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     />
                                 )}
                                 label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? 'gb').toUpperCase()]} icon={icons[(collected[field.name] ?? 'gb').toUpperCase()]} />
+                        )) || ((field.name === 'state') && (
+                            collected['country'] === 'us' ?
+                                <InputButton key={i} className={stylesCommon['body__child']} onClick={
+                                    () => nextScreen(
+                                        <PickView
+                                            title={field.humanName}
+                                            name={field.name}
+                                            onItemClick={(name, index, item) => {
+                                                onChange(name, item.id.toLowerCase())
+                                                backScreen()
+                                            }}
+                                            items={Object.entries(usStates).map(([code, state]) => ({
+                                                id: code,
+                                                name: state.name,
+                                                info: code
+                                            }))}
+                                            searchable
+                                        />
+                                    )}
+                                    label={field.humanName}
+                                    selectedOption={usStates[(collected[field.name] ?? 'al').toUpperCase()].name}
+                                />
+                                : <></>
                         )) || (((field.name === 'ccNumber' || field.name === 'ccMonth' || field.name === 'ccYear' || field.name === 'ccCVV') && isRequired(['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'], isCreditCardAdded, () => isCreditCardAdded = true)) && (
                             !ccCheck ?
                                 <CreditCardInput key={i} handleInputChange={onChange} errorObj={errorObj} />
@@ -148,10 +173,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         icon={''} />
                                     <InputText name='phoneNumber' type='number' value={collected['phoneNumber']} onChange={onChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Phone number" placeholder="654 56 84 56" />
                                 </div>
-                                : <></>
-                        )) || ((field.name === 'state') && (
-                            collected['country'] === 'us' ?
-                                <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
                                 : <></>
                         )) || ((field.type !== 'boolean') && (
                             <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
