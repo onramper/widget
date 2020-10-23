@@ -11,7 +11,7 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
       I want to buy
     </label>
     <div
-      className="input__type input__type--selector "
+      className="input__type input__type--selector  "
       onClick={[Function]}
     >
       <img
@@ -80,7 +80,7 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
         Currency
       </label>
       <div
-        className="input__type input__type--selector "
+        className="input__type input__type--selector  "
         onClick={[Function]}
       >
         <img
@@ -113,7 +113,7 @@ exports[`Component snapshots BodyBuyCrypto snapshot 1`] = `
       Payment method
     </label>
     <div
-      className="input__type input__type--selector "
+      className="input__type input__type--selector  "
       onClick={[Function]}
     >
       <img
@@ -249,7 +249,7 @@ exports[`Component snapshots InputButton snapshot 1`] = `
     Label
   </label>
   <div
-    className="input__type input__type--selector input__type--selector--disabled"
+    className="input__type input__type--selector  input__type--selector--disabled"
   >
     <img
       alt="Icon"
