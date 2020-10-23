@@ -184,7 +184,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                 searchable
                                             />
                                         )}
-                                        className={stylesCommon['row-fields__child']} label="Phone country code"
+                                        className={stylesCommon['row-fields__child']} label="Country code"
                                         selectedOption={'+' + collected[field.name] ?? phoneCodes[(collected['country'] ?? 'gb').toUpperCase()].phoneCode}
                                         error={errorObj?.[field.name]}
                                     />
