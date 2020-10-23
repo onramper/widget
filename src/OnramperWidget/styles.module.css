@@ -81,6 +81,7 @@ components
 .row-fields {
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
 }
 
 /* .row-fields__child {
