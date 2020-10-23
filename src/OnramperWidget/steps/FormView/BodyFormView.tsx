@@ -150,17 +150,17 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         />
                                     )}
                                     label={field.humanName}
-                                    selectedOption={usStates[(collected[field.name] ?? 'al').toUpperCase()].name}
+                                    selectedOption={usStates[((!collected[field.name] || collected[field.name] === '0') ? 'al' : collected[field.name]).toUpperCase()].name}
                                 />
                                 : <></>
                         )) || (((field.name === 'ccNumber' || field.name === 'ccMonth' || field.name === 'ccYear' || field.name === 'ccCVV') && isRequired(['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'], isCreditCardAdded, () => isCreditCardAdded = true)) && (
                             !ccCheck ?
-                                <CreditCardInput 
-                                ccNumberValue={collected['ccNumber']}
-                                ccMonthValue={collected['ccMonth']}
-                                ccYearValue={collected['ccYear']}
-                                ccCVVValue={collected['ccCVV']}
-                                key={i} handleInputChange={onChange} errorObj={errorObj} />
+                                <CreditCardInput
+                                    ccNumberValue={collected['ccNumber']}
+                                    ccMonthValue={collected['ccMonth']}
+                                    ccYearValue={collected['ccYear']}
+                                    ccCVVValue={collected['ccCVV']}
+                                    key={i} handleInputChange={onChange} errorObj={errorObj} />
                                 : <></>
                         )) || (((field.name === 'phoneCountryCode' || field.name === 'phoneNumber') && isRequired(['phoneCountryCode', 'phoneNumber'], isPhoneNumberAdded, () => isPhoneNumberAdded = true)) && (
                             !phoneNumberCheck ?
