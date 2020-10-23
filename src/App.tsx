@@ -9,7 +9,7 @@ const defaultAddrs = JSON.stringify({
 
 const defaultColor = `#${getParam('color', '31a5ff')}`
 const defaultAmount = Number(getParam('defaultAmount', '100'))
-const defaultCrypto = getParam('defaultCrypto', '')
+const defaultCrypto = getParam('defaultCrypto', 'BTC')
 const addresses = JSON.parse(getParam('addresses', defaultAddrs) ?? JSON.stringify({}))
 const onlyCryptos = getParam('onlyCryptos', undefined)?.split(',').map(code => code.trim())
 const excludeCryptos = getParam('excludeCryptos', undefined)?.split(',').map(code => code.trim())
