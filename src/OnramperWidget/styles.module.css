@@ -69,8 +69,16 @@ components
     display: flex;
     flex-direction: column;
     padding: var(--body-space-childs) var(--padding-rl);
+    padding-bottom: 0px; /*margin bottom set in body:after*/
     overflow: auto;
     flex-grow: 1;
+}
+
+/*workaround to fix this https://bugzilla.mozilla.org/show_bug.cgi?id=748518*/
+.body:after {
+    content: '';
+    display: block;
+    padding-bottom: var(--body-space-childs);
 }
 
 .body__child+.body__child {
