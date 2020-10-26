@@ -84,7 +84,6 @@
     top: 50%;
 
     color: var(--primary-color);
-    fill:red;
     background-color: var(--border-color);
     padding: var(--icon-padding);
     width: var(--icon-width);
