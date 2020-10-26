@@ -16,6 +16,7 @@ type InputCryptoAddrType = {
     className: string
     type?: string
     hint?: string
+    onHelpClick?: () => void
 }
 
 const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
@@ -52,7 +53,9 @@ const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
             icon={items.length > 0 ? IconChevronRight : undefined}
             iconPosition='end'
             onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
-            name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`YOUR ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder="" />
+            name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`YOUR ${collected.selectedCrypto?.name} WALLET ADDRESS`} placeholder=""
+            onHelpClick={props.onHelpClick}
+        />
     )
 }
 
