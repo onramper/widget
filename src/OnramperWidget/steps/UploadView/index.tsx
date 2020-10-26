@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import Header from '../../common/Header'
-import Footer from '../../common/Footer'
 import BodyUpload from './BodyUpload'
 import styles from '../../styles.module.css'
 
@@ -42,7 +41,6 @@ const UploadView: React.FC<{ nextStep: NextStep & { type: 'file' } }> = (props) 
         errorMsg={errorMsg}
         acceptedContentTypes={props.nextStep.acceptedContentTypes}
       />
-      <Footer />
     </div>
   );
 };

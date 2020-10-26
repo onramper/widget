@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../common/Header'
-import Footer from '../common/Footer'
 import BodyBuyCrypto from './BodyBuyCrypto'
 import styles from '../styles.module.css'
 import PickView from '../PickView'
@@ -68,7 +67,6 @@ const BuyCryptoView: React.FC = () => {
             setFlagEffectInit(prev => prev + 1)
         }}
       />
-      <Footer />
     </div>
   );
 };

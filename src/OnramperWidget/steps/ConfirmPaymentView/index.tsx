@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import Header from '../../common/Header'
-import Footer from '../../common/Footer'
 import BodyConfirmPayment from './BodyConfirmPayment'
 import styles from '../../styles.module.css'
 import Step from '../Step'
@@ -30,7 +29,6 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
         conversionRate={collected.selectedGateway?.rate}
         isFilled={true}
       />
-      <Footer />
     </div>
   );
 };

@@ -9,10 +9,15 @@ theme styles
     --min-height: 1rem;
     --width: 100%;
     --heigth: 100%;
-    --border-radius: 10px 10px 10px 10px;
+    --border-radius: 10px 10px 0px 0px;
     --background-color: white;
+    --padding-top: 1.75rem;
+    --padding-rl: 1.88rem;
+    --padding-bottom: 1.125rem;
     width: var(--width);
     height: var(--heigth);
+    display: flex;
+    flex-direction: column;
 }
 
 .theme div::-webkit-scrollbar {
@@ -44,9 +49,6 @@ general styles
 *********/
 
 .view {
-    --padding-top: 1.75rem;
-    --padding-rl: 1.88rem;
-    --padding-bottom: 1.125rem;
     --padding: var(--padding-top) var(--padding-rl) var(--padding-bottom) var(--padding-rl);
     --component-padding: 0.81rem;
     --component-content-spacing: var(--component-padding);

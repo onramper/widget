@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Header from '../../common/Header'
-import Footer from '../../common/Footer'
 import BodyPickOption from './BodyPickOptionView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
@@ -40,7 +39,6 @@ const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = (
         infoMsg={infoMsg}
         isFilled={isFilled}
       />
-      <Footer />
     </div>
   );
 };

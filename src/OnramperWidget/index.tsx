@@ -5,6 +5,9 @@ import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './NavContext';
 import { APIProvider } from './ApiContext'
 
+
+import Footer from './common/Footer'
+
 import './normalize.min.css'
 
 type OnramperWidgetProps = {
@@ -28,11 +31,14 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
 
     return (
         <div style={style} className={`${styles['theme']} ${className}`}>
-            <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} filters={{ onlyCryptos, excludeCryptos }} >
-                <NavProvider>
-                    <NavContainer home={<BuyCryptoView />} />
-                </NavProvider>
-            </APIProvider>
+            <NavProvider>
+                <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} filters={{ onlyCryptos, excludeCryptos }} >
+                    <div style={{ flexGrow: 1 }}>
+                        <NavContainer home={<BuyCryptoView />} />
+                    </div>
+                    <Footer />
+                </APIProvider>
+            </NavProvider>
         </div>
     )
 }

@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Header from '../../common/Header'
-import Footer from '../../common/Footer'
 import BodyForm from './BodyFormView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
@@ -83,7 +82,6 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
         onErrorDismissClick={() => setErrorMsg(undefined)}
         errorObj={errorObj}
       />
-      <Footer />
     </div>
   );
 };

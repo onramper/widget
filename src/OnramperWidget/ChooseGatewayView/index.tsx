@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Header from '../common/Header'
-import Footer from '../common/Footer'
 import styles from '../styles.module.css'
 import BodyChooseGateway from './BodyChooseGateway'
 import { NavContext } from '../NavContext'
@@ -33,7 +32,6 @@ const ChooseGatewayView = () => {
     <div className={styles.view}>
       <Header title="Choose gateway" backButton />
       <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} ratesList={data.allRates} onActionButton={() => nextScreen(<Step nextStep={availableRates[selectedGatewayIndex].nextStep!} />)} />
-      <Footer />
     </div>
   );
 };

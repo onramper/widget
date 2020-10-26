@@ -1,6 +1,5 @@
 import React, { useCallback, useContext } from 'react';
 import Header from '../../common/Header'
-import Footer from '../../common/Footer'
 import BodyWireTransfer from './BodyWireTransfer'
 import styles from '../../styles.module.css'
 
@@ -32,7 +31,6 @@ const WireTransferView: React.FC<{ nextStep: NextStep & { type: 'requestBankTran
         onIconClick={handleIconClick}
         reference={nextStep.reference ?? 'No reference'}
       />
-      <Footer />
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import Header from '..'
-import Footer from '../../Footer'
 import List from '../../List'
 import styles from '../../../styles.module.css'
 
@@ -50,7 +49,6 @@ const Menu: React.FC = () => {
           name: 'About Onramper',
         }
       ]} />
-      <Footer />
     </main>
   );
 };

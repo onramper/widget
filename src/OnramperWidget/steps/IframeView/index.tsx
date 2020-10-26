@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../../common/Header'
-import Footer from '../../common/Footer'
 import BodyIframeView from './BodyIframeView'
 import styles from '../../styles.module.css'
 
@@ -46,7 +45,6 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
         type={nextStep.type}
         onErrorDismissClick={() => setError(undefined)}
       />
-      <Footer />
     </div>
   );
 };
