@@ -58,9 +58,12 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                     </CSSTransition>
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
                 </ul>
-                <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={<IconWallet className={styles['icon']} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr || ''} single />
-                </ul>
+                {
+                    props.cryptoAddr &&
+                    <ul className={`${styles['wrapper']}`}>
+                        <Item type='main' icon={<IconWallet className={styles['icon']} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
+                    </ul>
+                }
                 {/*                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconPaymentMethod className={styles['icon']} />} title='Payment method' content={props.paymentMethod} />
                 </ul> */}

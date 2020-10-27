@@ -28,10 +28,30 @@ const ChooseGatewayView = () => {
     handleInputChange('selectedGateway', availableRates[selectedGatewayIndex])
   }, [handleInputChange, selectedGatewayIndex, availableRates])
 
+  const isWyreStep = () => {
+    const nextStep = availableRates[selectedGatewayIndex].nextStep
+    if (!nextStep) return
+    return (
+      availableRates[selectedGatewayIndex].identifier === 'Wyre'
+      && nextStep.type === 'form'
+      && nextStep.data.some(field => field.name === 'ccNumber')
+    )
+  }
+
   return (
     <div className={styles.view}>
       <Header title="Choose gateway" backButton />
-      <BodyChooseGateway onItemClick={(i) => setSelectedGatewayIndex(i)} ratesList={data.allRates} onActionButton={() => nextScreen(<Step nextStep={availableRates[selectedGatewayIndex].nextStep!} />)} />
+      <BodyChooseGateway
+        onItemClick={(i) => setSelectedGatewayIndex(i)}
+        ratesList={data.allRates}
+        onActionButton={
+          () => nextScreen(
+            <Step
+              nextStep={availableRates[selectedGatewayIndex].nextStep!}
+              isConfirmed={!isWyreStep()}
+            />)
+        }
+      />
     </div>
   );
 };
