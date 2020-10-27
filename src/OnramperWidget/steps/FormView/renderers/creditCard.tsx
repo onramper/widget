@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import stylesCommon from '../../../styles.module.css'
 import InputText from '../../../common/Input/InputText'
 
@@ -15,10 +15,15 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
 
     const { ccNumberValue = '', ccMonthValue = '', ccYearValue = '', ccCVVValue = '' } = props
 
+    const [isManualSlash, setIsManualSlash] = useState(false)
+
     const onChange = (name: string, value: string) => {
-        console.log(name, value)
         if (name === 'ccExpiration') {
-            console.log(value)
+            if (value.length === 3 && value.charAt(2) === '/')
+                setIsManualSlash(true)
+            else if (isManualSlash)
+                setIsManualSlash(false)
+
             let month = value.split('/')[0].replace(' ', '')
             let year = (value.split('/')[1] ?? '').replace(' ', '')
             if (year.length > 2) return
@@ -27,9 +32,7 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
         }
         else if (name === 'ccNumber') {
             const ccNumberValue = formatCardNumber(value.replace(/ /g, '')).replace(/ /g, '')
-            console.log('here', ccNumberValue)
             if (ccNumberValue.length > 16) return
-            console.log('heres', ccNumberValue.length)
             props.handleInputChange(name, ccNumberValue)
         }
         else {
@@ -47,6 +50,9 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
     }
 
     const formatExpiryDate = (value: string) => {
+        if (isManualSlash)
+            return value + ' / '
+
         const regex = /^(\d{0,2})(\d{0,2})$/g
         const onlyNumbers = value.replace(/[^\d]/g, '')
 
