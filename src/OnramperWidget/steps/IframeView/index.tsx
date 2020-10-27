@@ -8,6 +8,7 @@ import Step from '../Step'
 
 import { NextStep } from '../../ApiContext'
 import finishCCTransaction from '../../moonpayApi/finishCCTransaction'
+import { baseCreditCardSandboxUrl } from '../../moonpayApi/constants'
 
 import { NavContext } from '../../NavContext'
 
@@ -18,16 +19,16 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
 
   useEffect(() => {
     const receiveMessage = async (event: MessageEvent) => {
-      if (event.origin !== "https://sandbox.onramper.dev")
+      if (event.origin !== baseCreditCardSandboxUrl)
         return;
-      if (event.data.type){
+      if (event.data.type) {
         replaceScreen(<Step nextStep={(event.data as NextStep)} />)
-      } else if (event.data.transactionId){
+      } else if (event.data.transactionId) {
         const returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
         replaceScreen(<Step nextStep={(returnedNextStep as NextStep)} />)
-      } else if (typeof event.data === 'string'){
+      } else if (typeof event.data === 'string') {
         setError(event.data)
-      } else{
+      } else {
         setError('Unknow error. Please, contact help@onramper.com and provide the following info: ' + nextStep.url)
       }
     }
