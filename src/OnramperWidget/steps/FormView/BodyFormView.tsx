@@ -9,6 +9,8 @@ import ButtonAction from '../../common/ButtonAction'
 import InputButton from '../../common/Input/InputButton'
 import InfoBox from '../../common/InfoBox'
 import PickView from '../../PickView'
+import HelpView from '../../common/HelpView'
+import Help2FACreditCard from './renderers/Help2FACreditCard'
 
 import { APIContext, StepDataItems } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
@@ -97,7 +99,17 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         (field.name === 'cryptocurrencyAddress' && (
                             <InputCryptoAddr hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
                         ))
-                        || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode' || field.name === 'verifyCreditCard') && (
+                        || ((field.name === 'verifyCreditCard') && (
+                            <React.Fragment key={i}>
+                                <InputText onHelpClick={() => nextScreen(
+                                    <HelpView>
+                                        <Help2FACreditCard />
+                                    </HelpView>
+                                )} hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={getInputType(field)} />
+                                <span key={998} onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
+                            </React.Fragment>
+                        ))
+                        || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
                             <React.Fragment key={i}>
                                 <InputText hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={getInputType(field)} />
                                 <span key={999} onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>

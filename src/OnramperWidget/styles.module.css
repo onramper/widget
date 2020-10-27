@@ -155,3 +155,12 @@ components
     color: #083d8d;
     cursor: pointer;
 }
+
+/* help */
+.help-title {
+    margin: 0px;
+}
+
+.help-img {
+    width: 100%;
+}
