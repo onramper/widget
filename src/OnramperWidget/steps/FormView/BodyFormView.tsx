@@ -199,7 +199,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     label={field.humanName}
                                     selectedOption={usStates[((!collected[field.name] || collected[field.name] === '0') ? 'al' : collected[field.name]).toUpperCase()].name}
                                 />
-                                : <></>
+                                : null
                         )) || (((field.name === 'ccNumber' || field.name === 'ccMonth' || field.name === 'ccYear' || field.name === 'ccCVV') && isRequired(['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'], isCreditCardAdded, () => isCreditCardAdded = true)) && (
                             !ccCheck ?
                                 <CreditCardInput
@@ -209,10 +209,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     ccYearValue={collected['ccYear']}
                                     ccCVVValue={collected['ccCVV']}
                                     key={i} handleInputChange={onChange} errorObj={errorObj} />
-                                : <></>
+                                : null
                         )) || (((field.name === 'phoneCountryCode' || field.name === 'phoneNumber') && isRequired(['phoneCountryCode', 'phoneNumber'], isPhoneNumberAdded, () => isPhoneNumberAdded = true)) && (
                             !phoneNumberCheck ?
-                                <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
+                                <div key={i} className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
                                     <InputButton
                                         ref={inputRefs[fields.findIndex((field) => field.name === 'phoneCountryCode')].ref}
                                         onClick={
@@ -240,7 +240,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     />
                                     <InputText error={errorObj?.['phoneNumber']} ref={inputRefs[fields.findIndex((field) => field.name === 'phoneNumber')].ref} name='phoneNumber' type='number' value={collected['phoneNumber'] ?? ''} onChange={onChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Phone number" placeholder="654 56 84 56" />
                                 </div>
-                                : <></>
+                                : null
                         )) || ((field.type !== 'boolean') && (
                             <InputText ref={inputRefs[i].ref} key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
                         ))
