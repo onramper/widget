@@ -24,9 +24,9 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, re
         <div ref={ref} className={`${styles['input']} ${className}`}>
             {label && <label>{label}{props.onHelpClick && <>&nbsp;&nbsp;<HintIcon onClick={props.onHelpClick} /></>}</label>}
             <div onClick={props.onClick} className={`${styles['input__type']} ${styles['input__type--selector']} ${error || error === '' ? styles['input__type--selector--error'] : ''} ${props.onClick ? '' : styles['input__type--selector--disabled']}`}>
-                {icon ? <img alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? styles['input__type__child--old-first'] : ''}`} /> : null}
+                {icon && <img alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? styles['input__type__child--old-first'] : ''}`} />}
                 <span style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} className={`${styles['input__type__child']} ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`}>{selectedOption}</span>
-                {props.onClick ? <img alt="Chevron right" src={IconChevronRight} className={`${styles['input__type__child']} ${styles.input__icon} ${styles['input__icon--chevron']}`} /> : null}
+                {props.onClick && <img alt="Chevron right" src={IconChevronRight} className={`${styles['input__type__child']} ${styles.input__icon} ${styles['input__icon--chevron']}`} />}
             </div >
             <CSSTransition in={!!error}
                 timeout={500}
@@ -37,7 +37,7 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, re
                     exitActive: styles['collapse-exit-active'],
                 }}
                 unmountOnExit={true}>
-                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
+                {error && <span className={`${styles['text-error']}`} >{error}</span>}
             </CSSTransition>
         </div >
     )

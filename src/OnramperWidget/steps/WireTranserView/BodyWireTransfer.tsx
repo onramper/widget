@@ -53,10 +53,10 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
             <InputText value={bankDetails?.accountAddress} name='accountAddress' className={stylesCommon['body__child']} label="Account address" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             <InputText value={bankDetails?.bankAddress} name='bankAddress' className={stylesCommon['body__child']} label="Bank address" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             {
-                onActionButton ?
+                onActionButton &&
                     <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
                         <ButtonAction onClick={onActionButton} text='Finish' />
-                    </div> : null
+                    </div>
             }
         </main>
     )

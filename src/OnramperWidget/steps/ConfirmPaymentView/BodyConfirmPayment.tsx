@@ -108,7 +108,7 @@ const Item: React.FC<ItemType> = (props) => {
                 <span className={styles['title']} >{props.title}</span>
                 <span className={styles['description']} >{props.content}</span>
             </div>
-            {props.onClick ? <img src={IconChevron} className={`${styles['chevron']} ${isExpanded ? styles['chevron--down'] : styles['chevron--up']}`} alt='Expand button' onClick={onClick} /> : null}
+            {props.onClick && <img src={IconChevron} className={`${styles['chevron']} ${isExpanded ? styles['chevron--down'] : styles['chevron--up']}`} alt='Expand button' onClick={onClick} />}
         </li>
     )
 }

@@ -33,7 +33,7 @@ const InputText: React.FC<InputTextType> = (props) => {
     const placeholder = disabled ? '' : props.placeholder
     const clickableIcon = props.onIconClick ? true : false
     const { onChange = (e) => false, onIconClick = (n) => null } = props
-    
+
     const [actualSymbol, setActualSymbol] = useState<ItemType>()
     const [actualSymbolIndex, setActualSymbolIndex] = useState(0)
     const [switchPairEnabled, setSwitchPairEnabled] = useState(true)
@@ -42,7 +42,7 @@ const InputText: React.FC<InputTextType> = (props) => {
         let value = e.target.value === '' ? e.target.value : type === 'number' ? toMaxDecimalsRound(e.target.value ?? 0, actualSymbol?.precision ?? 1) : e.target.value
         onChange(e.target.name, value)
     }, [onChange, type, actualSymbol])
-    
+
     useEffect(() => {
         if (!symbols || symbols.length <= 0) return
         const nonFungible = symbols.find((symbol: ItemType) => symbol.precision === 0)
@@ -72,15 +72,15 @@ const InputText: React.FC<InputTextType> = (props) => {
         <div className={`${styles['input']} ${className}`}>
             {label && <label><span className={styles['label__title']}>{label}{props.onHelpClick && <>&nbsp;&nbsp;<HintIcon onClick={props.onHelpClick} /></>}</span>{switchPairEnabled && symbols && <SwitchPairs onClick={handleSwitchPair} pairs={symbols} indexSelectedNumber={actualSymbolIndex} />}</label>}
             <div className={`${styles['input__type']} ${styles['input__type--number']}  ${error || error === '' ? styles['input__type--number--error'] : ''} ${disabled ? styles['input__type--number--disabled'] : ''}`}>
-                {icon ? <img onClick={() => onIconClick(name)} alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} /> : null}
+                {icon && <img onClick={() => onIconClick(name)} alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} />}
                 <span after-content={actualSymbol?.symbol ?? undefined} className={`${styles['input__type__child']} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} >
                     <input
-/*                         onInput={(e: React.FormEvent<HTMLInputElement>) => {
-                            if (e.currentTarget.value) {
-                                let san = toMaxDecimalsRound(e.currentTarget.value, actualSymbol?.precision ?? 0)
-                                e.currentTarget.value = san.toString()
-                            }
-                        }} */
+                        /*                         onInput={(e: React.FormEvent<HTMLInputElement>) => {
+                                                    if (e.currentTarget.value) {
+                                                        let san = toMaxDecimalsRound(e.currentTarget.value, actualSymbol?.precision ?? 0)
+                                                        e.currentTarget.value = san.toString()
+                                                    }
+                                                }} */
                         step={actualSymbol?.precision !== undefined ? Number('1e-' + actualSymbol.precision) : 'any'}
                         name={name}
                         value={value}
@@ -99,7 +99,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                 unmountOnExit={true}
 
             >
-                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
+                {error && <span className={`${styles['text-error']}`} >{error}</span>}
             </CSSTransition>
         </div >
     )

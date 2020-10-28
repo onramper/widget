@@ -89,7 +89,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                 <div className={styles.content__price}>
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div className={`${styles['gateway-logo']}`}>
-                            {icon ? <img alt="Gateway logo" src={icon} /> : null}
+                            {icon && <img alt="Gateway logo" src={icon} />}
                         </div>
                     </CSSTransition>
                     <div>

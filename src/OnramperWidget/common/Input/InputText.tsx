@@ -50,7 +50,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
         <div ref={ref} className={`${styles['input']} ${className}`}>
             {label && <label>{label}{props.onHelpClick && <>&nbsp;&nbsp;<HintIcon onClick={props.onHelpClick} /></>}</label>}
             <div className={`${styles['input__type']} ${styles['input__type--number']}  ${error || error === '' ? styles['input__type--number--error'] : ''} ${disabled ? styles['input__type--number--disabled'] : ''}`}>
-                {icon ? <img onClick={(e) => onIconClick(name, formatValue(value, type), label ?? 'Text')} alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} /> : null}
+                {icon && <img onClick={(e) => onIconClick(name, formatValue(value, type), label ?? 'Text')} alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} />}
                 <span before-content={symbolPosition === 'start' ? symbol : undefined} after-content={symbolPosition === 'end' ? symbol : undefined} className={`${styles['input__type__child']} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} >
                     <input
                         max={type === 'date' ? "9999-12-31" : undefined}
@@ -66,9 +66,9 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                     exitActive: styles['collapse-exit-active'],
                 }}
                 unmountOnExit={true}>
-                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
+                {error && <span className={`${styles['text-error']}`} >{error}</span>}
             </CSSTransition>
-            {hint ? <span className={`${styles['text-hint']}`} >{hint}</span> : <></>}
+            {hint && <span className={`${styles['text-hint']}`} >{hint}</span>}
         </div>
     )
 })
