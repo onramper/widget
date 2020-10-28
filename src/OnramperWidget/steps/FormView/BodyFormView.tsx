@@ -16,11 +16,14 @@ import { APIContext, StepDataItems } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
 
-import countryNames from './utils/contryNames'
-import phoneCodes from './utils/phoneCodes'
-import usStates from './utils/usStates'
+import countryNames from '../../ApiContext/utils/contryNames'
+import phoneCodes from '../../ApiContext/utils/phoneCodes'
+import usStates from '../../ApiContext/utils/usStates'
 
 import { scrollTo } from '../../utils'
+
+const DEFAULT_SATE = 'AL'
+const DEFAULT_COUNTRY = 'GB'
 
 type BodyFormViewType = {
     onActionButton: () => void
@@ -49,18 +52,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         }))
     }, [fields])
 
+    const [countryHasChanged, setCountryHasChanged] = useState('initialkey')
+
     const [push2Bottom, setPush2Bottom] = useState(false)
-
-    const firstRender = useRef(true)
-    useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false
-            handleInputChange("phoneCountryCode", +phoneCodes[collected['selectedCountry']?.toUpperCase() ?? 'GB']?.phoneCode)
-            handleInputChange("state", collected['state'] ?? '0')
-            return
-        }
-    }, [handleInputChange, collected])
-
     useEffect(() => {
         setPush2Bottom(fields.some(field => field.name === 'termsOfUse'))
     }, [fields])
@@ -75,7 +69,33 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             }
         }
         handleInputChange(name, v)
+
+        if (name === 'country')
+            setCountryHasChanged(v)
+
     }, [handleInputChange])
+
+    useEffect(() => {
+        // setting initial values
+        if (countryHasChanged === 'initialkey') {
+            const country = collected['country'] ?? collected['selectedCountry'] ?? DEFAULT_COUNTRY
+            handleInputChange("country", country)
+            if (country.toUpperCase() === 'US')
+                handleInputChange("state", collected['state'] && collected['state'] !== "undefined" ? collected['state'] : DEFAULT_SATE)
+            else
+                handleInputChange("state", "undefined")
+
+            setCountryHasChanged('undefinedkey')
+        }
+        else if (countryHasChanged.toUpperCase() === 'US') {
+            handleInputChange("state", collected['state'] && collected['state'] !== "undefined" ? collected['state'] : DEFAULT_SATE)
+            setCountryHasChanged('undefinedkey')
+        }
+        else if (countryHasChanged !== 'undefinedkey') {
+            handleInputChange("state", 'undefined')
+            setCountryHasChanged('undefinedkey')
+        }
+    }, [countryHasChanged, collected, handleInputChange])
 
     const isRequired = (fields2Check: string[], isReq: boolean, isReqCB: () => void) => {
         for (const index in fields2Check) {
@@ -89,11 +109,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         return true
     }
 
-    useEffect(() => {
-        if (!collected['country'])
-            onChange('country', collected['selectedCountry'])
-    }, [onChange, collected])
-
+    // scroll to fields on new error
     useEffect(() => {
         if (errorMsg && generalErrorRef !== null) {
             if (generalErrorRef === null || generalErrorRef.current === null) return
@@ -101,6 +117,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         }
     }, [errorMsg])
 
+    // scroll to fields on new error
     useEffect(() => {
         if (errorObj && inputRefs !== null) {
             // smooth scroll to the first error
@@ -176,7 +193,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             searchable
                                         />
                                     )}
-                                label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? 'gb').toUpperCase()]} icon={icons[(collected[field.name] ?? 'gb').toUpperCase()]} />
+                                label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} icon={icons[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} />
                         )) || ((field.name === 'state') && (
                             collected['country'] === 'us'
                                 ? <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon['body__child']} onClick={
@@ -197,7 +214,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         />
                                     )}
                                     label={field.humanName}
-                                    selectedOption={usStates[((!collected[field.name] || collected[field.name] === '0') ? 'al' : collected[field.name]).toUpperCase()].name}
+                                    selectedOption={usStates[(collected['state'] && collected['state'] !== "undefined" ? collected['state'] : DEFAULT_SATE).toUpperCase()].name}
                                 />
                                 : <React.Fragment key={i}></React.Fragment>
                         )) || (((field.name === 'ccNumber' || field.name === 'ccMonth' || field.name === 'ccYear' || field.name === 'ccCVV') && isRequired(['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'], isCreditCardAdded, () => isCreditCardAdded = true)) && (

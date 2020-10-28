@@ -16,6 +16,8 @@ import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from '
 
 import { NextStepError } from './api'
 
+import phoneCodes from './utils/phoneCodes'
+
 const BASE_DEFAULT_AMOUNT_IN_USD = 100
 
 //Creating context
@@ -126,6 +128,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
       handleInputChange('selectedCountry', response_gateways.localization.country)
+      handleInputChange("phoneCountryCode", +phoneCodes[response_gateways.localization.country.toUpperCase() ?? 'GB']?.phoneCode)
       // save to state.date
       addData({
         availableCryptos: mappedAvailableCryptos,
