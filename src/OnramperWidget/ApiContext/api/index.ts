@@ -2,7 +2,7 @@ import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
-import processMoonpayStep from '../../moonpayApi'
+import processMoonpayStep from '@onramper/moonpay-adapter'
 
 const BASE_API = process.env.REACT_APP_STAGE === 'prod'
       ? 'https://api.onramper.com'

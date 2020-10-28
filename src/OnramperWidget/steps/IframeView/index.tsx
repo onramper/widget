@@ -6,10 +6,14 @@ import styles from '../../styles.module.css'
 import Step from '../Step'
 
 import { NextStep } from '../../ApiContext'
-import finishCCTransaction from '../../moonpayApi/finishCCTransaction'
-import { baseCreditCardSandboxUrl } from '../../moonpayApi/constants'
+import { finishCCTransaction } from '@onramper/moonpay-adapter'
 
 import { NavContext } from '../../NavContext'
+
+const baseCreditCardSandboxUrl = `https://sandbox.${
+  process.env.REACT_APP_STAGE === 'prod' ?
+    'onramper.com' : 'onramper.dev'
+  }`
 
 const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" } }> = ({ nextStep }) => {
   const { replaceScreen } = useContext(NavContext);
