@@ -50,13 +50,15 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { onClick = (i) => null } = props
 
     let diffPercent:number;
+    let isDiffPositive:boolean;
     if(receivedCrypto>selectedReceivedCrypto){
         diffPercent = (((receivedCrypto / selectedReceivedCrypto) - 1) * 100)
+        isDiffPositive = true;
     } else {
         diffPercent = (( 1 - (receivedCrypto / selectedReceivedCrypto)) * 100)
+        isDiffPositive = false;
     }
-    const isDiffPositive = diffPercent >= 0 ? true : false
-    const diff2Render = Math.abs(diffPercent).toFixed(2)
+    const diff2Render = diffPercent.toFixed(2)
 
     const kycLevel = requiredKYC?.length
 
