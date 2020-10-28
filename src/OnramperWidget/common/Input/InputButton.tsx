@@ -37,7 +37,7 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, re
                     exitActive: styles['collapse-exit-active'],
                 }}
                 unmountOnExit={true}>
-                {error && <span className={`${styles['text-error']}`} >{error}</span>}
+                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
             </CSSTransition>
         </div >
     )

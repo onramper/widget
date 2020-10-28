@@ -99,7 +99,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                 unmountOnExit={true}
 
             >
-                {error && <span className={`${styles['text-error']}`} >{error}</span>}
+                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
             </CSSTransition>
         </div >
     )

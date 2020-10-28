@@ -66,7 +66,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                     exitActive: styles['collapse-exit-active'],
                 }}
                 unmountOnExit={true}>
-                {error && <span className={`${styles['text-error']}`} >{error}</span>}
+                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
             </CSSTransition>
             {hint && <span className={`${styles['text-hint']}`} >{hint}</span>}
         </div>
