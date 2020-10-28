@@ -11,7 +11,7 @@ type CreditCardInputType = {
     ccCVVValue?: string
 }
 
-const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
+const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((props, ref) => {
 
     const { ccNumberValue = '', ccMonthValue = '', ccYearValue = '', ccCVVValue = '' } = props
 
@@ -64,6 +64,7 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
     return (
         <>
             <InputText
+                ref={ref}
                 className={stylesCommon["body__child"]}
                 label="Card number"
                 name="ccNumber"
@@ -97,6 +98,6 @@ const CreditCardInput: React.FC<CreditCardInputType> = (props) => {
             </div>
         </>
     )
-}
+})
 
 export default CreditCardInput

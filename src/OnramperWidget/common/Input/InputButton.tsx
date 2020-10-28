@@ -18,10 +18,10 @@ type InputButtonType = {
     onHelpClick?: () => void
 }
 
-const InputButton: React.FC<InputButtonType> = (props) => {
+const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, ref) => {
     const { selectedOption, label, icon, className, iconPosition, error } = props
     return (
-        <div className={`${styles['input']} ${className}`}>
+        <div ref={ref} className={`${styles['input']} ${className}`}>
             {label && <label>{label}{props.onHelpClick && <>&nbsp;&nbsp;<HintIcon onClick={props.onHelpClick} /></>}</label>}
             <div onClick={props.onClick} className={`${styles['input__type']} ${styles['input__type--selector']} ${error || error === '' ? styles['input__type--selector--error'] : ''} ${props.onClick ? '' : styles['input__type--selector--disabled']}`}>
                 {icon ? <img alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? styles['input__type__child--old-first'] : ''}`} /> : null}
@@ -41,7 +41,7 @@ const InputButton: React.FC<InputButtonType> = (props) => {
             </CSSTransition>
         </div >
     )
-}
+})
 
 InputButton.defaultProps = {
     className: '',

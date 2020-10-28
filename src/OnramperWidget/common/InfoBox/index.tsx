@@ -10,7 +10,7 @@ type InfoBoxType = {
     className?: string
 }
 
-const InfoBox: React.FC<InfoBoxType> = (props) => {
+const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBoxType>>((props, ref) => {
     const { type = 'info', onDismissClick = () => null, canBeDismissed = false, className = '' } = props
 
     let classBoxType = ''
@@ -39,7 +39,7 @@ const InfoBox: React.FC<InfoBoxType> = (props) => {
 
             }}
             unmountOnExit={true} >
-            <div className={`${styles.infobox} ${styles[classBoxType]} ${className}`}>
+            <div ref={ref} className={`${styles.infobox} ${styles[classBoxType]} ${className}`}>
                 <span className={styles['text']}>
                     {props.children}
                 </span>
@@ -47,7 +47,7 @@ const InfoBox: React.FC<InfoBoxType> = (props) => {
             </div>
         </CSSTransition >
     )
-}
+})
 
 
 export default InfoBox

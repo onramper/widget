@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback, useRef } from 'react'
+import React, { useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
@@ -20,6 +20,8 @@ import countryNames from './utils/contryNames'
 import phoneCodes from './utils/phoneCodes'
 import usStates from './utils/usStates'
 
+import { scrollTo } from '../../utils'
+
 type BodyFormViewType = {
     onActionButton: () => void
     handleInputChange: (name: string, value: any) => void
@@ -37,6 +39,15 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { collected } = useContext(APIContext);
     const { backScreen, nextScreen } = useContext(NavContext)
     const { isFilled = false, isLoading = false, errorObj, errorMsg } = props
+
+    const formContainer = useRef<HTMLDivElement>(null);
+    const generalErrorRef = useRef<HTMLDivElement>(null);
+    const inputRefs = useMemo(() => {
+        return fields.map(field => ({
+            name: field.name,
+            ref: React.createRef<HTMLDivElement>()
+        }))
+    }, [fields])
 
     const [push2Bottom, setPush2Bottom] = useState(false)
 
@@ -83,12 +94,34 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             onChange('country', collected['selectedCountry'])
     }, [onChange, collected])
 
+    useEffect(() => {
+        if (errorMsg && generalErrorRef !== null) {
+            if (generalErrorRef === null || generalErrorRef.current === null) return
+            scrollTo(formContainer.current, 0, 600)
+        }
+    }, [errorMsg])
+
+    useEffect(() => {
+        if (errorObj && inputRefs !== null) {
+            // smooth scroll to the first error
+            let errName = Object.keys(errorObj)[0]
+            // if the error is in any of the Credit/Debit Card fields, scoll to the first one (credit card number)
+            if (errName === 'ccMonth' || errName === 'ccYear' || errName === 'ccCVV')
+                errName = 'ccNumber'
+
+            const errInput = inputRefs.find(inp => inp.name === errName)
+            if (!errInput || errInput.ref.current === null) return
+            const el = errInput.ref.current
+            scrollTo(formContainer.current, el.offsetTop - el.getBoundingClientRect().height - 10, 600)
+        }
+    }, [errorObj, inputRefs])
+
     let isCreditCardAdded = false,
         isPhoneNumberAdded = false
 
     return (
-        <main className={stylesCommon.body}>
-            <InfoBox in={!!errorMsg} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} className={`${stylesCommon['body__child']}`} >
+        <main ref={formContainer} className={stylesCommon.body}>
+            <InfoBox ref={generalErrorRef} in={!!errorMsg} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} className={`${stylesCommon['body__child']}`} >
                 {errorMsg}
             </InfoBox>
             {
@@ -97,11 +130,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     const phoneNumberCheck = isPhoneNumberAdded
                     return (
                         (field.name === 'cryptocurrencyAddress' && (
-                            <InputCryptoAddr hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
+                            <InputCryptoAddr ref={inputRefs[i].ref} hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
                         ))
                         || ((field.name === 'verifyCreditCard') && (
                             <React.Fragment key={i}>
-                                <InputText onHelpClick={() => nextScreen(
+                                <InputText ref={inputRefs[i].ref} onHelpClick={() => nextScreen(
                                     <HelpView>
                                         <Help2FACreditCard />
                                     </HelpView>
@@ -111,7 +144,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         ))
                         || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
                             <React.Fragment key={i}>
-                                <InputText hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={getInputType(field)} />
+                                <InputText ref={inputRefs[i].ref} hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={getInputType(field)} />
                                 <span key={999} onClick={() => backScreen()} className={styles['resend']}>Resend code&nbsp;</span>
                             </React.Fragment>
                         ))
@@ -123,28 +156,30 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                 }.</label>
                         ))
                         || ((field.name === 'country') && (
-                            <InputButton key={i} className={stylesCommon['body__child']} onClick={
-                                () => nextScreen(
-                                    <PickView
-                                        title={field.humanName}
-                                        name={field.name}
-                                        onItemClick={(name, index, item) => {
-                                            onChange(name, item.id.toLowerCase())
-                                            backScreen()
-                                        }}
-                                        items={Object.entries(countryNames).map(([code, name]) => ({
-                                            id: code,
-                                            name,
-                                            icon: icons[code],
-                                            info: code
-                                        }))}
-                                        searchable
-                                    />
-                                )}
+                            <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon['body__child']}
+                                error={errorObj?.[field.name]}
+                                onClick={
+                                    () => nextScreen(
+                                        <PickView
+                                            title={field.humanName}
+                                            name={field.name}
+                                            onItemClick={(name, index, item) => {
+                                                onChange(name, item.id.toLowerCase())
+                                                backScreen()
+                                            }}
+                                            items={Object.entries(countryNames).map(([code, name]) => ({
+                                                id: code,
+                                                name,
+                                                icon: icons[code],
+                                                info: code
+                                            }))}
+                                            searchable
+                                        />
+                                    )}
                                 label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? 'gb').toUpperCase()]} icon={icons[(collected[field.name] ?? 'gb').toUpperCase()]} />
                         )) || ((field.name === 'state') && (
                             collected['country'] === 'us' ?
-                                <InputButton key={i} className={stylesCommon['body__child']} onClick={
+                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon['body__child']} onClick={
                                     () => nextScreen(
                                         <PickView
                                             title={field.humanName}
@@ -168,6 +203,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         )) || (((field.name === 'ccNumber' || field.name === 'ccMonth' || field.name === 'ccYear' || field.name === 'ccCVV') && isRequired(['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'], isCreditCardAdded, () => isCreditCardAdded = true)) && (
                             !ccCheck ?
                                 <CreditCardInput
+                                    ref={inputRefs[i].ref}
                                     ccNumberValue={collected['ccNumber']}
                                     ccMonthValue={collected['ccMonth']}
                                     ccYearValue={collected['ccYear']}
@@ -177,34 +213,36 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         )) || (((field.name === 'phoneCountryCode' || field.name === 'phoneNumber') && isRequired(['phoneCountryCode', 'phoneNumber'], isPhoneNumberAdded, () => isPhoneNumberAdded = true)) && (
                             !phoneNumberCheck ?
                                 <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                                    <InputButton onClick={
-                                        () => nextScreen(
-                                            <PickView
-                                                title={field.humanName}
-                                                name={field.name}
-                                                onItemClick={(name, index, item) => {
-                                                    onChange(name, +item.name)
-                                                    onChange('country', item.id.toLowerCase())
-                                                    backScreen()
-                                                }}
-                                                items={Object.entries(phoneCodes).map(([code, infoObj]) => ({
-                                                    id: code,
-                                                    name: infoObj['phoneCode'],
-                                                    info: infoObj['name'],
-                                                    searchWords: infoObj['searchWords']
-                                                }))}
-                                                searchable
-                                            />
-                                        )}
+                                    <InputButton
+                                        ref={inputRefs[fields.findIndex((field) => field.name === 'phoneCountryCode')].ref}
+                                        onClick={
+                                            () => nextScreen(
+                                                <PickView
+                                                    title={'Country code'}
+                                                    name={'phoneCountryCode'}
+                                                    onItemClick={(name, index, item) => {
+                                                        onChange(name, +item.name)
+                                                        onChange('country', item.id.toLowerCase())
+                                                        backScreen()
+                                                    }}
+                                                    items={Object.entries(phoneCodes).map(([code, infoObj]) => ({
+                                                        id: code,
+                                                        name: infoObj['phoneCode'],
+                                                        info: infoObj['name'],
+                                                        searchWords: infoObj['searchWords']
+                                                    }))}
+                                                    searchable
+                                                />
+                                            )}
                                         className={stylesCommon['row-fields__child']} label="Country code"
-                                        selectedOption={'+' + collected[field.name] ?? phoneCodes[(collected['country'] ?? 'gb').toUpperCase()].phoneCode}
-                                        error={errorObj?.[field.name]}
+                                        selectedOption={'+' + collected['phoneCountryCode'] ?? phoneCodes[(collected['country'] ?? 'gb').toUpperCase()].phoneCode}
+                                        error={errorObj?.['phoneCountryCode']}
                                     />
-                                    <InputText name='phoneNumber' type='number' value={collected['phoneNumber'] ?? ''} onChange={onChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Phone number" placeholder="654 56 84 56" />
+                                    <InputText error={errorObj?.['phoneNumber']} ref={inputRefs[fields.findIndex((field) => field.name === 'phoneNumber')].ref} name='phoneNumber' type='number' value={collected['phoneNumber'] ?? ''} onChange={onChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Phone number" placeholder="654 56 84 56" />
                                 </div>
                                 : <></>
                         )) || ((field.type !== 'boolean') && (
-                            <InputText key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
+                            <InputText ref={inputRefs[i].ref} key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon['body__child']} label={field.humanName} type={getInputType(field)} />
                         ))
                     )
                 })

@@ -19,7 +19,7 @@ type InputCryptoAddrType = {
     onHelpClick?: () => void
 }
 
-const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
+const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((props, ref) => {
     const { handleInputChange, error, type, hint } = props
     const { collected } = useContext(APIContext)
     const [selectedAddress, setSelectedAddress] = useState('')
@@ -46,6 +46,7 @@ const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
 
     return (
         <InputText
+            ref={ref}
             hint={hint}
             type={type}
             error={error}
@@ -57,6 +58,6 @@ const InputCryptoAddr: React.FC<InputCryptoAddrType> = (props) => {
             onHelpClick={props.onHelpClick}
         />
     )
-}
+})
 
 export default InputCryptoAddr

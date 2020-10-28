@@ -24,7 +24,7 @@ type InputTextType = {
     onHelpClick?: () => void
 }
 
-const InputText: React.FC<InputTextType> = (props) => {
+const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) => {
     const { symbol, label, className, icon, iconPosition, disabled, value, type, name, error, symbolPosition = 'end', hint } = props
     const placeholder = disabled ? '' : props.placeholder
     const clickableIcon = props.onIconClick ? true : false
@@ -47,7 +47,7 @@ const InputText: React.FC<InputTextType> = (props) => {
     }, [])
 
     return (
-        <div className={`${styles['input']} ${className}`}>
+        <div ref={ref} className={`${styles['input']} ${className}`}>
             {label && <label>{label}{props.onHelpClick && <>&nbsp;&nbsp;<HintIcon onClick={props.onHelpClick} /></>}</label>}
             <div className={`${styles['input__type']} ${styles['input__type--number']}  ${error || error === '' ? styles['input__type--number--error'] : ''} ${disabled ? styles['input__type--number--disabled'] : ''}`}>
                 {icon ? <img onClick={(e) => onIconClick(name, formatValue(value, type), label ?? 'Text')} alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} /> : null}
@@ -71,7 +71,7 @@ const InputText: React.FC<InputTextType> = (props) => {
             {hint ? <span className={`${styles['text-hint']}`} >{hint}</span> : <></>}
         </div>
     )
-}
+})
 
 InputText.defaultProps = {
     label: '\u00A0',
