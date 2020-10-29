@@ -164,3 +164,7 @@ components
     width: 100%;
     margin-bottom: 1rem;
 }
+
+.help-text {
+    font-size: 0.875rem;
+}
