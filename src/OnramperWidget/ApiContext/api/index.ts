@@ -5,8 +5,14 @@ import { NextStep } from '..'
 import processMoonpayStep from '@onramper/moonpay-adapter'
 
 const BASE_API = process.env.REACT_APP_STAGE === 'prod'
-      ? 'https://api.onramper.com'
-      : 'https://api.onramper.dev';
+    ? 'https://api.onramper.com'
+    : 'https://api.onramper.dev';
+
+let headers = new Headers()
+
+const authenticate = (pk: string) => {
+    headers.set('Authorization', `Basic ${pk}`)
+}
 
 /**
  * API calls
@@ -20,7 +26,7 @@ interface GatewaysParams {
 
 const gateways = async (params: GatewaysParams, filter?: Filters): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
-    const gateways_res = await fetch(`${BASE_API}/gateways?${urlParams}`)
+    const gateways_res = await fetch(`${BASE_API}/gateways?${urlParams}`, { headers })
     const gateways: GatewaysResponse = await processResponse(gateways_res)
     return filterGatewaysResponse(gateways, filter ?? {})
 }
@@ -33,7 +39,7 @@ interface RateParams {
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, { signal })
+    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, { headers, signal })
     return processResponse(gateways)
 }
 
@@ -47,9 +53,9 @@ interface ExecuteStepParams {
 }
 
 interface FetchResponse {
-    ok:boolean,
-    json: ()=>Promise<any>,
-    text: ()=>Promise<string>
+    ok: boolean,
+    json: () => Promise<any>,
+    text: () => Promise<string>
 }
 
 const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
@@ -60,12 +66,12 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
 
     const urlParams = createUrlParamsFromObject(params ?? {})
-    
+
     let nextStep: FetchResponse;
-    if(/https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/.test(step.url)){
+    if (/https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/.test(step.url)) {
         nextStep = await processMoonpayStep(step.url, body);
     } else {
-        nextStep = await fetch(`${step.url}?${urlParams}`, { method, body })
+        nextStep = await fetch(`${step.url}?${urlParams}`, { method, headers, body })
     }
     return processResponse(nextStep)
 }
@@ -139,6 +145,7 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCrypto
 }
 
 export {
+    authenticate,
     gateways,
     rate,
     executeStep,

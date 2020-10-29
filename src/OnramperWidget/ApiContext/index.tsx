@@ -24,6 +24,7 @@ const BASE_DEFAULT_AMOUNT_IN_USD = 100
 const APIContext = createContext<StateType>(initialState);
 
 interface APIProvider {
+  API_KEY?: string,
   defaultAmount?: number
   defaultAddrs?: { [key: string]: string[] }
   defaultCrypto?: string
@@ -34,7 +35,7 @@ interface APIProvider {
 }
 
 const APIProvider: React.FC<APIProvider> = (props) => {
-  const { defaultAmount = 100, defaultAddrs = {} } = props
+  const { defaultAmount = 100, defaultAddrs = {}, API_KEY } = props
   const iniState = {
     ...initialState,
     collected: {
@@ -45,6 +46,12 @@ const APIProvider: React.FC<APIProvider> = (props) => {
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
+
+  // INITIALIZING AUTHENTICATION
+  useEffect(() => {
+    if (API_KEY)
+      API.authenticate(API_KEY)
+  }, [API_KEY])
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(

@@ -11,6 +11,7 @@ import Footer from './common/Footer'
 import './normalize.min.css'
 
 type OnramperWidgetProps = {
+    API_KEY?: string,
     color?: string
     defaultAmount?: number
     defaultCrypto?: string
@@ -23,7 +24,15 @@ type OnramperWidgetProps = {
 }
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
-    const { color = '#31a5ff', defaultAddrs = {}, defaultAmount = 100, defaultCrypto, onlyCryptos, excludeCryptos, className = '' } = props
+    const {
+        color = '#31a5ff',
+        defaultAddrs = {},
+        defaultAmount = 100,
+        defaultCrypto,
+        onlyCryptos,
+        excludeCryptos,
+        className = ''
+    } = props
 
     const style = {
         "--primary-color": color,
@@ -32,7 +41,13 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     return (
         <div style={style} className={`${styles['theme']} ${className}`}>
             <NavProvider>
-                <APIProvider defaultAmount={defaultAmount} defaultAddrs={defaultAddrs} defaultCrypto={defaultCrypto} filters={{ onlyCryptos, excludeCryptos }} >
+                <APIProvider
+                    API_KEY={props.API_KEY}
+                    defaultAmount={defaultAmount}
+                    defaultAddrs={defaultAddrs}
+                    defaultCrypto={defaultCrypto}
+                    filters={{ onlyCryptos, excludeCryptos }}
+                >
                     <div style={{ flexGrow: 1 }}>
                         <NavContainer home={<BuyCryptoView />} />
                     </div>
