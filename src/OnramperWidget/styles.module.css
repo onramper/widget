@@ -17,10 +17,10 @@ theme styles
 
     width: var(--width);
     height: var(--heigth);
-       
     display: flex;
     flex-direction: column;
-    text-align: start;
+       
+    direction: ltr;
 }
 
 .theme div::-webkit-scrollbar {
