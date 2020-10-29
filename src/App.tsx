@@ -7,6 +7,7 @@ const defaultAddrs = JSON.stringify({
   NEO: ['neoAddr1', 'neoAddr2', 'neoAddr3', 'neoAddr4']
 })
 
+const apiKey = getParam('apiKey', undefined)
 const defaultColor = `#${getParam('color', '31a5ff')}`
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', 'BTC')
@@ -20,6 +21,7 @@ function App() {
       <div style={{ display: 'flex', height: '100%' }}>
         <div className={'widget-container'}>
           <OnramperWidget
+            API_KEY={apiKey}
             color={defaultColor}
             defaultAddrs={addresses}
             defaultAmount={defaultAmount}
