@@ -14,10 +14,13 @@ theme styles
     --padding-top: 1.75rem;
     --padding-rl: 1.88rem;
     --padding-bottom: 1.125rem;
+
     width: var(--width);
     height: var(--heigth);
+       
     display: flex;
     flex-direction: column;
+    text-align: start;
 }
 
 .theme div::-webkit-scrollbar {
