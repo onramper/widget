@@ -21,7 +21,6 @@ const PickView: React.FC<PickViewProps> = (props) => {
     <main className={styles.view}>
       <Header backButton title={title} />
       <List onItemClick={(index, item) => onItemClick(name, index, item)} items={items} searchable={searchable} />
-      <Footer />
     </main>
   );
 };
