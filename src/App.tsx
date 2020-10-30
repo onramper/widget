@@ -18,7 +18,8 @@ const excludeCryptos = getParam('excludeCryptos', undefined)?.split(',').map(cod
 function App() {
   return (
     <>
-      <div style={{ display: 'flex', height: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
+{/*         <div className={'onramper-pane'}></div> */}
         <div className={'widget-container'}>
           <OnramperWidget
             API_KEY={apiKey}
@@ -27,7 +28,8 @@ function App() {
             defaultAmount={defaultAmount}
             defaultCrypto={defaultCrypto}
             onlyCryptos={onlyCryptos}
-            excludeCryptos={excludeCryptos} />
+            excludeCryptos={excludeCryptos}
+          />
         </div>
       </div>
     </>
