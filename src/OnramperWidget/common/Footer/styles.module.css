@@ -6,7 +6,7 @@
     align-items: center;
     background-color: #F8F8F8;
     justify-content: center;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
     padding: 0.438rem var(--padding-rl) 0.625rem var(--padding-rl);
     font-size: 0.75rem;
 }
