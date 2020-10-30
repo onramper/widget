@@ -40,7 +40,7 @@ const ChooseGatewayView = () => {
 
   return (
     <div className={styles.view}>
-      <Header title="Choose gateway" backButton />
+      <Header title="Choose seller" backButton />
       <BodyChooseGateway
         onItemClick={(i) => setSelectedGatewayIndex(i)}
         ratesList={data.allRates}

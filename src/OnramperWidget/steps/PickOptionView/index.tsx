@@ -31,7 +31,7 @@ const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = (
 
   return (
     <div className={styles.view}>
-      <Header title="Purchase form" backButton />
+      <Header title="Choose identity document" backButton />
       <BodyPickOption
         steps={nextStepOptions}
         onActionButton={handleButtonAction}

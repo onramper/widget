@@ -39,7 +39,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                 {textInfo}
             </InfoBox>
             <InfoBox in={!autoRedirect} className={`${stylesCommon['body__child']}`} type='notification'>
-                {"Couldn't auto redirect you to finish the process, plesase click the button below to finish the process."}
+                {"We couldn't auto-redirect you to finish the process, please click the button below to finish the process."}
             </InfoBox>
             <InfoBox in={!!error} className={`${stylesCommon['body__child']}`} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} >
                 {error}

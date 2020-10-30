@@ -89,7 +89,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                         <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
                         <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
                         <div className={`${stylesCommon['body__child']}`}>
-                            <ButtonAction onClick={onBuyCrypto} text='Get crypto' disabled={!isFilled || collected.isCalculatingAmount || Object.keys(generalErrors).length > 0} />
+                            <ButtonAction onClick={onBuyCrypto} text={`Buy ${selectedCrypto.id}`} disabled={!isFilled || collected.isCalculatingAmount || Object.keys(generalErrors).length > 0} />
                         </div>
                     </>
                     :

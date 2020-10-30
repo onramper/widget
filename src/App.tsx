@@ -8,7 +8,7 @@ const defaultAddrs = JSON.stringify({
 })
 
 const apiKey = getParam('apiKey', undefined)
-const defaultColor = `#${getParam('color', '31a5ff')}`
+const defaultColor = `#${getParam('color', '266678')}`
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', 'BTC')
 const addresses = JSON.parse(getParam('addresses', defaultAddrs) ?? JSON.stringify({}))
