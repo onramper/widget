@@ -207,8 +207,12 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         || state.data.availableCurrencies.find((currency) => currency.id === response_gateways.localization.currency)
         || state.data.availableCurrencies[0]
 
-      const DEFAULT_AMOUNTS_MAP = response_gateways.defaultAmounts ?? {}
-      handleInputChange('amount', DEFAULT_AMOUNTS_MAP[actualCurrency.id] * defaultAmount / BASE_DEFAULT_AMOUNT_IN_USD)
+      if (!state.collected.selectedCurrency) {
+        const DEFAULT_AMOUNTS_MAP = response_gateways.defaultAmounts ?? {}
+        const defaultLocalCurrencyAmount = DEFAULT_AMOUNTS_MAP[actualCurrency.id] ?? 200
+        const calculatedDefaultAmount = defaultLocalCurrencyAmount * defaultAmount / BASE_DEFAULT_AMOUNT_IN_USD
+        handleInputChange('amount', calculatedDefaultAmount)
+      }
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) => item.fiatCurrencies.some((currency) => currency.code === actualCurrency.id))
