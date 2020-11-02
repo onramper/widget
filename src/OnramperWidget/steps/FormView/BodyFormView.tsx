@@ -114,9 +114,12 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         if (errorObj && inputRefs !== null) {
             // smooth scroll to the first error
             let errName = Object.keys(errorObj)[0]
+
             // if the error is in any of the Credit/Debit Card fields, scoll to the first one (credit card number)
-            if (errName === 'ccMonth' || errName === 'ccYear' || errName === 'ccCVV')
-                errName = 'ccNumber'
+            if (CREDIT_CARD_FIELDS_NAME_GROUP.some(f => f === errName))
+                errName = CREDIT_CARD_FIELDS_NAME_GROUP[0]
+            else if (PHONE_NUMBER_FIELDS_NAME_GROUP.some(f => f === errName))
+                errName = PHONE_NUMBER_FIELDS_NAME_GROUP[0]
 
             const errInput = inputRefs.find(inp => inp.name === errName)
             if (!errInput || errInput.ref.current === null) return
