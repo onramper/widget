@@ -128,7 +128,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         }
     }, [errorObj, inputRefs])
 
-    //
+    // Initialize group fields controller
     GroupFieldsController.initGroups()
 
     return (
