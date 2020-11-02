@@ -35,8 +35,39 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
   const [errorObj, setErrorObj] = useState<{ [key: string]: string }>()
+  const [title, setTitle] = useState('Purchase form')
 
   const nextStepData = nextStep.data || []
+
+  useEffect(() => {
+    if (nextStepData.length === 0) return
+
+    if (nextStepData.some(field => field.name === 'email') && nextStepData.length <= 2) {
+      setTitle('Input your email')
+    }
+    else if (nextStepData.some(field => field.name === 'phoneNumber') && nextStepData.length <= 2) {
+      setTitle('Input phone number')
+    }
+    else if (nextStepData.some(field => field.name === 'verifyEmailCode') && nextStepData.length <= 2) {
+      setTitle('Verify your email')
+    }
+    else if (nextStepData[0].name === 'verifyPhoneCode' || nextStepData[0].name === 'verifyCreditCard') {
+      if (nextStepData.length === 2 && (nextStepData[1].name === 'verifyPhoneCode' || nextStepData[1].name === 'verifyCreditCard'))
+        setTitle('Enter verification codes')
+      else if (nextStepData.length === 1)
+        setTitle('Enter verification code')
+    }
+    else if (
+      (nextStepData.some(field => field.name === 'state') || nextStepData.length === 1)
+      || (
+        nextStepData.some(field => field.name === 'firstName')
+        && nextStepData.some(field => field.name === 'country')
+        && !nextStepData.some(field => field.name === 'ccNumber')
+      )
+    ) {
+      setTitle('Your personal information')
+    }
+  }, [nextStepData])
 
   const handleButtonAction = async () => {
     setIsLoading(true)
@@ -71,7 +102,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
 
   return (
     <div className={styles.view}>
-      <Header title="Purchase form" backButton />
+      <Header title={title} backButton />
       <BodyForm
         fields={nextStepData}
         onActionButton={handleButtonAction}

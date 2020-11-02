@@ -41,7 +41,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
 
   return (
     <div className={styles.view}>
-      <Header title="Payment" backButton />
+      <Header title="Complete payment" backButton />
       <BodyIframeView
         textInfo={textInfo}
         error={error}
