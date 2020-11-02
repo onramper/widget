@@ -98,27 +98,40 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     }, [countryHasChanged, collected, handleInputChange])
 
     /**
-     * Function used to check if in the array of fields (props.fields) is present a given combination of fields.
-     * This function can be used to render a customized component that wrapps the combination of fields with a special design.
-     * When we loop over the array of fields, returns true only the first time it finds the combination.
+     * This function can be used to render a customized component that contains the combination of fields with a specific design.
+     * Used to check if in the array of fields (props.fields) is present a given combination of fields and if so, registers when it's added so the nexts iterations are not added twice
+     * Returns true
      * @param currentField name of the field is being checked
      * @param fields2Check array of fields we are looking for
-     * @param isReq boolean that tell us if the given combination of fields (fields2Check) is already found
-     * @param isReqCB function that is called after the combination of fields is found. Here we should change isReq to true so it don't gets called again
      */
-    const isRequired = (currentField: string, fields2Check: string[], isReq: boolean, isReqCB: () => void) => {
+    const isRequired = (currentField: string, fields2Check: string[]) => {
+        // checks if this check corresponds to this case or should be skipped
         if (!fields2Check.find((field) => field === currentField)) return false
 
+        // checks if all fields from fields2Check are requested
         for (const index in fields2Check) {
             if (!fields.some((f) => f.name === fields2Check[index])) {
                 return false
             }
         }
-        if (!isReq)
-            isReqCB()
+
+        // generating the key to identify the different combination of fields
+        const fields2CheckKey = fields2Check.sort().join(',')
+
+        if (_isAdded[fields2CheckKey] === undefined) {
+            _isAdded[fields2CheckKey] = false
+        } else if (_isAdded[fields2CheckKey] === false) {
+            _isAdded[fields2CheckKey] = true
+        }
 
         return true
     }
+
+    const isAdded = (fields2Check: string[]) => {
+        return _isAdded[fields2Check.sort().join(',')]
+    }
+
+    let _isAdded: { [key: string]: boolean } = {}
 
     // scroll to fields on new error (general error)
     useEffect(() => {
@@ -144,9 +157,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         }
     }, [errorObj, inputRefs])
 
-    let isCreditCardAdded = false,
-        isPhoneNumberAdded = false
-
     return (
         <main ref={formContainer} className={stylesCommon.body}>
             <InfoBox ref={generalErrorRef} in={!!errorMsg} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} className={`${stylesCommon['body__child']}`} >
@@ -154,8 +164,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             </InfoBox>
             {
                 fields.map((field, i) => {
-                    const ccCheck = isCreditCardAdded
-                    const phoneNumberCheck = isPhoneNumberAdded
                     return (
                         (field.name === 'cryptocurrencyAddress' && (
                             <InputCryptoAddr ref={inputRefs[i].ref} hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon['body__child']} handleInputChange={onChange} error={errorObj?.[field.name]} />
@@ -228,8 +236,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     selectedOption={usStates[(collected['state'] && collected['state'] !== "undefined" ? collected['state'] : DEFAULT_SATE).toUpperCase()].name}
                                 />
                                 : <React.Fragment key={i}></React.Fragment>
-                        )) || ((isRequired(field.name, ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'], isCreditCardAdded, () => isCreditCardAdded = true)) && (
-                            !ccCheck
+                        )) || ((isRequired(field.name, ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'])) && (
+                            !isAdded(['ccNumber', 'ccMonth', 'ccYear', 'ccCVV'])
                                 ? <CreditCardInput
                                     ref={inputRefs[i].ref}
                                     ccNumberValue={collected['ccNumber']}
@@ -238,8 +246,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     ccCVVValue={collected['ccCVV']}
                                     key={i} handleInputChange={onChange} errorObj={errorObj} />
                                 : <React.Fragment key={i}></React.Fragment>
-                        )) || ((isRequired(field.name, ['phoneCountryCode', 'phoneNumber'], isPhoneNumberAdded, () => isPhoneNumberAdded = true)) && (
-                            !phoneNumberCheck
+                        )) || ((isRequired(field.name, ['phoneCountryCode', 'phoneNumber'])) && (
+                            !isAdded(['phoneCountryCode', 'phoneNumber'])
                                 ? <div key={i} className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
                                     <InputButton
                                         ref={inputRefs[fields.findIndex((field) => field.name === 'phoneCountryCode')].ref}
