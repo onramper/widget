@@ -139,7 +139,7 @@
 
 .gateway-badge {
     position: absolute;
-    top: 0;
+    top: -1px;
     right: 0.625rem;
     padding: 0.1875rem 0.625rem;
     background-color: #008000;

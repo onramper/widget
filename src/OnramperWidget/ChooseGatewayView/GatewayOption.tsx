@@ -92,9 +92,11 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                 </div>
                 <div className={styles.content__price}>
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
-                        <div className={`${styles['gateway-badge']}`}>
-                            {/* {icon && <img alt="Gateway logo" src={icon} />} */}
-                            <span>Best offer</span>
+                        <div>
+                            <div className={`${styles['gateway-badge']}`}>
+                                {/* {icon && <img alt="Gateway logo" src={icon} />} */}
+                                <span>Best offer</span>
+                            </div>
                         </div>
                     </CSSTransition>
                     <div>
