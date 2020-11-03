@@ -2,9 +2,9 @@ import React from 'react';
 import OnramperWidget from './OnramperWidget'
 
 const defaultAddrs = JSON.stringify({
-  BTC: ['btcAddr1', 'btcAddr2'],
-  ETH: ['0xab0aFC6F0c1d3b2E0F3650eE9b92e1C6F0098bC1'],
-  NEO: ['neoAddr1', 'neoAddr2', 'neoAddr3', 'neoAddr4']
+  BTC: 'btcAddr1',
+  ETH: '0xab0aFC6F0c1d3b2E0F3650eE9b92e1C6F0098bC1',
+  NEO: 'neoAddr1'
 })
 
 const apiKey = getParam('apiKey', undefined)
@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-{/*         <div className={'onramper-pane'}></div> */}
+        {/*         <div className={'onramper-pane'}></div> */}
         <div className={'widget-container'}>
           <OnramperWidget
             API_KEY={apiKey}
