@@ -7,7 +7,7 @@ const SuccessView: React.FC<{ txType: "instant" | "pending" }> = ({ txType }) =>
 
   return (
     <div className={styles.view}>
-      <Header title={txType === 'instant' ? "Purchase completed" : "Purchase registred"} backButton={txType !== 'instant'} />
+      <Header title={txType === 'instant' ? "Order processed" : "Order registred"} backButton={txType !== 'instant'} />
       <BodySuccessView txType={txType} />
     </div>
   );
