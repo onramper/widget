@@ -75,6 +75,9 @@
 
 .content__info img {
     height: 1.875rem;
+    width: 1.875rem;
+    max-height: 1.875rem;
+    max-width: 1.875rem;
 }
 
 .content__info .title {
@@ -175,7 +178,7 @@
 /*     width: 100%; */
     align-items: flex-end;
     text-align: end;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
 }
 
 /* .content__price :not(.gateway-logo) > span {

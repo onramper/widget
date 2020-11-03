@@ -76,7 +76,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                 <div className={`${styles.content__info}`} >
                     <div className={styles['title-container']} >
                         <div>
-                            <img alt='' src={IconDetailTxTime} />
+                            <img alt='' src={props.icon} />
                             <div className={`${styles.title}`}>{name}</div>
                         </div>
                     </div>
