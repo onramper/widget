@@ -1,7 +1,9 @@
 import React, { useContext } from 'react'
 import styles from './styles.module.css'
-import IconDetailKYC from '../icons/kyc_level.svg'
-import IconDetailTxTime from '../icons/tx_time.svg'
+/* import IconDetailKYC from '../icons/kyc_level.svg'
+import IconDetailTxTime from '../icons/tx_time.svg' */
+import IconFastTime from '../icons/fast-time.svg'
+import IconKYCReq from '../icons/card.svg'
 
 import { CSSTransition } from 'react-transition-group';
 
@@ -84,8 +86,8 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         <div className={styles['collapsable-section']}>
                             <div className={`${styles['details']}`} >
                                 {duration && <div style={{ height: '0.2rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
-                                {duration && <div className={styles.details__item}><div><img alt='' src={IconDetailTxTime} /></div><span>Tx time: {duration.message}</span></div>}
-                                {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconDetailKYC} /></div><span>KYC level: {kycLevel}</span></div>}
+                                {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>Tx time: {duration.message}</span></div>}
+                                {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>KYC level: {kycLevel}</span></div>}
                             </div>
                         </div>
                     </CSSTransition>
