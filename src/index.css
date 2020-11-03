@@ -24,7 +24,6 @@ html, body, #root {
   margin: auto;
   max-width: 440px;
   max-height: 595px;
-  min-height: 595px;
   height: 100%;
   width: 100%;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .1);
@@ -36,11 +35,10 @@ html, body, #root {
   .widget-container {
     max-width: 480px;
     max-height: 595px;
-    min-height: 645px;
   }
 }
 
-@media (max-width: 575px) {
+@media (max-width: 575px), (max-height: 615px) {
   .widget-container {
     --border-radius: 0;
     max-width: 100%;
