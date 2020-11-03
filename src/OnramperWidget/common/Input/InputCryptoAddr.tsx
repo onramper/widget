@@ -31,7 +31,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((p
             hint={hint}
             type={type}
             error={error}
-            value={collected.cryptocurrencyAddress}
+            value={collected.cryptocurrencyAddress ?? ''}
             iconPosition='end'
             name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`Your ${collected.selectedCrypto?.name} wallet address`}
             onHelpClick={props.onHelpClick}
