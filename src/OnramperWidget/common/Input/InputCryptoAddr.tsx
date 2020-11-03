@@ -1,14 +1,8 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react'
-
-import PickView from '../../PickView'
+import React, { useContext, useEffect, useCallback } from 'react'
 
 import InputText from '../../common/Input/InputText'
 
-import IconChevronRight from '../../icons/chevron-right.svg'
-
 import { APIContext } from '../../ApiContext'
-import { NavContext } from '../../NavContext'
-import { ItemType } from '../../ApiContext'
 
 type InputCryptoAddrType = {
     handleInputChange: (name: string, value: any) => void
@@ -22,25 +16,12 @@ type InputCryptoAddrType = {
 const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((props, ref) => {
     const { handleInputChange, error, type, hint } = props
     const { collected } = useContext(APIContext)
-    const [selectedAddress, setSelectedAddress] = useState('')
-    const { nextScreen, backScreen } = useContext(NavContext);
-
-    const selectedCrypto = collected.selectedCrypto
-    let items: ItemType[] = []
-    if (selectedCrypto && collected.defaultAddrs[selectedCrypto.name])
-        items = collected.defaultAddrs[selectedCrypto.name].map((addr) => ({ name: addr, id: addr }))
 
     useEffect(() => {
-        handleInputChange('cryptocurrencyAddress', selectedAddress)
-    }, [selectedAddress, handleInputChange])
-
-    const handleAddressSelection = (name: string, index: number) => {
-        setSelectedAddress(items[index].name)
-        backScreen()
-    }
+        handleInputChange('cryptocurrencyAddress', collected.defaultAddrs[collected.selectedCrypto?.id ?? ''] ?? '')
+    }, [collected.defaultAddrs, collected.selectedCrypto, handleInputChange])
 
     const onChange = useCallback((name: string, value: string) => {
-        setSelectedAddress(value)
         handleInputChange(name, value)
     }, [handleInputChange])
 
@@ -50,11 +31,9 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((p
             hint={hint}
             type={type}
             error={error}
-            value={selectedAddress}
-            icon={items.length > 0 ? IconChevronRight : undefined}
+            value={collected.cryptocurrencyAddress}
             iconPosition='end'
-            onIconClick={() => nextScreen(<PickView onItemClick={handleAddressSelection} title="Select address" items={items} />)}
-            name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`Your ${collected.selectedCrypto?.name} wallet address`} placeholder=""
+            name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`Your ${collected.selectedCrypto?.name} wallet address`}
             onHelpClick={props.onHelpClick}
         />
     )
