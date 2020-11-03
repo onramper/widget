@@ -148,7 +148,6 @@
     background-color: #008000;
     border-radius: 0 0 5px 5px;
     color: white;
-    line-height: 1em;
 }
 
 .gateway-badge span {
@@ -179,6 +178,7 @@
     align-items: flex-end;
     text-align: end;
     font-size: 0.875rem;
+    line-height: 1em;
 }
 
 /* .content__price :not(.gateway-logo) > span {
@@ -192,6 +192,7 @@
     position: relative;
     display: inline-block;
     color: #008000;
+    margin-bottom: 0.1rem;
 }
 
 /*gateway collapsed*/
