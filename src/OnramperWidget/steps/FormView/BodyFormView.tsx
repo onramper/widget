@@ -37,6 +37,7 @@ type BodyFormViewType = {
     isLoading?: boolean
     errorObj?: { [key: string]: string }
     errorMsg?: string
+    infoMsg?: string
     inputName?: string
     onErrorDismissClick: () => void
 }
@@ -45,7 +46,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { handleInputChange, onActionButton, fields = [] } = props
     const { collected } = useContext(APIContext);
     const { backScreen, nextScreen } = useContext(NavContext)
-    const { isFilled = false, isLoading = false, errorObj, errorMsg } = props
+    const { isFilled = false, isLoading = false, errorObj, errorMsg, infoMsg } = props
 
     const formContainer = useRef<HTMLDivElement>(null);
     const generalErrorRef = useRef<HTMLDivElement>(null);
@@ -133,6 +134,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
     return (
         <main ref={formContainer} className={stylesCommon.body}>
+            <InfoBox in={!!infoMsg} type='info' className={`${stylesCommon['body__child']}`} >
+                {infoMsg}
+            </InfoBox>
             <InfoBox ref={generalErrorRef} in={!!errorMsg} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} className={`${stylesCommon['body__child']}`} >
                 {errorMsg}
             </InfoBox>

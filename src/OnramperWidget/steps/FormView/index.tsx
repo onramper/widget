@@ -36,12 +36,14 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   const [errorMsg, setErrorMsg] = useState<string>()
   const [errorObj, setErrorObj] = useState<{ [key: string]: string }>()
   const [title, setTitle] = useState('Purchase form')
+  const [infoMsg, setInfoMsg] = useState('')
 
   const nextStepData = nextStep.data || []
 
   useEffect(() => {
     if (nextStepData.length === 0) return
 
+    // set title
     if (nextStepData.some(field => field.name === 'email') && nextStepData.length <= 2) {
       setTitle('Input your email')
     }
@@ -67,6 +69,10 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
     ) {
       setTitle('Your personal information')
     }
+
+    // set infoMsg if needed
+    if (nextStepData.some(field => field.name === 'bankIban') && nextStepData.length <= 2)
+      setInfoMsg('Please, fill in the bank account number that you will use to send the wire transfer.')
   }, [nextStepData])
 
   const handleButtonAction = async () => {
@@ -109,6 +115,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
         handleInputChange={inputInterface.handleInputChange}
         isLoading={isLoading}
         errorMsg={errorMsg}
+        infoMsg={infoMsg}
         isFilled={isFilled}
         onErrorDismissClick={() => setErrorMsg(undefined)}
         errorObj={errorObj}
