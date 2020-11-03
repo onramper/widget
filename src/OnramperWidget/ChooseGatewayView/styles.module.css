@@ -8,6 +8,8 @@
 /*-------------------gateway option-------------------*/
 
 .option-container {
+    position: relative;
+
     --oc-padding: 0px 0.71875rem;
     display: flex;
     flex-direction: row;
@@ -48,7 +50,7 @@
     margin-right: 1.6875rem;
     flex-direction: column;
     box-sizing: border-box;
-    --collapsable-height: 2.9375rem;
+    --collapsable-height: 3rem;
     /* margin-bottom: 0.6rem;  *//*margined to align with crypto-diff*/
     transition: margin-right 2200ms cubic-bezier(0.4, 0, 1, 1);
 }
@@ -135,6 +137,21 @@
 /*     --collapsable-height: 1.5rem; */
 }
 
+.gateway-badge {
+    position: absolute;
+    top: 0;
+    right: 0.625rem;
+    padding: 0.1875rem 0.625rem;
+    background-color: #008000;
+    border-radius: 0 0 5px 5px;
+    color: white;
+    line-height: 1em;
+}
+
+.gateway-badge span {
+    font-size: 0.6875rem;
+}
+
 .content__price .gateway-logo {
     /* overflow: hidden; */
     height: var(--collapsable-height);
@@ -155,29 +172,29 @@
 .content__price > div {
     display: flex;
     flex-direction: column;
-    width: 100%;
+/*     width: 100%; */
     align-items: flex-end;
     text-align: end;
     font-size: 0.75rem;
 }
 
-.content__price :not(.gateway-logo) > span {
+/* .content__price :not(.gateway-logo) > span {
     line-height: 1em;
 }
-
+ */
 
 /*------------------- diff receive -------------------*/
 .receive-diff {
     --diff-size: 0.61312em;
     position: relative;
     display: inline-block;
-/*     color: green; */
+    color: #008000;
 }
 
 /*gateway collapsed*/
 .option-container--collapsed .receive-diff {
-    --diff-up-color: green;
-    --diff-down-color: red;
+    --diff-up-color: #008000;
+    --diff-down-color: #E85858;
 }
 
 .option-container--collapsed .receive-diff::before {

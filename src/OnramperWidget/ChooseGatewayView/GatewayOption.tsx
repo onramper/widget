@@ -46,7 +46,7 @@ type GateWayOptionProps = {
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { collected } = useContext(APIContext)
 
-    const { name, duration, receivedCrypto = 0, icon, isOpen, selectedReceivedCrypto = 0, available, error, requiredKYC } = props //todo change 
+    const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, requiredKYC } = props //todo change 
     const { onClick = (i) => null } = props
 
     let diffPercent: number;
@@ -63,8 +63,8 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const kycLevel = requiredKYC?.length
 
     var styleColorUpDownDiff = {
-        "--diff-up-color": collected.amountInCrypto ? 'red' : 'green',
-        "--diff-down-color": collected.amountInCrypto ? 'green' : 'red'
+        "--diff-up-color": collected.amountInCrypto ? '#E85858' : '#008000',
+        "--diff-down-color": collected.amountInCrypto ? '#008000' : '#E85858'
     } as React.CSSProperties;
 
     return (
@@ -92,8 +92,9 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                 </div>
                 <div className={styles.content__price}>
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
-                        <div className={`${styles['gateway-logo']}`}>
-                            {icon && <img alt="Gateway logo" src={icon} />}
+                        <div className={`${styles['gateway-badge']}`}>
+                            {/* {icon && <img alt="Gateway logo" src={icon} />} */}
+                            <span>Best offer</span>
                         </div>
                     </CSSTransition>
                     <div>
