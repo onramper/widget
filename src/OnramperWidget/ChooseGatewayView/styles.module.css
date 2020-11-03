@@ -21,6 +21,9 @@
 
 .option-container__radio {
     padding: var(--oc-padding);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .option-container__radio input[type='radio'] {
@@ -45,9 +48,9 @@
     margin-right: 1.6875rem;
     flex-direction: column;
     box-sizing: border-box;
-    --collapsable-height: 2.25rem;
+    --collapsable-height: 2.9375rem;
     /* margin-bottom: 0.6rem;  *//*margined to align with crypto-diff*/
-    transition: margin-right 200ms cubic-bezier(0.4, 0, 1, 1);
+    transition: margin-right 2200ms cubic-bezier(0.4, 0, 1, 1);
 }
 
 .content__info .collapsable-section {
@@ -57,23 +60,35 @@
     justify-content: space-between;
 }
 
-.content__info .title {
-    margin-bottom: 0.4375rem;
-    display: inline-block;
-    font-size: 1rem;
+.content__info .title-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 1rem;
 }
 
-/* .content__info > :last-child {
-    flex-grow: 1;
-} */
+.content__info .title-container > div > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.content__info img {
+    height: 1.875rem;
+}
+
+.content__info .title {
+    display: inline-block;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+}
+
 .content__price > :last-child {
     flex-grow: 1;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .content__info .details {
     font-size: 0.75rem;
-    opacity: 0.5;
+    color: #3E3D3D;
 /*     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(3rem, 6.5rem)); */
 }
@@ -85,7 +100,6 @@
 
     display: grid;
     grid-template-columns: fit-content(25%) auto;
-    column-gap: 0.35rem;
 }
 
 .details__item + .details__item {
@@ -94,14 +108,18 @@
 
 /*icon on child detail*/
 .details__item > div {
-    height: 1.066em;
+/*     height: 1.25em; */
+    width: 2.5rem;
     vertical-align: bottom;
+    display: flex;
 }
 
 .details__item > div > img {
-    width: 0.775rem;
-    height: 0.775rem;
+    width: 1.25rem;
+    height: 1.25rem;
     display: block;
+    margin-left: 0.3125rem;
+    margin-right: auto;
 }
 
 .content__info .fees {
@@ -234,7 +252,7 @@
 .collapse-enter-active {
     max-height: var(--collapsable-height);
     opacity: 1;
-    transition: max-height 200ms linear, opacity 300ms linear;
+    transition: max-height 200ms linear, opacity 300ms cubic-bezier(.99,.01,.4,.94);
 }
 
 .collapse-exit {

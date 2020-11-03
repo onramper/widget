@@ -49,13 +49,13 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { name, duration, receivedCrypto = 0, icon, isOpen, selectedReceivedCrypto = 0, available, error, requiredKYC } = props //todo change 
     const { onClick = (i) => null } = props
 
-    let diffPercent:number;
-    let isDiffPositive:boolean;
-    if(receivedCrypto>selectedReceivedCrypto){
+    let diffPercent: number;
+    let isDiffPositive: boolean;
+    if (receivedCrypto > selectedReceivedCrypto) {
         diffPercent = (((receivedCrypto / selectedReceivedCrypto) - 1) * 100)
         isDiffPositive = true;
     } else {
-        diffPercent = (( 1 - (receivedCrypto / selectedReceivedCrypto)) * 100)
+        diffPercent = ((1 - (receivedCrypto / selectedReceivedCrypto)) * 100)
         isDiffPositive = false;
     }
     const diff2Render = diffPercent.toFixed(2)
@@ -74,14 +74,18 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
             </div>
             <div className={`${styles['option-container__content']}`}>
                 <div className={`${styles.content__info}`} >
-                    <span className={`${styles.title}`}>{name}</span>
-                    <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
+                    <div className={styles['title-container']} >
                         <div>
-                            <div className={styles['collapsable-section']}>
-                                <div className={`${styles['details']}`} >
-                                    {duration && <div className={styles.details__item}><div><img alt='' src={IconDetailTxTime} /></div><span>Tx time: {duration.message}</span></div>}
-                                    {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconDetailKYC} /></div><span>KYC level: {kycLevel}</span></div>}
-                                </div>
+                            <img alt='' src={IconDetailTxTime} />
+                            <div className={`${styles.title}`}>{name}</div>
+                        </div>
+                    </div>
+                    <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
+                        <div className={styles['collapsable-section']}>
+                            <div className={`${styles['details']}`} >
+                                {duration && <div style={{ height: '0.2rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
+                                {duration && <div className={styles.details__item}><div><img alt='' src={IconDetailTxTime} /></div><span>Tx time: {duration.message}</span></div>}
+                                {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconDetailKYC} /></div><span>KYC level: {kycLevel}</span></div>}
                             </div>
                         </div>
                     </CSSTransition>
