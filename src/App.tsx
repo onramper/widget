@@ -1,17 +1,11 @@
 import React from 'react';
 import OnramperWidget from './OnramperWidget'
 
-const defaultAddrs = JSON.stringify({
-  BTC: 'btcAddr1',
-  ETH: '0xab0aFC6F0c1d3b2E0F3650eE9b92e1C6F0098bC1',
-  NEO: 'neoAddr1'
-})
-
 const apiKey = getParam('apiKey', undefined)
 const defaultColor = `#${getParam('color', '266678')}`
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', 'BTC')
-const addresses = JSON.parse(getParam('addresses', defaultAddrs) ?? JSON.stringify({}))
+const addresses = JSON.parse(getParam('addresses', '{}') ?? '{}')
 const onlyCryptos = getParam('onlyCryptos', undefined)?.split(',').map(code => code.trim())
 const excludeCryptos = getParam('excludeCryptos', undefined)?.split(',').map(code => code.trim())
 
