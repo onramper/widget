@@ -10,7 +10,7 @@
 .option-container {
     position: relative;
 
-    --oc-padding: 0px 0.71875rem;
+    --oc-padding: 0px 0.875rem;
     display: flex;
     flex-direction: row;
     border-style: solid;
@@ -69,22 +69,32 @@
     min-height: 1rem;
 }
 
-.content__info .title-container > div > * {
+/* .content__info .title-container > div > * {
     display: inline-block;
     vertical-align: middle;
-}
+} */
 
-.content__info img {
+.logo-container {
     height: 1.875rem;
     width: 1.875rem;
     max-height: 1.875rem;
     max-width: 1.875rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container img {
+max-height: 100%;
+max-width: 100%;
 }
 
 .content__info .title {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     font-size: 1rem;
     margin-left: 0.5rem;
+    letter-spacing: 0.01em;
 }
 
 .content__price > :last-child {
@@ -95,6 +105,7 @@
 .content__info .details {
     font-size: 0.75rem;
     color: #3E3D3D;
+    opacity: .6;
 /*     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(3rem, 6.5rem)); */
 }
@@ -106,10 +117,12 @@
 
     display: grid;
     grid-template-columns: fit-content(25%) auto;
+
+    letter-spacing: 0.03em;
 }
 
 .details__item + .details__item {
-    margin-top: 0.125rem;
+    margin-bottom: 0.125rem;
 }
 
 /*icon on child detail*/
@@ -144,7 +157,7 @@
 .gateway-badge {
     position: absolute;
     top: -1px;
-    right: 0.625rem;
+    right: 0.6875rem;
     padding: 0.1875rem 0.625rem;
     background-color: #008000;
     border-radius: 0 0 5px 5px;
@@ -153,6 +166,7 @@
 
 .gateway-badge span {
     font-size: 0.6875rem;
+    letter-spacing: 0.1em;
 }
 
 .content__price .gateway-logo {
@@ -180,6 +194,7 @@
     text-align: end;
     font-size: 0.875rem;
     line-height: 1em;
+    letter-spacing: 0.05em;
 }
 
 /* .content__price :not(.gateway-logo) > span {
@@ -193,7 +208,13 @@
     position: relative;
     display: inline-block;
     color: #008000;
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.15rem;
+    letter-spacing: 0.03em;
+}
+
+.receive-diff--diff {
+    letter-spacing: 0.1em;
+    font-weight: 500;
 }
 
 /*gateway collapsed*/
@@ -209,7 +230,7 @@
     border-right: calc( 0.57735 * var(--diff-size) ) solid transparent;
     border-left: calc( 0.57735 * var(--diff-size) ) solid transparent;
     right: 100%;
-    top: 23%;
+    top: 20%;
     position: absolute;
     margin-right: 0.33125em;
 }

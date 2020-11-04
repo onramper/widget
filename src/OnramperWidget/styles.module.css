@@ -54,7 +54,7 @@ general styles
     --padding: var(--padding-top) var(--padding-rl) var(--padding-bottom) var(--padding-rl);
     --component-padding: 0.81rem;
     --component-content-spacing: var(--component-padding);
-    --component-content-height: 1.25rem;
+    --component-content-height: 1.27rem;
     display: flex;
     flex-direction: column;
     border-radius: var(--border-radius) var(--border-radius) 0px 0px;

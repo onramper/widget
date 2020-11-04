@@ -77,17 +77,17 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
             <div className={`${styles['option-container__content']}`}>
                 <div className={`${styles.content__info}`} >
                     <div className={styles['title-container']} >
-                        <div>
+                        <div className={`${styles['title-item']} ${styles['logo-container']}`}>
                             <img alt='' src={props.icon} />
-                            <div className={`${styles.title}`}>{name}</div>
                         </div>
+                        <div className={`${styles['title-item']} ${styles.title}`}>{name}</div>
                     </div>
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div className={styles['collapsable-section']}>
                             <div className={`${styles['details']}`} >
-                                {duration && <div style={{ height: '0.2rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
-                                {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>Tx time: {duration.message}</span></div>}
-                                {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>KYC level: {kycLevel}</span></div>}
+                                {duration && <div style={{ height: '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
+                                {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>{duration.message}</span></div>}
+                                {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>No ID required</span></div>}
                             </div>
                         </div>
                     </CSSTransition>
@@ -104,12 +104,12 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                     <div>
                         <CSSTransition in={!available || !isOpen} {...transitionPropsPrice}>
                             {available ?
-                                <span style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
+                                <span style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
                                 : <span>Unavailable</span>
                             }
                         </CSSTransition>
                         {/* <CSSTransition in={isOpen && available} {...transitionPropsPrice}> */}
-                        {isOpen && available && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You Receive:'}</span>}
+                        {isOpen && available && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You receive:'}</span>}
                         {/* </CSSTransition> */}
                         {available ?
                             <span> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {receivedCrypto}</span>
