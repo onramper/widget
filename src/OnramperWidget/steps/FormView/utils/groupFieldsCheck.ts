@@ -33,7 +33,6 @@ export const isGroupRequired = (currentField: string, fields2Check: string[], al
 }
 
 export const isGroupAdded = (fields2Check: string[]) => {
-    console.log(fields2Check, _isAdded[fields2Check.sort().join(',')])
     return _isAdded[fields2Check.sort().join(',')]
 }
 
