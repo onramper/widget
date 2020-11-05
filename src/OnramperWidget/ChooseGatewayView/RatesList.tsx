@@ -1,7 +1,9 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect, useContext } from 'react'
 import styles from './styles.module.css'
 import GatewayOption from './GatewayOption'
-import { GatewayRateOption } from '../ApiContext'
+import type { badgeType } from './GatewayOption'
+import { APIContext, GatewayRateOption } from '../ApiContext'
+import { documents } from '../ApiContext/api/constants'
 
 interface RatesListProps {
     availableRates: GatewayRateOption[],
@@ -14,12 +16,49 @@ const RatesList: React.FC<RatesListProps> = (props) => {
     const unavailableRates: GatewayRateOption[] = props.unavailableRates
     const { onItemClick = () => null } = props
 
+    const { collected } = useContext(APIContext)
     const [selectedGatewayIndex, setSelectedGatewayIndex] = useState(0)
+    const [badges, setBadges] = useState<badgeType>()
 
     const handleItemClick = useCallback((index: number) => {
         setSelectedGatewayIndex(index)
         onItemClick(index)
     }, [onItemClick])
+
+    useEffect(() => {
+        const reqIds = availableRates.reduce((acc, rate) => {
+            const noId = (rate.requiredKYC ?? []).some(kyc => {
+                if (typeof kyc === 'string')
+                    return documents.some(doc => doc === kyc)
+                else
+                    return kyc.some(kycItem => documents.some(doc => doc === kycItem))
+            })
+            return {
+                ...acc,
+                [rate.identifier]: noId
+            }
+        }, {} as { [key: string]: boolean })
+
+        let easiests = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.requiredKYC?.length ?? Number.POSITIVE_INFINITY })), true)
+        let fastest = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.duration.seconds })), true)
+        const defaultReceivedCrypto = collected.amountInCrypto ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY
+        let bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
+
+        const badges = availableRates.reduce<badgeType>((acc, rate, _, arr) => {
+            return {
+                ...acc,
+                [rate.identifier]: {
+                    noId: !reqIds[rate.identifier],
+                    fast: rate.duration.seconds <= 60 * 10,
+                    fastest: fastest.some(id => id === rate.identifier),
+                    easiest: easiests.some(id => id === rate.identifier),
+                    bestOffer: bestOffers.some(id => id === rate.identifier)
+                }
+            }
+        }, {})
+
+        setBadges(badges)
+    }, [availableRates, collected.amountInCrypto])
 
     return (
         <div className={`${styles['rates-list']}`}>{/* TODO: change all custom lists to general list */}
@@ -31,6 +70,7 @@ const RatesList: React.FC<RatesListProps> = (props) => {
                         isOpen={i === selectedGatewayIndex}
                         selectedReceivedCrypto={availableRates[selectedGatewayIndex].receivedCrypto}
                         onClick={handleItemClick}
+                        badges={badges}
                         {...item}
                     />
                 )
@@ -48,6 +88,37 @@ const RatesList: React.FC<RatesListProps> = (props) => {
             }
         </div>
     )
+}
+
+const getArrOfMinsMaxs = (list: { name: string, value: number }[], min: boolean) => {
+    var lowest = min ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
+    var tmp;
+    let easiests: string[] = []
+
+    for (var i = list.length - 1; i >= 0; i--) {
+        tmp = list[i].value;
+        if (min) {
+            if (tmp < lowest) {
+                lowest = tmp;
+                easiests = [list[i].name]
+            }
+            else if (tmp === lowest) {
+                lowest = tmp;
+                easiests.push(list[i].name)
+            }
+        }
+        else {
+            if (tmp > lowest) {
+                lowest = tmp;
+                easiests = [list[i].name]
+            }
+            else if (tmp === lowest) {
+                lowest = tmp;
+                easiests.push(list[i].name)
+            }
+        }
+    }
+    return easiests
 }
 
 export default RatesList

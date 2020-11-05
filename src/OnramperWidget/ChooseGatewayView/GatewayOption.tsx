@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from './styles.module.css'
 /* import IconDetailKYC from '../icons/kyc_level.svg'
 import IconDetailTxTime from '../icons/tx_time.svg' */
@@ -7,10 +7,7 @@ import IconKYCReq from '../icons/card.svg'
 
 import { CSSTransition } from 'react-transition-group';
 
-import { GatewayRateOption } from '../ApiContext'
-
-import { APIContext } from '../ApiContext'
-
+import { APIContext, GatewayRateOption } from '../ApiContext'
 
 const transitionPropsCollapse = {
     timeout: 500,
@@ -42,13 +39,16 @@ type GateWayOptionProps = {
     index: number
     isOpen: boolean
     selectedReceivedCrypto?: number
+    badges?: badgeType
     onClick?: (index: number) => void
 } & GatewayRateOption
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { collected } = useContext(APIContext)
 
-    const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, requiredKYC } = props //todo change 
+    const [badge, setBadge] = useState("Alternative")
+
+    const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges={} } = props //todo change 
     const { onClick = (i) => null } = props
 
     let diffPercent: number;
@@ -62,12 +62,28 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     }
     const diff2Render = diffPercent.toFixed(2)
 
-    const kycLevel = requiredKYC?.length
-
     var styleColorUpDownDiff = {
         "--diff-up-color": collected.amountInCrypto ? '#E85858' : '#008000',
         "--diff-down-color": collected.amountInCrypto ? '#008000' : '#E85858'
     } as React.CSSProperties;
+
+    useEffect(() => {
+        if (badges[name]?.easiest && badges[name]?.fastest) {
+            setBadge('Best option')
+        }
+        else if (badges[name]?.bestOffer) {
+            setBadge('Best offer')
+        }
+        else if (badges[name]?.easiest) {
+            setBadge('Easiest')
+        }
+        else if (badges[name]?.fastest) {
+            setBadge('Fastest')
+        }
+        else if (badges[name]?.fast) {
+            setBadge('Fast')
+        }
+    }, [badges, name])
 
     return (
         <div onClick={() => onClick(props.index)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
@@ -87,7 +103,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                             <div className={`${styles['details']}`} >
                                 {duration && <div style={{ height: '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
                                 {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>{duration.message}</span></div>}
-                                {kycLevel && <div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>No ID required</span></div>}
+                                {props.badges?.[props.name].noId && <div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>No ID required</span></div>}
                             </div>
                         </div>
                     </CSSTransition>
@@ -97,7 +113,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         <div>
                             <div className={`${styles['gateway-badge']}`}>
                                 {/* {icon && <img alt="Gateway logo" src={icon} />} */}
-                                <span>Best offer</span>
+                                <span>{badge}</span>
                             </div>
                         </div>
                     </CSSTransition>
@@ -122,8 +138,14 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     )
 }
 
-GatewayOption.defaultProps = {
-
+export interface badgeType {
+    [key: string]: {
+        fast: boolean
+        noId: boolean
+        fastest: boolean
+        easiest: boolean
+        bestOffer: boolean
+    }
 }
 
 export default GatewayOption
