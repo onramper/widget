@@ -5,6 +5,7 @@
     flex-direction: column;
     overflow: auto;
     flex-grow: 1;
+    flex-shrink: 0;
     font-size: 1rem;
 }
 
@@ -46,6 +47,7 @@
     border-style: none;
     line-height: 2em;
     z-index: 1;
+    flex-shrink: 0;
 }
 
 .search-box:focus {
