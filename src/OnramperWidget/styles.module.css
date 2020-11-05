@@ -91,6 +91,10 @@ components
     margin-top: var(--body-space-childs);
 }
 
+.body__child {
+    flex-shrink: 0;
+}
+
 
 .row-fields {
     display: flex;
