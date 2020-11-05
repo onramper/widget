@@ -19,9 +19,9 @@ const RatesList: React.FC<RatesListProps> = (props) => {
     const { collected } = useContext(APIContext)
     const [selectedGatewayIndex, setSelectedGatewayIndex] = useState(0)
 
-    const handleItemClick = useCallback((index: number) => {
+    const handleItemClick = useCallback((index: number, id: number) => {
         setSelectedGatewayIndex(index)
-        onItemClick(index)
+        onItemClick(id)
     }, [onItemClick])
 
     const reqIds = availableRates.reduce((acc, rate) => {
@@ -42,8 +42,9 @@ const RatesList: React.FC<RatesListProps> = (props) => {
     const defaultReceivedCrypto = collected.amountInCrypto ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY
     let bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
 
-    const badges = availableRates.reduce<badgeType>((acc, rate, _, arr) => {
+    const badges = availableRates.reduce<badgeType>((acc, rate, index, arr) => {
         const allbadges = {
+            _id: index,
             noId: !reqIds[rate.identifier],
             fast: rate.duration.seconds <= 60 * 10,
             fastest: fastest.some(id => id === rate.identifier),
@@ -59,7 +60,7 @@ const RatesList: React.FC<RatesListProps> = (props) => {
         }
     }, {})
 
-    const sortedAvailableRates = availableRates.sort((a, b) => {
+    const sortedAvailableRates = [...availableRates].sort((a, b) => {
         let res = badges[b.identifier].count - badges[a.identifier].count
         if (res === 0) res = ((b.receivedCrypto ?? defaultReceivedCrypto) - (a.receivedCrypto ?? defaultReceivedCrypto)) * (collected.amountInCrypto ? -1 : 1)
         if (res === 0) res = a.duration.seconds - b.duration.seconds
@@ -74,7 +75,7 @@ const RatesList: React.FC<RatesListProps> = (props) => {
                         key={i}
                         index={i}
                         isOpen={i === selectedGatewayIndex}
-                        selectedReceivedCrypto={availableRates[selectedGatewayIndex].receivedCrypto}
+                        selectedReceivedCrypto={sortedAvailableRates[selectedGatewayIndex].receivedCrypto}
                         onClick={handleItemClick}
                         badges={badges}
                         {...item}

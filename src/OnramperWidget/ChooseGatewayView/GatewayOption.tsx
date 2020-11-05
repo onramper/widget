@@ -40,7 +40,7 @@ type GateWayOptionProps = {
     isOpen: boolean
     selectedReceivedCrypto?: number
     badges?: badgeType
-    onClick?: (index: number) => void
+    onClick?: (index: number, id: number) => void
 } & GatewayRateOption
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
@@ -49,7 +49,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const [badge, setBadge] = useState("Alternative")
 
     const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change 
-    const { onClick = (i) => null } = props
+    const { onClick = (i, d) => null } = props
 
     let diffPercent: number;
     let isDiffPositive: boolean;
@@ -66,6 +66,13 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
         "--diff-up-color": collected.amountInCrypto ? '#E85858' : '#008000',
         "--diff-down-color": collected.amountInCrypto ? '#008000' : '#E85858'
     } as React.CSSProperties;
+
+    React.useRef()
+    useEffect(() => {
+        if (props.index === 0 && isOpen) {
+            onClick(props.index, props.badges?.[name]._id ?? 0)
+        }
+    }, [onClick, props.index, props.badges, name, isOpen])
 
     useEffect(() => {
         if (props.index === 0 && badges[name]?.count > 1) {
@@ -86,7 +93,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     }, [badges, name, props.index])
 
     return (
-        <div onClick={() => onClick(props.index)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
+        <div onClick={() => onClick(props.index, props.badges?.[name]._id ?? 0)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
             <div className={styles['option-container__radio']}>
                 <input type='radio' checked={available && isOpen} readOnly disabled={!available}></input>
             </div>
@@ -140,6 +147,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
 
 export interface badgeType {
     [key: string]: {
+        _id: number
         fast: boolean
         noId: boolean
         fastest: boolean
