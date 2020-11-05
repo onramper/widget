@@ -68,7 +68,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     } as React.CSSProperties;
 
     useEffect(() => {
-        if (badges[name]?.easiest && badges[name]?.fastest) {
+        if (props.index == 0 && badges[name]?.count > 1) {
             setBadge('Best option')
         }
         else if (badges[name]?.bestOffer) {
@@ -83,7 +83,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
         else if (badges[name]?.fast) {
             setBadge('Fast')
         }
-    }, [badges, name])
+    }, [badges, name, props.index])
 
     return (
         <div onClick={() => onClick(props.index)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
@@ -103,7 +103,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                             <div className={`${styles['details']}`} >
                                 {duration && <div style={{ height: '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
                                 {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>{duration.message}</span></div>}
-                                {<div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>{props.badges?.[props.name].noId?"No ID required":"Identification required"}</span></div>}
+                                {<div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>{props.badges?.[props.name].noId ? "No ID required" : "Identification required"}</span></div>}
                             </div>
                         </div>
                     </CSSTransition>
