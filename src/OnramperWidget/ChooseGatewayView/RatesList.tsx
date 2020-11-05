@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react'
+import React, { useState, useCallback, useContext } from 'react'
 import styles from './styles.module.css'
 import GatewayOption from './GatewayOption'
 import type { badgeType } from './GatewayOption'
@@ -18,52 +18,57 @@ const RatesList: React.FC<RatesListProps> = (props) => {
 
     const { collected } = useContext(APIContext)
     const [selectedGatewayIndex, setSelectedGatewayIndex] = useState(0)
-    const [badges, setBadges] = useState<badgeType>()
 
     const handleItemClick = useCallback((index: number) => {
         setSelectedGatewayIndex(index)
         onItemClick(index)
     }, [onItemClick])
 
-    useEffect(() => {
-        const reqIds = availableRates.reduce((acc, rate) => {
-            const noId = (rate.requiredKYC ?? []).some(kyc => {
-                if (typeof kyc === 'string')
-                    return documents.some(doc => doc === kyc)
-                else
-                    return kyc.some(kycItem => documents.some(doc => doc === kycItem))
-            })
-            return {
-                ...acc,
-                [rate.identifier]: noId
+    const reqIds = availableRates.reduce((acc, rate) => {
+        const noId = (rate.requiredKYC ?? []).some(kyc => {
+            if (typeof kyc === 'string')
+                return documents.some(doc => doc === kyc)
+            else
+                return kyc.some(kycItem => documents.some(doc => doc === kycItem))
+        })
+        return {
+            ...acc,
+            [rate.identifier]: noId
+        }
+    }, {} as { [key: string]: boolean })
+
+    let easiests = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.requiredKYC?.length ?? Number.POSITIVE_INFINITY })), true)
+    let fastest = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.duration.seconds })), true)
+    const defaultReceivedCrypto = collected.amountInCrypto ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY
+    let bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
+
+    const badges = availableRates.reduce<badgeType>((acc, rate, _, arr) => {
+        const allbadges = {
+            noId: !reqIds[rate.identifier],
+            fast: rate.duration.seconds <= 60 * 10,
+            fastest: fastest.some(id => id === rate.identifier),
+            easiest: easiests.some(id => id === rate.identifier),
+            bestOffer: bestOffers.some(id => id === rate.identifier),
+        }
+        return {
+            ...acc,
+            [rate.identifier]: {
+                ...allbadges,
+                count: Object.values(allbadges).filter(Boolean).length
             }
-        }, {} as { [key: string]: boolean })
+        }
+    }, {})
 
-        let easiests = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.requiredKYC?.length ?? Number.POSITIVE_INFINITY })), true)
-        let fastest = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.duration.seconds })), true)
-        const defaultReceivedCrypto = collected.amountInCrypto ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY
-        let bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
-
-        const badges = availableRates.reduce<badgeType>((acc, rate, _, arr) => {
-            return {
-                ...acc,
-                [rate.identifier]: {
-                    noId: !reqIds[rate.identifier],
-                    fast: rate.duration.seconds <= 60 * 10,
-                    fastest: fastest.some(id => id === rate.identifier),
-                    easiest: easiests.some(id => id === rate.identifier),
-                    bestOffer: bestOffers.some(id => id === rate.identifier)
-                }
-            }
-        }, {})
-
-        setBadges(badges)
-    }, [availableRates, collected.amountInCrypto])
+    const sortedAvailableRates = availableRates.sort((a, b) => {
+        const res = badges[b.identifier].count - badges[a.identifier].count
+        if (res === 0) return -(b.duration.seconds ?? 0) + (a.duration.seconds ?? 0)
+        return res
+    })
 
     return (
         <div className={`${styles['rates-list']}`}>{/* TODO: change all custom lists to general list */}
             {
-                availableRates.map((item, i) =>
+                sortedAvailableRates.map((item, i) =>
                     <GatewayOption
                         key={i}
                         index={i}

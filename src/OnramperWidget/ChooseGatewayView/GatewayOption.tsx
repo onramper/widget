@@ -48,7 +48,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
 
     const [badge, setBadge] = useState("Alternative")
 
-    const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges={} } = props //todo change 
+    const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change 
     const { onClick = (i) => null } = props
 
     let diffPercent: number;
@@ -103,7 +103,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                             <div className={`${styles['details']}`} >
                                 {duration && <div style={{ height: '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
                                 {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>{duration.message}</span></div>}
-                                {props.badges?.[props.name].noId && <div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>No ID required</span></div>}
+                                {<div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>{props.badges?.[props.name].noId?"No ID required":"Identification required"}</span></div>}
                             </div>
                         </div>
                     </CSSTransition>
@@ -145,6 +145,7 @@ export interface badgeType {
         fastest: boolean
         easiest: boolean
         bestOffer: boolean
+        count: number
     }
 }
 
