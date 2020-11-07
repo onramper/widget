@@ -15,14 +15,19 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
 
     const { ccNumberValue = '', ccMonthValue = '', ccYearValue = '', ccCVVValue = '' } = props
 
-    const [isManualSlash, setIsManualSlash] = useState(false)
+    const [isSlashed, setIsSlashed] = useState(false)
 
-    const onChange = (name: string, value: string) => {
+    const onChange = (name: string, v: string) => {
+        let value = v
         if (name === 'ccExpiration') {
-            if (value.length === 3 && value.charAt(2) === '/')
-                setIsManualSlash(true)
-            else if (isManualSlash)
-                setIsManualSlash(false)
+            console.log(value, isSlashed, value.length)
+            if (!isSlashed && value.length === 2) {
+                setIsSlashed(true)
+            }
+            else if (isSlashed && value.length === 4) {
+                setIsSlashed(false)
+                value = value.substr(0, 1)
+            }
 
             let month = value.split('/')[0].replace(' ', '')
             let year = (value.split('/')[1] ?? '').replace(' ', '')
@@ -50,7 +55,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
     }
 
     const formatExpiryDate = (value: string) => {
-        if (isManualSlash)
+        if (isSlashed && value.length === 2)
             return value + ' / '
 
         const regex = /^(\d{0,2})(\d{0,2})$/g
