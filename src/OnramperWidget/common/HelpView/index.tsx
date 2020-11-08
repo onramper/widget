@@ -7,7 +7,9 @@ import { CSSTransition } from 'react-transition-group';
 import ButtonAction from '../ButtonAction'
 
 interface HelpViewProps {
-
+  buttonText?: string
+  maxHeight?: string
+  fixedHeight?: boolean
 }
 
 const HelpView: React.FC<HelpViewProps> = (props) => {
@@ -15,6 +17,9 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
   const { backScreen } = useContext(NavContext);
 
   const [isActive, setIsActive] = useState(false)
+
+  const { maxHeight = '350px', fixedHeight = false } = props
+  const classPrefix = fixedHeight ? '--fixed' : ''
 
   const ANIMATION_TIMEOUT = 250
 
@@ -29,22 +34,26 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
     setTimeout(backScreen, ANIMATION_TIMEOUT)
   }
 
+  const style = {
+    "--pane-max-height": maxHeight,
+  } as React.CSSProperties;
+
   return (
 
     <div className={`${commonStyles.view} ${styles['help-view']}`} onClick={handleDismiss}>
       <CSSTransition in={isActive}
         timeout={ANIMATION_TIMEOUT}
         classNames={{
-          enter: styles['collapse-enter'],
-          enterActive: styles['collapse-enter-active'],
-          exit: styles['collapse-exit'],
-          exitActive: styles['collapse-exit-active'],
+          enter: styles['collapse-enter' + classPrefix],
+          enterActive: styles['collapse-enter-active' + classPrefix],
+          exit: styles['collapse-exit' + classPrefix],
+          exitActive: styles['collapse-exit-active' + classPrefix],
         }}
         mountOnEnter={true}
         unmountOnExit={true}>
-        <div onClick={(e) => e.stopPropagation()} className={`${commonStyles.body} ${styles['help-pane']}`} >
+        <div style={style} onClick={(e) => e.stopPropagation()} className={`${commonStyles.body} ${styles['help-pane']} ${styles['help-pane' + classPrefix]}`} >
           {props.children}
-          <ButtonAction onClick={handleDismiss} text="Got it👌" />
+          {props.buttonText && <ButtonAction onClick={handleDismiss} text={props.buttonText} />}
         </div>
       </CSSTransition>
 
