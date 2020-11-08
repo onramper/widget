@@ -149,7 +149,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         || ((field.name === 'verifyCreditCard') && (
                             <React.Fragment key={i}>
                                 <InputText ref={inputRefs[i].ref} onHelpClick={() => nextScreen(
-                                    <HelpView>
+                                    <HelpView buttonText={"Got it👌"}>
                                         <Help2FACreditCard />
                                     </HelpView>
                                 )} hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon['body__child']} type={getInputType(field)} />

@@ -126,6 +126,10 @@
     height: 0.75rem;
 }
 
+.input__icon--date {
+    height: 1rem;
+}
+
 .clickable-icon:hover {
     cursor: pointer;
 }

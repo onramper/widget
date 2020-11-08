@@ -20,7 +20,6 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
     const onChange = (name: string, v: string) => {
         let value = v
         if (name === 'ccExpiration') {
-            console.log(value, isSlashed, value.length)
             if (!isSlashed && value.length === 2) {
                 setIsSlashed(true)
             }
