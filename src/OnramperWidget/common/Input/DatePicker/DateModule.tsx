@@ -100,6 +100,10 @@ const DateModule: React.FC<DateModuleType> = (props) => {
             <span id="month" className={`${styles.noselect} ${selectedValue === 'month' ? styles['date-item--selected'] : ''}`} onClick={onClick}>{valueObject.month}</span>
             <span className={styles.noselect}>/</span>
             <span id="year" className={`${styles.noselect} ${selectedValue === 'year' ? styles['date-item--selected'] : ''}`} onClick={onClick}>{valueObject.year}</span>
+            <span onClick={() => {
+                setSelectedCount(0)
+                setSelectedValue(old => old ?? 'day')
+            }} style={{ flexGrow: 1 }}></span>
         </div>
     )
 }
