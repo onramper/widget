@@ -5,11 +5,23 @@ import './calendar.css';
 
 interface DatePickerType {
     name: string
-    value?: string
+    value?: {
+        day: string,
+        month: string,
+        year: string
+    }
     onChange?: (name: string, value: any, type?: string) => void
 }
 
+const DEFAULT_VALUE = {
+    day: 'dd',
+    month: 'mm',
+    year: 'yyyy'
+}
+
 const DatePicker: React.FC<DatePickerType> = (props) => {
+
+    const startDate = props.value ?? DEFAULT_VALUE
 
     return (
         <HelpView maxHeight={'315px'} fixedHeight>
@@ -25,6 +37,7 @@ const DatePicker: React.FC<DatePickerType> = (props) => {
                         })
                     }
                 }}
+                activeStartDate={new Date(+startDate.year, +startDate.month, +startDate.day)}
             />
         </HelpView>
     )

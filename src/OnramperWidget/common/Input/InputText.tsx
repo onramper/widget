@@ -7,6 +7,10 @@ import DatePicker from './DatePicker'
 import IconCalendar from '../../icons/date-input.png'
 import DateModule from './DatePicker/DateModule'
 
+interface DateType {
+    day: string, month: string, year: string
+}
+
 type InputTextType = {
     disabled?: boolean,
     symbol?: string,
@@ -17,7 +21,7 @@ type InputTextType = {
     iconPosition?: 'start' | 'end',
     symbolPosition?: 'start' | 'end',
     onChange?: (name: string, value: any, type?: string) => void
-    value?: number | string
+    value?: number | string | DateType
     type?: string
     name: string
     onIconClick?: (name: string, value: string, label: string) => void
@@ -39,6 +43,15 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.currentTarget.value === '' ? e.currentTarget.value : type === 'number' ? +e.currentTarget.value : e.currentTarget.value
+        if (e.currentTarget.type === 'date' && typeof value === 'string') {
+            const date = {
+                year: value.split('-')[0],
+                month: value.split('-')[1],
+                day: value.split('-')[2]
+            }
+            onChange(e.currentTarget.name, date, e.currentTarget.type)
+            return
+        }
         onChange(e.currentTarget.name, value, e.currentTarget.type)
     }, [onChange, type])
 
@@ -62,6 +75,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                         onChange(name, value)
                         backScreen()
                     }}
+                    value={value as DateType}
                 />
             )
         }
