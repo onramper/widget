@@ -118,6 +118,10 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                     }
                     key = '0' + key
                 }
+                else if (selectedCount === 1) {
+                    const currentValue = selectedValue === 'year' ? value.split('-')[0] : selectedValue === 'month' ? value.split('-')[1] : value.split('-')[2]
+                    if (currentValue === '00') key = '01'
+                }
                 else if (selectedCount === 2) {
                     if (+key > 1) {
                         setSelectedCount(3)
@@ -125,8 +129,17 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                     }
                     key = '0' + key
                 }
-                else if (selectedCount === 4)
+                else if (selectedCount === 3) {
+                    const currentValue = selectedValue === 'year' ? value.split('-')[0] : selectedValue === 'month' ? value.split('-')[1] : value.split('-')[2]
+                    if (currentValue === '00') key = '01'
+                }
+                else if (selectedCount === 4) {
                     key = '000' + key
+                }
+                if (selectedCount > 6 && (selectedCount + 1) % 4 === 0) {
+                    const currentValue = selectedValue === 'year' ? value.split('-')[0] : selectedValue === 'month' ? value.split('-')[1] : value.split('-')[2]
+                    if ((currentValue + key).slice(-4) === '0000') key = '0001'
+                }
                 onChange(props.name, date2Object(value, key, selectedValue), 'date')
 
                 if (selectedCount === 1) {
