@@ -2,6 +2,7 @@ import React from 'react'
 import HelpView from '../../../common/HelpView'
 import Calendar from 'react-calendar';
 import './calendar.css';
+import { DEFAULT_VALUE } from './DateModule'
 
 export interface DateType {
     day: number, month: number, year: number
@@ -15,8 +16,8 @@ interface DatePickerType {
 
 const DatePicker: React.FC<DatePickerType> = (props) => {
 
-    const startDate = props.value ? new Date(props.value.year, props.value.month, props.value.day) : undefined
-
+    const { value = DEFAULT_VALUE } = props
+    const startDate = Object.values(value).some(v => !Number.isInteger(+v)) ? undefined : new Date(`${value.year}-${value.month}-${value.day} 00:00`)
     return (
         <HelpView maxHeight={'315px'} fixedHeight>
             <Calendar
@@ -31,7 +32,7 @@ const DatePicker: React.FC<DatePickerType> = (props) => {
                         })
                     }
                 }}
-                activeStartDate={startDate}
+                value={startDate}
             />
         </HelpView>
     )

@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useState, useRef, useEffect } from 'react'
 import styles from './styles.module.css'
 
-const DEFAULT_VALUE = {
+export const DEFAULT_VALUE = {
     day: 'dd',
     month: 'mm',
     year: 'yyyy'
