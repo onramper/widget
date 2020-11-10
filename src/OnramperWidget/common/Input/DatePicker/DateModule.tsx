@@ -84,7 +84,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                 let nextValue = Number.isInteger(+currentValue) ? +currentValue : selectedValue === 'year' ? lastYear : 0
                 nextValue++
                 nextValue = selectedValue === 'year' ? nextValue % 10000 : selectedValue === 'month' ? nextValue % 13 : nextValue % 32
-                if (nextValue === 0) nextValue = selectedValue === 'year' ? lastYear + 1 : nextValue+1
+                if (nextValue === 0) nextValue = selectedValue === 'year' ? lastYear + 1 : nextValue + 1
                 let actualDate = date2Object(value)
                 actualDate = {
                     ...actualDate,
@@ -107,18 +107,37 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                 }
                 onChange(props.name, actualDate, 'date')
             }
+            else {
+                if (!Number.isInteger(+event.key)) return
+                let key = event.key
+                console.log(selectedCount, +key > 3)
+                if (selectedCount === 0) {
+                    if (+key > 3) {
+                        setSelectedCount(2)
+                        setSelectedValue('month')
+                    }
+                    key = '0' + key
+                }
+                else if (selectedCount === 2) {
+                    if (+key > 1) {
+                        setSelectedCount(4)
+                        setSelectedValue('year')
+                    }
+                    key = '0' + key
+                }
+                else if (selectedCount === 4)
+                    key = '000' + key
+                onChange(props.name, date2Object(value, key, selectedValue), 'date')
 
-            if (!Number.isInteger(+event.key)) return
-            onChange(props.name, date2Object(value, event.key, selectedValue), 'date')
+                if (selectedCount === 1) {
+                    setSelectedValue('month')
+                }
+                else if (selectedCount === 3) {
+                    setSelectedValue('year')
+                }
 
-            if (selectedCount === 1) {
-                setSelectedValue('month')
+                setSelectedCount(old => ++old)
             }
-            else if (selectedCount === 3) {
-                setSelectedValue('year')
-            }
-
-            setSelectedCount(old => ++old)
         }
 
         document.addEventListener('keydown', callBack)
