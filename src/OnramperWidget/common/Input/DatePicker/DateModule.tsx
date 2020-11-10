@@ -113,14 +113,14 @@ const DateModule: React.FC<DateModuleType> = (props) => {
 
                 if (selectedCount === 0) {
                     if (+key > 3) {
-                        setSelectedCount(2)
+                        setSelectedCount(1)
                         setSelectedValue('month')
                     }
                     key = '0' + key
                 }
                 else if (selectedCount === 2) {
                     if (+key > 1) {
-                        setSelectedCount(4)
+                        setSelectedCount(3)
                         setSelectedValue('year')
                     }
                     key = '0' + key
@@ -204,7 +204,6 @@ const date2Object = (value: string, key: string = "", id: string = "") => {
         date.month = ("00" + date.month + key).slice(-2)
     else if (id === 'day')
         date.day = ("00" + date.day + key).slice(-2)
-
 
     return {
         year: Number.isInteger(+date.year) ? +date.year : DEFAULT_VALUE.year,
