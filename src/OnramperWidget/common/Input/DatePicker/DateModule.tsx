@@ -61,6 +61,51 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                 else {
                     setSelectedValue(undefined)
                 }
+                return
+            }
+            else if (event.key === 'ArrowRight') {
+                event.preventDefault()
+                const newSelectedValue = selectedValue === 'day' ? 'month' : selectedValue === 'month' ? 'year' : selectedValue
+                const newSelectedCount = newSelectedValue === 'month' ? 2 : newSelectedValue === 'year' ? 4 : 0
+                setSelectedValue(newSelectedValue)
+                setSelectedCount(newSelectedCount)
+            }
+            else if (event.key === 'ArrowLeft') {
+                event.preventDefault()
+                const newSelectedValue = selectedValue === 'year' ? 'month' : selectedValue === 'month' ? 'day' : selectedValue
+                const newSelectedCount = newSelectedValue === 'month' ? 2 : newSelectedValue === 'day' ? 0 : 4
+                setSelectedValue(newSelectedValue)
+                setSelectedCount(newSelectedCount)
+            }
+            else if (event.key === 'ArrowUp') {
+                event.preventDefault()
+                const lastYear = new Date().getFullYear() - 1
+                const currentValue = selectedValue === 'year' ? value.split('-')[0] : selectedValue === 'month' ? value.split('-')[1] : value.split('-')[2]
+                let nextValue = Number.isInteger(+currentValue) ? +currentValue : selectedValue === 'year' ? lastYear : 0
+                nextValue++
+                nextValue = selectedValue === 'year' ? nextValue % 10000 : selectedValue === 'month' ? nextValue % 13 : nextValue % 32
+                if (nextValue === 0) nextValue = selectedValue === 'year' ? lastYear + 1 : nextValue+1
+                let actualDate = date2Object(value)
+                actualDate = {
+                    ...actualDate,
+                    [selectedValue]: nextValue
+                }
+                onChange(props.name, actualDate, 'date')
+            }
+            else if (event.key === 'ArrowDown') {
+                event.preventDefault()
+                const lastYear = 10000
+                const currentValue = selectedValue === 'year' ? value.split('-')[0] : selectedValue === 'month' ? value.split('-')[1] : value.split('-')[2]
+                let nextValue = Number.isInteger(+currentValue) && +currentValue > 0 ? +currentValue : selectedValue === 'year' ? lastYear : selectedValue === 'month' ? 13 : 32
+                nextValue--
+                nextValue = selectedValue === 'year' ? nextValue % 10000 : selectedValue === 'month' ? nextValue % 13 : nextValue % 32
+                if (nextValue === 0) nextValue = selectedValue === 'year' ? 9999 : selectedValue === 'month' ? 12 : 31
+                let actualDate = date2Object(value)
+                actualDate = {
+                    ...actualDate,
+                    [selectedValue]: nextValue
+                }
+                onChange(props.name, actualDate, 'date')
             }
 
             if (!Number.isInteger(+event.key)) return
