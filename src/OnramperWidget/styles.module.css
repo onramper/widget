@@ -28,7 +28,7 @@ theme styles
  
 .theme div::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #0000001f;
+    background-color: #dbdbdb;
 }
 
 .theme div::-webkit-scrollbar-track {

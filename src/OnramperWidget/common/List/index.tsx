@@ -30,23 +30,25 @@ const List: React.FC<ListProps> = (props) => {
     }, [query])
 
     return (
-        <div className={`${styles.list}`}>
+        <>
             {searchable &&
                 <input className={styles['search-box']} type='text' value={query} onChange={(e) => setQuery(e.currentTarget.value.toLowerCase())} placeholder="Search..." autoFocus />
             }
-            {
-                items.map((item, i) =>
-                    filterItems(item) && <ListItem
-                        id={item.id}
-                        key={i}
-                        index={i}
-                        name={item.name}
-                        info={item.info}
-                        icon={item.icon}
-                        onClick={() => handleItemClick(i, item)} />
-                )
-            }
-        </div>
+            <div className={`${styles.list}`}>
+                {
+                    items.map((item, i) =>
+                        filterItems(item) && <ListItem
+                            id={item.id}
+                            key={i}
+                            index={i}
+                            name={item.name}
+                            info={item.info}
+                            icon={item.icon}
+                            onClick={() => handleItemClick(i, item)} />
+                    )
+                }
+            </div>
+        </>
     )
 }
 
