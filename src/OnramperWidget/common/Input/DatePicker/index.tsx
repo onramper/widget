@@ -17,7 +17,7 @@ interface DatePickerType {
 const DatePicker: React.FC<DatePickerType> = (props) => {
 
     const { value = DEFAULT_VALUE } = props
-    const startDate = Object.values(value).some(v => !Number.isInteger(+v)) ? undefined : new Date(`${value.year}-${value.month}-${value.day} 00:00`)
+    const startDate = Object.values(value).some(v => !Number.isInteger(+v)) ? undefined : new Date(`${value.year}/${value.month}/${value.day}`)
     return (
         <HelpView maxHeight={'315px'} fixedHeight>
             <Calendar
