@@ -110,7 +110,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
             else {
                 if (!Number.isInteger(+event.key)) return
                 let key = event.key
-                console.log(selectedCount, +key > 3)
+
                 if (selectedCount === 0) {
                     if (+key > 3) {
                         setSelectedCount(2)
@@ -152,6 +152,8 @@ const DateModule: React.FC<DateModuleType> = (props) => {
             setSelectedCount(0)
         else if (id === 'month' && selectedValue !== 'month')
             setSelectedCount(2)
+        else if (id === 'year' && selectedValue !== 'year')
+            setSelectedCount(4)
 
         setSelectedValue(e.currentTarget.id)
     }
@@ -197,11 +199,11 @@ const date2Object = (value: string, key: string = "", id: string = "") => {
     }
 
     if (id === 'year')
-        date.year = ("0000" + date.year + key).slice(-4).split('y').join('0')
+        date.year = ("0000" + date.year + key).slice(-4)
     else if (id === 'month')
-        date.month = ("00" + date.month + key).slice(-2).split('m').join('0')
+        date.month = ("00" + date.month + key).slice(-2)
     else if (id === 'day')
-        date.day = ("00" + date.day + key).slice(-2).split('d').join('0')
+        date.day = ("00" + date.day + key).slice(-2)
 
 
     return {
