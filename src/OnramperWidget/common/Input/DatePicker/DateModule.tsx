@@ -1,18 +1,17 @@
 import React, { MouseEventHandler, useState, useRef, useEffect } from 'react'
 import styles from './styles.module.css'
 
-interface DateModuleType {
-    name: string
-    value?: string
-    onChange?: (name: string, value: any, type?: string) => void
-}
-
 const DEFAULT_VALUE = {
     day: 'dd',
     month: 'mm',
     year: 'yyyy'
 }
 
+interface DateModuleType {
+    name: string
+    value?: string
+    onChange?: (name: string, value: any, type?: string) => void
+}
 
 const DateModule: React.FC<DateModuleType> = (props) => {
     const [selectedValue, setSelectedValue] = useState<string>()
@@ -95,11 +94,29 @@ const DateModule: React.FC<DateModuleType> = (props) => {
 
     return (
         <div ref={inputRef} className={styles['date']}>
-            <span id="day" className={`${styles.noselect} ${selectedValue === 'day' ? styles['date-item--selected'] : ''}`} onClick={onClick}>{valueObject.day}</span>
+            <span
+                id="day"
+                className={`${styles.noselect} ${selectedValue === 'day' ? styles['date-item--selected'] : ''}`}
+                onClick={onClick}
+            >
+                {valueObject.day}
+            </span>
             <span className={styles.noselect}>/</span>
-            <span id="month" className={`${styles.noselect} ${selectedValue === 'month' ? styles['date-item--selected'] : ''}`} onClick={onClick}>{valueObject.month}</span>
+            <span
+                id="month"
+                className={`${styles.noselect} ${selectedValue === 'month' ? styles['date-item--selected'] : ''}`}
+                onClick={onClick}
+            >
+                {valueObject.month}
+            </span>
             <span className={styles.noselect}>/</span>
-            <span id="year" className={`${styles.noselect} ${selectedValue === 'year' ? styles['date-item--selected'] : ''}`} onClick={onClick}>{valueObject.year}</span>
+            <span
+                id="year"
+                className={`${styles.noselect} ${selectedValue === 'year' ? styles['date-item--selected'] : ''}`}
+                onClick={onClick}
+            >
+                {valueObject.year}
+            </span>
             <span onClick={() => {
                 setSelectedCount(0)
                 setSelectedValue(old => old ?? 'day')
@@ -123,7 +140,11 @@ const date2Object = (value: string, key: string = "", id: string = "") => {
         date.day = ("00" + date.day + key).slice(-2).split('d').join('0')
 
 
-    return date
+    return {
+        year: Number.isInteger(+date.year) ? +date.year : DEFAULT_VALUE.year,
+        month: Number.isInteger(+date.month) ? +date.month : DEFAULT_VALUE.month,
+        day: Number.isInteger(+date.day) ? +date.day : DEFAULT_VALUE.day,
+    }
 }
 
 export default DateModule

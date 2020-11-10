@@ -6,10 +6,7 @@ import { NavContext } from '../../NavContext'
 import DatePicker from './DatePicker'
 import IconCalendar from '../../icons/date-input.png'
 import DateModule from './DatePicker/DateModule'
-
-interface DateType {
-    day: string, month: string, year: string
-}
+import type { DateType } from './DatePicker'
 
 type InputTextType = {
     disabled?: boolean,
@@ -58,9 +55,9 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
     const formatValue = (value?: any, type?: string) => {
         if (!value) return value
         if (type === 'date') {
-            const year = ("0000" + value.year).slice(-4);
-            const month = ("00" + value.month).slice(-2);
-            const day = ("00" + value.day).slice(-2);
+            const year = ("0000" + String(value.year)).slice(-4);
+            const month = ("00" + String(value.month)).slice(-2);
+            const day = ("00" + String(value.day)).slice(-2);
             return `${year}-${month}-${day}`
         }
         return value
@@ -117,7 +114,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
 const isTypeSupported = (type: string) => {
     var datefield = document.createElement("input")
     datefield.setAttribute("type", type)
-    return (datefield.type === 'date')
+    return (datefield.type === type)
 }
 
 InputText.defaultProps = {
