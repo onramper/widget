@@ -5,7 +5,6 @@
     flex-direction: column;
     overflow: auto;
     flex-grow: 1;
-    flex-shrink: 0;
     font-size: 1rem;
 }
 
@@ -16,6 +15,7 @@
     align-items: center;
     padding: 1.125rem var(--padding-rl);
     height: var(--component-content-height);
+    flex-shrink: 0;
 }
 
 .list-item:hover {
