@@ -22,16 +22,16 @@ theme styles
     direction: ltr;
 }
 
-.theme div::-webkit-scrollbar {
+.theme ::-webkit-scrollbar {
     width: 10px;
 }
  
-.theme div::-webkit-scrollbar-thumb {
+.theme ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #dbdbdb;
 }
 
-.theme div::-webkit-scrollbar-track {
+.theme ::-webkit-scrollbar-track {
   
   background-color: transparent;
 }
