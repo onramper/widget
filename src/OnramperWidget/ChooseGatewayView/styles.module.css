@@ -219,7 +219,7 @@ max-width: 100%;
 }
 
 .receive-amount {
-    word-break: break-all;
+    white-space: nowrap;
 }
 
 /*gateway collapsed*/
