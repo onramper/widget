@@ -91,7 +91,8 @@ max-width: 100%;
 
 .content__info .title {
     display: flex;
-    align-items: center;
+/*     align-items: center; */
+    margin-top: 0.375rem;
     font-size: 1rem;
     margin-left: 0.5rem;
     letter-spacing: 0.01em;
