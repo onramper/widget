@@ -48,7 +48,7 @@
 .content__info {
     display: flex;
     flex-grow: 1;
-    margin-right: 1.6875rem;
+/*     margin-right: 1.6875rem; */
     flex-direction: column;
     box-sizing: border-box;
     --collapsable-height: 3rem;
@@ -66,7 +66,7 @@
 .content__info .title-container {
     display: flex;
     flex-direction: row;
-    min-height: 1rem;
+    min-height: 2rem;
 }
 
 /* .content__info .title-container > div > * {
@@ -215,6 +215,10 @@ max-width: 100%;
 .receive-diff--diff {
     letter-spacing: 0.1em;
     font-weight: 500;
+}
+
+.receive-amount {
+    word-break: break-all;
 }
 
 /*gateway collapsed*/

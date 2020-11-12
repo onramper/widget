@@ -100,10 +100,10 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
             <div className={`${styles['option-container__content']}`}>
                 <div className={`${styles.content__info}`} >
                     <div className={styles['title-container']} >
-                        <div className={`${styles['title-item']} ${styles['logo-container']}`}>
+                        <div className={`${styles['logo-container']}`}>
                             <img alt='' src={props.icon} />
                         </div>
-                        <div className={`${styles['title-item']} ${styles.title}`}>{name}</div>
+                        <div className={`${styles.title}`}>{name}</div>
                     </div>
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div className={styles['collapsable-section']}>
@@ -135,7 +135,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         {isOpen && available && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You receive:'}</span>}
                         {/* </CSSTransition> */}
                         {available ?
-                            <span> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {receivedCrypto}</span>
+                            <span className={styles['receive-amount']}> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {receivedCrypto}</span>
                             : <span>{!error?.message ? 'Try again later' : error?.message}</span>
                         }
                     </div>
