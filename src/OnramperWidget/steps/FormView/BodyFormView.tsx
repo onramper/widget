@@ -66,7 +66,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
     const onChange = useCallback((name: string, value: any, type?: string) => {
         let v = value
-        if (v && type === 'date') {
+        if (v && type === 'date' && typeof value === 'string') {
             v = {
                 year: Number("0000" + value.split('-')[0].slice(-4)),
                 month: Number("00" + value.split('-')[1].slice(-2)),
