@@ -1,5 +1,7 @@
 # Onramper widget
+Onramper allows your users to buy cryptocurrency with fiat, directly from your website or app.
 
+For docs and examples visit: https://docs.onramper.com/[https://docs.onramper.com/]
 ###### Installation
 
 ```shell
@@ -14,22 +16,21 @@ $ npm install @onramper/widget
 ```javascript
 import OnramperWidget from "@onramper/widget";
 
-const userAddresses = {
-    "BTC": ["addr1"],
-    "ETH": ["add1r","addr2"]
-}
-
 export default function OnramperWidgetContainer() {
   return (
     <div style={{maxWidth: '440px',  maxHeight: '595px',  height: '100%',  width: '100%'}}>
-      <OnramperWidget defaultAddrs={userAddresses} />
+      <OnramperWidget
+        color="#266678"
+        defaultAmount={200}
+        defaultCrypto="BTC"
+      />
     </div>
   )
 }
 ```
 ###### Live example & customization
 While importing the widget as a React component, you can customize it using the component props below. 
-<a href="https://widget.onramper.dev" target='_blank' >CodeSandbox (soon)</a>
+<a href="https://widget.onramper.dev" target='https://codesandbox.io/s/onramper-widget-react-component-y3nd1' >CodeSandbox (soon)</a>
 
 #### Component props
 | Name           | Type      | Example                              | Default value |

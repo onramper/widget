@@ -51,6 +51,7 @@
     "@types/react-test-renderer": "^16.9.2",
     "@types/react-transition-group": "^4.4.0",
     "css-loader": "^4.3.0",
+    "file-loader": "^6.2.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.5.0",
     "prettier": "^2.1.2",

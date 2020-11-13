@@ -60,9 +60,20 @@ module.exports = {
                     {
                         loader: 'svg-url-loader',
                         options: {
-                            limit: 14000,
+                            limit: 30000,
                         }
                     }
+                ]
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            limit: false
+                        }
+                    },
                 ]
             }
         ]
