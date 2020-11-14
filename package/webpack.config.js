@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'none',
     entry: {
-        app: path.join(__dirname, 'index.tsx')
+        app: path.join(__dirname, 'src', 'index.tsx')
     },
     output: {
         libraryTarget: 'umd',
