@@ -22,7 +22,11 @@
     "ethereum"
   ],
   "homepage": "https://onramper.com",
-  "main": "./index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "webpack"
+  },
   "dependencies": {
     "@onramper/moonpay-adapter": "^1.1.1",
     "iso3166-alpha-converter": "^1.0.0",
@@ -56,5 +60,11 @@
     "css-loader": "^4.3.0",
     "@svgr/webpack": "^5.4.0",
     "file-loader": "^6.2.0"
-  }
+  },
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/*.png",
+    "dist/*.jpg"
+  ]
 }
