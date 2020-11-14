@@ -1,7 +1,7 @@
 # Onramper widget
 Onramper allows your users to buy cryptocurrency with fiat, directly from your website or app.
 
-For docs and examples visit: https://docs.onramper.com/[https://docs.onramper.com/]
+For docs and examples visit: [docs.onramper.com](https://docs.onramper.com/)
 ###### Installation
 
 ```shell
@@ -23,6 +23,7 @@ export default function OnramperWidgetContainer() {
         color="#266678"
         defaultAmount={200}
         defaultCrypto="BTC"
+        API_KEY="pk_live_YOUR-API-KEY"
       />
     </div>
   )
@@ -30,7 +31,7 @@ export default function OnramperWidgetContainer() {
 ```
 ###### Live example & customization
 While importing the widget as a React component, you can customize it using the component props below. 
-<a href="https://widget.onramper.dev" target='https://codesandbox.io/s/onramper-widget-react-component-y3nd1' >CodeSandbox (soon)</a>
+[CodeSandbox](https://codesandbox.io/s/onramper-widget-react-component-y3nd1)
 
 #### Component props
 | Name           | Type      | Example                              | Default value |
@@ -41,6 +42,7 @@ While importing the widget as a React component, you can customize it using the 
 | onlyCryptos    | String[]? | `["BTC", "ETH", "NEO"]`              | undefined     |
 | excludeCryptos | String[]? | `["ETH", "NEO"]`                     | undefined     |
 | color          | String?   | `"#000000"`                          | "#31a5ff"     |
+| API_KEY        | String    | `"pk_live_YOUR-API-KEY"`             | -             |
 
 ## Customize
 You can pass the following arguments to customize the widget
