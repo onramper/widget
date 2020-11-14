@@ -24,7 +24,7 @@
     "outDir": "./dist"
   },
   "include": [
-    "./src/OnramperWidget"
+    "*"
   ],
   "exclude": [
     "**/node_modules",

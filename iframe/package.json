@@ -3,14 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@onramper/moonpay-adapter": "^1.1.1",
-    "@types/react-calendar": "^3.1.2",
-    "iso3166-alpha-converter": "^1.0.0",
+    "@onramper/widget": "file:../package",
     "react": "^16.14.0",
-    "react-calendar": "^3.2.0",
-    "react-dom": "^16.14.0",
-    "react-transition-group": "^4.4.1",
-    "rendered-country-flags": "^1.2.0"
+    "react-dom": "^16.14.0"
   },
   "scripts": {
     "lint": "eslint src --ext ts,js,tsx --no-ignore --fix",

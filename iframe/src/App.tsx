@@ -1,5 +1,5 @@
 import React from 'react';
-import OnramperWidget from './OnramperWidget'
+import OnramperWidget from '@onramper/widget'
 
 const apiKey = getParam('apiKey', undefined)
 const defaultColor = `#${getParam('color', '266678')}`

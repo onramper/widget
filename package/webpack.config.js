@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'none',
     entry: {
-        app: path.join(__dirname, 'src/OnramperWidget', 'index.tsx')
+        app: path.join(__dirname, 'index.tsx')
     },
     output: {
         libraryTarget: 'umd',
@@ -21,7 +21,7 @@ module.exports = {
                 loader: 'ts-loader',
                 exclude: '/node_modules/',
                 options: {
-                    configFile: path.resolve(__dirname, 'component.tsconfig.json')
+                    configFile: path.resolve(__dirname, 'tsconfig.json')
                 }
             },
             {
