@@ -63,10 +63,12 @@ const NavProvider: React.FC = (props) => {
 }
 
 class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStateType> {
+  private transitionRef: React.RefObject<any>;
   constructor(props: { home?: ScreenType }) {
     super(props);
 
     this.state = initialState;
+    this.transitionRef = React.createRef()
   }
 
   componentDidMount() {
@@ -83,13 +85,13 @@ class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStat
             <div className={styles['nav-container']} >
               <TransitionGroup>
                 {value._state.screens.map((screen, i) => (
-                  <CSSTransition key={i} timeout={200} classNames={{
+                  <CSSTransition key={i} nodeRef={this.transitionRef} timeout={200} classNames={{
                     enter: styles['screen-enter'],
                     enterActive: styles['screen-enter-active'],
                     exit: styles['screen-exit'],
                     exitActive: styles['screen-exit-active'],
                   }}>
-                    <div style={{ zIndex: (i + 1) }} className={styles.screen}>
+                    <div style={{ zIndex: (i + 1) }} className={styles.screen} ref={this.transitionRef}>
                       {screen}
                     </div>
                   </CSSTransition>
