@@ -50,7 +50,9 @@ module.exports = {
         "no-extra-boolean-cast": "warn",
         "space-before-function-paren": "off",
         "func-call-spacing": "off",
-        "@typescript-eslint/no-use-before-define": "off"
+        "@typescript-eslint/no-use-before-define": "off",
+        "comma-dangle": "warn",
+        "dot-notation": "warn"
     },
     "settings": {
         "react": {

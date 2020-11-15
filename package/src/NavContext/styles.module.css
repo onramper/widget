@@ -27,6 +27,32 @@
     transition: opacity 200ms;
 }
 
+.floating {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    border-radius: var(--border-radius);
+}
+
+/* .floating-enter {
+    border-radius: 250px;
+    opacity: 0;
+}
+.floating-enter-active {
+    border-radius: var(--border-radius);
+    opacity: 1;
+    transition: border-radius 150ms, opacity 100ms;
+}
+.floating-exit {
+    opacity: 1;
+}
+.floating-exit-active {
+    opacity: 0;
+    transition: opacity 200ms;
+}
+ */
 /* .screen-enter {
     transform: translateX(100%);
 }
@@ -42,3 +68,139 @@
     transform: translateX(100%);
     transition: transform 300ms;
 } */
+
+.floating-iframe--none {
+    display: none;
+    border-radius: 240px;
+}
+
+.floating-iframe--block {
+    display: block;
+    border-radius: 1rem;
+    transition: border-radius ease 0.5s;
+}
+
+.floating-iframe--block:hover {
+    position: absolute;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    display: block;
+    transition: border-radius ease 0.5s;
+}
+
+
+
+
+.chat {
+    display: flex;
+    position: absolute;
+    z-index: 9999999;
+    bottom: 100px;
+    right: 20px;
+    cursor: pointer;
+    animation: sayhi 2200ms;
+  }
+  .background {
+    background-color: var(--primary-color);
+    border-radius: 25px;
+    box-shadow: 0 2.1px 1.3px rgba(0, 0, 0, 0.044),
+      0 5.9px 4.2px rgba(0, 0, 0, 0.054), 0 12.6px 9.5px rgba(0, 0, 0, 0.061),
+      0 25px 20px rgba(0, 0, 0, 0.1);
+    height: 50px;
+    left: 6.25px;
+    position: absolute;
+    top: 6.25px;
+    width: 50px;
+    transition: width 200ms, left 200ms;
+  }
+  .chat-bubble {
+    position: relative;
+    top:7px;
+    left:7px;
+    transition: transform 200ms;
+  }
+  .bubble {
+    transform-origin: 50%;
+    transition: transform 500ms cubic-bezier(0.17, 0.61, 0.54, 0.9);
+  }
+  .line {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 2.75;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .line1 {
+    stroke-dasharray: 60 90;
+    stroke-dashoffset: -20;
+  }
+  .line2 {
+    stroke-dasharray: 67 87;
+    stroke-dashoffset: -18;
+  }
+  .circle {
+    fill: #ffffff;
+    stroke: none;
+    transform-origin: 50%;
+    transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .active .bubble {
+    transform: translateX(35px) translateY(0px) rotate(45deg);
+  }
+  .active .line1 {
+    stroke-dashoffset: 21;
+  }
+  .active .line2 {
+    stroke-dashoffset: 30;
+  }
+  .active .circle {
+    transform: scale(0);
+  }
+  
+  .shy {
+    right: -10px;
+    transition: right 550ms;
+}
+
+.shy:hover {
+    right: 0;
+    transition: right 200ms;
+}
+
+.shy:hover .background {
+    width: 171px;
+    left: -106.9px;
+    transition: width 200ms, left 200ms;
+}
+
+.shy:hover .chat-bubble {
+    transform: translateX(-106.9px);
+    transition: transform 200ms;
+}
+
+.background-text {
+    color: white;
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 200ms;
+    position: relative;
+    top: 14px;
+    left: 50px;
+    white-space: nowrap;
+}
+
+.shy:hover .background-text {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+
+@keyframes sayhi {
+    0% { transform: rotate(0deg); }
+    59% { transform: rotate(0deg); }
+    60% { transform:  rotate(0deg); }
+    70% { transform:  rotate(-30deg); }
+    80% { transform: rotate(0deg); }
+    90% { transform: rotate(-30deg); }
+    100% { transform:  rotate(0deg); }
+  }
