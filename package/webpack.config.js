@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = env => ({
     mode: env.NODE_ENV,
@@ -82,6 +83,9 @@ module.exports = env => ({
     },
     plugins: [
         new webpack.DefinePlugin({ "process.env.STAGE": JSON.stringify(env.STAGE) }),
+        new ESLintPlugin({
+            extensions: ['ts', 'tsx'],
+        })
     ],
     externals: {
         react: {
