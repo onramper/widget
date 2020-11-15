@@ -25,7 +25,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
         day: value.split('-')[2]
     } : DEFAULT_VALUE
 
-    const onChange = props.onChange || ((a, b, c) => null)
+    const { onChange = (a, b, c) => null } = props
 
     useEffect(() => {
         const reff = inputRef.current

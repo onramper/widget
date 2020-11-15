@@ -36,7 +36,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   const [title, setTitle] = useState('Purchase form')
   const [infoMsg, setInfoMsg] = useState('')
 
-  const nextStepData = nextStep.data || []
+  const { data: nextStepData = [] } = nextStep
 
   useEffect(() => {
     if (nextStepData.length === 0) return
