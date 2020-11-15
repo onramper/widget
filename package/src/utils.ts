@@ -71,12 +71,12 @@ export const scrollTo = (element: HTMLElement | null, to: number, duration: numb
     };
 
     if (element === null) return
-    let start = element.scrollTop,
-        change = to - start,
-        currentTime = 0,
-        increment = 20;
+    const start = element.scrollTop
+    const change = to - start
+    let currentTime = 0
+    const increment = 20;
 
-    let animateScroll = function () {
+    const animateScroll = function () {
         currentTime += increment;
         const val = easeInOutQuad(currentTime, start, change, duration);
         element.scrollTop = val;
