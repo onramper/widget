@@ -190,10 +190,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                 backScreen()
                                             }}
                                             items={Object.entries(countryNames).map(([code, name]) => ({
-                                                "id": code,
+                                                id: code,
                                                 name,
-                                                "icon": icons[code],
-                                                "info": code
+                                                icon: icons[code],
+                                                info: code
                                             }))}
                                             searchable
                                         />
@@ -211,9 +211,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                 backScreen()
                                             }}
                                             items={Object.entries(usStates).map(([code, state]) => ({
-                                                "id": code,
-                                                "name": state.name,
-                                                "info": code
+                                                id: code,
+                                                name: state.name,
+                                                info: code
                                             }))}
                                             searchable
                                         />

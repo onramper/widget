@@ -1,3 +1,4 @@
+/* eslint quote-props: off */
 const gateways = async () => {
     return {
         "gateways": [

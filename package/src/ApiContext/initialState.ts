@@ -77,38 +77,38 @@ export type ApiInterfaceType = {
 }
 
 export const initialState: StateType = {
-    "collected": {
-        "amount": 100,
-        "amountInCrypto": false,
-        "isCalculatingAmount": true,
-        "selectedCrypto": undefined,
-        "selectedCurrency": undefined,
-        "selectedPaymentMethod": undefined,
-        "selectedGateway": undefined,
-        "selectedCountry": undefined,
-        "cryptocurrencyAddress": undefined,
-        "defaultAddrs": {},
-        "errors": undefined
+    collected: {
+        amount: 100,
+        amountInCrypto: false,
+        isCalculatingAmount: true,
+        selectedCrypto: undefined,
+        selectedCurrency: undefined,
+        selectedPaymentMethod: undefined,
+        selectedGateway: undefined,
+        selectedCountry: undefined,
+        cryptocurrencyAddress: undefined,
+        defaultAddrs: {},
+        errors: undefined
     },
-    "data": {
-        "availableCryptos": [],
-        "availableCurrencies": [],
-        "availablePaymentMethods": [],
-        "allRates": [],
-        "handleCryptoChange": () => undefined,
-        "handleCurrencyChange": () => undefined,
-        "handlePaymentMethodChange": () => undefined,
-        "response_gateways": undefined,
-        "filtredGatewaysByCrypto": [],
-        "filtredGatewaysByCurrency": [],
-        "response_rate": undefined
+    data: {
+        availableCryptos: [],
+        availableCurrencies: [],
+        availablePaymentMethods: [],
+        allRates: [],
+        handleCryptoChange: () => undefined,
+        handleCurrencyChange: () => undefined,
+        handlePaymentMethodChange: () => undefined,
+        response_gateways: undefined,
+        filtredGatewaysByCrypto: [],
+        filtredGatewaysByCurrency: [],
+        response_rate: undefined
     },
-    "inputInterface": {
-        "handleInputChange": () => null
+    inputInterface: {
+        handleInputChange: () => null
     },
-    "apiInterface": {
-        "init": async () => undefined,
-        "executeStep": async (nextStep: NextStep) => nextStep,
-        "getRates": async () => undefined
+    apiInterface: {
+        init: async () => undefined,
+        executeStep: async (nextStep: NextStep) => nextStep,
+        getRates: async () => undefined
     }
 }

@@ -1,3 +1,4 @@
+/* eslint quote-props: off */
 export default {
     "AF": {
         "name": "Afghanistan",

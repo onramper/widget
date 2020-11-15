@@ -87,7 +87,7 @@ const processResponse = async (response: FetchResponse): Promise<any> => {
         try {
             error_response = await response.json()
         } catch (error) {
-            throw new NextStepError({ "message": await response.text() })
+            throw new NextStepError({ message: await response.text() })
         }
         throw new NextStepError(error_response)
     }
