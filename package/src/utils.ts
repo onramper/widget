@@ -8,9 +8,9 @@ export const copyToClipBoard = async (text: string, copied: (status: boolean, te
 };
 
 export const arrayUnique = (array: any[]) => {
-    var a = array.concat();
-    for (var i = 0; i < a.length; ++i) {
-        for (var j = i + 1; j < a.length; ++j) {
+    const a = array.concat();
+    for (let i = 0; i < a.length; ++i) {
+        for (let j = i + 1; j < a.length; ++j) {
             if (a[i] === a[j])
                 a.splice(j--, 1);
         }
@@ -45,7 +45,7 @@ const ordredMagnitudes = [
 ]
 export const formatSeconds = (s: number) => {
     let value = s
-    var i = 0
+    let i = 0
     for (i; i < ordredMagnitudes.length; i++) {
         const nextValue = s / ordredMagnitudes[i].factor
         if (nextValue < 1) break
@@ -71,14 +71,14 @@ export const scrollTo = (element: HTMLElement | null, to: number, duration: numb
     };
 
     if (element === null) return
-    var start = element.scrollTop,
+    let start = element.scrollTop,
         change = to - start,
         currentTime = 0,
         increment = 20;
 
     var animateScroll = function () {
         currentTime += increment;
-        var val = easeInOutQuad(currentTime, start, change, duration);
+        const val = easeInOutQuad(currentTime, start, change, duration);
         element.scrollTop = val;
         if (currentTime < duration) {
             setTimeout(animateScroll, increment);

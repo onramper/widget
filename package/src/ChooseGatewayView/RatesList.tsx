@@ -98,11 +98,11 @@ const RatesList: React.FC<RatesListProps> = (props) => {
 }
 
 const getArrOfMinsMaxs = (list: { name: string, value: number }[], min: boolean) => {
-    var lowest = min ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
-    var tmp;
+    let lowest = min ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
+    let tmp;
     let easiests: string[] = []
 
-    for (var i = list.length - 1; i >= 0; i--) {
+    for (let i = list.length - 1; i >= 0; i--) {
         tmp = list[i].value;
         if (min) {
             if (tmp < lowest) {

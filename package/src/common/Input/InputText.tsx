@@ -113,7 +113,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
 })
 
 const isTypeSupported = (type: string) => {
-    var datefield = document.createElement("input")
+    const datefield = document.createElement("input")
     datefield.setAttribute("type", type)
     return (datefield.type === type)
 }

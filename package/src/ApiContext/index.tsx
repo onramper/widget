@@ -109,7 +109,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
       // GET ALL AVAILABLE CRYPTOS
       let availableCryptos: GatewaysResponse['gateways'][0]['cryptoCurrencies'] = []
-      for (var i in response_gateways.gateways) {
+      for (const i in response_gateways.gateways) {
         if (!response_gateways.gateways[i].cryptoCurrencies) continue
         availableCryptos = availableCryptos.concat(response_gateways.gateways[i].cryptoCurrencies)
       }
@@ -163,7 +163,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
       // GET ALL AVAILABLE FIAT CURRENCIES THAT CAN BE USED TO BUY THE SELECTED CRYPTO
       let availableCurrencies: GatewaysResponse['gateways'][0]['fiatCurrencies'] = []
-      for (var i in filtredGatewaysByCrypto) {
+      for (const i in filtredGatewaysByCrypto) {
         if (!filtredGatewaysByCrypto[i].fiatCurrencies) continue
         availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[i].fiatCurrencies)
       }
@@ -219,7 +219,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
       // GET ALL AVAILABLE PAYMENT METHODS THAT CAN BE USED TO BUY THE SELECTED CRYPTO WITH THE SELECTED CURRENCY
       let availablePaymentMethods: GatewaysResponse['gateways'][0]['paymentMethods'] = []
-      for (var i in filtredGatewaysByCurrency) {
+      for (const i in filtredGatewaysByCurrency) {
         if (!filtredGatewaysByCurrency[i].paymentMethods) continue
         availablePaymentMethods = availablePaymentMethods.concat(filtredGatewaysByCurrency[i].paymentMethods)
       }

@@ -62,7 +62,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     }
     const diff2Render = diffPercent.toFixed(2)
 
-    var styleColorUpDownDiff = {
+    const styleColorUpDownDiff = {
         "--diff-up-color": collected.amountInCrypto ? '#E85858' : '#008000',
         "--diff-down-color": collected.amountInCrypto ? '#008000' : '#E85858'
     } as React.CSSProperties;
