@@ -13,9 +13,9 @@ jobs:
     - name: Get Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '11.x'
-    - run: npm ci
-    - run: npm run build
+        node-version: '12.x'
+    - run: (cd package && npm ci &&  npm run build:dev)
+    - run: (cd iframe && npm ci &&  npm run build)
   test:
     runs-on: ubuntu-latest
     steps:
@@ -23,9 +23,8 @@ jobs:
     - name: Get Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '11.x'
+        node-version: '12.x'
     - run: npm ci
-    - run: npm test
   deploy:
     needs: [lint-and-build, test]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/demo')
@@ -55,15 +54,15 @@ jobs:
     - name: Get Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '11.x'
-    - run: npm ci
-    - run: npm run build
+        node-version: '12.x'
+    - run: (cd package && npm ci &&  npm run build:$STAGE)
       env:
-        REACT_APP_STAGE: ${{ steps.git-branch.outputs.stage }}
+        STAGE: ${{ steps.git-branch.outputs.stage }}
+    - run: (cd iframe && npm ci &&  npm run build)
     - name: Deploy to static site
       uses: onramper/action-deploy-aws-static-site@v1
       with:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         domain: ${{ steps.git-branch.outputs.domain }}
-        publish_dir: './build'
+        publish_dir: './iframe/build'
