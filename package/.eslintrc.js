@@ -33,7 +33,8 @@ module.exports = {
         "padded-blocks": "off",
         "operator-linebreak": "off",
         "@typescript-eslint/no-use-before-define": "warn",
-        "camelcase": "warn"
+        "camelcase": "warn",
+        "multiline-ternary": "off"
     },
     "settings": {
         "react": {
