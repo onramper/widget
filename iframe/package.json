@@ -35,39 +35,18 @@
     ]
   },
   "devDependencies": {
-    "@svgr/webpack": "^5.4.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.9.1",
-    "@types/node": "^12.19.2",
     "@types/react": "^16.9.54",
     "@types/react-dom": "^16.9.9",
     "@types/react-test-renderer": "^16.9.2",
-    "@types/react-transition-group": "^4.4.0",
-    "css-loader": "^4.3.0",
-    "file-loader": "^6.2.0",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.5.0",
     "prettier": "^2.1.2",
     "react-scripts": "3.4.1",
     "react-test-renderer": "^16.14.0",
-    "style-loader": "^1.3.0",
-    "svg-url-loader": "^6.0.0",
     "ts-jest": "^24.3.0",
-    "ts-loader": "^8.0.7",
-    "typescript": "^3.9.5",
-    "webpack-cli": "^3.3.12"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,ts,tsx}": [
-      "npm run lint"
-    ]
+    "typescript": "^3.9.5"
   },
   "jest": {
     "collectCoverageFrom": [
