@@ -31,7 +31,9 @@ module.exports = {
         "spaced-comment": "off",
         "curly": "off",
         "padded-blocks": "off",
-        "operator-linebreak": "off"
+        "operator-linebreak": "off",
+        "@typescript-eslint/no-use-before-define": "warn",
+        "camelcase": "warn"
     },
     "settings": {
         "react": {
