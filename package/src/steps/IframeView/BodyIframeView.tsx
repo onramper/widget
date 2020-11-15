@@ -19,7 +19,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const redirect = useCallback(() => {
         setAutoRedirect(true)
         //try to open popup
-        let windowObjectReference = window.open(props.src, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
+        const windowObjectReference = window.open(props.src, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
         //if opened -> all is ok
         if (windowObjectReference) return
         //if not opened -> warn user about popup blocked + ask user for click a button

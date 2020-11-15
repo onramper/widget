@@ -69,14 +69,14 @@ export const collectedReducer = (state: StateType, action: DataActions) => {
                 [action.payload.name]: [...state.collected[action.payload.name], ...newFiles]
             }
         case CollectedActionsType.DeleteFile:
-            let name2delete = action.payload.value
+            const name2delete = action.payload.value
             const newList = (state.collected[action.payload.name] as File[]).filter(f => f.name !== name2delete)
             return {
                 ...state.collected,
                 [action.payload.name]: [...newList]
             }
         case CollectedActionsType.AddError:
-            let error = action.payload.value
+            const error = action.payload.value
             if (!error) return {
                 ...state.collected,
                 errors: undefined

@@ -37,10 +37,10 @@ const RatesList: React.FC<RatesListProps> = (props) => {
         }
     }, {} as { [key: string]: boolean })
 
-    let easiests = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.requiredKYC?.length ?? Number.POSITIVE_INFINITY })), true)
-    let fastest = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.duration.seconds })), true)
+    const easiests = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.requiredKYC?.length ?? Number.POSITIVE_INFINITY })), true)
+    const fastest = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.duration.seconds })), true)
     const defaultReceivedCrypto = collected.amountInCrypto ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY
-    let bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
+    const bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
 
     const badges = availableRates.reduce<badgeType>((acc, rate, index, arr) => {
         const allbadges = {

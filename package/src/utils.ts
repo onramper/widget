@@ -25,15 +25,15 @@ export const arrayObjUnique = (array: any[], attrFilter: string) => {
 
 export const toMaxDecimalsFloor = (n: number | string, decimals: number) => {
     const amount = typeof n === 'string' ? Number(n.replace(',', '.')) : n
-    let factor = Number('1e' + decimals)
-    let nRound = Math.floor((amount) * factor) / factor
+    const factor = Number('1e' + decimals)
+    const nRound = Math.floor((amount) * factor) / factor
     return !isFinite(nRound) ? 0 : nRound
 }
 
 export const toMaxDecimalsRound = (n: number | string, decimals: number) => {
     const amount = typeof n === 'string' ? Number(n.replace(',', '.')) : n
-    let factor = Number('1e' + decimals)
-    let nRound = Math.round((amount) * factor) / factor
+    const factor = Number('1e' + decimals)
+    const nRound = Math.round((amount) * factor) / factor
     return !isFinite(nRound) ? 0 : nRound
 }
 
@@ -47,7 +47,7 @@ export const formatSeconds = (s: number) => {
     let value = s
     var i = 0
     for (i; i < ordredMagnitudes.length; i++) {
-        let nextValue = s / ordredMagnitudes[i].factor
+        const nextValue = s / ordredMagnitudes[i].factor
         if (nextValue < 1) break
         value = nextValue
     }

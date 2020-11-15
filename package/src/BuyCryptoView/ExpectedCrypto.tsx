@@ -23,7 +23,7 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
         let lowest = Number.POSITIVE_INFINITY;
         let index = 0
         let tmp: number;
-        let pricedRates = allRates.filter(item => item.available)
+        const pricedRates = allRates.filter(item => item.available)
 
         for (let i = pricedRates.length - 1; i >= 0; i--) {
             tmp = pricedRates[i].receivedCrypto ?? 0;

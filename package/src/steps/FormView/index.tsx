@@ -80,7 +80,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
     setErrorObj(undefined)
     setErrorMsg(undefined)
 
-    let params = nextStepData.reduce((acc, current) => {
+    const params = nextStepData.reduce((acc, current) => {
       return { ...acc, [current.name]: collected[current.name] }
     }, {})
     try {

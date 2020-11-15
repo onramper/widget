@@ -8,7 +8,7 @@ const BASE_API = process.env.STAGE === 'prod'
     ? 'https://api.onramper.com'
     : 'https://api.onramper.dev';
 
-let headers = new Headers()
+const headers = new Headers()
 
 const authenticate = (pk: string) => {
     headers.set('Authorization', `Basic ${pk}`)

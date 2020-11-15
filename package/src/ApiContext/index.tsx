@@ -130,7 +130,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       }))
 
       // SELECT DEFAULT CRYPTO
-      let selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === props.defaultCrypto)) || mappedAvailableCryptos[0]
+      const selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === props.defaultCrypto)) || mappedAvailableCryptos[0]
 
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)

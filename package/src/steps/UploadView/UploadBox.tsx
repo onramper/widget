@@ -24,7 +24,7 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
 
     const handleOnDropFiles = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
-        let newFiles = [...e.dataTransfer.files]
+        const newFiles = [...e.dataTransfer.files]
 
         onFilesAdded(id, [...newFiles], maxFiles)
         setIsDragOver(false)
@@ -32,8 +32,8 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
 
     const handleOnSelectFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
-        let currentFiles = e.currentTarget.files || []
-        let newFiles = [...currentFiles]
+        const currentFiles = e.currentTarget.files || []
+        const newFiles = [...currentFiles]
 
         onFilesAdded(id, [...newFiles], maxFiles)
 

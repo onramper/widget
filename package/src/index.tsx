@@ -60,7 +60,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
 }
 
 const initialize = (selector: string, props: OnramperWidgetProps) => {
-    let domContainer = document.querySelector(selector);
+    const domContainer = document.querySelector(selector);
     ReactDOM.render(<OnramperWidget {...props} />, domContainer);
 }
 
