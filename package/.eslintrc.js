@@ -47,7 +47,8 @@ module.exports = {
         "no-unused-vars": "off", //overrided @typescript-eslint/no-unused-vars
         "no-extra-boolean-cast": "warn",
         "space-before-function-paren": "off",
-        "func-call-spacing": "off"
+        "func-call-spacing": "off",
+        "@typescript-eslint/no-use-before-define": "off"
     },
     "settings": {
         "react": {

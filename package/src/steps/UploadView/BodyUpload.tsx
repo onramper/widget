@@ -28,11 +28,11 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
     const handleFilesAdd = (name: string, files: File[], maxFiles: number) => {
         setErrorControlMsg(undefined)
         if (!files.every(file => props.acceptedContentTypes?.some(t => file.type === t))) {
-            const erros_message = `Type not valid. Please upload a ${props.acceptedContentTypes?.reduce((acc, actual, index) => {
+            const errorsMessage = `Type not valid. Please upload a ${props.acceptedContentTypes?.reduce((acc, actual, index) => {
                 if (index === 0) return actual
                 return `${acc}, ${actual}`
             }, '')}.`
-            setErrorControlMsg(erros_message)
+            setErrorControlMsg(errorsMessage)
             return false
         }
 

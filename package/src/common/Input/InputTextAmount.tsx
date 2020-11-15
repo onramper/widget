@@ -1,12 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import styles from './styles.module.css'
-
 import { toMaxDecimalsRound } from '../../utils'
-
 import { ItemType } from '../../ApiContext';
-
 import HintIcon from '../HintIcon'
-
 import { CSSTransition } from 'react-transition-group';
 
 type InputTextType = {

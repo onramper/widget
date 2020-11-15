@@ -204,7 +204,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
 }
 
 const date2Object = (value: string, key: string = "", id: string = "") => {
-    const _value = !!value ? value : "yyyy-mm-dd"
+    const _value = value || "yyyy-mm-dd"
     const date = {
         year: _value.split('-')[0],
         month: _value.split('-')[1],

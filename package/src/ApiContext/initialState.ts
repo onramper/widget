@@ -60,10 +60,10 @@ export type DataStateType = {
     handleCurrencyChange: (currency?: ItemType) => | undefined | {}
     handlePaymentMethodChange: (paymentMehtod?: ItemType) => | undefined | {}
     //remote responses
-    response_gateways?: GatewaysResponse
+    responseGateways?: GatewaysResponse
     filtredGatewaysByCrypto: GatewaysResponse['gateways']
     filtredGatewaysByCurrency: GatewaysResponse['gateways']
-    response_rate?: RateResponse
+    responseRate?: RateResponse
 }
 
 export type InputInterfaceType = {
@@ -98,10 +98,10 @@ export const initialState: StateType = {
         handleCryptoChange: () => undefined,
         handleCurrencyChange: () => undefined,
         handlePaymentMethodChange: () => undefined,
-        response_gateways: undefined,
+        responseGateways: undefined,
         filtredGatewaysByCrypto: [],
         filtredGatewaysByCurrency: [],
-        response_rate: undefined
+        responseRate: undefined
     },
     inputInterface: {
         handleInputChange: () => null

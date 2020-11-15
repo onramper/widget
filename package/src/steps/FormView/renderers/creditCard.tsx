@@ -17,6 +17,27 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
 
     const [isSlashed, setIsSlashed] = useState(false)
 
+    const formatCardNumber = (value: string) => {
+        const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g
+        const onlyNumbers = value.replace(/[^\d]/g, '')
+
+        return onlyNumbers.replace(regex, (regex, $1, $2, $3, $4) =>
+            [$1, $2, $3, $4].filter(group => !!group).join(' ')
+        )
+    }
+
+    const formatExpiryDate = (value: string) => {
+        if (isSlashed && value.length === 2)
+            return value + ' / '
+
+        const regex = /^(\d{0,2})(\d{0,2})$/g
+        const onlyNumbers = value.replace(/[^\d]/g, '')
+
+        return onlyNumbers.replace(regex, (regex, $1, $2) =>
+            [$1, $2].filter(group => !!group).join(' / ')
+        )
+    }
+
     const onChange = (name: string, v: string) => {
         let value = v
         if (name === 'ccExpiration') {
@@ -42,27 +63,6 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
         else {
             props.handleInputChange(name, value)
         }
-    }
-
-    const formatCardNumber = (value: string) => {
-        const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g
-        const onlyNumbers = value.replace(/[^\d]/g, '')
-
-        return onlyNumbers.replace(regex, (regex, $1, $2, $3, $4) =>
-            [$1, $2, $3, $4].filter(group => !!group).join(' ')
-        )
-    }
-
-    const formatExpiryDate = (value: string) => {
-        if (isSlashed && value.length === 2)
-            return value + ' / '
-
-        const regex = /^(\d{0,2})(\d{0,2})$/g
-        const onlyNumbers = value.replace(/[^\d]/g, '')
-
-        return onlyNumbers.replace(regex, (regex, $1, $2) =>
-            [$1, $2].filter(group => !!group).join(' / ')
-        )
     }
 
     return (

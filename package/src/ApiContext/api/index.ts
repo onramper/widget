@@ -26,8 +26,8 @@ interface GatewaysParams {
 
 const gateways = async (params: GatewaysParams, filter?: Filters): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
-    const gateways_res = await fetch(`${BASE_API}/gateways?${urlParams}`, { headers })
-    const gateways: GatewaysResponse = await processResponse(gateways_res)
+    const gatewaysRes = await fetch(`${BASE_API}/gateways?${urlParams}`, { headers })
+    const gateways: GatewaysResponse = await processResponse(gatewaysRes)
     return filterGatewaysResponse(gateways, filter ?? {})
 }
 
@@ -83,13 +83,13 @@ const processResponse = async (response: FetchResponse): Promise<any> => {
     if (response.ok)
         return await response.json()
     else {
-        let error_response
+        let errorResponse
         try {
-            error_response = await response.json()
+            errorResponse = await response.json()
         } catch (error) {
             throw new NextStepError({ message: await response.text() })
         }
-        throw new NextStepError(error_response)
+        throw new NextStepError(errorResponse)
     }
 }
 
