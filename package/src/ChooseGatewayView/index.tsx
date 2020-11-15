@@ -3,13 +3,11 @@ import Header from '../common/Header'
 import styles from '../styles.module.css'
 import BodyChooseGateway from './BodyChooseGateway'
 import { NavContext } from '../NavContext'
-import { APIContext } from '../ApiContext'
+import { APIContext, GatewayRateOption } from '../ApiContext'
 
 import Step from '../steps/Step'
 
 /* import WalletAddressView from '../steps/WalletAddressView' */
-
-import { GatewayRateOption } from '../ApiContext'
 
 const ChooseGatewayView = () => {
   const { nextScreen } = useContext(NavContext)

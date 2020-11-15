@@ -20,19 +20,18 @@ module.exports = {
         "react",
         "@typescript-eslint"
     ],
-    "rules": { //0: off, 1:warn, 2:error
+    "rules": { // 0: off, 1:warn, 2:error
         "semi": "off",
         "no-multiple-empty-lines": "off",
-        "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": "error",
-        "react/prop-types": "off",//since is defined by typescript types
+        "no-use-before-define": "off", // overrided @typescript-eslint/no-use-before-define
+        "@typescript-eslint/no-use-before-define": "warn",
+        "react/prop-types": "off",// is defined with typescript types
         "indent": "off",
         "quotes": "off",
         "spaced-comment": "off",
         "curly": "off",
         "padded-blocks": "off",
         "operator-linebreak": "off",
-        "@typescript-eslint/no-use-before-define": "warn",
         "camelcase": "warn",
         "multiline-ternary": "off",
         "no-useless-return": "warn",
@@ -43,7 +42,9 @@ module.exports = {
         "keyword-spacing": "off",
         "space-before-blocks": "off",
         "key-spacing": "off",
-        "quote-props": "warn"
+        "quote-props": "warn",
+        "import/no-duplicates": "warn",
+        "no-unused-vars": "off", //overrided @typescript-eslint/no-unused-vars
     },
     "settings": {
         "react": {

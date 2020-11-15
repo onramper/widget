@@ -1,6 +1,5 @@
-import { StateType, DataStateType } from './initialState'
+import { StateType, DataStateType, ErrorObjectType } from './initialState'
 import { ItemType } from '.';
-import { ErrorObjectType } from './initialState'
 
 export enum CollectedActionsType {
     AddField = 'ADD_FIELD',

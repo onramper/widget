@@ -6,9 +6,8 @@ import InputTextAmount from '../common/Input/InputTextAmount'
 import ButtonAction from '../common/ButtonAction'
 import ExpectedCrypto from './ExpectedCrypto'
 
-import { APIContext } from '../ApiContext'
+import { APIContext, ItemType, ItemCategory } from '../ApiContext'
 
-import { ItemType, ItemCategory } from '../ApiContext'
 import InfoBox from '../common/InfoBox'
 import ErrorVisual from '../common/ErrorVisual'
 
