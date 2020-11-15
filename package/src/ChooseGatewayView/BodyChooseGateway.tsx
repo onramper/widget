@@ -24,21 +24,21 @@ const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
     return (
         <main className={stylesCommon.body}>
             {ratesList.length > 0 ?
-                <div className={`${stylesCommon['body__child']}`}>
+                <div className={`${stylesCommon.body__child}`}>
                     <RatesList availableRates={availableRates} unavailableRates={unavailableRates} onItemClick={onItemClick} />
                 </div>
                 : (
                     <>
-                        <InfoBox in={true} type='info' className={`${stylesCommon['body__child']}`}>
+                        <InfoBox in={true} type='info' className={`${stylesCommon.body__child}`}>
                             No prices available at this time.
                         </InfoBox>
-                        <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+                        <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                             <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
                         </div>
                     </>
                 )
             }
-            <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+            <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text='Continue' disabled={availableRates.length < 1} />
             </div>
         </main>

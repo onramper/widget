@@ -62,7 +62,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
 
     return (
         <main className={stylesCommon.body}>
-            {!isProcessingStep && <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+            {!isProcessingStep && <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
             </div>}
         </main>

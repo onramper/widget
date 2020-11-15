@@ -53,13 +53,13 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <InfoBox in={!!textInfo} className={`${stylesCommon['body__child']}`}>
+            <InfoBox in={!!textInfo} className={`${stylesCommon.body__child}`}>
                 {textInfo}
             </InfoBox>
-            <InfoBox type='error' in={!!errorControlMsg} className={`${stylesCommon['body__child']}`} canBeDismissed onDismissClick={() => setErrorControlMsg(undefined)}>
+            <InfoBox type='error' in={!!errorControlMsg} className={`${stylesCommon.body__child}`} canBeDismissed onDismissClick={() => setErrorControlMsg(undefined)}>
                 {errorControlMsg}
             </InfoBox>
-            <div className={`${stylesCommon['body__child']} ${stylesCommon.grow}`}>
+            <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 <UploadBox id='files' onFilesAdded={handleFilesAdd} onFileDeleted={handleFilesDelete} filesList={existingFiles} maxFiles={1} >
                     <strong>Drag and Drop</strong><br />
                     a file or click here<br />
@@ -69,7 +69,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
                     }, '')} ]
                 </UploadBox>
             </div>
-            <div className={`${stylesCommon['body__child']}`}>
+            <div className={`${stylesCommon.body__child}`}>
                 <ButtonAction onClick={() => onActionButton(existingFiles[0])} text={isLoading ? 'Verifying...' : 'Continue'} disabled={existingFiles.length !== 1 || isLoading} />
             </div>
         </main>

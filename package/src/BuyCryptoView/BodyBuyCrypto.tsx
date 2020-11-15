@@ -71,7 +71,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         <main className={stylesCommon.body}>
             {
                 generalErrors.map((errName, i) =>
-                    <InfoBox key={i} in={!!errors[errName]} type='error' className={`${stylesCommon['body__child']}`}>
+                    <InfoBox key={i} in={!!errors[errName]} type='error' className={`${stylesCommon.body__child}`}>
                         {errors[errName].message}
                         &nbsp;
                         {<button className={stylesCommon['button--link']} onClick={() => onPriceError(errName)}>Try again.</button>}
@@ -81,19 +81,19 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             {
                 !generalErrors.some(errName => errName === "GATEWAYS") ?
                     <>
-                        <InputButton onClick={openPickCrypto} className={stylesCommon['body__child']} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
-                        <div className={`${stylesCommon['body__child']} ${stylesCommon['row-fields']}`}>
-                            <InputTextAmount error={errors['amount']?.message} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon['grow']}`} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} />
+                        <InputButton onClick={openPickCrypto} className={stylesCommon.body__child} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
+                        <div className={`${stylesCommon.body__child} ${stylesCommon['row-fields']}`}>
+                            <InputTextAmount error={errors.amount?.message} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon.grow}`} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} />
                             <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
                         </div>
-                        <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon['body__child']} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-                        <ExpectedCrypto className={`${stylesCommon['body__child']} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
-                        <div className={`${stylesCommon['body__child']}`}>
+                        <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon.body__child} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
+                        <ExpectedCrypto className={`${stylesCommon.body__child} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
+                        <div className={`${stylesCommon.body__child}`}>
                             <ButtonAction onClick={onBuyCrypto} text={`Buy ${selectedCrypto.id}`} disabled={!isFilled || collected.isCalculatingAmount || Object.keys(generalErrors).length > 0} />
                         </div>
                     </>
                     :
-                    <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+                    <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                         <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
                     </div>
             }

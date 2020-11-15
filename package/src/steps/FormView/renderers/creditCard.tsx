@@ -69,22 +69,22 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
         <>
             <InputText
                 ref={ref}
-                className={stylesCommon["body__child"]}
+                className={stylesCommon.body__child}
                 label="Card number"
                 name="ccNumber"
-                error={props.errorObj?.['ccNumber']}
+                error={props.errorObj?.ccNumber}
                 onChange={onChange}
                 placeholder='4111 1111 1111 1111'
                 value={formatCardNumber(ccNumberValue)}
             />
             <div
-                className={`${stylesCommon["body__child"]} ${stylesCommon["row-fields"]}`}
+                className={`${stylesCommon.body__child} ${stylesCommon["row-fields"]}`}
             >
                 <InputText
                     className={stylesCommon["row-fields__child"]}
                     label="Expiry date"
                     name="ccExpiration"
-                    error={props.errorObj?.['ccMonth'] || props.errorObj?.['ccYear']}
+                    error={props.errorObj?.ccMonth || props.errorObj?.ccYear}
                     onChange={onChange}
                     placeholder='MM/YY'
                     value={formatExpiryDate(`${ccMonthValue}${ccYearValue.substring(2, 4)}`)}
@@ -94,7 +94,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
                     className={stylesCommon["row-fields__child"]}
                     label="CCV"
                     name="ccCVV"
-                    error={props.errorObj?.['ccCVV']}
+                    error={props.errorObj?.ccCVV}
                     onChange={onChange}
                     placeholder='123'
                     value={ccCVVValue}

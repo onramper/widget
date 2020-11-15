@@ -69,11 +69,11 @@ const InputText: React.FC<InputTextType> = (props) => {
     }
 
     return (
-        <div className={`${styles['input']} ${className}`}>
-            {label && <label><span className={styles['label__title']}>{label}{props.onHelpClick && <>&nbsp;&nbsp;<HintIcon onClick={props.onHelpClick} /></>}</span>{switchPairEnabled && symbols && <SwitchPairs onClick={handleSwitchPair} pairs={symbols} indexSelectedNumber={actualSymbolIndex} />}</label>}
-            <div className={`${styles['input__type']} ${styles['input__type--number']}  ${error || error === '' ? styles['input__type--number--error'] : ''} ${disabled ? styles['input__type--number--disabled'] : ''}`}>
-                {icon && <img onClick={() => onIconClick(name)} alt="Icon" src={icon} className={`${styles['input__type__child']} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} />}
-                <span after-content={actualSymbol?.symbol ?? undefined} className={`${styles['input__type__child']} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} >
+        <div className={`${styles.input} ${className}`}>
+            {label && <label><span className={styles.label__title}>{label}{props.onHelpClick && <>&nbsp;&nbsp;<HintIcon onClick={props.onHelpClick} /></>}</span>{switchPairEnabled && symbols && <SwitchPairs onClick={handleSwitchPair} pairs={symbols} indexSelectedNumber={actualSymbolIndex} />}</label>}
+            <div className={`${styles.input__type} ${styles['input__type--number']}  ${error || error === '' ? styles['input__type--number--error'] : ''} ${disabled ? styles['input__type--number--disabled'] : ''}`}>
+                {icon && <img onClick={() => onIconClick(name)} alt="Icon" src={icon} className={`${styles.input__type__child} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} />}
+                <span after-content={actualSymbol?.symbol ?? undefined} className={`${styles.input__type__child} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} >
                     <input
                         /*                         onInput={(e: React.FormEvent<HTMLInputElement>) => {
                                                     if (e.currentTarget.value) {
@@ -112,7 +112,7 @@ const SwitchPairs: React.FC<{ pairs: ItemType[], onClick: (index: number) => voi
                 const isSelected = indexSelectedNumber === index
                 return (
                     <span key={index}>
-                        <span onClick={!isSelected ? () => onClick(index) : () => null} className={`${styles['label__symbol']} ${isSelected ? styles['label__symbol--selected'] : ''}`} >
+                        <span onClick={!isSelected ? () => onClick(index) : () => null} className={`${styles.label__symbol} ${isSelected ? styles['label__symbol--selected'] : ''}`} >
                             {item.name}
                         </span>
                         <span>{index < pairs.length - 1 ? '\u00A0/\u00A0' : ''}</span>

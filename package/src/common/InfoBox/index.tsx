@@ -40,7 +40,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
             }}
             unmountOnExit={true} >
             <div ref={ref} className={`${styles.infobox} ${styles[classBoxType]} ${className}`}>
-                <span className={styles['text']}>
+                <span className={styles.text}>
                     {props.children}
                 </span>
                 {canBeDismissed && <span className={styles['close-button']} onClick={onDismissClick} >✖</span>}

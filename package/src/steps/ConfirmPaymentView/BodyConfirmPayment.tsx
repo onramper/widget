@@ -35,9 +35,9 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
 
     return (
         <main className={stylesCommon.body}>
-            <div className={`${stylesCommon['body__child']} ${stylesCommon.grow} ${styles['container']}`}>
-                <ul className={`${styles['wrapper']}`}>
-                    <Item type='main' icon={<IconPay className={styles['icon']} />} title='Pay' content={`${props.payAmount} ${props.currency}`} onClick={props.conversionRate || props.fees ? () => setIsExpanded(actual => !actual) : undefined} isExpanded={isExpanded} />
+            <div className={`${stylesCommon.body__child} ${stylesCommon.grow} ${styles.container}`}>
+                <ul className={`${styles.wrapper}`}>
+                    <Item type='main' icon={<IconPay className={styles.icon} />} title='Pay' content={`${props.payAmount} ${props.currency}`} onClick={props.conversionRate || props.fees ? () => setIsExpanded(actual => !actual) : undefined} isExpanded={isExpanded} />
                     <CSSTransition
                         in={isExpanded}
                         timeout={1000}
@@ -60,19 +60,19 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 </ul>
                 {
                     props.cryptoAddr &&
-                    <ul className={`${styles['wrapper']}`}>
-                        <Item type='main' icon={<IconWallet className={styles['icon']} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
+                    <ul className={`${styles.wrapper}`}>
+                        <Item type='main' icon={<IconWallet className={styles.icon} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
                     </ul>
                 }
                 {/*                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconPaymentMethod className={styles['icon']} />} title='Payment method' content={props.paymentMethod} />
                 </ul> */}
-                <ul className={`${styles['wrapper']}`}>
-                    {props.txTime && <Item type='main' icon={<IconExpectedtime className={styles['icon']} />} title='Expected transaction time' content={props.txTime.message} single />}
+                <ul className={`${styles.wrapper}`}>
+                    {props.txTime && <Item type='main' icon={<IconExpectedtime className={styles.icon} />} title='Expected transaction time' content={props.txTime.message} single />}
                 </ul>
                 {/* <label className={styles['terms']}><input type="checkbox" name='agreementCheckbox' onChange={(e) => inputInterface.handleInputChange(e.currentTarget.name, e.currentTarget.checked)} /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label> */}
             </div>
-            <div className={`${stylesCommon['body__child']}`}>
+            <div className={`${stylesCommon.body__child}`}>
                 <ButtonAction onClick={onActionButton} text='Continue' disabled={!props.isFilled} />
             </div>
         </main >
@@ -94,21 +94,21 @@ const Item: React.FC<ItemType> = (props) => {
     const typeClass = props.type === 'main' ? 'item--main' : 'item--detail'
 
     return (
-        <li className={`${styles['item']} ${styles[typeClass]} ${single ? styles['item--single'] : ''}`}>
+        <li className={`${styles.item} ${styles[typeClass]} ${single ? styles['item--single'] : ''}`}>
             {props.type === 'main' ?
                 /* <img className={`${styles['icon']}`} src={icon} alt='Icon item' /> */
                 /* <svg className={`${styles['icon']}`}>
                     <use xlinkHref={`${icon}#icon`} />
                 </svg> */
-                typeof icon === 'string' ? <img className={`${styles['icon']}`} src={icon} alt='Icon item' /> : icon
+                typeof icon === 'string' ? <img className={`${styles.icon}`} src={icon} alt='Icon item' /> : icon
                 :
-                <i className={styles['dot']} />
+                <i className={styles.dot} />
             }
-            <div className={`${styles['content']} ${props.onClick ? styles['content--expandable'] : ''}`} onClick={onClick}>
-                <span className={styles['title']} >{props.title}</span>
-                <span className={styles['description']} >{props.content}</span>
+            <div className={`${styles.content} ${props.onClick ? styles['content--expandable'] : ''}`} onClick={onClick}>
+                <span className={styles.title} >{props.title}</span>
+                <span className={styles.description} >{props.content}</span>
             </div>
-            {props.onClick && <img src={IconChevron} className={`${styles['chevron']} ${isExpanded ? styles['chevron--down'] : styles['chevron--up']}`} alt='Expand button' onClick={onClick} />}
+            {props.onClick && <img src={IconChevron} className={`${styles.chevron} ${isExpanded ? styles['chevron--down'] : styles['chevron--up']}`} alt='Expand button' onClick={onClick} />}
         </li>
     )
 }

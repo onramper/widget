@@ -172,7 +172,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
     }
 
     return (
-        <div ref={inputRef} className={styles['date']}>
+        <div ref={inputRef} className={styles.date}>
             <span
                 id="day"
                 className={`${styles.noselect} ${selectedValue === 'day' ? styles['date-item--selected'] : ''}`}

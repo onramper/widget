@@ -20,9 +20,9 @@ const Header: React.FC<HeaderType> = (props) => {
 
     return (
         <nav className={styles.header}>
-            {backButton && <img onClick={() => backScreen()} className={`${styles['header__child']} ${styles['header__back-icon']}`} alt="Back" src={IconLeftArrow} />}
-            <h1 className={`${styles['header__child']}`}>{title}</h1>
-            <img onClick={onMenuClick} alt="menu" className={`${styles['header__child']} ${styles['header__burger-icon']}`} src={title === 'Menu' ? IconClose : IconMenu} />
+            {backButton && <img onClick={() => backScreen()} className={`${styles.header__child} ${styles['header__back-icon']}`} alt="Back" src={IconLeftArrow} />}
+            <h1 className={`${styles.header__child}`}>{title}</h1>
+            <img onClick={onMenuClick} alt="menu" className={`${styles.header__child} ${styles['header__burger-icon']}`} src={title === 'Menu' ? IconClose : IconMenu} />
         </nav>
     )
 }

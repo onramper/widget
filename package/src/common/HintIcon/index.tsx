@@ -9,7 +9,7 @@ type HintIconType = {
 const HintIcon: React.FC<HintIconType> = (props) => {
     return (
         <span onClick={props.onClick} className={styles['tooltip-help']}>
-            <IconHint className={`${styles['icon']} ${styles['icon-question']}`} />
+            <IconHint className={`${styles.icon} ${styles['icon-question']}`} />
         </span>
     )
 }

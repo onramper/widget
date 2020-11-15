@@ -23,13 +23,13 @@ const BodyPickOption: React.FC<BodyPickOptionType> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <InfoBox in={!!infoMsg} type='info' className={`${stylesCommon['body__child']}`} >
+            <InfoBox in={!!infoMsg} type='info' className={`${stylesCommon.body__child}`} >
                 {infoMsg}
             </InfoBox>
-            <div className={`${stylesCommon['body__child']}`}>
+            <div className={`${stylesCommon.body__child}`}>
                 <InputRadio options={steps.map((item, i) => ({ name: item.humanName, value: item.humanName }))} onItemClick={props.handleOptionChange} />
             </div>
-            <div className={`${stylesCommon['body__child']} ${stylesCommon['grow']}`}>
+            <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled} />
             </div>
         </main >
@@ -55,7 +55,7 @@ const InputRadio: React.FC<InputRadio> = ({ options, onItemClick = () => null })
         <>
             {
                 options.map((item, i) =>
-                    <div className={styles['option']} key={i}>
+                    <div className={styles.option} key={i}>
                         <label><input className={styles['input--radio']} type="radio" value={item.value ?? ('Item ' + i)} checked={i === itemClicked} onChange={(e) => onClick(i)} />{item.name ?? ('Item ' + i)}</label>
                     </div>
                 )
