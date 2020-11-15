@@ -24,7 +24,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
         if (windowObjectReference) return
         //if not opened -> warn user about popup blocked + ask user for click a button
         setAutoRedirect(false)
-        return
+        return undefined
     }, [props.src])
 
     useEffect(() => {

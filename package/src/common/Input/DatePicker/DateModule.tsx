@@ -61,7 +61,6 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                 else {
                     setSelectedValue(undefined)
                 }
-                return
             }
             else if (event.key === 'ArrowRight') {
                 event.preventDefault()

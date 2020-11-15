@@ -351,7 +351,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       }
 
       // IF NO ERRORS, RETURN UNDEFINED
-      return
+      return undefined
     }, [addData, state.collected.selectedCountry, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.response_gateways, state.collected.selectedPaymentMethod, processErrors, clearErrors])
 
   useEffect(() => {

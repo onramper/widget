@@ -34,7 +34,8 @@ module.exports = {
         "operator-linebreak": "off",
         "@typescript-eslint/no-use-before-define": "warn",
         "camelcase": "warn",
-        "multiline-ternary": "off"
+        "multiline-ternary": "off",
+        "no-useless-return": "warn"
     },
     "settings": {
         "react": {
