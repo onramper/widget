@@ -29,7 +29,8 @@ module.exports = {
         "indent": "off",
         "quotes": "off",
         "spaced-comment": "off",
-        "curly": "off"
+        "curly": "off",
+        "padded-blocks": "off"
     },
     "settings": {
         "react": {
