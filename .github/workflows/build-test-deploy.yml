@@ -1,4 +1,4 @@
-name: Build, test & deploy
+name: Build & deploy
 
 on:
   push:
@@ -16,17 +16,8 @@ jobs:
         node-version: '12.x'
     - run: (cd package && npm ci &&  npm run build:dev)
     - run: (cd iframe && npm ci &&  npm run build)
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Get Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
-    - run: npm ci
   deploy:
-    needs: [lint-and-build, test]
+    needs: [lint-and-build]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/demo')
     runs-on: ubuntu-latest
     steps:
