@@ -35,7 +35,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
             }}
             classNames={{
                 enter: styles['collapse-enter'],
-                enterActive: styles['collapse-enter-active'],
+                enterActive: styles['collapse-enter-active']
 
             }}
             unmountOnExit={true} >

@@ -69,7 +69,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
   const addData = useCallback(
     (data: any) => dispatch({ type: DataActionsType.AddData, payload: { value: data } }),
-    [],
+    []
   )
 
   const processErrors = useCallback((name: string, type: string, message: string) => {
@@ -186,7 +186,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.date
       addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.response_gateways, state.data.availableCryptos, addData, handleInputChange, state.collected.selectedCrypto],
+    }, [state.data.response_gateways, state.data.availableCryptos, addData, handleInputChange, state.collected.selectedCrypto]
   )
 
   const handleCurrencyChange = useCallback(
@@ -241,7 +241,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // save to state.date
       addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
-    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.response_gateways, state.collected.selectedCurrency, defaultAmount],
+    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.response_gateways, state.collected.selectedCurrency, defaultAmount]
   )
 
   const handlePaymentMethodChange = useCallback(
@@ -389,7 +389,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
         ...state.data,
         handleCryptoChange,
         handleCurrencyChange,
-        handlePaymentMethodChange,
+        handlePaymentMethodChange
       },
       apiInterface: { init, executeStep, getRates }
     }}>

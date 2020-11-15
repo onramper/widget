@@ -36,7 +36,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     } = props
 
     const style = {
-        "--primary-color": color,
+        "--primary-color": color
     } as React.CSSProperties;
 
     return (

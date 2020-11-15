@@ -49,7 +49,7 @@ const RatesList: React.FC<RatesListProps> = (props) => {
             fast: rate.duration.seconds <= 60 * 10,
             fastest: fastest.some(id => id === rate.identifier),
             easiest: easiests.some(id => id === rate.identifier),
-            bestOffer: bestOffers.some(id => id === rate.identifier),
+            bestOffer: bestOffers.some(id => id === rate.identifier)
         }
         return {
             ...acc,

@@ -89,7 +89,7 @@ class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStat
                     enter: styles['screen-enter'],
                     enterActive: styles['screen-enter-active'],
                     exit: styles['screen-exit'],
-                    exitActive: styles['screen-exit-active'],
+                    exitActive: styles['screen-exit-active']
                   }}>
                     <div style={{ zIndex: (i + 1) }} className={styles.screen} ref={this.transitionRef}>
                       {screen}
@@ -107,7 +107,7 @@ class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStat
 NavContainer.contextType = NavContext
 
 const mainReducer = (state: NavigationStateType, action: NavigationActions) => ({
-  screens: navigationReducer(state, action),
+  screens: navigationReducer(state, action)
 });
 
 const navigationReducer = (state: NavigationStateType, action: NavigationActions) => {

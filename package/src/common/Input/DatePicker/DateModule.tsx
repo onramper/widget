@@ -222,7 +222,7 @@ const date2Object = (value: string, key: string = "", id: string = "") => {
     return {
         year: Number.isInteger(+date.year) ? +date.year : DEFAULT_VALUE.year,
         month: Number.isInteger(+date.month) ? +date.month > 13 ? 12 : +date.month : DEFAULT_VALUE.month,
-        day: Number.isInteger(+date.day) ? +date.day > 32 ? 31 : +date.day : DEFAULT_VALUE.day,
+        day: Number.isInteger(+date.day) ? +date.day > 32 ? 31 : +date.day : DEFAULT_VALUE.day
     }
 }
 

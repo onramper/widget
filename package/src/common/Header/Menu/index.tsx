@@ -34,11 +34,11 @@ const Menu: React.FC = () => {
       <List onItemClick={handleItemClick} items={[
         {
           id: 'faq',
-          name: 'FAQ/support',
+          name: 'FAQ/support'
         },
         {
           id: 'legal',
-          name: 'Privacy Policy',
+          name: 'Privacy Policy'
         },
         {
           id: 'terms',
@@ -46,7 +46,7 @@ const Menu: React.FC = () => {
         },
         {
           id: 'about',
-          name: 'About Onramper',
+          name: 'About Onramper'
         }
       ]} />
     </main>

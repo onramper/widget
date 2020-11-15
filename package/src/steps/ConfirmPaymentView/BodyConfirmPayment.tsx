@@ -45,7 +45,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                             enter: styles['details-enter'],
                             enterActive: styles['details-enter-active'],
                             exit: styles['details-exit'],
-                            exitActive: styles['details-exit-active'],
+                            exitActive: styles['details-exit-active']
                         }}
                         unmountOnExit
                         onEnter={() => setIsExpanded(true)}

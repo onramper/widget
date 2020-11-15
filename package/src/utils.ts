@@ -41,7 +41,7 @@ const ordredMagnitudes = [
     { magnitude: 'seconds', magnitudeShort: 's', factor: 1 },
     { magnitude: 'minutes', magnitudeShort: 'm', factor: 60 },
     { magnitude: 'hours', magnitudeShort: 'h', factor: 3600 },
-    { magnitude: 'days', magnitudeShort: 'd', factor: 86400 },
+    { magnitude: 'days', magnitudeShort: 'd', factor: 86400 }
 ]
 export const formatSeconds = (s: number) => {
     let value = s

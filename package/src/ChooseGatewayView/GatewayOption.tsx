@@ -15,7 +15,7 @@ const transitionPropsCollapse = {
         enter: styles['collapse-enter'],
         enterActive: styles['collapse-enter-active'],
         exit: styles['collapse-exit'],
-        exitActive: styles['collapse-exit-active'],
+        exitActive: styles['collapse-exit-active']
     },
     unmountOnExit: true
 }
@@ -29,7 +29,7 @@ const transitionPropsPrice = {
         enter: styles['fade-enter'],
         enterActive: styles['fade-enter-active'],
         exit: styles['fade-exit'],
-        exitActive: styles['fade-exit-active'],
+        exitActive: styles['fade-exit-active']
     },
     unmountOnExit: true
 }

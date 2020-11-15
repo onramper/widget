@@ -102,7 +102,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                     enter: styles['collapse-enter'],
                     enterActive: styles['collapse-enter-active'],
                     exit: styles['collapse-exit'],
-                    exitActive: styles['collapse-exit-active'],
+                    exitActive: styles['collapse-exit-active']
                 }}
                 unmountOnExit={true}>
                 {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}

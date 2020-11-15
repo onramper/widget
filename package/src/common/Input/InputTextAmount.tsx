@@ -94,7 +94,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                     enter: styles['collapse-enter'],
                     enterActive: styles['collapse-enter-active'],
                     exit: styles['collapse-exit'],
-                    exitActive: styles['collapse-exit-active'],
+                    exitActive: styles['collapse-exit-active']
                 }}
                 unmountOnExit={true}
 

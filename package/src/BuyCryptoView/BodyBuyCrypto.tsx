@@ -55,7 +55,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                 handleInputChange('amountInCrypto', item.currencyType === ItemCategory.Crypto)
                 setAmountInCrypto(item.currencyType === ItemCategory.Crypto)
             }
-        }, [handleInputChange, collected.bestExpectedCrypto, symbolRecentlyChanged],
+        }, [handleInputChange, collected.bestExpectedCrypto, symbolRecentlyChanged]
     )
 
     const firstRender = useRef(true)

@@ -35,7 +35,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
   }
 
   const style = {
-    "--pane-max-height": maxHeight,
+    "--pane-max-height": maxHeight
   } as React.CSSProperties;
 
   return (
@@ -47,7 +47,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
           enter: styles['collapse-enter' + classPrefix],
           enterActive: styles['collapse-enter-active' + classPrefix],
           exit: styles['collapse-exit' + classPrefix],
-          exitActive: styles['collapse-exit-active' + classPrefix],
+          exitActive: styles['collapse-exit-active' + classPrefix]
         }}
         mountOnEnter={true}
         unmountOnExit={true}>

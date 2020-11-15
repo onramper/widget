@@ -161,5 +161,5 @@ export default {
   VA: "Vatican City",
   VN: "Vietnam",
   EH: "Western Sahara",
-  ZM: "Zambia",
+  ZM: "Zambia"
 } as {[alpha2:string]:string};

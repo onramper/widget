@@ -34,7 +34,7 @@ describe("Component snapshots", () => {
     ["BodyBuyCrypto", <BodyBuyCrypto onBuyCrypto={() => null} handleInputChange={() => null} openPickCrypto={() => null} openPickCurrency={() => null} openPickPayment={() => null} selectedCrypto={itemsListExample[0]} selectedCurrency={itemsListExample[0]} selectedPaymentMethod={itemsListExample[0]} />],
     ["ExpectedCrypto", <ExpectedCrypto denom="BTC" isLoading={false} />],
     ["InputButton", <InputButton label="Label" selectedOption={itemsListExample[0].name} icon={itemsListExample[0].icon} />],
-    ["InputText", <InputText name='example' label="Label" />],
+    ["InputText", <InputText name='example' label="Label" />]
   ]);
 
   for (const [name, elem] of components) {
