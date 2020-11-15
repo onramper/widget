@@ -45,6 +45,8 @@ module.exports = {
         "quote-props": "warn",
         "import/no-duplicates": "warn",
         "no-unused-vars": "off", //overrided @typescript-eslint/no-unused-vars
+        "no-extra-boolean-cast": "warn",
+        "space-before-function-paren": "off"
     },
     "settings": {
         "react": {

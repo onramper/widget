@@ -38,10 +38,10 @@ const APIProvider: React.FC<APIProvider> = (props) => {
   const { defaultAmount = 100, defaultAddrs = {}, API_KEY } = props
   const iniState = {
     ...initialState,
-    "collected": {
+    collected: {
       ...initialState.collected,
-      "amount": defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
-      "defaultAddrs": Object.entries(defaultAddrs).reduce((acc, [key, value]) => ({ ...acc, [key.toUpperCase()]: value }), {})
+      amount: defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
+      defaultAddrs: Object.entries(defaultAddrs).reduce((acc, [key, value]) => ({ ...acc, [key.toUpperCase()]: value }), {})
     }
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
@@ -55,7 +55,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
-    (name: string, value: string | number | boolean | ItemType | ErrorObjectType[]) => dispatch({ "type": CollectedActionsType.AddField, "payload": { name, value } }),
+    (name: string, value: string | number | boolean | ItemType | ErrorObjectType[]) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
     []
   )
 
@@ -68,23 +68,23 @@ const APIProvider: React.FC<APIProvider> = (props) => {
   /* *********** */
 
   const addData = useCallback(
-    (data: any) => dispatch({ "type": DataActionsType.AddData, "payload": { "value": data } }),
+    (data: any) => dispatch({ type: DataActionsType.AddData, payload: { value: data } }),
     []
   )
 
   const processErrors = useCallback((name: string, type: string, message: string) => {
     const error = {
       [name]: {
-        "type": type,
-        "message": message
+        type: type,
+        message: message
       }
     }
-    dispatch({ "type": CollectedActionsType.AddError, "payload": { "value": error } })
+    dispatch({ type: CollectedActionsType.AddError, payload: { value: error } })
     return error
   }, [])
 
   const clearErrors = useCallback(() => {
-    dispatch({ "type": CollectedActionsType.AddError, "payload": { "value": undefined } })
+    dispatch({ type: CollectedActionsType.AddError, payload: { value: undefined } })
   }, [])
 
   /* *********** */
@@ -97,7 +97,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // REQUEST AVAILABLE GATEWAYS
       let response_gateways: GatewaysResponse
       try {
-        response_gateways = await API.gateways({ "country": actualCountry, "includeIcons": true, "includeDefaultAmounts": true }, { "onlyCryptos": props.filters?.onlyCryptos, "excludeCryptos": props.filters?.excludeCryptos })
+        response_gateways = await API.gateways({ country: actualCountry, includeIcons: true, includeDefaultAmounts: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos })
       } catch (error) {
         return processErrors("GATEWAYS", "API", error.message)
       }
@@ -120,13 +120,13 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
       // MAP AVAILABLE CRYPTOS LIST (CURRENCY LIST) TO AN ITEMTYPE LIST
       const mappedAvailableCryptos: ItemType[] = availableCryptos.map((crypto) => ({
-        "id": crypto.code,
-        "name": crypto.code,
-        "info": ICONS_MAP[crypto.code]?.name || 'Cryptocurrency',
-        "icon": ICONS_MAP[crypto.code]?.icon,
-        "precision": crypto.precision,
-        "symbol": crypto.code,
-        "currencyType": ItemCategory.Crypto
+        id: crypto.code,
+        name: crypto.code,
+        info: ICONS_MAP[crypto.code]?.name || 'Cryptocurrency',
+        icon: ICONS_MAP[crypto.code]?.icon,
+        precision: crypto.precision,
+        symbol: crypto.code,
+        currencyType: ItemCategory.Crypto
       }))
 
       // SELECT DEFAULT CRYPTO
@@ -138,7 +138,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       handleInputChange("phoneCountryCode", +phoneCodes[response_gateways.localization.country.toUpperCase() ?? 'GB']?.phoneCode)
       // save to state.date
       addData({
-        "availableCryptos": mappedAvailableCryptos,
+        availableCryptos: mappedAvailableCryptos,
         ICONS_MAP,
         response_gateways
       })
@@ -172,19 +172,19 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
       const ICONS_MAP = state.data.response_gateways.icons || {}
       const mappedAvailableCurrencies: ItemType[] = availableCurrencies.map((currency) => ({
-        "id": currency.code,
-        "name": currency.code,
-        "info": ICONS_MAP[currency.code]?.name || 'Currency',
-        "icon": ICONS_MAP[currency.code]?.icon,
-        "precision": currency.precision,
-        "symbol": ICONS_MAP[currency.code]?.symbol,
-        "currencyType": ItemCategory.Currency
+        id: currency.code,
+        name: currency.code,
+        info: ICONS_MAP[currency.code]?.name || 'Currency',
+        icon: ICONS_MAP[currency.code]?.icon,
+        precision: currency.precision,
+        symbol: ICONS_MAP[currency.code]?.symbol,
+        currencyType: ItemCategory.Currency
       }))
 
       // save to state.collected
       handleInputChange('selectedCrypto', actualCrypto)
       // save to state.date
-      addData({ "availableCurrencies": mappedAvailableCurrencies, filtredGatewaysByCrypto })
+      addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
 
     }, [state.data.response_gateways, state.data.availableCryptos, addData, handleInputChange, state.collected.selectedCrypto]
   )
@@ -228,18 +228,18 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
       const ICONS_MAP = response_gateways.icons || {}
       const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map((item, i) => ({
-        "id": item,
-        "name": ICONS_MAP[item]?.name || item,
-        "symbol": '',
-        "info": '',
-        "icon": ICONS_MAP[item]?.icon,
-        "type": ItemCategory.PaymentMethod
+        id: item,
+        name: ICONS_MAP[item]?.name || item,
+        symbol: '',
+        info: '',
+        icon: ICONS_MAP[item]?.icon,
+        type: ItemCategory.PaymentMethod
       }))
 
       // save to state.collected
       handleInputChange('selectedCurrency', actualCurrency)
       // save to state.date
-      addData({ "availablePaymentMethods": mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
+      addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
     }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.response_gateways, state.collected.selectedCurrency, defaultAmount]
   )
@@ -268,7 +268,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
       // IF THE AMOUNT IS NOT SET OR IT'S ===0 THEN NO AVAILABLE RATES
       if (!state.collected.amount) {
-        addData({ "allRates": [] })
+        addData({ allRates: [] })
         return
       }
 
@@ -294,7 +294,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
       // ELSE, CLEAR THE ABORT CONTROLLER AND RETURN ERROR
       let response_rate: RateResponse
       try {
-        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { "country": state.collected.selectedCountry, "amountInCrypto": state.collected.amountInCrypto, "includeIcons": true }, signal)
+        response_rate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { country: state.collected.selectedCountry, amountInCrypto: state.collected.amountInCrypto, includeIcons: true }, signal)
       } catch (error) {
         if (error.name === 'AbortError')
           return {}
@@ -309,22 +309,22 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
       // MAP RATES TO GatewayOptionType
       const mappedAllRates: GatewayRateOption[] = response_rate.map((item) => ({
-        "id": item.identifier,
-        "name": item.identifier,
-        "identifier": item.identifier,
-        "duration": item.duration,
-        "available": item.available,
-        "rate": item.rate,
-        "fees": item.fees,
-        "requiredKYC": item.requiredKYC,
-        "receivedCrypto": item.receivedCrypto,
-        "nextStep": item.nextStep,
-        "error": item.error,
-        "icon": item.icon || LogoOnramper
+        id: item.identifier,
+        name: item.identifier,
+        identifier: item.identifier,
+        duration: item.duration,
+        available: item.available,
+        rate: item.rate,
+        fees: item.fees,
+        requiredKYC: item.requiredKYC,
+        receivedCrypto: item.receivedCrypto,
+        nextStep: item.nextStep,
+        error: item.error,
+        icon: item.icon || LogoOnramper
       }))
 
       // save to state.date
-      addData({ "allRates": mappedAllRates, response_rate })
+      addData({ allRates: mappedAllRates, response_rate })
 
       // IF THERE ARE NO RATES AVAILABLES THEN REDUCE UNAVAILABLE RATES TO AN ERRORS OBJECT
       const unavailableRates = response_rate.filter(item => !item.available)
@@ -334,12 +334,12 @@ const APIProvider: React.FC<APIProvider> = (props) => {
           switch (item.error.type) {
             case 'MIN':
               if (!minMaxErrors[item.error.type] || ((item.error.limit ?? Number.POSITIVE_INFINITY) < minMaxErrors[item.error.type].limit)) {
-                minMaxErrors[item.error.type] = { "message": item.error.message, "limit": item.error.limit }
+                minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
               return minMaxErrors
             case 'MAX':
               if (!minMaxErrors[item.error.type] || ((item.error.limit ?? Number.NEGATIVE_INFINITY) > minMaxErrors[item.error.type].limit)) {
-                minMaxErrors[item.error.type] = { "message": item.error.message, "limit": item.error.limit }
+                minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
               return minMaxErrors
             default:
@@ -375,23 +375,23 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
-      return await API.executeStep(step, data, { "country": state.collected.selectedCountry })
+      return await API.executeStep(step, data, { country: state.collected.selectedCountry })
     }, [state.collected.selectedCountry])
 
   return (
     <APIContext.Provider value={{
       ...state,
-      "inputInterface": {
+      inputInterface: {
         ...state.inputInterface,
         handleInputChange
       },
-      "data": {
+      data: {
         ...state.data,
         handleCryptoChange,
         handleCurrencyChange,
         handlePaymentMethodChange
       },
-      "apiInterface": { init, executeStep, getRates }
+      apiInterface: { init, executeStep, getRates }
     }}>
       {props.children}
     </APIContext.Provider>

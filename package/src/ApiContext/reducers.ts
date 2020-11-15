@@ -46,8 +46,8 @@ export type DataActions = {
 
 export const mainReducer = (state: StateType, action: DataActions) => ({
     ...state,
-    "collected": collectedReducer(state, action),
-    "data": dataReducer(state, action)
+    collected: collectedReducer(state, action),
+    data: dataReducer(state, action)
 });
 
 export const collectedReducer = (state: StateType, action: DataActions) => {
@@ -78,11 +78,11 @@ export const collectedReducer = (state: StateType, action: DataActions) => {
             const error = action.payload.value
             if (!error) return {
                 ...state.collected,
-                "errors": undefined
+                errors: undefined
             }
             else if (Object.entries(error).length > 0) return {
                 ...state.collected,
-                "errors": { ...state.collected.errors, ...error }
+                errors: { ...state.collected.errors, ...error }
             }
             else return state.collected
         default:

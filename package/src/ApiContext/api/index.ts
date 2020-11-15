@@ -135,12 +135,12 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCrypto
             cryptosList = cryptosList.filter(crypto => !_excludeCryptos.includes(crypto.code))
         return {
             ...gateway,
-            "cryptoCurrencies": cryptosList
+            cryptoCurrencies: cryptosList
         }
     })
     return {
         ...gatewaysResponse,
-        "gateways": filtredGateways
+        gateways: filtredGateways
     }
 }
 

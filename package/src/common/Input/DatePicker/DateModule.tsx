@@ -2,9 +2,9 @@ import React, { MouseEventHandler, useState, useRef, useEffect } from 'react'
 import styles from './styles.module.css'
 
 export const DEFAULT_VALUE = {
-    "day": 'dd',
-    "month": 'mm',
-    "year": 'yyyy'
+    day: 'dd',
+    month: 'mm',
+    year: 'yyyy'
 }
 
 interface DateModuleType {
@@ -20,9 +20,9 @@ const DateModule: React.FC<DateModuleType> = (props) => {
 
     const { value = "yyyy-mm-dd" } = props
     const valueObject = value ? {
-        "year": value.split('-')[0],
-        "month": value.split('-')[1],
-        "day": value.split('-')[2]
+        year: value.split('-')[0],
+        month: value.split('-')[1],
+        day: value.split('-')[2]
     } : DEFAULT_VALUE
 
     const onChange = props.onChange || ((a, b, c) => null)
@@ -206,9 +206,9 @@ const DateModule: React.FC<DateModuleType> = (props) => {
 const date2Object = (value: string, key: string = "", id: string = "") => {
     const _value = !!value ? value : "yyyy-mm-dd"
     const date = {
-        "year": _value.split('-')[0],
-        "month": _value.split('-')[1],
-        "day": _value.split('-')[2]
+        year: _value.split('-')[0],
+        month: _value.split('-')[1],
+        day: _value.split('-')[2]
     }
 
     if (id === 'year')
@@ -219,9 +219,9 @@ const date2Object = (value: string, key: string = "", id: string = "") => {
         date.day = ("00" + date.day + key).slice(-2)
 
     return {
-        "year": Number.isInteger(+date.year) ? +date.year : DEFAULT_VALUE.year,
-        "month": Number.isInteger(+date.month) ? +date.month > 13 ? 12 : +date.month : DEFAULT_VALUE.month,
-        "day": Number.isInteger(+date.day) ? +date.day > 32 ? 31 : +date.day : DEFAULT_VALUE.day
+        year: Number.isInteger(+date.year) ? +date.year : DEFAULT_VALUE.year,
+        month: Number.isInteger(+date.month) ? +date.month > 13 ? 12 : +date.month : DEFAULT_VALUE.month,
+        day: Number.isInteger(+date.day) ? +date.day > 32 ? 31 : +date.day : DEFAULT_VALUE.day
     }
 }
 
