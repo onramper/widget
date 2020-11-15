@@ -35,7 +35,9 @@ module.exports = {
         "@typescript-eslint/no-use-before-define": "warn",
         "camelcase": "warn",
         "multiline-ternary": "off",
-        "no-useless-return": "warn"
+        "no-useless-return": "warn",
+        "no-trailing-spaces": "off",
+        "brace-style": "off"
     },
     "settings": {
         "react": {
