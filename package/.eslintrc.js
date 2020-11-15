@@ -30,7 +30,8 @@ module.exports = {
         "quotes": "off",
         "spaced-comment": "off",
         "curly": "off",
-        "padded-blocks": "off"
+        "padded-blocks": "off",
+        "operator-linebreak": "off"
     },
     "settings": {
         "react": {
