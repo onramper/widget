@@ -4,7 +4,7 @@ import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
 import processMoonpayStep from '@onramper/moonpay-adapter'
 
-const BASE_API = process.env.REACT_APP_STAGE === 'prod'
+const BASE_API = process.env.STAGE === 'prod'
     ? 'https://api.onramper.com'
     : 'https://api.onramper.dev';
 

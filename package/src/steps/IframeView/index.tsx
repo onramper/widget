@@ -11,7 +11,7 @@ import { finishCCTransaction } from '@onramper/moonpay-adapter'
 import { NavContext } from '../../NavContext'
 
 const baseCreditCardSandboxUrl = `https://sandbox.${
-  process.env.REACT_APP_STAGE === 'prod' ?
+  process.env.STAGE === 'prod' ?
     'onramper.com' : 'onramper.dev'
   }`
 

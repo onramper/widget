@@ -1,7 +1,9 @@
 const path = require('path');
+const webpack = require('webpack');
 
-module.exports = {
-    mode: 'none',
+module.exports = env => ({
+    mode: env.NODE_ENV,
+    watch: env.NODE_ENV === "development",
     entry: {
         app: path.join(__dirname, 'src', 'index.tsx')
     },
@@ -78,6 +80,9 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new webpack.DefinePlugin({ "process.env.STAGE": JSON.stringify(env.STAGE) }),
+    ],
     externals: {
         react: {
             'commonjs': 'react',
@@ -92,4 +97,4 @@ module.exports = {
             'root': 'ReactDOM'
         },
     }
-}
+})
