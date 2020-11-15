@@ -29,7 +29,7 @@ module.exports = {
         "indent": "off",
         "quotes": "off",
         "spaced-comment": "off",
-        "camelcase": "off"
+        "curly": "off"
     },
     "settings": {
         "react": {
