@@ -36,7 +36,7 @@ const BodyPickOption: React.FC<BodyPickOptionType> = (props) => {
     )
 }
 
-interface InputRadio {
+interface InputRadioType {
     options: {
         value?: string,
         name?: string
@@ -44,7 +44,7 @@ interface InputRadio {
     onItemClick?: (i: number) => void
 }
 
-const InputRadio: React.FC<InputRadio> = ({ options, onItemClick = () => null }) => {
+const InputRadio: React.FC<InputRadioType> = ({ options, onItemClick = () => null }) => {
     const [itemClicked, setIndexClicked] = useState(0)
     const onClick = (i: number) => {
         setIndexClicked(i)
