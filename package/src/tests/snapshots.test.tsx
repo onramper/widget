@@ -18,10 +18,10 @@ function testSnapshot(element: JSX.Element) {
 
 const itemsListExample = [
   {
-    id: 'BTC',
-    icon: IconBTC,
-    name: "BTC",
-    info: "Bitcoin"
+    "id": 'BTC',
+    "icon": IconBTC,
+    "name": "BTC",
+    "info": "Bitcoin"
   }
 ];
 

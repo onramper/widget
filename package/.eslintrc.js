@@ -37,7 +37,13 @@ module.exports = {
         "multiline-ternary": "off",
         "no-useless-return": "warn",
         "no-trailing-spaces": "off",
-        "brace-style": "off"
+        "brace-style": "off",
+        "react/display-name": "off",
+        "space-infix-ops": "off",
+        "keyword-spacing": "off",
+        "space-before-blocks": "off",
+        "key-spacing": "off",
+        "quote-props": "warn"
     },
     "settings": {
         "react": {

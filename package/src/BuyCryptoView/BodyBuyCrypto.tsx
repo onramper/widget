@@ -103,8 +103,8 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
 
 const LOAGIND_TEXT = 'Loading...'
 const LoadingItem: ItemType = {
-    id: '',
-    name: LOAGIND_TEXT
+    "id": '',
+    "name": LOAGIND_TEXT
 }
 
 export default BodyBuyCrypto

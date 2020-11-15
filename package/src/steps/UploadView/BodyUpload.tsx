@@ -77,7 +77,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
 }
 
 BodyUpload.defaultProps = {
-    onActionButton: () => null
+    "onActionButton": () => null
 }
 
 export default BodyUpload

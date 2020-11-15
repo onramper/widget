@@ -10,28 +10,28 @@ import { CSSTransition } from 'react-transition-group';
 import { APIContext, GatewayRateOption } from '../ApiContext'
 
 const transitionPropsCollapse = {
-    timeout: 500,
-    classNames: {
-        enter: styles['collapse-enter'],
-        enterActive: styles['collapse-enter-active'],
-        exit: styles['collapse-exit'],
-        exitActive: styles['collapse-exit-active']
+    "timeout": 500,
+    "classNames": {
+        "enter": styles['collapse-enter'],
+        "enterActive": styles['collapse-enter-active'],
+        "exit": styles['collapse-exit'],
+        "exitActive": styles['collapse-exit-active']
     },
-    unmountOnExit: true
+    "unmountOnExit": true
 }
 
 const transitionPropsPrice = {
-    timeout: {
-        enter: 500,
-        exit: 100
+    "timeout": {
+        "enter": 500,
+        "exit": 100
     },
-    classNames: {
-        enter: styles['fade-enter'],
-        enterActive: styles['fade-enter-active'],
-        exit: styles['fade-exit'],
-        exitActive: styles['fade-exit-active']
+    "classNames": {
+        "enter": styles['fade-enter'],
+        "enterActive": styles['fade-enter-active'],
+        "exit": styles['fade-exit'],
+        "exitActive": styles['fade-exit-active']
     },
-    unmountOnExit: true
+    "unmountOnExit": true
 }
 
 
@@ -108,7 +108,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                     <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
                         <div className={styles['collapsable-section']}>
                             <div className={`${styles.details}`} >
-                                {duration && <div style={{ height: '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
+                                {duration && <div style={{ "height": '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
                                 {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>{duration.message}</span></div>}
                                 {<div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>{props.badges?.[props.name].noId ? "No ID required" : "Identification required"}</span></div>}
                             </div>

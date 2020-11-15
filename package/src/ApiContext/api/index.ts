@@ -87,7 +87,7 @@ const processResponse = async (response: FetchResponse): Promise<any> => {
         try {
             error_response = await response.json()
         } catch (error) {
-            throw new NextStepError({ message: await response.text() })
+            throw new NextStepError({ "message": await response.text() })
         }
         throw new NextStepError(error_response)
     }
@@ -135,12 +135,12 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCrypto
             cryptosList = cryptosList.filter(crypto => !_excludeCryptos.includes(crypto.code))
         return {
             ...gateway,
-            cryptoCurrencies: cryptosList
+            "cryptoCurrencies": cryptosList
         }
     })
     return {
         ...gatewaysResponse,
-        gateways: filtredGateways
+        "gateways": filtredGateways
     }
 }
 

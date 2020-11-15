@@ -28,7 +28,7 @@ export type NavigationActions = {
   screen: ScreenType;
 }
 
-const initialState = { screens: [] }
+const initialState = { "screens": [] }
 
 //Creating context
 const NavContext = createContext<{
@@ -38,11 +38,11 @@ const NavContext = createContext<{
   nextScreen: (screen: ScreenType) => void;
   replaceScreen: (screen: ScreenType) => void;
 }>({
-  _state: initialState,
-  onlyScreen: () => null,
-  backScreen: () => null,
-  nextScreen: () => null,
-  replaceScreen: () => null
+  "_state": initialState,
+  "onlyScreen": () => null,
+  "backScreen": () => null,
+  "nextScreen": () => null,
+  "replaceScreen": () => null
 });
 
 
@@ -50,10 +50,10 @@ const NavContext = createContext<{
 const NavProvider: React.FC = (props) => {
   const [_state, dispatch] = useReducer(mainReducer, initialState);
 
-  const backScreen = useCallback(() => dispatch({ type: NavigationActionsType.Pop }), [])
-  const nextScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Push, screen }), [])
-  const onlyScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Only, screen }), [])
-  const replaceScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Replace, screen }), [])
+  const backScreen = useCallback(() => dispatch({ "type": NavigationActionsType.Pop }), [])
+  const nextScreen = useCallback((screen: ScreenType) => dispatch({ "type": NavigationActionsType.Push, screen }), [])
+  const onlyScreen = useCallback((screen: ScreenType) => dispatch({ "type": NavigationActionsType.Only, screen }), [])
+  const replaceScreen = useCallback((screen: ScreenType) => dispatch({ "type": NavigationActionsType.Replace, screen }), [])
 
   return (
     <NavContext.Provider value={{ _state, onlyScreen, backScreen, nextScreen, replaceScreen }}>
@@ -86,12 +86,12 @@ class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStat
               <TransitionGroup>
                 {value._state.screens.map((screen, i) => (
                   <CSSTransition key={i} nodeRef={this.transitionRef} timeout={200} classNames={{
-                    enter: styles['screen-enter'],
-                    enterActive: styles['screen-enter-active'],
-                    exit: styles['screen-exit'],
-                    exitActive: styles['screen-exit-active']
+                    "enter": styles['screen-enter'],
+                    "enterActive": styles['screen-enter-active'],
+                    "exit": styles['screen-exit'],
+                    "exitActive": styles['screen-exit-active']
                   }}>
-                    <div style={{ zIndex: (i + 1) }} className={styles.screen} ref={this.transitionRef}>
+                    <div style={{ "zIndex": (i + 1) }} className={styles.screen} ref={this.transitionRef}>
                       {screen}
                     </div>
                   </CSSTransition>
@@ -107,7 +107,7 @@ class NavContainer extends React.Component<{ home?: ScreenType }, NavigationStat
 NavContainer.contextType = NavContext
 
 const mainReducer = (state: NavigationStateType, action: NavigationActions) => ({
-  screens: navigationReducer(state, action)
+  "screens": navigationReducer(state, action)
 });
 
 const navigationReducer = (state: NavigationStateType, action: NavigationActions) => {

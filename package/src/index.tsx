@@ -49,7 +49,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                     defaultCrypto={defaultCrypto}
                     filters={{ onlyCryptos, excludeCryptos }}
                 >
-                    <div style={{ flexGrow: 1, display:'flex' }}>
+                    <div style={{ "flexGrow": 1, "display":'flex' }}>
                         <NavContainer home={<BuyCryptoView />} />
                     </div>
                     <Footer />

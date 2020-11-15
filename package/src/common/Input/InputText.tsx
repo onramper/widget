@@ -43,9 +43,9 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
         const value = e.currentTarget.value === '' ? e.currentTarget.value : type === 'number' ? +e.currentTarget.value : e.currentTarget.value
         if (e.currentTarget.type === 'date' && typeof value === 'string') {
             const date = {
-                year: value.split('-')[0],
-                month: value.split('-')[1],
-                day: value.split('-')[2]
+                "year": value.split('-')[0],
+                "month": value.split('-')[1],
+                "day": value.split('-')[2]
             }
             onChange(e.currentTarget.name, date, e.currentTarget.type)
             return
@@ -99,10 +99,10 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
             <CSSTransition in={!!error}
                 timeout={500}
                 classNames={{
-                    enter: styles['collapse-enter'],
-                    enterActive: styles['collapse-enter-active'],
-                    exit: styles['collapse-exit'],
-                    exitActive: styles['collapse-exit-active']
+                    "enter": styles['collapse-enter'],
+                    "enterActive": styles['collapse-enter-active'],
+                    "exit": styles['collapse-exit'],
+                    "exitActive": styles['collapse-exit-active']
                 }}
                 unmountOnExit={true}>
                 {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
@@ -119,11 +119,11 @@ const isTypeSupported = (type: string) => {
 }
 
 InputText.defaultProps = {
-    label: '\u00A0',
-    className: '',
-    iconPosition: 'start',
-    disabled: false,
-    type: 'text'
+    "label": '\u00A0',
+    "className": '',
+    "iconPosition": 'start',
+    "disabled": false,
+    "type": 'text'
 }
 
 export default InputText

@@ -27,9 +27,9 @@ const DatePicker: React.FC<DatePickerType> = (props) => {
                     if (props.onChange && date instanceof Date) {
                         const formattedDate = date.toLocaleDateString('en-CA', {})
                         props.onChange(props.name, {
-                            year: +formattedDate.split('-')[0],
-                            month: +formattedDate.split('-')[1],
-                            day: +formattedDate.split('-')[2]
+                            "year": +formattedDate.split('-')[0],
+                            "month": +formattedDate.split('-')[1],
+                            "day": +formattedDate.split('-')[2]
                         })
                     }
                 }}

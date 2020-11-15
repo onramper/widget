@@ -31,10 +31,10 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, re
             <CSSTransition in={!!error}
                 timeout={500}
                 classNames={{
-                    enter: styles['collapse-enter'],
-                    enterActive: styles['collapse-enter-active'],
-                    exit: styles['collapse-exit'],
-                    exitActive: styles['collapse-exit-active']
+                    "enter": styles['collapse-enter'],
+                    "enterActive": styles['collapse-enter-active'],
+                    "exit": styles['collapse-exit'],
+                    "exitActive": styles['collapse-exit-active']
                 }}
                 unmountOnExit={true}>
                 {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
@@ -44,9 +44,9 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, re
 })
 
 InputButton.defaultProps = {
-    className: '',
-    iconPosition: 'start',
-    selectedOption: ''
+    "className": '',
+    "iconPosition": 'start',
+    "selectedOption": ''
 }
 
 export default InputButton

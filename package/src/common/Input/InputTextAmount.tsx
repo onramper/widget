@@ -91,10 +91,10 @@ const InputText: React.FC<InputTextType> = (props) => {
             <CSSTransition in={!!error}
                 timeout={500}
                 classNames={{
-                    enter: styles['collapse-enter'],
-                    enterActive: styles['collapse-enter-active'],
-                    exit: styles['collapse-exit'],
-                    exitActive: styles['collapse-exit-active']
+                    "enter": styles['collapse-enter'],
+                    "enterActive": styles['collapse-enter-active'],
+                    "exit": styles['collapse-exit'],
+                    "exitActive": styles['collapse-exit-active']
                 }}
                 unmountOnExit={true}
 
@@ -125,11 +125,11 @@ const SwitchPairs: React.FC<{ pairs: ItemType[], onClick: (index: number) => voi
 }
 
 InputText.defaultProps = {
-    label: '\u00A0',
-    className: '',
-    iconPosition: 'start',
-    disabled: false,
-    type: 'text'
+    "label": '\u00A0',
+    "className": '',
+    "iconPosition": 'start',
+    "disabled": false,
+    "type": 'text'
 }
 
 export default InputText

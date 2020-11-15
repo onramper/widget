@@ -52,8 +52,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const generalErrorRef = useRef<HTMLDivElement>(null);
     const inputRefs = useMemo(() => {
         return fields.map(field => ({
-            name: field.name,
-            ref: React.createRef<HTMLDivElement>()
+            "name": field.name,
+            "ref": React.createRef<HTMLDivElement>()
         }))
     }, [fields])
 
@@ -69,15 +69,15 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         if (v && type === 'date') {
             if(typeof value === 'string'){
                 v = {
-                    year: Number("0000" + value.split('-')[0].slice(-4)),
-                    month: Number("00" + value.split('-')[1].slice(-2)),
-                    day: Number("00" + value.split('-')[2].slice(-2))
+                    "year": Number("0000" + value.split('-')[0].slice(-4)),
+                    "month": Number("00" + value.split('-')[1].slice(-2)),
+                    "day": Number("00" + value.split('-')[2].slice(-2))
                 }
             } else {
                 v={
-                    year: Number(v.year),
-                    month: Number(v.month),
-                    day: Number(v.day)
+                    "year": Number(v.year),
+                    "month": Number(v.month),
+                    "day": Number(v.day)
                 }
             }
         }
@@ -190,10 +190,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                 backScreen()
                                             }}
                                             items={Object.entries(countryNames).map(([code, name]) => ({
-                                                id: code,
+                                                "id": code,
                                                 name,
-                                                icon: icons[code],
-                                                info: code
+                                                "icon": icons[code],
+                                                "info": code
                                             }))}
                                             searchable
                                         />
@@ -211,9 +211,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                 backScreen()
                                             }}
                                             items={Object.entries(usStates).map(([code, state]) => ({
-                                                id: code,
-                                                name: state.name,
-                                                info: code
+                                                "id": code,
+                                                "name": state.name,
+                                                "info": code
                                             }))}
                                             searchable
                                         />
@@ -248,10 +248,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                         backScreen()
                                                     }}
                                                     items={Object.entries(phoneCodes).map(([code, infoObj]) => ({
-                                                        id: code,
-                                                        name: infoObj.phoneCode,
-                                                        info: infoObj.name,
-                                                        searchWords: infoObj.searchWords
+                                                        "id": code,
+                                                        "name": infoObj.phoneCode,
+                                                        "info": infoObj.name,
+                                                        "searchWords": infoObj.searchWords
                                                     }))}
                                                     searchable
                                                 />

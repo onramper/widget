@@ -44,10 +44,10 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
       <CSSTransition in={isActive}
         timeout={ANIMATION_TIMEOUT}
         classNames={{
-          enter: styles['collapse-enter' + classPrefix],
-          enterActive: styles['collapse-enter-active' + classPrefix],
-          exit: styles['collapse-exit' + classPrefix],
-          exitActive: styles['collapse-exit-active' + classPrefix]
+          "enter": styles['collapse-enter' + classPrefix],
+          "enterActive": styles['collapse-enter-active' + classPrefix],
+          "exit": styles['collapse-exit' + classPrefix],
+          "exitActive": styles['collapse-exit-active' + classPrefix]
         }}
         mountOnEnter={true}
         unmountOnExit={true}>

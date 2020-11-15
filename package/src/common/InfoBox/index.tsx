@@ -30,12 +30,12 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
     return (
         <CSSTransition in={props.in}
             timeout={{
-                enter: 100,
-                exit: 0
+                "enter": 100,
+                "exit": 0
             }}
             classNames={{
-                enter: styles['collapse-enter'],
-                enterActive: styles['collapse-enter-active']
+                "enter": styles['collapse-enter'],
+                "enterActive": styles['collapse-enter-active']
 
             }}
             unmountOnExit={true} >
