@@ -31,7 +31,7 @@ type InputTextType = {
 const InputText: React.FC<InputTextType> = (props) => {
     const { symbols, label, className, icon, iconPosition, disabled, value, type, name, error, onSymbolChange = (s: any) => null } = props
     const placeholder = disabled ? '' : props.placeholder
-    const clickableIcon = props.onIconClick ? true : false
+    const clickableIcon = !!props.onIconClick
     const { onChange = (e) => false, onIconClick = (n) => null } = props
 
     const [actualSymbol, setActualSymbol] = useState<ItemType>()

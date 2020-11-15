@@ -26,7 +26,6 @@ const List: React.FC<ListProps> = (props) => {
             || item.info?.toLowerCase().startsWith(query)
             || searchWords?.split(' ').some((substring) => substring.toLowerCase().startsWith(query))
             || searchWords?.toLowerCase().startsWith(query)
-            ? true : false
     }, [query])
 
     return (

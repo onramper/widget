@@ -32,9 +32,9 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
     const { backScreen, nextScreen } = useContext(NavContext)
     const { symbol, label = '\u00A0', className, disabled, value, type = 'text', name, error, symbolPosition = 'end', hint } = props
     const placeholder = disabled ? '' : props.placeholder
-    const clickableIcon = props.clickableIcon || props.onIconClick ? true : false
+    const clickableIcon = !!(props.clickableIcon || props.onIconClick)
     const { onChange = (e) => false, onIconClick = (n, v, l) => null } = props
-    const dateSupported = type === 'date' ? isTypeSupported(type) ? true : false : true
+    const dateSupported = type === 'date' ? isTypeSupported(type) : true
     const icon = !dateSupported ? IconCalendar : props.icon
     const iconPosition = !dateSupported ? 'end' : props.iconPosition
     const classPrefix = !dateSupported ? '--date' : '--chevron'

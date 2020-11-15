@@ -61,7 +61,7 @@ const APIProvider: React.FC<APIProvider> = (props) => {
 
   useEffect(() => {
     if (lastCall) handleInputChange('isCalculatingAmount', true)
-    else handleInputChange('isCalculatingAmount', state.data.response_rate === undefined ? true : false)
+    else handleInputChange('isCalculatingAmount', state.data.response_rate === undefined)
   }, [lastCall, handleInputChange, state.data.response_rate])
 
 

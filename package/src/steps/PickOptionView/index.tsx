@@ -26,7 +26,7 @@ const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = (
   }
 
   useEffect(() => {
-    setIsFilled(selectedOption !== undefined ? true : false)
+    setIsFilled(selectedOption !== undefined)
   }, [selectedOption])
 
   return (
