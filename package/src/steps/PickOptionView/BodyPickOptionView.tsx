@@ -27,7 +27,7 @@ const BodyPickOption: React.FC<BodyPickOptionType> = (props) => {
                 {infoMsg}
             </InfoBox>
             <div className={`${stylesCommon.body__child}`}>
-                <InputRadio options={steps.map((item, i) => ({ name: item.humanName, value: item.humanName }))} onItemClick={props.handleOptionChange} />
+                <InputRadio options={steps.map((item) => ({ name: item.humanName, value: item.humanName }))} onItemClick={props.handleOptionChange} />
             </div>
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled} />
@@ -56,7 +56,7 @@ const InputRadio: React.FC<InputRadioType> = ({ options, onItemClick = () => nul
             {
                 options.map((item, i) =>
                     <div className={styles.option} key={i}>
-                        <label><input className={styles['input--radio']} type="radio" value={item.value ?? ('Item ' + i)} checked={i === itemClicked} onChange={(e) => onClick(i)} />{item.name ?? ('Item ' + i)}</label>
+                        <label><input className={styles['input--radio']} type="radio" value={item.value ?? ('Item ' + i)} checked={i === itemClicked} onChange={() => onClick(i)} />{item.name ?? ('Item ' + i)}</label>
                     </div>
                 )
             }

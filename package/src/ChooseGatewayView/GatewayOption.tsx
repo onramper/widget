@@ -49,7 +49,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const [badge, setBadge] = useState("Alternative")
 
     const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change 
-    const { onClick = (i, d) => null } = props
+    const { onClick } = props
 
     let diffPercent: number;
     let isDiffPositive: boolean;
@@ -70,7 +70,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     React.useRef()
     useEffect(() => {
         if (props.index === 0 && isOpen) {
-            onClick(props.index, props.badges?.[name]._id ?? 0)
+            onClick?.(props.index, props.badges?.[name]._id ?? 0)
         }
     }, [onClick, props.index, props.badges, name, isOpen])
 
@@ -93,7 +93,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     }, [badges, name, props.index])
 
     return (
-        <div onClick={() => onClick(props.index, props.badges?.[name]._id ?? 0)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
+        <div onClick={() => onClick?.(props.index, props.badges?.[name]._id ?? 0)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
             <div className={styles['option-container__radio']}>
                 <input type='radio' checked={available && isOpen} readOnly disabled={!available}></input>
             </div>

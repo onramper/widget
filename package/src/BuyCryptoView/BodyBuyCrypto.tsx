@@ -28,7 +28,7 @@ interface BodyBuyCryptoProps {
 
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
-    const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment, onPriceError = (s: string) => null } = props
+    const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment, onPriceError } = props
     const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, errors = {}, isFilled = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
@@ -73,7 +73,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                     <InfoBox key={i} in={!!errors[errName]} type='error' className={`${stylesCommon.body__child}`}>
                         {errors[errName].message}
                         &nbsp;
-                        {<button className={stylesCommon['button--link']} onClick={() => onPriceError(errName)}>Try again.</button>}
+                        {<button className={stylesCommon['button--link']} onClick={() => onPriceError?.(errName)}>Try again.</button>}
                     </InfoBox>
                 )
             }

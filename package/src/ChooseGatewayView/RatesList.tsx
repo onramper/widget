@@ -42,7 +42,7 @@ const RatesList: React.FC<RatesListProps> = (props) => {
     const defaultReceivedCrypto = collected.amountInCrypto ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY
     const bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
 
-    const badges = availableRates.reduce<badgeType>((acc, rate, index, arr) => {
+    const badges = availableRates.reduce<badgeType>((acc, rate, index) => {
         const allbadges = {
             _id: index,
             noId: !reqIds[rate.identifier],

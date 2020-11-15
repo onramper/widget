@@ -226,7 +226,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
       const ICONS_MAP = responseGateways.icons || {}
-      const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map((item, i) => ({
+      const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map((item) => ({
         id: item,
         name: ICONS_MAP[item]?.name || item,
         symbol: '',

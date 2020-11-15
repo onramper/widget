@@ -25,7 +25,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
         day: value.split('-')[2]
     } : DEFAULT_VALUE
 
-    const { onChange = (a, b, c) => null } = props
+    const { onChange } = props
 
     useEffect(() => {
         const reff = inputRef.current
@@ -89,7 +89,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                     ...actualDate,
                     [selectedValue]: nextValue
                 }
-                onChange(props.name, actualDate, 'date')
+                onChange?.(props.name, actualDate, 'date')
             }
             else if (event.key === 'ArrowDown') {
                 event.preventDefault()
@@ -104,7 +104,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                     ...actualDate,
                     [selectedValue]: nextValue
                 }
-                onChange(props.name, actualDate, 'date')
+                onChange?.(props.name, actualDate, 'date')
             }
             else {
                 if (!Number.isInteger(+event.key)) return
@@ -139,7 +139,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
                     const currentValue = selectedValue === 'year' ? value.split('-')[0] : selectedValue === 'month' ? value.split('-')[1] : value.split('-')[2]
                     if ((currentValue + key).slice(-4) === '0000') key = '0001'
                 }
-                onChange(props.name, date2Object(value, key, selectedValue), 'date')
+                onChange?.(props.name, date2Object(value, key, selectedValue), 'date')
 
                 if (selectedCount === 1) {
                     setSelectedValue('month')

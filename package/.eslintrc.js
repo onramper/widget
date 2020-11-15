@@ -30,6 +30,7 @@ module.exports = {
         "quotes": "off",
         "spaced-comment": "off",
         "curly": "off",
+        "object-curly-spacing": "off",
         "padded-blocks": "off",
         "operator-linebreak": "off",
         "camelcase": "warn",
@@ -45,6 +46,7 @@ module.exports = {
         "quote-props": "warn",
         "import/no-duplicates": "warn",
         "no-unused-vars": "off", //overrided @typescript-eslint/no-unused-vars
+        "@typescript-eslint/no-unused-vars": "warn",
         "no-extra-boolean-cast": "warn",
         "space-before-function-paren": "off",
         "func-call-spacing": "off",
