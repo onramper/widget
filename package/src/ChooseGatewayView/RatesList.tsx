@@ -37,25 +37,25 @@ const RatesList: React.FC<RatesListProps> = (props) => {
         }
     }, {} as { [key: string]: boolean })
 
-    const easiests = getArrOfMinsMaxs(availableRates.map((rate) => ({ "name": rate.identifier, "value": rate.requiredKYC?.length ?? Number.POSITIVE_INFINITY })), true)
-    const fastest = getArrOfMinsMaxs(availableRates.map((rate) => ({ "name": rate.identifier, "value": rate.duration.seconds })), true)
+    const easiests = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.requiredKYC?.length ?? Number.POSITIVE_INFINITY })), true)
+    const fastest = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.duration.seconds })), true)
     const defaultReceivedCrypto = collected.amountInCrypto ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY
-    const bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ "name": rate.identifier, "value": rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
+    const bestOffers = getArrOfMinsMaxs(availableRates.map((rate) => ({ name: rate.identifier, value: rate.receivedCrypto ?? defaultReceivedCrypto })), collected.amountInCrypto)
 
     const badges = availableRates.reduce<badgeType>((acc, rate, index, arr) => {
         const allbadges = {
-            "_id": index,
-            "noId": !reqIds[rate.identifier],
-            "fast": rate.duration.seconds <= 60 * 10,
-            "fastest": fastest.some(id => id === rate.identifier),
-            "easiest": easiests.some(id => id === rate.identifier),
-            "bestOffer": bestOffers.some(id => id === rate.identifier)
+            _id: index,
+            noId: !reqIds[rate.identifier],
+            fast: rate.duration.seconds <= 60 * 10,
+            fastest: fastest.some(id => id === rate.identifier),
+            easiest: easiests.some(id => id === rate.identifier),
+            bestOffer: bestOffers.some(id => id === rate.identifier)
         }
         return {
             ...acc,
             [rate.identifier]: {
                 ...allbadges,
-                "count": Object.values(allbadges).filter(Boolean).length
+                count: Object.values(allbadges).filter(Boolean).length
             }
         }
     }, {})

@@ -62,9 +62,9 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                         title='Sandbox'
                         src={props.src}
                         style={{
-                            "width": '100%',
-                            "height": '100%',
-                            "borderStyle": 'none'
+                            width: '100%',
+                            height: '100%',
+                            borderStyle: 'none'
                         }}
                     />
                 }

@@ -23,7 +23,7 @@ const BASE_DEFAULT_AMOUNT_IN_USD = 100
 //Creating context
 const APIContext = createContext<StateType>(initialState);
 
-interface APIProvider {
+interface APIProviderType {
   API_KEY?: string,
   defaultAmount?: number
   defaultAddrs?: { [key: string]: string[] }
@@ -34,7 +34,7 @@ interface APIProvider {
   }
 }
 
-const APIProvider: React.FC<APIProvider> = (props) => {
+const APIProvider: React.FC<APIProviderType> = (props) => {
   const { defaultAmount = 100, defaultAddrs = {}, API_KEY } = props
   const iniState = {
     ...initialState,

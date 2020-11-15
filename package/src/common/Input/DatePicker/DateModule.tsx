@@ -198,7 +198,7 @@ const DateModule: React.FC<DateModuleType> = (props) => {
             <span onClick={() => {
                 setSelectedCount(0)
                 setSelectedValue(old => old ?? 'day')
-            }} style={{ "flexGrow": 1 }}></span>
+            }} style={{ flexGrow: 1 }}></span>
         </div>
     )
 }

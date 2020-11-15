@@ -28,7 +28,7 @@ const Header: React.FC<HeaderType> = (props) => {
 }
 
 Header.defaultProps = {
-    "backButton": false
+    backButton: false
 }
 
 export default Header

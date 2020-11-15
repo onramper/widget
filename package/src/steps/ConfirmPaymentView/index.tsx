@@ -5,8 +5,7 @@ import styles from '../../styles.module.css'
 import Step from '../Step'
 
 import { NavContext } from '../../NavContext'
-import { APIContext } from '../../ApiContext'
-import { NextStep } from '../../ApiContext';
+import { APIContext, NextStep } from '../../ApiContext'
 
 const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
   const { nextScreen } = useContext(NavContext);

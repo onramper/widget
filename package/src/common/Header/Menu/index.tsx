@@ -33,20 +33,20 @@ const Menu: React.FC = () => {
       <Header title="Menu" onMenuClick={() => backScreen()} />
       <List onItemClick={handleItemClick} items={[
         {
-          "id": 'faq',
-          "name": 'FAQ/support'
+          id: 'faq',
+          name: 'FAQ/support'
         },
         {
-          "id": 'legal',
-          "name": 'Privacy Policy'
+          id: 'legal',
+          name: 'Privacy Policy'
         },
         {
-          "id": 'terms',
-          "name": 'Terms of use'
+          id: 'terms',
+          name: 'Terms of use'
         },
         {
-          "id": 'about',
-          "name": 'About Onramper'
+          id: 'about',
+          name: 'About Onramper'
         }
       ]} />
     </main>

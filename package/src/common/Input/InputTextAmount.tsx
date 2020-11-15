@@ -73,7 +73,7 @@ const InputText: React.FC<InputTextType> = (props) => {
             {label && <label><span className={styles.label__title}>{label}{props.onHelpClick && <>&nbsp;&nbsp;<HintIcon onClick={props.onHelpClick} /></>}</span>{switchPairEnabled && symbols && <SwitchPairs onClick={handleSwitchPair} pairs={symbols} indexSelectedNumber={actualSymbolIndex} />}</label>}
             <div className={`${styles.input__type} ${styles['input__type--number']}  ${error || error === '' ? styles['input__type--number--error'] : ''} ${disabled ? styles['input__type--number--disabled'] : ''}`}>
                 {icon && <img onClick={() => onIconClick(name)} alt="Icon" src={icon} className={`${styles.input__type__child} ${styles.input__icon} ${iconPosition === 'end' ? `${styles['input__type__child--old-first']} ${styles['input__icon--chevron']}` : ''} ${clickableIcon ? styles['clickable-icon'] : ''}`} data-value={value} />}
-                <span after-content={actualSymbol?.symbol ?? undefined} className={`${styles.input__type__child} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ 'order': iconPosition === 'end' ? -1 : 'unset' }} >
+                <span after-content={actualSymbol?.symbol ?? undefined} className={`${styles.input__type__child} ${styles.symbol}  ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`} style={{ order: iconPosition === 'end' ? -1 : 'unset' }} >
                     <input
                         /*                         onInput={(e: React.FormEvent<HTMLInputElement>) => {
                                                     if (e.currentTarget.value) {
@@ -91,10 +91,10 @@ const InputText: React.FC<InputTextType> = (props) => {
             <CSSTransition in={!!error}
                 timeout={500}
                 classNames={{
-                    "enter": styles['collapse-enter'],
-                    "enterActive": styles['collapse-enter-active'],
-                    "exit": styles['collapse-exit'],
-                    "exitActive": styles['collapse-exit-active']
+                    enter: styles['collapse-enter'],
+                    enterActive: styles['collapse-enter-active'],
+                    exit: styles['collapse-exit'],
+                    exitActive: styles['collapse-exit-active']
                 }}
                 unmountOnExit={true}
 
@@ -125,11 +125,11 @@ const SwitchPairs: React.FC<{ pairs: ItemType[], onClick: (index: number) => voi
 }
 
 InputText.defaultProps = {
-    "label": '\u00A0',
-    "className": '',
-    "iconPosition": 'start',
-    "disabled": false,
-    "type": 'text'
+    label: '\u00A0',
+    className: '',
+    iconPosition: 'start',
+    disabled: false,
+    type: 'text'
 }
 
 export default InputText

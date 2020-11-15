@@ -52,12 +52,13 @@ export const mainReducer = (state: StateType, action: DataActions) => ({
 
 export const collectedReducer = (state: StateType, action: DataActions) => {
     switch (action.type) {
-        case CollectedActionsType.AddField:
+        case CollectedActionsType.AddField: {
             return {
                 ...state.collected,
                 [action.payload.name]: action.payload.value
             }
-        case CollectedActionsType.AddFile:
+        }
+        case CollectedActionsType.AddFile: {
             let newFiles = action.payload.value
             if (newFiles && newFiles.length > 0) {
                 const existingFiles = (state.collected[action.payload.name] as File[]).map(f => f.name)
@@ -67,14 +68,16 @@ export const collectedReducer = (state: StateType, action: DataActions) => {
                 ...state.collected,
                 [action.payload.name]: [...state.collected[action.payload.name], ...newFiles]
             }
-        case CollectedActionsType.DeleteFile:
+        }
+        case CollectedActionsType.DeleteFile: {
             const name2delete = action.payload.value
             const newList = (state.collected[action.payload.name] as File[]).filter(f => f.name !== name2delete)
             return {
                 ...state.collected,
                 [action.payload.name]: [...newList]
             }
-        case CollectedActionsType.AddError:
+        }
+        case CollectedActionsType.AddError: {
             const error = action.payload.value
             if (!error) return {
                 ...state.collected,
@@ -85,6 +88,7 @@ export const collectedReducer = (state: StateType, action: DataActions) => {
                 errors: { ...state.collected.errors, ...error }
             }
             else return state.collected
+        }
         default:
             return state.collected
     }

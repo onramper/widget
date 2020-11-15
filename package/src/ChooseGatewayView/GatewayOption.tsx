@@ -10,28 +10,28 @@ import { CSSTransition } from 'react-transition-group';
 import { APIContext, GatewayRateOption } from '../ApiContext'
 
 const transitionPropsCollapse = {
-    "timeout": 500,
-    "classNames": {
-        "enter": styles['collapse-enter'],
-        "enterActive": styles['collapse-enter-active'],
-        "exit": styles['collapse-exit'],
-        "exitActive": styles['collapse-exit-active']
+    timeout: 500,
+    classNames: {
+        enter: styles['collapse-enter'],
+        enterActive: styles['collapse-enter-active'],
+        exit: styles['collapse-exit'],
+        exitActive: styles['collapse-exit-active']
     },
-    "unmountOnExit": true
+    unmountOnExit: true
 }
 
 const transitionPropsPrice = {
-    "timeout": {
-        "enter": 500,
-        "exit": 100
+    timeout: {
+        enter: 500,
+        exit: 100
     },
-    "classNames": {
-        "enter": styles['fade-enter'],
-        "enterActive": styles['fade-enter-active'],
-        "exit": styles['fade-exit'],
-        "exitActive": styles['fade-exit-active']
+    classNames: {
+        enter: styles['fade-enter'],
+        enterActive: styles['fade-enter-active'],
+        exit: styles['fade-exit'],
+        exitActive: styles['fade-exit-active']
     },
-    "unmountOnExit": true
+    unmountOnExit: true
 }
 
 
