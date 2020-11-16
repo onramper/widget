@@ -60,7 +60,7 @@
 }
 
 .hi {
-  animation: sayhi 900ms;
+  animation: sayhi 800ms;
 }
 
 .background {
@@ -183,13 +183,13 @@
     transform: rotate(0deg);
   }
   16.66% {
-    transform: rotate(30deg);
+    transform: rotate(20deg);
   }
   50% {
-    transform: rotate(-30deg);
+    transform: rotate(-20deg);
   }
   83.33% {
-    transform: rotate(30deg);
+    transform: rotate(20deg);
   }
   100% {
     transform: rotate(0deg);
