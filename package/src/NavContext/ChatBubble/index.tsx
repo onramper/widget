@@ -11,7 +11,6 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     /* const transitionRef = React.useRef<HTMLIFrameElement>(null) */
     const [isChatOpen, setIsChatOpen] = React.useState(false)
     const [isDone, setIsDone] = React.useState(0)
-    const [status, setStatus] = React.useState(false)
     const { intro = false } = props
     const chatURL = "https://tawk.to/chat/5faec5a2c52f660e8973425f/default"
 
@@ -22,18 +21,8 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
             setIsDone(2)
     }, [intro, isDone])
 
-    React.useEffect(() => {
-        const chackUp = async () => {
-            fetch(chatURL).then((response) => {
-                console.log(response)
-                setStatus(response.status === 200)
-            }).catch(console.log)
-        }
-        chackUp()
-    })
-
     return (
-        status ? <div>
+        <>
             <CSSTransition
                 onEnter={() => {
                     if (iframeRef.current)
@@ -55,7 +44,7 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
                     ref={iframeRef}
                     frameBorder="0"
                     title="Helper chat"
-                    src="https://tawk.to/chat/5faec5a2c52f660e8973425f/default"
+                    src={chatURL}
                     className={styles.floating}
                 />
             </CSSTransition>
@@ -81,8 +70,7 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
                     </svg>
                 </div>
             </div>
-        </div>
-            : <></>
+        </>
     )
 }
 
