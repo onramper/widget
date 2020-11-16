@@ -10,7 +10,18 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     const iframeRef = React.useRef<HTMLIFrameElement>(null)
     /* const transitionRef = React.useRef<HTMLIFrameElement>(null) */
     const [isChatOpen, setIsChatOpen] = React.useState(false)
+    const [isDone, setIsDone] = React.useState(0)
     const { intro = false } = props
+
+    React.useEffect(() => {
+        console.log('start!', intro, isDone)
+        if (intro)
+            setIsDone(1)
+        else if (isDone === 1)
+            setIsDone(2)
+
+        console.log('called!', intro, isDone)
+    }, [intro])
 
     return (
         <>
@@ -39,7 +50,7 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
                     className={styles.floating}
                 />
             </CSSTransition>
-            <div className={`${styles["chat"]} ${!props.intro ? styles['shy'] : 'hi'} ${isChatOpen ? styles["active"] : ''}`} onClick={(e) => {
+            <div className={`${styles["chat"]} ${!intro ? (isDone === 0 ? '' : styles['shy']) : styles['hi']} ${isChatOpen ? styles["active"] : ''}`} onClick={(e) => {
                 e.preventDefault()
                 setIsChatOpen(prevState => !prevState)
             }}>

@@ -55,9 +55,12 @@
   position: absolute;
   z-index: 9999999;
   bottom: 71px;
-  right: 20px;
+  right: 12px;
   cursor: pointer;
-  animation: sayhi 2200ms;
+}
+
+.hi {
+  animation: sayhi 900ms;
 }
 
 .background {
@@ -171,20 +174,14 @@
   0% {
     transform: rotate(0deg);
   }
-  59% {
-    transform: rotate(0deg);
+  16.66% {
+    transform: rotate(30deg);
   }
-  60% {
-    transform: rotate(0deg);
-  }
-  70% {
+  50% {
     transform: rotate(-30deg);
   }
-  80% {
-    transform: rotate(0deg);
-  }
-  90% {
-    transform: rotate(-30deg);
+  83.33% {
+    transform: rotate(30deg);
   }
   100% {
     transform: rotate(0deg);

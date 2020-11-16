@@ -70,7 +70,7 @@ class NavContainer extends React.Component<{ home?: ScreenType }, { intro: boole
     super(props);
 
     this.state = {
-      intro: true
+      intro: false
     };
     this.transitionRef = React.createRef()
     this.timer = null
@@ -81,17 +81,27 @@ class NavContainer extends React.Component<{ home?: ScreenType }, { intro: boole
     if (firstScreen)
       this.context.onlyScreen(firstScreen)
 
-    this.timer = setInterval(
+    this.timer = setTimeout(
       () => {
-        this.setState({ intro: false })
+        this.setState({ intro: true })
+        if (this.timer)
+          clearTimeout(this.timer);
+        this.timer = setTimeout(
+          () => {
+            this.setState({ intro: false })
+            if (this.timer)
+              clearTimeout(this.timer);
+          },
+          800
+        );
       },
-      2200
+      900
     );
   }
 
   componentWillUnmount() {
     if (this.timer)
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
   }
 
   render() {
