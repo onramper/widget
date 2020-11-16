@@ -1,8 +1,10 @@
 /*********
 theme styles
 *********/
+
 .theme {
-    --primary-color:#31a5ff; /* default color*/
+    --primary-color: #31a5ff;
+    /* default color*/
     --max-width: 1rem;
     --max-height: 1rem;
     --min-width: 1rem;
@@ -13,12 +15,10 @@ theme styles
     --padding-top: 1.75rem;
     --padding-rl: 1.88rem;
     --padding-bottom: 1.125rem;
-
     width: var(--width);
     height: var(--heigth);
     display: flex;
     flex-direction: column;
-       
     direction: ltr;
     -webkit-tap-highlight-color: transparent;
 }
@@ -26,25 +26,23 @@ theme styles
 .theme ::-webkit-scrollbar {
     width: 10px;
 }
- 
+
 .theme ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #dbdbdb;
 }
 
 .theme ::-webkit-scrollbar-track {
-  
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .theme input[type=number] {
     -moz-appearance: textfield;
-  }
+}
 
-.theme input[type=number]::-webkit-outer-spin-button,
-.theme input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.theme input[type=number]::-webkit-outer-spin-button, .theme input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /*********
@@ -72,16 +70,19 @@ components
 /*-------------------body layot-------------------*/
 
 .body {
-    --body-space-childs: 1.25rem; /* var(--padding-bottom); */
+    --body-space-childs: 1.25rem;
+    /* var(--padding-bottom); */
     display: flex;
     flex-direction: column;
     padding: var(--body-space-childs) var(--padding-rl);
-    padding-bottom: 0px; /*margin bottom set in body:after*/
+    padding-bottom: 0px;
+    /*margin bottom set in body:after*/
     overflow: auto;
     flex-grow: 1;
 }
 
 /*workaround to fix this https://bugzilla.mozilla.org/show_bug.cgi?id=748518*/
+
 .body:after {
     content: '';
     display: block;
@@ -95,7 +96,6 @@ components
 .body__child {
     flex-shrink: 0;
 }
-
 
 .row-fields {
     display: flex;
@@ -125,16 +125,14 @@ components
         flex-direction: column;
         align-items: stretch;
     }
-
     .row-fields__child+.row-fields__child {
         margin-left: 0;
         margin-top: var(--body-space-childs);
     }
 }
 
-
-
 /*******/
+
 .input-icon {
     height: 0.75rem;
 }
@@ -148,13 +146,12 @@ components
     padding: 0;
     color: inherit;
     text-decoration: none;
-    outline:0;
+    outline: 0;
 }
 
 .button--link:hover {
     text-decoration: underline;
 }
-
 
 .text--link {
     text-decoration: none;
@@ -163,6 +160,7 @@ components
 }
 
 /* help */
+
 .help-title {
     margin: 0px;
 }
