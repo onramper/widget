@@ -8,9 +8,10 @@ interface ChatBubbleType {
 
 export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     const iframeRef = React.useRef<HTMLIFrameElement>(null)
-    /* const transitionRef = React.useRef<HTMLIFrameElement>(null) */
+    const transitionRef = React.useRef<any>()
     const [isChatOpen, setIsChatOpen] = React.useState(false)
     const [isDone, setIsDone] = React.useState(0)
+    const [isClicked, setIsClicked] = React.useState(false)
     const { intro = false } = props
     const chatURL = "https://tawk.to/chat/5faec5a2c52f660e8973425f/default"
 
@@ -24,6 +25,7 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     return (
         <>
             <CSSTransition
+                ref={transitionRef}
                 onEnter={() => {
                     if (iframeRef.current)
                         iframeRef.current.style.display = 'block'
@@ -48,10 +50,19 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
                     className={styles.floating}
                 />
             </CSSTransition>
-            <div className={`${styles["chat"]} ${!intro ? (isDone === 0 ? '' : styles['shy']) : styles['hi']} ${isChatOpen ? styles["active"] : ''}`} onClick={(e) => {
-                e.preventDefault()
-                setIsChatOpen(prevState => !prevState)
-            }}>
+            <div
+                onMouseOver={() => setIsClicked(false)}
+                className={`${styles["chat"]} ${!intro ? (isDone === 0 ? '' : styles[isClicked ? 'shy--unhover' : 'shy']) : styles['hi']} ${isChatOpen ? styles["active"] : ''}`} onClick={(e) => {
+                    e.preventDefault()
+                    setIsChatOpen(prevState => !prevState)
+                    setIsClicked(false)
+
+                    const t = setTimeout(() => {
+                        setIsClicked(true)
+                        if (t)
+                            clearTimeout(t)
+                    }, 750)
+                }}>
                 <div className={`${styles['anim-container']}`}>
                     <div className={styles["background"]}><span onClick={(e) => e.preventDefault()} className={styles["background-text"]}>Do you need help?</span></div>
                     <svg className={styles["chat-bubble"]} width="46.875" height="46.875" viewBox="12 13.5 75 75">

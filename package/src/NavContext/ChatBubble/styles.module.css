@@ -25,26 +25,6 @@
   border-radius: var(--border-radius);
 }
 
-.floating-iframe--none {
-  display: none;
-  border-radius: 240px;
-}
-
-.floating-iframe--block {
-  display: block;
-  border-radius: 1rem;
-  transition: border-radius ease 0.5s;
-}
-
-.floating-iframe--block:hover {
-  position: absolute;
-  z-index: 999;
-  height: 100%;
-  width: 100%;
-  display: block;
-  transition: border-radius ease 0.5s;
-}
-
 .anim-container {
   transform: translate(-6.25px, -6.25px);
 }
@@ -136,12 +116,25 @@
   transform: scale(0);
 }
 
-.shy {
+.background-text {
+  color: white;
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 200ms;
+  position: relative;
+  top: 14px;
+  left: 50px;
+  white-space: nowrap;
+}
+
+.shy,
+.shy--unhover {
   right: var(--offset);
   transition: right 300ms;
 }
 
-.shy.active {
+.shy.active,
+.shy--unhover.active {
   right: -15px;
   transition: right 300ms;
 }
@@ -160,17 +153,6 @@
 .shy:hover .chat-bubble {
   transform: translateX(calc(-116.9px - var(--offset)));
   transition: transform 200ms;
-}
-
-.background-text {
-  color: white;
-  font-size: 0.75rem;
-  opacity: 0;
-  transition: opacity 200ms;
-  position: relative;
-  top: 14px;
-  left: 50px;
-  white-space: nowrap;
 }
 
 .shy:hover .background-text {
