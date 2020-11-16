@@ -14,14 +14,11 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     const { intro = false } = props
 
     React.useEffect(() => {
-        console.log('start!', intro, isDone)
         if (intro)
             setIsDone(1)
         else if (isDone === 1)
             setIsDone(2)
-
-        console.log('called!', intro, isDone)
-    }, [intro])
+    }, [intro, isDone])
 
     return (
         <>

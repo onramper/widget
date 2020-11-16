@@ -53,7 +53,8 @@ module.exports = {
         "@typescript-eslint/no-use-before-define": "off",
         "comma-dangle": "off",
         "dot-notation": "off",
-        "arrow-spacing": "off"
+        "arrow-spacing": "off",
+        "eol-last": "off"
     },
     "settings": {
         "react": {
