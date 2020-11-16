@@ -51,8 +51,9 @@ module.exports = {
         "space-before-function-paren": "off",
         "func-call-spacing": "off",
         "@typescript-eslint/no-use-before-define": "off",
-        "comma-dangle": "warn",
-        "dot-notation": "warn"
+        "comma-dangle": "off",
+        "dot-notation": "off",
+        "arrow-spacing": "off"
     },
     "settings": {
         "react": {
