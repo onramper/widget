@@ -57,7 +57,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       else if (nextStepData.length === 1)
         setTitle('Enter verification code')
     }
-    else if (
+    /* else if (
       (nextStepData.some(field => field.name === 'state') || nextStepData.length === 1)
       || (
         nextStepData.some(field => field.name === 'firstName')
@@ -66,7 +66,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       )
     ) {
       setTitle('Your personal information')
-    }
+    } */
 
     // set infoMsg if needed
     if (nextStepData.some(field => field.name === 'bankIban') && nextStepData.length <= 2)
