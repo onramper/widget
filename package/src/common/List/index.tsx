@@ -31,7 +31,7 @@ const List: React.FC<ListProps> = (props) => {
     return (
         <>
             {searchable &&
-                <input className={styles['search-box']} type='text' value={query} onChange={(e) => setQuery(e.currentTarget.value.toLowerCase())} placeholder="Search..." autoFocus />
+                <input className={styles['search-box']} type='text' value={query} onChange={(e) => setQuery(e.currentTarget.value.toLowerCase())} placeholder="Search..." />
             }
             <div className={`${styles.list}`}>
                 {
