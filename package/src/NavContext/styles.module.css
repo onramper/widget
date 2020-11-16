@@ -90,13 +90,16 @@
 }
 
 
-
+.anim-container {
+  transform: translate(-6.25px, -6.25px);
+}
 
 .chat {
+    --offset: -10px;
     display: flex;
     position: absolute;
     z-index: 9999999;
-    bottom: 100px;
+    bottom: 71px;
     right: 20px;
     cursor: pointer;
     animation: sayhi 2200ms;
@@ -116,8 +119,8 @@
   }
   .chat-bubble {
     position: relative;
-    top:7px;
-    left:7px;
+    top: 7.85px;
+    left: 7.4px;
     transition: transform 200ms;
   }
   .bubble {
@@ -159,8 +162,14 @@
   }
   
   .shy {
-    right: -10px;
-    transition: right 550ms;
+    right: var(--offset);
+    transition: right 300ms;
+}
+
+
+.shy.active {
+  right: -15px;
+  transition: right 300ms;
 }
 
 .shy:hover {
@@ -169,13 +178,13 @@
 }
 
 .shy:hover .background {
-    width: 171px;
-    left: -106.9px;
+    width: calc(181px + var(--offset));
+    left: calc(-116.9px - var(--offset));
     transition: width 200ms, left 200ms;
 }
 
 .shy:hover .chat-bubble {
-    transform: translateX(-106.9px);
+    transform: translateX(calc(-116.9px - var(--offset)));
     transition: transform 200ms;
 }
 
