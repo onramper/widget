@@ -23,7 +23,7 @@ const BASE_DEFAULT_AMOUNT_IN_USD = 100
 const APIContext = createContext<StateType>(initialState);
 
 interface APIProviderType {
-  API_KEY: string,
+  API_KEY?: string,
   defaultAmount?: number
   defaultAddrs?: { [key: string]: string[] }
   defaultCrypto?: string

@@ -12,7 +12,7 @@ import './isolateinheritance.css'
 import './normalize.min.css'
 
 type OnramperWidgetProps = {
-    API_KEY: string,
+    API_KEY?: string,
     color?: string
     defaultAmount?: number
     defaultCrypto?: string
