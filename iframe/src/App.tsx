@@ -1,8 +1,8 @@
 import React from 'react';
 import OnramperWidget from '@onramper/widget'
 
-const com_key = process.env.STAGE === 'prod' ? 'pk_prod_5_mIrIKzxaFzgVpVMGuXmg00' : 'pk_test_5_mIrIKzxaFzgVpVMGuXmg00'
-const dev_key = process.env.STAGE === 'prod' ? 'pk_prod_4uEw2wi1UN77IgsFAjbCLQ00' : 'pk_test_4uEw2wi1UN77IgsFAjbCLQ00'
+const com_key = process.env.STAGE === 'prod' ? 'pk_prod_trQ0nGBcmU_JY41N8Tl50Q00' : 'pk_test_trQ0nGBcmU_JY41N8Tl50Q00'
+const dev_key = process.env.STAGE === 'prod' ? 'pk_prod_oDsXkHokDdr06zZ0_sxJGw00' : 'pk_test_oDsXkHokDdr06zZ0_sxJGw00'
 
 const defaultApiKey =
   window.self !== window.top
