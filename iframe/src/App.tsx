@@ -1,7 +1,15 @@
 import React from 'react';
 import OnramperWidget from '@onramper/widget'
 
-const apiKey = getParam('apiKey', undefined)
+const com_key = process.env.STAGE === 'prod' ? 'pk_prod_5_mIrIKzxaFzgVpVMGuXmg00' : 'pk_test_5_mIrIKzxaFzgVpVMGuXmg00'
+const dev_key = process.env.STAGE === 'prod' ? 'pk_prod_4uEw2wi1UN77IgsFAjbCLQ00' : 'pk_test_4uEw2wi1UN77IgsFAjbCLQ00'
+
+const defaultApiKey =
+  window.self !== window.top
+    ? undefined
+    : window.location.href.split('.')[1] === 'com' ? com_key : dev_key
+
+const apiKey = getParam('apiKey', defaultApiKey)
 const defaultColor = `#${getParam('color', '266678')}`
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', 'BTC')
