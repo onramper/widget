@@ -5,33 +5,29 @@
 This project is created using create-react-app with typescript, here you will find some notes about how to customize or build the widget from the source files. In this repo you will find the source files of Onramper's buy page ([`https://widget.onramper.com`](https://widget.onramper.com)) and the source files of the widget component ([`https://npm.org/package/@onramper/widget`](https://npm.org/package/@onramper/widget))
 
 Directory structure (only main files listed):  
-
 ```
 .
-├── dist # generated after build
-├── ...
-├── src
-│   ├── OnramperWidget
+├── iframe # Onramper's buy page
 │   ├── ...
-│   ├── App.tsx
-│   ├── index.css
-│   └── index.tsx 
-├── ...
-├── component.tsconfig.json
-├── package.json
-├── tsconfig.json
-├── webpack.config.js
-└── index.html
+│   └── src
+│       ├── ...
+│       ├── App.tsx
+│       ├── index.css
+│       └── index.tsx 
+└── package # Onramper's widget source code
+    ├── ...
+    ├── dist
+    └── src
+        ├── ...
+        ├── NavContext
+        ├── ApiContext
+        │   ├── ...
+        │   └── api 
+        ├── steps
+        │   ├── ...
+        │   └── Step 
+        └── index.tsx
 ```
-
-| File / folder                                             | Description                                                                   |
-| --------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `./src/OnramperWidget`                                    | Source files of the widget component. [See more](#onramperwidget).            |
-| `./component.tsconfig.json`<br>`./webpack.config.js`      | Config files used to transpile and bundle the widget component.               |
-| `./src/App.tsx`<br>`./src/index.css`<br>`./src/index.tsx` | Buy page files.                                                               |
-| `./dist`                                                  | Bundled component.                                                            |
-| `./tsconfig.json`                                         | Typescript configuration file used by `react-scripts` app.                    |
-| `./package.json`                                          | Describes scripts for develop, test and build the component and the buy page. |
 
 ## Setup
 Install dependencies:
@@ -58,30 +54,27 @@ Build the widget component source files into the `./dist` folder:
 npm run build:component
 ```
 
-## OnramperWidget
-Directory structure (only main files listed):  
+## Buy page
 
-```
-OnramperWidget
-├── NavContext
-├── ApiContext
-│   ├── ...
-│   └── api 
-├── ...
-├── steps
-│   ├── ...
-│   └── Step 
-└── index.tsx
-```
+| File / folder                                             | Description                                                                   |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `./`                                    | Project generated using create-react-app.            |
+| `./src/App.tsx`<br>`./src/index.css`<br>`./src/index.tsx` | Buy page files.                                                               |
+| `./package.json`                                                  | The `@onramper/widget` package used in `src/App.tsx` is a local dependency and the route to the package is defined here.        |
 
-| File / folder      | Description                                                                                                                                                       |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `./NavContext`     | Navigation context. Manages the screens stack and the transitions. Exposes functions to navigate between screens. [See more](#navcontext).                        |
-| `./ApiContext`     | Api context. Manages the state of the app and the API calls. Exposes functions to make requests to the api and manage the general state. [See more](#apicontext). |
-| `./ApiContext/api` | Module that handles the [API](API-Reference.md) calls.                                                                                                            |
-| `./steps/Step`     | General step component. Used to redirect and display the correct screen according to the next step received from the API.                                         |
-| `./steps`          | This folder contains the diferent step screens.                                                                                                                   |
-| `./index.tsx`      | Exports the widget component.                                                                                                                                     |
+
+## Widget
+
+##### Package
+
+| File / folder                                             | Description                                                                   |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `./src/NavContext`     | Navigation context. Manages the screens stack and the transitions. Exposes functions to navigate between screens. [See more](#navcontext).                        |
+| `./src/ApiContext`     | Api context. Manages the state of the app and the API calls. Exposes functions to make requests to the api and manage the general state. [See more](#apicontext). |
+| `./src/ApiContext/api` | Module that handles the [API](API-Reference.md) calls.                                                                                                            |
+| `./src/steps/Step`     | General step component. Used to redirect and display the correct screen according to the next step received from the API.                                         |
+| `./src/steps`          | This folder contains the diferent step screens.                                                                                                                   |
+| `./src/index.tsx`      | Exports the widget component.                                                                                                                                     |
 
 #### NavContext
 The navigation context manages the screens stack and transitions and exposes functions to navigate between screens. Learn about contexts in React [here](https://reactjs.org/docs/context.html).
