@@ -19,6 +19,7 @@ type InputButtonType = {
 }
 
 const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, ref) => {
+    const transitionRef = React.useRef(null)
     const { selectedOption, label, icon, className, iconPosition, error } = props
     return (
         <div ref={ref} className={`${styles.input} ${className}`}>
@@ -28,7 +29,7 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, re
                 <span style={{ order: iconPosition === 'end' ? -1 : 'unset' }} className={`${styles.input__type__child} ${iconPosition === 'end' ? styles['input__type__child--new-first'] : ''}`}>{selectedOption}</span>
                 {props.onClick && <img alt="Chevron right" src={IconChevronRight} className={`${styles.input__type__child} ${styles.input__icon} ${styles['input__icon--chevron']}`} />}
             </div >
-            <CSSTransition in={!!error}
+            <CSSTransition nodeRef={transitionRef} in={!!error}
                 timeout={500}
                 classNames={{
                     enter: styles['collapse-enter'],
@@ -37,7 +38,7 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, re
                     exitActive: styles['collapse-exit-active']
                 }}
                 unmountOnExit={true}>
-                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
+                {error ? <span ref={transitionRef} className={`${styles['text-error']}`} >{error}</span> : <></>}
             </CSSTransition>
         </div >
     )

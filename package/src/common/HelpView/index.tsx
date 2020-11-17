@@ -13,7 +13,7 @@ interface HelpViewProps {
 }
 
 const HelpView: React.FC<HelpViewProps> = (props) => {
-
+  const transitionRef = React.useRef(null)
   const { backScreen } = useContext(NavContext);
 
   const [isActive, setIsActive] = useState(false)
@@ -41,7 +41,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
   return (
 
     <div className={`${commonStyles.view} ${styles['help-view']}`} onClick={handleDismiss}>
-      <CSSTransition in={isActive}
+      <CSSTransition nodeRef={transitionRef} in={isActive}
         timeout={ANIMATION_TIMEOUT}
         classNames={{
           enter: styles['collapse-enter' + classPrefix],
@@ -51,7 +51,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
         }}
         mountOnEnter={true}
         unmountOnExit={true}>
-        <div style={style} onClick={(e) => e.stopPropagation()} className={`${commonStyles.body} ${styles['help-pane']} ${styles['help-pane' + classPrefix]}`} >
+        <div ref={transitionRef} style={style} onClick={(e) => e.stopPropagation()} className={`${commonStyles.body} ${styles['help-pane']} ${styles['help-pane' + classPrefix]}`} >
           {props.children}
           {props.buttonText && <ButtonAction onClick={handleDismiss} text={props.buttonText} />}
         </div>

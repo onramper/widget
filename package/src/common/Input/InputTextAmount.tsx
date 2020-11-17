@@ -25,6 +25,7 @@ type InputTextType = {
 }
 
 const InputText: React.FC<InputTextType> = (props) => {
+    const transitionRef = React.useRef(null)
     const { symbols, label, className, icon, iconPosition, disabled, value, type, name, error, onSymbolChange } = props
     const placeholder = disabled ? '' : props.placeholder
     const clickableIcon = !!props.onIconClick
@@ -84,7 +85,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                         disabled={disabled} />
                 </span>
             </div>
-            <CSSTransition in={!!error}
+            <CSSTransition nodeRef={transitionRef} in={!!error}
                 timeout={500}
                 classNames={{
                     enter: styles['collapse-enter'],
@@ -95,7 +96,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                 unmountOnExit={true}
 
             >
-                {error ? <span className={`${styles['text-error']}`} >{error}</span> : <></>}
+                {error ? <span ref={transitionRef} className={`${styles['text-error']}`} >{error}</span> : <></>}
             </CSSTransition>
         </div >
     )

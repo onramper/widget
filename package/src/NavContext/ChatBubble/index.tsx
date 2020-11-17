@@ -25,7 +25,8 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     return (
         <>
             <CSSTransition
-                ref={transitionRef}
+                node={transitionRef}
+                nodeRef={iframeRef}
                 onEnter={() => {
                     if (iframeRef.current)
                         iframeRef.current.style.display = 'block'

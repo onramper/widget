@@ -30,7 +30,7 @@ type BodyConfirmPaymentViewType = {
 
 const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => {
     const [isExpanded, setIsExpanded] = useState(false)
-
+    const transitionRef = React.useRef(null)
     const { onActionButton } = props
 
     return (
@@ -39,6 +39,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 <ul className={`${styles.wrapper}`}>
                     <Item type='main' icon={<IconPay className={styles.icon} />} title='Pay' content={`${props.payAmount} ${props.currency}`} onClick={props.conversionRate || props.fees ? () => setIsExpanded(actual => !actual) : undefined} isExpanded={isExpanded} />
                     <CSSTransition
+                        nodeRef={transitionRef}
                         in={isExpanded}
                         timeout={1000}
                         classNames={{
@@ -51,7 +52,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                         onEnter={() => setIsExpanded(true)}
                         onExited={() => setIsExpanded(false)}
                     >
-                        <div className={styles['details-container']}>
+                        <div ref={transitionRef} className={styles['details-container']}>
                             {props.conversionRate && <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />}
                             {props.fees && <Item type='detail' title='Transaction fee' content={`${props.fees} ${props.currency}`} />}
                         </div>

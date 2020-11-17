@@ -45,7 +45,10 @@ type GateWayOptionProps = {
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { collected } = useContext(APIContext)
-
+    /* const [transitionRefs] = useState(Array(3).map(() => React.useRef(null))) */
+    const transitionRefs1 = React.useRef(null)
+    const transitionRefs2 = React.useRef(null)
+    const transitionRefs3 = React.useRef(null)
     const [badge, setBadge] = useState("Alternative")
 
     const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change 
@@ -67,7 +70,6 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
         "--diff-down-color": collected.amountInCrypto ? '#008000' : '#E85858'
     } as React.CSSProperties;
 
-    React.useRef()
     useEffect(() => {
         if (props.index === 0 && isOpen) {
             onClick?.(props.index, props.badges?.[name]._id ?? 0)
@@ -105,8 +107,8 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         </div>
                         <div className={`${styles.title}`}>{name}</div>
                     </div>
-                    <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
-                        <div className={styles['collapsable-section']}>
+                    <CSSTransition nodeRef={transitionRefs1} {...transitionPropsCollapse} in={isOpen && available}>
+                        <div ref={transitionRefs1} className={styles['collapsable-section']}>
                             <div className={`${styles.details}`} >
                                 {duration && <div style={{ height: '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
                                 {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>{duration.message}</span></div>}
@@ -116,8 +118,8 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                     </CSSTransition>
                 </div>
                 <div className={styles.content__price}>
-                    <CSSTransition {...transitionPropsCollapse} in={isOpen && available}>
-                        <div>
+                    <CSSTransition nodeRef={transitionRefs2} {...transitionPropsCollapse} in={isOpen && available}>
+                        <div ref={transitionRefs2} >
                             <div className={`${styles['gateway-badge']}`}>
                                 {/* {icon && <img alt="Gateway logo" src={icon} />} */}
                                 <span>{badge}</span>
@@ -125,10 +127,10 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         </div>
                     </CSSTransition>
                     <div>
-                        <CSSTransition in={!available || !isOpen} {...transitionPropsPrice}>
+                        <CSSTransition nodeRef={transitionRefs3} in={!available || !isOpen} {...transitionPropsPrice}>
                             {available ?
-                                <span style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
-                                : <span>Unavailable</span>
+                                <span ref={transitionRefs3} style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
+                                : <span ref={transitionRefs3} >Unavailable</span>
                             }
                         </CSSTransition>
                         {/* <CSSTransition in={isOpen && available} {...transitionPropsPrice}> */}

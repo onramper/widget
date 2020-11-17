@@ -28,7 +28,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
     }
 
     return (
-        <CSSTransition in={props.in}
+        <CSSTransition nodeRef={ref} in={props.in}
             timeout={{
                 enter: 100,
                 exit: 0
