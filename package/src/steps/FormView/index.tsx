@@ -85,15 +85,13 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       const newNextStep = await apiInterface.executeStep(nextStep, params);
       nextScreen(<Step nextStep={newNextStep} />)
     } catch (error) {
-      if (error instanceof NextStepError) {
-        const processedError = processError(error, nextStepData)
-        if (processedError.field)
-          setErrorObj({ [processedError.field]: processedError.message })
-        else if (processedError.fields)
-          setErrorObj(processedError.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
-        else
-          setErrorMsg(processedError.message)
-      }
+      const processedError = processError(error, nextStepData)
+      if (processedError.field)
+        setErrorObj({ [processedError.field]: processedError.message })
+      else if (processedError.fields)
+        setErrorObj(processedError.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
+      else
+        setErrorMsg(processedError.message)
     }
 
     setIsLoading(false)
