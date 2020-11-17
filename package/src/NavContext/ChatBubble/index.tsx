@@ -13,7 +13,7 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     const [isDone, setIsDone] = React.useState(0)
     const [isClicked, setIsClicked] = React.useState(false)
     const { intro = false } = props
-    const chatURL = "https://tawk.to/chat/5faec5a2c52f660e8973425f/default"
+    const chatURL = "https://tawk.to/chat/5fa107bee019ee7748f03bc7/default"
 
     React.useEffect(() => {
         if (intro)
