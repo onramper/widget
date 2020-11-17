@@ -71,18 +71,18 @@ npm run build:component
 | --------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | `./src/NavContext`     | Navigation context. Manages the screens stack and the transitions. Exposes functions to navigate between screens. [See more](#navcontext).                        |
 | `./src/ApiContext`     | Api context. Manages the state of the app and the API calls. Exposes functions to make requests to the api and manage the general state. [See more](#apicontext). |
-| `./src/ApiContext/api` | Module that handles the [API](API-Reference.md) calls.                                                                                                            |
+| `./src/ApiContext/api` | Module that handles the [API](https://docs.onramper.dev/API-Reference) calls.                                                                                                            |
 | `./src/steps/Step`     | General step component. Used to redirect and display the correct screen according to the next step received from the API.                                         |
 | `./src/steps`          | This folder contains the diferent step screens.                                                                                                                   |
 | `./src/index.tsx`      | Exports the widget component.                                                                                                                                     |
 
 #### NavContext
-The navigation context manages the screens stack and transitions and exposes functions to navigate between screens. Learn about contexts in React [here](https://reactjs.org/docs/context.html).
+The navigation context manages the screens stack and transitions and exposes functions to navigate between screens.
 
 Exports `NavContext`, `NavProvider` and `NavContainer`.
 
-`NavProvider`: Navigation provider. Wraps the components that will consume the context.
-`NavContainer`: Container of the screens. The component that will be used as main screen should be passed as prop to this component. [See implementation here](https://docs.onramper.dev/widget/#react-component).  
+`NavProvider`: Navigation provider. Wraps the components that will consume the context.  
+`NavContainer`: Container of the screens. The component that will be used as main screen should be passed as prop to this component.  
 `NavContext`: Navigation context. Used to consume the context.
 
 Functions availables to consume:  
@@ -95,8 +95,7 @@ Functions availables to consume:
 | `replaceScreen(screen: React.ReactNode)` | Replaces the top screen of the stack by `screen`.         |
 
 #### ApiContext
-The api context manages the state of the widget and the API responses. Exposes functions and variables to manage the general state of the widget and to interact with the [api](API-Reference.md). To learn about the api execution flow, [click here](API.md#purchase-fow). 
-Learn more about contexts [here](https://reactjs.org/docs/context.html).
+The api context manages the state of the widget and the API responses. Exposes functions and variables to manage the general state of the widget and to interact with the [api](https://docs.onramper.dev/API-Reference). To learn about the api execution flow, [click here](https://docs.onramper.dev/API-Reference#purchase-fow). 
 
 Consuming `ApiContext` you can access to 4 objects: `collected`, `apiInterface`, `data`, `inputInterface`.
 
@@ -108,7 +107,7 @@ Provides functions to update and collect variables.
 | inputInterface.handleInputChange(name: string, value: any) | Function used to update and add variables to the [`collected` object](#collected). |
 
 ###### collected
-Object that stores all input variables. New variables can be added and/or updated using the [`inputInterface`](#inputinterface). Below are shown only some of the parameters availables in the object, [see declaration for all initial attributes](./ApiContext/initialState.ts) .
+Object that stores all input variables. New variables can be added and/or updated using the [`inputInterface`](#inputinterface). Below are shown only some of the parameters availables in the object, [see declaration for all initial attributes](./package/src/ApiContext/initialState.ts) .
 
 | Variable                                                                                                                            | Description                                                                                                                                                                                                                      |
 | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -146,7 +145,7 @@ Provides functions to interact with the [API](https://docs.onramper.dev/API-Refe
 | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | init(country?: string)                      | Makes a call to get all the options the user have for buy crypto given a country. This function triggers a call to `handleCryptoChange`, `handleCurrencyChange`, `handlePaymentMethodChange` and `getRates` consecutively. If `country` is not set then the country parameter is automatically detected by Onramper's API using the user's IP address).                                  |
 | getRates()                                  | Makes a call to get all rates and stores it into `data.allRates` (see [`data` object](#data)). The parameters used to get the rates are `selectedCrypto`, `selectedCurrency`, `selectedPaymentMethod` and `amount` from the [`collected` object](#collected). Each one of this rates, have an attribute `nextStep` that represents the first step to execute to start the purchase flow. |
-| executeStep(step: NextStep, params: object) | Makes a call to `step.url` with the `params` object as a request body. Sends to the api the step with the corresponding step fields filled (`params`). The response of this call is a new step, also can throw an error if any error is made completing the `params` object. [Read how steps work here](API-Reference.md).                                                               |
+| executeStep(step: NextStep, params: object) | Makes a call to `step.url` with the `params` object as a request body. Sends to the api the step with the corresponding step fields filled (`params`). The response of this call is a new step, also can throw an error if any error is made completing the `params` object. [Read how steps work here](https://docs.onramper.dev/API-Reference/#steps).                                                               |
 
 ###### data
 Object that stores the lists of the available items (cryptos, currencies, payment methods and gateways) the user can select and includes functions to update that lists depending on the items selected. Through this object you can also access to the raw responses of the calls made to the api among others. [See declaration for all attributes](./ApiContext/initialState.ts). 
@@ -157,4 +156,4 @@ Object that stores the lists of the available items (cryptos, currencies, paymen
 | availableCurrencies `ItemType[]`                                                                                                                         | List of currencies with which you can buy the selected cryptocurrency ([`collected.selectedCrypto`](#collected)). This list is updated if the selected cryptocurrency is changed.                                                                                         |
 | availablePaymentMethods `ItemType[]`                                                                                                                     | List of payment methods availables that can be used for buy the selected cryptocurrency with the selected currency ([`collected.selectedCurrency`](#collected)). This list is updated if the selected currency is changed.                                                |
 | allRates `GatewayRateOption[]`                                                                                                                           | List of available and unavailable gateways. This list is updated if `amount`, `selectedCrypto`, `selectedCurrency` or `selectedPaymentMethod` attributes from the [`collected` object](#collected) is changed.                                                            |
-| data.handleCryptoChange(crypto?: ItemType)<br>data.handleCurrencyChange(currency?: ItemType)<br>data.handlePaymentMethodChange(paymentMethod?: ItemType) | Functions that updates the items lists (`availableCryptos`, `availableCurrencies`, `availablePaymentMethods` and `allRates`) and the selected items variables from the `collected` object if it's necessary. [Read how are updated here](#apicontext-internal-execution). |
+| data.handleCryptoChange(crypto?: ItemType)<br>data.handleCurrencyChange(currency?: ItemType)<br>data.handlePaymentMethodChange(paymentMethod?: ItemType) | Functions that updates the items lists (`availableCryptos`, `availableCurrencies`, `availablePaymentMethods` and `allRates`) and the selected items variables from the `collected` object if it's necessary.|
