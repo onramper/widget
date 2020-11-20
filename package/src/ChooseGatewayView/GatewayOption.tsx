@@ -77,6 +77,14 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     }, [onClick, props.index, props.badges, name, isOpen])
 
     useEffect(() => {
+        if (name === 'Wyre') {
+            if (badges[name]?.bestOffer)
+                setBadge('Best offer')
+            else
+                setBadge('Easiest')
+            return
+        }
+
         if (props.index === 0 && badges[name]?.count > 1) {
             setBadge('Best option')
         }
