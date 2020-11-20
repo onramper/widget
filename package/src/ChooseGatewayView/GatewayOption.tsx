@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import styles from './styles.module.css'
 /* import IconDetailKYC from '../icons/kyc_level.svg'
 import IconDetailTxTime from '../icons/tx_time.svg' */
-import IconFastTime from '../icons/fast-time.svg'
-import IconKYCReq from '../icons/card.svg'
+import IconFastTime from '../icons/fast-time.png'
+import IconKYCReq from '../icons/card.png'
 
 import { CSSTransition } from 'react-transition-group';
 
