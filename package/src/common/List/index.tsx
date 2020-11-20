@@ -28,10 +28,12 @@ const List: React.FC<ListProps> = (props) => {
             || searchWords?.toLowerCase().startsWith(query)
     }, [query])
 
+    const smallHeightScreen = window.screen.height <= 615 || window.screen.width <= 575
+
     return (
         <>
             {searchable &&
-                <input className={styles['search-box']} type='text' value={query} onChange={(e) => setQuery(e.currentTarget.value.toLowerCase())} placeholder="Search..." />
+                <input className={styles['search-box']} type='text' value={query} onChange={(e) => setQuery(e.currentTarget.value.toLowerCase())} placeholder="Search..." autoFocus={!smallHeightScreen} />
             }
             <div className={`${styles.list}`}>
                 {
