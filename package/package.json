@@ -62,7 +62,6 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-webpack-plugin": "^2.3.0",
-    "file-loader": "^6.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
     "jest-environment-jsdom-fifteen": "^1.0.2",
@@ -72,6 +71,7 @@
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.7",
     "typescript": "^3.9.5",
+    "url-loader": "^4.1.1",
     "webpack": "^5.4.0",
     "webpack-cli": "^4.2.0"
   },

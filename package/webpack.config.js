@@ -64,23 +64,17 @@ module.exports = env => ({
                         }
                     },
                     {
-                        loader: 'svg-url-loader',
-                        options: {
-                            limit: 30000,
-                        }
+                        loader: 'svg-url-loader'
                     }
                 ]
             },
             {
-                test: /\.(png|jpe?g|gif)$/i,
+                test: /\.(png|jpg|gif)$/i,
                 use: [
                     {
-                        loader: 'file-loader',
-                        options: {
-                            limit: false
-                        }
-                    },
-                ]
+                        loader: 'url-loader'
+                    }
+                ],
             }
         ]
     },

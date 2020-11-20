@@ -54,7 +54,8 @@ module.exports = {
         "comma-dangle": "off",
         "dot-notation": "off",
         "arrow-spacing": "off",
-        "eol-last": "off"
+        "eol-last": "off",
+        "no-multi-spaces": "off"
     },
     "settings": {
         "react": {
