@@ -15,9 +15,7 @@
     "build": "react-scripts build",
     "build:prod": "export REACT_APP_STAGE=prod&&npm run build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build:component": "rm -f -r dist && webpack && npx copyfiles -u 2 \"./src/OnramperWidget/package.json\" \"./src/OnramperWidget/README.md\" ./dist && npx copyfiles \"./LICENSE\" dist && rm -r dist/*/ && rm ./dist/utils.d.ts",
-    "publish:component": "cd dist && npm publish"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
