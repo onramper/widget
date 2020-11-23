@@ -91,8 +91,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       clearErrors()
 
-      const actualCountry = country || state.collected.selectedCountry
-
+      const actualCountry = country
       // REQUEST AVAILABLE GATEWAYS
       let responseGateways: GatewaysResponse
       try {
@@ -142,7 +141,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         responseGateways: responseGateways
       })
 
-    }, [addData, handleInputChange, props.defaultCrypto, props.filters, processErrors, clearErrors, state.collected.selectedCountry])
+    }, [addData, handleInputChange, props.defaultCrypto, props.filters, processErrors, clearErrors])
 
   const handleCryptoChange = useCallback(
     (crypto?: ItemType): ErrorObjectType | undefined | {} => {
