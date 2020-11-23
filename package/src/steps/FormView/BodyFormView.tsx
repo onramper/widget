@@ -212,14 +212,14 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             }}
                                             items={Object.entries(usStates).map(([code, state]) => ({
                                                 id: code,
-                                                name: state.name,
+                                                name: state,
                                                 info: code
                                             }))}
                                             searchable
                                         />
                                     )}
                                     label={field.humanName}
-                                    selectedOption={usStates[(collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_SATE).toUpperCase()].name}
+                                    selectedOption={usStates[(collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_SATE).toUpperCase()]}
                                 />
                                 : <React.Fragment key={i}></React.Fragment>
                         )) || ((GroupFieldsController.isGroupRequired(field.name, CREDIT_CARD_FIELDS_NAME_GROUP, fields.map((f) => f.name))) && (

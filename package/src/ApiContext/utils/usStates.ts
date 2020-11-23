@@ -1,139 +1,62 @@
 /* eslint quote-props: off */
 export default {
-    "AL": {
-        "name": "Alabama"
-    },
-    "AK": {
-        "name": "Alaska"
-    },
-    "AZ": {
-        "name": "Arizona"
-    },
-    "AR": {
-        "name": "Arkansas"
-    },
-    "CA": {
-        "name": "California"
-    },
-    "CO": {
-        "name": "Colorado"
-    },
-    "DE": {
-        "name": "Delaware"
-    },
-    "DC": {
-        "name": "District of Columbia"
-    },
-    "FL": {
-        "name": "Florida"
-    },
-    "GA": {
-        "name": "Georgia"
-    },
-    "ID": {
-        "name": "Idaho"
-    },
-    "IL": {
-        "name": "Illinois"
-    },
-    "IN": {
-        "name": "Indiana"
-    },
-    "IA": {
-        "name": "Iowa"
-    },
-    "LA": {
-        "name": "Louisiana"
-    },
-    "ME": {
-        "name": "Maine"
-    },
-    "MD": {
-        "name": "Maryland"
-    },
-    "MA": {
-        "name": "Massachusetts"
-    },
-    "MI": {
-        "name": "Michigan"
-    },
-    "MN": {
-        "name": "Minnesota"
-    },
-    "MS": {
-        "name": "Mississippi"
-    },
-    "MO": {
-        "name": "Missouri"
-    },
-    "MT": {
-        "name": "Montana"
-    },
-    "NV": {
-        "name": "Nevada"
-    },
-    "NH": {
-        "name": "New Hampshire"
-    },
-    "NJ": {
-        "name": "New Jersey"
-    },
-    "NC": {
-        "name": "North Carolina"
-    },
-    "ND": {
-        "name": "North Dakota"
-    },
-    "OH": {
-        "name": "Ohio"
-    },
-    "OK": {
-        "name": "Oklahoma"
-    },
-    "OR": {
-        "name": "Oregon"
-    },
-    "PA": {
-        "name": "Pennsylvania"
-    },
-    "PR": {
-        "name": "Puerto Rico"
-    },
-    "SC": {
-        "name": "South Carolina"
-    },
-    "SD": {
-        "name": "South Dakota"
-    },
-    "TN": {
-        "name": "Tennessee"
-    },
-    "TX": {
-        "name": "Texas"
-    },
-    "UT": {
-        "name": "Utah"
-    },
-    "VT": {
-        "name": "Vermont"
-    },
-    "VA": {
-        "name": "Virginia"
-    },
-    "WA": {
-        "name": "Washington"
-    },
-    "WV": {
-        "name": "West Virginia"
-    },
-    "WI": {
-        "name": "Wisconsin"
-    },
-    "WY": {
-        "name": "Wyoming"
-    }
+    'AL': 'Alabama',
+    'AK': 'Alaska',
+    'AZ': 'Arizona',
+    'AR': 'Arkansas',
+    'CA': 'California',
+    'CO': 'Colorado',
+    'CT': 'Connecticut',
+    'DE': 'Delaware',
+    'FL': 'Florida',
+    'GA': 'Georgia',
+    'HI': 'Hawaii',
+    'ID': 'Idaho',
+    'IL': 'Illinois',
+    'IN': 'Indiana',
+    'IA': 'Iowa',
+    'KS': 'Kansas',
+    'KY': 'Kentucky',
+    'LA': 'Louisiana',
+    'ME': 'Maine',
+    'MD': 'Maryland',
+    'MA': 'Massachusetts',
+    'MI': 'Michigan',
+    'MN': 'Minnesota',
+    'MS': 'Mississippi',
+    'MO': 'Missouri',
+    'MT': 'Montana',
+    'NE': 'Nebraska',
+    'NV': 'Nevada',
+    'NH': 'New Hampshire',
+    'NJ': 'New Jersey',
+    'NM': 'New Mexico',
+    'NY': 'New York',
+    'NC': 'North Carolina',
+    'ND': 'North Dakota',
+    'OH': 'Ohio',
+    'OK': 'Oklahoma',
+    'OR': 'Oregon',
+    'PA': 'Pennsylvania',
+    'RI': 'Rhode Island',
+    'SC': 'South Carolina',
+    'SD': 'South Dakota',
+    'TN': 'Tennessee',
+    'TX': 'Texas',
+    'UT': 'Utah',
+    'VT': 'Vermont',
+    'VA': 'Virginia',
+    'WA': 'Washington',
+    'WV': 'West Virginia',
+    'WI': 'Wisconsin',
+    'WY': 'Wyoming',
+    'DC': 'District of Columbia',
+    'AS': 'American Samoa',
+    'GU': 'Guam',
+    'MP': 'Northern Mariana Islands',
+    'PR': 'Puerto Rico',
+    'UM': 'United States Minor Outlying Islands',
+    'VI': 'U.S. Virgin Islands'
 } as {
-    [code: string]: {
-        name: string
-    }
+    [code: string]: string
 }
