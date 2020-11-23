@@ -6,7 +6,7 @@ interface GatewaysResponse {
     }[]
     localization: {
         country: string,
-        state: string,
+        state: string | null,
         currency: string
     }
     icons?: {
