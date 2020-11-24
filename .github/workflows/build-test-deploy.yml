@@ -35,7 +35,7 @@ jobs:
           echo "::set-output name=domain::widget.onramper.dev"
         elif [ $REF == 'refs/heads/demo' ]
         then
-          echo "::set-output name=stage::dev"
+          echo "::set-output name=stage::demo"
           echo "::set-output name=domain::demo.onramper.dev"
         else
           exit 1
@@ -49,7 +49,7 @@ jobs:
     - run: (cd package && npm ci &&  npm run build:$STAGE)
       env:
         STAGE: ${{ steps.git-branch.outputs.stage }}
-    - run: (cd iframe && npm ci &&  npm run build)
+    - run: (cd iframe && npm ci &&  npm run build:$STAGE)
     - name: Deploy to static site
       uses: onramper/action-deploy-aws-static-site@v1
       with:
