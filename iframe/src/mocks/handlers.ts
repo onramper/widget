@@ -49,10 +49,29 @@ export const handlers = [
                 nextStep = CCPro.getNextStep(currentStep)
                 break
             case 'Moonpay':
-                nextStep = Moonpay.getNextStep(currentStep)
+                nextStep = Moonpay.getNextStep(currentStep) // used for demo purposes, not real behavior of moonpay
                 break
             case 'Wyre':
                 nextStep = Wyre.getNextStep(currentStep)
+                break
+            default:
+                nextStep = { type: 'completed' }
+                break
+        }
+
+        return res(
+            // Respond with a 200 status code
+            ctx.status(200),
+            ctx.json(nextStep)
+        )
+    }),
+    rest.put(`${BASE_API}/transaction/*`, async (req, res, ctx) => {
+        const gateway = req.url.pathname.split('/')[2]
+        const currentStep = req.url.pathname.split('/')[3]
+        let nextStep
+        switch (gateway) {
+            case 'Moonpay':
+                nextStep = Moonpay.getNextStep(currentStep) // used for demo purposes, not real behavior of moonpay
                 break
             default:
                 nextStep = { type: 'completed' }

@@ -1,13 +1,14 @@
 import { encodeToken } from './utils'
 
 const getNextStep = (currentStep: string) => {
+    console.log('CURRENT STEP', currentStep)
     switch (currentStep) {
         case 'firstStep':
             return firstStep
         case 'email':
-            return emailStep
-        case 'verifyEmail':
             return verifyEmailStep
+        case 'verifyEmail':
+            return emailStep
         case 'identity':
             return personalInfoStep
         case 'pickOne':
@@ -16,7 +17,8 @@ const getNextStep = (currentStep: string) => {
         case 'national_identity_card':
         case 'residence_permit':
         case 'driving_licence':
-            return uploadStep
+        case 'selfie':
+            return uploadStep(getDocumetnHumanName(currentStep))
         case 'registerBank':
             return bankStep
     }
@@ -197,16 +199,16 @@ const pickOneStep = {
     ]
 }
 
-const uploadStep = {
+const uploadStep = (fileName: string) => ({
     "type": "file",
-    "humanName": "Selfie",
-    "url": "https://api.onramper.dev/transaction/Moonpay/registerBank/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+    "humanName": fileName + (fileName === 'Selfie' ? '' : " - Back"),
+    "url": `https://api.onramper.dev/transaction/Moonpay/${fileName === 'Selfie' ? 'registerBank' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "acceptedContentTypes": [
         "image/jpeg",
         "image/png",
         "application/pdf"
     ]
-}
+})
 
 const bankStep = {
     "type": "requestBankTransaction",
@@ -220,6 +222,23 @@ const bankStep = {
     },
     "reference": "jTxDd17ATQ",
     "hint": "Transfer 100$ into the bank account provided to complete the transaction. Your transaction must cite the reference jTxDd17ATQ to be valid. We sent this data to your email."
+}
+
+const getDocumetnHumanName = (doc: string) => {
+    switch (doc) {
+        case 'passport':
+            return 'Passport';
+        case 'national_identity_card':
+            return 'National Identity Card';
+        case 'residence_permit':
+            return 'Residence Card';
+        case 'driving_licence':
+            return "Driver's License";
+        case 'selfie':
+            return "Selfie";
+        default:
+            return 'registerBank'
+    }
 }
 
 export default {
