@@ -4,7 +4,7 @@ import stylesCommon from '../../styles.module.css'
 import InfoBox from '../../common/InfoBox'
 import ButtonAction from '../../common/ButtonAction'
 import UploadBox from './UploadBox'
-
+import { isFileUploaded } from '../utils'
 
 type BodyUploadType = {
     onActionButton: (file: File) => void,
@@ -70,7 +70,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
                 </UploadBox>
             </div>
             <div className={`${stylesCommon.body__child}`}>
-                <ButtonAction onClick={() => onActionButton(existingFiles[0])} text={isLoading ? 'Verifying...' : 'Continue'} disabled={existingFiles.length !== 1 || isLoading} />
+                <ButtonAction onClick={() => onActionButton(existingFiles[0])} text={isLoading ? 'Verifying...' : 'Continue'} disabled={!isFileUploaded(existingFiles) || isLoading} />
             </div>
         </main>
     )

@@ -1,7 +1,6 @@
 import { encodeToken } from './utils'
 
 const getNextStep = (currentStep: string) => {
-    console.log('CURRENT STEP', currentStep)
     switch (currentStep) {
         case 'firstStep':
             return firstStep

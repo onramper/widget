@@ -6,6 +6,7 @@ import Step from '../Step'
 
 import { APIContext, NextStep, NextStepError, StepDataItems } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
+import { areAllKeysFilled } from '../utils'
 
 const processError = (error: NextStepError, nextStepData: StepDataItems) => {
   let newErr = new NextStepError('NextStep error')
@@ -98,8 +99,9 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   }
 
   useEffect(() => {
-    const someEmpty = nextStepData.some((item) => (!collected[item.name] && (item.type !== 'boolean' || item.name === 'termsOfUse')))
-    setIsFilled(!someEmpty)
+    const keysList = nextStepData.filter((data) => !(data.type === 'boolean' && data.name !== 'termsOfUse')).map(nsd => nsd.name)
+    const filled = areAllKeysFilled(collected, keysList)
+    setIsFilled(filled)
   }, [collected, nextStepData])
 
   return (
