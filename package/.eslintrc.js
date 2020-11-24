@@ -33,7 +33,7 @@ module.exports = {
         "object-curly-spacing": "off",
         "padded-blocks": "off",
         "operator-linebreak": "off",
-        "camelcase": "warn",
+        "camelcase": "off",
         "multiline-ternary": "off",
         "no-useless-return": "warn",
         "no-trailing-spaces": "off",

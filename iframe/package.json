@@ -15,6 +15,7 @@
     "start:demo": "set REACT_APP_STAGE=demo&&npm start",
     "build": "react-scripts build",
     "build:prod": "set REACT_APP_STAGE=prod&&npm run build",
+    "build:demo": "set REACT_APP_STAGE=demo&&npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

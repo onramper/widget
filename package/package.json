@@ -27,8 +27,10 @@
   "scripts": {
     "build:prod": "webpack --env NODE_ENV=production --env STAGE=prod",
     "build:dev": "webpack --env NODE_ENV=production --env STAGE=dev",
+    "build:demo": "webpack --env NODE_ENV=production --env STAGE=demo",
     "test": "jest --passWithNoTests",
     "start": "webpack --env NODE_ENV=development --env STAGE=dev",
+    "start:demo": "webpack --env NODE_ENV=development --env STAGE=demo",
     "prepublishOnly": "npm run build:prod"
   },
   "dependencies": {
