@@ -50,6 +50,8 @@ jobs:
       env:
         STAGE: ${{ steps.git-branch.outputs.stage }}
     - run: (cd iframe && npm ci &&  npm run build)
+      env:
+          STAGE: ${{ steps.git-branch.outputs.stage }}
     - name: Deploy to static site
       uses: onramper/action-deploy-aws-static-site@v1
       with:
