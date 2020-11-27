@@ -4,6 +4,7 @@ import BuyCryptoView from './BuyCryptoView'
 import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './NavContext';
 import { APIProvider } from './ApiContext'
+import './polyfills/composedpath.polyfill'
 
 
 import Footer from './common/Footer'
