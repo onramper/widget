@@ -103,9 +103,11 @@ const processResponse = async (response: FetchResponse): Promise<any> => {
 class NextStepError extends Error {
     fields?: FieldError[] = undefined
     field?: string = undefined
+    fatal?: boolean = undefined
     constructor(error: any) {
         super("NextStep error");
         this.name = "NextStepError";
+        this.fatal = error.fatal
         if (Array.isArray(error))
             this.fields = error
         else if (error.field) {
