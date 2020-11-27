@@ -36,6 +36,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   const [errorObj, setErrorObj] = useState<{ [key: string]: string }>()
   const [title, setTitle] = useState('Purchase form')
   const [infoMsg, setInfoMsg] = useState('')
+  const [isFatal, setIsFatal] = useState(false)
 
   const { data: nextStepData = [] } = nextStep
 
@@ -93,6 +94,8 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
         setErrorObj(processedError.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
       else
         setErrorMsg(processedError.message)
+
+      setIsFatal(error.fatal)
     }
 
     setIsLoading(false)
@@ -117,6 +120,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
         isFilled={isFilled}
         onErrorDismissClick={() => setErrorMsg(undefined)}
         errorObj={errorObj}
+        isFatal={isFatal}
       />
     </div>
   );
