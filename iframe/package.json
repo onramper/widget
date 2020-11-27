@@ -5,6 +5,7 @@
   "dependencies": {
     "@onramper/widget": "file:../package",
     "react": "^16.14.0",
+    "react-app-polyfill": "^2.0.0",
     "react-dom": "^16.14.0"
   },
   "scripts": {
