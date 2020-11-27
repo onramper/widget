@@ -1,3 +1,4 @@
+import "abort-controller/polyfill"
 import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
