@@ -15,6 +15,7 @@
     "start:prod": "export REACT_APP_STAGE=prod&&npm start",
     "start:demo": "export REACT_APP_STAGE=demo&&npm start",
     "build": "react-scripts build",
+    "build:dev": "react-scripts build",
     "build:prod": "export REACT_APP_STAGE=prod&&npm run build",
     "build:demo": "export REACT_APP_STAGE=demo&&npm run build",
     "test": "react-scripts test",
