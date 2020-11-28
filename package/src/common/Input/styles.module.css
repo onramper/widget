@@ -146,6 +146,11 @@
     margin-top: 0.2727em;
 }
 
+.text-hint--link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 /********error display transition*********/
 .collapse-enter {
     max-height: 0px;
