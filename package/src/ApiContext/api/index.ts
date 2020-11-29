@@ -3,7 +3,7 @@ import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
-import processMoonpayStep from '@onramper/moonpay-adapter'
+import processMoonpayStep, {moonpayUrlRegex} from '@onramper/moonpay-adapter'
 
 const BASE_API = process.env.STAGE === 'prod'
     ? 'https://api.onramper.com'
@@ -80,7 +80,7 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
 const isMoonpayStep = (stepUrl: string) => {
     if (process.env.STAGE === 'demo') //only for demo purposes
         return false
-    return /https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/.test(stepUrl)
+    return moonpayUrlRegex.test(stepUrl)
 }
 
 /**
