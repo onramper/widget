@@ -14,8 +14,9 @@ const defaultColor = `#${getParam('color', '266678')}`
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', 'BTC')
 const addresses = JSON.parse(getParam('addresses', '{}') ?? '{}')
-const onlyCryptos = getParam('onlyCryptos', undefined)?.split(',').map(code => code.trim())
-const excludeCryptos = getParam('excludeCryptos', undefined)?.split(',').map(code => code.trim())
+const onlyCryptos = getArrayParam('onlyCryptos')
+const excludeCryptos = getArrayParam('excludeCryptos')
+const onlyGateways = getArrayParam('onlyGateways')
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             defaultCrypto={defaultCrypto}
             onlyCryptos={onlyCryptos}
             excludeCryptos={excludeCryptos}
+            onlyGateways={onlyGateways}
           />
         </div>
       </div>
@@ -49,6 +51,10 @@ function getParam(name: string, defaultValue?: string): string | undefined {
     }
   }
   return value
+}
+
+function getArrayParam(paramName:string){
+  return  getParam(paramName, undefined)?.split(',').map(code => code.trim())
 }
 
 export default App;

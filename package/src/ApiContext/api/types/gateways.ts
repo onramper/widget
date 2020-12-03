@@ -1,5 +1,6 @@
 interface GatewaysResponse {
     gateways: {
+        identifier: string
         paymentMethods: string[]
         fiatCurrencies: Currency[]
         cryptoCurrencies: Currency[]

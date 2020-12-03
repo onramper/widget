@@ -2,6 +2,7 @@ import type { GatewaysResponse } from '@onramper/widget/dist/ApiContext/api/type
 const gatewaysAllParams: GatewaysResponse = {
     "gateways": [
         {
+            "identifier": "Wyre",
             "paymentMethods": [
                 "creditCard"
             ],
@@ -67,14 +68,9 @@ const gatewaysAllParams: GatewaysResponse = {
             ]
         },
         {
+            "identifier": "Wyre",
             "paymentMethods": [
                 "creditCard"
-            ],
-            "cryptoCurrencies": [
-                {
-                    "code": "USDT",
-                    "precision": 6
-                }
             ],
             "fiatCurrencies": [
                 {
@@ -85,31 +81,16 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "CAD",
                     "precision": 2
                 }
-            ]
-        },
-        {
-            "paymentMethods": [
-                "creditCard",
-                "bankTransfer"
-            ],
-            "fiatCurrencies": [
-                {
-                    "code": "EUR",
-                    "precision": 2
-                }
             ],
             "cryptoCurrencies": [
                 {
-                    "code": "BTC",
-                    "precision": 5
-                },
-                {
-                    "code": "ETH",
-                    "precision": 5
+                    "code": "USDT",
+                    "precision": 6
                 }
             ]
         },
         {
+            "identifier": "Moonpay",
             "paymentMethods": [
                 "bankTransfer"
             ],
@@ -443,6 +424,7 @@ const gatewaysAllParams: GatewaysResponse = {
             ]
         },
         {
+            "identifier": "Moonpay",
             "paymentMethods": [
                 "creditCard"
             ],

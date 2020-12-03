@@ -131,9 +131,10 @@ const createUrlParamsFromObject = (paramsObj: { [key: string]: any }): string =>
 
 interface Filters {
     onlyCryptos?: string[],
-    excludeCryptos?: string[]
+    excludeCryptos?: string[],
+    onlyGateways?: string[]
 }
-const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos }: Filters): GatewaysResponse => {
+const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos, onlyGateways }: Filters): GatewaysResponse => {
     const _onlyCryptos = onlyCryptos?.map(code => code.toUpperCase())
     const _excludeCryptos = excludeCryptos?.map(code => code.toUpperCase())
     const filtredGateways = gatewaysResponse.gateways.map(gateway => {
@@ -146,6 +147,11 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCrypto
             ...gateway,
             cryptoCurrencies: cryptosList
         }
+    }).filter(gateway=>{
+        if(onlyGateways === undefined){
+            return true;
+        }
+        return onlyGateways.includes(gateway.identifier)
     })
     return {
         ...gatewaysResponse,

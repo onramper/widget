@@ -22,6 +22,7 @@ type OnramperWidgetProps = {
     }
     onlyCryptos?: string[]
     excludeCryptos?: string[]
+    onlyGateways?: string[]
     className?: string
 }
 
@@ -33,6 +34,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
         defaultCrypto,
         onlyCryptos,
         excludeCryptos,
+        onlyGateways,
         className = ''
     } = props
 
@@ -48,7 +50,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                     defaultAmount={defaultAmount}
                     defaultAddrs={defaultAddrs}
                     defaultCrypto={defaultCrypto}
-                    filters={{ onlyCryptos, excludeCryptos }}
+                    filters={{ onlyCryptos, excludeCryptos, onlyGateways }}
                 >
                     <div style={{ flexGrow: 1, display:'flex' }}>
                         <NavContainer home={<BuyCryptoView />} />

@@ -30,6 +30,7 @@ interface APIProviderType {
   filters?: {
     onlyCryptos?: string[]
     excludeCryptos?: string[]
+    onlyGateways?: string[]
   }
 }
 
@@ -95,7 +96,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // REQUEST AVAILABLE GATEWAYS
       let responseGateways: GatewaysResponse
       try {
-        responseGateways = await API.gateways({ country: actualCountry, includeIcons: true, includeDefaultAmounts: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos })
+        responseGateways = await API.gateways({ country: actualCountry, includeIcons: true, includeDefaultAmounts: true }, { onlyCryptos: props.filters?.onlyCryptos, excludeCryptos: props.filters?.excludeCryptos, onlyGateways: props.filters?.onlyGateways })
       } catch (error) {
         return processErrors("GATEWAYS", "API", error.message)
       }
