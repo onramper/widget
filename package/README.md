@@ -41,6 +41,7 @@ While importing the widget as a React component, you can customize it using the 
 | defaultAddrs   | Object?   | `{"BTC":["ADDR1"], "ETH":["ADDR2"]}` | {}            |
 | onlyCryptos    | String[]? | `["BTC", "ETH", "NEO"]`              | undefined     |
 | excludeCryptos | String[]? | `["ETH", "NEO"]`                     | undefined     |
+| onlyGateways   | String[]? | `["Moonpay", "Wyre"]`                | undefined     |
 | color          | String?   | `"#000000"`                          | "#31a5ff"     |
 | API_KEY        | String    | `"pk_live_YOUR-API-KEY"`             | -             |
 
@@ -54,4 +55,5 @@ You can pass the following arguments to customize the widget
 | addresses      | A stringified JSON with the wallet addresses of the user. The keys should be the cryptocurrency code and the value a list containing the user addresses. Can be more than one address per wallet and more than one cryptocurrency. |
 | onlyCryptos    | A comma-separated list of crypto codes to include. Only this cryptos will be shown to the user.|
 | excludeCryptos | A comma-separated list of crypto codes to exclude. This cryptos will be excluded from the list of available cryptos..|
+| onlyGateways   | A comma-separated list of gateways to enable. Only these gateways will be shown to the user for selection.|
 | color          | Color to change the highlight of the widget. Should be an hex color.|
