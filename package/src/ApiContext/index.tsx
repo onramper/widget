@@ -293,7 +293,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // ELSE, CLEAR THE ABORT CONTROLLER AND RETURN ERROR
       let responseRate: RateResponse
       try {
-        responseRate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { country: state.collected.selectedCountry, amountInCrypto: state.collected.amountInCrypto, includeIcons: true }, signal)
+        responseRate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { country: state.collected.selectedCountry, amountInCrypto: state.collected.amountInCrypto, includeIcons: true }, props.filters?.onlyGateways, signal)
       } catch (error) {
         if (error.name === 'AbortError')
           return {}
@@ -351,7 +351,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // IF NO ERRORS, RETURN UNDEFINED
       return undefined
-    }, [addData, state.collected.selectedCountry, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.responseGateways, state.collected.selectedPaymentMethod, processErrors, clearErrors])
+    }, [addData, state.collected.selectedCountry, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.responseGateways, state.collected.selectedPaymentMethod, processErrors, clearErrors, props.filters?.onlyGateways])
 
   useEffect(() => {
     handleCryptoChange()

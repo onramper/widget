@@ -38,10 +38,11 @@ interface RateParams {
     [key: string]: any
 }
 
-const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, signal?: AbortSignal): Promise<RateResponse> => {
+const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, onlygateways?:string[], signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const gateways = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, { headers, signal })
-    return processResponse(gateways)
+    const ratesRes = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, { headers, signal })
+    const rates: RateResponse = await processResponse(ratesRes)
+    return filterRatesResponse(rates, onlygateways)
 }
 
 /**
@@ -157,6 +158,15 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCrypto
         ...gatewaysResponse,
         gateways: filtredGateways
     }
+}
+
+const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[]): RateResponse => {
+    return ratesResponse.filter(gateway=>{
+        if(onlyGateways === undefined){
+            return true;
+        }
+        return onlyGateways.includes(gateway.identifier)
+    })
 }
 
 export {
