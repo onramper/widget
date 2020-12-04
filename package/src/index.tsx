@@ -18,7 +18,7 @@ type OnramperWidgetProps = {
     defaultAmount?: number
     defaultCrypto?: string
     defaultAddrs?: {
-        [key: string]: string[]
+        [key: string]: string
     }
     onlyCryptos?: string[]
     excludeCryptos?: string[]

@@ -25,7 +25,7 @@ const APIContext = createContext<StateType>(initialState);
 interface APIProviderType {
   API_KEY?: string,
   defaultAmount?: number
-  defaultAddrs?: { [key: string]: string[] }
+  defaultAddrs?: { [key: string]: string }
   defaultCrypto?: string
   filters?: {
     onlyCryptos?: string[]
