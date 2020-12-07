@@ -22,8 +22,13 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
       if (event.data.type) {
         replaceScreen(<Step nextStep={(event.data as NextStep)} />)
       } else if (event.data.transactionId) {
-        const returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
-        replaceScreen(<Step nextStep={(returnedNextStep as NextStep)} />)
+        try {
+          const returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
+          replaceScreen(<Step nextStep={(returnedNextStep as NextStep)} />)
+        } catch (e) {
+          (event.source as Window)?.postMessage('reset', '*')
+          setError(e.message)
+        }
       } else if (typeof event.data === 'string') {
         setError(event.data)
       } else {
