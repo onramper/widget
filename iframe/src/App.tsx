@@ -17,6 +17,7 @@ const addresses = JSON.parse(getParam('addresses', '{}') ?? '{}')
 const onlyCryptos = getArrayParam('onlyCryptos')
 const excludeCryptos = getArrayParam('excludeCryptos')
 const onlyGateways = getArrayParam('onlyGateways')
+const onlyFiat = getArrayParam('onlyFiat')
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             onlyCryptos={onlyCryptos}
             excludeCryptos={excludeCryptos}
             onlyGateways={onlyGateways}
+            onlyFiat={onlyFiat}
           />
         </div>
       </div>

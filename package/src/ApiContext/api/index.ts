@@ -134,19 +134,25 @@ interface Filters {
     onlyCryptos?: string[],
     excludeCryptos?: string[],
     onlyGateways?: string[]
+    onlyFiat?:string[]
 }
-const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos, onlyGateways }: Filters): GatewaysResponse => {
+const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos, onlyGateways, onlyFiat }: Filters): GatewaysResponse => {
     const _onlyCryptos = onlyCryptos?.map(code => code.toUpperCase())
     const _excludeCryptos = excludeCryptos?.map(code => code.toUpperCase())
+    const _onlyFiat = onlyFiat?.map(code => code.toUpperCase())
     const filtredGateways = gatewaysResponse.gateways.map(gateway => {
         let cryptosList = gateway.cryptoCurrencies
+        let fiatList = gateway.fiatCurrencies
         if (_onlyCryptos && _onlyCryptos?.length > 0)
             cryptosList = gateway.cryptoCurrencies.filter(crypto => _onlyCryptos.includes(crypto.code))
         if (_excludeCryptos && _excludeCryptos?.length > 0)
             cryptosList = cryptosList.filter(crypto => !_excludeCryptos.includes(crypto.code))
+        if(_onlyFiat && _onlyFiat?.length > 0)
+            fiatList = fiatList.filter(fiat => _onlyFiat.includes(fiat.code))
         return {
             ...gateway,
-            cryptoCurrencies: cryptosList
+            cryptoCurrencies: cryptosList,
+            fiatCurrencies: fiatList
         }
     }).filter(gateway=>{
         if(onlyGateways === undefined){
