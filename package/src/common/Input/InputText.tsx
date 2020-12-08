@@ -27,6 +27,7 @@ type InputTextType = {
     hintButton?: boolean
     onHintClick?: () => void
     clickableIcon?: boolean
+    maxLength?: number
 }
 
 const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) => {
@@ -92,6 +93,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                         dateSupported ?
                             <input
                                 max={type === 'date' ? "9999-12-31" : undefined}
+                                maxLength={props.maxLength}
                                 name={name} value={formatValue(value, type)} onChange={(e) => handleInputChange(e)} type={type} min="0" placeholder={placeholder} disabled={disabled} />
                             : <DateModule name={name} value={formatValue(value, type)} onChange={onChange} />
                     }

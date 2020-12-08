@@ -98,6 +98,8 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
                     onChange={onChange}
                     placeholder='123'
                     value={ccCVVValue}
+                    type="password"
+                    maxLength={3}
                 />
             </div>
         </>
