@@ -43,6 +43,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value === '' ? e.currentTarget.value : type === 'number' ? +e.currentTarget.value : e.currentTarget.value
+        if (!value && type === 'number') return false
         if (e.currentTarget.type === 'date' && typeof value === 'string') {
             const date = {
                 year: value.split('-')[0],
@@ -94,7 +95,14 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                             <input
                                 max={type === 'date' ? "9999-12-31" : undefined}
                                 maxLength={props.maxLength}
-                                name={name} value={formatValue(value, type)} onChange={(e) => handleInputChange(e)} type={type} min="0" placeholder={placeholder} disabled={disabled} />
+                                name={name}
+                                value={formatValue(value, type)}
+                                onChange={(e) => handleInputChange(e)}
+                                type={type}
+                                min="0"
+                                placeholder={placeholder}
+                                disabled={disabled}
+                            />
                             : <DateModule name={name} value={formatValue(value, type)} onChange={onChange} />
                     }
                 </span>
