@@ -20,6 +20,8 @@ const getNextStep = (currentStep: string) => {
             return uploadStep(getDocumetnHumanName(currentStep))
         case 'registerBank':
             return bankStep
+        case 'iframe':
+            return iframeStep
     }
 }
 
@@ -221,6 +223,11 @@ const bankStep = {
     },
     "reference": "jTxDd17ATQ",
     "hint": "Transfer 100$ into the bank account provided to complete the transaction. Your transaction must cite the reference jTxDd17ATQ to be valid. We sent this data to your email."
+}
+
+const iframeStep = {
+    "type": "iframe",
+    "url": "https://sandbox.onramper.dev/?customerId=demo&transactionId=0&customerAddress=e30="
 }
 
 const getDocumetnHumanName = (doc: string) => {
