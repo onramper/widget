@@ -136,7 +136,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             const errInput = inputRefs.find(inp => inp.name === errName)
             if (!errInput || errInput.ref.current === null) return
             const el = errInput.ref.current
-            scrollTo(formContainer.current, el.offsetTop - el.getBoundingClientRect().height - 10, 600)
+            scrollTo(formContainer.current, el.parentElement!.offsetTop - el.parentElement!.getBoundingClientRect().height - 10, 600)
         }
     }, [errorObj, inputRefs])
 
