@@ -18,6 +18,7 @@ import { NextStepError } from './api'
 import phoneCodes from './utils/phoneCodes'
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100
+const DEFAULT_CURRENCY = 'USD'
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -205,6 +206,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       const actualCurrency =
         state.data.availableCurrencies.find((currency) => currency.id === selectedCurrency?.id)
         || state.data.availableCurrencies.find((currency) => currency.id === responseGateways.localization.currency)
+        || state.data.availableCurrencies.find((currency) => currency.id === DEFAULT_CURRENCY)
         || state.data.availableCurrencies[0]
 
       if (!state.collected.selectedCurrency) {
