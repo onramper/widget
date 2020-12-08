@@ -11,3 +11,16 @@
     cursor: pointer;
     padding: 0.5rem;
 }
+
+.body {
+    padding: 0;
+}
+
+.body__child {
+    margin-right: var(--padding-rl);
+    margin-left: var(--padding-rl);
+}
+
+.body__child:first-child {
+    margin-top: var(--body-space-childs);
+}

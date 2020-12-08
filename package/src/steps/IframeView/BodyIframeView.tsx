@@ -34,8 +34,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     }, [props.src, type, redirect])
 
     return (
-        <main className={stylesCommon.body}>
-            <InfoBox in={!!textInfo && type !== 'redirect'} className={`${stylesCommon.body__child}`}>
+        <main className={`${stylesCommon.body} ${styles.body}`}>
+            <InfoBox in={!!textInfo && type !== 'redirect'} className={`${stylesCommon.body__child} ${styles.body__child}`}>
                 {textInfo}
             </InfoBox>
             <InfoBox in={!autoRedirect} className={`${stylesCommon.body__child}`} type='notification'>
