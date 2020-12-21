@@ -40,7 +40,7 @@ const BuyCryptoView: React.FC = () => {
   useEffect(() => {
     setErrors(errors)
     if (errors?.GATEWAYS)
-      nextScreen(<ErrorView />)
+      nextScreen(<ErrorView type="GATEWAYS" />)
   }, [errors, nextScreen])
 
   useEffect(() => {

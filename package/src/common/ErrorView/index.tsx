@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './styles.module.css'
 import stylesCommon from '../../styles.module.css'
-import { TX_ERROR } from './errors'
+import { TX_ERROR, GATEWAYS_ERROR } from './errors'
 
 import Header from '../../common/Header'
 import ButtonAction from '../ButtonAction'
@@ -38,6 +38,8 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
     switch (props.type) {
       case 'TX':
         return TX_ERROR
+      case 'GATEWAYS':
+        return GATEWAYS_ERROR
       default:
         return TX_ERROR
     }
@@ -49,17 +51,20 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
       <div className={`${stylesCommon.body} ${styles.body}`}>
         <div className={styles['body-content']}>
           <currentError.illustration className={styles['content-image']} />
-          <span className={styles['content-title']}>{currentError.title}</span>
-          <span className={styles['content-description']}>
+          {currentError.title && <span className={styles['content-title']}>{currentError.title}</span>}
+          {currentError.description && <span className={styles['content-description']}>
             {currentError.description}
-          </span>
+          </span>}
         </div>
-        <div className={styles['body-content']}>
-          <ButtonAction text="Try another gateway" size='small' onClick={restartWidget} />
-          <a className={styles['content-link']} target='_blank' rel="noreferrer" href="https://onramper.com/FAQ/">Read our FAQs</a>
-        </div>
+        {
+          (currentError.tryAgain || currentError.faqsLink) &&
+          <div className={styles['body-content']}>
+            {currentError.tryAgain && <ButtonAction text="Try another gateway" size='small' onClick={restartWidget} />}
+            {currentError.faqsLink && < a className={styles['content-link']} target='_blank' rel="noreferrer" href="https://onramper.com/FAQ/">Read our FAQs</a>}
+          </div>
+        }
       </div>
-    </div>
+    </div >
   );
 };
 
