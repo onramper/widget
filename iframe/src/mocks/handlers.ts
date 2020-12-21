@@ -1,5 +1,5 @@
 import { rest } from 'msw'
-//import gatewaysAllParams from './responses/gateways'
+//import { gatewaysAllParams, noGatewaysAllParams } from './responses/gateways'
 //import ratesAllParams from './responses/rates'
 import CCPro from './responses/steps/Cryptocoin.pro'
 import Moonpay from './responses/steps/Moonpay'
@@ -17,14 +17,6 @@ export const handlers = [
             delete response.icons
         if (req.url.searchParams.get('includeDefaultAmounts') !== 'true')
             delete response.defaultAmounts
-        if (req.url.searchParams.get('country'))
-            response = {
-                ...response,
-                localization: {
-                    ...response.localization,
-                    country: req.params.country,
-                }
-            }
 
         const RESPONSE_CODE: number = 200
         if (RESPONSE_CODE === 200)
