@@ -55,7 +55,8 @@ module.exports = {
         "dot-notation": "off",
         "arrow-spacing": "off",
         "eol-last": "off",
-        "no-multi-spaces": "off"
+        "no-multi-spaces": "off",
+        "no-undef": "off" //overrided @typescript-eslint
     },
     "settings": {
         "react": {
