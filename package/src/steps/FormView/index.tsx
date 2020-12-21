@@ -3,6 +3,7 @@ import Header from '../../common/Header'
 import BodyForm from './BodyFormView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
+import ErrorView from '../../common/ErrorView'
 
 import { APIContext, NextStep, NextStepError, StepDataItems } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
@@ -36,7 +37,6 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   const [errorObj, setErrorObj] = useState<{ [key: string]: string }>()
   const [title, setTitle] = useState('Purchase form')
   const [infoMsg, setInfoMsg] = useState('')
-  const [isFatal, setIsFatal] = useState(false)
 
   const { data: nextStepData = [] } = nextStep
 
@@ -95,7 +95,8 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       else
         setErrorMsg(processedError.message)
 
-      setIsFatal(error.fatal)
+      if (error.fatal)
+        nextScreen(<ErrorView type="TX" />)
     }
 
     setIsLoading(false)
@@ -120,7 +121,6 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
         isFilled={isFilled}
         onErrorDismissClick={() => setErrorMsg(undefined)}
         errorObj={errorObj}
-        isFatal={isFatal}
       />
     </div>
   );
