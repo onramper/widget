@@ -19,3 +19,8 @@
     background-color: darkgray;
     cursor: unset;
 }
+
+.button-action--small {
+    font-size: 1rem;
+    padding: 0.625rem 1rem;
+}
