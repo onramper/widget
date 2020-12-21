@@ -136,7 +136,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
       handleInputChange('selectedCountry', responseGateways.localization.country)
-      handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country.toUpperCase() ?? 'GB']?.phoneCode)
+      handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country?.toUpperCase() ?? 'GB']?.phoneCode)
       // save to state.date
       addData({
         availableCryptos: mappedAvailableCryptos,
