@@ -7,6 +7,11 @@
     border-radius: 10px 10px 0 0;
     font-size: 1rem;
     flex-shrink: 0;
+    z-index: 1;
+}
+
+.header--no-separator {
+    border-bottom: 0;
 }
 
 .header__child+.header__child {
