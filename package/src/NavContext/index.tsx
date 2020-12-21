@@ -7,6 +7,7 @@ export type ScreenType = React.ReactNode;
 
 export type NavigationStateType = {
   screens: ScreenType[];
+  currentSes: number;
 }
 
 export enum NavigationActionsType {
@@ -29,7 +30,10 @@ export type NavigationActions = {
   screen: ScreenType;
 }
 
-const initialState = { screens: [] }
+const initialState = {
+  screens: [],
+  currentSes: 0
+}
 
 //Creating context
 const NavContext = createContext<{
@@ -118,7 +122,7 @@ class NavContainer extends React.Component<{ home?: ScreenType }, { intro: boole
                     exit: styles['screen-exit'],
                     exitActive: styles['screen-exit-active']
                   }}>
-                    <div style={{ zIndex: (i + 1) }} className={styles.screen} ref={this.transitionRef}>
+                    <div key={`${value._state.currentSes}${i}`} style={{ zIndex: (i + 1) }} className={styles.screen} ref={this.transitionRef}>
                       {screen}
                     </div>
                   </CSSTransition>
@@ -135,7 +139,8 @@ class NavContainer extends React.Component<{ home?: ScreenType }, { intro: boole
 NavContainer.contextType = NavContext
 
 const mainReducer = (state: NavigationStateType, action: NavigationActions) => ({
-  screens: navigationReducer(state, action)
+  screens: navigationReducer(state, action),
+  currentSes: action.type === NavigationActionsType.Only ? state.currentSes + 1 : state.currentSes
 });
 
 const navigationReducer = (state: NavigationStateType, action: NavigationActions) => {

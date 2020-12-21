@@ -74,6 +74,7 @@ export type ApiInterfaceType = {
     init: (country?: string) => Promise<ErrorObjectType | undefined | {}>
     executeStep: (step: NextStep, params: { [key: string]: any }) => Promise<NextStep>
     getRates: () => Promise<ErrorObjectType | undefined | {}>
+    clearErrors: () => void
 }
 
 export const initialState: StateType = {
@@ -109,6 +110,7 @@ export const initialState: StateType = {
     apiInterface: {
         init: async () => undefined,
         executeStep: async (nextStep: NextStep) => nextStep,
-        getRates: async () => undefined
+        getRates: async () => undefined,
+        clearErrors: () => undefined
     }
 }

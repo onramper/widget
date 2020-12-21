@@ -4,13 +4,14 @@ import BodyBuyCrypto from './BodyBuyCrypto'
 import styles from '../styles.module.css'
 import PickView from '../PickView'
 import ChooseGatewayView from '../ChooseGatewayView'
+import ErrorView from '../common/ErrorView'
 
 import { NavContext } from '../NavContext'
 import { APIContext, ItemType } from '../ApiContext'
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
-  const [errors, setErrors] = useState<{ [key: string]: any } | undefined>({})
+  const [localErrors, setErrors] = useState<{ [key: string]: any } | undefined>({})
 
   const [flagEffectInit, setFlagEffectInit] = useState(0)
 
@@ -18,6 +19,7 @@ const BuyCryptoView: React.FC = () => {
   const { data, inputInterface, collected, apiInterface } = useContext(APIContext);
   const { handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
   const { init, getRates } = apiInterface
+  const { errors } = collected
 
   //flagEffectInit used to call init again
   useEffect(() => {
@@ -36,8 +38,10 @@ const BuyCryptoView: React.FC = () => {
   }
 
   useEffect(() => {
-    setErrors(collected.errors)
-  }, [collected.errors])
+    setErrors(errors)
+    if (errors?.GATEWAYS)
+      nextScreen(<ErrorView />)
+  }, [errors, nextScreen])
 
   useEffect(() => {
     if (collected.selectedCrypto && collected.selectedCurrency && collected.selectedPaymentMethod && collected.amount > 0)
@@ -58,7 +62,7 @@ const BuyCryptoView: React.FC = () => {
         selectedCurrency={collected.selectedCurrency}
         selectedPaymentMethod={collected.selectedPaymentMethod}
         handleInputChange={inputInterface.handleInputChange}
-        errors={errors}
+        errors={localErrors}
         isFilled={isFilled}
         onPriceError={(errName: string) => {
           if (errName === 'RATE')

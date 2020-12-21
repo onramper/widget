@@ -393,7 +393,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         handleCurrencyChange,
         handlePaymentMethodChange
       },
-      apiInterface: { init, executeStep, getRates }
+      apiInterface: { init, executeStep, getRates, clearErrors }
     }}>
       {props.children}
     </APIContext.Provider>
