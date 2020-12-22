@@ -37,7 +37,7 @@ const InputText: React.FC<InputTextType> = (props) => {
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value === '' ? e.target.value : type === 'number' ? toMaxDecimalsRound(e.target.value ?? 0, actualSymbol?.precision ?? 1) : e.target.value
-        if (!value && type === 'number') return false
+        if (value !== '' && !value && type === 'number') return false
         onChange?.(e.target.name, value)
     }, [onChange, type, actualSymbol])
 
@@ -82,7 +82,7 @@ const InputText: React.FC<InputTextType> = (props) => {
                         step={actualSymbol?.precision !== undefined ? Number('1e-' + actualSymbol.precision) : 'any'}
                         name={name}
                         value={value}
-                        onChange={(e) => handleInputChange(e)} type={type} min="0" placeholder={placeholder}
+                        onChange={(e) => handleInputChange(e)} type={type === 'number' ? 'text' : type} min="0" placeholder={placeholder}
                         disabled={disabled} />
                 </span>
             </div>
