@@ -24,14 +24,21 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
         let returnedNextStep: any;
         try {
           if (event.data.type === "card-completed") {
+            console.log("before finishCCTransaction")
             returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
+            console.log("after finishCCTransaction")
           } else if (event.data.type === "2fa-completed") {
+            console.log("before checkTransaction")
             returnedNextStep = await checkTransaction(event.data.moonpayTxId, event.data.onramperTxId);
+            console.log("after checkTransaction")
           } else {
+            console.log("throw Unexpected response received")
             throw new Error("Unexpected response received")
           }
           replaceScreen(<Step nextStep={(returnedNextStep as NextStep)} />)
         } catch (e) {
+          console.log(e)
+          console.log(event)
           if (event.data.type === "card-completed") {
             (event.source as Window)?.postMessage('reset', '*')
           }
