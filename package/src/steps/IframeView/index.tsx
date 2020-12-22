@@ -61,6 +61,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
         src={nextStep.url}
         type={nextStep.type}
         onErrorDismissClick={() => setError(undefined)}
+        isFullScreen={nextStep.type === 'iframe' ? nextStep.fullscreen : false}
       />
     </div>
   );

@@ -89,6 +89,10 @@ components
     padding-bottom: var(--body-space-childs);
 }
 
+.body--full_screen:after {
+    content: none;
+}
+
 .body__child+.body__child {
     margin-top: var(--body-space-childs);
 }

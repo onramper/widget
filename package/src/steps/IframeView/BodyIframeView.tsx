@@ -10,6 +10,7 @@ interface BodyIframeViewType {
     textInfo?: string
     error?: string
     onErrorDismissClick: () => void
+    isFullScreen?: boolean
 }
 
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
@@ -34,16 +35,21 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     }, [props.src, type, redirect])
 
     return (
-        <main className={`${stylesCommon.body} ${styles.body}`}>
-            <InfoBox in={!!textInfo && type !== 'redirect'} className={`${stylesCommon.body__child} ${styles.body__child}`}>
-                {textInfo}
-            </InfoBox>
-            <InfoBox in={!autoRedirect} className={`${stylesCommon.body__child}`} type='notification'>
-                {"We couldn't auto-redirect you to finish the process, please click the button below to finish the process."}
-            </InfoBox>
-            <InfoBox in={!!error} className={`${stylesCommon.body__child}`} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} >
-                {error}
-            </InfoBox>
+        <main className={`${stylesCommon.body} ${props.isFullScreen ? stylesCommon['body--full_screen'] : ''} ${styles.body}`}>
+            {
+                !props.isFullScreen &&
+                <>
+                    <InfoBox in={!!textInfo && type !== 'redirect'} className={`${stylesCommon.body__child} ${styles.body__child}`}>
+                        {textInfo}
+                    </InfoBox>
+                    <InfoBox in={!autoRedirect} className={`${stylesCommon.body__child}`} type='notification'>
+                        {"We couldn't auto-redirect you to finish the process, please click the button below to finish the process."}
+                    </InfoBox>
+                    <InfoBox in={!!error} className={`${stylesCommon.body__child}`} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} >
+                        {error}
+                    </InfoBox>
+                </>
+            }
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 {
                     ((type === 'redirect' && autoRedirect) && (

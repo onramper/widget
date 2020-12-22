@@ -64,7 +64,11 @@ type NextStep =
         url: string;
         data: StepDataItems;
     } | {
-        type: 'iframe' | 'redirect';
+        type: 'iframe';
+        url: string;
+        fullscreen: boolean;
+    } | {
+        type: 'redirect';
         url: string;
     } | {
         type: 'pickOne';
