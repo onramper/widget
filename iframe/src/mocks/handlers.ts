@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 //import { gatewaysAllParams, noGatewaysAllParams } from './responses/gateways'
-//import ratesAllParams from './responses/rates'
+import ratesAllParams from './responses/rates'
 import CCPro from './responses/steps/Cryptocoin.pro'
 import Moonpay from './responses/steps/Moonpay'
 import Wyre from './responses/steps/Wyre'
@@ -32,6 +32,15 @@ export const handlers = [
                 ctx.json({ message: "'Authorization' header was no provided." })
             )
     }), */
+    rest.get(`${BASE_API}/rate/*`, (req, res, ctx) => {
+        const RESPONSE_CODE: number = 200
+        if (RESPONSE_CODE === 200)
+            return res(
+                // Respond with a 200 status code
+                ctx.status(200),
+                ctx.json(ratesAllParams)
+            )
+    }),
     rest.post(`${BASE_API}/transaction/*`, async (req, res, ctx) => {
         const gateway = req.url.pathname.split('/')[2]
         const currentStep = req.url.pathname.split('/')[3]
