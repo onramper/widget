@@ -6,7 +6,7 @@ import styles from '../../styles.module.css'
 import Step from '../Step'
 
 import { NextStep } from '../../ApiContext'
-import { finishCCTransaction, baseCreditCardSandboxUrl } from '@onramper/moonpay-adapter'
+import { finishCCTransaction, baseCreditCardSandboxUrl, checkTransaction } from '@onramper/moonpay-adapter'
 
 import { NavContext } from '../../NavContext'
 
@@ -19,16 +19,25 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
     const receiveMessage = async (event: MessageEvent) => {
       if (event.origin !== baseCreditCardSandboxUrl)
         return;
-      if (event.data.type) {
-        replaceScreen(<Step nextStep={(event.data as NextStep)} />)
-      } else if (event.data.transactionId) {
+      if (event.data.gateway === "Moonpay") {
+        let returnedNextStep:any;
         try {
-          const returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
+          if(event.data.type === "card-completed"){
+            returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
+          } else if (event.data.type === "2fa-completed"){
+            returnedNextStep = await checkTransaction(event.data.moonpayTxId, event.data.onramperTxId);
+          } else {
+            throw new Error("Unexpected response received")
+          }
           replaceScreen(<Step nextStep={(returnedNextStep as NextStep)} />)
         } catch (e) {
-          (event.source as Window)?.postMessage('reset', '*')
+          if(event.data.type === "card-completed"){
+            (event.source as Window)?.postMessage('reset', '*')
+          }
           setError(e.message)
         }
+      } else if (event.data.type) {
+        replaceScreen(<Step nextStep={(event.data as NextStep)} />)
       } else if (typeof event.data === 'string') {
         setError(event.data)
       } else {
