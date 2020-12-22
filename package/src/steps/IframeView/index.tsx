@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Header from '../../common/Header'
 import BodyIframeView from './BodyIframeView'
 import styles from '../../styles.module.css'
+import ErrorView from '../../common/ErrorView'
 
 import Step from '../Step'
 
@@ -11,7 +12,7 @@ import { finishCCTransaction, baseCreditCardSandboxUrl, checkTransaction } from 
 import { NavContext } from '../../NavContext'
 
 const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" } }> = ({ nextStep }) => {
-  const { replaceScreen } = useContext(NavContext);
+  const { replaceScreen, nextScreen } = useContext(NavContext);
   const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
   const [error, setError] = useState<string>()
 
@@ -20,19 +21,22 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
       if (event.origin !== baseCreditCardSandboxUrl)
         return;
       if (event.data.gateway === "Moonpay") {
-        let returnedNextStep:any;
+        let returnedNextStep: any;
         try {
-          if(event.data.type === "card-completed"){
+          if (event.data.type === "card-completed") {
             returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
-          } else if (event.data.type === "2fa-completed"){
+          } else if (event.data.type === "2fa-completed") {
             returnedNextStep = await checkTransaction(event.data.moonpayTxId, event.data.onramperTxId);
           } else {
             throw new Error("Unexpected response received")
           }
           replaceScreen(<Step nextStep={(returnedNextStep as NextStep)} />)
         } catch (e) {
-          if(event.data.type === "card-completed"){
+          if (event.data.type === "card-completed") {
             (event.source as Window)?.postMessage('reset', '*')
+          }
+          else if (event.data.type === "2fa-completed") {
+            nextScreen(<ErrorView type="TX" />)
           }
           setError(e.message)
         }
@@ -46,7 +50,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
     }
     window.addEventListener("message", receiveMessage);
     return () => window.removeEventListener("message", receiveMessage);
-  }, [replaceScreen, nextStep.type, nextStep.url])
+  }, [replaceScreen, nextStep.type, nextStep.url, nextScreen])
 
   return (
     <div className={styles.view}>
