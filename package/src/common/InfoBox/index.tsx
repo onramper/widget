@@ -12,7 +12,7 @@ type InfoBoxType = {
 
 const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBoxType>>((props, ref) => {
     const { type = 'info', onDismissClick = () => null, canBeDismissed = false, className = '' } = props
-
+    const defaultRef = ref || React.createRef<HTMLDivElement>();
     let classBoxType = ''
     switch (type) {
         case 'error':
@@ -28,7 +28,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
     }
 
     return (
-        <CSSTransition nodeRef={ref} in={props.in}
+        <CSSTransition nodeRef={defaultRef} in={props.in}
             timeout={{
                 enter: 100,
                 exit: 0
@@ -39,7 +39,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
 
             }}
             unmountOnExit={true} >
-            <div ref={ref} className={`${styles.infobox} ${styles[classBoxType]} ${className}`}>
+            <div ref={defaultRef} className={`${styles.infobox} ${styles[classBoxType]} ${className}`}>
                 <span className={styles.text}>
                     {props.children}
                 </span>

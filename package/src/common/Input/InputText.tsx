@@ -40,6 +40,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
     const icon = !dateSupported ? IconCalendar : props.icon
     const iconPosition = !dateSupported ? 'end' : props.iconPosition
     const classPrefix = !dateSupported ? '--date' : '--chevron'
+    const transitionRef = React.createRef<HTMLDivElement>()
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value === '' ? e.currentTarget.value : type === 'number' ? +e.currentTarget.value : e.currentTarget.value
@@ -107,7 +108,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                     }
                 </span>
             </div>
-            <CSSTransition nodeRef={ref} in={!!error}
+            <CSSTransition nodeRef={transitionRef} in={!!error}
                 timeout={500}
                 classNames={{
                     enter: styles['collapse-enter'],
@@ -116,7 +117,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                     exitActive: styles['collapse-exit-active']
                 }}
                 unmountOnExit={true}>
-                {error ? <span ref={ref} className={`${styles['text-error']}`} >{error}</span> : <></>}
+                {error ? <span ref={transitionRef} className={`${styles['text-error']}`} >{error}</span> : <></>}
             </CSSTransition>
             {hint && <span onClick={props.onHintClick} className={`${styles['text-hint']} ${props.onHintClick ? styles['text-hint--link'] : ''}`} >{hint}</span>}
         </div>
