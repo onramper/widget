@@ -8,7 +8,6 @@ interface ChatBubbleType {
 
 export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     const iframeRef = React.useRef<HTMLIFrameElement>(null)
-    const transitionRef = React.useRef<any>()
     const [isChatOpen, setIsChatOpen] = React.useState(false)
     const [isDone, setIsDone] = React.useState(0)
     const [isClicked, setIsClicked] = React.useState(false)
@@ -25,7 +24,6 @@ export const ChatBubble: React.FC<ChatBubbleType> = (props) => {
     return (
         <>
             <CSSTransition
-                node={transitionRef}
                 nodeRef={iframeRef}
                 onEnter={() => {
                     if (iframeRef.current)
