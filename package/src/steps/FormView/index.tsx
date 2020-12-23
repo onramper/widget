@@ -87,6 +87,10 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       const newNextStep = await apiInterface.executeStep(nextStep, params);
       nextScreen(<Step nextStep={newNextStep} />)
     } catch (error) {
+      if (error.fatal) {
+        nextScreen(<ErrorView type="TX" />)
+        return
+      }
       const processedError = processError(error, nextStepData)
       if (processedError.field)
         setErrorObj({ [processedError.field]: processedError.message })
@@ -94,9 +98,6 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
         setErrorObj(processedError.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
       else
         setErrorMsg(processedError.message)
-
-      if (error.fatal)
-        nextScreen(<ErrorView type="TX" />)
     }
 
     setIsLoading(false)

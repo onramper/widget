@@ -37,6 +37,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
           }
           else if (event.data.type === "2fa-completed") {
             nextScreen(<ErrorView type="TX" />)
+            return
           }
           setError(e.message)
         }
