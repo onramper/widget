@@ -22,9 +22,8 @@ const TX_ERROR: ErrorType = {
 }
 
 const GATEWAYS_ERROR: ErrorType = {
-    title: "Something went wrong",
-    description: <>Your country is not yet supported by Onramper.
-    But rest assured!
+    title: "Unexplored area",
+    description: <>Your country is not yet supported by Onramper.<br/>
     We&apos;re working hard to make it available for you as soon as possible!
     For more information read our FAQs or contact us.</>,
     illustration: ErrorIllustration,

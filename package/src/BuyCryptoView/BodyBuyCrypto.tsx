@@ -78,7 +78,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                 )
             }
             {
-                !generalErrors.some(errName => errName === "GATEWAYS") ?
+                !generalErrors.some(errName => errName === "GATEWAYS" || errName === "RATE") ?
                     <>
                         <InputButton onClick={openPickCrypto} className={stylesCommon.body__child} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
                         <div className={`${stylesCommon.body__child} ${stylesCommon['row-fields']}`}>
