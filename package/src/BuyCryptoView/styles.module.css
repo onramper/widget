@@ -10,6 +10,7 @@
 
 .expected-crypto__amount {
     font-size: 1.69rem;
+    text-align: center;
 }
 
 .expected-crypto__info {
