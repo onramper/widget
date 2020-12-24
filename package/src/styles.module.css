@@ -16,6 +16,7 @@ theme styles
     --padding-rl: 1.88rem;
     --padding-bottom: 1.125rem;
     width: var(--width);
+    min-width: 250px;
     height: var(--heigth);
     display: flex;
     flex-direction: column;
