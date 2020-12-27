@@ -42,14 +42,23 @@ export type CollectedStateType = {
     defaultAddrs: {
         [key: string]: string[]
     }
-    errors?: { [key: string]: ErrorObjectType }
+    errors?: ErrorObjectType
     [key: string]: any
 }
 
 export type ErrorObjectType = {
-    type: string,
-    message: string
-}
+    GATEWAYS?: {
+        type: 'API' | 'NO_GATEWAYS' | 'NO_CRYPTOS',
+        message: string
+    },
+    RATE?: {
+        type: TypesOfRateError,
+        message: string
+        limit?: number
+    }
+} | undefined
+
+export type TypesOfRateError = 'API' | 'NO_RATES' | 'MIN' | 'MAX' | 'UNREACHABLE' | 'OTHER'
 
 export type DataStateType = {
     availableCryptos: ItemType[]

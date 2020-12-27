@@ -40,7 +40,7 @@ export type DataActions = {
 } | {
     type: CollectedActionsType.AddError;
     payload: {
-        value: { [key: string]: ErrorObjectType } | undefined
+        value: ErrorObjectType | undefined
     };
 }
 

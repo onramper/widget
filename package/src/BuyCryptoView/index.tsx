@@ -11,20 +11,20 @@ import { APIContext, ItemType } from '../ApiContext'
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
-  const [localErrors, setErrors] = useState<{ [key: string]: any } | undefined>({})
+/*   const [localErrors, setErrors] = useState<{ [key: string]: any } | undefined>({}) */
 
-  const [flagEffectInit, setFlagEffectInit] = useState(0)
+  /* const [flagEffectInit, setFlagEffectInit] = useState(0) */
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } = useContext(APIContext);
   const { handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
-  const { init, getRates } = apiInterface
+  const { init/* , getRates */ } = apiInterface
   const { errors } = collected
 
   //flagEffectInit used to call init again
   useEffect(() => {
     init();
-  }, [init, flagEffectInit])
+  }, [init/* , flagEffectInit */])
 
   const handleItemClick = (name: string, index: number, item: ItemType) => {
     if (name === 'crypto')
@@ -37,12 +37,17 @@ const BuyCryptoView: React.FC = () => {
     backScreen()
   }
 
+  //listening to errors sent by APIContext
   useEffect(() => {
-    if (errors?.GATEWAYS || errors?.RATE) {
+    if (errors?.GATEWAYS)
       nextScreen(<ErrorView type="GATEWAYS" />)
-      return
-    }
-    setErrors(errors)
+
+    else if (errors?.RATE)
+      if (errors.RATE.type === 'API')
+        nextScreen(<ErrorView type="RATES" />)
+      else if (errors.RATE.type === 'NO_RATES')
+        nextScreen(<ErrorView type="RATES" />)
+
   }, [errors, nextScreen])
 
   useEffect(() => {
@@ -64,14 +69,14 @@ const BuyCryptoView: React.FC = () => {
         selectedCurrency={collected.selectedCurrency}
         selectedPaymentMethod={collected.selectedPaymentMethod}
         handleInputChange={inputInterface.handleInputChange}
-        errors={localErrors}
+/*         errors={localErrors} */
         isFilled={isFilled}
-        onPriceError={(errName: string) => {
-          if (errName === 'RATE')
-            getRates()
-          else if (errName === 'GATEWAYS')
-            setFlagEffectInit(prev => prev + 1)
-        }}
+      /*         onPriceError={(errName: string) => {
+                if (errName === 'RATE')
+                  getRates()
+                else if (errName === 'GATEWAYS')
+                  setFlagEffectInit(prev => prev + 1)
+              }} */
       />
     </div>
   );

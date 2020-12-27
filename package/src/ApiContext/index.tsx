@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useCallback, useEffect, useState } from 'react';
 
-import { StateType, initialState, ErrorObjectType, ItemCategory } from './initialState'
+import { StateType, initialState, ItemCategory } from './initialState'
 import { mainReducer, CollectedActionsType, DataActionsType } from './reducers'
 
 import { arrayUnique, arrayObjUnique } from '../utils'
@@ -8,7 +8,7 @@ import { arrayUnique, arrayObjUnique } from '../utils'
 import LogoOnramper from '../icons/onramper_logo.svg'
 
 import * as API from './api'
-import type { ItemType, GatewayRateOption } from './initialState';
+import type { ItemType, GatewayRateOption, ErrorObjectType, TypesOfRateError } from './initialState';
 import { GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
 import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from './api/types/nextStep';
@@ -74,15 +74,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     []
   )
 
-  const processErrors = useCallback((name: string, type: string, message: string) => {
-    const error = {
-      [name]: {
-        type: type,
-        message: message
-      }
-    }
-    dispatch({ type: CollectedActionsType.AddError, payload: { value: error } })
-    return error
+  const processErrors = useCallback((newError: ErrorObjectType) => {
+    dispatch({ type: CollectedActionsType.AddError, payload: { value: newError } })
+    return newError
   }, [])
 
   const clearErrors = useCallback(() => {
@@ -100,10 +94,20 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       try {
         responseGateways = await API.gateways({ country: actualCountry, includeIcons: true, includeDefaultAmounts: true }, props.filters)
       } catch (error) {
-        return processErrors("GATEWAYS", "API", error.message)
+        return processErrors({
+          GATEWAYS: {
+            type: "API",
+            message: error.message
+          }
+        })
       }
       if (responseGateways.gateways.length <= 0) {
-        return processErrors("GATEWAYS", "NO_GATEWAYS", "No gateways found.")
+        return processErrors({
+          GATEWAYS: {
+            type: "NO_GATEWAYS",
+            message: "No gateways found."
+          }
+        })
       }
 
       const ICONS_MAP = responseGateways.icons || {}
@@ -116,7 +120,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }
       availableCryptos = arrayObjUnique(availableCryptos, 'code')
       if (availableCryptos.length <= 0) {
-        return processErrors("GATEWAYS", "NO_CRYPTOS", "No cryptos found.")
+        return processErrors({
+          GATEWAYS: {
+            type: "NO_CRYPTOS",
+            message: "No cryptos found."
+          }
+        })
       }
 
       // MAP AVAILABLE CRYPTOS LIST (CURRENCY LIST) TO AN ITEMTYPE LIST
@@ -301,13 +310,24 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         if (error.name === 'AbortError')
           return {}
         setLastCall(undefined)
-        return processErrors("RATE", "API", error.message)
+        return processErrors({
+          RATE: {
+            type: "API",
+            message: error.message
+          }
+        })
       }
 
       // IF THE REQUEST DIDN'T THROW ANY ERROR, CLEAR THE ABORT CONTROLLER FROM THE STATE
       setLastCall(undefined)
 
-      if (!responseRate || responseRate.length <= 0) return processErrors("RATE", "NO_RATES", "No rates found")
+      if (!responseRate || responseRate.length <= 0)
+        return processErrors({
+          RATE: {
+            type: "NO_RATES",
+            message: "No rates found."
+          }
+        })
 
       // MAP RATES TO GatewayOptionType
       const mappedAllRates: GatewayRateOption[] = responseRate.map((item) => ({
@@ -335,7 +355,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           if (!item.error) return minMaxErrors
           switch (item.error.type) {
             case 'MIN':
-              if (!minMaxErrors[item.error.type] || ((item.error.limit ?? Number.POSITIVE_INFINITY) < minMaxErrors[item.error.type].limit)) {
+              if (!minMaxErrors['MIN'] || ((item.error.limit ?? Number.POSITIVE_INFINITY) < minMaxErrors[item.error.type].limit)) {
                 minMaxErrors[item.error.type] = { message: item.error.message, limit: item.error.limit }
               }
               return minMaxErrors
@@ -345,11 +365,35 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
               }
               return minMaxErrors
             default:
-              minMaxErrors[item.error.type] = item.error.message
+              //minMaxErrors[item.error.type] = item.error.message
+              //minMaxErrors["OTHER"] = item.error.message
               return minMaxErrors
           }
         }, {})
-        return processErrors("amount", "PARAM", minMaxErrors.MIN?.message ?? minMaxErrors.MAX?.message)
+
+        let errNAME: TypesOfRateError = "MIN"
+        //only send 1 error with the following priority
+        if (minMaxErrors.MIN)
+          errNAME = "MIN"
+        else if (minMaxErrors.MAX)
+          errNAME = "MAX"
+        else {
+          return processErrors({
+            RATE: {
+              type: "OTHER",
+              message: "No gateways availables at this moment, try again in some minutes."
+            }
+          })
+        }
+
+
+        return processErrors({
+          RATE: {
+            type: errNAME,
+            message: minMaxErrors[errNAME]?.message,
+            limit: minMaxErrors[errNAME]?.limit
+          }
+        })
       }
 
       // IF NO ERRORS, RETURN UNDEFINED
