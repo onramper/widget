@@ -53,11 +53,11 @@
     }
 
     .content__price {
-        margin-top: 1.5625rem;
+        margin-top: 0.875rem;
     }
 
     .option-container--collapsed .content__price {
-        margin-top: 0.8125rem;
+        margin-top: 0rem;
     }
 }
 
