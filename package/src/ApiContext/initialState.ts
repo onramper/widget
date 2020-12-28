@@ -48,7 +48,7 @@ export type CollectedStateType = {
 
 export type ErrorObjectType = {
     GATEWAYS?: {
-        type: 'API' | 'NO_GATEWAYS' | 'NO_CRYPTOS',
+        type: 'API' | 'NO_GATEWAYS' | 'NO_CRYPTOS' | 'NO_FIAT' | 'NO_PAYMENT_METHODS',
         message: string
     },
     RATE?: {

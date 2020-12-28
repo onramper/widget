@@ -86,12 +86,11 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   /* *********** */
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
-      clearErrors()
-
       const actualCountry = country
       // REQUEST AVAILABLE GATEWAYS
       let responseGateways: GatewaysResponse
       try {
+        clearErrors()
         responseGateways = await API.gateways({ country: actualCountry, includeIcons: true, includeDefaultAmounts: true }, props.filters)
       } catch (error) {
         return processErrors({
@@ -178,6 +177,14 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         availableCurrencies = availableCurrencies.concat(filtredGatewaysByCrypto[i].fiatCurrencies)
       }
       availableCurrencies = arrayObjUnique(availableCurrencies, 'code')
+      if (availableCurrencies.length <= 0) {
+        return processErrors({
+          GATEWAYS: {
+            type: "NO_FIAT",
+            message: "No fiat currencies found."
+          }
+        })
+      }
 
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
       const ICONS_MAP = state.data.responseGateways.icons || {}
@@ -196,7 +203,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.date
       addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.responseGateways, state.data.availableCryptos, addData, handleInputChange, state.collected.selectedCrypto]
+    }, [state.data.responseGateways, state.data.availableCryptos, addData, handleInputChange, state.collected.selectedCrypto, processErrors]
   )
 
   const handleCurrencyChange = useCallback(
@@ -235,6 +242,14 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         availablePaymentMethods = availablePaymentMethods.concat(filtredGatewaysByCurrency[i].paymentMethods)
       }
       availablePaymentMethods = arrayUnique(availablePaymentMethods)
+      if (availablePaymentMethods.length <= 0) {
+        return processErrors({
+          GATEWAYS: {
+            type: "NO_PAYMENT_METHODS",
+            message: "No payment methods availables found."
+          }
+        })
+      }
 
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
       const ICONS_MAP = responseGateways.icons || {}
@@ -252,7 +267,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.date
       addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
-    }, [handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.responseGateways, state.collected.selectedCurrency, defaultAmount]
+    }, [processErrors, handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.responseGateways, state.collected.selectedCurrency, defaultAmount]
   )
 
   const handlePaymentMethodChange = useCallback(
@@ -273,12 +288,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
   const getRates = useCallback(
     async (): Promise<ErrorObjectType | undefined | {}> => {
-      clearErrors()
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       if (!state.data.responseGateways) return
 
       // IF THE AMOUNT IS NOT SET OR IT'S ===0 THEN NO AVAILABLE RATES
       if (!state.collected.amount) {
+        clearErrors()
         addData({ allRates: [] })
         return
       }
@@ -305,6 +320,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // ELSE, CLEAR THE ABORT CONTROLLER AND RETURN ERROR
       let responseRate: RateResponse
       try {
+        clearErrors()
         responseRate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { country: state.collected.selectedCountry, amountInCrypto: state.collected.amountInCrypto, includeIcons: true }, props.filters?.onlyGateways, signal)
       } catch (error) {
         if (error.name === 'AbortError')
