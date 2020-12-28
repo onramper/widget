@@ -31,7 +31,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
             const errorsMessage = `Type not valid. Please upload a ${props.acceptedContentTypes?.reduce((acc, actual, index) => {
                 if (index === 0) return actual
                 return `${acc}, ${actual}`
-            }, '')}.`
+            }, '')} file.`
             setErrorControlMsg(errorsMessage)
             return false
         }
