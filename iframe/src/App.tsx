@@ -17,6 +17,7 @@ const defaultFiat = getParam('defaultFiat', 'USD')
 const addresses = JSON.parse(getParam('addresses', '{}') ?? '{}')
 const onlyCryptos = getArrayParam('onlyCryptos')
 const excludeCryptos = getArrayParam('excludeCryptos')
+const excludeFiat = getArrayParam('excludeFiat')
 const onlyGateways = getArrayParam('onlyGateways')
 const onlyFiat = getArrayParam('onlyFiat')
 
@@ -35,6 +36,7 @@ function App() {
             defaultFiat={defaultFiat}
             onlyCryptos={onlyCryptos}
             excludeCryptos={excludeCryptos}
+            excludeFiat={excludeFiat}
             onlyGateways={onlyGateways}
             onlyFiat={onlyFiat}
           />

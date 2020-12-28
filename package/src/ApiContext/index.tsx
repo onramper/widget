@@ -19,6 +19,7 @@ import phoneCodes from './utils/phoneCodes'
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100
 const DEFAULT_CURRENCY = 'USD'
+const DEFAULT_CRYPTO = 'BTC'
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -32,13 +33,16 @@ interface APIProviderType {
   filters?: {
     onlyCryptos?: string[]
     excludeCryptos?: string[]
+    excludeFiat?: string[]
     onlyGateways?: string[]
     onlyFiat?: string[]
   }
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
-  const { defaultAmount = 100, defaultAddrs = {}, API_KEY, defaultFiat = DEFAULT_CURRENCY } = props
+  const { defaultAmount = 100, defaultAddrs = {}, API_KEY } = props
+  const defaultFiat = props.defaultFiat?.toUpperCase() || DEFAULT_CURRENCY
+  const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO
   const iniState = {
     ...initialState,
     collected: {
@@ -140,7 +144,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }))
 
       // SELECT DEFAULT CRYPTO
-      const selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === props.defaultCrypto)) || mappedAvailableCryptos[0]
+      const selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === defaultCrypto)) || mappedAvailableCryptos[0]
 
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
@@ -153,7 +157,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         responseGateways: responseGateways
       })
 
-    }, [addData, handleInputChange, props.defaultCrypto, props.filters, processErrors, clearErrors])
+    }, [addData, handleInputChange, defaultCrypto, props.filters, processErrors, clearErrors])
 
   const handleCryptoChange = useCallback(
     (crypto?: ItemType): ErrorObjectType | undefined | {} => {

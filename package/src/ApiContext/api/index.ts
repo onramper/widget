@@ -3,7 +3,7 @@ import { RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
-import processMoonpayStep, {moonpayUrlRegex} from '@onramper/moonpay-adapter'
+import processMoonpayStep, { moonpayUrlRegex } from '@onramper/moonpay-adapter'
 
 const BASE_API = process.env.STAGE === 'prod'
     ? 'https://api.onramper.com'
@@ -38,7 +38,7 @@ interface RateParams {
     [key: string]: any
 }
 
-const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, onlygateways?:string[], signal?: AbortSignal): Promise<RateResponse> => {
+const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, onlygateways?: string[], signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
     const ratesRes = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, { headers, signal })
     const rates: RateResponse = await processResponse(ratesRes)
@@ -133,13 +133,15 @@ const createUrlParamsFromObject = (paramsObj: { [key: string]: any }): string =>
 interface Filters {
     onlyCryptos?: string[],
     excludeCryptos?: string[],
+    excludeFiat?: string[],
     onlyGateways?: string[]
-    onlyFiat?:string[]
+    onlyFiat?: string[]
 }
-const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos, onlyGateways, onlyFiat }: Filters): GatewaysResponse => {
+const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos, excludeFiat, onlyGateways, onlyFiat }: Filters): GatewaysResponse => {
     const _onlyCryptos = onlyCryptos?.map(code => code.toUpperCase())
     const _excludeCryptos = excludeCryptos?.map(code => code.toUpperCase())
     const _onlyFiat = onlyFiat?.map(code => code.toUpperCase())
+    const _excludeFiat = excludeFiat?.map(code => code.toUpperCase())
     const filtredGateways = gatewaysResponse.gateways.map(gateway => {
         let cryptosList = gateway.cryptoCurrencies
         let fiatList = gateway.fiatCurrencies
@@ -147,15 +149,17 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCrypto
             cryptosList = gateway.cryptoCurrencies.filter(crypto => _onlyCryptos.includes(crypto.code))
         if (_excludeCryptos && _excludeCryptos?.length > 0)
             cryptosList = cryptosList.filter(crypto => !_excludeCryptos.includes(crypto.code))
-        if(_onlyFiat && _onlyFiat?.length > 0)
+        if (_onlyFiat && _onlyFiat?.length > 0)
             fiatList = fiatList.filter(fiat => _onlyFiat.includes(fiat.code))
+        if (_excludeFiat && _excludeFiat?.length > 0)
+            fiatList = fiatList.filter(fiat => !_excludeFiat.includes(fiat.code))
         return {
             ...gateway,
             cryptoCurrencies: cryptosList,
             fiatCurrencies: fiatList
         }
-    }).filter(gateway=>{
-        if(onlyGateways === undefined){
+    }).filter(gateway => {
+        if (onlyGateways === undefined) {
             return true;
         }
         return onlyGateways.includes(gateway.identifier)
@@ -167,8 +171,8 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCrypto
 }
 
 const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[]): RateResponse => {
-    return ratesResponse.filter(gateway=>{
-        if(onlyGateways === undefined){
+    return ratesResponse.filter(gateway => {
+        if (onlyGateways === undefined) {
             return true;
         }
         return onlyGateways.includes(gateway.identifier)
