@@ -36,8 +36,10 @@ const InputText: React.FC<InputTextType> = (props) => {
     const [switchPairEnabled, setSwitchPairEnabled] = useState(true)
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value === '' ? e.target.value : type === 'number' ? toMaxDecimalsRound(e.target.value ?? 0, actualSymbol?.precision ?? 1) : e.target.value
-        if (value !== '' && !value && type === 'number') return false
+        let value: string | number = e.target.value
+        if (!value.match(/\.$|,$/))
+            value = value === '' ? e.target.value : type === 'number' ? toMaxDecimalsRound(e.target.value ?? 0, actualSymbol?.precision ?? 1) : value
+        if (value !== 0 && value !== '' && !value && type === 'number') return false
         onChange?.(e.target.name, value)
     }, [onChange, type, actualSymbol])
 
