@@ -17,6 +17,7 @@ type OnramperWidgetProps = {
     color?: string
     defaultAmount?: number
     defaultCrypto?: string
+    defaultFiat?: string
     defaultAddrs?: {
         [key: string]: string
     }
@@ -30,8 +31,9 @@ type OnramperWidgetProps = {
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     const {
         color = '#31a5ff',
-        defaultAddrs = {},
-        defaultAmount = 100,
+        defaultAddrs,
+        defaultAmount,
+        defaultFiat,
         defaultCrypto,
         onlyCryptos,
         excludeCryptos,
@@ -52,6 +54,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                     defaultAmount={defaultAmount}
                     defaultAddrs={defaultAddrs}
                     defaultCrypto={defaultCrypto}
+                    defaultFiat={defaultFiat}
                     filters={{ onlyCryptos, excludeCryptos, onlyGateways, onlyFiat }}
                 >
                     <div style={{ flexGrow: 1, display:'flex' }}>

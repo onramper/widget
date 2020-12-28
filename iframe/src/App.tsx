@@ -13,6 +13,7 @@ const apiKey = getParam('apiKey', defaultApiKey)
 const defaultColor = `#${getParam('color', '266678')}`
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', 'BTC')
+const defaultFiat = getParam('defaultFiat', 'USD')
 const addresses = JSON.parse(getParam('addresses', '{}') ?? '{}')
 const onlyCryptos = getArrayParam('onlyCryptos')
 const excludeCryptos = getArrayParam('excludeCryptos')
@@ -31,6 +32,7 @@ function App() {
             defaultAddrs={addresses}
             defaultAmount={defaultAmount}
             defaultCrypto={defaultCrypto}
+            defaultFiat={defaultFiat}
             onlyCryptos={onlyCryptos}
             excludeCryptos={excludeCryptos}
             onlyGateways={onlyGateways}

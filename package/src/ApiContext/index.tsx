@@ -28,6 +28,7 @@ interface APIProviderType {
   defaultAmount?: number
   defaultAddrs?: { [key: string]: string }
   defaultCrypto?: string
+  defaultFiat?: string
   filters?: {
     onlyCryptos?: string[]
     excludeCryptos?: string[]
@@ -37,7 +38,7 @@ interface APIProviderType {
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
-  const { defaultAmount = 100, defaultAddrs = {}, API_KEY } = props
+  const { defaultAmount = 100, defaultAddrs = {}, API_KEY, defaultFiat = DEFAULT_CURRENCY } = props
   const iniState = {
     ...initialState,
     collected: {
@@ -222,7 +223,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       const actualCurrency =
         state.data.availableCurrencies.find((currency) => currency.id === selectedCurrency?.id)
         || state.data.availableCurrencies.find((currency) => currency.id === responseGateways.localization.currency)
-        || state.data.availableCurrencies.find((currency) => currency.id === DEFAULT_CURRENCY)
+        || state.data.availableCurrencies.find((currency) => currency.id === defaultFiat)
         || state.data.availableCurrencies[0]
 
       if (!state.collected.selectedCurrency) {
@@ -267,7 +268,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.date
       addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
-    }, [processErrors, handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.responseGateways, state.collected.selectedCurrency, defaultAmount]
+    }, [processErrors, handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.responseGateways, state.collected.selectedCurrency, defaultAmount, defaultFiat]
   )
 
   const handlePaymentMethodChange = useCallback(
