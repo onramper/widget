@@ -292,7 +292,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (!state.data.responseGateways) return
 
       // IF THE AMOUNT IS NOT SET OR IT'S ===0 THEN NO AVAILABLE RATES
-      if (!state.collected.amount) {
+      if (!state.collected.amount || !isFinite(state.collected.amount)) {
         clearErrors()
         addData({ allRates: [] })
         return
