@@ -17,22 +17,26 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const { textInfo, type, error } = props
     const [autoRedirect, setAutoRedirect] = useState(true)
 
+    const main = window.document.getElementById('main')
+    const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
+    const iframeUrl = `${props.src}${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
+
     const redirect = useCallback(() => {
         setAutoRedirect(true)
         //try to open popup
-        const windowObjectReference = window.open(props.src, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
+        const windowObjectReference = window.open(iframeUrl, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
         //if opened -> all is ok
         if (windowObjectReference) return
         //if not opened -> warn user about popup blocked + ask user for click a button
         setAutoRedirect(false)
         return undefined
-    }, [props.src])
+    }, [iframeUrl])
 
     useEffect(() => {
         if (type === 'redirect')
             redirect()
 
-    }, [props.src, type, redirect])
+    }, [iframeUrl, type, redirect])
 
     return (
         <main className={`${stylesCommon.body} ${props.isFullScreen ? stylesCommon['body--full_screen'] : ''} ${styles.body}`}>
@@ -66,7 +70,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     ))
                     || <iframe
                         title='Sandbox'
-                        src={props.src}
+                        src={iframeUrl}
                         style={{
                             width: '100%',
                             height: '100%',

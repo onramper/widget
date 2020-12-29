@@ -49,7 +49,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     } as React.CSSProperties;
 
     return (
-        <div style={style} className={`isolate-inheritance ${styles.theme} ${className}`}>
+        <div id="main" style={style} className={`isolate-inheritance ${styles.theme} ${className}`}>
             <NavProvider>
                 <APIProvider
                     API_KEY={props.API_KEY}
