@@ -20,6 +20,10 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
     const receiveMessage = async (event: MessageEvent) => {
       if (event.origin !== baseCreditCardSandboxUrl)
         return;
+      if (event.type === 'INIT') {
+        setError(undefined)
+        return
+      }
       if (event.data.gateway === "Moonpay") {
         let returnedNextStep: any;
         try {
