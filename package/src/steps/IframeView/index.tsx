@@ -20,7 +20,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
     const receiveMessage = async (event: MessageEvent) => {
       if (event.origin !== baseCreditCardSandboxUrl)
         return;
-      if (event.type === 'INIT') {
+      if (event.data.type === 'INIT') {
         setError(undefined)
         return
       }
