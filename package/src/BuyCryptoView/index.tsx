@@ -11,14 +11,11 @@ import { APIContext, ItemType } from '../ApiContext'
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false)
-/*   const [localErrors, setErrors] = useState<{ [key: string]: any } | undefined>({}) */
-
-  /* const [flagEffectInit, setFlagEffectInit] = useState(0) */
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } = useContext(APIContext);
   const { handleCryptoChange, handleCurrencyChange, handlePaymentMethodChange } = data
-  const { init/* , getRates */ } = apiInterface
+  const { init } = apiInterface
   const { errors } = collected
 
   //flagEffectInit used to call init again
@@ -69,14 +66,7 @@ const BuyCryptoView: React.FC = () => {
         selectedCurrency={collected.selectedCurrency}
         selectedPaymentMethod={collected.selectedPaymentMethod}
         handleInputChange={inputInterface.handleInputChange}
-/*         errors={localErrors} */
         isFilled={isFilled}
-      /*         onPriceError={(errName: string) => {
-                if (errName === 'RATE')
-                  getRates()
-                else if (errName === 'GATEWAYS')
-                  setFlagEffectInit(prev => prev + 1)
-              }} */
       />
     </div>
   );

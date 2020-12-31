@@ -16,20 +16,18 @@ interface BodyBuyCryptoProps {
     openPickCrypto?: () => void
     openPickCurrency?: () => void
     openPickPayment?: () => void
-    /*     onPriceError?: (errName: string) => void */
     selectedCrypto?: ItemType
     selectedCurrency?: ItemType
     selectedPaymentMethod?: ItemType
     handleInputChange: (name: string, value: any) => void
-    /*     errors?: ErrorObjectType */
     isFilled?: boolean
 }
 
 
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
-    const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment/* , onPriceError */ } = props
-    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, /* errors = {},  */isFilled = true } = props
+    const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
+    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
 

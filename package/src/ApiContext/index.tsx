@@ -20,6 +20,8 @@ import phoneCodes from './utils/phoneCodes'
 const BASE_DEFAULT_AMOUNT_IN_USD = 100
 const DEFAULT_CURRENCY = 'USD'
 const DEFAULT_CRYPTO = 'BTC'
+export const DEFAULT_COUNTRY = 'US'
+export const DEFAULT_STATE = 'AL'
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -148,8 +150,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
-      handleInputChange('selectedCountry', responseGateways.localization.country)
-      handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country?.toUpperCase() ?? 'GB']?.phoneCode)
+      handleInputChange('selectedCountry', responseGateways.localization.country ?? DEFAULT_COUNTRY)
+      handleInputChange('state', responseGateways.localization.state ?? DEFAULT_STATE)
+      handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country?.toUpperCase() ?? DEFAULT_COUNTRY]?.phoneCode)
       // save to state.date
       addData({
         availableCryptos: mappedAvailableCryptos,

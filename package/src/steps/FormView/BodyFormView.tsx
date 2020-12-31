@@ -12,7 +12,7 @@ import PickView from '../../PickView'
 import HelpView from '../../common/HelpView'
 import Help2FACreditCard from './renderers/Help2FACreditCard'
 
-import { APIContext, StepDataItems } from '../../ApiContext'
+import { APIContext, StepDataItems, DEFAULT_STATE, DEFAULT_COUNTRY } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
 
@@ -22,9 +22,6 @@ import usStates from '../../ApiContext/utils/usStates'
 
 import { scrollTo } from '../../utils'
 import { GroupFieldsController } from './utils'
-
-const DEFAULT_SATE = 'AL'
-const DEFAULT_COUNTRY = 'GB'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -91,24 +88,24 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     useEffect(() => {
         // setting initial values
         if (countryHasChanged === 'initialkey') {
-            const country = collected.country ?? collected.selectedCountry ?? DEFAULT_COUNTRY
+            const country = collected.country ?? collected.selectedCountry
             handleInputChange("country", country)
             if (country.toUpperCase() === 'US')
-                handleInputChange("state", collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_SATE)
+                handleInputChange("state", collected.state && (collected.state !== "undefined") ? collected.state : DEFAULT_STATE)
             else
                 handleInputChange("state", "undefined")
 
             setCountryHasChanged('undefinedkey')
         }
         else if (countryHasChanged.toUpperCase() === 'US') {
-            handleInputChange("state", collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_SATE)
+            handleInputChange("state", collected.state && (collected.state !== "undefined") ? collected.state : DEFAULT_STATE)
             setCountryHasChanged('undefinedkey')
         }
         else if (countryHasChanged !== 'undefinedkey') {
             handleInputChange("state", 'undefined')
             setCountryHasChanged('undefinedkey')
         }
-    }, [countryHasChanged, collected, handleInputChange])
+    }, [countryHasChanged, collected.country, collected.state, collected.selectedCountry, handleInputChange])
 
     // scroll to fields on new error (general error)
     useEffect(() => {
@@ -220,7 +217,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             />
                                         )}
                                         label={field.humanName}
-                                        selectedOption={usStates[(collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_SATE).toUpperCase()]}
+                                        selectedOption={usStates[(collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_STATE).toUpperCase()]}
                                     />
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((GroupFieldsController.isGroupRequired(field.name, CREDIT_CARD_FIELDS_NAME_GROUP, fields.map((f) => f.name))) && (
