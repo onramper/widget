@@ -8,6 +8,7 @@ import { APIContext } from '../../ApiContext'
 
 import { NextStep } from '../../ApiContext/api/types/nextStep'
 import Step from '../Step'
+import ErrorView from '../../common/ErrorView'
 
 const UploadView: React.FC<{ nextStep: NextStep & { type: 'file' } }> = (props) => {
   const { nextScreen } = useContext(NavContext);
@@ -25,7 +26,12 @@ const UploadView: React.FC<{ nextStep: NextStep & { type: 'file' } }> = (props) 
       const newNextStep = await apiInterface.executeStep(props.nextStep, file);
       nextScreen(<Step nextStep={newNextStep} />)
     } catch (error) {
-      setErrorMsg(error.message)
+      if (error.fatal) {
+        nextScreen(<ErrorView type="TX" />)
+        return
+      } else {
+        setErrorMsg(error.message)
+      }
     }
 
     setIsLoading(false)

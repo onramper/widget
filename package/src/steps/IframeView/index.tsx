@@ -25,7 +25,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
         return
       }
       if (event.data.gateway === "Moonpay") {
-        let returnedNextStep: any;
+        let returnedNextStep: any; //: NextStep;
         try {
           if (event.data.type === "card-completed") {
             returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
