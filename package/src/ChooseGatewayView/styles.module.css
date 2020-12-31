@@ -288,12 +288,6 @@ max-width: 100%;
     margin-right: 0;
 }
 
-@media (max-width: 360px) {
-    .option-container--collapsed {
-        border-color: var(--boorder-option-container-color);
-    }
-}
-
 .option-container--disabled {
     border-style: none;
     color: #d6d6d6;
@@ -305,6 +299,16 @@ max-width: 100%;
 
 .option-container--disabled .content__price > div {   
     font-size: 0.625rem;
+}
+
+@media (max-width: 360px) {
+    .option-container--collapsed {
+        border-color: var(--boorder-option-container-color);
+    }
+
+    .option-container--disabled {
+        border-style: solid;
+    }
 }
 
 /* .option-container__content--collapsed,
