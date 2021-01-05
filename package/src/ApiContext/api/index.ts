@@ -40,7 +40,11 @@ interface RateParams {
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, onlygateways?: string[], signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const ratesRes = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, { headers, signal })
+    const ratesRes = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, {
+        headers,
+        signal,
+        credentials: 'include'
+    })
     const rates: RateResponse = await processResponse(ratesRes)
     return filterRatesResponse(rates, onlygateways)
 }
