@@ -39,6 +39,7 @@ interface APIProviderType {
     onlyGateways?: string[]
     onlyFiat?: string[]
   }
+  country?: string
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -93,7 +94,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   /* *********** */
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
-      const actualCountry = country
+      const actualCountry = props.country || country
       // REQUEST AVAILABLE GATEWAYS
       let responseGateways: GatewaysResponse
       try {
@@ -150,7 +151,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
-      handleInputChange('selectedCountry', responseGateways.localization.country ?? DEFAULT_COUNTRY)
+      handleInputChange('selectedCountry', actualCountry || responseGateways.localization.country || DEFAULT_COUNTRY)
       handleInputChange('state', responseGateways.localization.state ?? DEFAULT_STATE)
       handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country?.toUpperCase() ?? DEFAULT_COUNTRY]?.phoneCode)
       // save to state.date
@@ -160,7 +161,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         responseGateways: responseGateways
       })
 
-    }, [addData, handleInputChange, defaultCrypto, props.filters, processErrors, clearErrors])
+    }, [addData, handleInputChange, defaultCrypto, props.filters, processErrors, clearErrors, props.country])
 
   const handleCryptoChange = useCallback(
     (crypto?: ItemType): ErrorObjectType | undefined | {} => {

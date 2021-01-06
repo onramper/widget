@@ -20,6 +20,7 @@ const excludeCryptos = getArrayParam('excludeCryptos')
 const excludeFiat = getArrayParam('excludeFiat')
 const onlyGateways = getArrayParam('onlyGateways')
 const onlyFiat = getArrayParam('onlyFiat')
+const country = getParam('country')
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             excludeFiat={excludeFiat}
             onlyGateways={onlyGateways}
             onlyFiat={onlyFiat}
+            country={country}
           />
         </div>
       </div>
@@ -59,8 +61,8 @@ function getParam(name: string, defaultValue?: string): string | undefined {
   return value
 }
 
-function getArrayParam(paramName:string){
-  return  getParam(paramName, undefined)?.split(',').map(code => code.trim())
+function getArrayParam(paramName: string) {
+  return getParam(paramName, undefined)?.split(',').map(code => code.trim())
 }
 
 export default App;
