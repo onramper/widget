@@ -27,7 +27,10 @@ interface GatewaysParams {
 
 const gateways = async (params: GatewaysParams, filter?: Filters): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
-    const gatewaysRes = await fetch(`${BASE_API}/gateways?${urlParams}`, { headers })
+    const gatewaysRes = await fetch(`${BASE_API}/gateways?${urlParams}`, {
+        headers,
+        credentials: 'include'
+     })
     const gateways: GatewaysResponse = await processResponse(gatewaysRes)
     return filterGatewaysResponse(gateways, filter ?? {})
 }
