@@ -67,6 +67,7 @@ type NextStep =
         type: 'iframe';
         url: string;
         fullscreen: boolean;
+        neededFeatures?: string;
     } | {
         type: 'redirect';
         url: string;

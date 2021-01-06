@@ -11,6 +11,7 @@ interface BodyIframeViewType {
     error?: string
     onErrorDismissClick: () => void
     isFullScreen?: boolean
+    features?: string
 }
 
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
@@ -71,6 +72,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     || <iframe
                         title='Sandbox'
                         src={iframeUrl}
+                        allow={props.features}
                         style={{
                             width: '100%',
                             height: '100%',

@@ -63,6 +63,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
       <BodyIframeView
         textInfo={textInfo}
         error={error}
+        features={nextStep.type === 'iframe' ? nextStep.neededFeatures : undefined}
         src={nextStep.url}
         type={nextStep.type}
         onErrorDismissClick={() => setError(undefined)}
