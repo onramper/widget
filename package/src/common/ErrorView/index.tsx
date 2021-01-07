@@ -14,6 +14,7 @@ interface ErrorViewProps {
   maxHeight?: string
   fixedHeight?: boolean
   type?: 'TX' | 'GENERIC' | 'GATEWAYS' | 'RATES'
+  message?: string
 }
 
 const ErrorView: React.FC<ErrorViewProps> = (props) => {
@@ -39,6 +40,7 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
       case 'TX':
         return TX_ERROR
       case 'GATEWAYS':
+      case 'RATES':
         return GATEWAYS_ERROR
       default:
         return TX_ERROR
@@ -55,6 +57,7 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
           {currentError.description && <span className={styles['content-description']}>
             {currentError.description}
           </span>}
+          {props.message && <span>{props.message}</span>}
         </div>
         {
           (currentError.tryAgain || currentError.faqsLink) &&

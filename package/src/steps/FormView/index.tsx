@@ -72,7 +72,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       nextScreen(<Step nextStep={newNextStep} />)
     } catch (error) {
       if (error.fatal) {
-        nextScreen(<ErrorView type="TX" />)
+        nextScreen(<ErrorView type="TX" message={error.message} />)
         return
       }
       const processedError = processError(error, nextStepData)
