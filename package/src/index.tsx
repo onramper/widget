@@ -28,6 +28,7 @@ type OnramperWidgetProps = {
     onlyFiat?: string[]
     className?: string
     country?: string
+    isAddressEditable?: boolean
 }
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
@@ -43,7 +44,8 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
         onlyGateways,
         onlyFiat,
         className = '',
-        country
+        country,
+        isAddressEditable
     } = props
 
     const style = {
@@ -61,6 +63,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                     defaultFiat={defaultFiat}
                     filters={{ onlyCryptos, excludeCryptos, excludeFiat, onlyGateways, onlyFiat }}
                     country={country}
+                    isAddressEditable={isAddressEditable}
                 >
                     <div style={{ flexGrow: 1, display: 'flex' }}>
                         <NavContainer home={<BuyCryptoView />} />

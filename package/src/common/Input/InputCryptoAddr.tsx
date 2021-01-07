@@ -11,10 +11,11 @@ type InputCryptoAddrType = {
     type?: string
     hint?: string
     onHelpClick?: () => void
+    disabled?: boolean
 }
 
 const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((props, ref) => {
-    const { handleInputChange, error, type, hint } = props
+    const { handleInputChange, error, type, hint, disabled = false } = props
     const { collected } = useContext(APIContext)
 
     useEffect(() => {
@@ -33,7 +34,9 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((p
             error={error}
             value={collected.cryptocurrencyAddress ?? ''}
             iconPosition='end'
-            name='cryptocurrencyAddress' onChange={onChange} className={props.className} label={`Your ${collected.selectedCrypto?.name} wallet address`}
+            name='cryptocurrencyAddress' onChange={onChange} className={props.className}
+            label={`Your ${collected.selectedCrypto?.name} wallet address`}
+            disabled={disabled}
         />
     )
 })

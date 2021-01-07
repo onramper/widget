@@ -150,7 +150,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     fields.map((field, i) => {
                         return (
                             (field.name === 'cryptocurrencyAddress' && (
-                                <InputCryptoAddr ref={inputRefs[i].ref} hint={field.hint} type={getInputType(field)} key={i} className={stylesCommon.body__child} handleInputChange={onChange} error={errorObj?.[field.name]} />
+                                <InputCryptoAddr
+                                    ref={inputRefs[i].ref}
+                                    hint={field.hint}
+                                    type={getInputType(field)}
+                                    key={i}
+                                    className={stylesCommon.body__child}
+                                    handleInputChange={onChange}
+                                    error={errorObj?.[field.name]}
+                                    disabled={!collected.isAddressEditable}
+                                />
                             ))
                             || ((field.name === 'verifyCreditCard') && (
                                 <React.Fragment key={i}>

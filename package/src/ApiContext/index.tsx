@@ -40,10 +40,11 @@ interface APIProviderType {
     onlyFiat?: string[]
   }
   country?: string
+  isAddressEditable?: boolean
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
-  const { defaultAmount = 100, defaultAddrs = {}, API_KEY } = props
+  const { defaultAmount = 100, defaultAddrs = {}, API_KEY, isAddressEditable = true } = props
   const defaultFiat = props.defaultFiat?.toUpperCase() || DEFAULT_CURRENCY
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO
   const iniState = {
@@ -51,7 +52,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     collected: {
       ...initialState.collected,
       amount: defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
-      defaultAddrs: Object.entries(defaultAddrs).reduce((acc, [key, value]) => ({ ...acc, [key.toUpperCase()]: value }), {})
+      defaultAddrs: Object.entries(defaultAddrs).reduce((acc, [key, value]) => ({ ...acc, [key.toUpperCase()]: value }), {}),
+      isAddressEditable
     }
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);

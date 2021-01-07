@@ -21,6 +21,7 @@ const excludeFiat = getArrayParam('excludeFiat')
 const onlyGateways = getArrayParam('onlyGateways')
 const onlyFiat = getArrayParam('onlyFiat')
 const country = getParam('country')
+const isAddressEditable = getParam('isAddressEditable', 'true')
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             onlyGateways={onlyGateways}
             onlyFiat={onlyFiat}
             country={country}
+            isAddressEditable={isAddressEditable === 'true'}
           />
         </div>
       </div>

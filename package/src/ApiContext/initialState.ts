@@ -42,7 +42,8 @@ export type CollectedStateType = {
     defaultAddrs: {
         [key: string]: string[]
     }
-    errors?: ErrorObjectType
+    errors?: ErrorObjectType,
+    isAddressEditable?: boolean
     [key: string]: any
 }
 
@@ -98,7 +99,8 @@ export const initialState: StateType = {
         selectedCountry: undefined,
         cryptocurrencyAddress: undefined,
         defaultAddrs: {},
-        errors: undefined
+        errors: undefined,
+        isAddressEditable: true
     },
     data: {
         availableCryptos: [],
