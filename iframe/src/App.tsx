@@ -22,7 +22,8 @@ const onlyGateways = getArrayParam('onlyGateways')
 const onlyFiat = getArrayParam('onlyFiat')
 const country = getParam('country')
 const isAddressEditable = getParam('isAddressEditable', 'true')
-
+const wallets = getWalletsParam()
+console.log(wallets)
 function App() {
   return (
     <>
@@ -32,7 +33,7 @@ function App() {
           <OnramperWidget
             API_KEY={apiKey}
             color={defaultColor}
-            defaultAddrs={addresses}
+            defaultAddrs={wallets || addresses}
             defaultAmount={defaultAmount}
             defaultCrypto={defaultCrypto}
             defaultFiat={defaultFiat}
@@ -65,6 +66,15 @@ function getParam(name: string, defaultValue?: string): string | undefined {
 
 function getArrayParam(paramName: string) {
   return getParam(paramName, undefined)?.split(',').map(code => code.trim())
+}
+
+function getWalletsParam() {
+  return getParam('wallets', undefined)?.split(',').reduce((acc, wallet) => (
+    {
+      ...acc,
+      [wallet.split(':')?.[0]]: wallet.split(':')?.[1]
+    }
+  ), {})
 }
 
 export default App;
