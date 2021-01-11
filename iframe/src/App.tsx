@@ -23,7 +23,7 @@ const onlyFiat = getArrayParam('onlyFiat')
 const country = getParam('country')
 const isAddressEditable = getParam('isAddressEditable', 'true')
 const wallets = getWalletsParam()
-console.log(wallets)
+
 function App() {
   return (
     <>
