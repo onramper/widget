@@ -17,27 +17,27 @@ interface BodyIframeViewType {
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const { textInfo, type, error } = props
     const [autoRedirect, setAutoRedirect] = useState(true)
+    const [iframeUrl, setIframeUrl] = useState(props.src)
 
-    const main = window.document.getElementById('main')
-    const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
-    const iframeUrl = `${props.src}${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
-
-    const redirect = useCallback(() => {
+    const redirect = useCallback(async (url: string) => {
         setAutoRedirect(true)
         //try to open popup
-        const windowObjectReference = window.open(iframeUrl, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
+        const windowObjectReference = window.open(url, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
         //if opened -> all is ok
         if (windowObjectReference) return
         //if not opened -> warn user about popup blocked + ask user for click a button
         setAutoRedirect(false)
-        return undefined
-    }, [iframeUrl])
+    }, [])
 
     useEffect(() => {
+        const main = window.document.getElementById('main')
+        const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
+        const newIframeUrl = `${props.src}${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
+        setIframeUrl(newIframeUrl)
+        
         if (type === 'redirect')
-            redirect()
-
-    }, [iframeUrl, type, redirect])
+            redirect(newIframeUrl)
+    }, [props.src, redirect, type])
 
     return (
         <main className={`${stylesCommon.body} ${props.isFullScreen ? stylesCommon['body--full_screen'] : ''} ${styles.body}`}>
@@ -66,7 +66,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     || ((type === 'redirect' && !autoRedirect) && (
                         <div className={`${styles.center}`}>
                             <span className={`${stylesCommon.body__child} `}>Please, click the button below to finish the process.</span>
-                            <button className={`${stylesCommon.body__child} ${styles['button--redirect']}`} onClick={redirect} >Finish process</button>
+                            <button className={`${stylesCommon.body__child} ${styles['button--redirect']}`} onClick={() => redirect(iframeUrl)} >Finish process</button>
                         </div>
                     ))
                     || <iframe
