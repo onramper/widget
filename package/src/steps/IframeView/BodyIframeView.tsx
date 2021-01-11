@@ -4,6 +4,8 @@ import styles from './styles.module.css'
 
 import InfoBox from '../../common/InfoBox'
 
+import { SANDBOX_HOSTNAME } from '../../ApiContext/api/constants'
+
 interface BodyIframeViewType {
     src: string
     type: string
@@ -13,6 +15,18 @@ interface BodyIframeViewType {
     isFullScreen?: boolean
     features?: string
 }
+
+const getHostname = (href: string) => {
+    const location = document.createElement("a");
+    location.href = href;
+    // IE doesn't Fpopulate all link properties when setting .href with a relative URL,
+    // however .href will return an absolute URL which then can be used on itself
+    // to populate these additional fields.
+    if (location.host === "") {
+        location.href = location.href; // eslint-disable-line no-self-assign
+    }
+    return location.hostname;
+};
 
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const { textInfo, type, error } = props
@@ -31,10 +45,14 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
 
     useEffect(() => {
         const main = window.document.getElementById('main')
-        const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
-        const newIframeUrl = `${props.src}${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
+        let urlTail = ''
+        if (getHostname(props.src) === SANDBOX_HOSTNAME) {
+            const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
+            urlTail = `${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
+        }
+        const newIframeUrl = `${props.src}${urlTail}`
         setIframeUrl(newIframeUrl)
-        
+
         if (type === 'redirect')
             redirect(newIframeUrl)
     }, [props.src, redirect, type])

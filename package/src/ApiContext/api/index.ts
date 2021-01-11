@@ -5,9 +5,7 @@ import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
 import processMoonpayStep, { moonpayUrlRegex } from '@onramper/moonpay-adapter'
 
-const BASE_API = process.env.STAGE === 'prod'
-    ? 'https://api.onramper.com'
-    : 'https://api.onramper.dev';
+import { BASE_API } from './constants'
 
 const headers = new Headers()
 
@@ -30,7 +28,7 @@ const gateways = async (params: GatewaysParams, filter?: Filters): Promise<Gatew
     const gatewaysRes = await fetch(`${BASE_API}/gateways?${urlParams}`, {
         headers,
         credentials: 'include'
-     })
+    })
     const gateways: GatewaysResponse = await processResponse(gatewaysRes)
     return filterGatewaysResponse(gateways, filter ?? {})
 }
