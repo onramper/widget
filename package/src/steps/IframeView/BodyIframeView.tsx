@@ -1,10 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useContext } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
 import InfoBox from '../../common/InfoBox'
 
 import { SANDBOX_HOSTNAME } from '../../ApiContext/api/constants'
+import { APIContext } from '../../ApiContext'
+import { NavContext } from '../../NavContext'
+
+import BuyCryptoView from '../../BuyCryptoView'
+import ButtonAction from '../../common/ButtonAction'
 
 interface BodyIframeViewType {
     src: string
@@ -31,14 +36,44 @@ const getHostname = (href: string) => {
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const { textInfo, type, error } = props
     const [autoRedirect, setAutoRedirect] = useState(true)
+    const [isAGateway, setisAGateway] = useState(false)
     const [iframeUrl, setIframeUrl] = useState(props.src)
+    const [countDown, setCountDown] = useState(3)
+
+    const [userClosedPopup, setUserClosedPopup] = useState(false)
+
+    const { collected, apiInterface } = useContext(APIContext)
+    const { selectedGateway } = collected
+    const [isRestartCalled, setIsRestartCalled] = useState(false)
+
+    const { onlyScreen } = useContext(NavContext)
+
+    const restartWidget = () => {
+        apiInterface.clearErrors()
+        setIsRestartCalled(true)
+    }
+
+    useEffect(() => {
+        if (isRestartCalled && !collected.errors) {
+            onlyScreen(<BuyCryptoView />)
+            setIsRestartCalled(false)
+        }
+    }, [collected.errors, isRestartCalled, onlyScreen])
 
     const redirect = useCallback(async (url: string) => {
         setAutoRedirect(true)
         //try to open popup
         const windowObjectReference = window.open(url, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
         //if opened -> all is ok
-        if (windowObjectReference) return
+        if (windowObjectReference) {
+            const checkIfClosed = setInterval(() => {
+                if (windowObjectReference.closed) {
+                    setUserClosedPopup(true)
+                    clearInterval(checkIfClosed)
+                }
+            }, 250)
+            return
+        }
         //if not opened -> warn user about popup blocked + ask user for click a button
         setAutoRedirect(false)
     }, [])
@@ -46,16 +81,32 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     useEffect(() => {
         const main = window.document.getElementById('main')
         let urlTail = ''
-        if (getHostname(props.src) === SANDBOX_HOSTNAME) {
+        const hostname = getHostname(props.src)
+        if (hostname === SANDBOX_HOSTNAME) {
             const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
             urlTail = `${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
         }
+        else if (selectedGateway?.nextStep?.type === 'redirect' && hostname === getHostname(selectedGateway?.nextStep.url)) {
+            setisAGateway(true)
+        }
         const newIframeUrl = `${props.src}${urlTail}`
         setIframeUrl(newIframeUrl)
+    }, [props.src, redirect, type, selectedGateway])
 
-        if (type === 'redirect')
-            redirect(newIframeUrl)
-    }, [props.src, redirect, type])
+    useEffect(() => {
+        if (countDown <= 0) {
+            if (type === 'redirect')
+                redirect(iframeUrl)
+            return
+        }
+        let countDownId: ReturnType<typeof setTimeout>
+        if (isAGateway) {
+            countDownId = setTimeout(() => {
+                setCountDown(old => --old)
+            }, 1000);
+        }
+        return () => clearTimeout(countDownId);
+    }, [isAGateway, countDown, iframeUrl, redirect, type])
 
     return (
         <main className={`${stylesCommon.body} ${props.isFullScreen ? stylesCommon['body--full_screen'] : ''} ${styles.body}`}>
@@ -75,10 +126,46 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             }
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 {
-                    ((type === 'redirect' && autoRedirect) && (
+                    ((isAGateway && type === 'redirect') && (
+                        <div className={`${styles.center}`}>
+                            <div className={styles.block}>
+                                {
+                                    countDown <= 0 ?
+                                        <>
+                                            <span>You have been redirected to finish the purchase with {selectedGateway?.identifier}.</span>
+                                            <span style={{ width: '50%' }}>
+                                                If nothing happened, please, click the button below.
+                                            </span>
+                                            <span style={{ width: '50%', marginBottom: '1rem' }}>
+                                                <ButtonAction text="Complete purchase" size='small' onClick={() => redirect(iframeUrl)} />
+                                            </span>
+                                        </>
+                                        :
+                                        <>
+                                            <span>You will be redirected to finish the purchase with {selectedGateway?.identifier}.</span>
+                                            <span><div>Redirecting you in</div><div style={{ fontSize: '1.5rem' }}>{countDown}</div></span>
+                                        </>
+                                }
+                            </div>
+                            {
+                                userClosedPopup && (
+                                    <div className={styles.block} style={{ fontSize: '0.75rem' }}>
+                                        <hr className={styles.divisor}></hr>
+                                        <span>
+                                            <div>Or, if you already finished the transaction:</div>
+                                        </span>
+                                        <span>
+                                            <ButtonAction text="Buy more crypto" size='small' onClick={restartWidget} />
+                                        </span>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    ))
+                    || ((type === 'redirect' && autoRedirect) && (
                         <div className={`${styles.center}`}>
                             <span>Redirecting you to finish the process...</span>
-                            {/* <span>A new window should be opened, if not, <span className={stylesCommon['text--link']} onClick={redirect}>click here</span>.</span> */}
+                            <span>A new window should be opened, if not, <span className={stylesCommon['text--link']} onClick={() => redirect(iframeUrl)} >click here</span>.</span>
                         </div>
                     ))
                     || ((type === 'redirect' && !autoRedirect) && (

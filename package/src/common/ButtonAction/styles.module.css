@@ -10,7 +10,7 @@
     border-color: #DEDEDE;
     padding: 0.78rem;
     color: white;
-    font-size: 1.25rem;
+    font-size: 1.25em;
     width: 100%;
     margin-top: auto;
 }
@@ -21,6 +21,6 @@
 }
 
 .button-action--small {
-    font-size: 1rem;
-    padding: 0.625rem 1rem;
+    font-size: 1em;
+    padding: 0.625em 1em;
 }

@@ -7,3 +7,5 @@ export const BASE_API = process.env.STAGE === 'prod'
 export const SANDBOX_HOSTNAME = process.env.STAGE === 'prod'
     ? 'sandbox.onramper.com'
     : 'sandbox.onramper.dev';
+
+export const MERCURYO_HOSTNAME = 'exchange.mercuryo.io'

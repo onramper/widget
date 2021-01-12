@@ -5,6 +5,16 @@
     align-items: center;
     text-align: center;
     font-size: 1rem;
+    margin: auto var(--padding-rl)
+}
+
+.block > span+span {
+    margin: auto;
+    margin-top: 1rem;
+}
+
+.block > span {
+    display: block;
 }
 
 .button--redirect {
@@ -23,4 +33,13 @@
 
 .body__child:first-child {
     margin-top: var(--body-space-childs);
+}
+
+.divisor {
+    border: 0;
+    width: 8rem;
+    border-top: 2px solid whitesmoke;
+    border-radius: 5px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
