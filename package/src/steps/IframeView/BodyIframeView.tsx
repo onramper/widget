@@ -94,7 +94,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     }, [props.src, redirect, type, selectedGateway])
 
     useEffect(() => {
-        if (countDown <= 0) {
+        if (countDown <= 0 || !isAGateway) {
             if (type === 'redirect')
                 redirect(iframeUrl)
             return
@@ -165,13 +165,18 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     || ((type === 'redirect' && autoRedirect) && (
                         <div className={`${styles.center}`}>
                             <span>Redirecting you to finish the process...</span>
-                            <span>A new window should be opened, if not, <span className={stylesCommon['text--link']} onClick={() => redirect(iframeUrl)} >click here</span>.</span>
+                            <span>A new window should be opened, if not, click the button below to finish the process.</span>
+                            <span style={{ width: '40%' }}>
+                                <ButtonAction text="Finish process" size='small' onClick={() => redirect(iframeUrl)} />
+                            </span>
                         </div>
                     ))
                     || ((type === 'redirect' && !autoRedirect) && (
                         <div className={`${styles.center}`}>
                             <span className={`${stylesCommon.body__child} `}>Please, click the button below to finish the process.</span>
-                            <button className={`${stylesCommon.body__child} ${styles['button--redirect']}`} onClick={() => redirect(iframeUrl)} >Finish process</button>
+                            <span style={{ width: '30%' }}>
+                                <ButtonAction text="Finish process" size='small' onClick={() => redirect(iframeUrl)} />
+                            </span>
                         </div>
                     ))
                     || <iframe

@@ -5,10 +5,12 @@
     align-items: center;
     text-align: center;
     font-size: 1rem;
-    margin: auto var(--padding-rl)
+    margin: auto var(--padding-rl);
+    width: 100%;
 }
 
-.block > span+span {
+.block > span+span,
+.center > span+span {
     margin: auto;
     margin-top: 1rem;
 }
