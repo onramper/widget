@@ -43,7 +43,7 @@ export const API_ERROR = (message: string, cb: () => any): JSX.Element => {
             <span className={styles['content-title']}>Couldn&apos;t connect😕</span>
             <span className={styles['content-description']}>
                 There are problems trying to connect to the server.<br />
-                Please, check your internet settings and try again.<br />
+                Please, try again in some minutes.<br />
                 {message}<br />
                 For more information read our FAQs or contact us.
             </span>

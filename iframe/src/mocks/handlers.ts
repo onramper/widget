@@ -30,7 +30,16 @@ export const handlers = [
             ctx.json(noGatewaysAllParams)
         ) */
         //Failed to fetch
-        throw new Error("Failed to fetch")
+        /* throw new Error("Failed to fetch") */
+        //Server error
+        /* return res(
+            ctx.status(500)
+        ) */
+        //Unknown response error
+        return res(
+            ctx.status(200),
+            ctx.json({})
+        )
 
         /* return res(
             ctx.status(403),

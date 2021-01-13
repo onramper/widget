@@ -59,7 +59,7 @@ interface ExecuteStepParams {
     [key: string]: any
 }
 
-interface FetchResponse {
+interface FetchResponse { //should be replaced by a complete fetch type
     ok: boolean,
     json: () => Promise<any>,
     text: () => Promise<string>
@@ -100,7 +100,11 @@ const processResponse = async (response: FetchResponse): Promise<any> => {
         try {
             errorResponse = await response.json()
         } catch (error) {
-            throw new NextStepError({ message: await response.text() })
+            try {
+                throw new NextStepError({ message: await response.text() })
+            } catch (error) {
+                throw new NextStepError({ message: "Error parsing the response" })
+            }
         }
         throw new NextStepError(errorResponse)
     }
@@ -121,7 +125,7 @@ class NextStepError extends Error {
             this.message = error.message
         }
         else
-            this.message = error.message
+            this.message = error.message ?? error
     }
 }
 
