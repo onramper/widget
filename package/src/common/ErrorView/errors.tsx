@@ -45,4 +45,13 @@ const CountryNotSupportedError = (country?: string): ErrorType => {
     }
 }
 
+export const DISABLED_GATEWAYS: ErrorType = {
+    title: "It's not you...",
+    description: <>Looks like this Onramper integration has disabled some of the available gateways in this area.<br />
+    For more information read our FAQs or contact us.</>,
+    illustration: ErrorIllustration,
+    tryAgain: false,
+    faqsLink: true
+}
+
 export { TX_ERROR, GATEWAYS_ERROR, CountryNotSupportedError }

@@ -98,10 +98,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       const actualCountry = props.country || country
       // REQUEST AVAILABLE GATEWAYS
+      let rawResponseGateways: GatewaysResponse
       let responseGateways: GatewaysResponse
       try {
         clearErrors()
-        responseGateways = await API.gateways({ country: actualCountry, includeIcons: true, includeDefaultAmounts: true }, props.filters)
+        rawResponseGateways = await API.gateways({ country: actualCountry, includeIcons: true, includeDefaultAmounts: true })
+        responseGateways = API.filterGatewaysResponse(rawResponseGateways, props.filters)
       } catch (error) {
         return processErrors({
           GATEWAYS: {
@@ -112,6 +114,14 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }
       handleInputChange('selectedCountry', actualCountry || responseGateways.localization.country || DEFAULT_COUNTRY)
       if (responseGateways.gateways.length <= 0) {
+        if (rawResponseGateways.gateways.length > 0) {
+          return processErrors({
+            GATEWAYS: {
+              type: "DISABLED_GATEWAYS",
+              message: "Gateways disabled by filters."
+            }
+          })
+        }
         return processErrors({
           GATEWAYS: {
             type: "NO_GATEWAYS",
@@ -330,9 +340,22 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // IF THE CATCHED EXCEPTION WAS THROWN BY OUR ABORT CONTROLLER THEN RETURN EMPTY ERROR
       // ELSE, CLEAR THE ABORT CONTROLLER AND RETURN ERROR
       let responseRate: RateResponse
+      let rawResponseRate: RateResponse
       try {
         clearErrors()
-        responseRate = await API.rate(inCurrency, outCurrency, actualAmount, actualPaymentMethod, { country: state.collected.selectedCountry, amountInCrypto: state.collected.amountInCrypto, includeIcons: true }, props.filters?.onlyGateways, signal)
+        rawResponseRate = await API.rate(
+          inCurrency,
+          outCurrency,
+          actualAmount,
+          actualPaymentMethod,
+          {
+            country: state.collected.selectedCountry,
+            amountInCrypto: state.collected.amountInCrypto,
+            includeIcons: true
+          },
+          signal
+        )
+        responseRate = API.filterRatesResponse(rawResponseRate, props.filters?.onlyGateways)
       } catch (error) {
         if (error.name === 'AbortError')
           return {}

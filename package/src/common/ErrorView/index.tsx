@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './styles.module.css'
 import stylesCommon from '../../styles.module.css'
-import { TX_ERROR, CountryNotSupportedError } from './errors'
+import { TX_ERROR, CountryNotSupportedError, DISABLED_GATEWAYS } from './errors'
 
 import Header from '../../common/Header'
 import ButtonAction from '../ButtonAction'
@@ -13,7 +13,7 @@ interface ErrorViewProps {
   buttonText?: string
   maxHeight?: string
   fixedHeight?: boolean
-  type?: 'TX' | 'GENERIC' | 'GATEWAYS' | 'RATES'
+  type?: 'TX' | 'GENERIC' | 'GATEWAYS' | 'RATES' | "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_CRYPTOS" | "NO_FIAT" | "NO_PAYMENT_METHODS"
   message?: string
 }
 
@@ -39,7 +39,10 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
     switch (props.type) {
       case 'TX':
         return TX_ERROR
-      case 'GATEWAYS':
+      case 'NO_GATEWAYS':
+        return CountryNotSupportedError(collected.selectedCountry)
+      case 'DISABLED_GATEWAYS':
+        return DISABLED_GATEWAYS
       case 'RATES':
         return CountryNotSupportedError(collected.selectedCountry)
       default:

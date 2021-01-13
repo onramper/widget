@@ -23,14 +23,14 @@ interface GatewaysParams {
     [key: string]: any
 }
 
-const gateways = async (params: GatewaysParams, filter?: Filters): Promise<GatewaysResponse> => {
+const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
     const gatewaysRes = await fetch(`${BASE_API}/gateways?${urlParams}`, {
         headers,
         credentials: 'include'
     })
     const gateways: GatewaysResponse = await processResponse(gatewaysRes)
-    return filterGatewaysResponse(gateways, filter ?? {})
+    return gateways
 }
 
 interface RateParams {
@@ -39,7 +39,7 @@ interface RateParams {
     [key: string]: any
 }
 
-const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, onlygateways?: string[], signal?: AbortSignal): Promise<RateResponse> => {
+const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
     const ratesRes = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, {
         headers,
@@ -47,7 +47,7 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
         credentials: 'include'
     })
     const rates: RateResponse = await processResponse(ratesRes)
-    return filterRatesResponse(rates, onlygateways)
+    return rates
 }
 
 /**
@@ -142,7 +142,10 @@ interface Filters {
     onlyGateways?: string[]
     onlyFiat?: string[]
 }
-const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, { onlyCryptos, excludeCryptos, excludeFiat, onlyGateways, onlyFiat }: Filters): GatewaysResponse => {
+const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, filters?: Filters): GatewaysResponse => {
+    if (!filters) return gatewaysResponse
+
+    const { onlyCryptos, excludeCryptos, excludeFiat, onlyGateways, onlyFiat } = filters
     const _onlyCryptos = onlyCryptos?.map(code => code.toUpperCase())
     const _excludeCryptos = excludeCryptos?.map(code => code.toUpperCase())
     const _onlyFiat = onlyFiat?.map(code => code.toUpperCase())
@@ -189,5 +192,7 @@ export {
     gateways,
     rate,
     executeStep,
+    filterGatewaysResponse,
+    filterRatesResponse,
     NextStepError
 }
