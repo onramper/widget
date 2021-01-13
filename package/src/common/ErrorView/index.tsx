@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './styles.module.css'
 import stylesCommon from '../../styles.module.css'
-import { TX_ERROR, GATEWAYS_ERROR } from './errors'
+import { TX_ERROR, CountryNotSupportedError } from './errors'
 
 import Header from '../../common/Header'
 import ButtonAction from '../ButtonAction'
@@ -41,7 +41,7 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
         return TX_ERROR
       case 'GATEWAYS':
       case 'RATES':
-        return GATEWAYS_ERROR
+        return CountryNotSupportedError(collected.selectedCountry)
       default:
         return TX_ERROR
     }

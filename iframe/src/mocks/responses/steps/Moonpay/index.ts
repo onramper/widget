@@ -44,7 +44,7 @@ const firstStep = {
 }
 
 const emailStep = {
-    "type": "form",
+    "type": "redirect",
     "url": `https://api.onramper.dev/transaction/Moonpay/verifyEmail/${encodeToken(["", ""])}`,
     "data": [
         {
@@ -62,7 +62,7 @@ const emailStep = {
 }
 
 const verifyEmailStep = {
-    "type": "form",
+    "type": "redirect",
     "url": "https://api.onramper.dev/transaction/Moonpay/identity/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
     "data": [
         {

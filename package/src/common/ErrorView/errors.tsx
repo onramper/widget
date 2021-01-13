@@ -1,5 +1,6 @@
 import React from 'react'
 import { ReactComponent as ErrorIllustration } from '../../icons/error.svg'
+import countryNames from '../../ApiContext/utils/contryNames'
 
 interface ErrorType {
     title: string;
@@ -22,8 +23,8 @@ const TX_ERROR: ErrorType = {
 }
 
 const GATEWAYS_ERROR: ErrorType = {
-    title: "Unexplored area",
-    description: <>Your country is not yet supported by Onramper.<br/>
+    title: "Country not supported",
+    description: <>Your country is not yet supported by Onramper.<br />
     We&apos;re working hard to make it available for you as soon as possible!
     For more information read our FAQs or contact us.</>,
     illustration: ErrorIllustration,
@@ -31,4 +32,17 @@ const GATEWAYS_ERROR: ErrorType = {
     faqsLink: true
 }
 
-export { TX_ERROR, GATEWAYS_ERROR }
+const CountryNotSupportedError = (country?: string): ErrorType => {
+    const c = countryNames[country?.toUpperCase() ?? ''] ?? country?.toUpperCase() 
+    return {
+        title: "Country not supported",
+        description: <>{c} is not yet supported by Onramper.<br />
+        We&apos;re working hard to make it available for you as soon as possible!
+        For more information read our FAQs or contact us.</>,
+        illustration: ErrorIllustration,
+        tryAgain: false,
+        faqsLink: true
+    }
+}
+
+export { TX_ERROR, GATEWAYS_ERROR, CountryNotSupportedError }

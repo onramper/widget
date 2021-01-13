@@ -1,5 +1,5 @@
 import { rest } from 'msw'
-//import { gatewaysAllParams, noGatewaysAllParams } from './responses/gateways'
+import { gatewaysAllParams, noGatewaysAllParams } from './responses/gateways'
 import ratesAllParams from './responses/rates'
 import CCPro from './responses/steps/Cryptocoin.pro'
 import Moonpay from './responses/steps/Moonpay'
@@ -11,27 +11,30 @@ const BASE_API = 'https://api.onramper.dev'
 let moonpayKYCStepsCount = 0
 
 export const handlers = [
-    /* rest.get(`${BASE_API}/gateways`, (req, res, ctx) => {
-        let response = gatewaysAllParams
+    rest.get(`${BASE_API}/gateways`, (req, res, ctx) => {
+        let response = noGatewaysAllParams
         if (req.url.searchParams.get('includeIcons') !== 'true')
             delete response.icons
         if (req.url.searchParams.get('includeDefaultAmounts') !== 'true')
             delete response.defaultAmounts
 
-        const RESPONSE_CODE: number = 200
-        if (RESPONSE_CODE === 200)
-            return res(
-                // Respond with a 200 status code
-                ctx.status(200),
-                ctx.json(response)
-            )
-        else if (RESPONSE_CODE === 403)
-            return res(
-                // Respond with a 200 status code
-                ctx.status(403),
-                ctx.json({ message: "'Authorization' header was no provided." })
-            )
-    }), */
+
+        //Sucess response
+        return res(
+            ctx.status(200),
+            ctx.json(gatewaysAllParams)
+        )
+        //Unsupported country
+        /* return res(
+            ctx.status(200),
+            ctx.json(noGatewaysAllParams)
+        ) */
+
+        /* return res(
+            ctx.status(403),
+            ctx.json({ message: "'Authorization' header was no provided." })
+        ) */
+    }),
     rest.get(`${BASE_API}/rate/*`, (req, res, ctx) => {
         const RESPONSE_CODE: number = 200
         if (RESPONSE_CODE === 200)

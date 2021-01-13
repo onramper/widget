@@ -1412,7 +1412,7 @@ const gatewaysAllParams: GatewaysResponse = {
 const noGatewaysAllParams: GatewaysResponse = {
     "gateways": [],
     "localization": {
-        "country": "bzrp",
+        "country": "es",
         "state": null,
         "currency": "EUR"
     },

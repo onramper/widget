@@ -110,6 +110,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           }
         })
       }
+      handleInputChange('selectedCountry', actualCountry || responseGateways.localization.country || DEFAULT_COUNTRY)
       if (responseGateways.gateways.length <= 0) {
         return processErrors({
           GATEWAYS: {
@@ -153,7 +154,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // save to state.collected
       handleInputChange('selectedCrypto', selectedCrypto)
-      handleInputChange('selectedCountry', actualCountry || responseGateways.localization.country || DEFAULT_COUNTRY)
       handleInputChange('state', responseGateways.localization.state ?? DEFAULT_STATE)
       handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country?.toUpperCase() ?? DEFAULT_COUNTRY]?.phoneCode)
       // save to state.date
