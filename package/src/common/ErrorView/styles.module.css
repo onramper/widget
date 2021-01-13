@@ -19,11 +19,11 @@
     align-items: center;
 }
 
-.body-content > * {
+.body-content>* {
     margin-top: .75rem;
 }
 
-.body-content > :first-child {
+.body-content> :first-child {
     margin-top: 0rem;
 }
 
@@ -33,6 +33,7 @@
 
 .content-description {
     font-size: 0.875rem;
+    margin-top: 1rem;
 }
 
 .content-link {

@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './styles.module.css'
 import stylesCommon from '../../styles.module.css'
-import { TX_ERROR, CountryNotSupportedError, DISABLED_GATEWAYS } from './errors'
+import { COUNTRY_NOT_SUPPORTED, DISABLED_GATEWAYS, API_ERROR } from './errors'
 
 import Header from '../../common/Header'
-import ButtonAction from '../ButtonAction'
 import { NavContext } from '../../NavContext'
 import BuyCryptoView from '../../BuyCryptoView'
 import { APIContext } from '../../ApiContext';
@@ -35,18 +34,17 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
     }
   }, [collected.errors, isRestartCalled, onlyScreen])
 
-  const currentError = (() => {
+  const CurrentError = (() => {
     switch (props.type) {
-      case 'TX':
-        return TX_ERROR
       case 'NO_GATEWAYS':
-        return CountryNotSupportedError(collected.selectedCountry)
+        return COUNTRY_NOT_SUPPORTED(collected.selectedCountry)
       case 'DISABLED_GATEWAYS':
         return DISABLED_GATEWAYS
+      case 'API':
+        return API_ERROR(props.message ?? '', restartWidget)
       case 'RATES':
-        return CountryNotSupportedError(collected.selectedCountry)
-      default:
-        return TX_ERROR
+        default:
+        return COUNTRY_NOT_SUPPORTED(collected.selectedCountry)
     }
   })()
 
@@ -54,21 +52,7 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
     <div className={stylesCommon.view}>
       <Header title="" noSeparator />
       <div className={`${stylesCommon.body} ${styles.body}`}>
-        <div className={styles['body-content']}>
-          <currentError.illustration className={styles['content-image']} />
-          {currentError.title && <span className={styles['content-title']}>{currentError.title}</span>}
-          {currentError.description && <span className={styles['content-description']}>
-            {currentError.description}
-          </span>}
-          {props.message && <span>{props.message}</span>}
-        </div>
-        {
-          (currentError.tryAgain || currentError.faqsLink) &&
-          <div className={styles['body-content']}>
-            {currentError.tryAgain && <ButtonAction text="Try another gateway" size='small' onClick={restartWidget} />}
-            {currentError.faqsLink && < a className={styles['content-link']} target='_blank' rel="noreferrer" href="https://onramper.com/FAQ/">Read our FAQs</a>}
-          </div>
-        }
+        {CurrentError}
       </div>
     </div >
   );

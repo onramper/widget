@@ -37,7 +37,7 @@ const BuyCryptoView: React.FC = () => {
   //listening to errors sent by APIContext
   useEffect(() => {
     if (errors?.GATEWAYS)
-      nextScreen(<ErrorView type={errors?.GATEWAYS.type} />)
+      nextScreen(<ErrorView type={errors?.GATEWAYS.type} message={errors?.GATEWAYS.message} />)
     else if (errors?.RATE)
       if (errors.RATE.type === 'API')
         nextScreen(<ErrorView type="RATES" />)

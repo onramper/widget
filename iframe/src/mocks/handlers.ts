@@ -20,15 +20,17 @@ export const handlers = [
 
 
         //Sucess response
-        return res(
+        /* eturn res(
             ctx.status(200),
             ctx.json(gatewaysAllParams)
-        )
+        ) */
         //Unsupported country
         /* return res(
             ctx.status(200),
             ctx.json(noGatewaysAllParams)
         ) */
+        //Failed to fetch
+        throw new Error("Failed to fetch")
 
         /* return res(
             ctx.status(403),
