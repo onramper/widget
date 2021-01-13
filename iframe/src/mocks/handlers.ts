@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 import { gatewaysAllParams, noGatewaysAllParams } from './responses/gateways'
-import ratesAllParams from './responses/rates'
+import { ratesAllParams, ratesAllUnavailable } from './responses/rates'
 import CCPro from './responses/steps/Cryptocoin.pro'
 import Moonpay from './responses/steps/Moonpay'
 import Wyre from './responses/steps/Wyre'
@@ -12,18 +12,18 @@ let moonpayKYCStepsCount = 0
 
 export const handlers = [
     rest.get(`${BASE_API}/gateways`, (req, res, ctx) => {
-        let response = noGatewaysAllParams
+        /* let response = noGatewaysAllParams
         if (req.url.searchParams.get('includeIcons') !== 'true')
             delete response.icons
         if (req.url.searchParams.get('includeDefaultAmounts') !== 'true')
-            delete response.defaultAmounts
+            delete response.defaultAmounts */
 
 
         //Sucess response
-        /* eturn res(
+        return res(
             ctx.status(200),
             ctx.json(gatewaysAllParams)
-        ) */
+        )
         //Unsupported country
         /* return res(
             ctx.status(200),
@@ -36,10 +36,10 @@ export const handlers = [
             ctx.status(500)
         ) */
         //Unknown response error
-        return res(
+        /* return res(
             ctx.status(200),
             ctx.json({})
-        )
+        ) */
 
         /* return res(
             ctx.status(403),
@@ -47,13 +47,16 @@ export const handlers = [
         ) */
     }),
     rest.get(`${BASE_API}/rate/*`, (req, res, ctx) => {
-        const RESPONSE_CODE: number = 200
-        if (RESPONSE_CODE === 200)
-            return res(
-                // Respond with a 200 status code
-                ctx.status(200),
-                ctx.json(ratesAllParams)
-            )
+        //Successful response
+        /* return res(
+            ctx.status(200),
+            ctx.json(ratesAllParams)
+        ) */
+        //Unavailable rates response
+        return res(
+            ctx.status(200),
+            ctx.json(ratesAllUnavailable)
+        )
     }),
     rest.post(`${BASE_API}/transaction/*`, async (req, res, ctx) => {
         const gateway = req.url.pathname.split('/')[2]

@@ -431,7 +431,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           return processErrors({
             RATE: {
               type: "OTHER",
-              message: "No gateways availables at this moment, try again in some minutes."
+              message: "No gateways connected at this moment, try again in some minutes."
             }
           })
         }

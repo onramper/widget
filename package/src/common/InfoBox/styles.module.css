@@ -1,6 +1,8 @@
 .infobox {
     --padding-rl: 1.25rem;
     --padding-tb: 0.75rem;
+    --color-border: #006eff;
+    --color-background: #e6f4ff;
     margin: 0;
     padding: var(--padding-tb) var(--padding-rl);
     font-size: 0.75rem;
@@ -16,8 +18,9 @@
 }
 
 .infobox--notification {
-    background-color: #82b8ff;
-    color: white;
+    border-left: 5px solid var(--color-border);
+    background-color: var(--color-background);
+    color: var(--color-border);
 }
 
 .infobox--error {
