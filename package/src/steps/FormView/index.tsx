@@ -3,7 +3,7 @@ import Header from '../../common/Header'
 import BodyForm from './BodyFormView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
-import ErrorView from '../../common/ErrorView'
+/* import ErrorView from '../../common/ErrorView' */
 
 import { APIContext, NextStep } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
@@ -18,7 +18,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   const [isFilled, setIsFilled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
-  const [errorObj, setErrorObj] = useState<{ [key: string]: string }>()
+  const [errorObj, setErrorObj] = useState<{ [key: string]: string | undefined }>()
   const [title, setTitle] = useState('Purchase form')
   const [infoMsg, setInfoMsg] = useState('')
 
@@ -71,12 +71,12 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       const newNextStep = await apiInterface.executeStep(nextStep, params);
       nextScreen(<Step nextStep={newNextStep} />)
     } catch (error) {
-      if (error.fatal) {
-        nextScreen(<ErrorView type="TX" message={error.message} />)
-        return
-      }
       const processedError = processError(error, nextStepData)
-      if (processedError.field)
+      if (error.fatal) {
+        //nextScreen(<ErrorView type="TX" message={error.message} />)
+        setErrorObj({ FATAL: error.message })
+      }
+      else if (processedError.field)
         setErrorObj({ [processedError.field]: processedError.message })
       else if (processedError.fields)
         setErrorObj(processedError.fields.reduce((acc, actual) => { return ({ ...acc, [actual.field]: actual.message }) }, {}))
@@ -104,7 +104,10 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
         errorMsg={errorMsg}
         infoMsg={infoMsg}
         isFilled={isFilled}
-        onErrorDismissClick={() => setErrorMsg(undefined)}
+        onErrorDismissClick={(field?: string) => {
+          if (field && errorObj) setErrorObj(old => ({ ...old, [field]: undefined }))
+          else setErrorMsg(undefined)
+        }}
         errorObj={errorObj}
       />
     </div>

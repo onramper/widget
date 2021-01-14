@@ -43,8 +43,8 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
       case 'API':
         return API_ERROR(props.message ?? '', restartWidget)
       case 'RATES':
-        default:
-        return COUNTRY_NOT_SUPPORTED(collected.selectedCountry)
+      default:
+        return API_ERROR(props.message ?? '', restartWidget)
     }
   })()
 

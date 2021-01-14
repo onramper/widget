@@ -11,6 +11,7 @@ type InfoBoxType = {
     className?: string
     onActionClick?: () => void
     actionText?: string
+    message?: string
 }
 
 const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBoxType>>((props, ref) => {
@@ -56,16 +57,31 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
 
             }}
             unmountOnExit={true} >
-            <div style={style} ref={defaultRef} className={`${styles.infobox} ${styles[classBoxType]} ${className}`}>
-                <span className={styles.text}>
-                    {props.children}
-                </span>
+            <div style={style} ref={defaultRef} className={`${styles.infobox} ${!props.children ? styles['infobox-simple'] : ''} ${styles[classBoxType]} ${className}`}>
                 {
-                    props.onActionClick &&
-                    <span style={{ fontSize: '0.7rem', paddingLeft: '2rem' }}>
-                        <ButtonAction className={styles['button-action']} size='small' text={actionText} onClick={props.onActionClick} />
-                    </span>
+                    props.message && (
+                        <>
+                            <span className={styles.text}>
+                                {props.message}
+                            </span>
+                            <br />
+                        </>
+                    )
                 }
+                <div className={`${styles['child-node']} ${!props.children ? styles['child-node-simple'] : ''}`} >
+                    {
+                        props.children &&
+                        <span className={styles.text}>
+                            {props.children}
+                        </span>
+                    }
+                    {
+                        props.onActionClick &&
+                        <span style={{ fontSize: '0.7rem', marginRight: canBeDismissed ? '0.75rem' : 'unset' }}>
+                            <ButtonAction className={`${styles['button-action']}`} size='small' text={actionText} onClick={props.onActionClick} />
+                        </span>
+                    }
+                </div>
                 {canBeDismissed && <span className={styles['close-button']} onClick={onDismissClick} >✖</span>}
             </div>
         </CSSTransition >

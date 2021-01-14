@@ -4,7 +4,7 @@ import InputText from '../../../common/Input/InputText'
 
 type CreditCardInputType = {
     handleInputChange: (name: string, value: any) => void
-    errorObj?: { [key: string]: string }
+    errorObj?: { [key: string]: string | undefined }
     ccNumberValue?: string
     ccMonthValue?: string
     ccYearValue?: string

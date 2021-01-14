@@ -22,6 +22,8 @@ import usStates from '../../ApiContext/utils/usStates'
 
 import { scrollTo } from '../../utils'
 import { GroupFieldsController } from './utils'
+import BuyCryptoView from '../../BuyCryptoView'
+import ChooseGatewayView from '../../ChooseGatewayView'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -32,23 +34,38 @@ type BodyFormViewType = {
     fields: StepDataItems
     isFilled?: boolean
     isLoading?: boolean
-    errorObj?: { [key: string]: string }
+    errorObj?: { [key: string]: string | undefined }
     errorMsg?: string
     infoMsg?: string
     inputName?: string
-    onErrorDismissClick: () => void
+    onErrorDismissClick: (field?: string) => void
 }
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { handleInputChange, onActionButton, fields = [] } = props
-    const { collected } = useContext(APIContext);
-    const { backScreen, nextScreen } = useContext(NavContext)
+    const { collected, apiInterface } = useContext(APIContext);
+    const { backScreen, nextScreen, onlyScreen } = useContext(NavContext)
     const { isFilled = false, isLoading = false, errorObj, errorMsg, infoMsg } = props
+
+    const [isRestartCalled, setIsRestartCalled] = useState(false)
+
+    const restartToAnotherGateway = () => {
+        apiInterface.clearErrors()
+        setIsRestartCalled(true)
+    }
+
+    useEffect(() => {
+        if (isRestartCalled && !collected.errors) {
+            onlyScreen(<BuyCryptoView />)
+            nextScreen(<ChooseGatewayView />)
+            setIsRestartCalled(false)
+        }
+    }, [collected.errors, isRestartCalled, onlyScreen, nextScreen])
 
     const formContainer = useRef<HTMLDivElement>(null);
     const generalErrorRef = useRef<HTMLDivElement>(null);
     const inputRefs = useMemo(() => {
-        return fields.map(field => ({
+        return [...fields, { name: 'FATAL' }].map(field => ({
             name: field.name,
             ref: React.createRef<HTMLDivElement>()
         }))
@@ -143,8 +160,25 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 <InfoBox in={!!infoMsg} type='info' className={`${stylesCommon.body__child}`} >
                     {infoMsg}
                 </InfoBox>
-                <InfoBox ref={generalErrorRef} in={!!errorMsg} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} className={`${stylesCommon.body__child}`} >
+                <InfoBox ref={generalErrorRef} in={!!errorMsg} type='error' canBeDismissed onDismissClick={() => props.onErrorDismissClick()} className={`${stylesCommon.body__child}`} >
                     {errorMsg}
+                </InfoBox>
+                <InfoBox
+                    ref={inputRefs[inputRefs.length - 1].ref}
+                    in={!!errorObj?.['FATAL']}
+                    type='error'
+                    message={errorObj?.['FATAL']}
+                    className={`${stylesCommon.body__child}`}
+                    actionText="Try another gateway"
+                    onActionClick={restartToAnotherGateway}
+                    onDismissClick={() => props.onErrorDismissClick('FATAL')}
+                    canBeDismissed
+                >
+                    <span>{"Posible solutions:"}</span><br />
+                    <span>· Use a differrent credit card.</span><br />
+                    <span>· If you didn't use your real identity, start the process again providing it.</span><br />
+                    <span>· Try another gateway.</span><br />
+                    <span>· Fill out our help form.</span>
                 </InfoBox>
                 {
                     fields.map((field, i) => {
@@ -249,7 +283,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                     <PickView
                                                         title={'Country code'}
                                                         name={'phoneCountryCode'}
-                                                        onItemClick={(name, index, item) => {
+                                                        onItemClick={(name, _, item) => {
                                                             onChange(name, +item.name)
                                                             onChange('country', item.id.toLowerCase())
                                                             backScreen()
