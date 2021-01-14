@@ -59,7 +59,7 @@ export type ErrorObjectType = {
     }
 } | undefined
 
-export type TypesOfRateError = 'API' | 'NO_RATES' | 'MIN' | 'MAX' | 'UNREACHABLE' | 'OTHER'
+export type TypesOfRateError = 'API' | 'NO_RATES' | 'MIN' | 'MAX' | 'UNREACHABLE' | 'OTHER' | 'ALL_UNAVAILABLE'
 
 export type DataStateType = {
     availableCryptos: ItemType[]

@@ -75,9 +75,13 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     return (
         <main className={stylesCommon.body}>
             <InfoBox
+                in={collected.errors?.RATE?.type === 'OTHER'} type='notification' className={`${stylesCommon.body__child}`}>
+                {collected.errors?.RATE?.message}
+            </InfoBox>
+            <InfoBox
                 onActionClick={onBuyCrypto}
                 actionText={"See all gateways"}
-                in={collected.errors?.RATE?.type === 'OTHER'} type='notification' className={`${stylesCommon.body__child}`}>
+                in={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE'} type='notification' className={`${stylesCommon.body__child}`}>
                 {collected.errors?.RATE?.message}
             </InfoBox>
             <InputButton onClick={openPickCrypto} className={stylesCommon.body__child} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
@@ -88,7 +92,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon.body__child} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
             <ExpectedCrypto className={`${stylesCommon.body__child} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
             <div className={`${stylesCommon.body__child}`}>
-                <ButtonAction onClick={onBuyCrypto} text={collected.errors?.RATE?.type === 'OTHER' ? 'See gateways' : `Buy ${selectedCrypto.id}`} disabled={!isFilled || collected.isCalculatingAmount || !!minMaxErrorsMsg} />
+                <ButtonAction onClick={onBuyCrypto} text={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE' ? 'See gateways' : `Buy ${selectedCrypto.id}`} disabled={!isFilled || collected.isCalculatingAmount || !!minMaxErrorsMsg} />
             </div>
         </main >
     )

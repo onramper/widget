@@ -60,9 +60,12 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
                 <span className={styles.text}>
                     {props.children}
                 </span>
-                <span style={{ fontSize: '0.7rem', paddingLeft: '2rem' }}>
-                    <ButtonAction className={styles['button-action']} size='small' text={actionText} onClick={props.onActionClick} />
-                </span>
+                {
+                    props.onActionClick &&
+                    <span style={{ fontSize: '0.7rem', paddingLeft: '2rem' }}>
+                        <ButtonAction className={styles['button-action']} size='small' text={actionText} onClick={props.onActionClick} />
+                    </span>
+                }
                 {canBeDismissed && <span className={styles['close-button']} onClick={onDismissClick} >✖</span>}
             </div>
         </CSSTransition >
