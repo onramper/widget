@@ -28,7 +28,7 @@ const ChooseGatewayView = () => {
 
   const isWyreStep = () => {
     const nextStep = availableRates[selectedGatewayIndex].nextStep
-    if (!nextStep) return
+    if (!nextStep) return false
     return (
       availableRates[selectedGatewayIndex].identifier === 'Wyre'
       && nextStep.type === 'form'

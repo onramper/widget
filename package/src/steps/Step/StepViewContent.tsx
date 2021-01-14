@@ -28,7 +28,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
             setIsProcessingStep(false)
             return
         }
-        if ((isConfirmed !== undefined && !isConfirmed) || (!isConfirmed && (nextStep.type === 'iframe' || nextStep.type === 'requestBankTransaction'))) {
+        if (isConfirmed === false || (!isConfirmed && (nextStep.type === 'iframe' || nextStep.type === 'requestBankTransaction'))) {
             replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
             return
         }
