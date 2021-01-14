@@ -74,7 +74,10 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
 
     return (
         <main className={stylesCommon.body}>
-            <InfoBox in={collected.errors?.RATE?.type === 'OTHER'} type='notification' className={`${stylesCommon.body__child}`}>
+            <InfoBox
+                onActionClick={onBuyCrypto}
+                actionText={"See all gateways"}
+                in={collected.errors?.RATE?.type === 'OTHER'} type='notification' className={`${stylesCommon.body__child}`}>
                 {collected.errors?.RATE?.message}
             </InfoBox>
             <InputButton onClick={openPickCrypto} className={stylesCommon.body__child} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />

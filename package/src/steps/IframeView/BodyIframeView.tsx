@@ -79,10 +79,10 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     }, [])
 
     useEffect(() => {
-        const main = window.document.getElementById('main')
         let urlTail = ''
         const hostname = getHostname(props.src)
         if (hostname === SANDBOX_HOSTNAME) {
+            const main = window.document.getElementById('main')
             const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
             urlTail = `${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
         }

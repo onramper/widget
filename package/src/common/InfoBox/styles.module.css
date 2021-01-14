@@ -1,8 +1,6 @@
 .infobox {
     --padding-rl: 1.25rem;
     --padding-tb: 0.75rem;
-    --color-border: #006eff;
-    --color-background: #e6f4ff;
     margin: 0;
     padding: var(--padding-tb) var(--padding-rl);
     font-size: 0.75rem;
@@ -39,6 +37,10 @@
 .close-button:hover {
     cursor: pointer;
     opacity: 0.5;
+}
+
+.button-action {
+    width: 5rem;
 }
 
 /********error display transition*********/
