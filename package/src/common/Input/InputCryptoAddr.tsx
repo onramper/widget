@@ -20,7 +20,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((p
 
     useEffect(() => {
         handleInputChange('cryptocurrencyAddress', collected.defaultAddrs[collected.selectedCrypto?.id ?? ''] ?? collected.cryptocurrencyAddress ?? '')
-    }, [collected.defaultAddrs, collected.selectedCrypto, handleInputChange])
+    }, [collected.defaultAddrs, collected.selectedCrypto, handleInputChange, collected.cryptocurrencyAddress])
 
     const onChange = useCallback((name: string, value: string) => {
         handleInputChange(name, value)
