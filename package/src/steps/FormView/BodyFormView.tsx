@@ -178,7 +178,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     <span>· Use a differrent credit card.</span><br />
                     <span>· If you didn't use your real identity, start the process again providing it.</span><br />
                     <span>· Try another gateway.</span><br />
-                    <span>· Fill out our help form.</span>
+                    <span>· Contact us.</span>
                 </InfoBox>
                 {
                     fields.map((field, i) => {
