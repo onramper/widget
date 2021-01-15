@@ -38,7 +38,7 @@ const getHostname = (href: string) => {
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const { textInfo, type, error } = props
     const [autoRedirect, setAutoRedirect] = useState(true)
-    const [isAGateway, setisAGateway] = useState(false)
+    /* const [isAGateway, setisAGateway] = useState(true) */
     const [iframeUrl, setIframeUrl] = useState(props.src)
     const [countDown, setCountDown] = useState(3)
 
@@ -49,6 +49,9 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const [isRestartCalled, setIsRestartCalled] = useState(false)
 
     const { onlyScreen, nextScreen } = useContext(NavContext)
+
+    const hostname = getHostname(props.src)
+    const isAGateway = selectedGateway?.nextStep?.type === 'redirect' && hostname === getHostname(selectedGateway?.nextStep.url)
 
     const restartWidget = () => {
         apiInterface.clearErrors()
@@ -90,15 +93,16 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
             urlTail = `${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
         }
-        else if (selectedGateway?.nextStep?.type === 'redirect' && hostname === getHostname(selectedGateway?.nextStep.url)) {
+        /* else if (selectedGateway?.nextStep?.type === 'redirect' && hostname === getHostname(selectedGateway?.nextStep.url)) {
             setisAGateway(true)
-        }
+        } */
         const newIframeUrl = `${props.src}${urlTail}`
         setIframeUrl(newIframeUrl)
     }, [props.src, redirect, type, selectedGateway])
 
     useEffect(() => {
         if (countDown <= 0 || !isAGateway) {
+            console.log("Redirect!!", isAGateway)
             if (type === 'redirect')
                 redirect(iframeUrl)
             return
