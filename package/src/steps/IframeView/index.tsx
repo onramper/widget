@@ -15,6 +15,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
   const { replaceScreen, nextScreen } = useContext(NavContext);
   const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
   const [error, setError] = useState<string>()
+  const [fatalError, setFatalError] = useState<string>()
 
   useEffect(() => {
     const receiveMessage = async (event: MessageEvent) => {
@@ -22,6 +23,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
         return;
       if (event.data.type === 'INIT') {
         setError(undefined)
+        setFatalError(undefined)
         return
       }
       if (event.data.gateway === "Moonpay") {
@@ -40,7 +42,8 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
             (event.source as Window)?.postMessage('reset', '*')
           }
           else if (event.data.type === "2fa-completed") {
-            nextScreen(<ErrorView type="TX" />)
+            /* nextScreen(<ErrorView type="TX" />) */
+            setFatalError(e.message)
             return
           }
           setError(e.message)
@@ -63,10 +66,11 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
       <BodyIframeView
         textInfo={textInfo}
         error={error}
+        fatalError={fatalError}
         features={nextStep.type === 'iframe' ? nextStep.neededFeatures : undefined}
         src={nextStep.url}
         type={nextStep.type}
-        onErrorDismissClick={() => setError(undefined)}
+        onErrorDismissClick={(type) => type === 'FATAL' ? setFatalError(undefined) : setError(undefined)}
         isFullScreen={nextStep.type === 'iframe' ? nextStep.fullscreen : false}
       />
     </div>

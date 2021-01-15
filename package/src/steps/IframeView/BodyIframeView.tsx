@@ -10,13 +10,15 @@ import { NavContext } from '../../NavContext'
 
 import BuyCryptoView from '../../BuyCryptoView'
 import ButtonAction from '../../common/ButtonAction'
+import ChooseGatewayView from '../../ChooseGatewayView'
 
 interface BodyIframeViewType {
     src: string
     type: string
     textInfo?: string
     error?: string
-    onErrorDismissClick: () => void
+    fatalError?: string
+    onErrorDismissClick: (type?: string) => void
     isFullScreen?: boolean
     features?: string
 }
@@ -46,7 +48,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const { selectedGateway } = collected
     const [isRestartCalled, setIsRestartCalled] = useState(false)
 
-    const { onlyScreen } = useContext(NavContext)
+    const { onlyScreen, nextScreen } = useContext(NavContext)
 
     const restartWidget = () => {
         apiInterface.clearErrors()
@@ -56,9 +58,11 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     useEffect(() => {
         if (isRestartCalled && !collected.errors) {
             onlyScreen(<BuyCryptoView />)
+            if (!!props.fatalError)
+                nextScreen(<ChooseGatewayView />)
             setIsRestartCalled(false)
         }
-    }, [collected.errors, isRestartCalled, onlyScreen])
+    }, [collected.errors, isRestartCalled, onlyScreen, nextScreen])
 
     const redirect = useCallback(async (url: string) => {
         setAutoRedirect(true)
@@ -119,8 +123,20 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     <InfoBox in={!autoRedirect} className={`${stylesCommon.body__child} ${styles.body__child}`} type='notification'>
                         {"We couldn't auto-redirect you to finish the process, please click the button below to finish the process."}
                     </InfoBox>
-                    <InfoBox in={!!error} className={`${stylesCommon.body__child} ${styles.body__child}`} type='error' canBeDismissed onDismissClick={props.onErrorDismissClick} >
+                    <InfoBox in={!!error} className={`${stylesCommon.body__child} ${styles.body__child}`} type='error' canBeDismissed onDismissClick={() => props.onErrorDismissClick()} >
                         {error}
+                    </InfoBox>
+                    <InfoBox
+                        in={!!props.fatalError}
+                        type='error'
+                        message={props.fatalError}
+                        className={`${stylesCommon.body__child} ${styles.body__child}`}
+                        actionText="Try another gateway"
+                        onActionClick={restartWidget}
+                        onDismissClick={() => props.onErrorDismissClick('FATAL')}
+                        canBeDismissed
+                    >
+                        <span>{"It's posible that your bank rejected the transaction. Please. use another credit card or try with another gateway."}</span>
                     </InfoBox>
                 </>
             }
