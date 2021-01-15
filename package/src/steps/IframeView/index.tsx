@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Header from '../../common/Header'
 import BodyIframeView from './BodyIframeView'
 import styles from '../../styles.module.css'
-import ErrorView from '../../common/ErrorView'
+/* import ErrorView from '../../common/ErrorView' */
 
 import Step from '../Step'
 
