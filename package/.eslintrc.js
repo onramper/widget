@@ -56,7 +56,8 @@ module.exports = {
         "arrow-spacing": "off",
         "eol-last": "off",
         "no-multi-spaces": "off",
-        "no-undef": "off" //overrided @typescript-eslint
+        "no-undef": "off", //overrided @typescript-eslint
+        "react/no-unescaped-entities": "off"
     },
     "settings": {
         "react": {
