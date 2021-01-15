@@ -58,11 +58,11 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     useEffect(() => {
         if (isRestartCalled && !collected.errors) {
             onlyScreen(<BuyCryptoView />)
-            if (!!props.fatalError)
+            if (props.fatalError)
                 nextScreen(<ChooseGatewayView />)
             setIsRestartCalled(false)
         }
-    }, [collected.errors, isRestartCalled, onlyScreen, nextScreen])
+    }, [collected.errors, isRestartCalled, onlyScreen, nextScreen, props.fatalError])
 
     const redirect = useCallback(async (url: string) => {
         setAutoRedirect(true)
