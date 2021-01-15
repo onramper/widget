@@ -1,6 +1,6 @@
 import { rest } from 'msw'
-import { gatewaysAllParams, noGatewaysAllParams } from './responses/gateways'
-import { ratesAllParams, ratesAllUnavailable } from './responses/rates'
+import { gatewaysAllParams/* , noGatewaysAllParams */ } from './responses/gateways'
+import { ratesAllParams/* , ratesAllUnavailable */ } from './responses/rates'
 import CCPro from './responses/steps/Cryptocoin.pro'
 import Moonpay from './responses/steps/Moonpay'
 import Wyre from './responses/steps/Wyre'
@@ -48,15 +48,15 @@ export const handlers = [
     }),
     rest.get(`${BASE_API}/rate/*`, (req, res, ctx) => {
         //Successful response
-        /* return res(
-            ctx.status(200),
-            ctx.json(ratesAllParams)
-        ) */
-        //Unavailable rates response
         return res(
             ctx.status(200),
-            ctx.json(ratesAllUnavailable)
+            ctx.json(ratesAllParams)
         )
+        //Unavailable rates response
+        /* return res(
+            ctx.status(200),
+            ctx.json(ratesAllUnavailable)
+        ) */
     }),
     rest.post(`${BASE_API}/transaction/*`, async (req, res, ctx) => {
         const gateway = req.url.pathname.split('/')[2]
@@ -77,11 +77,18 @@ export const handlers = [
                 break
         }
 
+        //Successful response
         return res(
             // Respond with a 200 status code
             ctx.status(200),
             ctx.json(nextStep)
         )
+
+        //Fatal error
+        /* return res(
+            ctx.status(400),
+            ctx.json({ "message": "Order failed: We are unable to process your order at this time.", "fatal": true })
+        ) */
     }),
     rest.put(`${BASE_API}/transaction/*`, async (req, res, ctx) => {
         const gateway = req.url.pathname.split('/')[2]
