@@ -360,6 +360,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         if (error.name === 'AbortError')
           return {}
         setLastCall(undefined)
+        console.log("Thrown by this-----------")
         return processErrors({
           RATE: {
             type: "API",
@@ -371,13 +372,15 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // IF THE REQUEST DIDN'T THROW ANY ERROR, CLEAR THE ABORT CONTROLLER FROM THE STATE
       setLastCall(undefined)
 
-      if (!responseRate || responseRate.length <= 0)
+      if (!responseRate || responseRate.length <= 0) {
+        console.log("Thrown by this")
         return processErrors({
           RATE: {
             type: "NO_RATES",
             message: "No rates found."
           }
         })
+      }
 
       // MAP RATES TO GatewayOptionType
       const mappedAllRates: GatewayRateOption[] = responseRate.map((item) => ({

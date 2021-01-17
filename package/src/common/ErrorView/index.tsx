@@ -12,7 +12,7 @@ interface ErrorViewProps {
   buttonText?: string
   maxHeight?: string
   fixedHeight?: boolean
-  type?: 'TX' | 'GENERIC' | 'GATEWAYS' | 'RATES' | "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_CRYPTOS" | "NO_FIAT" | "NO_PAYMENT_METHODS"
+  type?: "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_CRYPTOS" | "NO_FIAT" | "NO_PAYMENT_METHODS" | "NO_RATES" | "MIN" | "MAX" | "UNREACHABLE" | "OTHER" | "ALL_UNAVAILABLE" | undefined
   message?: string
 }
 
@@ -42,7 +42,6 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
         return DISABLED_GATEWAYS
       case 'API':
         return API_ERROR(props.message ?? '', restartWidget)
-      case 'RATES':
       default:
         return API_ERROR(props.message ?? '', restartWidget)
     }

@@ -27,7 +27,7 @@ const UploadView: React.FC<{ nextStep: NextStep & { type: 'file' } }> = (props) 
       nextScreen(<Step nextStep={newNextStep} />)
     } catch (error) {
       if (error.fatal) {
-        nextScreen(<ErrorView type="TX" />)
+        nextScreen(<ErrorView />)
         return
       } else {
         setErrorMsg(error.message)
