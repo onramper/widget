@@ -4,7 +4,7 @@ import styles from './styles.module.css'
 
 import InfoBox from '../../common/InfoBox'
 
-import { SANDBOX_HOSTNAME } from '../../ApiContext/api/constants'
+import { SANDBOX_HOSTNAME, MOONPAY_HOSTNAME } from '../../ApiContext/api/constants'
 import { APIContext } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 
@@ -88,11 +88,17 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     useEffect(() => {
         let urlTail = ''
         const hostname = getHostname(props.src)
-        if (hostname === SANDBOX_HOSTNAME) {
-            const main = window.document.getElementById('main')
-            const primaryColor = main !== null ? 'color=' + getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
-            urlTail = `${props.src.includes('?') ? '&' : '?'}${primaryColor ?? ''}`
-        }
+        const main = window.document.getElementById('main')
+        const primaryColor = main !== null ? getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
+        console.log(primaryColor, hostname)
+        if (primaryColor)
+            if (hostname === SANDBOX_HOSTNAME) {
+                urlTail = `${props.src.includes('?') ? '&' : '?'}color=${primaryColor}`
+            }
+            else if (hostname === MOONPAY_HOSTNAME) {
+                urlTail = `${props.src.includes('?') ? '&' : '?'}colorCode=%23${primaryColor}`
+            }
+
         /* else if (selectedGateway?.nextStep?.type === 'redirect' && hostname === getHostname(selectedGateway?.nextStep.url)) {
             setisAGateway(true)
         } */
