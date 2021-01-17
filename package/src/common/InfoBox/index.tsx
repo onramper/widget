@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './styles.module.css'
 import { CSSTransition } from 'react-transition-group';
 import ButtonAction from '../ButtonAction'
@@ -15,6 +15,8 @@ type InfoBoxType = {
 }
 
 const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBoxType>>((props, ref) => {
+    const [disableButton, setDisableButton] = useState(false)
+
     const {
         type = 'info',
         onDismissClick = () => null,
@@ -44,6 +46,23 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
         "--color-border": "var(--primary-color)",
         "--color-background": `#${primaryColor}15`,
     } as React.CSSProperties;
+
+    const _onActionClick = () => {
+        setDisableButton(true)
+        if (props.onActionClick) {
+            props.onActionClick()
+        }
+    }
+
+    useEffect(() => {
+        let t: ReturnType<typeof setTimeout>
+        if (disableButton)
+            t = setTimeout(() => {
+                setDisableButton(false)
+            }, 1000)
+        return () => clearTimeout(t)
+
+    }, [disableButton])
 
     return (
         <CSSTransition nodeRef={defaultRef} in={props.in}
@@ -78,7 +97,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
                     {
                         props.onActionClick &&
                         <span style={{ fontSize: '0.7rem', marginRight: canBeDismissed ? '0.75rem' : 'unset' }}>
-                            <ButtonAction className={`${styles['button-action']}`} size='small' text={actionText} onClick={props.onActionClick} />
+                            <ButtonAction className={`${styles['button-action']}`} size='small' text={disableButton ? 'Loading...' : actionText} onClick={_onActionClick} /* disabled={disableButton} */ />
                         </span>
                     }
                 </div>

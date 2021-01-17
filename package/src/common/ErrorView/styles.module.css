@@ -11,7 +11,7 @@
     align-items: center;
 }
 
-.body > * {
+.body>* {
     margin-right: 5rem;
     margin-left: 5rem;
 }
@@ -42,14 +42,27 @@
 }
 
 .content-link {
+    display: block;
     font-size: 0.875rem;
     color: #353535;
     font-weight: 700;
-    margin-top: 0.4375rem;
     letter-spacing: 0.2px;
+}
+
+.content-message {
+    margin: 1rem 0;
+    display: block;
 }
 
 .content-image {
     width: 15rem;
     color: var(--primary-color);
+}
+
+.content-button {
+    min-width: 10rem;
+}
+
+.content-button+.content-link {
+    margin-top: 1rem;
 }

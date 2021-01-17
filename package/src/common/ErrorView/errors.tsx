@@ -12,7 +12,7 @@ export const COUNTRY_NOT_SUPPORTED = (country?: string): JSX.Element => {
             <span className={styles['content-title']}>Country not supported</span>
             <span className={styles['content-description']}>
                 {_country} is not yet supported by Onramper.<br />
-                We&apos;re working hard to make it available for you as soon as possible!
+                We&apos;re working hard to make it available for you as soon as possible!<br /><br />
                 For more information read our FAQs or contact us.
             </span>
             <div className={styles['content-description']}>
@@ -29,7 +29,7 @@ export const DISABLED_GATEWAYS =
         <span className={styles['content-title']}>It&apos;s not you...</span>
         <span className={styles['content-description']}>
             Looks like this Onramper integration has disabled some of the available gateways in this area.<br />
-                For more information read our FAQs or contact us.
+                For more information read our FAQs or contact us.<br /><br />
             </span>
         <div className={styles['content-description']}>
             <a className={styles['content-link']} target='_blank' rel="noreferrer" href="https://onramper.com/FAQ/">Read our FAQs</a>
@@ -40,15 +40,15 @@ export const API_ERROR = (message: string, cb: () => any): JSX.Element => {
     return (
         <>
             <ErrorIllustration className={styles['content-image']} />
-            <span className={styles['content-title']}>Couldn&apos;t connect😕</span>
+            <span className={styles['content-title']}>Couldn&apos;t connect</span>
             <span className={styles['content-description']}>
                 There are problems trying to connect to the server.<br />
                 Please, try again in some minutes.<br />
-                {message}<br />
+                {message ? <span className={styles['content-message']}>{message}<br /></span> : <br />}
                 For more information read our FAQs or contact us.
             </span>
             <div className={styles['content-description']}>
-                <ButtonAction text="Try another gateway" size='small' onClick={cb} />
+                <ButtonAction className={styles['content-button']} text="Try again" size='small' onClick={cb} />
                 <a className={styles['content-link']} target='_blank' rel="noreferrer" href="https://onramper.com/FAQ/">Read our FAQs</a>
             </div>
         </>
