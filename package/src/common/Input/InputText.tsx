@@ -44,7 +44,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value === '' ? e.currentTarget.value : type === 'number' ? +e.currentTarget.value : e.currentTarget.value
-        if (!value && type === 'number') return false
+        if (!value && value !== '' && type === 'number') return false
         if (e.currentTarget.type === 'date' && typeof value === 'string') {
             const date = {
                 year: value.split('-')[0],

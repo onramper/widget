@@ -102,7 +102,6 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
 
     useEffect(() => {
         if (countDown <= 0 || !isAGateway) {
-            console.log("Redirect!!", isAGateway)
             if (type === 'redirect')
                 redirect(iframeUrl)
             return
