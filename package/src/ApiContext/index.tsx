@@ -360,7 +360,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         if (error.name === 'AbortError')
           return {}
         setLastCall(undefined)
-        console.log("Thrown by this-----------")
         return processErrors({
           RATE: {
             type: "API",
@@ -373,7 +372,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       setLastCall(undefined)
 
       if (!responseRate || responseRate.length <= 0) {
-        console.log("Thrown by this")
         return processErrors({
           RATE: {
             type: "NO_RATES",
