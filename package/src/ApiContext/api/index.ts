@@ -11,7 +11,6 @@ const headers = new Headers()
 
 const authenticate = (pk: string) => {
     headers.set('Authorization', `Basic ${pk}`)
-    /* headers.set('Access-Control-Allow-Credentials', 'true'); */
 }
 
 /**
@@ -28,7 +27,7 @@ const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
     const gatewaysRes = await fetch(`${BASE_API}/gateways?${urlParams}`, {
         headers,
-        /* credentials: 'include' */
+        credentials: 'include'
     })
     const gateways: GatewaysResponse = await processResponse(gatewaysRes)
     return gateways
@@ -45,7 +44,7 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
     const ratesRes = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, {
         headers,
         signal,
-        /* credentials: 'include' */
+        credentials: 'include'
     })
     const rates: RateResponse = await processResponse(ratesRes)
     return rates
