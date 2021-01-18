@@ -24,8 +24,8 @@
 .option-container__radio {
     padding: var(--oc-padding);
     display: flex;
-/*     flex-direction: row;
-    align-items: center; */
+    flex-direction: row;
+    align-items: flex-start;
     padding-top: 0.5rem;
 }
 
