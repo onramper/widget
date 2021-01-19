@@ -4,6 +4,7 @@ import styles from './styles.module.css'
 import IconUpload from '../../icons/upload_file.svg'
 import IconDocument from '../../icons/file.svg'
 import IconDelete from '../../icons/delete.svg'
+import { acceptedContentTypes } from '@onramper/moonpay-adapter/build/constants'
 
 type UploadBoxType = {
     onFilesAdded: (name: string, files: File[], maxFiles: number) => boolean
@@ -11,6 +12,7 @@ type UploadBoxType = {
     id: string
     filesList: File[]
     maxFiles?: number
+    acceptedContentTypes?:string[]
 }
 
 const UploadBox: React.FC<UploadBoxType> = (props) => {
@@ -51,8 +53,20 @@ const UploadBox: React.FC<UploadBoxType> = (props) => {
             {filesList.length >= maxFiles && maxFiles > 0 ?
                 null
                 :
-                < div onDrop={handleOnDropFiles} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave} className={`${styles['drag-box']} ${isDragOver ? styles['drag-box-dragging'] : ''}`}>
-                    <input type='file' multiple onChange={handleOnSelectFiles} />
+                <div onDrop={handleOnDropFiles} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave} className={`${styles['drag-box']} ${isDragOver ? styles['drag-box-dragging'] : ''}`}>
+                    <input
+                        type='file'
+                        multiple={maxFiles>1}
+                        onChange={handleOnSelectFiles}
+                        accept={
+                            acceptedContentTypes?.length > 0
+                            ? acceptedContentTypes.reduce((acc, act, i) => {
+                                if (i === 0) return act;
+                                return `${acc}, ${act}`;
+                              }, "")
+                            : "*"
+                        }
+                    />
                     <img alt='Upload icon' className={styles['drag-info']} src={IconUpload} />
                     <span className={styles['drag-info']} >
                         {props.children}

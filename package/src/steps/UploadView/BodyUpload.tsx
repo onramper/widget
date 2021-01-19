@@ -60,7 +60,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
                 {errorControlMsg}
             </InfoBox>
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
-                <UploadBox id='files' onFilesAdded={handleFilesAdd} onFileDeleted={handleFilesDelete} filesList={existingFiles} maxFiles={1} >
+                <UploadBox id='files' onFilesAdded={handleFilesAdd} onFileDeleted={handleFilesDelete} filesList={existingFiles} maxFiles={1} acceptedContentTypes={props.acceptedContentTypes} >
                     <strong>Drag and Drop</strong><br />
                     a file or click here<br />
                     [ {props.acceptedContentTypes?.map(type => type.split('/')[1])?.reduce((acc, actual, index) => {
