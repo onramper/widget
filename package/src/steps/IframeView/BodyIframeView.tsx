@@ -70,15 +70,19 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const redirect = useCallback(async (url: string) => {
         setAutoRedirect(true)
         //try to open popup
-        const windowObjectReference = window.open(url, '_blank', 'height=595,width=440,scrollbars=yes')//todo: add config
+        const windowObjectReference = window.open(url, '_blank', 'height=595,width=440,scrollbars=yes,left=0')//todo: add config
         //if opened -> all is ok
         if (windowObjectReference) {
+            const interval = 250
+            const times2Count = 60000/250
+            let count = 0
             const checkIfClosed = setInterval(() => {
-                if (windowObjectReference.closed) {
+                if (windowObjectReference.closed || count > times2Count) {
                     setUserClosedPopup(true)
                     clearInterval(checkIfClosed)
                 }
-            }, 250)
+                count++
+            }, interval)
             return
         }
         //if not opened -> warn user about popup blocked + ask user for click a button
@@ -90,7 +94,6 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
         const hostname = getHostname(props.src)
         const main = window.document.getElementById('main')
         const primaryColor = main !== null ? getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
-        console.log(primaryColor, hostname)
         if (primaryColor)
             if (hostname === SANDBOX_HOSTNAME) {
                 urlTail = `${props.src.includes('?') ? '&' : '?'}color=${primaryColor}`
