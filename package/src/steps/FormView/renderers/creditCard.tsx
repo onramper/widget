@@ -66,7 +66,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
     }
 
     return (
-        <>
+        <form>
             <InputText
                 ref={ref}
                 className={stylesCommon.body__child}
@@ -102,7 +102,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
                     maxLength={3}
                 />
             </div>
-        </>
+        </form>
     )
 })
 
