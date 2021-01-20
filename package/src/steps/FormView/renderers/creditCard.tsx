@@ -51,7 +51,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
 
             const month = value.split('/')[0].replace(' ', '')
             const year = (value.split('/')[1] ?? '').replace(' ', '')
-            if (year.length > 2) return
+            if (year.length > 2 || month.length > 2) return
             props.handleInputChange('ccMonth', month)
             props.handleInputChange('ccYear', '20' + year)
         }
