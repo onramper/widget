@@ -3,6 +3,8 @@ import styles from './styles.module.css'
 import { CSSTransition } from 'react-transition-group';
 import ButtonAction from '../ButtonAction'
 
+import {URLize} from './utils'
+
 type InfoBoxType = {
     type?: 'info' | 'error' | 'notification'
     onDismissClick?: () => void
@@ -64,6 +66,8 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
 
     }, [disableButton])
 
+    const message = URLize(props.message)
+
     return (
         <CSSTransition nodeRef={defaultRef} in={props.in}
             timeout={{
@@ -78,10 +82,10 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
             unmountOnExit={true} >
             <div style={style} ref={defaultRef} className={`${styles.infobox} ${!props.children ? styles['infobox-simple'] : ''} ${styles[classBoxType]} ${className}`}>
                 {
-                    props.message && (
+                    typeof message === 'string' && props.message && (
                         <>
                             <span className={styles.text}>
-                                {props.message}
+                                {message}
                             </span>
                             <br />
                         </>
@@ -89,10 +93,14 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
                 }
                 <div className={`${styles['child-node']} ${!props.children ? styles['child-node-simple'] : ''}`} >
                     {
-                        props.children &&
-                        <span className={styles.text}>
-                            {props.children}
+                       props.message && typeof message !== 'string'
+                        ? <span className={styles.text}>
+                            {message}
                         </span>
+                        : 
+                         <span className={styles.text}>
+                             {props.children}
+                         </span>
                     }
                     {
                         props.onActionClick &&
