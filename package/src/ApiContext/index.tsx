@@ -61,8 +61,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
   // INITIALIZING AUTHENTICATION
   useEffect(() => {
-    if (API_KEY)
-      API.authenticate(API_KEY)
+    if (!API_KEY) throw new Error("API KEY NOT PROVIDED")
+    API.authenticate(API_KEY)
   }, [API_KEY])
 
   /* DEFINING INPUT INTERFACES */
