@@ -15,6 +15,7 @@ import './normalize.min.css'
 type OnramperWidgetProps = {
     API_KEY?: string,
     color?: string
+    fontFamily?: string
     defaultAmount?: number
     defaultCrypto?: string
     defaultFiat?: string
@@ -37,6 +38,7 @@ type OnramperWidgetProps = {
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     const {
         color = '#266678',
+        fontFamily,
         defaultAddrs,
         defaultAmount,
         defaultFiat,
@@ -55,7 +57,8 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     } = props
 
     const style = {
-        "--primary-color": color
+        "--primary-color": color,
+        "--font-family": fontFamily
     } as React.CSSProperties;
 
     return (

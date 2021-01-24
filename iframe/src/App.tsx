@@ -11,6 +11,7 @@ const defaultApiKey =
 
 const apiKey = getParam('apiKey', defaultApiKey)
 const defaultColor = `#${getParam('color', '266678')}`
+const fontFamily = getParam('fontFamily')
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', 'BTC')
 const defaultFiat = getParam('defaultFiat', 'USD')
@@ -36,6 +37,7 @@ function App() {
           <OnramperWidget
             API_KEY={apiKey}
             color={defaultColor}
+            fontFamily={fontFamily}
             defaultAddrs={wallets || addresses}
             defaultAmount={defaultAmount}
             defaultCrypto={defaultCrypto}
