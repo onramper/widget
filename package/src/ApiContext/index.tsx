@@ -14,6 +14,7 @@ import { RateResponse } from './api/types/rate'
 import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from './api/types/nextStep';
 
 import { NextStepError } from './api'
+import type { Filters } from './api'
 
 import phoneCodes from './utils/phoneCodes'
 
@@ -32,13 +33,8 @@ interface APIProviderType {
   defaultAddrs?: { [key: string]: string }
   defaultCrypto?: string
   defaultFiat?: string
-  filters?: {
-    onlyCryptos?: string[]
-    excludeCryptos?: string[]
-    excludeFiat?: string[]
-    onlyGateways?: string[]
-    onlyFiat?: string[]
-  }
+  defaultPaymentMethod?: string
+  filters?: Filters
   country?: string
   isAddressEditable?: boolean
 }
@@ -142,7 +138,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (availableCryptos.length <= 0) {
         return processErrors({
           GATEWAYS: {
-            type: "NO_CRYPTOS",
+            type: "NO_ITEMS",
             message: "No cryptos found."
           }
         })
@@ -201,7 +197,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (availableCurrencies.length <= 0) {
         return processErrors({
           GATEWAYS: {
-            type: "NO_FIAT",
+            type: "NO_ITEMS",
             message: "No fiat currencies found."
           }
         })
@@ -266,7 +262,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (availablePaymentMethods.length <= 0) {
         return processErrors({
           GATEWAYS: {
-            type: "NO_PAYMENT_METHODS",
+            type: "NO_ITEMS",
             message: "No payment methods availables found."
           }
         })
@@ -294,7 +290,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const handlePaymentMethodChange = useCallback(
     (selectedPaymentMethod?: ItemType): ErrorObjectType | undefined | {} => {
 
-      selectedPaymentMethod = selectedPaymentMethod ?? state.collected.selectedPaymentMethod
+      selectedPaymentMethod = props.defaultPaymentMethod ? { id:props.defaultPaymentMethod, name:"Default payment method" } : selectedPaymentMethod ?? state.collected.selectedPaymentMethod
 
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       if (!state.data.responseGateways) return {}
@@ -305,7 +301,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.collected
       handleInputChange('selectedPaymentMethod', actualPaymentMethod)
 
-    }, [handleInputChange, state.data.availablePaymentMethods, state.data.responseGateways, state.collected.selectedPaymentMethod])
+    }, [handleInputChange, state.data.availablePaymentMethods, state.data.responseGateways, state.collected.selectedPaymentMethod, props.defaultPaymentMethod])
 
   const getRates = useCallback(
     async (): Promise<ErrorObjectType | undefined | {}> => {

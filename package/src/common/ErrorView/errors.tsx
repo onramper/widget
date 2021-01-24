@@ -54,3 +54,20 @@ export const API_ERROR = (message: string, cb: () => any): JSX.Element => {
         </>
     )
 }
+
+export const NO_ITEMS_FOUND = (message?: string): JSX.Element => {
+    return (
+        <>
+            <ErrorIllustration className={styles['content-image']} />
+            <span className={styles['content-title']}>We tried but...</span>
+            <span className={styles['content-description']}>
+                looks like this Onramper integration has disabled some items.
+                {message ? <span className={styles['content-message']}>{message}<br /></span> : <br />}
+                For more information read our FAQs or contact us.
+            </span>
+            <div className={styles['content-description']}>
+                <a className={styles['content-link']} target='_blank' rel="noreferrer" href="https://onramper.com/FAQ/">Read our FAQs</a>
+            </div>
+        </>
+    )
+}

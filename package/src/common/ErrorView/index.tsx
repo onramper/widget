@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './styles.module.css'
 import stylesCommon from '../../styles.module.css'
-import { COUNTRY_NOT_SUPPORTED, DISABLED_GATEWAYS, API_ERROR } from './errors'
+import { COUNTRY_NOT_SUPPORTED, DISABLED_GATEWAYS, API_ERROR, NO_ITEMS_FOUND } from './errors'
 
 import Header from '../../common/Header'
 import { NavContext } from '../../NavContext'
@@ -12,7 +12,7 @@ interface ErrorViewProps {
   buttonText?: string
   maxHeight?: string
   fixedHeight?: boolean
-  type?: "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_CRYPTOS" | "NO_FIAT" | "NO_PAYMENT_METHODS" | "NO_RATES" | "MIN" | "MAX" | "UNREACHABLE" | "OTHER" | "ALL_UNAVAILABLE" | undefined
+  type?: "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_ITEMS" | "NO_RATES" | "MIN" | "MAX" | "UNREACHABLE" | "OTHER" | "ALL_UNAVAILABLE" | undefined
   message?: string
 }
 
@@ -36,6 +36,8 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
 
   const CurrentError = (() => {
     switch (props.type) {
+      case 'NO_ITEMS':
+        return NO_ITEMS_FOUND(props.message)
       case 'NO_GATEWAYS':
         return COUNTRY_NOT_SUPPORTED(collected.selectedCountry)
       case 'DISABLED_GATEWAYS':

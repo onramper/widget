@@ -139,35 +139,53 @@ const createUrlParamsFromObject = (paramsObj: { [key: string]: any }): string =>
         return acc
     }, '')
 
-interface Filters {
+export interface Filters {
     onlyCryptos?: string[],
     excludeCryptos?: string[],
+    onlyPaymentMethods?: string[],
+    excludePaymentMethods?: string[],
     excludeFiat?: string[],
     onlyGateways?: string[]
     onlyFiat?: string[]
 }
 const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, filters?: Filters): GatewaysResponse => {
     if (!filters) return gatewaysResponse
+    
+    const { onlyCryptos, excludeCryptos, onlyPaymentMethods, excludePaymentMethods, excludeFiat, onlyGateways, onlyFiat } = filters
 
-    const { onlyCryptos, excludeCryptos, excludeFiat, onlyGateways, onlyFiat } = filters
     const _onlyCryptos = onlyCryptos?.map(code => code.toUpperCase())
     const _excludeCryptos = excludeCryptos?.map(code => code.toUpperCase())
+
+    const _onlyPaymentMethods = onlyPaymentMethods
+    const _excludePaymentMethods = excludePaymentMethods
+
     const _onlyFiat = onlyFiat?.map(code => code.toUpperCase())
     const _excludeFiat = excludeFiat?.map(code => code.toUpperCase())
+
     const filtredGateways = gatewaysResponse.gateways.map(gateway => {
         let cryptosList = gateway.cryptoCurrencies
+        let paymentMethodsList = gateway.paymentMethods
         let fiatList = gateway.fiatCurrencies
+
         if (_onlyCryptos && _onlyCryptos?.length > 0)
-            cryptosList = gateway.cryptoCurrencies.filter(crypto => _onlyCryptos.includes(crypto.code))
+            cryptosList = cryptosList.filter(crypto => _onlyCryptos.includes(crypto.code))
         if (_excludeCryptos && _excludeCryptos?.length > 0)
             cryptosList = cryptosList.filter(crypto => !_excludeCryptos.includes(crypto.code))
+
+        if (_onlyPaymentMethods && _onlyPaymentMethods?.length > 0)
+            paymentMethodsList = paymentMethodsList.filter(paymentMethod => _onlyPaymentMethods.includes(paymentMethod))
+        if (_excludePaymentMethods && _excludePaymentMethods?.length > 0)
+            paymentMethodsList = paymentMethodsList.filter(paymentMethod => !_excludePaymentMethods.includes(paymentMethod))
+
         if (_onlyFiat && _onlyFiat?.length > 0)
             fiatList = fiatList.filter(fiat => _onlyFiat.includes(fiat.code))
         if (_excludeFiat && _excludeFiat?.length > 0)
             fiatList = fiatList.filter(fiat => !_excludeFiat.includes(fiat.code))
+
         return {
             ...gateway,
             cryptoCurrencies: cryptosList,
+            paymentMethods: paymentMethodsList,
             fiatCurrencies: fiatList
         }
     }).filter(gateway => {
