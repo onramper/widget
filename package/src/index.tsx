@@ -39,7 +39,7 @@ type OnramperWidgetProps = {
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     const {
         color = '#266678',
-        fontFamily,
+        fontFamily = "'Roboto', sans-serif",
         defaultAddrs,
         defaultAmount,
         defaultFiat,
