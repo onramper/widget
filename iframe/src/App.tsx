@@ -14,7 +14,8 @@ const defaultColor = `#${getParam('color', '266678')}`
 const fontFamily = getParam('fontFamily')
 const defaultAmount = Number(getParam('defaultAmount', '100'))
 const defaultCrypto = getParam('defaultCrypto', 'BTC')
-const defaultFiat = getParam('defaultFiat', 'USD')
+const defaultFiat = getParam('defaultFiat')
+const defaultFiatSoft = getParam('defaultFiatSoft')
 const defaultPaymentMethod = getParam('defaultPaymentMethod')
 const addresses = JSON.parse(getParam('addresses', '{}') ?? '{}')
 const onlyCryptos = getArrayParam('onlyCryptos')
@@ -42,6 +43,7 @@ function App() {
             defaultAmount={defaultAmount}
             defaultCrypto={defaultCrypto}
             defaultFiat={defaultFiat}
+            defaultFiatSoft={defaultFiatSoft}
             defaultPaymentMethod={defaultPaymentMethod}
             onlyCryptos={onlyCryptos}
             excludeCryptos={excludeCryptos}

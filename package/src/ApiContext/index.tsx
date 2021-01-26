@@ -33,6 +33,7 @@ interface APIProviderType {
   defaultAddrs?: { [key: string]: string }
   defaultCrypto?: string
   defaultFiat?: string
+  defaultFiatSoft?: string
   defaultPaymentMethod?: string
   filters?: Filters
   country?: string
@@ -41,7 +42,8 @@ interface APIProviderType {
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
   const { defaultAmount = 100, defaultAddrs = {}, API_KEY, isAddressEditable = true } = props
-  const defaultFiat = props.defaultFiat?.toUpperCase() || DEFAULT_CURRENCY
+  const defaultFiat = props.defaultFiat?.toUpperCase()
+  const defaultFiatSoft = props.defaultFiatSoft?.toUpperCase() || DEFAULT_CURRENCY
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO
   const iniState = {
     ...initialState,
@@ -156,10 +158,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }))
 
       // SELECT DEFAULT CRYPTO
-      const selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === defaultCrypto)) || mappedAvailableCryptos[0]
+ /*      const selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === defaultCrypto)) || mappedAvailableCryptos[0]
 
       // save to state.collected
-      handleInputChange('selectedCrypto', selectedCrypto)
+      handleInputChange('selectedCrypto', selectedCrypto) */
       handleInputChange('state', responseGateways.localization.state ?? DEFAULT_STATE)
       handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country?.toUpperCase() ?? DEFAULT_COUNTRY]?.phoneCode)
       // save to state.date
@@ -169,11 +171,15 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         responseGateways: responseGateways
       })
 
-    }, [addData, handleInputChange, defaultCrypto, props.filters, processErrors, clearErrors, props.country])
+    }, [addData, handleInputChange, props.filters, processErrors, clearErrors, props.country])
 
   const handleCryptoChange = useCallback(
     (crypto?: ItemType): ErrorObjectType | undefined | {} => {
-      crypto = crypto ?? state.collected.selectedCrypto
+      let _crypto: typeof crypto
+      if (!crypto)
+        _crypto = state.collected.selectedCrypto || { id:defaultCrypto, name:defaultCrypto }
+      else
+        _crypto = crypto
 
       // IF RESPONSE IS NOT SET YET, DON'T DO ANYTHING
       if (!state.data.responseGateways) return {}
@@ -182,7 +188,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (gateways.length <= 0) return {}
       if (state.data.availableCryptos.length <= 0) return {}
 
-      const actualCrypto = state.data.availableCryptos.find((cryptoCurrency) => cryptoCurrency.id === crypto?.id) || state.data.availableCryptos[0]
+      const actualCrypto = state.data.availableCryptos.find((cryptoCurrency) => cryptoCurrency.id === _crypto?.id) || state.data.availableCryptos[0]
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CRYPTO
       const filtredGatewaysByCrypto = gateways.filter((item) => item.cryptoCurrencies.some((crypto) => crypto.code === actualCrypto.id))
@@ -220,12 +226,17 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.date
       addData({ availableCurrencies: mappedAvailableCurrencies, filtredGatewaysByCrypto })
 
-    }, [state.data.responseGateways, state.data.availableCryptos, addData, handleInputChange, state.collected.selectedCrypto, processErrors]
+    }, [state.data.responseGateways, state.data.availableCryptos, addData, handleInputChange, state.collected.selectedCrypto, processErrors, defaultCrypto]
   )
 
   const handleCurrencyChange = useCallback(
     (selectedCurrency?: ItemType): ErrorObjectType | undefined | {} => {
-      selectedCurrency = selectedCurrency ?? state.collected.selectedCurrency
+      let _selectedCurrency: typeof selectedCurrency
+
+      if (!selectedCurrency)
+        _selectedCurrency = state.collected.selectedCurrency || (defaultFiat ? {id:defaultFiat, name:defaultFiat} : undefined)
+      else
+        _selectedCurrency = selectedCurrency
 
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       const responseGateways = state.data.responseGateways
@@ -237,9 +248,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (!state.data.availableCurrencies || state.data.availableCurrencies.length <= 0) return {}
 
       const actualCurrency =
-        state.data.availableCurrencies.find((currency) => currency.id === selectedCurrency?.id)
+        state.data.availableCurrencies.find((currency) => currency.id === _selectedCurrency?.id)
         || state.data.availableCurrencies.find((currency) => currency.id === responseGateways.localization.currency)
-        || state.data.availableCurrencies.find((currency) => currency.id === defaultFiat)
+        || state.data.availableCurrencies.find((currency) => currency.id === defaultFiatSoft)
         || state.data.availableCurrencies[0]
 
       if (!state.collected.selectedCurrency) {
@@ -284,19 +295,23 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.date
       addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
-    }, [processErrors, handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.responseGateways, state.collected.selectedCurrency, defaultAmount, defaultFiat]
+    }, [processErrors, handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.responseGateways, state.collected.selectedCurrency, defaultAmount, defaultFiat, defaultFiatSoft]
   )
 
   const handlePaymentMethodChange = useCallback(
     (selectedPaymentMethod?: ItemType): ErrorObjectType | undefined | {} => {
 
-      selectedPaymentMethod = props.defaultPaymentMethod ? { id:props.defaultPaymentMethod, name:"Default payment method" } : selectedPaymentMethod ?? state.collected.selectedPaymentMethod
+      let _selectedPaymentMethod: typeof selectedPaymentMethod
+      if (!selectedPaymentMethod)
+        _selectedPaymentMethod = state.collected.selectedPaymentMethod || (props.defaultPaymentMethod ? { id:props.defaultPaymentMethod, name:props.defaultPaymentMethod } : undefined)
+      else
+        _selectedPaymentMethod = selectedPaymentMethod
 
       // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
       if (!state.data.responseGateways) return {}
       if (!state.data.availablePaymentMethods || state.data.availablePaymentMethods.length <= 0) return {}
 
-      const actualPaymentMethod = state.data.availablePaymentMethods.find((currency) => currency.id === selectedPaymentMethod?.id) || state.data.availablePaymentMethods[0]
+      const actualPaymentMethod = state.data.availablePaymentMethods.find((currency) => currency.id === _selectedPaymentMethod?.id) || state.data.availablePaymentMethods[0]
 
       // save to state.collected
       handleInputChange('selectedPaymentMethod', actualPaymentMethod)

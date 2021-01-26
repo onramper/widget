@@ -19,6 +19,7 @@ type OnramperWidgetProps = {
     defaultAmount?: number
     defaultCrypto?: string
     defaultFiat?: string
+    defaultFiatSoft?: string
     defaultPaymentMethod?: string
     defaultAddrs?: {
         [key: string]: string
@@ -42,6 +43,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
         defaultAddrs,
         defaultAmount,
         defaultFiat,
+        defaultFiatSoft,
         defaultCrypto,
         onlyCryptos,
         excludeCryptos,
@@ -70,6 +72,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                     defaultAddrs={defaultAddrs}
                     defaultCrypto={defaultCrypto}
                     defaultFiat={defaultFiat}
+                    defaultFiatSoft={defaultFiatSoft}
                     defaultPaymentMethod={defaultPaymentMethod}
                     filters={{ onlyCryptos, excludeCryptos, excludeFiat, onlyGateways, onlyFiat, onlyPaymentMethods, excludePaymentMethods }}
                     country={country}
