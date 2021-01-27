@@ -65,9 +65,17 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
-    (name: string, value: string | number | boolean | ItemType | ErrorObjectType[]) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
+    (name: string, value: string | number | boolean | ItemType | ErrorObjectType[] | { [key: string]: string; }) => dispatch({ type: CollectedActionsType.AddField, payload: { name, value } }),
     []
   )
+
+  useEffect(()=>{
+    handleInputChange("defaultAddrs", defaultAddrs)
+  }, [defaultAddrs, handleInputChange])
+
+  useEffect(()=>{
+    handleInputChange("isAddressEditable", isAddressEditable)
+  }, [isAddressEditable, handleInputChange])
 
   useEffect(() => {
     if (lastCall) handleInputChange('isCalculatingAmount', true)

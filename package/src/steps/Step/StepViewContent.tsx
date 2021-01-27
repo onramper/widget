@@ -13,7 +13,7 @@ import WireTranserView from '../WireTranserView'
 
 import { NavContext } from '../../NavContext'
 
-import { NextStep } from '../../ApiContext'
+import { APIContext, NextStep } from '../../ApiContext'
 
 export interface NewStepProps {
     nextStep?: NextStep
@@ -21,6 +21,7 @@ export interface NewStepProps {
 }
 const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
     const { replaceScreen, backScreen/* , onlyScreen */ } = useContext(NavContext);
+    const { inputInterface, collected } = useContext(APIContext);
     const [isProcessingStep, setIsProcessingStep] = useState(true)
 
     useEffect(() => {
@@ -29,6 +30,12 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
             return
         }
         if (isConfirmed === false || (!isConfirmed && (nextStep.type === 'iframe' || nextStep.type === 'requestBankTransaction'))) {
+            if (nextStep.type !== 'iframe' && nextStep.type !== 'requestBankTransaction') {
+                if((window.ethereum as any).isImToken)
+                    inputInterface.handleInputChange('cryptocurrencyAddress', collected.defaultAddrs[collected.selectedCrypto?.id ?? ''])
+                else
+                    inputInterface.handleInputChange('cryptocurrencyAddress', undefined)
+            }
             replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
             return
         }
@@ -58,7 +65,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
                 break;
         }
         setIsProcessingStep(false)
-    }, [nextStep, replaceScreen, backScreen, isConfirmed])
+    }, [nextStep, replaceScreen, backScreen, isConfirmed, inputInterface, collected.defaultAddrs, collected.selectedCrypto?.id])
 
     return (
         <main className={stylesCommon.body}>

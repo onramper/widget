@@ -40,7 +40,7 @@ export type CollectedStateType = {
     selectedCountry?: string
     cryptocurrencyAddress?: string,
     defaultAddrs: {
-        [key: string]: string[]
+        [key: string]: string
     }
     errors?: ErrorObjectType,
     isAddressEditable?: boolean
