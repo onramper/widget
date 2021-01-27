@@ -38,8 +38,9 @@ const InputText: React.FC<InputTextType> = (props) => {
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         let value: string | number = e.target.value.replace(',', '.')
         if (value.split('.').length > 2 || !isFinite(Number(value))) return false
-        if (!value.match(/\.$|,$|^\.|^,/))
-            value = value === '' ? e.target.value : type === 'number' ? toMaxDecimalsRound(e.target.value ?? 0, actualSymbol?.precision ?? 1) : value
+        if (!value.match(/\.(0+)?$|,(0+)?$|^\.(0+)?|^,(0+)?/)) {
+            value = value === '' ? e.target.value : type === 'number' ? toMaxDecimalsRound(value ?? 0, actualSymbol?.precision ?? 1) : value
+        }
         if (value !== 0 && value !== '' && !value && type === 'number') return false
         onChange?.(e.target.name, value)
     }, [onChange, type, actualSymbol])
