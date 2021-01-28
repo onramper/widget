@@ -7,7 +7,7 @@ import Step from "../Step";
 import { NavContext } from "../../NavContext";
 import { APIContext, NextStep } from "../../ApiContext";
 
-const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
+const ConfirmPaymentView: React.FC<{ nextStep: NextStep, includeCryptoAddr?:boolean }> = (props) => {
   const { nextScreen } = useContext(NavContext);
   const { collected } = useContext(APIContext);
   const [walletAddr, setWalletAddr] = React.useState(
@@ -15,7 +15,7 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep }> = (props) => {
   );
 
   React.useEffect(() => {
-    setWalletAddr(collected?.cryptocurrencyAddress);
+    setWalletAddr(props.includeCryptoAddr ? collected?.cryptocurrencyAddress : undefined);
   }, [collected?.cryptocurrencyAddress]);
 
   return (

@@ -31,12 +31,10 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         }
         if (isConfirmed === false || (!isConfirmed && (nextStep.type === 'iframe' || nextStep.type === 'requestBankTransaction'))) {
             if (nextStep.type !== 'iframe' && nextStep.type !== 'requestBankTransaction') {
-                if((window.ethereum as any).isImToken)
+                if(!collected.isAddressEditable)
                     inputInterface.handleInputChange('cryptocurrencyAddress', collected.defaultAddrs[collected.selectedCrypto?.id ?? ''])
-                else
-                    inputInterface.handleInputChange('cryptocurrencyAddress', undefined)
             }
-            replaceScreen(<ConfirmPaymentView nextStep={nextStep} />)
+            replaceScreen(<ConfirmPaymentView nextStep={nextStep} includeCryptoAddr={!collected.isAddressEditable} />)
             return
         }
         switch (nextStep.type) {
@@ -65,7 +63,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
                 break;
         }
         setIsProcessingStep(false)
-    }, [nextStep, replaceScreen, backScreen, isConfirmed, inputInterface, collected.defaultAddrs, collected.selectedCrypto?.id])
+    }, [nextStep, replaceScreen, backScreen, isConfirmed, inputInterface, collected.defaultAddrs, collected.selectedCrypto?.id, collected.isAddressEditable])
 
     return (
         <main className={stylesCommon.body}>
