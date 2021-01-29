@@ -21,13 +21,13 @@ const cryptoFacts = shuffle([
   "Bitcoin is created through mining",
 ]);
 
-const BodyLoading: React.FC<BodyLoadingType> = (props) => {
+const BodyLoading: React.FC<BodyLoadingType> = () => {
   const [factIndex, setFactIndex] = React.useState(0);
 
   React.useEffect(() => {
     const t = setInterval(
       () => setFactIndex((old) => (old + 1) % cryptoFacts.length),
-      5000
+      1000 * 10
     );
     return () => clearInterval(t);
   }, []);
@@ -39,9 +39,30 @@ const BodyLoading: React.FC<BodyLoadingType> = (props) => {
         Verifying your identity
       </p>
       <p style={{ color: "#252525", fontSize: "0.9rem" }}>
-        Your documents are being verified, please, wait. While, did you know...
+        Your documents are being verified, this process takes about 5 minutes,
+        please, wait.
       </p>
-      <p style={{ fontStyle: "italic" }}>{cryptoFacts[factIndex]}</p>
+      <span
+        style={{
+          fontStyle: "italic",
+          fontSize: "13px",
+          padding: "5px",
+          marginTop: "1.5rem",
+        }}
+      >
+        While, did you know...
+      </span>
+      <p
+        style={{
+          margin: "0rem",
+          alignSelf: "center",
+          bottom: "1.125rem",
+          fontSize: "13px",
+          borderRadius: "16px",
+        }}
+      >
+        {cryptoFacts[factIndex]}
+      </p>
     </main>
   );
 };
@@ -60,12 +81,12 @@ const CardAnimation = () => (
 );
 
 function shuffle(array: string[]) {
-  var currentIndex = array.length,
-    temporaryValue,
-    randomIndex;
+  let currentIndex = array.length;
+  let temporaryValue;
+  let randomIndex;
 
   // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+  while (currentIndex !== 0) {
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
