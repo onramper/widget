@@ -16,7 +16,7 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep, includeCryptoAddr?:bool
 
   React.useEffect(() => {
     setWalletAddr(props.includeCryptoAddr ? collected?.cryptocurrencyAddress : undefined);
-  }, [collected?.cryptocurrencyAddress]);
+  }, [collected?.cryptocurrencyAddress, props.includeCryptoAddr]);
 
   return (
     <div className={styles.view}>
