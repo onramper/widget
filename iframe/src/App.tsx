@@ -1,6 +1,5 @@
 import React from "react";
 import OnramperWidget from "@onramper/widget";
-/* import Web3 from "web3"; */
 
 const com_key = "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00";
 const dev_key = "pk_test_oDsXkHokDdr06zZ0_sxJGw00";
@@ -29,72 +28,10 @@ const excludeFiat = getArrayParam("excludeFiat");
 const onlyGateways = getArrayParam("onlyGateways");
 const onlyFiat = getArrayParam("onlyFiat");
 const country = getParam("country");
-/* let isAddressEditable = getParam("isAddressEditable", "true"); */
-//let wallets = getWalletsParam();
-
-const erc20Coins = [
-  "AAVE",
-  "BAND",
-  "BAT",
-  "CHZ",
-  "COMP",
-  "CVC",
-  "DAI",
-  "ETH",
-  "FUN",
-  "LINK",
-  "MANA",
-  "MATIC",
-  "MKR",
-  "OCEAN",
-  "OKB",
-  "OM",
-  "OMG",
-  "PAX",
-  "PAXG",
-  "REP",
-  "STMX",
-  "TUSD",
-  "UNI",
-  "USDC",
-  "USDT",
-  "WBTC",
-  "ZRX",
-  "ETH"
-];
+const isAddressEditable = getParam("isAddressEditable", "true");
+const wallets = getWalletsParam();
 
 function App() {
-  const [wallets, setWallets] = React.useState(getWalletsParam());
-  const [isAddressEditable, setIsAddressEditable] = React.useState(
-    getParam("isAddressEditable", "true")
-  );
-
-  React.useEffect(() => {
-    const d = async () => {
-      /* let web3: Web3; */
-      if (window.ethereum) {
-        const ethereum = window.ethereum as any;
-        /* web3 = new Web3(ethereum as any); */
-        try {
-          // Request account access if needed
-          if (ethereum.isImToken) {
-            await ethereum.enable().then((w: string[]) => {
-              setIsAddressEditable("false");
-              setWallets((old) => ({
-                ...old,
-                ...(erc20Coins.reduce((acc, act)=>({...acc, [act]:w[0]}), {}))
-              }));
-            });
-          }
-          // Acccounts now exposed
-        } catch (error) {
-          // User denied account access...
-        }
-      }
-    };
-    d();
-  }, []);
-
   return (
     <>
       <div style={{ display: "flex", flexDirection: "row", height: "100%" }}>

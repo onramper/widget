@@ -149,6 +149,8 @@
 .text-hint--link {
     text-decoration: underline;
     cursor: pointer;
+    color: #4c4c4c;
+    margin-top: 6px;
 }
 
 /********error display transition*********/

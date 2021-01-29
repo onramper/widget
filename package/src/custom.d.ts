@@ -33,6 +33,8 @@ interface Window {
           enable(): Promise<string[]>;
           selectedAddress: string | null;
           request: (params: { method: string }) => Promise<string[]>;
+          isMetaMask: boolean
+          isImToken: boolean
         }
       | undefined;
   }
