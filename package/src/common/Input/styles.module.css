@@ -11,6 +11,7 @@
     font-size: 0.875rem;
     display: flex;
     flex-direction: row;
+    align-items: baseline;
 }
 
 .label__title {

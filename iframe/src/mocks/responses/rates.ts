@@ -52,6 +52,12 @@ const ratesAllParams = [
                     "type": "string",
                     "name": "cryptocurrencyAddress",
                     "humanName": "Cryptocurrency wallet address"
+                },
+                {
+                    "type":"string",
+                    "name":"cryptocurrencyAddressTag",
+                    "humanName":"Cryptocurrency address tag",
+                    "required":false
                 }
             ]
         }

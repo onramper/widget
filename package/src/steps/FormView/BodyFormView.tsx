@@ -13,6 +13,7 @@ import HelpView from '../../common/HelpView'
 import Help2FACreditCard from './renderers/Help2FACreditCard'
 
 import { APIContext, StepDataItems, DEFAULT_STATE, DEFAULT_COUNTRY } from '../../ApiContext'
+import type { CollectedStateType } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
 
@@ -95,12 +96,20 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 }
             }
         }
+
+        if (name === 'cryptocurrencyAddressTag') {
+            handleInputChange('cryptocurrencyAddress', {
+                ...collected.cryptocurrencyAddress,
+                memo:v
+            })
+        }
+
         handleInputChange(name, v)
 
         if (name === 'country')
             setCountryHasChanged(v)
 
-    }, [handleInputChange])
+    }, [handleInputChange, collected.cryptocurrencyAddress])
 
     useEffect(() => {
         // setting initial values
@@ -197,7 +206,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             ))
                             || ((field.name === 'verifyCreditCard') && (
                                 <React.Fragment key={i}>
-                                    <InputText ref={inputRefs[i].ref} onHintClick={() => nextScreen(
+                                    <InputText isRequired={field.required!==false} ref={inputRefs[i].ref} onHintClick={() => nextScreen(
                                         <HelpView buttonText={"Got it👌"}>
                                             <Help2FACreditCard />
                                         </HelpView>
@@ -207,7 +216,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             ))
                             || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
                                 <React.Fragment key={i}>
-                                    <InputText ref={inputRefs[i].ref} hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon.body__child} type={getInputType(field)} />
+                                    <InputText isRequired={field.required!==false} ref={inputRefs[i].ref} hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon.body__child} type={getInputType(field)} />
                                     <span key={999} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
                                 </React.Fragment>
                             ))
@@ -305,7 +314,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     </div>
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((field.type !== 'boolean') && (
-                                <InputText ref={inputRefs[i].ref} key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={collected[field.name] ?? ''} onChange={onChange} className={stylesCommon.body__child} label={field.humanName} type={getInputType(field)} />
+                                <InputText isRequired={field.required!==false} ref={inputRefs[i].ref} key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={getValueByField(field, collected)} onChange={onChange} className={stylesCommon.body__child} label={field.humanName} type={getInputType(field)} />
                             ))
                         )
                     })
@@ -316,6 +325,14 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             </>
         </main >
     )
+}
+
+const getValueByField = (field: BodyFormViewType['fields'][0], collected: CollectedStateType) => {
+    if (field.name === 'cryptocurrencyAddressTag')
+        return collected["cryptocurrencyAddress"]?.memo ?? ""
+    else if (field.name)
+        return collected[field.name]
+    else return ""
 }
 
 const getInputType = (field: BodyFormViewType['fields'][0]) => {

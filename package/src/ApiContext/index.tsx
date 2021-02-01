@@ -8,7 +8,7 @@ import { arrayUnique, arrayObjUnique } from '../utils'
 import LogoOnramper from '../icons/onramper_logo.svg'
 
 import * as API from './api'
-import type { ItemType, GatewayRateOption, ErrorObjectType, TypesOfRateError } from './initialState';
+import type { ItemType, GatewayRateOption, ErrorObjectType, TypesOfRateError, CryptoAddrType, CollectedStateType } from './initialState';
 import { GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
 import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from './api/types/nextStep';
@@ -30,7 +30,7 @@ const APIContext = createContext<StateType>(initialState);
 interface APIProviderType {
   API_KEY?: string,
   defaultAmount?: number
-  defaultAddrs?: { [key: string]: string }
+  defaultAddrs?: { [denom: string]: CryptoAddrType }
   defaultCrypto?: string
   defaultFiat?: string
   defaultFiatSoft?: string
@@ -69,9 +69,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     []
   )
 
-  useEffect(()=>{
+/*   useEffect(()=>{
+    console.log(defaultAddrs)
     handleInputChange("defaultAddrs", defaultAddrs)
-  }, [defaultAddrs, handleInputChange])
+  }, [defaultAddrs, handleInputChange]) */
 
   useEffect(()=>{
     handleInputChange("isAddressEditable", isAddressEditable)
@@ -524,5 +525,8 @@ export type {
   NextStep,
   StepDataItems,
   FileStep,
-  InfoDepositBankAccount
+  InfoDepositBankAccount,
+  Filters,
+  APIProviderType,
+  CollectedStateType
 }

@@ -47,13 +47,15 @@ function App() {
             defaultFiat={defaultFiat}
             defaultFiatSoft={defaultFiatSoft}
             defaultPaymentMethod={defaultPaymentMethod}
-            onlyCryptos={onlyCryptos}
-            excludeCryptos={excludeCryptos}
-            onlyPaymentMethods={onlyPaymentMethods}
-            excludePaymentMethods={excludePaymentMethods}
-            excludeFiat={excludeFiat}
-            onlyGateways={onlyGateways}
-            onlyFiat={onlyFiat}
+            filters= {{
+              onlyCryptos: onlyCryptos,
+              excludeCryptos: excludeCryptos,
+              onlyPaymentMethods: onlyPaymentMethods,
+              excludePaymentMethods: excludePaymentMethods,
+              excludeFiat: excludeFiat,
+              onlyGateways: onlyGateways,
+              onlyFiat: onlyFiat,
+            }}
             country={country}
             isAddressEditable={isAddressEditable === "true"}
           />
@@ -85,13 +87,20 @@ function getArrayParam(paramName: string) {
 function getWalletsParam() {
   return getParam("wallets", undefined)
     ?.split(",")
-    .reduce(
-      (acc, wallet) => ({
+    .reduce((acc, wallet) => {
+      if (wallet.split(":").length !== 2) return acc;
+      const denom = wallet.split(":")?.[0];
+      const tail = wallet.split(":")?.[1].split(";");
+      if (tail && tail.length > 2) return acc;
+      let address;
+      let memo;
+      if (tail.length >= 1) address = tail[0];
+      if (tail.length === 2) memo = tail[1];
+      return {
         ...acc,
-        [wallet.split(":")?.[0]]: wallet.split(":")?.[1],
-      }),
-      {}
-    );
+        [denom]: { address, memo },
+      };
+    }, {});
 }
 
 export default App;

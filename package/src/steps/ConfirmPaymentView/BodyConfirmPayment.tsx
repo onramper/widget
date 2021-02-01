@@ -5,6 +5,7 @@ import styles from './styles.module.css'
 import IconChevron from '../../icons/chevron-right.svg'
 import { ReactComponent as IconPay } from '../../icons/payment.svg'
 import { ReactComponent as IconWallet } from '../../icons/wallet.svg'
+import { ReactComponent as IconTag } from '../../icons/tag.svg'
 import { ReactComponent as IconExpectedtime } from '../../icons/expected_time.svg'
 
 import { CSSTransition } from 'react-transition-group';
@@ -21,6 +22,7 @@ type BodyConfirmPaymentViewType = {
     cryptoAmount: number
     cryptoDenom: string
     cryptoAddr?: string
+    cryptoAddrTag?: string
     paymentMethod?: string
     cryptoIcon?: string
     txTime?: { seconds: number, message: string }
@@ -63,6 +65,12 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                     props.cryptoAddr &&
                     <ul className={`${styles.wrapper}`}>
                         <Item type='main' icon={<IconWallet className={styles.icon} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
+                    </ul>
+                }
+                {
+                    props.cryptoAddrTag &&
+                    <ul className={`${styles.wrapper}`}>
+                        <Item type='main' icon={<IconTag className={styles.icon} />} title={`Address tag`} content={props.cryptoAddrTag} single />
                     </ul>
                 }
                 {/*                 <ul className={`${styles['wrapper']}`}>

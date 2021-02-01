@@ -7,16 +7,25 @@ import Step from "../Step";
 import { NavContext } from "../../NavContext";
 import { APIContext, NextStep } from "../../ApiContext";
 
-const ConfirmPaymentView: React.FC<{ nextStep: NextStep, includeCryptoAddr?:boolean }> = (props) => {
+const ConfirmPaymentView: React.FC<{
+  nextStep: NextStep;
+  includeCryptoAddr?: boolean;
+}> = (props) => {
   const { nextScreen } = useContext(NavContext);
   const { collected } = useContext(APIContext);
-  const [walletAddr, setWalletAddr] = React.useState(
-    collected.cryptocurrencyAddress
-  );
+  const [walletAddr, setWalletAddr] = React.useState<
+    undefined | { address?: string; memo?: string }
+  >({
+    address: collected.cryptocurrencyAddress?.address,
+    memo: collected.cryptocurrencyAddress?.memo,
+  });
 
   React.useEffect(() => {
-    setWalletAddr(props.includeCryptoAddr ? collected?.cryptocurrencyAddress : undefined);
-  }, [collected?.cryptocurrencyAddress, props.includeCryptoAddr]);
+    setWalletAddr(props.includeCryptoAddr ? {
+      address: collected.cryptocurrencyAddress?.address,
+      memo: collected.cryptocurrencyAddress?.memo,
+    } : undefined);
+  }, [props.includeCryptoAddr, collected.cryptocurrencyAddress]);
 
   return (
     <div className={styles.view}>
@@ -31,7 +40,8 @@ const ConfirmPaymentView: React.FC<{ nextStep: NextStep, includeCryptoAddr?:bool
         cryptoAmount={collected.selectedGateway?.receivedCrypto || 0}
         cryptoDenom={collected.selectedCrypto?.name || ""}
         txTime={collected.selectedGateway?.duration}
-        cryptoAddr={walletAddr}
+        cryptoAddr={walletAddr?.address}
+        cryptoAddrTag={walletAddr?.memo}
         cryptoIcon={collected.selectedCrypto?.icon}
         paymentMethod={collected.selectedPaymentMethod?.name}
         conversionRate={collected.selectedGateway?.rate}

@@ -29,6 +29,11 @@ export type StateType = {
     [key: string]: any
 }
 
+export interface CryptoAddrType {
+    address: string,
+    memo?: string
+}
+
 export type CollectedStateType = {
     amount: number,
     amountInCrypto: boolean,
@@ -38,7 +43,7 @@ export type CollectedStateType = {
     selectedPaymentMethod?: ItemType,
     selectedGateway?: GatewayRateOption,
     selectedCountry?: string
-    cryptocurrencyAddress?: string,
+    cryptocurrencyAddress?: CryptoAddrType,
     defaultAddrs: {
         [key: string]: string
     }

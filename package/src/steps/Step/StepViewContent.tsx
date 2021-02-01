@@ -30,11 +30,13 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
             return
         }
         if (isConfirmed === false || (!isConfirmed && (nextStep.type === 'iframe' || nextStep.type === 'requestBankTransaction'))) {
+            let includeAddr = true
             if (nextStep.type !== 'iframe' && nextStep.type !== 'requestBankTransaction') {
+                includeAddr=false
                 if(!collected.isAddressEditable)
                     inputInterface.handleInputChange('cryptocurrencyAddress', collected.defaultAddrs[collected.selectedCrypto?.id ?? ''])
             }
-            replaceScreen(<ConfirmPaymentView nextStep={nextStep} includeCryptoAddr={!collected.isAddressEditable} />)
+            replaceScreen(<ConfirmPaymentView nextStep={nextStep} includeCryptoAddr={includeAddr} />)
             return
         }
         switch (nextStep.type) {

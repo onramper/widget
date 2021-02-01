@@ -41,8 +41,8 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((p
     }, [collected.defaultAddrs, collected.selectedCrypto?.id, collected.cryptocurrencyAddress, handleInputChange])
 
     const onChange = useCallback((name: string, value: string) => {
-        handleInputChange(name, value)
-    }, [handleInputChange])
+        handleInputChange(name, {...collected.cryptocurrencyAddress, address:value})
+    }, [handleInputChange, collected.cryptocurrencyAddress])
 
     const getWalletAddrs = useCallback(async () => {
         const importedWallets = await ProviderManager.getAccounts()
@@ -50,7 +50,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((p
             setNewInfo(`Couldn't get your ${collected.selectedCrypto?.id ?? ''} address from ${ProviderManager.providerName}, access denied.`)
             return
         }
-        handleInputChange('cryptocurrencyAddress', importedWallets[collected.selectedCrypto?.id ?? ''])
+        handleInputChange('cryptocurrencyAddress', {address: importedWallets[collected.selectedCrypto?.id ?? '']})
         setNewErr(undefined)
         setNewInfo(`${collected.selectedCrypto?.info ??''} address successfully imported from ${ProviderManager.providerName} wallet`)
     }, [collected.selectedCrypto?.id, handleInputChange, collected.selectedCrypto?.info])
@@ -77,7 +77,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((p
             hint={ProviderManager.providerName ? `Import address from ${ProviderManager.providerName} wallet` : props.hint}
             type={type}
             error={newErr}
-            value={collected.cryptocurrencyAddress ?? ''}
+            value={collected.cryptocurrencyAddress?.address ?? ''}
             iconPosition='end'
             name='cryptocurrencyAddress'
             onChange={onChange}

@@ -90,7 +90,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   useEffect(() => {
     const keysList = nextStepData.filter((data) => {
       if (data.type === 'boolean' && data.name !== 'termsOfUse') return false
-      if (data.type!=='boolean' && !data.required) return false
+      if (data.type!=='boolean' && data.required===false) return false
       return  true
     }).map(nsd => nsd.name)
     const filled = areAllKeysFilled(collected, keysList)
