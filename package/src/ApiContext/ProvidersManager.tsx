@@ -8,9 +8,9 @@ export enum ProviderNames {
 export class ProviderManager {
   static providerName: ProviderNames | undefined;
 
-  static _cryptoCode: string | undefined;
+  private static _cryptoCode: string | undefined;
 
-  static _cryptoName: string | null = null;
+  private static _cryptoName: string | null = null;
 
   static providerIsPresent = (cryptoCode?: string, cryptoName?: string) => {
     if (!cryptoCode || !cryptoName) return false;
@@ -27,7 +27,9 @@ export class ProviderManager {
 
     // IMTOKEN
     if (
-      ProviderManager.IMTOKEN_supportedCryptos.includes(cryptoCode.toUpperCase()) ||
+      ProviderManager.IMTOKEN_supportedCryptos.includes(
+        cryptoCode.toUpperCase()
+      ) ||
       (ProviderManager.IMTOKEN_supportedCryptos.includes("ETH") &&
         ERC20COINS.includes(cryptoCode.toUpperCase()))
     ) {
@@ -52,14 +54,17 @@ export class ProviderManager {
 
   static isdApp = () => {
     if (!ProviderManager.providerName) return false;
-    if ([ProviderNames.imToken].includes(ProviderManager.providerName)) return true;
+    if ([ProviderNames.imToken].includes(ProviderManager.providerName))
+      return true;
   };
 
   static getAccounts = async (): Promise<
     { [cryptoCode: string]: string } | undefined
   > => {
-    if (ProviderManager.providerName === ProviderNames.imToken) return ProviderManager.getImTokenAccounts();
-    else if (ProviderManager.providerName === ProviderNames.Metamask) return ProviderManager.getMetamaskAccounts();
+    if (ProviderManager.providerName === ProviderNames.imToken)
+      return ProviderManager.getImTokenAccounts();
+    else if (ProviderManager.providerName === ProviderNames.Metamask)
+      return ProviderManager.getMetamaskAccounts();
   };
 
   /**
