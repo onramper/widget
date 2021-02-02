@@ -4,6 +4,7 @@ import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
 import processMoonpayStep, { moonpayUrlRegex } from '@onramper/moonpay-adapter'
+import type {CryptoAddrType} from '../initialState'
 
 import { BASE_API } from './constants'
 
@@ -200,12 +201,25 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, filters?: Fi
     }
 }
 
-const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[]): RateResponse => {
+type DefaultAddrs = {
+    [denom: string]: CryptoAddrType | undefined;
+}
+
+const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[], defaultAddrs?:DefaultAddrs, selectedCrypto?:string): RateResponse => {
     return ratesResponse.filter(gateway => {
-        if (onlyGateways === undefined) {
-            return true;
+        if (onlyGateways !== undefined && !onlyGateways.includes(gateway.identifier)) {
+            return false;
         }
-        return onlyGateways.includes(gateway.identifier)
+        if(defaultAddrs !== undefined && selectedCrypto !== undefined){
+            const memoUsed = defaultAddrs[selectedCrypto]?.memo !== undefined
+            if(memoUsed){
+                const nextStep = gateway.nextStep
+                if(nextStep!==undefined && nextStep.type === "form" && !nextStep.data.some(data=>data.name==="cryptocurrencyAddressTag")){
+                    return false;
+                }
+            }
+        }
+        return true;
     })
 }
 
