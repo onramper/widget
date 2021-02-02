@@ -88,14 +88,14 @@ function getWalletsParam() {
   return getParam("wallets", undefined)
     ?.split(",")
     .reduce((acc, wallet) => {
-      if (wallet.split(":").length !== 2) return acc;
-      const denom = wallet.split(":")?.[0];
-      const tail = wallet.split(":")?.[1].split(";");
-      if (tail && tail.length > 2) return acc;
+      const paramSplitted = wallet.split(":")
+      const denom = paramSplitted[0];
+      const walletAddr = paramSplitted.slice(1).join(":").split(";")
+      if (walletAddr && walletAddr.length > 2) return acc;
       let address;
       let memo;
-      if (tail.length >= 1) address = tail[0];
-      if (tail.length === 2) memo = tail[1];
+      if (walletAddr.length >= 1) address = walletAddr[0];
+      if (walletAddr.length === 2) memo = walletAddr[1];
       return {
         ...acc,
         [denom]: { address, memo },
