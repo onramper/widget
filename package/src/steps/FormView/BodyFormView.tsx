@@ -314,7 +314,20 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     </div>
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((field.type !== 'boolean') && (
-                                <InputText isRequired={field.required!==false} ref={inputRefs[i].ref} key={i} hint={field.hint} error={errorObj?.[field.name]} name={field.name} value={getValueByField(field, collected)} onChange={onChange} className={stylesCommon.body__child} label={field.humanName} type={getInputType(field)} />
+                                <InputText
+                                    isRequired={field.required!==false}
+                                    ref={inputRefs[i].ref}
+                                    key={i}
+                                    hint={field.hint}
+                                    error={errorObj?.[field.name]}
+                                    name={field.name}
+                                    value={getValueByField(field, collected)}
+                                    onChange={onChange}
+                                    className={stylesCommon.body__child}
+                                    label={field.humanName}
+                                    type={getInputType(field)}
+                                    disabled={field.name==='cryptocurrencyAddressTag' && !collected.isAddressEditable}
+                                />
                             ))
                         )
                     })
