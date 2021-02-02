@@ -69,7 +69,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       if (current.name==="cryptocurrencyAddress")
         value = collected[current.name]?.address
       if (current.name==="cryptocurrencyAddressTag")
-        value = collected[current.name]?.memo
+        value = collected["cryptocurrencyAddress"]?.memo
       return { ...acc, [current.name]: value }
     }, {})
     try {
