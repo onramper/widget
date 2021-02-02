@@ -65,7 +65,12 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
     setErrorMsg(undefined)
 
     const params = nextStepData.reduce((acc, current) => {
-      return { ...acc, [current.name]: collected[current.name] }
+      let value = collected[current.name]
+      if (current.name==="cryptocurrencyAddress")
+        value = collected[current.name]?.address
+      if (current.name==="cryptocurrencyAddressTag")
+        value = collected[current.name]?.memo
+      return { ...acc, [current.name]: value }
     }, {})
     try {
       const newNextStep = await apiInterface.executeStep(nextStep, params);
