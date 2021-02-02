@@ -375,7 +375,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           },
           signal
         )
-        responseRate = API.filterRatesResponse(rawResponseRate, props.filters?.onlyGateways)
+        responseRate = API.filterRatesResponse(rawResponseRate, props.filters?.onlyGateways, state.collected.defaultAddrs, state.collected.selectedCrypto?.id)
       } catch (error) {
         if (error.name === 'AbortError')
           return {}
@@ -469,7 +469,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // IF NO ERRORS, RETURN UNDEFINED
       return undefined
-    }, [addData, state.collected.selectedCountry, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.responseGateways, state.collected.selectedPaymentMethod, processErrors, clearErrors, props.filters?.onlyGateways])
+    }, [addData, state.collected.selectedCountry, state.collected.selectedCrypto, state.collected.selectedCurrency, state.collected.amount, state.collected.amountInCrypto, state.data.responseGateways, state.collected.selectedPaymentMethod, state.collected.defaultAddrs, processErrors, clearErrors, props.filters?.onlyGateways])
 
   useEffect(() => {
     handleCryptoChange()
