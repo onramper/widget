@@ -69,11 +69,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     []
   )
 
-/*   useEffect(()=>{
-    console.log(defaultAddrs)
-    handleInputChange("defaultAddrs", defaultAddrs)
-  }, [defaultAddrs, handleInputChange]) */
-
   useEffect(()=>{
     handleInputChange("isAddressEditable", isAddressEditable)
   }, [isAddressEditable, handleInputChange])
@@ -166,11 +161,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         currencyType: ItemCategory.Crypto
       }))
 
-      // SELECT DEFAULT CRYPTO
- /*      const selectedCrypto = mappedAvailableCryptos.find((crypto) => (crypto.id === defaultCrypto)) || mappedAvailableCryptos[0]
-
       // save to state.collected
-      handleInputChange('selectedCrypto', selectedCrypto) */
       handleInputChange('state', responseGateways.localization.state ?? DEFAULT_STATE)
       handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country?.toUpperCase() ?? DEFAULT_COUNTRY]?.phoneCode)
       // save to state.date
