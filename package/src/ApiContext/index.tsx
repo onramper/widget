@@ -8,7 +8,7 @@ import { arrayUnique, arrayObjUnique } from '../utils'
 import LogoOnramper from '../icons/onramper_logo.svg'
 
 import * as API from './api'
-import type { ItemType, GatewayRateOption, ErrorObjectType, TypesOfRateError, CryptoAddrType, CollectedStateType } from './initialState';
+import type { ItemType, GatewayRateOption, ErrorObjectType, TypesOfRateError, CryptoAddrType, CollectedStateType, GatewayRateOptionSimple } from './initialState';
 import { GatewaysResponse } from './api/types/gateways'
 import { RateResponse } from './api/types/rate'
 import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from './api/types/nextStep';
@@ -474,6 +474,93 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     handlePaymentMethodChange()
   }, [handlePaymentMethodChange])
 
+  useEffect(()=> {
+    const allRatesNames = state.data.allRates.map(rate=>rate.identifier)
+    const hiddenRates = state.data.responseGateways?.gateways.filter(gateway=>!allRatesNames.includes(gateway.identifier))
+    const hiddenRatesWithMyCrypto = hiddenRates?.filter(rate=>rate.cryptoCurrencies.some(crypto=>crypto.code===state.collected.selectedCrypto?.id))
+    const hiddenRatesWithMyCryptonCurrency = hiddenRatesWithMyCrypto?.filter(rate=>rate.fiatCurrencies.some(Fiat=>Fiat.code===state.collected.selectedCurrency?.id))
+    const hiddenPaymentMethodsByCryptoFiat = hiddenRatesWithMyCryptonCurrency?.reduce((acc, rate)=> {
+      const newAcc = []
+      for (let index = 0; index < rate.paymentMethods.length; index++) {
+        const element = rate.paymentMethods[index];
+        if (!acc[rate.identifier]?.includes(element))
+          newAcc.push(element)
+      }
+      return {
+        ...acc,
+        [rate.identifier] : [...(acc[rate.identifier]??[]), ...newAcc]
+      }
+    }, {} as {[identifier:string]:string[]})
+    console.log("hiddenPaymentMethodsByCryptoFiat", hiddenPaymentMethodsByCryptoFiat)
+    const hiddenPaymentMethodsByCrypto = hiddenRatesWithMyCrypto?.reduce((acc, rate)=> {
+      const newAcc = []
+      for (let index = 0; index < rate.paymentMethods.length; index++) {
+        const element = rate.paymentMethods[index];
+        if (!acc[rate.identifier]?.includes(element))
+          newAcc.push(element)
+      }
+      return {
+        ...acc,
+        [rate.identifier] : [...(acc[rate.identifier]??[]), ...newAcc]
+      }
+    }, {} as {[identifier:string]:string[]})
+    console.log("hiddenPaymentMethodsByCrypto", hiddenPaymentMethodsByCrypto)
+
+    const mappedHiddenByCrypto = Object.entries(hiddenPaymentMethodsByCrypto??{})
+    .map(([identifier])=>{
+      return {
+        [identifier]: "Available paying with USD, EUR, GBP or other currency"/* payments.reduce((acc, payment, index, arr) => {
+          const paymentName = state.data.ICONS_MAP?.[payment].name
+          if (acc==="")
+            return `Available paying with ${paymentName}`
+          else if (index<arr.length-1)
+            return `${acc}, ${paymentName}`
+          else if (index===arr.length-1)
+            return `${acc} and ${paymentName}`
+          else return acc
+        }, "") */
+      }
+    })
+
+    console.log(mappedHiddenByCrypto)
+
+    const mappedHiddenByFiat = Object.entries(hiddenPaymentMethodsByCryptoFiat??{})
+    .map(([identifier, payments])=>{
+      return {
+        identifier: identifier,
+        icon: state.data.ICONS_MAP?.[identifier]?.icon || LogoOnramper,
+        error: {
+          type: "OPTION",
+          message: payments.reduce((acc, payment, index, arr) => {
+            const paymentName = state.data.ICONS_MAP?.[payment].name
+            if (acc==="")
+              return `Available paying with ${paymentName}`
+            else if (index<arr.length-1)
+              return `${acc}, ${paymentName}`
+            else if (index===arr.length-1)
+              return `${acc} and ${paymentName}`
+            else return acc
+          }, "")
+        }
+      }
+    })
+
+    console.log(mappedHiddenByFiat)
+
+    addData({
+      mappedHiddenByFiat: mappedHiddenByFiat,
+      mappedHiddenByCrypto: mappedHiddenByCrypto
+    })
+  }, [
+    state.collected.selectedPaymentMethod,
+    state.collected.selectedCrypto?.id,
+    state.collected.selectedCurrency?.id,
+    state.data.allRates,
+    state.data.responseGateways?.gateways,
+    addData,
+    state.data.ICONS_MAP
+  ])
+
   useEffect(() => {
     const getRatesEffect = async () => {
       await getRates()
@@ -519,5 +606,6 @@ export type {
   InfoDepositBankAccount,
   Filters,
   APIProviderType,
-  CollectedStateType
+  CollectedStateType,
+  GatewayRateOptionSimple
 }

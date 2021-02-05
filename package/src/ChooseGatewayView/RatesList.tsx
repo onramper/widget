@@ -2,12 +2,13 @@ import React, { useState, useCallback, useContext } from 'react'
 import styles from './styles.module.css'
 import GatewayOption from './GatewayOption'
 import type { badgeType } from './GatewayOption'
-import { APIContext, GatewayRateOption } from '../ApiContext'
+import { APIContext, GatewayRateOption, GatewayRateOptionSimple } from '../ApiContext'
 import { documents } from '../ApiContext/api/constants'
 
 interface RatesListProps {
     availableRates: GatewayRateOption[],
     unavailableRates: GatewayRateOption[],
+    hiddenRates: GatewayRateOptionSimple[],
     onItemClick?: (index: number) => void
 }
 
@@ -82,6 +83,21 @@ const RatesList: React.FC<RatesListProps> = (props) => {
                     />
                 )
             }
+{/*             {
+                props.hiddenRates.map((item, i) =>
+                    <GatewayOption
+                        id={item.identifier}
+                        name={item.identifier}
+                        available={true}
+                        duration={{seconds:0, message:""}}
+                        key={i}
+                        index={i}
+                        isOpen={false}
+                        selectedReceivedCrypto={0}
+                        {...item}
+                    />
+                )
+            } */}
             {
                 unavailableRates.map((item, i) =>
                     <GatewayOption

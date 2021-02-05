@@ -3,6 +3,7 @@ import { RateResponse, GatewayRate } from './api/types/rate'
 import { NextStep } from './api/types/nextStep'
 
 export type GatewayRateOption = { id: string, name: string } & GatewayRate
+export type GatewayRateOptionSimple = Pick<GatewayRate, "identifier" | "icon" | "error">
 
 export interface ItemType {
     id: string
@@ -64,7 +65,7 @@ export type ErrorObjectType = {
     }
 } | undefined
 
-export type TypesOfRateError = 'API' | 'NO_RATES' | 'MIN' | 'MAX' | 'UNREACHABLE' | 'OTHER' | 'ALL_UNAVAILABLE'
+export type TypesOfRateError = 'API' | 'NO_RATES' | 'MIN' | 'MAX' | 'UNREACHABLE' | 'OTHER' | 'ALL_UNAVAILABLE' | 'OPTION'
 
 export type DataStateType = {
     availableCryptos: ItemType[]
@@ -78,7 +79,9 @@ export type DataStateType = {
     responseGateways?: GatewaysResponse
     filtredGatewaysByCrypto: GatewaysResponse['gateways']
     filtredGatewaysByCurrency: GatewaysResponse['gateways']
+    mappedHiddenByFiat: GatewayRateOptionSimple[]
     responseRate?: RateResponse
+    ICONS_MAP?: {[key:string]: {icon: string, name: string, symbol?:string}}
 }
 
 export type InputInterfaceType = {
@@ -118,7 +121,8 @@ export const initialState: StateType = {
         responseGateways: undefined,
         filtredGatewaysByCrypto: [],
         filtredGatewaysByCurrency: [],
-        responseRate: undefined
+        responseRate: undefined,
+        mappedHiddenByFiat: []
     },
     inputInterface: {
         handleInputChange: () => null

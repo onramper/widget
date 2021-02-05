@@ -12,7 +12,7 @@ interface ErrorViewProps {
   buttonText?: string
   maxHeight?: string
   fixedHeight?: boolean
-  type?: "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_ITEMS" | "NO_RATES" | "MIN" | "MAX" | "UNREACHABLE" | "OTHER" | "ALL_UNAVAILABLE" | undefined
+  type?: "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_ITEMS" | "NO_RATES" | "MIN" | "MAX" | "UNREACHABLE" | "OTHER" | "ALL_UNAVAILABLE" | undefined | "OPTION"
   message?: string
 }
 

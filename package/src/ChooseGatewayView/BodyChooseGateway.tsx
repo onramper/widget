@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import stylesCommon from '../styles.module.css'
 
 import ButtonAction from '../common/ButtonAction'
 
-import { GatewayRateOption } from '../ApiContext'
+import { APIContext, GatewayRateOption } from '../ApiContext'
 import InfoBox from '../common/InfoBox'
 import ErrorVisual from '../common/ErrorVisual'
 import RatesList from './RatesList'
@@ -15,17 +15,20 @@ type BodyChooseGatewayType = {
 }
 
 const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
+    const { data } = useContext(APIContext)
+
     const { onActionButton, onItemClick } = props
     const { ratesList } = props
 
     const availableRates = ratesList.filter(el => el.available)
     const unavailableRates = ratesList.filter(el => !el.available)
+    const hiddenRates = data.mappedHiddenByFiat
 
     return (
         <main className={stylesCommon.body}>
             {ratesList.length > 0 ?
                 <div className={`${stylesCommon.body__child}`}>
-                    <RatesList availableRates={availableRates} unavailableRates={unavailableRates} onItemClick={onItemClick} />
+                    <RatesList availableRates={availableRates} unavailableRates={unavailableRates} hiddenRates={hiddenRates} onItemClick={onItemClick} />
                 </div>
                 : (
                     <>
