@@ -290,15 +290,17 @@ max-width: 100%;
 
 .option-container--disabled {
     border-style: none;
-    color: #d6d6d6;
+    color: #343434;
 }
 
 .option-container--disabled:hover {
     cursor: default;
 }
 
-.option-container--disabled .content__price > div {   
-    font-size: 0.625rem;
+.option-container--disabled .content__price > div {
+    letter-spacing: 0;   
+    font-size: 0.75rem;
+    margin-left: 0.6875rem;
 }
 
 .option-container--option {
@@ -306,7 +308,8 @@ max-width: 100%;
     color: #343434;
 }
 
-.option-container--disabled .content__price > div {   
+.option-container--disabled .content__price > div {
+    letter-spacing: 0;   
     font-size: 0.75rem;
     margin-left: 0.6875rem;
 }
