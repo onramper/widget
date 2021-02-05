@@ -84,12 +84,8 @@ const RatesList: React.FC<RatesListProps> = (props) => {
                 )
             }
             {
-                props.hiddenRates.map((item, i) =>
+                unavailableRates.map((item, i) =>
                     <GatewayOption
-                        id={item.identifier}
-                        name={item.identifier}
-                        available={false}
-                        duration={{seconds:0, message:""}}
                         key={i}
                         index={i}
                         isOpen={false}
@@ -99,8 +95,12 @@ const RatesList: React.FC<RatesListProps> = (props) => {
                 )
             }
             {
-                unavailableRates.map((item, i) =>
+                props.hiddenRates.map((item, i) =>
                     <GatewayOption
+                        id={item.identifier}
+                        name={item.identifier}
+                        available={false}
+                        duration={{seconds:0, message:""}}
                         key={i}
                         index={i}
                         isOpen={false}

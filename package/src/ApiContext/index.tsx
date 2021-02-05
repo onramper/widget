@@ -541,10 +541,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }
     })
 
-    console.log(mappedHiddenByFiat)
+    const allMappedHidden = arrayObjUnique([...mappedHiddenByFiat, ...mappedHiddenByCrypto], "identifier")
 
     addData({
-      mappedHiddenByFiat: [...mappedHiddenByFiat, ...mappedHiddenByCrypto],
+      mappedHiddenByFiat: allMappedHidden,
       mappedHiddenByCrypto: mappedHiddenByCrypto
     })
   }, [
