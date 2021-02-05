@@ -509,16 +509,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     const mappedHiddenByCrypto = Object.entries(hiddenPaymentMethodsByCrypto??{})
     .map(([identifier])=>{
       return {
-        [identifier]: "Available paying with USD, EUR, GBP or other currency"/* payments.reduce((acc, payment, index, arr) => {
-          const paymentName = state.data.ICONS_MAP?.[payment].name
-          if (acc==="")
-            return `Available paying with ${paymentName}`
-          else if (index<arr.length-1)
-            return `${acc}, ${paymentName}`
-          else if (index===arr.length-1)
-            return `${acc} and ${paymentName}`
-          else return acc
-        }, "") */
+        identifier: identifier,
+        icon: state.data.ICONS_MAP?.[identifier]?.icon || LogoOnramper,
+        error: {
+          type: "OPTION",
+          message: "Available paying with USD, EUR, GBP or other currency"
+        }
       }
     })
 
@@ -548,7 +544,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     console.log(mappedHiddenByFiat)
 
     addData({
-      mappedHiddenByFiat: mappedHiddenByFiat,
+      mappedHiddenByFiat: [...mappedHiddenByFiat, ...mappedHiddenByCrypto],
       mappedHiddenByCrypto: mappedHiddenByCrypto
     })
   }, [
