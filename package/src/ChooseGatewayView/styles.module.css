@@ -301,6 +301,16 @@ max-width: 100%;
     font-size: 0.625rem;
 }
 
+.option-container--option {
+    border-style: none;
+    color: #343434;
+}
+
+.option-container--disabled .content__price > div {   
+    font-size: 0.75rem;
+    margin-left: 0.6875rem;
+}
+
 @media (max-width: 360px) {
     .option-container--collapsed {
         border-color: var(--boorder-option-container-color);

@@ -53,6 +53,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
 
     const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change 
     const { onClick } = props
+    const isAnOption = error?.type==="OPTION"
 
     let diffPercent: number;
     let isDiffPositive: boolean;
@@ -103,7 +104,10 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     }, [badges, name, props.index])
 
     return (
-        <div onClick={() => onClick?.(props.index, props.badges?.[name]._id ?? 0)} className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''}` : ''}`}>
+        <div
+            onClick={() => onClick?.(props.index, props.badges?.[name]._id ?? 0)}
+            className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''} ${isAnOption?styles['option-container--option']:''}` : ''}`}
+        >
             <div className={styles['option-container__radio']}>
                 <input type='radio' checked={available && isOpen} readOnly disabled={!available}></input>
             </div>
@@ -135,7 +139,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         </div>
                     </CSSTransition>
                     <div>
-                        <CSSTransition nodeRef={transitionRefs3} in={!available || !isOpen} {...transitionPropsPrice}>
+                        <CSSTransition nodeRef={transitionRefs3} in={(!available || !isOpen) && !isAnOption} {...transitionPropsPrice}>
                             {available ?
                                 <span ref={transitionRefs3} style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
                                 : <span ref={transitionRefs3} >Unavailable</span>

@@ -538,7 +538,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             else if (index<arr.length-1)
               return `${acc}, ${paymentName}`
             else if (index===arr.length-1)
-              return `${acc} and ${paymentName}`
+              return `${acc} or ${paymentName}`
             else return acc
           }, "")
         }
