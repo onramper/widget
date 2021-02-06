@@ -19,7 +19,7 @@ const defaultCrypto = getParam("defaultCrypto", "BTC");
 const defaultFiat = getParam("defaultFiat");
 const defaultFiatSoft = getParam("defaultFiatSoft");
 const defaultPaymentMethod = getParam("defaultPaymentMethod");
-const addresses = JSON.parse(getParam("addresses", "{}") ?? "{}");
+const addresses = getAddressesParam();
 const onlyCryptos = getArrayParam("onlyCryptos");
 const excludeCryptos = getArrayParam("excludeCryptos");
 const onlyPaymentMethods = getArrayParam("onlyPaymentMethods");
@@ -102,5 +102,16 @@ function getWalletsParam() {
       };
     }, {});
 }
+
+function getAddressesParam() {
+  const addrs = JSON.parse(getParam("addresses", "{}") ?? "{}")
+  return Object.entries(addrs).reduce((acc, [key, address]) => {
+    return {
+      ...acc,
+      [key]:{address}
+    }
+  }, {})
+}
+
 
 export default App;
