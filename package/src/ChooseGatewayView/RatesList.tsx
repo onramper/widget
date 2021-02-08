@@ -15,6 +15,9 @@ interface RatesListProps {
 const RatesList: React.FC<RatesListProps> = (props) => {
     const availableRates: GatewayRateOption[] = props.availableRates
     const unavailableRates: GatewayRateOption[] = props.unavailableRates
+    const _unavailableRates = unavailableRates.filter(ur => !ur.error?.type.match(/MIN|MAX/))
+    const _minMaxUnavailableRates = unavailableRates.filter(ur => ur.error?.type.match(/MIN|MAX/))
+    console.log(availableRates, _unavailableRates, _minMaxUnavailableRates)
     const { onItemClick = () => null } = props
 
     const { collected } = useContext(APIContext)
@@ -84,7 +87,7 @@ const RatesList: React.FC<RatesListProps> = (props) => {
                 )
             }
             {
-                unavailableRates.map((item, i) =>
+                _minMaxUnavailableRates.map((item, i) =>
                     <GatewayOption
                         key={i}
                         index={i}
@@ -101,6 +104,17 @@ const RatesList: React.FC<RatesListProps> = (props) => {
                         name={item.identifier}
                         available={false}
                         duration={{seconds:0, message:""}}
+                        key={i}
+                        index={i}
+                        isOpen={false}
+                        selectedReceivedCrypto={0}
+                        {...item}
+                    />
+                )
+            }
+            {
+                _unavailableRates.map((item, i) =>
+                    <GatewayOption
                         key={i}
                         index={i}
                         isOpen={false}
