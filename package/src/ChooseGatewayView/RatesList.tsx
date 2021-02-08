@@ -17,7 +17,6 @@ const RatesList: React.FC<RatesListProps> = (props) => {
     const unavailableRates: GatewayRateOption[] = props.unavailableRates
     const _unavailableRates = unavailableRates.filter(ur => !ur.error?.type.match(/MIN|MAX/))
     const _minMaxUnavailableRates = unavailableRates.filter(ur => ur.error?.type.match(/MIN|MAX/))
-    console.log(availableRates, _unavailableRates, _minMaxUnavailableRates)
     const { onItemClick = () => null } = props
 
     const { collected } = useContext(APIContext)

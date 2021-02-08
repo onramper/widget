@@ -100,7 +100,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputTextType>((props, ref) =
                                 max={type === 'date' ? "9999-12-31" : undefined}
                                 maxLength={props.maxLength}
                                 name={name}
-                                value={formatValue(value, type)}
+                                value={formatValue(value, type) ?? ""}
                                 onChange={(e) => handleInputChange(e)}
                                 type={type}
                                 min="0"
