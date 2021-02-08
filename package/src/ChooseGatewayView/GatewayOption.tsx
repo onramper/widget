@@ -139,7 +139,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         </div>
                     </CSSTransition>
                     <div>
-                        <CSSTransition nodeRef={transitionRefs3} in={(!available || !isOpen) && !isAnOption} {...transitionPropsPrice}>
+                        <CSSTransition nodeRef={transitionRefs3} in={(!available || !isOpen) && !isAnOption && !(error?.type.match(/MIN|MAX/))} {...transitionPropsPrice}>
                             {available ?
                                 <span ref={transitionRefs3} style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
                                 : <span ref={transitionRefs3} >Unavailable</span>

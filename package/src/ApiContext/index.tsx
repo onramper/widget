@@ -491,7 +491,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         [rate.identifier] : [...(acc[rate.identifier]??[]), ...newAcc]
       }
     }, {} as {[identifier:string]:string[]})
-    console.log("hiddenPaymentMethodsByCryptoFiat", hiddenPaymentMethodsByCryptoFiat)
+
     const hiddenPaymentMethodsByCrypto = hiddenRatesWithMyCrypto?.reduce((acc, rate)=> {
       const newAcc = []
       for (let index = 0; index < rate.paymentMethods.length; index++) {
@@ -504,7 +504,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         [rate.identifier] : [...(acc[rate.identifier]??[]), ...newAcc]
       }
     }, {} as {[identifier:string]:string[]})
-    console.log("hiddenPaymentMethodsByCrypto", hiddenPaymentMethodsByCrypto)
 
     const mappedHiddenByCrypto = Object.entries(hiddenPaymentMethodsByCrypto??{})
     .map(([identifier])=>{
@@ -517,8 +516,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         }
       }
     })
-
-    console.log(mappedHiddenByCrypto)
 
     const mappedHiddenByFiat = Object.entries(hiddenPaymentMethodsByCryptoFiat??{})
     .map(([identifier, payments])=>{
