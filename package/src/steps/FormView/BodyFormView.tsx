@@ -173,6 +173,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         else return acc
     }, {} as {[key:string]:any})
 
+    const groupedFieldDataCC = CREDIT_CARD_FIELDS_NAME_GROUP.reduce((acc, actual) => {
+        const fieldItem = fields.find(field => field.name === actual)
+        if (fieldItem && fieldItem?.type !== "boolean")
+            return {
+                ...acc,
+                [actual]: {...fieldItem}
+            }
+        else return acc
+    }, {} as {[key:string]:any})
+
     return (
         <main ref={formContainer} className={stylesCommon.body}>
             <>
@@ -285,6 +295,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             )) || ((GroupFieldsController.isGroupRequired(field.name, CREDIT_CARD_FIELDS_NAME_GROUP, fields.map((f) => f.name))) && (
                                 !GroupFieldsController.isGroupAdded(CREDIT_CARD_FIELDS_NAME_GROUP)
                                     ? <CreditCardInput
+                                        fieldsGroup={groupedFieldDataCC}
                                         ref={inputRefs[i].ref}
                                         ccNumberValue={collected.ccNumber}
                                         ccMonthValue={collected.ccMonth}
@@ -296,6 +307,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                 !GroupFieldsController.isGroupAdded(PHONE_NUMBER_FIELDS_NAME_GROUP)
                                     ? <div key={i} className={`${stylesCommon.body__child} ${stylesCommon['row-fields']}`}>
                                         <InputButton
+                                            hint={groupedFieldDataPHONE['phoneCountryCode'].hint}
                                             ref={inputRefs[fields.findIndex((field) => field.name === 'phoneCountryCode')].ref}
                                             onClick={
                                                 () => nextScreen(

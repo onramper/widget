@@ -16,6 +16,7 @@ type InputButtonType = {
     onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
     error?: string
     onHelpClick?: () => void
+    hint?: string
 }
 
 const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, ref) => {
@@ -40,6 +41,7 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonType>((props, re
                 unmountOnExit={true}>
                 {error ? <span ref={transitionRef} className={`${styles['text-error']}`} >{error}</span> : <></>}
             </CSSTransition>
+            {props.hint && <span className={`${styles['text-hint']}`} >{props.hint}</span>}
         </div >
     )
 })
