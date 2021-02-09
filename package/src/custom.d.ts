@@ -29,13 +29,11 @@ declare module "*.png" {
 
 interface Window {
     ethereum:
-      | {
-          enable(): Promise<string[]>;
-          selectedAddress: string | null;
-          request: (params: { method: string }) => Promise<string[]>;
-          isMetaMask: boolean
-          isImToken: boolean
-        }
-      | undefined;
-  }
-  
+    | {
+        request: Function;
+        selectedAddress: string | null;
+        isMetaMask: boolean
+        isImToken: boolean
+    }
+    | undefined;
+}

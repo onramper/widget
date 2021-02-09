@@ -73,7 +73,9 @@ export class ProviderManager {
 
   static getMetamaskAccounts = async () => {
     try {
-      const eth_account = await window.ethereum!.enable();
+      const ethereum = window.ethereum
+      if (!ethereum) return
+      const eth_account = await ethereum.request({method:'eth_requestAccounts'});
       return ERC20COINS.reduce(
         (acc, act) => ({ ...acc, [act]: eth_account[0] }),
         {}

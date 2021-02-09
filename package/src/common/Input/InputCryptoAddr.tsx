@@ -45,6 +45,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>((p
     }, [handleInputChange, collected.cryptocurrencyAddress])
 
     const getWalletAddrs = useCallback(async () => {
+        setNewInfo(undefined)
         const importedWallets = await ProviderManager.getAccounts()
         if (!importedWallets) {
             setNewInfo(`Couldn't get your ${collected.selectedCrypto?.id ?? ''} address from ${ProviderManager.providerName}, access denied.`)
