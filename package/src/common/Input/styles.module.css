@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: column;
     font-size: 1rem;
+    min-width: 6rem;
 }
 
 .input > label {
