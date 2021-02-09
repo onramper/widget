@@ -64,7 +64,7 @@ const RatesList: React.FC<RatesListProps> = (props) => {
     }, {})
 
     const sortedAvailableRates = [...availableRates].sort((a, b) => {
-        let res = badges[b.identifier].count - badges[a.identifier].count
+        let res = 0//badges[b.identifier].count - badges[a.identifier].count
         if (res === 0) res = ((b.receivedCrypto ?? defaultReceivedCrypto) - (a.receivedCrypto ?? defaultReceivedCrypto)) * (collected.amountInCrypto ? -1 : 1)
         if (res === 0) res = a.duration.seconds - b.duration.seconds
         return res
