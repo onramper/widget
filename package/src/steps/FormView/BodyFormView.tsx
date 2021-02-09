@@ -226,11 +226,23 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             ))
                             || ((field.name === 'verifyCreditCard') && (
                                 <React.Fragment key={i}>
-                                    <InputText isRequired={field.required !== false} ref={inputRefs[i].ref} onHintClick={() => nextScreen(
-                                        <HelpView buttonText={"Got it👌"}>
-                                            <Help2FACreditCard />
-                                        </HelpView>
-                                    )} hint={"Where do I find this code?"} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon.body__child} type={getInputType(field)} />
+                                    <InputText
+                                        value={collected[field.name] ?? ''}
+                                        isRequired={field.required !== false}
+                                        ref={inputRefs[i].ref}
+                                        onHintClick={() => nextScreen(
+                                            <HelpView buttonText={"Got it👌"}>
+                                                <Help2FACreditCard />
+                                            </HelpView>
+                                        )}
+                                        hint={"Where do I find this code?"}
+                                        name={field.name} onChange={onChange}
+                                        label={field.humanName}
+                                        placeholder=""
+                                        error={errorObj?.[field.name]}
+                                        className={stylesCommon.body__child}
+                                        type={getInputType(field)}
+                                    />
                                     <span key={998} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
                                 </React.Fragment>
                             ))
