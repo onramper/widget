@@ -165,7 +165,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
     const groupedFieldDataPHONE = PHONE_NUMBER_FIELDS_NAME_GROUP.reduce((acc, actual) => {
         const fieldItem = fields.find(field => field.name === actual)
-        if (fieldItem && fieldItem?.type != "boolean")
+        if (fieldItem && fieldItem?.type !== "boolean")
             return {
                 ...acc,
                 [actual]: {...fieldItem}
