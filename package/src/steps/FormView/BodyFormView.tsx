@@ -236,7 +236,19 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             ))
                             || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
                                 <React.Fragment key={i}>
-                                    <InputText isRequired={field.required !== false} ref={inputRefs[i].ref} hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon.body__child} type={getInputType(field)} />
+                                    <InputText
+                                        isRequired={field.required !== false}
+                                        ref={inputRefs[i].ref}
+                                        hint={field.hint}
+                                        name={field.name}
+                                        onChange={onChange}
+                                        label={field.humanName}
+                                        placeholder=""
+                                        error={errorObj?.[field.name]}
+                                        className={stylesCommon.body__child}
+                                        type={getInputType(field)}
+                                        value={collected[field.name] ?? ''}
+                                    />
                                     <span key={999} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
                                 </React.Fragment>
                             ))
