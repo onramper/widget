@@ -51,6 +51,8 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
         return true
     }
 
+    const smallHeightScreen = window.screen.height <= 615 || window.screen.width <= 575
+console.log(smallHeightScreen)
     return (
         <main className={stylesCommon.body}>
             <InfoBox in={!!textInfo} className={`${stylesCommon.body__child}`}>
@@ -61,8 +63,8 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
             </InfoBox>
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 <UploadBox id='files' onFilesAdded={handleFilesAdd} onFileDeleted={handleFilesDelete} filesList={existingFiles} maxFiles={1} acceptedContentTypes={props.acceptedContentTypes} >
-                    <strong>Drag and Drop</strong><br />
-                    a file or click here<br />
+                    <strong>{smallHeightScreen ? "Click here to" : "Drag and Drop"}</strong><br />
+                    {smallHeightScreen ? "upload a file or take a picture" : "a file or click here"}<br />
                     [ {props.acceptedContentTypes?.map(type => type.split('/')[1])?.reduce((acc, actual, index) => {
                         if (index === 0) return actual
                         return `${acc} or ${actual}`
