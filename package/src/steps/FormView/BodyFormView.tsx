@@ -100,7 +100,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         if (name === 'cryptocurrencyAddressTag') {
             handleInputChange('cryptocurrencyAddress', {
                 ...collected.cryptocurrencyAddress,
-                memo:v
+                memo: v
             })
         }
 
@@ -163,6 +163,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     // Initialize group fields controller
     GroupFieldsController.initGroups()
 
+    const groupedFieldDataPHONE = PHONE_NUMBER_FIELDS_NAME_GROUP.reduce((acc, actual) => {
+        const fieldItem = fields.find(field => field.name === actual)
+        if (fieldItem && fieldItem?.type != "boolean")
+            return {
+                ...acc,
+                [actual]: {...fieldItem}
+            }
+        else return acc
+    }, {} as {[key:string]:any})
+
     return (
         <main ref={formContainer} className={stylesCommon.body}>
             <>
@@ -206,7 +216,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             ))
                             || ((field.name === 'verifyCreditCard') && (
                                 <React.Fragment key={i}>
-                                    <InputText isRequired={field.required!==false} ref={inputRefs[i].ref} onHintClick={() => nextScreen(
+                                    <InputText isRequired={field.required !== false} ref={inputRefs[i].ref} onHintClick={() => nextScreen(
                                         <HelpView buttonText={"Got it👌"}>
                                             <Help2FACreditCard />
                                         </HelpView>
@@ -216,7 +226,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             ))
                             || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
                                 <React.Fragment key={i}>
-                                    <InputText isRequired={field.required!==false} ref={inputRefs[i].ref} hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon.body__child} type={getInputType(field)} />
+                                    <InputText isRequired={field.required !== false} ref={inputRefs[i].ref} hint={field.hint} name={field.name} onChange={onChange} label={field.humanName} placeholder="" error={errorObj?.[field.name]} className={stylesCommon.body__child} type={getInputType(field)} />
                                     <span key={999} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
                                 </React.Fragment>
                             ))
@@ -310,12 +320,24 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             selectedOption={'+' + collected.phoneCountryCode ?? phoneCodes[(collected.country ?? 'gb').toUpperCase()].phoneCode}
                                             error={errorObj?.phoneCountryCode}
                                         />
-                                        <InputText error={errorObj?.phoneNumber} ref={inputRefs[fields.findIndex((field) => field.name === 'phoneNumber')].ref} name='phoneNumber' type='number' value={collected.phoneNumber ?? ''} onChange={onChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon.grow}`} label="Phone number" placeholder="654 56 84 56" />
+                                        <InputText
+                                            error={errorObj?.phoneNumber}
+                                            ref={inputRefs[fields.findIndex((field) => field.name === 'phoneNumber')].ref}
+                                            name='phoneNumber'
+                                            type='number'
+                                            value={collected.phoneNumber ?? ''}
+                                            onChange={onChange}
+                                            className={`${stylesCommon['row-fields__child']}
+                                            ${stylesCommon.grow}`}
+                                            label="Phone number"
+                                            placeholder="654 56 84 56"
+                                            hint={groupedFieldDataPHONE['phoneNumber'].hint}
+                                        />
                                     </div>
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((field.type !== 'boolean') && (
                                 <InputText
-                                    isRequired={field.required!==false}
+                                    isRequired={field.required !== false}
                                     ref={inputRefs[i].ref}
                                     key={i}
                                     hint={field.hint}
@@ -326,7 +348,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     className={stylesCommon.body__child}
                                     label={field.humanName}
                                     type={getInputType(field)}
-                                    disabled={field.name==='cryptocurrencyAddressTag' && !collected.isAddressEditable}
+                                    disabled={field.name === 'cryptocurrencyAddressTag' && !collected.isAddressEditable}
                                 />
                             ))
                         )
