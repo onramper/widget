@@ -77,7 +77,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
                 onChange={onChange}
                 placeholder='4111 1111 1111 1111'
                 value={formatCardNumber(ccNumberValue)}
-                hint={props.fieldsGroup?.['ccNumber'].hint}
+                hint={props.fieldsGroup?.['ccNumber']?.hint}
             />
             <div
                 className={`${stylesCommon.body__child} ${stylesCommon["row-fields"]}`}
@@ -90,7 +90,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
                     onChange={onChange}
                     placeholder='MM/YY'
                     value={formatExpiryDate(`${ccMonthValue}${ccYearValue.substring(2, 4)}`)}
-                    hint={props.fieldsGroup?.['ccExpiration'].hint}
+                    hint={props.fieldsGroup?.['ccExpiration']?.hint}
                 /* value={formatExpiryDate('1111')} */
                 />
                 <InputText
@@ -103,7 +103,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
                     value={ccCVVValue}
                     type="password"
                     maxLength={3}
-                    hint={props.fieldsGroup?.['ccCVV'].hint}
+                    hint={props.fieldsGroup?.['ccCVV']?.hint}
                 />
             </div>
         </form>
