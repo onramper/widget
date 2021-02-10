@@ -367,7 +367,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             ${stylesCommon.grow}`}
                                             label="Phone number"
                                             placeholder="654 56 84 56"
-                                            hint={groupedFieldDataPHONE['phoneNumber'].hint}
+                                            hint={groupedFieldDataPHONE['phoneNumber']?.hint}
                                         />
                                     </div>
                                     : <React.Fragment key={i}></React.Fragment>
