@@ -331,8 +331,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                 !GroupFieldsController.isGroupAdded(PHONE_NUMBER_FIELDS_NAME_GROUP)
                                     ? <div key={i} className={`${stylesCommon.body__child} ${stylesCommon['row-fields']}`}>
                                         <InputButton
-                                            hint={groupedFieldDataPHONE['phoneCountryCode'].hint}
-                                            ref={inputRefs[fields.findIndex((field) => field.name === 'phoneCountryCode')].ref}
+                                            hint={groupedFieldDataPHONE['phoneCountryCode']?.hint}
+                                            ref={inputRefs[fields.findIndex((field) => field.name === 'phoneCountryCode')]?.ref}
                                             onClick={
                                                 () => nextScreen(
                                                     <PickView
