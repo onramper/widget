@@ -203,7 +203,7 @@ const pickOneStep = {
 const uploadStep = (fileName: string) => ({
     "type": "file",
     "humanName": fileName + (fileName === 'Selfie' ? '' : " - Back"),
-    "url": `https://api.onramper.dev/transaction/Moonpay/${fileName === 'Selfie' ? 'registerBank' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+    "url": `https://api.onramper.dev/transaction/Moonpay/${fileName === 'Selfie' ? 'iframe' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "acceptedContentTypes": [
         "image/jpeg",
         "image/png",
