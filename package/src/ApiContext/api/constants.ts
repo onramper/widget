@@ -2,7 +2,7 @@ export const documents = ['passport', 'nationalIdentityCard', 'residenceCard', '
 
 export const BASE_API = process.env.STAGE === 'prod'
     ? 'https://api.onramper.com'
-    : 'https://api.onramper.dev';
+    : 'https://test.onramper.tech';
 
 export const SANDBOX_HOSTNAME = process.env.STAGE === 'prod'
     ? 'sandbox.onramper.com'
