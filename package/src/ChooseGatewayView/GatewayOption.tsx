@@ -20,7 +20,7 @@ const transitionPropsCollapse = {
     unmountOnExit: true
 }
 
-const transitionPropsPrice = {
+/* const transitionPropsPrice = {
     timeout: {
         enter: 500,
         exit: 100
@@ -32,7 +32,7 @@ const transitionPropsPrice = {
         exitActive: styles['fade-exit-active']
     },
     unmountOnExit: true
-}
+} */
 
 
 type GateWayOptionProps = {
@@ -139,14 +139,20 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         </div>
                     </CSSTransition>
                     <div>
-                        <CSSTransition nodeRef={transitionRefs3} in={(!available || !isOpen) && !isAnOption && !(error?.type.match(/MIN|MAX/))} {...transitionPropsPrice}>
+                        {/* <CSSTransition nodeRef={transitionRefs3} in={(!available || !isOpen) && !isAnOption && !(error?.type.match(/MIN|MAX/))} {...transitionPropsPrice}>
                             {available ?
                                 <span ref={transitionRefs3} style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
                                 : <span ref={transitionRefs3} >Unavailable</span>
                             }
-                        </CSSTransition>
+                        </CSSTransition> */}
                         {/* <CSSTransition in={isOpen && available} {...transitionPropsPrice}> */}
-                        {isOpen && available && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You receive:'}</span>}
+                        {
+                            ((isOpen && available) && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You receive:'}</span>)
+                            || ((!available || !isOpen) && !isAnOption && !(error?.type.match(/MIN|MAX/)) &&
+                                    available ?
+                                    <span ref={transitionRefs3} style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
+                                    : <span ref={transitionRefs3} >Unavailable</span>)
+                        }
                         {/* </CSSTransition> */}
                         {available ?
                             <span className={styles['receive-amount']}> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {receivedCrypto}</span>
