@@ -4,9 +4,7 @@ import { ratesAllParams/* , ratesAllUnavailable */ } from './responses/rates'
 import CCPro from './responses/steps/Cryptocoin.pro'
 import Moonpay from './responses/steps/Moonpay'
 import Wyre from './responses/steps/Wyre'
-
-
-const BASE_API = 'https://api.onramper.dev'
+import { BASE_API } from './constants'
 
 let moonpayKYCStepsCount = 0
 
@@ -109,7 +107,7 @@ export const handlers = [
             ctx.json(nextStep)
         )
     }),
-    rest.get(`https://api.onramper.com/partner/fees`, async (req, res, ctx) => {
+    rest.get(`${BASE_API}/partner/fees`, async (req, res, ctx) => {
         return res(
             // Respond with a 200 status code
             ctx.status(200),

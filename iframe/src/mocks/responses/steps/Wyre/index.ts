@@ -1,3 +1,5 @@
+import { BASE_API } from '../../../constants'
+
 const getNextStep = (currentStep: string) => {
     switch (currentStep) {
         case 'firstStep':
@@ -11,7 +13,7 @@ const getNextStep = (currentStep: string) => {
 
 const firstStep = {
     "type": "form",
-    "url": "https://api.onramper.dev/transaction/Wyre/createOrder/WyJuUGxEVGF2djFJaXR6MU9jZVNZTHVRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+    "url": `${BASE_API}/transaction/Wyre/createOrder/WyJuUGxEVGF2djFJaXR6MU9jZVNZTHVRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "data": [
         {
             "type": "string",
@@ -113,7 +115,7 @@ const firstStep = {
 
 const verificationCodesStep = {
     "type": "form",
-    "url": "https://api.onramper.dev/transaction/Wyre/verify/WyJVbVhFMVBDNUdXelhWa05TQ09ZRlF3LS0iLCJXT19BTTgyN0ZRTjNHIiwiRzNYUFlXVjI4QzIyVU5aV0RBNzYiXQ==",
+    "url": `${BASE_API}/transaction/Wyre/verify/WyJVbVhFMVBDNUdXelhWa05TQ09ZRlF3LS0iLCJXT19BTTgyN0ZRTjNHIiwiRzNYUFlXVjI4QzIyVU5aV0RBNzYiXQ==`,
     "data": [
         {
             "type": "string",

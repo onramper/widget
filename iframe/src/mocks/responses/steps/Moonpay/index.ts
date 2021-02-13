@@ -1,4 +1,5 @@
 import { encodeToken } from './utils'
+import { BASE_API } from '../../../constants'
 
 const getNextStep = (currentStep: string) => {
     switch (currentStep) {
@@ -27,7 +28,7 @@ const getNextStep = (currentStep: string) => {
 
 const firstStep = {
     "type": "form",
-    "url": "https://api.onramper.dev/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+    "url": `${BASE_API}/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "data": [
         {
             "type": "string",
@@ -45,7 +46,7 @@ const firstStep = {
 
 const emailStep = {
     "type": "redirect",
-    "url": `https://api.onramper.dev/transaction/Moonpay/verifyEmail/${encodeToken(["", ""])}`,
+    "url": `${BASE_API}/transaction/Moonpay/verifyEmail/${encodeToken(["", ""])}`,
     "data": [
         {
             "type": "string",
@@ -63,7 +64,7 @@ const emailStep = {
 
 const verifyEmailStep = {
     "type": "form",
-    "url": "https://api.onramper.dev/transaction/Moonpay/identity/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+    "url": `${BASE_API}/transaction/Moonpay/identity/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "data": [
         {
             "type": "string",
@@ -97,7 +98,7 @@ const verifyEmailStep = {
 
 const personalInfoStep = {
     "type": "form",
-    "url": "https://api.onramper.dev/transaction/Moonpay/pickOne/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+    "url": `${BASE_API}/transaction/Moonpay/pickOne/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "data": [
         {
             "type": "string",
@@ -160,7 +161,7 @@ const pickOneStep = {
         {
             "type": "file",
             "humanName": "Passport - Front",
-            "url": "https://api.onramper.dev/transaction/Moonpay/passport/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+            "url": `${BASE_API}/transaction/Moonpay/passport/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "acceptedContentTypes": [
                 "image/jpeg",
                 "image/png",
@@ -170,7 +171,7 @@ const pickOneStep = {
         {
             "type": "file",
             "humanName": "Driver's License - Front",
-            "url": "https://api.onramper.dev/transaction/Moonpay/national_identity_card/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+            "url": `${BASE_API}/transaction/Moonpay/national_identity_card/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "acceptedContentTypes": [
                 "image/jpeg",
                 "image/png",
@@ -180,7 +181,7 @@ const pickOneStep = {
         {
             "type": "file",
             "humanName": "National Identity Card - Front",
-            "url": "https://api.onramper.dev/transaction/Moonpay/residence_permit/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+            "url": `${BASE_API}/transaction/Moonpay/residence_permit/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "acceptedContentTypes": [
                 "image/jpeg",
                 "image/png",
@@ -190,7 +191,7 @@ const pickOneStep = {
         {
             "type": "file",
             "humanName": "Residence Card - Front",
-            "url": "https://api.onramper.dev/transaction/Moonpay/driving_licence/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+            "url": `${BASE_API}/transaction/Moonpay/driving_licence/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "acceptedContentTypes": [
                 "image/jpeg",
                 "image/png",
@@ -203,7 +204,7 @@ const pickOneStep = {
 const uploadStep = (fileName: string) => ({
     "type": "file",
     "humanName": fileName + (fileName === 'Selfie' ? '' : " - Back"),
-    "url": `https://api.onramper.dev/transaction/Moonpay/${fileName === 'Selfie' ? 'iframe' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+    "url": `${BASE_API}/transaction/Moonpay/${fileName === 'Selfie' ? 'iframe' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "acceptedContentTypes": [
         "image/jpeg",
         "image/png",

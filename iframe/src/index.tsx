@@ -10,7 +10,6 @@ if (process.env.REACT_APP_STAGE === 'demo') {
   const { worker } = require('./mocks')
   worker.start()
 }
-
 ReactDOM.render(
   <React.StrictMode>
     <App />
