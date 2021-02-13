@@ -1,3 +1,5 @@
+import { BASE_API } from '../constants'
+
 const ratesAllParams = [
     {
         "identifier": "Mercuryo",
@@ -40,7 +42,7 @@ const ratesAllParams = [
         "receivedCrypto": 0.00598,
         "nextStep": {
             "type": "form",
-            "url": "https://api.onramper.dev/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+            "url": `${BASE_API}/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "data": [
                 {
                     "type": "string",
@@ -81,7 +83,7 @@ const ratesAllParams = [
         "nextStep": {
             fatal: true,
             "type": "form",
-            "url": "https://api.onramper.dev/transaction/Wyre/createOrder/WyJuUGxEVGF2djFJaXR6MU9jZVNZTHVRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+            "url": `${BASE_API}/transaction/Wyre/createOrder/WyJuUGxEVGF2djFJaXR6MU9jZVNZTHVRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "data": [
                 {
                     "type": "string",
@@ -233,7 +235,7 @@ const ratesAllUnavailable = [
         "receivedCrypto": 0.00305,
         "nextStep": {
             "type": "form",
-            "url": "https://api.onramper.dev/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+            "url": `${BASE_API}/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "data": [
                 {
                     "type": "string",
@@ -268,7 +270,7 @@ const ratesAllUnavailable = [
         "nextStep": {
             fatal: true,
             "type": "form",
-            "url": "https://api.onramper.dev/transaction/Wyre/createOrder/WyJuUGxEVGF2djFJaXR6MU9jZVNZTHVRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd",
+            "url": `${BASE_API}/transaction/Wyre/createOrder/WyJuUGxEVGF2djFJaXR6MU9jZVNZTHVRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "data": [
                 {
                     "type": "string",
