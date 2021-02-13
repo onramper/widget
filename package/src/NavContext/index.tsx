@@ -83,7 +83,7 @@ class NavContainer extends React.Component<{ home?: ScreenType, displayChatBubbl
 
     this.state = {
       intro: false,
-      displayChatBubble: this.props.displayChatBubble || true
+      displayChatBubble: this.props.displayChatBubble ?? true
     };
     this.transitionRef = React.createRef()
     this.timer = null
