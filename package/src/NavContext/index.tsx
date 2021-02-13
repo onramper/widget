@@ -8,13 +8,15 @@ export type ScreenType = React.ReactNode;
 export type NavigationStateType = {
   screens: ScreenType[];
   currentSes: number;
+  isChatOpen: boolean
 }
 
 export enum NavigationActionsType {
   Only = 'ONLY',
   Push = 'PUSH',
   Pop = 'POP',
-  Replace = 'REPLACE'
+  Replace = 'REPLACE',
+  Chat = 'TRIGGERCHAT'
 }
 
 export type NavigationActions = {
@@ -28,11 +30,14 @@ export type NavigationActions = {
 } | {
   type: NavigationActionsType.Replace;
   screen: ScreenType;
+} | {
+  type: NavigationActionsType.Chat;
 }
 
 const initialState = {
   screens: [],
-  currentSes: 0
+  currentSes: 0,
+  isChatOpen: false
 }
 
 //Creating context
@@ -42,12 +47,14 @@ const NavContext = createContext<{
   backScreen: () => void;
   nextScreen: (screen: ScreenType) => void;
   replaceScreen: (screen: ScreenType) => void;
+  triggerChat: () => void
 }>({
   _state: initialState,
   onlyScreen: () => null,
   backScreen: () => null,
   nextScreen: () => null,
-  replaceScreen: () => null
+  replaceScreen: () => null,
+  triggerChat: () => null
 });
 
 
@@ -59,22 +66,24 @@ const NavProvider: React.FC = (props) => {
   const nextScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Push, screen }), [])
   const onlyScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Only, screen }), [])
   const replaceScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Replace, screen }), [])
+  const triggerChat = useCallback(() => dispatch({ type: NavigationActionsType.Chat }), [])
 
   return (
-    <NavContext.Provider value={{ _state, onlyScreen, backScreen, nextScreen, replaceScreen }}>
+    <NavContext.Provider value={{ _state, onlyScreen, backScreen, nextScreen, replaceScreen, triggerChat }}>
       {props.children}
     </NavContext.Provider>
   )
 }
 
-class NavContainer extends React.Component<{ home?: ScreenType }, { intro: boolean }> {
+class NavContainer extends React.Component<{ home?: ScreenType, displayChatBubble?: boolean }, { intro: boolean, displayChatBubble: boolean }> {
   private transitionRef: React.RefObject<any>;
   private timer: ReturnType<typeof setTimeout> | null
   constructor(props: { home?: ScreenType }) {
     super(props);
 
     this.state = {
-      intro: false
+      intro: false,
+      displayChatBubble: this.props.displayChatBubble || true
     };
     this.transitionRef = React.createRef()
     this.timer = null
@@ -128,7 +137,12 @@ class NavContainer extends React.Component<{ home?: ScreenType }, { intro: boole
                   </CSSTransition>
                 ))}
               </TransitionGroup>
-              <ChatBubble intro={this.state.intro} />
+              <ChatBubble
+                onActionChatClick={()=>{ value.triggerChat() }}
+                isChatOpen={value._state.isChatOpen}
+                intro={this.state.intro}
+                isBubbleActive={this.state.displayChatBubble}
+              />
             </div>
         }
       </NavContext.Consumer>
@@ -140,7 +154,8 @@ NavContainer.contextType = NavContext
 
 const mainReducer = (state: NavigationStateType, action: NavigationActions) => ({
   screens: navigationReducer(state, action),
-  currentSes: action.type === NavigationActionsType.Only ? state.currentSes + 1 : state.currentSes
+  currentSes: action.type === NavigationActionsType.Only ? state.currentSes + 1 : state.currentSes,
+  isChatOpen: action.type === NavigationActionsType.Chat ? !state.isChatOpen : state.isChatOpen
 });
 
 const navigationReducer = (state: NavigationStateType, action: NavigationActions) => {

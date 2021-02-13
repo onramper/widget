@@ -16,14 +16,15 @@ import './normalize.min.css'
 type OnramperWidgetProps = APIProviderType & { 
     color?: string
     fontFamily?: string
-    className?: string
+    className?: string,
+    displayChatBubble?: boolean
 }
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     const {
         color = '#266678',
         fontFamily = "'Roboto', sans-serif",
-        className = '',
+        className = ''
     } = props
 
     const style = {
@@ -47,7 +48,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                     isAddressEditable={props.isAddressEditable}
                 >
                     <div style={{ flexGrow: 1, display: 'flex' }}>
-                        <NavContainer home={<BuyCryptoView />} />
+                        <NavContainer home={<BuyCryptoView />} displayChatBubble={props.displayChatBubble} />
                     </div>
                     <Footer />
                 </APIProvider>
