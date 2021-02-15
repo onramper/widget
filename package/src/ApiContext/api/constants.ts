@@ -1,12 +1,12 @@
 export const documents = ['passport', 'nationalIdentityCard', 'residenceCard', 'driverLicense']
 
 export const BASE_API = process.env.STAGE === 'prod'
-    ? 'https://api.onramper.com'
+    ? 'https://onramper.tech'
     : 'https://staging.onramper.tech';
 
 export const SANDBOX_HOSTNAME = process.env.STAGE === 'prod'
-    ? 'sandbox.onramper.com'
-    : 'sandbox.onramper.dev';
+    ? 'sandbox.onramper.tech'
+    : 'sandbox.staging.onramper.tech';
 
 export const MERCURYO_HOSTNAME = 'exchange.mercuryo.io'
 
