@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@onramper/widget": "file:../package",
+    "@sentry/react": "^6.1.0",
+    "@sentry/tracing": "^6.1.0",
     "react": "^16.14.0",
     "react-app-polyfill": "^2.0.0",
     "react-dom": "^16.14.0"
