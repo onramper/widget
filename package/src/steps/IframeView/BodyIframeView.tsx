@@ -91,7 +91,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
 
     useEffect(() => {
         let urlTail = ''
-        const hostname = getHostname(props.src)
+        const hostname = getHostname(props.src).split('.').splice(1).join('.')
         const main = window.document.getElementById('main')
         const primaryColor = main !== null ? getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
         if (primaryColor)
