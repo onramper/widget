@@ -16,7 +16,7 @@ const firstStep = {
 
 const completedStep = {
     type: 'completed',
-    trackingUrl: 'https://google.es'
+    trackingUrl: 'https://onramper.com'
 }
 
 export default {

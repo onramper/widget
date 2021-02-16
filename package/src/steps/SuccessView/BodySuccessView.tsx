@@ -11,6 +11,7 @@ import { ReactComponent as TICK_BLUE } from '../../icons/success_blue.svg'
 
 type BodySuccessViewType = {
     txType: "instant" | "pending"
+    trackingURL?: string
 }
 
 const BodySuccessView: React.FC<BodySuccessViewType> = (props) => {
@@ -31,8 +32,18 @@ const BodySuccessView: React.FC<BodySuccessViewType> = (props) => {
                 {props.txType === 'instant' ? <TICK_GREEN className={styles['success-icon']} /> : <TICK_BLUE className={styles['success-icon']} />}
                 <span className={styles.title}>{props.txType === 'instant' ? title : 'Your transaction is waiting for payment'}</span>
                 <span className={styles.info}>{props.txType === 'instant' ? info : 'Complete the payment to get your cryptos. We sent you the instructions and the payment info to your email.'}</span>
+                {
+                    (props.txType === 'instant' && props.trackingURL) &&
+                    <>
+                        <button
+                            onClick={() => window.open(props.trackingURL)}
+                            className={`${styles['button--basic']} ${styles['button--tracking']}`}
+                        >Track your transaction</button>
+                        <hr className={stylesCommon.divisor}></hr>
+                    </>
+                }
                 {props.txType === 'pending' && false && <span className={styles['button--link']}>Download your payment info</span>}
-                <button onClick={() => onlyScreen(<BuyCryptoView />)} className={`${styles['button--basic']} ${props.txType === 'pending' ? styles['button--pending'] : ''}`} >Buy more crypto</button>
+                <button onClick={() => onlyScreen(<BuyCryptoView />)} className={`${styles['button--basic']} ${props.txType === 'pending' ? styles['button--pending'] : styles['button--instant']}`} >Buy more crypto</button>
             </div>
         </main>
     )

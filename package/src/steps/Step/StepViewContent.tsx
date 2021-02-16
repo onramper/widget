@@ -53,7 +53,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
                 replaceScreen(<IframeView nextStep={nextStep} />)
                 break;
             case 'completed':
-                replaceScreen(<SuccessView txType='instant' />)//onlyScreen(<SuccessView txType='instant' />)
+                replaceScreen(<SuccessView txType='instant' nextStep={nextStep} />)//onlyScreen(<SuccessView txType='instant' />)
                 break;
             case 'iframe':
                 replaceScreen(<IframeView nextStep={nextStep} />)

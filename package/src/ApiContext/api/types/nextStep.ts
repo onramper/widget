@@ -75,7 +75,8 @@ type NextStep =
         type: 'pickOne';
         options: FileStep[];
     } | {
-        type: 'completed'
+        type: 'completed',
+        trackingUrl: string
     } | {
         type: 'requestBankTransaction';
         depositBankAccount: InfoDepositBankAccount;

@@ -22,7 +22,7 @@ const WireTransferView: React.FC<{ nextStep: NextStep & { type: 'requestBankTran
     <div className={styles.view}>
       <Header title="Wire transfer details" />
       <BodyWireTransfer
-        onActionButton={() => nextScreen(<SuccessView txType='pending' />)}
+        onActionButton={() => nextScreen(<SuccessView txType='pending' nextStep={{ type: "completed" }} />)}
         amount={collected.amount.toString()}
         bankDetails={nextStep.depositBankAccount}
         symbol={collected.selectedCurrency?.symbol ?? ''}

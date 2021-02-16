@@ -3,7 +3,7 @@ const getNextStep = (currentStep: string) => {
         case 'email':
             return {
                 type: 'completed',
-                trackingUrl: 'https://google.es'
+                trackingUrl: 'https://onramper.com'
             }
     }
 }

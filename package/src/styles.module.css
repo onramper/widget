@@ -180,3 +180,12 @@ components
 .help-text {
     font-size: 0.875rem;
 }
+
+.divisor {
+    border: 0;
+    width: 8rem;
+    border-top: 2px solid whitesmoke;
+    border-radius: 5px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

@@ -50,3 +50,13 @@
 .button--pending {
     background-color: #006bb3;
 }
+
+.button--instant {
+    margin-top: 0;
+    font-size: 0.8125rem;
+    background-color: var(--primary-color);
+}
+
+.button--tracking {
+    background-color: var(--primary-color);
+}

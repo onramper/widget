@@ -36,12 +36,3 @@
 .body__child:first-child {
     margin-top: var(--body-space-childs);
 }
-
-.divisor {
-    border: 0;
-    width: 8rem;
-    border-top: 2px solid whitesmoke;
-    border-radius: 5px;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
