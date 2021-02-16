@@ -15,7 +15,8 @@ const firstStep = {
 }
 
 const completedStep = {
-    type: 'completed'
+    type: 'completed',
+    trackingUrl: 'https://google.es'
 }
 
 export default {
