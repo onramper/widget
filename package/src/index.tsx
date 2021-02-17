@@ -13,7 +13,7 @@ import Footer from './common/Footer'
 import './isolateinheritance.css'
 import './normalize.min.css'
 
-type OnramperWidgetProps = APIProviderType & { 
+type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & { 
     color?: string
     fontFamily?: string
     className?: string,
