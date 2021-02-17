@@ -11,6 +11,7 @@ import * as serviceWorker from './serviceWorker';
 Sentry.init({
   dsn: "https://44e974f8b9e24b448bc6f0b7c3ea2c12@o506512.ingest.sentry.io/5596296",
   integrations: [new Integrations.BrowserTracing()],
+  environment: window.location.origin.split(".")[2] === "com"?'prod':'test',
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control

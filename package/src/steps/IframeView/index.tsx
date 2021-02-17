@@ -6,6 +6,7 @@ import styles from '../../styles.module.css'
 
 import Step from '../Step'
 
+import { sentryHub, ApiError } from '../../ApiContext/api/index'
 import { NextStep } from '../../ApiContext'
 import { finishCCTransaction, baseCreditCardSandboxUrl, checkTransaction } from '@onramper/moonpay-adapter'
 
@@ -17,6 +18,16 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
   const [error, setError] = useState<string>()
   const [fatalError, setFatalError] = useState<string>()
 
+  function reportError(message:string, fatal:boolean, eventData:any){
+    sentryHub.addBreadcrumb({message:`Recieved a ${fatal?'fatal ':''} error when interacting with an iframe`, data:eventData})
+    sentryHub.captureException(new ApiError(message));
+    if(fatal){
+      setFatalError(message)
+    } else {
+      setError(message)
+    }
+  }
+
   useEffect(() => {
     const receiveMessage = async (event: MessageEvent) => {
       if (event.origin !== baseCreditCardSandboxUrl)
@@ -26,6 +37,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
         setFatalError(undefined)
         return
       }
+      sentryHub.addBreadcrumb({message:`Received a postMessage from ${event.origin}`, data:event.data})
       if (event.data.gateway === "Moonpay") {
         let returnedNextStep: any; //: NextStep;
         try {
@@ -43,17 +55,17 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
           }
           else if (event.data.type === "2fa-completed") {
             /* nextScreen(<ErrorView type="TX" />) */
-            setFatalError(e.message)
+            reportError(e.message, true, event.data)
             return
           }
-          setError(e.message)
+          reportError(e.message, false, event.data)
         }
       } else if (event.data.type) {
         replaceScreen(<Step nextStep={(event.data as NextStep)} />)
       } else if (typeof event.data === 'string') {
-        setError(event.data)
+        reportError(event.data, false, event.data)
       } else {
-        setError('Unknow error. Please, contact help@onramper.com and provide the following info: ' + nextStep.url)
+        reportError('Unknow error. Please, contact help@onramper.com and provide the following info: ' + nextStep.url, false, event.data)
       }
     }
     window.addEventListener("message", receiveMessage);

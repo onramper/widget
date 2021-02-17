@@ -4,14 +4,26 @@ import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
 import processMoonpayStep, { moonpayUrlRegex } from '@onramper/moonpay-adapter'
-import type {CryptoAddrType} from '../initialState'
+import { BrowserClient, Hub } from "@sentry/browser";
+import type { CryptoAddrType } from '../initialState'
 
 import { BASE_API } from './constants'
 
 const headers = new Headers()
+// See https://github.com/getsentry/sentry-javascript/issues/1656#issuecomment-430295616
+const sentryClient = new BrowserClient({
+    dsn: "https://283a138678d94cc295852f634d4cdd1c@o506512.ingest.sentry.io/5638949",
+    environment: process.env.STAGE
+});
+const sentryHub = new Hub(sentryClient);
 
 const authenticate = (pk: string) => {
     headers.set('Authorization', `Basic ${pk}`)
+    sentryHub.addBreadcrumb({message:`Authenticated with API key '${pk}'`, category:'auth'})
+}
+
+function logRequest(url:string){
+    sentryHub.addBreadcrumb({message:`Sent a request to '${url}'`})
 }
 
 /**
@@ -26,7 +38,9 @@ interface GatewaysParams {
 
 const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
-    const gatewaysRes = await fetch(`${BASE_API}/gateways?${urlParams}`, {
+    const gatewaysUrl = `${BASE_API}/gateways?${urlParams}`
+    logRequest(gatewaysUrl)
+    const gatewaysRes = await fetch(gatewaysUrl, {
         headers,
         credentials: 'include'
     })
@@ -37,13 +51,15 @@ const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
 interface RateParams {
     country?: string
     amountInCrypto?: boolean,
-    address: string|undefined,
+    address: string | undefined,
     [key: string]: any
 }
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const ratesRes = await fetch(`${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`, {
+    const ratesUrl = `${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`
+    logRequest(ratesUrl)
+    const ratesRes = await fetch(ratesUrl, {
         headers,
         signal,
         credentials: 'include'
@@ -76,6 +92,7 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
 
     const urlParams = createUrlParamsFromObject(params ?? {})
 
+    logRequest(step.url)
     let nextStep: FetchResponse;
     if (isMoonpayStep(step.url)) {
         nextStep = await processMoonpayStep(step.url, { method, headers, body });
@@ -103,12 +120,22 @@ const processResponse = async (response: FetchResponse): Promise<any> => {
             errorResponse = await response.json()
         } catch (error) {
             try {
-                throw new NextStepError({ message: await response.text() })
+                errorResponse = { message: await response.text() }
             } catch (error) {
-                throw new NextStepError({ message: "Error parsing the response" })
+                errorResponse = { message: "Error parsing the response" }
             }
         }
+        sentryHub.addBreadcrumb({message:"Error received from request", data:errorResponse})
+        sentryHub.captureException(new ApiError(errorResponse.message));
         throw new NextStepError(errorResponse)
+    }
+}
+
+class ApiError extends Error {
+    data?: any
+    constructor(message: string) {
+        super(message);
+        this.name = message
     }
 }
 
@@ -152,7 +179,7 @@ export interface Filters {
 }
 const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, filters?: Filters): GatewaysResponse => {
     if (!filters) return gatewaysResponse
-    
+
     const { onlyCryptos, excludeCryptos, onlyPaymentMethods, excludePaymentMethods, excludeFiat, onlyGateways, onlyFiat } = filters
 
     const _onlyCryptos = onlyCryptos?.map(code => code.toUpperCase())
@@ -206,16 +233,16 @@ type DefaultAddrs = {
     [denom: string]: CryptoAddrType | undefined;
 }
 
-const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[], defaultAddrs?:DefaultAddrs, selectedCrypto?:string): RateResponse => {
+const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[], defaultAddrs?: DefaultAddrs, selectedCrypto?: string): RateResponse => {
     return ratesResponse.filter(gateway => {
         if (onlyGateways !== undefined && !onlyGateways.includes(gateway.identifier)) {
             return false;
         }
-        if(defaultAddrs !== undefined && selectedCrypto !== undefined){
+        if (defaultAddrs !== undefined && selectedCrypto !== undefined) {
             const memoUsed = defaultAddrs[selectedCrypto]?.memo !== undefined
-            if(memoUsed){
+            if (memoUsed) {
                 const nextStep = gateway.nextStep
-                if(nextStep!==undefined && nextStep.type === "form" && !nextStep.data.some(data=>data.name==="cryptocurrencyAddressTag")){
+                if (nextStep !== undefined && nextStep.type === "form" && !nextStep.data.some(data => data.name === "cryptocurrencyAddressTag")) {
                     return false;
                 }
             }
@@ -231,5 +258,7 @@ export {
     executeStep,
     filterGatewaysResponse,
     filterRatesResponse,
-    NextStepError
+    NextStepError,
+    sentryHub,
+    ApiError
 }
