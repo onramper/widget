@@ -357,6 +357,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       try {
         clearErrors()
         const address = state.collected.defaultAddrs[outCurrency]?.address
+        const addressTag = state.collected.defaultAddrs[outCurrency]?.memo
         rawResponseRate = await API.rate(
           inCurrency,
           outCurrency,
@@ -366,7 +367,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             country: state.collected.selectedCountry,
             amountInCrypto: state.collected.amountInCrypto,
             includeIcons: true,
-            address
+            address,
+            addressTag
           },
           signal
         )
