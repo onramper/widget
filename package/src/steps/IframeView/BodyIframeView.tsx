@@ -92,8 +92,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     useEffect(() => {
         let urlTail = ''
         const hostname = getHostname(props.src).split('.').splice(1).join('.')
-        const main = window.document.getElementById('main')
-        const primaryColor = main !== null ? getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
+        //const main = window.document.getElementById('main')
+        const primaryColor = collected.themeColor//main !== null ? getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
         if (primaryColor)
             if (hostname === SANDBOX_HOSTNAME) {
                 urlTail = `${props.src.includes('?') ? '&' : '?'}color=${primaryColor}`
@@ -107,7 +107,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
         } */
         const newIframeUrl = `${props.src}${urlTail}`
         setIframeUrl(newIframeUrl)
-    }, [props.src, redirect, type, selectedGateway])
+    }, [props.src, redirect, type, selectedGateway, collected.themeColor])
 
     useEffect(() => {
         if (countDown <= 0 || !isAGateway) {

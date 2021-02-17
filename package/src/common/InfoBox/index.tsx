@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styles from './styles.module.css'
 import { CSSTransition } from 'react-transition-group';
 import ButtonAction from '../ButtonAction'
-
+import { APIContext } from '../../ApiContext'
 import {URLize} from './utils'
 
 type InfoBoxType = {
@@ -18,6 +18,7 @@ type InfoBoxType = {
 
 const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBoxType>>((props, ref) => {
     const [disableButton, setDisableButton] = useState(false)
+    const { collected } = useContext(APIContext)
 
     const {
         type = 'info',
@@ -41,8 +42,8 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
             break;
     }
 
-    const main = window.document.getElementById('main')
-    const primaryColor = main !== null ? getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
+    //const main = window.document.getElementById('main')
+    const primaryColor = collected.themeColor//main !== null ? getComputedStyle(main).getPropertyValue('--primary-color').replace('#', '') : undefined
 
     const style = {
         "--color-border": "var(--primary-color)",

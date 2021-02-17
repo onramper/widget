@@ -228,7 +228,7 @@ const bankStep = {
 
 const iframeStep = {
     "type": "iframe",
-    "url": "https://sandbox.onramper.dev/?customerId=demo&transactionId=0&customerAddress=e30="
+    "url": "https://moonpay.sandbox.staging.onramper.tech/?customerId=demo&transactionId=0&customerAddress=e30="
 }
 
 const getDocumetnHumanName = (doc: string) => {

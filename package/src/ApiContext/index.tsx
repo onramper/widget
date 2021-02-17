@@ -38,6 +38,7 @@ interface APIProviderType {
   filters?: Filters
   country?: string
   isAddressEditable?: boolean
+  themeColor: string
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -51,7 +52,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       ...initialState.collected,
       amount: defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
       defaultAddrs: Object.entries(defaultAddrs).reduce((acc, [key, value]) => ({ ...acc, [key.toUpperCase()]: value }), {}),
-      isAddressEditable
+      isAddressEditable,
+      themeColor: props.themeColor
     }
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);

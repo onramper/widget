@@ -50,6 +50,7 @@ export type CollectedStateType = {
     }
     errors?: ErrorObjectType,
     isAddressEditable?: boolean
+    themeColor: string
     [key: string]: any
 }
 
@@ -108,7 +109,8 @@ export const initialState: StateType = {
         cryptocurrencyAddress: undefined,
         defaultAddrs: {},
         errors: undefined,
-        isAddressEditable: true
+        isAddressEditable: true,
+        themeColor: "266678"
     },
     data: {
         availableCryptos: [],
