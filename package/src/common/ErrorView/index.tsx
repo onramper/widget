@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './styles.module.css'
 import stylesCommon from '../../styles.module.css'
-import { COUNTRY_NOT_SUPPORTED, DISABLED_GATEWAYS, API_ERROR, NO_ITEMS_FOUND } from './errors'
+import { COUNTRY_NOT_SUPPORTED, DISABLED_GATEWAYS, API_ERROR, NO_ITEMS_FOUND, CRASH_ERROR } from './errors'
 
 import Header from '../../common/Header'
 import { NavContext } from '../../NavContext'
@@ -12,8 +12,9 @@ interface ErrorViewProps {
   buttonText?: string
   maxHeight?: string
   fixedHeight?: boolean
-  type?: "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_ITEMS" | "NO_RATES" | "MIN" | "MAX" | "UNREACHABLE" | "OTHER" | "ALL_UNAVAILABLE" | undefined | "OPTION"
+  type?: "API" | "NO_GATEWAYS" | "DISABLED_GATEWAYS" | "NO_ITEMS" | "NO_RATES" | "MIN" | "MAX" | "UNREACHABLE" | "OTHER" | "ALL_UNAVAILABLE" | undefined | "OPTION" | "CRASH"
   message?: string
+  callback?: () => any
 }
 
 const ErrorView: React.FC<ErrorViewProps> = (props) => {
@@ -44,6 +45,11 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
         return DISABLED_GATEWAYS
       case 'API':
         return API_ERROR(props.message ?? '', restartWidget)
+      case 'CRASH':
+        return CRASH_ERROR(() => {
+          props.callback?.()
+          restartWidget()
+        })
       default:
         return API_ERROR(props.message ?? '', restartWidget)
     }
@@ -51,7 +57,7 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
 
   return (
     <div className={stylesCommon.view}>
-      <Header title="" noSeparator />
+      {props.type !== 'CRASH' && <Header title="" noSeparator />}
       <div className={`${stylesCommon.body} ${styles.body}`}>
         {CurrentError}
       </div>

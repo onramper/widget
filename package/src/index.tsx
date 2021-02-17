@@ -1,19 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import BuyCryptoView from './BuyCryptoView'
+import ErrorView from './common/ErrorView'
 import styles from './styles.module.css'
 import { NavProvider, NavContainer } from './NavContext';
 import { APIProvider } from './ApiContext'
 import type { APIProviderType } from './ApiContext'
 import './polyfills/composedpath.polyfill'
-
+import { ErrorBoundary } from './ErrorBoundary'
 
 import Footer from './common/Footer'
 
 import './isolateinheritance.css'
 import './normalize.min.css'
 
-type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & { 
+type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & {
     color?: string
     fontFamily?: string
     className?: string,
@@ -21,6 +22,8 @@ type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & {
 }
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
+    const [flagRestart, setFlagRestart] = React.useState(0)
+
     const {
         color = '#266678',
         fontFamily = "'Roboto', sans-serif",
@@ -33,28 +36,41 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     } as React.CSSProperties;
 
     return (
-        <div id="main" style={style} className={`isolate-inheritance ${styles.theme} ${className}`}>
-            <NavProvider>
-                <APIProvider
-                    API_KEY={props.API_KEY}
-                    defaultAmount={props.defaultAmount}
-                    defaultAddrs={props.defaultAddrs}
-                    defaultCrypto={props.defaultCrypto}
-                    defaultFiat={props.defaultFiat}
-                    defaultFiatSoft={props.defaultFiatSoft}
-                    defaultPaymentMethod={props.defaultPaymentMethod}
-                    filters={props.filters}
-                    country={props.country}
-                    isAddressEditable={props.isAddressEditable}
-                    themeColor={color.slice(1)}
-                >
-                    <div style={{ flexGrow: 1, display: 'flex' }}>
-                        <NavContainer home={<BuyCryptoView />} displayChatBubble={props.displayChatBubble} />
-                    </div>
-                    <Footer />
-                </APIProvider>
-            </NavProvider>
-        </div>
+        <div key={flagRestart} id="main" style={style} className={`isolate-inheritance ${styles.theme} ${className}`}>
+            <ErrorBoundary
+                FallbackComponent={({ resetErrorBoundary }) =>
+                    <ErrorView
+                        type="CRASH"
+                        callback={resetErrorBoundary}
+                    />
+                }
+                onReset={() => {
+                    // reset the state of your app so the error doesn't happen again
+                    setFlagRestart(old => ++old)
+                }}
+            >
+                <NavProvider>
+                    <APIProvider
+                        API_KEY={props.API_KEY}
+                        defaultAmount={props.defaultAmount}
+                        defaultAddrs={props.defaultAddrs}
+                        defaultCrypto={props.defaultCrypto}
+                        defaultFiat={props.defaultFiat}
+                        defaultFiatSoft={props.defaultFiatSoft}
+                        defaultPaymentMethod={props.defaultPaymentMethod}
+                        filters={props.filters}
+                        country={props.country}
+                        isAddressEditable={props.isAddressEditable}
+                        themeColor={color.slice(1)}
+                    >
+                        <div style={{ flexGrow: 1, display: 'flex' }}>
+                            <NavContainer home={<BuyCryptoView />} displayChatBubble={props.displayChatBubble} />
+                        </div>
+                        <Footer />
+                    </APIProvider>
+                </NavProvider>
+            </ErrorBoundary>
+        </div >
     )
 }
 
