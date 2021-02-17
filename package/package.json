@@ -47,6 +47,7 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
+    "@sentry/types": "^6.1.0",
     "@svgr/webpack": "^5.4.0",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.42",
