@@ -7,7 +7,7 @@ import { NavProvider, NavContainer } from './NavContext';
 import { APIProvider } from './ApiContext'
 import type { APIProviderType } from './ApiContext'
 import './polyfills/composedpath.polyfill'
-import { ErrorBoundary } from './ErrorBoundary'
+import { ErrorBoundary } from '@sentry/react'
 
 import Footer from './common/Footer'
 
@@ -38,10 +38,10 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     return (
         <div key={flagRestart} id="main" style={style} className={`isolate-inheritance ${styles.theme} ${className}`}>
             <ErrorBoundary
-                FallbackComponent={({ resetErrorBoundary }) =>
+                fallback={({ resetError }) =>
                     <ErrorView
                         type="CRASH"
-                        callback={resetErrorBoundary}
+                        callback={resetError}
                     />
                 }
                 onReset={() => {
