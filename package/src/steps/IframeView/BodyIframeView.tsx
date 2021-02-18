@@ -74,7 +74,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
         //if opened -> all is ok
         if (windowObjectReference) {
             const interval = 250
-            const times2Count = 60000/250
+            const times2Count = 60000 / 250
             let count = 0
             const checkIfClosed = setInterval(() => {
                 if (windowObjectReference.closed || count > times2Count) {
@@ -154,7 +154,12 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             }
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 {
-                    ((isAGateway && type === 'redirect') && (
+                    (props.fatalError && (
+                        <div className={`${styles.center}`}>
+                            <span>{props.fatalError}</span>
+                        </div>
+                    ))
+                    || ((isAGateway && type === 'redirect') && (
                         <div className={`${styles.center}`}>
                             <div className={styles.block}>
                                 {
