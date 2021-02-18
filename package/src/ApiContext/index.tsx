@@ -71,7 +71,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     []
   )
 
-  useEffect(()=>{
+  useEffect(() => {
     handleInputChange("isAddressEditable", isAddressEditable)
   }, [isAddressEditable, handleInputChange])
 
@@ -160,6 +160,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         icon: ICONS_MAP[crypto.code]?.icon,
         precision: crypto.precision,
         symbol: crypto.code,
+        supportsAddressTag: crypto.supportsAddressTag,
         currencyType: ItemCategory.Crypto
       }))
 
@@ -179,7 +180,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     (crypto?: ItemType): ErrorObjectType | undefined | {} => {
       let _crypto: typeof crypto
       if (!crypto)
-        _crypto = state.collected.selectedCrypto || { id:defaultCrypto, name:defaultCrypto }
+        _crypto = state.collected.selectedCrypto || { id: defaultCrypto, name: defaultCrypto }
       else
         _crypto = crypto
 
@@ -236,7 +237,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       let _selectedCurrency: typeof selectedCurrency
 
       if (!selectedCurrency)
-        _selectedCurrency = state.collected.selectedCurrency || (defaultFiat ? {id:defaultFiat, name:defaultFiat} : undefined)
+        _selectedCurrency = state.collected.selectedCurrency || (defaultFiat ? { id: defaultFiat, name: defaultFiat } : undefined)
       else
         _selectedCurrency = selectedCurrency
 
@@ -305,7 +306,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       let _selectedPaymentMethod: typeof selectedPaymentMethod
       if (!selectedPaymentMethod)
-        _selectedPaymentMethod = state.collected.selectedPaymentMethod || (props.defaultPaymentMethod ? { id:props.defaultPaymentMethod, name:props.defaultPaymentMethod } : undefined)
+        _selectedPaymentMethod = state.collected.selectedPaymentMethod || (props.defaultPaymentMethod ? { id: props.defaultPaymentMethod, name: props.defaultPaymentMethod } : undefined)
       else
         _selectedPaymentMethod = selectedPaymentMethod
 
@@ -480,12 +481,32 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     handlePaymentMethodChange()
   }, [handlePaymentMethodChange])
 
-  useEffect(()=> {
-    const allRatesNames = state.data.allRates.map(rate=>rate.identifier)
-    const hiddenRates = state.data.responseGateways?.gateways.filter(gateway=>!allRatesNames.includes(gateway.identifier))
-    const hiddenRatesWithMyCrypto = hiddenRates?.filter(rate=>rate.cryptoCurrencies.some(crypto=>crypto.code===state.collected.selectedCrypto?.id))
-    const hiddenRatesWithMyCryptonCurrency = hiddenRatesWithMyCrypto?.filter(rate=>rate.fiatCurrencies.some(Fiat=>Fiat.code===state.collected.selectedCurrency?.id))
-    const hiddenPaymentMethodsByCryptoFiat = hiddenRatesWithMyCryptonCurrency?.reduce((acc, rate)=> {
+  useEffect(() => {
+    // ["Wyre", "Moonpay", ...] current available rates
+    const allRatesNames = state.data.allRates.map(rate => rate.identifier)
+    // [{identifier, cryptoCurrencies, ...}, ...] gateways not availables for current crypto, fiat and payment method
+    const hiddenRates = state.data.responseGateways?.gateways.filter(gateway => !allRatesNames.includes(gateway.identifier))
+    // gateways not availables for current crypto, fiat and payment method that includes crypto selection
+    const hiddenRatesWithMyCrypto = hiddenRates?.filter(rate => rate.cryptoCurrencies.some(crypto => crypto.code === state.collected.selectedCrypto?.id))
+    // gateways not availables for current crypto, fiat and payment method that includes crypto selection and fiat selection
+    const hiddenRatesWithMyCryptonCurrency = hiddenRatesWithMyCrypto?.filter(rate => rate.fiatCurrencies.some(Fiat => Fiat.code === state.collected.selectedCurrency?.id))
+
+    // [{identifier: ["EUR", "USD", ...]}] currencies of gateways not availables for current crypto, fiat and payment method that includes crypto selection
+    const hiddenCurrenciesByCrypto = hiddenRatesWithMyCrypto?.reduce((acc, rate) => {
+      const newAcc = []
+      for (let index = 0; index < rate.fiatCurrencies.length; index++) {
+        const element = rate.fiatCurrencies[index].code;
+        if (!acc[rate.identifier]?.includes(element))
+          newAcc.push(element)
+      }
+      return {
+        ...acc,
+        [rate.identifier]: [...(acc[rate.identifier] ?? []), ...newAcc]
+      }
+    }, {} as { [identifier: string]: string[] })
+
+    // [{identifier: ["ccard", "bank", ...]}] payment methods of gateways not availables for current crypto, fiat and payment method that includes crypto selection and fiat selection
+    const hiddenPaymentMethodsByCryptoFiat = hiddenRatesWithMyCryptonCurrency?.reduce((acc, rate) => {
       const newAcc = []
       for (let index = 0; index < rate.paymentMethods.length; index++) {
         const element = rate.paymentMethods[index];
@@ -494,55 +515,65 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }
       return {
         ...acc,
-        [rate.identifier] : [...(acc[rate.identifier]??[]), ...newAcc]
+        [rate.identifier]: [...(acc[rate.identifier] ?? []), ...newAcc]
       }
-    }, {} as {[identifier:string]:string[]})
+    }, {} as { [identifier: string]: string[] })
 
-    const hiddenPaymentMethodsByCrypto = hiddenRatesWithMyCrypto?.reduce((acc, rate)=> {
-      const newAcc = []
-      for (let index = 0; index < rate.paymentMethods.length; index++) {
-        const element = rate.paymentMethods[index];
-        if (!acc[rate.identifier]?.includes(element))
-          newAcc.push(element)
-      }
-      return {
-        ...acc,
-        [rate.identifier] : [...(acc[rate.identifier]??[]), ...newAcc]
-      }
-    }, {} as {[identifier:string]:string[]})
-
-    const mappedHiddenByCrypto = Object.entries(hiddenPaymentMethodsByCrypto??{})
-    .map(([identifier])=>{
-      return {
-        identifier: identifier,
-        icon: state.data.ICONS_MAP?.[identifier]?.icon || LogoOnramper,
-        error: {
-          type: "OPTION",
-          message: "Available paying with USD, EUR, GBP or other currency"
+    const mappedHiddenByCrypto = Object.entries(hiddenCurrenciesByCrypto ?? {})
+      .map(([identifier, currencies]) => {
+        return {
+          identifier: identifier,
+          icon: state.data.ICONS_MAP?.[identifier]?.icon || LogoOnramper,
+          error: {
+            type: "OPTION",
+            message: (() => {
+              const fiats: string[] = []
+              if (currencies.includes("EUR")) fiats.push("EUR")
+              if (currencies.includes("USD")) fiats.push("USD")
+              if (currencies.includes("GBP")) fiats.push("GBP")
+              if (fiats.length < 3)
+                for (let i = 0; i < 3 - fiats.length; i++) {
+                  const currencyToDisplay = currencies.find(c => !fiats.includes(c))
+                  if (currencyToDisplay)
+                    fiats.push(currencyToDisplay)
+                }
+              if (currencies.length > fiats.length)
+                fiats.push("other currencies")
+              return fiats.reduce((acc, currency, index, arr) => {
+                const currencyName = currency
+                if (acc === "")
+                  return `Available paying with ${currencyName}`
+                else if (index < arr.length - 1)
+                  return `${acc}, ${currencyName}`
+                else if (index === arr.length - 1)
+                  return `${acc} or ${currencyName}`
+                else return acc
+              }, "")
+            })()
+          }
         }
-      }
-    })
+      })
 
-    const mappedHiddenByFiat = Object.entries(hiddenPaymentMethodsByCryptoFiat??{})
-    .map(([identifier, payments])=>{
-      return {
-        identifier: identifier,
-        icon: state.data.ICONS_MAP?.[identifier]?.icon || LogoOnramper,
-        error: {
-          type: "OPTION",
-          message: payments.reduce((acc, payment, index, arr) => {
-            const paymentName = state.data.ICONS_MAP?.[payment].name
-            if (acc==="")
-              return `Available paying with ${paymentName}`
-            else if (index<arr.length-1)
-              return `${acc}, ${paymentName}`
-            else if (index===arr.length-1)
-              return `${acc} or ${paymentName}`
-            else return acc
-          }, "")
+    const mappedHiddenByFiat = Object.entries(hiddenPaymentMethodsByCryptoFiat ?? {})
+      .map(([identifier, payments]) => {
+        return {
+          identifier: identifier,
+          icon: state.data.ICONS_MAP?.[identifier]?.icon || LogoOnramper,
+          error: {
+            type: "OPTION",
+            message: payments.reduce((acc, payment, index, arr) => {
+              const paymentName = state.data.ICONS_MAP?.[payment].name
+              if (acc === "")
+                return `Available paying with ${paymentName}`
+              else if (index < arr.length - 1)
+                return `${acc}, ${paymentName}`
+              else if (index === arr.length - 1)
+                return `${acc} or ${paymentName}`
+              else return acc
+            }, "")
+          }
         }
-      }
-    })
+      })
 
     const allMappedHidden = arrayObjUnique([...mappedHiddenByFiat, ...mappedHiddenByCrypto], "identifier")
 
@@ -556,8 +587,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     state.collected.selectedCurrency?.id,
     state.data.allRates,
     state.data.responseGateways?.gateways,
+    state.data.availableCryptos,
     addData,
-    state.data.ICONS_MAP
+    state.data.ICONS_MAP,
+    state.collected.defaultAddrs
   ])
 
   useEffect(() => {
