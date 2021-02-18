@@ -21,6 +21,7 @@ interface GatewaysResponse {
 interface Currency {
     code: string
     precision: number
+    supportsAddressTag?: boolean
 }
 
 interface IconGatewaysResponse {

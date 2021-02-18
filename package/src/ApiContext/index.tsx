@@ -489,7 +489,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     // gateways not availables for current crypto, fiat and payment method that includes crypto selection
     const hiddenRatesWithMyCrypto = hiddenRates?.filter(rate => rate.cryptoCurrencies.some(crypto => crypto.code === state.collected.selectedCrypto?.id))
     // gateways not availables for current crypto, fiat and payment method that includes crypto selection and fiat selection
-    const hiddenRatesWithMyCryptonCurrency = hiddenRatesWithMyCrypto?.filter(rate => rate.fiatCurrencies.some(Fiat => Fiat.code === state.collected.selectedCurrency?.id))
+    const hiddenRatesWithMyCryptoAndCurrency = hiddenRatesWithMyCrypto?.filter(rate => rate.fiatCurrencies.some(Fiat => Fiat.code === state.collected.selectedCurrency?.id))
 
     // [{identifier: ["EUR", "USD", ...]}] currencies of gateways not availables for current crypto, fiat and payment method that includes crypto selection
     const hiddenCurrenciesByCrypto = hiddenRatesWithMyCrypto?.reduce((acc, rate) => {
@@ -506,7 +506,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     }, {} as { [identifier: string]: string[] })
 
     // [{identifier: ["ccard", "bank", ...]}] payment methods of gateways not availables for current crypto, fiat and payment method that includes crypto selection and fiat selection
-    const hiddenPaymentMethodsByCryptoFiat = hiddenRatesWithMyCryptonCurrency?.reduce((acc, rate) => {
+    const hiddenPaymentMethodsByCryptoFiat = hiddenRatesWithMyCryptoAndCurrency?.reduce((acc, rate) => {
       const newAcc = []
       for (let index = 0; index < rate.paymentMethods.length; index++) {
         const element = rate.paymentMethods[index];
@@ -519,7 +519,16 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }
     }, {} as { [identifier: string]: string[] })
 
+    const selectedCrypto = state.collected.selectedCrypto?.id ?? ''
+
+    const memoUsed = state.collected.defaultAddrs[selectedCrypto]?.memo !== undefined
+
     const mappedHiddenByCrypto = Object.entries(hiddenCurrenciesByCrypto ?? {})
+      // if memo is used, then remove gateways that doesn't accept it
+      // 1. select all gateways with the same identifier (filter)
+      // 2. check if any of the gateways entries (some) that includes our crypto (find, always true) supports address tag for the crypto
+      .filter(([identifier]) => !memoUsed || hiddenRatesWithMyCrypto?.filter(g => g.identifier === identifier)
+        ?.some(g => g.cryptoCurrencies.find(c => c.code === selectedCrypto)?.supportsAddressTag))
       .map(([identifier, currencies]) => {
         return {
           identifier: identifier,
@@ -528,6 +537,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             type: "OPTION",
             message: (() => {
               const fiats: string[] = []
+              // Adding first popular currencies
               if (currencies.includes("EUR")) fiats.push("EUR")
               if (currencies.includes("USD")) fiats.push("USD")
               if (currencies.includes("GBP")) fiats.push("GBP")
@@ -555,6 +565,11 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       })
 
     const mappedHiddenByFiat = Object.entries(hiddenPaymentMethodsByCryptoFiat ?? {})
+      // if memo is used, then remove gateways that doesn't accept it
+      // 1. select all gateways with the same identifier (filter)
+      // 2. check if any of the gateways entries (some) that includes our crypto (find, always true) supports address tag for the crypto
+      .filter(([identifier]) => !memoUsed || hiddenRatesWithMyCrypto?.filter(g => g.identifier === identifier)
+        ?.some(g => g.cryptoCurrencies.find(c => c.code === selectedCrypto)?.supportsAddressTag))
       .map(([identifier, payments]) => {
         return {
           identifier: identifier,

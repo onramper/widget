@@ -14,6 +14,7 @@ export interface ItemType {
     precision?: number
     currencyType?: string
     searchWords?: string //format "word1 word2"
+    supportsAddressTag?: boolean
 }
 
 export enum ItemCategory {
