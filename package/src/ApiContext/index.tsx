@@ -389,11 +389,15 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // IF THE REQUEST DIDN'T THROW ANY ERROR, CLEAR THE ABORT CONTROLLER FROM THE STATE
       setLastCall(undefined)
 
+      if (responseRate) {
+        addData({ responseRate: responseRate })
+      }
+
       if (!responseRate || responseRate.length <= 0) {
         return processErrors({
           RATE: {
             type: "NO_RATES",
-            message: "No rates found."
+            message: `We tried but... we haven't found any gateway for this combination of cryptocurrency, fiat currency, payment method and/or prefilled ${outCurrency} wallet address. Please, try with another one or contact us.`
           }
         })
       }
@@ -415,7 +419,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }))
 
       // save to state.date
-      addData({ allRates: mappedAllRates, responseRate: responseRate })
+      addData({ allRates: mappedAllRates })
 
       // IF THERE ARE NO RATES AVAILABLES THEN REDUCE UNAVAILABLE RATES TO AN ERRORS OBJECT
       const unavailableRates = responseRate.filter(item => !item.available)

@@ -1,7 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './styles.module.css'
 import stylesCommon from '../../styles.module.css'
-import { COUNTRY_NOT_SUPPORTED, DISABLED_GATEWAYS, API_ERROR, NO_ITEMS_FOUND, CRASH_ERROR } from './errors'
+import {
+  COUNTRY_NOT_SUPPORTED,
+  DISABLED_GATEWAYS,
+  API_ERROR,
+  NO_ITEMS_FOUND,
+  CRASH_ERROR
+} from './errors'
 
 import Header from '../../common/Header'
 import { NavContext } from '../../NavContext'

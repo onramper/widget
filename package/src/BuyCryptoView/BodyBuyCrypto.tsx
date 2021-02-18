@@ -8,6 +8,7 @@ import ExpectedCrypto from './ExpectedCrypto'
 
 import { APIContext, ItemCategory } from '../ApiContext'
 import type { ItemType } from '../ApiContext'
+import { NavContext } from '../NavContext'
 
 import InfoBox from '../common/InfoBox'
 
@@ -30,6 +31,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
+    const { triggerChat } = useContext(NavContext)
 
     const [pairs, setPairs] = useState<ItemType[]>()
     const [amountInCrypto, setAmountInCrypto] = useState(false)
@@ -79,9 +81,27 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                 {collected.errors?.RATE?.message}
             </InfoBox>
             <InfoBox
-                onActionClick={onBuyCrypto}
-                actionText={"See all gateways"}
-                in={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE'} type='notification' className={`${stylesCommon.body__child}`}>
+                onActionClick={
+                    collected.errors?.RATE?.type === 'ALL_UNAVAILABLE'
+                        ? onBuyCrypto
+                        : collected.errors?.RATE?.type === 'NO_RATES'
+                            ? triggerChat
+                            : undefined
+                }
+                actionText={
+                    collected.errors?.RATE?.type === 'ALL_UNAVAILABLE'
+                        ? "See all gateways"
+                        : collected.errors?.RATE?.type === 'NO_RATES'
+                            ? "Contact us"
+                            : undefined
+                }
+                in={
+                    collected.errors?.RATE?.type === 'ALL_UNAVAILABLE'
+                    || collected.errors?.RATE?.type === 'NO_RATES'
+                }
+                type='notification'
+                className={`${stylesCommon.body__child}`}
+            >
                 {collected.errors?.RATE?.message}
             </InfoBox>
             <InputButton onClick={openPickCrypto} className={stylesCommon.body__child} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} />
@@ -90,9 +110,18 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                 <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
             <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon.body__child} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
-            <ExpectedCrypto className={`${stylesCommon.body__child} ${stylesCommon.grow}`} amountInCrypto={amountInCrypto} denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name} isLoading={collected.isCalculatingAmount} />
+            <ExpectedCrypto
+                className={`${stylesCommon.body__child} ${stylesCommon.grow}`}
+                amountInCrypto={amountInCrypto}
+                denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name}
+                isLoading={collected.isCalculatingAmount}
+            />
             <div className={`${stylesCommon.body__child}`}>
-                <ButtonAction onClick={onBuyCrypto} text={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE' ? 'See gateways' : `Buy ${selectedCrypto.id}`} disabled={!isFilled || collected.isCalculatingAmount || !!minMaxErrorsMsg} />
+                <ButtonAction
+                    onClick={onBuyCrypto}
+                    text={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE' ? 'See gateways' : `Buy ${selectedCrypto.id}`}
+                    disabled={!isFilled || collected.isCalculatingAmount || !!minMaxErrorsMsg || collected.errors?.RATE?.type === 'NO_RATES'}
+                />
             </div>
         </main >
     )

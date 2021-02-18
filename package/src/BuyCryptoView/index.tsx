@@ -39,7 +39,7 @@ const BuyCryptoView: React.FC = () => {
     if (!errors || Object.keys(errors).length <= 0) return
     const key = Object.keys(errors)[0] as keyof typeof errors
     const type = errors?.[key]?.type
-    if (type && !['MIN', 'MAX', 'ALL_UNAVAILABLE'].includes(type))
+    if (type && !['MIN', 'MAX', 'ALL_UNAVAILABLE', 'NO_RATES'].includes(type))
       nextScreen(<ErrorView type={type} message={errors?.[key]?.message} />)
   }, [errors, nextScreen])
 

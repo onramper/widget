@@ -52,7 +52,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
     }
 
     const smallHeightScreen = window.screen.height <= 615 || window.screen.width <= 575
-console.log(smallHeightScreen)
+
     return (
         <main className={stylesCommon.body}>
             <InfoBox in={!!textInfo} className={`${stylesCommon.body__child}`}>
