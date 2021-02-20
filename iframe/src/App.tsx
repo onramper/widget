@@ -8,8 +8,8 @@ const defaultApiKey =
   window.self !== window.top
     ? undefined
     : window.location.origin.split(".")[2] === "com"
-    ? com_key
-    : dev_key;
+      ? com_key
+      : dev_key;
 
 const apiKey = getParam("apiKey", defaultApiKey);
 const defaultColor = `#${getParam("color", "266678")}`;
@@ -33,9 +33,17 @@ const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble")
 
 function App() {
+
+  const style = {
+    display: "flex",
+    flexDirection: "row",
+    height: "100%",
+    backgroundColor: inIframe() ? "transparent" : "whitesmoke"
+  } as React.CSSProperties;
+
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "row", height: "100%" }}>
+      <div style={style}>
         {/*         <div className={'onramper-pane'}></div> */}
         <div className={"widget-container"}>
           <OnramperWidget
@@ -48,7 +56,7 @@ function App() {
             defaultFiat={defaultFiat}
             defaultFiatSoft={defaultFiatSoft}
             defaultPaymentMethod={defaultPaymentMethod}
-            filters= {{
+            filters={{
               onlyCryptos: onlyCryptos,
               excludeCryptos: excludeCryptos,
               onlyPaymentMethods: onlyPaymentMethods,
@@ -58,8 +66,8 @@ function App() {
               onlyFiat: onlyFiat,
             }}
             country={country}
-            isAddressEditable={isAddressEditable===undefined?undefined:isAddressEditable === "true"}
-            displayChatBubble={displayChatBubble===undefined?undefined:displayChatBubble=== "true"}
+            isAddressEditable={isAddressEditable === undefined ? undefined : isAddressEditable === "true"}
+            displayChatBubble={displayChatBubble === undefined ? undefined : displayChatBubble === "true"}
           />
         </div>
       </div>
@@ -110,9 +118,17 @@ function getAddressesParam() {
   return Object.entries(addrs).reduce((acc, [key, address]) => {
     return {
       ...acc,
-      [key]:{address}
+      [key]: { address }
     }
   }, {})
+}
+
+function inIframe() {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
 }
 
 
