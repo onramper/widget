@@ -71,6 +71,7 @@ type NextStep =
     } | {
         type: 'redirect';
         url: string;
+        hint?: string;
     } | {
         type: 'wait';
         url: string;

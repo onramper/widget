@@ -40,7 +40,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     const [autoRedirect, setAutoRedirect] = useState(true)
     /* const [isAGateway, setisAGateway] = useState(true) */
     const [iframeUrl, setIframeUrl] = useState(props.src)
-    const [countDown, setCountDown] = useState(3)
+    const [countDown, setCountDown] = useState(textInfo?10:3)
 
     const [userClosedPopup, setUserClosedPopup] = useState(false)
 
@@ -126,6 +126,11 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
 
     return (
         <main className={`${stylesCommon.body} ${props.isFullScreen ? stylesCommon['body--full_screen'] : ''} ${styles.body}`}>
+            {
+                <InfoBox in={!!textInfo} className={`${stylesCommon.body__child} ${styles.body__child}`} type='notification'>
+                    {textInfo}
+                </InfoBox>
+            }
             {
                 !props.isFullScreen &&
                 <>

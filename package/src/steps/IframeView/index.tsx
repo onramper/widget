@@ -76,7 +76,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
     <div className={styles.view}>
       <Header title="Complete payment" backButton />
       <BodyIframeView
-        textInfo={textInfo}
+        textInfo={nextStep.type === 'redirect' ? nextStep.hint : textInfo}
         error={error}
         fatalError={fatalError}
         features={nextStep.type === 'iframe' ? nextStep.neededFeatures : undefined}
