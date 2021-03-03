@@ -1,44 +1,50 @@
-import React, { createContext, useReducer, useCallback } from 'react';
-import styles from './styles.module.css'
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import ChatBubble from './ChatBubble';
+import React, { createContext, useReducer, useCallback } from "react";
+import styles from "./styles.module.css";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import ChatBubble from "./ChatBubble";
+import { APIContext } from "../ApiContext";
 
 export type ScreenType = React.ReactNode;
 
 export type NavigationStateType = {
   screens: ScreenType[];
   currentSes: number;
-  isChatOpen: boolean
-}
+  isChatOpen: boolean;
+};
 
 export enum NavigationActionsType {
-  Only = 'ONLY',
-  Push = 'PUSH',
-  Pop = 'POP',
-  Replace = 'REPLACE',
-  Chat = 'TRIGGERCHAT'
+  Only = "ONLY",
+  Push = "PUSH",
+  Pop = "POP",
+  Replace = "REPLACE",
+  Chat = "TRIGGERCHAT",
 }
 
-export type NavigationActions = {
-  type: NavigationActionsType.Only;
-  screen: ScreenType;
-} | {
-  type: NavigationActionsType.Push;
-  screen: ScreenType;
-} | {
-  type: NavigationActionsType.Pop;
-} | {
-  type: NavigationActionsType.Replace;
-  screen: ScreenType;
-} | {
-  type: NavigationActionsType.Chat;
-}
+export type NavigationActions =
+  | {
+      type: NavigationActionsType.Only;
+      screen: ScreenType;
+    }
+  | {
+      type: NavigationActionsType.Push;
+      screen: ScreenType;
+    }
+  | {
+      type: NavigationActionsType.Pop;
+    }
+  | {
+      type: NavigationActionsType.Replace;
+      screen: ScreenType;
+    }
+  | {
+      type: NavigationActionsType.Chat;
+    };
 
 const initialState = {
   screens: [],
   currentSes: 0,
-  isChatOpen: false
-}
+  isChatOpen: false,
+};
 
 //Creating context
 const NavContext = createContext<{
@@ -47,132 +53,179 @@ const NavContext = createContext<{
   backScreen: () => void;
   nextScreen: (screen: ScreenType) => void;
   replaceScreen: (screen: ScreenType) => void;
-  triggerChat: () => void
+  triggerChat: () => void;
 }>({
   _state: initialState,
   onlyScreen: () => null,
   backScreen: () => null,
   nextScreen: () => null,
   replaceScreen: () => null,
-  triggerChat: () => null
+  triggerChat: () => null,
 });
-
 
 //Creating context
 const NavProvider: React.FC = (props) => {
   const [_state, dispatch] = useReducer(mainReducer, initialState);
 
-  const backScreen = useCallback(() => dispatch({ type: NavigationActionsType.Pop }), [])
-  const nextScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Push, screen }), [])
-  const onlyScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Only, screen }), [])
-  const replaceScreen = useCallback((screen: ScreenType) => dispatch({ type: NavigationActionsType.Replace, screen }), [])
-  const triggerChat = useCallback(() => dispatch({ type: NavigationActionsType.Chat }), [])
+  const backScreen = useCallback(
+    () => dispatch({ type: NavigationActionsType.Pop }),
+    []
+  );
+  const nextScreen = useCallback(
+    (screen: ScreenType) =>
+      dispatch({ type: NavigationActionsType.Push, screen }),
+    []
+  );
+  const onlyScreen = useCallback(
+    (screen: ScreenType) =>
+      dispatch({ type: NavigationActionsType.Only, screen }),
+    []
+  );
+  const replaceScreen = useCallback(
+    (screen: ScreenType) =>
+      dispatch({ type: NavigationActionsType.Replace, screen }),
+    []
+  );
+  const triggerChat = useCallback(
+    () => dispatch({ type: NavigationActionsType.Chat }),
+    []
+  );
 
   return (
-    <NavContext.Provider value={{ _state, onlyScreen, backScreen, nextScreen, replaceScreen, triggerChat }}>
+    <NavContext.Provider
+      value={{
+        _state,
+        onlyScreen,
+        backScreen,
+        nextScreen,
+        replaceScreen,
+        triggerChat,
+      }}
+    >
       {props.children}
     </NavContext.Provider>
-  )
-}
+  );
+};
 
-class NavContainer extends React.Component<{ home?: ScreenType, displayChatBubble?: boolean }, { intro: boolean, displayChatBubble: boolean }> {
+class NavContainer extends React.Component<
+  { home?: ScreenType },
+  { intro: boolean }
+> {
   private transitionRef: React.RefObject<any>;
-  private timer: ReturnType<typeof setTimeout> | null
+  private timer: ReturnType<typeof setTimeout> | null;
+
   constructor(props: { home?: ScreenType }) {
     super(props);
 
     this.state = {
       intro: false,
-      displayChatBubble: this.props.displayChatBubble ?? true
     };
-    this.transitionRef = React.createRef()
-    this.timer = null
+    this.transitionRef = React.createRef();
+    this.timer = null;
   }
 
   componentDidMount() {
-    const firstScreen = this.props.home
-    if (firstScreen)
-      this.context.onlyScreen(firstScreen)
+    const firstScreen = this.props.home;
+    if (firstScreen) this.context.onlyScreen(firstScreen);
 
-    this.timer = setTimeout(
-      () => {
-        this.setState({ intro: true })
-        if (this.timer)
-          clearTimeout(this.timer);
-        this.timer = setTimeout(
-          () => {
-            this.setState({ intro: false })
-            if (this.timer)
-              clearTimeout(this.timer);
-          },
-          800
-        );
-      },
-      900
-    );
+    this.timer = setTimeout(() => {
+      this.setState({ intro: true });
+      if (this.timer) clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.setState({ intro: false });
+        if (this.timer) clearTimeout(this.timer);
+      }, 800);
+    }, 900);
   }
 
   componentWillUnmount() {
-    if (this.timer)
-      clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer);
   }
 
   render() {
     return (
-      <NavContext.Consumer>
-        {
-          value =>
-            <div className={styles['nav-container']} >
-              <TransitionGroup>
-                {value._state.screens.map((screen, i) => (
-                  <CSSTransition key={i} nodeRef={this.transitionRef} timeout={200} classNames={{
-                    enter: styles['screen-enter'],
-                    enterActive: styles['screen-enter-active'],
-                    exit: styles['screen-exit'],
-                    exitActive: styles['screen-exit-active']
-                  }}>
-                    <div key={`${value._state.currentSes}${i}`} style={{ zIndex: (i + 1) }} className={styles.screen} ref={this.transitionRef}>
-                      {screen}
-                    </div>
-                  </CSSTransition>
-                ))}
-              </TransitionGroup>
-              <ChatBubble
-                onActionChatClick={()=>{ value.triggerChat() }}
-                isChatOpen={value._state.isChatOpen}
-                intro={this.state.intro}
-                isBubbleActive={this.state.displayChatBubble}
-              />
-            </div>
+      <APIContext.Consumer>
+        {(apicontext) => {
+          return (<NavContext.Consumer>
+            {(value) => (
+              <div className={styles["nav-container"]}>
+                <TransitionGroup>
+                  {value._state.screens.map((screen, i) => (
+                    <CSSTransition
+                      key={i}
+                      nodeRef={this.transitionRef}
+                      timeout={200}
+                      classNames={{
+                        enter: styles["screen-enter"],
+                        enterActive: styles["screen-enter-active"],
+                        exit: styles["screen-exit"],
+                        exitActive: styles["screen-exit-active"],
+                      }}
+                    >
+                      <div
+                        key={`${value._state.currentSes}${i}`}
+                        style={{ zIndex: i + 1 }}
+                        className={styles.screen}
+                        ref={this.transitionRef}
+                      >
+                        {screen}
+                      </div>
+                    </CSSTransition>
+                  ))}
+                </TransitionGroup>
+                <ChatBubble
+                  onActionChatClick={() => {
+                    value.triggerChat();
+                  }}
+                  isChatOpen={value._state.isChatOpen}
+                  intro={this.state.intro}
+                  isBubbleActive={apicontext.collected.displayChatBubble}
+                />
+              </div>
+            )}
+          </NavContext.Consumer>)
         }
-      </NavContext.Consumer>
-    )
+        }
+      </APIContext.Consumer>
+    );
   }
 }
 
-NavContainer.contextType = NavContext
+NavContainer.contextType = NavContext;
 
-const mainReducer = (state: NavigationStateType, action: NavigationActions) => ({
+const mainReducer = (
+  state: NavigationStateType,
+  action: NavigationActions
+) => ({
   screens: navigationReducer(state, action),
-  currentSes: action.type === NavigationActionsType.Only ? state.currentSes + 1 : state.currentSes,
-  isChatOpen: action.type === NavigationActionsType.Chat ? !state.isChatOpen : state.isChatOpen
+  currentSes:
+    action.type === NavigationActionsType.Only
+      ? state.currentSes + 1
+      : state.currentSes,
+  isChatOpen:
+    action.type === NavigationActionsType.Chat
+      ? !state.isChatOpen
+      : state.isChatOpen,
 });
 
-const navigationReducer = (state: NavigationStateType, action: NavigationActions) => {
-  const { screens } = state
+const navigationReducer = (
+  state: NavigationStateType,
+  action: NavigationActions
+) => {
+  const { screens } = state;
   switch (action.type) {
     case NavigationActionsType.Only:
       return [action.screen];
     case NavigationActionsType.Push:
       return [...screens, action.screen];
     case NavigationActionsType.Pop:
-      if (screens.length <= 1) return screens
+      if (screens.length <= 1) return screens;
       return [...screens.slice(0, -1)];
     case NavigationActionsType.Replace:
       return [...screens.slice(0, -1), action.screen];
     default:
-      return screens
+      return screens;
   }
-}
+};
 
 export { NavProvider, NavContext, NavContainer };

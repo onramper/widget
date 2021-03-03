@@ -7,7 +7,7 @@ import { NavContext } from '../../../NavContext'
 
 
 const Menu: React.FC = () => {
-  const { backScreen, triggerChat } = useContext(NavContext)
+  const { backScreen/* , triggerChat */ } = useContext(NavContext)
 
   const handleItemClick = (i: number) => {
     switch (i) {
@@ -20,10 +20,10 @@ const Menu: React.FC = () => {
       case 2:
         window.open("https://onramper.com/terms-of-use/")
         break;
-      case 3:
+     /*  case 3:
         backScreen()
         triggerChat()
-        break;
+        break; */
       case 4:
         window.open("https://onramper.com/about")
         break;
@@ -48,10 +48,10 @@ const Menu: React.FC = () => {
           id: 'terms',
           name: 'Terms of use'
         },
-        {
+/*         {
           id: 'liveChat',
           name: 'Live chat'
-        },
+        }, */
         {
           id: 'about',
           name: 'About Onramper'

@@ -23,6 +23,8 @@ const DEFAULT_CURRENCY = 'USD'
 const DEFAULT_CRYPTO = 'BTC'
 export const DEFAULT_COUNTRY = 'US'
 export const DEFAULT_STATE = 'AL'
+const NO_CHAT_COUNTRIES = ['ng']
+const DEFAULT_DISPLAYCHATBUBBLE = true
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -39,6 +41,7 @@ interface APIProviderType {
   country?: string
   isAddressEditable?: boolean
   themeColor: string
+  displayChatBubble?: boolean
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -116,7 +119,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           }
         })
       }
-      handleInputChange('selectedCountry', actualCountry || responseGateways.localization.country || DEFAULT_COUNTRY)
+      const widgetsCountry = actualCountry || responseGateways.localization.country || DEFAULT_COUNTRY
+      handleInputChange('selectedCountry', widgetsCountry)
+      if (!NO_CHAT_COUNTRIES.includes(widgetsCountry) && (props.displayChatBubble || props.displayChatBubble===undefined))
+        handleInputChange('displayChatBubble', DEFAULT_DISPLAYCHATBUBBLE)
       if (responseGateways.gateways.length <= 0) {
         if (rawResponseGateways.gateways.length > 0) {
           return processErrors({
@@ -174,7 +180,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         responseGateways: responseGateways
       })
 
-    }, [addData, handleInputChange, props.filters, processErrors, clearErrors, props.country])
+    }, [addData, handleInputChange, props.filters, processErrors, clearErrors, props.country, props.displayChatBubble])
 
   const handleCryptoChange = useCallback(
     (crypto?: ItemType): ErrorObjectType | undefined | {} => {
