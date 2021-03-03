@@ -83,9 +83,8 @@ const ratesAllParams = [
         ],
         "receivedCrypto": 0.00298541,
         "nextStep": {
-            fatal: true,
             "type": "form",
-            "url": `${BASE_API}/transaction/Wyre/createOrder/WyJuUGxEVGF2djFJaXR6MU9jZVNZTHVRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+            "url": `${BASE_API}/transaction/Wyre/wait/WyJuUGxEVGF2djFJaXR6MU9jZVNZTHVRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "data": [
                 {
                     "type": "string",

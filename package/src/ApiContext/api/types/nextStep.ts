@@ -72,6 +72,9 @@ type NextStep =
         type: 'redirect';
         url: string;
     } | {
+        type: 'wait';
+        url: string;
+    } | {
         type: 'pickOne';
         options: FileStep[];
     } | {
