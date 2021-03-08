@@ -379,7 +379,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           },
           signal
         )
-        alert(JSON.stringify(rawResponseRate))
+
         responseRate = API.filterRatesResponse(rawResponseRate, props.filters?.onlyGateways, state.collected.defaultAddrs, state.collected.selectedCrypto?.id)
       } catch (error) {
         if (error.name === 'AbortError')

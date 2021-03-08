@@ -54,12 +54,15 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change 
     const { onClick } = props
     const isAnOption = error?.type==="OPTION"
+<<<<<<< HEAD
 
     useEffect(()=>{
         if (!available)
             alert(JSON.stringify(props))
 
     }, [available, props])
+=======
+>>>>>>> parent of 90259f5 (Temp commit, debug)
 
     let diffPercent: number;
     let isDiffPositive: boolean;
