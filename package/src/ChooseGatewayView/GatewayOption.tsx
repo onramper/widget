@@ -59,7 +59,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
         if (!available)
             alert(JSON.stringify(props))
 
-    }, [])
+    }, [available, props])
 
     let diffPercent: number;
     let isDiffPositive: boolean;
