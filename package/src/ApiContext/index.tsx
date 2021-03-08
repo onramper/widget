@@ -540,9 +540,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // 2. check if any of the gateways entries (some) that includes our crypto (find, always true) supports address tag for the crypto
       .filter(([identifier]) => !memoUsed || hiddenRatesWithMyCrypto?.filter(g => g.identifier === identifier)
         ?.some(g => g.cryptoCurrencies.find(c => c.code === selectedCrypto)?.supportsAddressTag))
-        .filter(([_, currencies])=>currencies.length>1)
+        .filter((o)=>o[1].length>1)
         .map(([identifier, currencies]) => {
-        if (currencies.length>1)
         return {
           identifier: identifier,
           icon: state.data.ICONS_MAP?.[identifier]?.icon || LogoOnramper,
@@ -583,7 +582,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // 2. check if any of the gateways entries (some) that includes our crypto (find, always true) supports address tag for the crypto
       .filter(([identifier]) => !memoUsed || hiddenRatesWithMyCrypto?.filter(g => g.identifier === identifier)
         ?.some(g => g.cryptoCurrencies.find(c => c.code === selectedCrypto)?.supportsAddressTag))
-      .filter(([_, payments])=>payments.length>1)
+      .filter((o)=>o[1].length>1)
       .map(([identifier, payments]) => {
         return {
           identifier: identifier,
