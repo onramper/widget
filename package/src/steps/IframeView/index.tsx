@@ -14,7 +14,7 @@ import { NavContext } from '../../NavContext'
 
 const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" } }> = ({ nextStep }) => {
   const { replaceScreen, nextScreen } = useContext(NavContext);
-  const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
+  //const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
   const [error, setError] = useState<string>()
   const [fatalError, setFatalError] = useState<string>()
 
@@ -76,7 +76,7 @@ const IframeView: React.FC<{ nextStep: NextStep & { type: 'iframe' | "redirect" 
     <div className={styles.view}>
       <Header title="Complete payment" backButton />
       <BodyIframeView
-        textInfo={nextStep.type === 'redirect' ? nextStep.hint : textInfo}
+        textInfo={nextStep.type === 'redirect' ? nextStep.hint : undefined}
         error={error}
         fatalError={fatalError}
         features={nextStep.type === 'iframe' ? nextStep.neededFeatures : undefined}
