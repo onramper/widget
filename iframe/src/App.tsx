@@ -31,6 +31,7 @@ const country = getParam("country");
 const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble")
+const amountInCrypto = getParam("amountInCrypto")
 
 function App() {
 
@@ -68,6 +69,7 @@ function App() {
             country={country}
             isAddressEditable={isAddressEditable === undefined ? undefined : isAddressEditable === "true"}
             displayChatBubble={displayChatBubble === undefined ? undefined : displayChatBubble === "true"}
+            amountInCrypto={amountInCrypto === undefined ? undefined : amountInCrypto === "true"}
           />
         </div>
       </div>

@@ -34,7 +34,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     const { triggerChat } = useContext(NavContext)
 
     const [pairs, setPairs] = useState<ItemType[]>()
-    const [amountInCrypto, setAmountInCrypto] = useState(false)
+    const [amountInCrypto, setAmountInCrypto] = useState<boolean>(collected.amountInCrypto??false)
     const [symbolRecentlyChanged, setSymbolRecentlyChanged] = useState(false)
 
     const [minMaxErrorsMsg, setMinMaxErrorsMsg] = useState<string>()

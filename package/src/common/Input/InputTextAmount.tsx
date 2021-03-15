@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import styles from './styles.module.css'
 import { toMaxDecimalsRound } from '../../utils'
-import { ItemType } from '../../ApiContext';
+import { ItemType, APIContext } from '../../ApiContext';
 import HintIcon from '../HintIcon'
 import { CSSTransition } from 'react-transition-group';
 
@@ -31,8 +31,10 @@ const InputText: React.FC<InputTextType> = (props) => {
     const clickableIcon = !!props.onIconClick
     const { onChange, onIconClick } = props
 
+    const {collected} = React.useContext(APIContext)
+
     const [actualSymbol, setActualSymbol] = useState<ItemType>()
-    const [actualSymbolIndex, setActualSymbolIndex] = useState(0)
+    const [actualSymbolIndex, setActualSymbolIndex] = useState(collected.amountInCrypto?1: 0)
     const [switchPairEnabled, setSwitchPairEnabled] = useState(true)
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,11 +55,11 @@ const InputText: React.FC<InputTextType> = (props) => {
             setSwitchPairEnabled(false)
         }
         else {
-            setActualSymbol(symbols[0])
-            setActualSymbolIndex(0)
+            setActualSymbol(symbols[actualSymbolIndex])
+            setActualSymbolIndex(actualSymbolIndex)
             setSwitchPairEnabled(true)
         }
-    }, [symbols])
+    }, [symbols, actualSymbolIndex])
 
     useEffect(() => {
         onSymbolChange?.(actualSymbol)

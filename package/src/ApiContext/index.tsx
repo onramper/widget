@@ -42,6 +42,7 @@ interface APIProviderType {
   isAddressEditable?: boolean
   themeColor: string
   displayChatBubble?: boolean
+  amountInCrypto?: boolean
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -56,7 +57,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       amount: defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
       defaultAddrs: Object.entries(defaultAddrs).reduce((acc, [key, value]) => ({ ...acc, [key.toUpperCase()]: value }), {}),
       isAddressEditable,
-      themeColor: props.themeColor
+      themeColor: props.themeColor,
+      amountInCrypto: props.amountInCrypto ?? initialState.collected.amountInCrypto
     }
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
@@ -263,9 +265,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         || state.data.availableCurrencies[0]
 
       if (!state.collected.selectedCurrency) {
-        const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {}
-        const defaultLocalCurrencyAmount = DEFAULT_AMOUNTS_MAP[actualCurrency.id] ?? 200
-        const calculatedDefaultAmount = defaultLocalCurrencyAmount * defaultAmount / BASE_DEFAULT_AMOUNT_IN_USD
+        let calculatedDefaultAmount = defaultAmount
+        if (!props.amountInCrypto) {
+          const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {}
+          const defaultLocalCurrencyAmount = DEFAULT_AMOUNTS_MAP[actualCurrency.id] ?? 200
+          calculatedDefaultAmount = defaultLocalCurrencyAmount * defaultAmount / BASE_DEFAULT_AMOUNT_IN_USD
+        }
         handleInputChange('amount', calculatedDefaultAmount)
       }
 
@@ -304,7 +309,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.date
       addData({ availablePaymentMethods: mappedAvailablePaymentMethods, filtredGatewaysByCurrency })
 
-    }, [processErrors, handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.responseGateways, state.collected.selectedCurrency, defaultAmount, defaultFiat, defaultFiatSoft]
+    }, [processErrors, handleInputChange, addData, state.data.filtredGatewaysByCrypto, state.data.availableCurrencies, state.data.responseGateways, state.collected.selectedCurrency, defaultAmount, defaultFiat, defaultFiatSoft, props.amountInCrypto]
   )
 
   const handlePaymentMethodChange = useCallback(

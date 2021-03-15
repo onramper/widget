@@ -63,6 +63,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                         isAddressEditable={props.isAddressEditable}
                         themeColor={color.slice(1)}
                         displayChatBubble={props.displayChatBubble}
+                        amountInCrypto={props.amountInCrypto}
                     >
                         <div style={{ flexGrow: 1, display: 'flex' }}>
                             <NavContainer home={<BuyCryptoView />} />

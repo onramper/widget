@@ -38,7 +38,7 @@ export interface CryptoAddrType {
 
 export type CollectedStateType = {
     amount: number,
-    amountInCrypto: boolean,
+    amountInCrypto?: boolean,
     isCalculatingAmount: boolean
     selectedCrypto?: ItemType,
     selectedCurrency?: ItemType,
@@ -101,7 +101,7 @@ export type ApiInterfaceType = {
 export const initialState: StateType = {
     collected: {
         amount: 100,
-        amountInCrypto: false,
+        amountInCrypto: undefined,
         isCalculatingAmount: true,
         selectedCrypto: undefined,
         selectedCurrency: undefined,
