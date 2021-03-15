@@ -26,7 +26,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
 
     const {
         color = '#266678',
-        fontFamily = "'Roboto', sans-serif",
+        fontFamily = props.fontFamily,
         className = ''
     } = props
 

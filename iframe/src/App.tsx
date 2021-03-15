@@ -13,7 +13,7 @@ const defaultApiKey =
 
 const apiKey = getParam("apiKey", defaultApiKey);
 const defaultColor = `#${getParam("color", "266678")}`;
-const fontFamily = getParam("fontFamily");
+const fontFamily = getParam("fontFamily", "'Roboto', sans-serif");
 const defaultAmount = Number(getParam("defaultAmount", "100"));
 const defaultCrypto = getParam("defaultCrypto", "BTC");
 const defaultFiat = getParam("defaultFiat");
@@ -32,6 +32,10 @@ const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble")
 const amountInCrypto = getParam("amountInCrypto")
+const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display=swap')
+
+if (gFontPath)
+  loadGoogleFont(gFontPath)
 
 function App() {
 
@@ -131,6 +135,15 @@ function inIframe() {
   } catch (e) {
     return true;
   }
+}
+
+function loadGoogleFont (gFontPath: string) {
+  const css = `@import url('https://fonts.googleapis.com/${gFontPath}');`
+  const head = document.getElementsByTagName('head')[0]
+  const style = document.createElement('style');
+  style.appendChild(document.createTextNode(css));
+  /* head.appendChild(style); */
+  head.prepend(style)
 }
 
 
