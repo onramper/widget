@@ -21,10 +21,14 @@ const ConfirmPaymentView: React.FC<{
   });
 
   React.useEffect(() => {
-    setWalletAddr(props.includeCryptoAddr ? {
-      address: collected.cryptocurrencyAddress?.address,
-      memo: collected.cryptocurrencyAddress?.memo,
-    } : undefined);
+    setWalletAddr(
+      props.includeCryptoAddr
+        ? {
+            address: collected.cryptocurrencyAddress?.address,
+            memo: collected.cryptocurrencyAddress?.memo,
+          }
+        : undefined
+    );
   }, [props.includeCryptoAddr, collected.cryptocurrencyAddress]);
 
   return (
@@ -34,10 +38,18 @@ const ConfirmPaymentView: React.FC<{
         onActionButton={() =>
           nextScreen(<Step nextStep={props.nextStep} isConfirmed />)
         }
-        payAmount={collected.amount.toString()}
+        payAmount={
+          collected.amountInCrypto
+            ? collected.amount
+            : collected.selectedGateway?.receivedCrypto || 0
+        }
         fees={collected.selectedGateway?.fees}
         currency={collected.selectedCurrency?.name}
-        cryptoAmount={collected.selectedGateway?.receivedCrypto || 0}
+        cryptoAmount={
+          collected.amountInCrypto
+            ? collected.selectedGateway?.receivedCrypto || 0
+            : collected.amount
+        }
         cryptoDenom={collected.selectedCrypto?.name || ""}
         txTime={collected.selectedGateway?.duration}
         cryptoAddr={walletAddr?.address}

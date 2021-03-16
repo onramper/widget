@@ -15,7 +15,7 @@ import ButtonAction from '../../common/ButtonAction'
 
 type BodyConfirmPaymentViewType = {
     onActionButton: () => void
-    payAmount: string
+    payAmount: number
     fees?: number
     currency?: string
 
