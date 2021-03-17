@@ -40,15 +40,15 @@ const ConfirmPaymentView: React.FC<{
         }
         payAmount={
           collected.amountInCrypto
-            ? collected.amount
-            : collected.selectedGateway?.receivedCrypto || 0
+            ? collected.selectedGateway?.receivedCrypto || 0
+            : collected.amount
         }
         fees={collected.selectedGateway?.fees}
         currency={collected.selectedCurrency?.name}
         cryptoAmount={
           collected.amountInCrypto
-            ? collected.selectedGateway?.receivedCrypto || 0
-            : collected.amount
+            ? collected.amount
+            : collected.selectedGateway?.receivedCrypto || 0
         }
         cryptoDenom={collected.selectedCrypto?.name || ""}
         txTime={collected.selectedGateway?.duration}
