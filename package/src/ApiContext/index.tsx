@@ -22,7 +22,8 @@ const BASE_DEFAULT_AMOUNT_IN_USD = 100
 const DEFAULT_CURRENCY = 'USD'
 const DEFAULT_CRYPTO = 'BTC'
 export const DEFAULT_COUNTRY = 'US'
-export const DEFAULT_STATE = 'AL'
+export const DEFAULT_US_STATE = 'AL'
+export const DEFAULT_CA_STATE = 'AB'
 const NO_CHAT_COUNTRIES = ['ng']
 const DEFAULT_DISPLAYCHATBUBBLE = true
 
@@ -173,7 +174,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }))
 
       // save to state.collected
-      handleInputChange('state', responseGateways.localization.state ?? DEFAULT_STATE)
+      const defaultState = widgetsCountry.toUpperCase() === 'US' ? DEFAULT_US_STATE : DEFAULT_CA_STATE
+      handleInputChange('state', responseGateways.localization.state ?? defaultState)
       handleInputChange("phoneCountryCode", +phoneCodes[responseGateways.localization.country?.toUpperCase() ?? DEFAULT_COUNTRY]?.phoneCode)
       // save to state.date
       addData({

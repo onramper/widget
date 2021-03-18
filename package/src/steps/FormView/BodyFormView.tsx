@@ -12,7 +12,7 @@ import PickView from '../../PickView'
 import HelpView from '../../common/HelpView'
 import Help2FACreditCard from './renderers/Help2FACreditCard'
 
-import { APIContext, StepDataItems, DEFAULT_STATE, DEFAULT_COUNTRY } from '../../ApiContext'
+import { APIContext, StepDataItems, DEFAULT_US_STATE, DEFAULT_CA_STATE, DEFAULT_COUNTRY } from '../../ApiContext'
 import type { CollectedStateType } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
@@ -20,6 +20,7 @@ import icons from 'rendered-country-flags'
 import countryNames from '../../ApiContext/utils/contryNames'
 import phoneCodes from '../../ApiContext/utils/phoneCodes'
 import usStates from '../../ApiContext/utils/usStates'
+import caStates from '../../ApiContext/utils/caStates'
 
 import { scrollTo } from '../../utils'
 import { GroupFieldsController } from './utils'
@@ -117,14 +118,20 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             const country = collected.country ?? collected.selectedCountry
             handleInputChange("country", country)
             if (country.toUpperCase() === 'US')
-                handleInputChange("state", collected.state && (collected.state !== "undefined") ? collected.state : DEFAULT_STATE)
+                handleInputChange("state", collected.state && (collected.state !== "undefined") ? collected.state : DEFAULT_US_STATE)
+            else if (country.toUpperCase() === 'CA')
+                handleInputChange("state", collected.state && (collected.state !== "undefined") ? collected.state : DEFAULT_CA_STATE)
             else
                 handleInputChange("state", "undefined")
 
             setCountryHasChanged('undefinedkey')
         }
         else if (countryHasChanged.toUpperCase() === 'US') {
-            handleInputChange("state", collected.state && (collected.state !== "undefined") ? collected.state : DEFAULT_STATE)
+            handleInputChange("state", collected.state && (collected.state !== "undefined") ? collected.state : DEFAULT_US_STATE)
+            setCountryHasChanged('undefinedkey')
+        }
+        else if (countryHasChanged.toUpperCase() === 'CA') {
+            handleInputChange("state", collected.state && (collected.state !== "undefined") ? collected.state : DEFAULT_CA_STATE)
             setCountryHasChanged('undefinedkey')
         }
         else if (countryHasChanged !== 'undefinedkey') {
@@ -294,7 +301,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         )}
                                     label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} icon={icons[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} />
                             )) || ((field.name === 'state') && (
-                                collected.country === 'us'
+                                collected.country === 'us' || collected.country === 'ca'
                                     ? <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child} onClick={
                                         () => nextScreen(
                                             <PickView
@@ -304,7 +311,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                     onChange(name, item.id.toLowerCase())
                                                     backScreen()
                                                 }}
-                                                items={Object.entries(usStates).map(([code, state]) => ({
+                                                items={Object.entries(collected.country === 'us'?usStates:caStates).map(([code, state]) => ({
                                                     id: code,
                                                     name: state,
                                                     info: code
@@ -313,7 +320,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             />
                                         )}
                                         label={field.humanName}
-                                        selectedOption={usStates[(collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_STATE).toUpperCase()]}
+                                        selectedOption={
+                                            collected.country === 'us'
+                                            ? usStates[(collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_US_STATE).toUpperCase()]
+                                            : caStates[(collected.state && collected.state !== "undefined" ? collected.state : DEFAULT_CA_STATE).toUpperCase()]
+                                        }
                                     />
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((GroupFieldsController.isGroupRequired(field.name, CREDIT_CARD_FIELDS_NAME_GROUP, fields.map((f) => f.name))) && (
