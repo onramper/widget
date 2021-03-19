@@ -30,7 +30,7 @@ const onlyFiat = getArrayParam("onlyFiat");
 const country = getParam("country");
 const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
-const displayChatBubble = getParam("displayChatBubble")
+const displayChatBubble = getParam("displayChatBubble", "false")
 const amountInCrypto = getParam("amountInCrypto")
 const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display=swap')
 

@@ -173,14 +173,14 @@ class NavContainer extends React.Component<
                     </CSSTransition>
                   ))}
                 </TransitionGroup>
-                <ChatBubble
+                {value._state.isChatOpen && <ChatBubble
                   onActionChatClick={() => {
                     value.triggerChat();
                   }}
                   isChatOpen={value._state.isChatOpen}
                   intro={this.state.intro}
                   isBubbleActive={apicontext.collected.displayChatBubble}
-                />
+                />}
               </div>
             )}
           </NavContext.Consumer>)
