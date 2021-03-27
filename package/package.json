@@ -1,6 +1,6 @@
 {
   "name": "@onramper/widget",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -44,8 +44,8 @@
     "rendered-country-flags": "^1.2.0"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": ">=16.13.1",
+    "react-dom": ">=16.13.1"
   },
   "devDependencies": {
     "@sentry/types": "^6.1.0",
