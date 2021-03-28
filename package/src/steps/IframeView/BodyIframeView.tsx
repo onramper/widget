@@ -4,7 +4,7 @@ import styles from './styles.module.css'
 
 import InfoBox from '../../common/InfoBox'
 
-import { SANDBOX_HOSTNAME, MOONPAY_HOSTNAME } from '../../ApiContext/api/constants'
+import { SANDBOX_HOSTNAME, MOONPAY_HOSTNAME, COINIFY_HOSTNAME } from '../../ApiContext/api/constants'
 import { APIContext } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 
@@ -100,6 +100,9 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             }
             else if (hostname === MOONPAY_HOSTNAME) {
                 urlTail = `${props.src.includes('?') ? '&' : '?'}colorCode=%23${primaryColor}`
+            }
+            else if (hostname === COINIFY_HOSTNAME) {
+                urlTail = `${props.src.includes('?') ? '&' : '?'}primaryColor=${primaryColor}`
             }
 
         /* else if (selectedGateway?.nextStep?.type === 'redirect' && hostname === getHostname(selectedGateway?.nextStep.url)) {
