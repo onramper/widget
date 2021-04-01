@@ -50,6 +50,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { isFilled = false, isLoading = false, errorObj, errorMsg, infoMsg } = props
 
     const [isRestartCalled, setIsRestartCalled] = useState(false)
+    const [verifyCode, setVerifyCode] = useState('')
 
     const restartToAnotherGateway = () => {
         apiInterface.clearErrors()
@@ -105,6 +106,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
             })
         }
 
+        if (name === 'verifyPhoneCode' || name === 'verifyEmailCode')
+            setVerifyCode(v)
+            
         handleInputChange(name, v)
 
         if (name === 'country')
@@ -266,7 +270,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         error={errorObj?.[field.name]}
                                         className={stylesCommon.body__child}
                                         type={getInputType(field)}
-                                        value={collected[field.name] ?? ''}
+                                        value={verifyCode}
                                     />
                                     <span key={999} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
                                 </React.Fragment>
