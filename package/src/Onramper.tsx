@@ -25,7 +25,7 @@ export const EVENTS: EVENTSType = { ...GENERAL_EVENTS, ...SIMPLE_EVENTS };
 export function emit(event_type: string, ctx: EventContext) {
   eventEmitter.emit(event_type, {
     type: event_type,
-    context: ctx,
+    ...ctx,
   });
 }
 
