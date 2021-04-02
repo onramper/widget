@@ -1,5 +1,5 @@
 import React from "react";
-import OnramperWidget from "@onramper/widget";
+import OnramperWidget, { Onramper } from "@onramper/widget";
 
 const com_key = "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00";
 const dev_key = "pk_test_oDsXkHokDdr06zZ0_sxJGw00";
@@ -36,6 +36,10 @@ const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display
 
 if (gFontPath)
   loadGoogleFont(gFontPath)
+
+Onramper.on(Onramper.EVENTS.ALL, (context)=>{
+  window.parent.postMessage(context,"*");  //  `*` on any domain
+})
 
 function App() {
 
