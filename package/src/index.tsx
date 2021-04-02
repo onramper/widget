@@ -9,7 +9,7 @@ import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import Footer from "./common/Footer";
-import {on, EVENTS} from "./Onramper";
+import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 
@@ -82,9 +82,19 @@ const initialize = (selector: string, props: OnramperWidgetProps) => {
   ReactDOM.render(<OnramperWidget {...props} />, domContainer);
 };
 
+export interface EventContext {
+  type: string;
+  gateway: string;
+  trackingUrl?: string;
+}
+
+const ev = { ...EVENTS }
 const Onramper = {
   on,
-  EVENTS: { ...EVENTS },
+  EVENTS: ev,
+} as {
+  on: (event_type: string, cb: (ctx: EventContext) => void) => void;
+  EVENTS: typeof ev
 };
 
 export default (props: OnramperWidgetProps) => <OnramperWidget {...props} />;
