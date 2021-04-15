@@ -14,9 +14,7 @@ export const getQuote = async (
   crypto: string,
   amount: number
 ) => {
-  //https://api.mercuryo.io/v1.5/widget/buy/rate?from=USD&to=BTC&amount=100&widget_id=d9d9dab5-7127-417b-92fb-478bc90916b3
-
-  const quoteUrl = `https://api.mercuryo.io/v1.6/widget/buy/rate?from=${fiat}&to=${crypto}&amount=${amount}&widget_id=${widgetId}`;
+  const quoteUrl = `https://api.mercuryo.io/v1.5/widget/buy/rate?from=${fiat}&to=${crypto}&amount=${amount}&widget_id=${widgetId}`;
   logRequest(quoteUrl);
   const ratesRes = await fetch(quoteUrl);
   const rates: QuoteResponse = await processResponse(ratesRes);
