@@ -52,7 +52,9 @@ export type CollectedStateType = {
     errors?: ErrorObjectType,
     isAddressEditable?: boolean
     themeColor: string,
-    displayChatBubble?: boolean
+    displayChatBubble?: boolean,
+    partnerContext?: {[key:string]:any}
+    isPartnerContextSent: boolean
     [key: string]: any
 }
 
@@ -113,7 +115,9 @@ export const initialState: StateType = {
         errors: undefined,
         isAddressEditable: true,
         themeColor: "266678",
-        displayChatBubble: false
+        displayChatBubble: false,
+        partnerContext: undefined,
+        isPartnerContextSent: false
     },
     data: {
         availableCryptos: [],

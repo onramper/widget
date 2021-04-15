@@ -65,6 +65,9 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             themeColor={color.slice(1)}
             displayChatBubble={props.displayChatBubble}
             amountInCrypto={props.amountInCrypto}
+            partnerContext={{
+              "Does it work?": "Yes!",
+            }}
           >
             <div style={{ flexGrow: 1, display: "flex" }}>
               <NavContainer home={<BuyCryptoView />} />
@@ -88,13 +91,13 @@ export interface EventContext {
   trackingUrl?: string;
 }
 
-const ev = { ...EVENTS }
+const ev = { ...EVENTS };
 const Onramper = {
   on,
   EVENTS: ev,
 } as {
   on: (event_type: string, cb: (ctx: EventContext) => void) => void;
-  EVENTS: typeof ev
+  EVENTS: typeof ev;
 };
 
 export default (props: OnramperWidgetProps) => <OnramperWidget {...props} />;

@@ -44,6 +44,7 @@ interface APIProviderType {
   themeColor: string
   displayChatBubble?: boolean
   amountInCrypto?: boolean
+  partnerContext?: {[key:string]: any}
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {

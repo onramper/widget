@@ -73,7 +73,9 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       return { ...acc, [current.name]: value }
     }, {})
     try {
-      const newNextStep = await apiInterface.executeStep(nextStep, params);
+      const payload = collected.isPartnerContextSent?params:{...params, partnerContext:collected.partnerContext}
+      const newNextStep = await apiInterface.executeStep(nextStep, payload);
+      inputInterface.handleInputChange('isPartnerContextSent', true)
       nextScreen(<Step nextStep={newNextStep} />)
     } catch (error) {
       const processedError = processError(error, nextStepData)
