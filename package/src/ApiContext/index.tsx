@@ -65,6 +65,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
+  const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0)
 
   // INITIALIZING AUTHENTICATION
   useEffect(() => {
@@ -638,7 +639,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
   useEffect(()=>{
     const getQuote = async () => {
-      const mercuryoIndex = state.data.allRates.findIndex(rate=>rate.identifier==='Mercuryo')
+      const mercuryoIndex = state.data.allRates.findIndex(rate=>rate.identifier==='Mercuryo' && rate.receivedCrypto!==mercuryoReceivedCrypto)
       if (mercuryoIndex>=0) {
         if (state.collected.amountInCrypto) return
         const currencyIn = state.collected.selectedCurrency?.id
@@ -647,6 +648,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         const quoteResponse = await Mercuryo.getQuote(currencyIn, currencyOut, state.collected.amount)
         if (quoteResponse.status!==200) return
         const newRates = state.data.allRates
+        setMercuryoReceivedCrypto(quoteResponse.data.amount)
         newRates[mercuryoIndex] = {
           ...state.data.allRates[mercuryoIndex],
           receivedCrypto: quoteResponse.data.amount,
@@ -656,7 +658,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }
     }
     getQuote()
-  }, [state.data.allRates, addData, state.collected.amount, state.collected.amountInCrypto, state.collected.selectedCrypto?.id, state.collected.selectedCurrency?.id])
+  }, [mercuryoReceivedCrypto, state.data.allRates, addData, state.collected.amount, state.collected.amountInCrypto, state.collected.selectedCrypto?.id, state.collected.selectedCurrency?.id])
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
