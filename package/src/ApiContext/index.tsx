@@ -15,7 +15,7 @@ import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from '
 
 import { NextStepError } from './api'
 import type { Filters } from './api'
-import * as Mercuryo from './api/gateways/mercuryo'
+/* import * as Mercuryo from './api/gateways/mercuryo' */
 import phoneCodes from './utils/phoneCodes'
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100
@@ -65,7 +65,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
-  const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0)
+  /* const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0) */
 
   // INITIALIZING AUTHENTICATION
   useEffect(() => {
@@ -637,7 +637,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     getRatesEffect()
   }, [getRates])
 
-  useEffect(()=>{
+/*   useEffect(()=>{
     const getQuote = async () => {
       const mercuryoIndex = state.data.allRates.findIndex(rate=>rate.identifier==='Mercuryo' && rate.receivedCrypto!==mercuryoReceivedCrypto)
       if (mercuryoIndex>=0) {
@@ -658,7 +658,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }
     }
     getQuote()
-  }, [mercuryoReceivedCrypto, state.data.allRates, addData, state.collected.amount, state.collected.amountInCrypto, state.collected.selectedCrypto?.id, state.collected.selectedCurrency?.id])
+  }, [mercuryoReceivedCrypto, state.data.allRates, addData, state.collected.amount, state.collected.amountInCrypto, state.collected.selectedCrypto?.id, state.collected.selectedCurrency?.id]) */
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
