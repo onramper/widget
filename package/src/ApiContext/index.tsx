@@ -15,7 +15,7 @@ import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from '
 
 import { NextStepError } from './api'
 import type { Filters } from './api'
-
+import * as Mercuryo from './api/gateways/mercuryo'
 import phoneCodes from './utils/phoneCodes'
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100
@@ -635,6 +635,28 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     }
     getRatesEffect()
   }, [getRates])
+
+  useEffect(()=>{
+    const getQuote = async () => {
+      const mercuryoIndex = state.data.allRates.findIndex(rate=>rate.identifier==='Mercuryo')
+      if (mercuryoIndex>=0) {
+        if (state.collected.amountInCrypto) return
+        const currencyIn = state.collected.selectedCurrency?.id
+        const currencyOut = state.collected.selectedCrypto?.id
+        if (!currencyIn || !currencyOut) return
+        const quoteResponse = await Mercuryo.getQuote(currencyIn, currencyOut, state.collected.amount)
+        if (quoteResponse.status!==200) return
+        const newRates = state.data.allRates
+        newRates[mercuryoIndex] = {
+          ...state.data.allRates[mercuryoIndex],
+          receivedCrypto: quoteResponse.data.amount,
+          rate: state.collected.amount/quoteResponse.data.amount
+        }
+        addData({ allRates:  newRates})
+      }
+    }
+    getQuote()
+  }, [state.data.allRates, addData, state.collected.amount, state.collected.amountInCrypto, state.collected.selectedCrypto?.id, state.collected.selectedCurrency?.id])
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {

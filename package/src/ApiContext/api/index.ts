@@ -22,7 +22,7 @@ const authenticate = (pk: string) => {
     sentryHub.addBreadcrumb({message:`Authenticated with API key '${pk}'`, category:'auth'})
 }
 
-function logRequest(url:string){
+export function logRequest(url:string){
     sentryHub.addBreadcrumb({message:`Sent a request to '${url}'`})
 }
 
@@ -111,7 +111,7 @@ const isMoonpayStep = (stepUrl: string) => {
 /**
  * Utils
  */
-const processResponse = async (response: FetchResponse): Promise<any> => {
+export const processResponse = async (response: FetchResponse): Promise<any> => {
     if (response.ok)
         return await response.json()
     else {
