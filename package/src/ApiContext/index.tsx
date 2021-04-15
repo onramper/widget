@@ -653,7 +653,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         setMercuryoReceivedCrypto(quoteResponse.receivedCrypto)
         newRates[mercuryoIndex] = {
           ...state.data.allRates[mercuryoIndex],
-          receivedCrypto: quoteResponse.receivedCrypto,
+          ...quoteResponse,
           rate: state.collected.amount/quoteResponse.receivedCrypto
         }
         addData({ allRates:  newRates})
