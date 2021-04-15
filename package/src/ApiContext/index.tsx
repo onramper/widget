@@ -15,7 +15,6 @@ import type { NextStep, StepDataItems, FileStep, InfoDepositBankAccount } from '
 
 import { NextStepError } from './api'
 import type { Filters } from './api'
-/* import * as Mercuryo from './api/gateways/mercuryo' */
 import phoneCodes from './utils/phoneCodes'
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100
@@ -65,7 +64,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   }
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
-  /* const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0) */
+  const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0)
 
   // INITIALIZING AUTHENTICATION
   useEffect(() => {
@@ -637,28 +636,31 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     getRatesEffect()
   }, [getRates])
 
-/*   useEffect(()=>{
+   useEffect(()=>{
     const getQuote = async () => {
       const mercuryoIndex = state.data.allRates.findIndex(rate=>rate.identifier==='Mercuryo' && rate.receivedCrypto!==mercuryoReceivedCrypto)
       if (mercuryoIndex>=0) {
         if (state.collected.amountInCrypto) return
         const currencyIn = state.collected.selectedCurrency?.id
         const currencyOut = state.collected.selectedCrypto?.id
-        if (!currencyIn || !currencyOut) return
-        const quoteResponse = await Mercuryo.getQuote(currencyIn, currencyOut, state.collected.amount)
-        if (quoteResponse.status!==200) return
+        const paymentMethod = state.collected.selectedPaymentMethod?.id
+        if (!currencyIn || !currencyOut || !paymentMethod) return
+        const quoteResponse = (await API.rate(currencyIn, currencyOut, state.collected.amount, paymentMethod, {
+          gateway: "Mercuryo"
+        }))[0]
+        if (!quoteResponse || !quoteResponse.receivedCrypto) return
         const newRates = state.data.allRates
-        setMercuryoReceivedCrypto(quoteResponse.data.amount)
+        setMercuryoReceivedCrypto(quoteResponse.receivedCrypto)
         newRates[mercuryoIndex] = {
           ...state.data.allRates[mercuryoIndex],
-          receivedCrypto: quoteResponse.data.amount,
-          rate: state.collected.amount/quoteResponse.data.amount
+          receivedCrypto: quoteResponse.receivedCrypto,
+          rate: state.collected.amount/quoteResponse.receivedCrypto
         }
         addData({ allRates:  newRates})
       }
     }
     getQuote()
-  }, [mercuryoReceivedCrypto, state.data.allRates, addData, state.collected.amount, state.collected.amountInCrypto, state.collected.selectedCrypto?.id, state.collected.selectedCurrency?.id]) */
+  }, [state.collected.selectedPaymentMethod?.id, mercuryoReceivedCrypto, state.data.allRates, addData, state.collected.amount, state.collected.amountInCrypto, state.collected.selectedCrypto?.id, state.collected.selectedCurrency?.id])
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
