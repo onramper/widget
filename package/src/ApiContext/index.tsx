@@ -94,7 +94,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
-  const [_lastCallMercuryo, setLastCallMercuryo] = useState<AbortController>();
+  const [_, setLastCallMercuryo] = useState<AbortController>();
   const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0);
 
   // INITIALIZING AUTHENTICATION
@@ -899,27 +899,32 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           lastController?.abort();
           return controller;
         });
-        const quoteResponse = (
-          await API.rate(
-            currencyIn,
-            currencyOut,
-            state.collected.amount,
-            paymentMethod,
-            {
-              gateway: "Mercuryo",
-            },
-            signal
-          )
-        )[0];
-        if (!quoteResponse || !quoteResponse.receivedCrypto) return;
-        const newRates = state.data.allRates;
-        setMercuryoReceivedCrypto(quoteResponse.receivedCrypto);
-        newRates[mercuryoIndex] = {
-          ...state.data.allRates[mercuryoIndex],
-          ...quoteResponse,
-          rate: state.collected.amount / quoteResponse.receivedCrypto,
-        };
-        addData({ allRates: newRates });
+        try {
+          const quoteResponse = (
+            await API.rate(
+              currencyIn,
+              currencyOut,
+              state.collected.amount,
+              paymentMethod,
+              {
+                gateway: "Mercuryo",
+              },
+              signal
+            )
+          )[0];
+          if (!quoteResponse || !quoteResponse.receivedCrypto) return;
+          const newRates = state.data.allRates;
+          setMercuryoReceivedCrypto(quoteResponse.receivedCrypto);
+          newRates[mercuryoIndex] = {
+            ...state.data.allRates[mercuryoIndex],
+            ...quoteResponse,
+            rate: state.collected.amount / quoteResponse.receivedCrypto,
+          };
+          addData({ allRates: newRates });
+        } catch (e) {
+          if (e.name === "AbortError") return {};
+          setLastCall(undefined);
+        }
       }
     };
     getQuote();
