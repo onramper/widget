@@ -94,7 +94,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
-  const [_, setLastCallMercuryo] = useState<AbortController>();
+  const [lastCallMercuryo, setLastCallMercuryo] = useState<AbortController>();
   const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0);
 
   // INITIALIZING AUTHENTICATION
@@ -127,13 +127,13 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   }, [isAddressEditable, handleInputChange]);
 
   useEffect(() => {
-    if (lastCall) handleInputChange("isCalculatingAmount", true);
+    if (lastCall || lastCallMercuryo) handleInputChange("isCalculatingAmount", true);
     else
       handleInputChange(
         "isCalculatingAmount",
         state.data.responseRate === undefined
       );
-  }, [lastCall, handleInputChange, state.data.responseRate]);
+  }, [lastCall, lastCallMercuryo, handleInputChange, state.data.responseRate]);
 
   /* *********** */
 
@@ -924,7 +924,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             allRates: [...newRates],
           });
         } catch (e) {
-          if (e.name === "AbortError") return {};
+          if (e.name === "AbortError") return;
           setLastCallMercuryo(undefined);
         }
       }
