@@ -94,7 +94,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
-  const [_, setLastCallMercuryo] = useState<AbortController>();
   const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0);
 
   // INITIALIZING AUTHENTICATION
@@ -895,10 +894,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         const controller = new AbortController();
         const { signal } = controller;
 
-        setLastCallMercuryo((lastController) => {
-          lastController?.abort();
-          return controller;
-        });
         try {
           const quoteResponse = (
             await API.rate(
