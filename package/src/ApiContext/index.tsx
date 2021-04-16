@@ -923,6 +923,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           addData({
             allRates: [...newRates],
           });
+          setLastCallMercuryo(undefined);
         } catch (e) {
           if (e.name === "AbortError") return;
           setLastCallMercuryo(undefined);
