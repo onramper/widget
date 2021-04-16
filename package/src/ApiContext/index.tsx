@@ -920,7 +920,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             ...quoteResponse,
             rate: state.collected.amount / quoteResponse.receivedCrypto,
           };
-          addData({ allRates: newRates });
+          addData({
+            allRates: [...newRates],
+          });
         } catch (e) {
           if (e.name === "AbortError") return {};
           setLastCallMercuryo(undefined);
