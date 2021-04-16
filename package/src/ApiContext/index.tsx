@@ -94,6 +94,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
+  const [_lastCallMercuryo, setLastCallMercuryo] = useState<AbortController>();
   const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0);
 
   // INITIALIZING AUTHENTICATION
@@ -889,6 +890,15 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         const currencyOut = state.collected.selectedCrypto?.id;
         const paymentMethod = state.collected.selectedPaymentMethod?.id;
         if (!currencyIn || !currencyOut || !paymentMethod) return;
+        // CREATE NEW ABORT CONTROLLER FOR EACH REQUEST AND STORE IT IN THE LOCAL STATE
+        // IF THERE'S ANY PENDING REQUEST THEN ABORT IT BEFORE STORE THE NEW ABORT CONTROLLER
+        const controller = new AbortController();
+        const { signal } = controller;
+
+        setLastCallMercuryo((lastController) => {
+          lastController?.abort();
+          return controller;
+        });
         const quoteResponse = (
           await API.rate(
             currencyIn,
@@ -897,7 +907,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             paymentMethod,
             {
               gateway: "Mercuryo",
-            }
+            },
+            signal
           )
         )[0];
         if (!quoteResponse || !quoteResponse.receivedCrypto) return;
