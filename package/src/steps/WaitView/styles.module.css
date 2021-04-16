@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+.error-image {
+  width: 15rem;
+  color: var(--primary-color);
+}
+
 .container-icon {
   position: relative;
   width: 50%;

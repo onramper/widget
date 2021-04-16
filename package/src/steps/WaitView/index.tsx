@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../../common/Header";
 import BodyLoading from "./BodyLoading";
 import styles from "../../styles.module.css";
@@ -16,21 +16,28 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   const { nextScreen, backScreen, replaceScreen } = useContext(NavContext);
   const { apiInterface } = useContext(APIContext);
   const { executeStep } = apiInterface;
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const callback = async () => {
       let newNextStep: NextStep = props.nextStep;
-      while (newNextStep.type === "wait") {
+      let failed = false;
+      while (newNextStep.type === "wait" && !failed) {
         try {
           await delay(100);
           newNextStep = await executeStep(newNextStep, {});
         } catch (error) {
-          if (error.fatal) nextScreen(<ErrorView />);
-          else backScreen();
+          failed = true;
+          if (error.fatal) nextScreen(<ErrorView message={error.message} />);
+          else
+            setError(
+              error.message ??
+                "Couldn't process your information, please, try again."
+            );
           break;
         }
       }
-      replaceScreen(<Step nextStep={newNextStep} />);
+      if (!failed) replaceScreen(<Step nextStep={newNextStep} />);
     };
     callback();
   }, [executeStep, props.nextStep, backScreen, nextScreen, replaceScreen]);
@@ -38,7 +45,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   return (
     <div className={styles.view}>
       <Header title="" backButton />
-      <BodyLoading />
+      <BodyLoading error={error} />
     </div>
   );
 };

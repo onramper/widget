@@ -1,10 +1,12 @@
 import React from "react";
 import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
-/* import { ReactComponent as IdCardIcon } from "../../icons/id-card.svg"; */
-import Loading from '../../common/Loading'
+import { ReactComponent as ErrorIllustration } from "../../icons/error.svg";
+import Loading from "../../common/Loading";
 
-type BodyLoadingType = {};
+interface BodyLoadingType {
+  error: string;
+}
 
 /* const IconSVGStyles = {
   width: "100%",
@@ -22,7 +24,7 @@ const cryptoFacts = shuffle([
   "Bitcoin is created through mining",
 ]);
 
-const BodyLoading: React.FC<BodyLoadingType> = () => {
+const BodyLoading: React.FC<BodyLoadingType> = (props) => {
   const [factIndex, setFactIndex] = React.useState(0);
 
   React.useEffect(() => {
@@ -35,13 +37,19 @@ const BodyLoading: React.FC<BodyLoadingType> = () => {
 
   return (
     <main className={`${stylesCommon.body} ${styles.body}`}>
-      <Loading />
+      {props.error ? (
+        <ErrorIllustration className={styles["error-image"]} />
+      ) : (
+        <Loading />
+      )}
       <p style={{ fontSize: "1.4375rem", marginBottom: "0rem" }}>
-        Checking your information
+        {props.error ? props.error : "Checking your information"}
       </p>
-      <p style={{ color: "#252525", fontSize: "0.9rem" }}>
-        We are trying to create your order... please wait.
-      </p>
+      {!props.error && (
+        <p style={{ color: "#252525", fontSize: "0.9rem" }}>
+          We are creating your order... please wait.
+        </p>
+      )}
       <span
         style={{
           fontStyle: "italic",
@@ -50,7 +58,7 @@ const BodyLoading: React.FC<BodyLoadingType> = () => {
           marginTop: "1.5rem",
         }}
       >
-        While, did you know...
+        {props.error ? "Did you know..." : "While, did you know..."}
       </span>
       <p
         style={{
