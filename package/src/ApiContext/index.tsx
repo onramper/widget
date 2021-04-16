@@ -89,6 +89,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       themeColor: props.themeColor,
       amountInCrypto:
         props.amountInCrypto ?? initialState.collected.amountInCrypto,
+      partnerContext: props.partnerContext,
     },
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
