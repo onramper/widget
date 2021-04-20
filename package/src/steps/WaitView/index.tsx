@@ -14,7 +14,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   props
 ) => {
   const { nextScreen, backScreen, replaceScreen } = useContext(NavContext);
-  const { apiInterface } = useContext(APIContext);
+  const { apiInterface, inputInterface, collected } = useContext(APIContext);
   const { executeStep } = apiInterface;
   const [error, setError] = useState("");
 
@@ -25,7 +25,9 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
       while (newNextStep.type === "wait" && !failed) {
         try {
           await delay(100);
-          newNextStep = await executeStep(newNextStep, {});
+          const payload = { partnerContext: collected.partnerContext };
+          newNextStep = await executeStep(newNextStep, payload);
+          inputInterface.handleInputChange("isPartnerContextSent", true);
         } catch (error) {
           failed = true;
           if (error.fatal) nextScreen(<ErrorView message={error.message} />);
