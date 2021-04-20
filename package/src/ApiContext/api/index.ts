@@ -94,8 +94,9 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
     const urlParams = createUrlParamsFromObject(params ?? {})
 
     logRequest(step.url)
+    const nextStepType = step.url.split('/')[5]
     let nextStep: FetchResponse;
-    if (isMoonpayStep(step.url)) {
+    if (isMoonpayStep(step.url) && nextStepType !== "iframe") {
         nextStep = await processMoonpayStep(step.url, { method, headers, body });
     } else {
         nextStep = await fetch(`${step.url}?${urlParams}`, { method, headers, body })
