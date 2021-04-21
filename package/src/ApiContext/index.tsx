@@ -127,7 +127,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   }, [isAddressEditable, handleInputChange]);
 
   useEffect(() => {
-    if (lastCall || lastCallMercuryo) handleInputChange("isCalculatingAmount", true);
+    if (lastCall || lastCallMercuryo)
+      handleInputChange("isCalculatingAmount", true);
     else
       handleInputChange(
         "isCalculatingAmount",
@@ -912,7 +913,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
               signal
             )
           )[0];
-          if (!quoteResponse || !quoteResponse.receivedCrypto) return;
+          if (!quoteResponse || !quoteResponse.receivedCrypto) {
+            setLastCallMercuryo(undefined);
+            return;
+          }
           const newRates = state.data.allRates;
           setMercuryoReceivedCrypto(quoteResponse.receivedCrypto);
           newRates[mercuryoIndex] = {
