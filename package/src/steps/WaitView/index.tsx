@@ -42,7 +42,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
       if (!failed) replaceScreen(<Step nextStep={newNextStep} />);
     };
     callback();
-  }, [executeStep, props.nextStep, backScreen, nextScreen, replaceScreen]);
+  }, [inputInterface, collected.partnerContext, executeStep, props.nextStep, backScreen, nextScreen, replaceScreen]);
 
   return (
     <div className={styles.view}>
