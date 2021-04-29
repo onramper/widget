@@ -204,7 +204,7 @@ const pickOneStep = {
 const uploadStep = (fileName: string) => ({
     "type": "file",
     "humanName": fileName + (fileName === 'Selfie' ? '' : " - Back"),
-    "url": `${BASE_API}/transaction/Moonpay/${fileName === 'Selfie' ? 'iframe' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+    "url": `${BASE_API}/transaction/Moonpay/${fileName === 'Selfie' ? 'registerBank' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "acceptedContentTypes": [
         "image/jpeg",
         "image/png",
@@ -228,7 +228,7 @@ const bankStep = {
 
 const iframeStep = {
     "type": "iframe",
-    "url": "https://moonpay.sandbox.staging.onramper.tech/?customerId=demo&transactionId=0&customerAddress=e30="
+    "url": "https://moonpay.sandbox.staging.onramper.tech/?customerId=demo&transactionId=0&customerAddress=e30=&apiKey=1"
 }
 
 const getDocumetnHumanName = (doc: string) => {
