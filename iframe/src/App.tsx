@@ -33,6 +33,7 @@ const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble", "false")
 const amountInCrypto = getParam("amountInCrypto")
 const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display=swap')
+const partnerContext = getJSONParam("partnerContext", undefined)
 
 if (gFontPath)
   loadGoogleFont(gFontPath)
@@ -78,6 +79,7 @@ function App() {
             isAddressEditable={isAddressEditable === undefined ? undefined : isAddressEditable === "true"}
             displayChatBubble={displayChatBubble === undefined ? undefined : displayChatBubble === "true"}
             amountInCrypto={amountInCrypto === undefined ? undefined : amountInCrypto === "true"}
+            partnerContext={partnerContext}
           />
         </div>
       </div>
@@ -148,6 +150,16 @@ function loadGoogleFont (gFontPath: string) {
   style.appendChild(document.createTextNode(css));
   /* head.appendChild(style); */
   head.prepend(style)
+}
+
+function getJSONParam(name: string, defaultValue?: string) {
+  try {
+    const value = new URLSearchParams(window.location.search).get(name);
+    if (!value) return defaultValue
+    return JSON.parse(decodeURIComponent(value))
+  } catch (error) {
+    throw new Error(`Invalid value for ${name} parameter!`)
+  }
 }
 
 
