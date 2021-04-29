@@ -55,6 +55,7 @@ export type CollectedStateType = {
     displayChatBubble?: boolean,
     partnerContext?: {[key:string]:any}
     isPartnerContextSent: boolean
+    redirectURL?: string
     [key: string]: any
 }
 
@@ -117,7 +118,8 @@ export const initialState: StateType = {
         themeColor: "266678",
         displayChatBubble: false,
         partnerContext: undefined,
-        isPartnerContextSent: false
+        isPartnerContextSent: false,
+        redirectURL: undefined
     },
     data: {
         availableCryptos: [],

@@ -34,6 +34,7 @@ const displayChatBubble = getParam("displayChatBubble", "false")
 const amountInCrypto = getParam("amountInCrypto")
 const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display=swap')
 const partnerContext = getJSONParam("partnerContext", undefined)
+const redirectURL = getParam("redirectURL", undefined)
 
 if (gFontPath)
   loadGoogleFont(gFontPath)
@@ -80,6 +81,7 @@ function App() {
             displayChatBubble={displayChatBubble === undefined ? undefined : displayChatBubble === "true"}
             amountInCrypto={amountInCrypto === undefined ? undefined : amountInCrypto === "true"}
             partnerContext={partnerContext}
+            redirectURL={redirectURL}
           />
         </div>
       </div>
@@ -89,15 +91,13 @@ function App() {
 
 function getParam(name: string, defaultValue?: string): string | undefined {
   const value = new URLSearchParams(window.location.search).get(name);
-  if (value === null) {
-    if (defaultValue !== undefined) {
-      return defaultValue;
-    } else {
-      //throw new Error(`Parameter ${name} has not been provided in the query string`)
-      return undefined;
-    }
+  if (value === null)
+      return defaultValue
+  try {
+    return decodeURIComponent(value)
+  } catch (error) {
+    throw new Error(`Couldn't decode ${name} parameter!`)
   }
-  return value;
 }
 
 function getArrayParam(paramName: string) {

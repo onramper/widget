@@ -63,6 +63,7 @@ interface APIProviderType {
   displayChatBubble?: boolean;
   amountInCrypto?: boolean;
   partnerContext?: { [key: string]: any };
+  redirectURL?: string
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -76,7 +77,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const defaultFiatSoft =
     props.defaultFiatSoft?.toUpperCase() || DEFAULT_CURRENCY;
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO;
-  const iniState = {
+  const iniState: StateType = {
     ...initialState,
     collected: {
       ...initialState.collected,
@@ -90,6 +91,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       amountInCrypto:
         props.amountInCrypto ?? initialState.collected.amountInCrypto,
       partnerContext: props.partnerContext,
+      redirectURL: props.redirectURL
     },
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
