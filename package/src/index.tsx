@@ -65,10 +65,9 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             themeColor={color.slice(1)}
             displayChatBubble={props.displayChatBubble}
             amountInCrypto={props.amountInCrypto}
-            partnerContext={{
+            partnerContext={props.partnerContext ?? {
               "Does it work?": 1,
             }}
-            /* partnerContext={props.partnerContext} */
             redirectURL={props.redirectURL}
           >
             <div style={{ flexGrow: 1, display: "flex" }}>
