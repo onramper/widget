@@ -63,7 +63,7 @@ interface APIProviderType {
   displayChatBubble?: boolean;
   amountInCrypto?: boolean;
   partnerContext?: { [key: string]: any };
-  redirectURL?: string
+  redirectURL?: string;
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -91,7 +91,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       amountInCrypto:
         props.amountInCrypto ?? initialState.collected.amountInCrypto,
       partnerContext: props.partnerContext,
-      redirectURL: props.redirectURL
+      redirectURL: props.redirectURL,
     },
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
@@ -950,11 +950,13 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
+      if (step.type !== "file" && (props.partnerContext !== data.partnerContext))
+        throw new Error("Partner context not set properly");
       return await API.executeStep(step, data, {
         country: state.collected.selectedCountry,
       });
     },
-    [state.collected.selectedCountry]
+    [state.collected.selectedCountry, props.partnerContext]
   );
 
   return (
