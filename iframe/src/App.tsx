@@ -25,7 +25,9 @@ const excludeCryptos = getArrayParam("excludeCryptos");
 const onlyPaymentMethods = getArrayParam("onlyPaymentMethods");
 const excludePaymentMethods = getArrayParam("excludePaymentMethods");
 const excludeFiat = getArrayParam("excludeFiat");
-const onlyGateways = getArrayParam("onlyGateways");
+let onlyGateways = getArrayParam("onlyGateways") ?? [];
+if (defaultApiKey === apiKey)
+  onlyGateways.concat(['Moonpay','Mercuryo','Xanpool','Coinify'])
 const onlyFiat = getArrayParam("onlyFiat");
 const country = getParam("country");
 const isAddressEditable = getParam("isAddressEditable");
