@@ -15,6 +15,7 @@ import WaitView from "../WaitView";
 import { NavContext } from "../../NavContext";
 
 import { APIContext, NextStep } from "../../ApiContext";
+import InformationView from "../InformationView";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -82,6 +83,9 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         break;
       case "requestBankTransaction":
         replaceScreen(<WireTranserView nextStep={nextStep} />); //onlyScreen(<WireTranserView nextStep={nextStep} />)
+        break;
+      case "information":
+        replaceScreen(<InformationView nextStep={nextStep} />);
         break;
       default:
         break;

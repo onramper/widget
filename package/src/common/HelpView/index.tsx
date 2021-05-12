@@ -10,6 +10,8 @@ interface HelpViewProps {
   buttonText?: string
   maxHeight?: string
   fixedHeight?: boolean
+  onActionClick?: () => Promise<boolean>
+  error?: string
 }
 
 const HelpView: React.FC<HelpViewProps> = (props) => {
@@ -34,6 +36,12 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
     setTimeout(backScreen, ANIMATION_TIMEOUT)
   }
 
+  const handleOnButtonClick = async () => {
+    if (props.error || await props.onActionClick?.()) {
+      /* handleDismiss() */
+    }
+  }
+
   const style = {
     "--pane-max-height": maxHeight
   } as React.CSSProperties;
@@ -53,7 +61,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
         unmountOnExit={true}>
         <div ref={transitionRef} style={style} onClick={(e) => e.stopPropagation()} className={`${commonStyles.body} ${styles['help-pane']} ${styles['help-pane' + classPrefix]}`} >
           {props.children}
-          {props.buttonText && <ButtonAction onClick={handleDismiss} text={props.buttonText} />}
+          {props.buttonText && <ButtonAction onClick={props.error ? handleDismiss : handleOnButtonClick} text={props.buttonText} />}
         </div>
       </CSSTransition>
 

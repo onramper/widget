@@ -46,6 +46,11 @@ export const handlers = [
     }),
     rest.get(`${BASE_API}/rate/*`, (req, res, ctx) => {
         //Successful response
+        if (req.url.searchParams.get('gateway')==="Mercuryo")
+            return res(
+                ctx.status(200),
+                ctx.json([ratesAllParams.find(rate=>rate.identifier==="Mercuryo")])
+            )
         return res(
             ctx.status(200),
             ctx.json(ratesAllParams)

@@ -60,6 +60,10 @@ interface InfoDepositBankAccount {
 type NextStep =
     FileStep
     | {
+        type: 'information';
+        url: string;
+        message: string;
+    } | {
         type: 'form';
         url: string;
         data: StepDataItems;

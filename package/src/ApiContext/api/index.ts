@@ -86,7 +86,7 @@ interface FetchResponse { //should be replaced by a complete fetch type
 
 const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
 
-    if (step.type !== 'form' && step.type !== 'file' && step.type !== 'wait') throw new Error('Unexpected error: Invalid step end.')
+    if (step.type !== 'information' && step.type !== 'form' && step.type !== 'file' && step.type !== 'wait') throw new Error('Unexpected error: Invalid step end.')
 
     const method = step.type === 'file' ? 'PUT' : 'POST'
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
