@@ -15,14 +15,21 @@ const InformationView: React.FC<{
   const { nextScreen } = useContext(NavContext);
   const { apiInterface, collected } = useContext(APIContext);
   const [error, setError] = React.useState<string>();
+  const [buttonText, setButtonText] = React.useState<string>(error ? "Close" : "Got it!");
+
+  React.useEffect(()=>{
+    setButtonText(error ? "Close" : "Got it!")
+  }, [error])
 
   const handleButtonAction = async () => {
     try {
+      setButtonText("Loading...")
       const payload = { partnerContext: collected.partnerContext };
       const newNextStep = await apiInterface.executeStep(
         props.nextStep,
         payload
       );
+      setButtonText("Got it!")
       nextScreen(<Step nextStep={newNextStep} />);
       return true;
     } catch (error) {
@@ -37,7 +44,7 @@ const InformationView: React.FC<{
 
   return (
     <HelpView
-      buttonText={error ? "Close" : "Got it!"}
+      buttonText={buttonText}
       onActionClick={handleButtonAction}
       error={error}
     >
