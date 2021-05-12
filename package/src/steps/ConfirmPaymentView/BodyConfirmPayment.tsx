@@ -55,8 +55,8 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                         onExited={() => setIsExpanded(false)}
                     >
                         <div ref={transitionRef} className={styles['details-container']}>
-                            {props.conversionRate && <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />}
-                            {props.fees && <Item type='detail' title='Transaction fee' content={`${props.fees} ${props.currency}`} />}
+                            {props.conversionRate !== undefined && <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />}
+                            {props.fees !== undefined && <Item type='detail' title='Transaction fee' content={`${props.fees} ${props.currency}`} />}
                         </div>
                     </CSSTransition>
                     <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
