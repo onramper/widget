@@ -37,7 +37,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       isConfirmed === false ||
       (!isConfirmed &&
         (nextStep.type === "iframe" ||
-          nextStep.type === "requestBankTransaction"))
+          nextStep.type === "requestBankTransaction") && nextStep.type==='iframe' && !nextStep.fullscreen)
     ) {
       let includeAddr = true;
       if (
