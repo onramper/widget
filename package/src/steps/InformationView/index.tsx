@@ -12,7 +12,7 @@ import ErrorView from "../../common/ErrorView";
 const InformationView: React.FC<{
   nextStep: NextStep & { type: "information" };
 }> = (props) => {
-  const { nextScreen } = useContext(NavContext);
+  const { replaceScreen } = useContext(NavContext);
   const { apiInterface, collected } = useContext(APIContext);
   const [error, setError] = React.useState<string>();
   const [buttonText, setButtonText] = React.useState<string>(error ? "Close" : "Got it!");
@@ -30,11 +30,11 @@ const InformationView: React.FC<{
         payload
       );
       setButtonText("Got it!")
-      nextScreen(<Step nextStep={newNextStep} />);
+      replaceScreen(<Step nextStep={newNextStep} />);
       return true;
     } catch (error) {
       if (error.fatal) {
-        nextScreen(<ErrorView />);
+        replaceScreen(<ErrorView />);
       } else {
         setError(error.message);
       }

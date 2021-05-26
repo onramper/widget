@@ -19,6 +19,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
   const { backScreen } = useContext(NavContext);
 
   const [isActive, setIsActive] = useState(false)
+  const [buttonDisabled, setButtonDisabled] = useState(false)
 
   const { maxHeight = '350px', fixedHeight = false } = props
   const classPrefix = fixedHeight ? '--fixed' : ''
@@ -37,7 +38,9 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
   }
 
   const handleOnButtonClick = async () => {
+    setButtonDisabled(true)
     if (props.error || await props.onActionClick?.()) {
+      setButtonDisabled(false)
       /* handleDismiss() */
     }
   }
@@ -61,7 +64,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
         unmountOnExit={true}>
         <div ref={transitionRef} style={style} onClick={(e) => e.stopPropagation()} className={`${commonStyles.body} ${styles['help-pane']} ${styles['help-pane' + classPrefix]}`} >
           {props.children}
-          {props.buttonText && <ButtonAction onClick={props.error ? handleDismiss : handleOnButtonClick} text={props.buttonText} />}
+          {props.buttonText && <ButtonAction onClick={props.error ? handleDismiss : handleOnButtonClick} text={props.buttonText} disabled={buttonDisabled} />}
         </div>
       </CSSTransition>
 
