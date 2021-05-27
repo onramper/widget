@@ -96,8 +96,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
-  const [lastCallMercuryo, setLastCallMercuryo] = useState<AbortController>();
-  const [mercuryoReceivedCrypto, setMercuryoReceivedCrypto] = useState(0);
 
   // INITIALIZING AUTHENTICATION
   useEffect(() => {
@@ -129,14 +127,14 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   }, [isAddressEditable, handleInputChange]);
 
   useEffect(() => {
-    if (lastCall || lastCallMercuryo)
+    if (lastCall)
       handleInputChange("isCalculatingAmount", true);
     else
       handleInputChange(
         "isCalculatingAmount",
         state.data.responseRate === undefined
       );
-  }, [lastCall, lastCallMercuryo, handleInputChange, state.data.responseRate]);
+  }, [lastCall, handleInputChange, state.data.responseRate]);
 
   /* *********** */
 
@@ -879,74 +877,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     };
     getRatesEffect();
   }, [getRates]);
-
-  useEffect(() => {
-    const getQuote = async () => {
-      const mercuryoIndex = state.data.allRates.findIndex(
-        (rate) =>
-          rate.identifier === "Mercuryo" &&
-          rate.receivedCrypto !== mercuryoReceivedCrypto
-      );
-      if (mercuryoIndex >= 0) {
-        if (state.collected.amountInCrypto) return;
-        const currencyIn = state.collected.selectedCurrency?.id;
-        const currencyOut = state.collected.selectedCrypto?.id;
-        const paymentMethod = state.collected.selectedPaymentMethod?.id;
-        if (!currencyIn || !currencyOut || !paymentMethod) return;
-        // CREATE NEW ABORT CONTROLLER FOR EACH REQUEST AND STORE IT IN THE LOCAL STATE
-        // IF THERE'S ANY PENDING REQUEST THEN ABORT IT BEFORE STORE THE NEW ABORT CONTROLLER
-        const controller = new AbortController();
-        const { signal } = controller;
-
-        setLastCallMercuryo((lastController) => {
-          lastController?.abort();
-          return controller;
-        });
-        try {
-          const quoteResponse = (
-            await API.rate(
-              currencyIn,
-              currencyOut,
-              state.collected.amount,
-              paymentMethod,
-              {
-                gateway: "Mercuryo",
-              },
-              signal
-            )
-          )[0];
-          if (!quoteResponse || !quoteResponse.receivedCrypto) {
-            setLastCallMercuryo(undefined);
-            return;
-          }
-          const newRates = state.data.allRates;
-          setMercuryoReceivedCrypto(quoteResponse.receivedCrypto);
-          newRates[mercuryoIndex] = {
-            ...state.data.allRates[mercuryoIndex],
-            ...quoteResponse,
-            rate: state.collected.amount / quoteResponse.receivedCrypto,
-          };
-          addData({
-            allRates: [...newRates],
-          });
-          setLastCallMercuryo(undefined);
-        } catch (e) {
-          if (e.name === "AbortError") return;
-          setLastCallMercuryo(undefined);
-        }
-      }
-    };
-    getQuote();
-  }, [
-    state.collected.selectedPaymentMethod?.id,
-    mercuryoReceivedCrypto,
-    state.data.allRates,
-    addData,
-    state.collected.amount,
-    state.collected.amountInCrypto,
-    state.collected.selectedCrypto?.id,
-    state.collected.selectedCurrency?.id,
-  ]);
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
