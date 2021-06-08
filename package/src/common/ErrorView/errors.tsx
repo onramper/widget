@@ -40,12 +40,10 @@ export const API_ERROR = (message: string, cb: () => any): JSX.Element => {
     return (
         <>
             <ErrorIllustration className={styles['content-image']} />
-            <span className={styles['content-title']}>Couldn&apos;t connect</span>
+            <span className={styles['content-title']}>Couldn&apos;t continue</span>
             <span className={styles['content-description']}>
-                There are problems trying to connect to the server.<br />
-                Please, try again in some minutes.<br />
                 {message ? <span className={styles['content-message']}>{message}<br /></span> : <br />}
-                For more information read our FAQs or contact us.
+                For more information of the error, read our FAQs or contact us.
             </span>
             <div className={styles['content-description']}>
                 <ButtonAction className={styles['content-button']} text="Try again" size='small' onClick={cb} />
