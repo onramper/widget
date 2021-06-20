@@ -17,17 +17,19 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   const { apiInterface, inputInterface, collected } = useContext(APIContext);
   const { executeStep } = apiInterface;
   const [error, setError] = useState("");
+  const { handleInputChange } = inputInterface;
+  const { nextStep } = props;
 
   useEffect(() => {
     const callback = async () => {
-      let newNextStep: NextStep = props.nextStep;
+      let newNextStep: NextStep = nextStep;
       let failed = false;
       while (newNextStep.type === "wait" && !failed) {
         try {
-          await delay(100);
+          await delay(500);
           const payload = { partnerContext: collected.partnerContext };
           newNextStep = await executeStep(newNextStep, payload);
-          inputInterface.handleInputChange("isPartnerContextSent", true);
+          handleInputChange("isPartnerContextSent", true);
         } catch (error) {
           failed = true;
           if (error.fatal) nextScreen(<ErrorView message={error.message} />);
@@ -42,7 +44,15 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
       if (!failed) replaceScreen(<Step nextStep={newNextStep} />);
     };
     callback();
-  }, [inputInterface, collected.partnerContext, executeStep, props.nextStep, backScreen, nextScreen, replaceScreen]);
+  }, [
+    handleInputChange,
+    collected.partnerContext,
+    executeStep,
+    nextStep,
+    backScreen,
+    nextScreen,
+    replaceScreen,
+  ]);
 
   return (
     <div className={styles.view}>
