@@ -114,6 +114,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         | ItemType
         | ErrorObjectType[]
         | { [key: string]: string }
+        | undefined
     ) =>
       dispatch({
         type: CollectedActionsType.AddField,
@@ -127,8 +128,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   }, [isAddressEditable, handleInputChange]);
 
   useEffect(() => {
-    if (lastCall)
-      handleInputChange("isCalculatingAmount", true);
+    if (lastCall) handleInputChange("isCalculatingAmount", true);
     else
       handleInputChange(
         "isCalculatingAmount",
@@ -215,7 +215,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       const ICONS_MAP = responseGateways.icons || {};
 
       // GET ALL AVAILABLE CRYPTOS
-      let availableCryptos: GatewaysResponse["gateways"][0]["cryptoCurrencies"] = [];
+      let availableCryptos: GatewaysResponse["gateways"][0]["cryptoCurrencies"] =
+        [];
       for (const i in responseGateways.gateways) {
         if (!responseGateways.gateways[i].cryptoCurrencies) continue;
         availableCryptos = availableCryptos.concat(
@@ -308,7 +309,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       );
 
       // GET ALL AVAILABLE FIAT CURRENCIES THAT CAN BE USED TO BUY THE SELECTED CRYPTO
-      let availableCurrencies: GatewaysResponse["gateways"][0]["fiatCurrencies"] = [];
+      let availableCurrencies: GatewaysResponse["gateways"][0]["fiatCurrencies"] =
+        [];
       for (const i in filtredGatewaysByCrypto) {
         if (!filtredGatewaysByCrypto[i].fiatCurrencies) continue;
         availableCurrencies = availableCurrencies.concat(
@@ -341,6 +343,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // save to state.collected
       handleInputChange("selectedCrypto", actualCrypto);
+      handleInputChange(
+        "cryptocurrencyAddress",
+        state.collected.defaultAddrs[actualCrypto.id]?.address
+      );
       // save to state.date
       addData({
         availableCurrencies: mappedAvailableCurrencies,
@@ -355,6 +361,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       state.collected.selectedCrypto,
       processErrors,
       defaultCrypto,
+      state.collected.defaultAddrs,
     ]
   );
 
@@ -415,7 +422,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       );
 
       // GET ALL AVAILABLE PAYMENT METHODS THAT CAN BE USED TO BUY THE SELECTED CRYPTO WITH THE SELECTED CURRENCY
-      let availablePaymentMethods: GatewaysResponse["gateways"][0]["paymentMethods"] = [];
+      let availablePaymentMethods: GatewaysResponse["gateways"][0]["paymentMethods"] =
+        [];
       for (const i in filtredGatewaysByCurrency) {
         if (!filtredGatewaysByCurrency[i].paymentMethods) continue;
         availablePaymentMethods = availablePaymentMethods.concat(
@@ -434,16 +442,15 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // MAP AVAILABLE FIAT CURRENCIES (CURRENCY LIST) TO AN ITEMTYPE LIST
       const ICONS_MAP = responseGateways.icons || {};
-      const mappedAvailablePaymentMethods: ItemType[] = availablePaymentMethods.map(
-        (item) => ({
+      const mappedAvailablePaymentMethods: ItemType[] =
+        availablePaymentMethods.map((item) => ({
           id: item,
           name: ICONS_MAP[item]?.name || item,
           symbol: "",
           info: "",
           icon: ICONS_MAP[item]?.icon,
           type: ItemCategory.PaymentMethod,
-        })
-      );
+        }));
 
       // save to state.collected
       handleInputChange("selectedCurrency", actualCurrency);
@@ -743,8 +750,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     );
 
     // [{identifier: ["ccard", "bank", ...]}] payment methods of gateways not availables for current crypto, fiat and payment method that includes crypto selection and fiat selection
-    const hiddenPaymentMethodsByCryptoFiat = hiddenRatesWithMyCryptoAndCurrency?.reduce(
-      (acc, rate) => {
+    const hiddenPaymentMethodsByCryptoFiat =
+      hiddenRatesWithMyCryptoAndCurrency?.reduce((acc, rate) => {
         const newAcc = [];
         for (let index = 0; index < rate.paymentMethods.length; index++) {
           const element = rate.paymentMethods[index];
@@ -754,9 +761,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           ...acc,
           [rate.identifier]: [...(acc[rate.identifier] ?? []), ...newAcc],
         };
-      },
-      {} as { [identifier: string]: string[] }
-    );
+      }, {} as { [identifier: string]: string[] });
 
     const selectedCrypto = state.collected.selectedCrypto?.id ?? "";
 
@@ -880,7 +885,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
-      if (step.type !== "file" && (props.partnerContext !== data.partnerContext))
+      if (step.type !== "file" && props.partnerContext !== data.partnerContext)
         throw new Error("Partner context not set properly");
       return await API.executeStep(step, data, {
         country: state.collected.selectedCountry,
