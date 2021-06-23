@@ -12,6 +12,7 @@ interface HelpViewProps {
   fixedHeight?: boolean
   onActionClick?: () => Promise<boolean>
   error?: string
+  dismissAfterClick?: boolean
 }
 
 const HelpView: React.FC<HelpViewProps> = (props) => {
@@ -21,7 +22,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
   const [isActive, setIsActive] = useState(false)
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
-  const { maxHeight = '350px', fixedHeight = false } = props
+  const { maxHeight = '350px', fixedHeight = false, dismissAfterClick=false } = props
   const classPrefix = fixedHeight ? '--fixed' : ''
 
   const ANIMATION_TIMEOUT = 250
@@ -41,8 +42,9 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
     setButtonDisabled(true)
     if (props.error || await props.onActionClick?.()) {
       setButtonDisabled(false)
-      /* handleDismiss() */
     }
+    if (dismissAfterClick)
+      handleDismiss()
   }
 
   const style = {
