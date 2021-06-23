@@ -19,6 +19,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   const [error, setError] = useState("");
   const { handleInputChange } = inputInterface;
   const { nextStep } = props;
+  const [collectedStore] = useState(collected)
 
   useEffect(() => {
     const callback = async () => {
@@ -27,7 +28,15 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
       while (newNextStep.type === "wait" && !failed) {
         try {
           await delay(500);
-          const payload = { partnerContext: collected.partnerContext };
+          let payload = { partnerContext: collectedStore.partnerContext };
+          if (newNextStep.extraData && newNextStep.extraData.length > 0) {
+            newNextStep.extraData.forEach((data) => {
+              payload = {
+                ...payload,
+                [data.name]: collectedStore[data.name],
+              };
+            });
+          }
           newNextStep = await executeStep(newNextStep, payload);
           handleInputChange("isPartnerContextSent", true);
         } catch (error) {
@@ -52,6 +61,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
     backScreen,
     nextScreen,
     replaceScreen,
+    collectedStore,
   ]);
 
   return (

@@ -79,6 +79,7 @@ type NextStep =
     } | {
         type: 'wait';
         url: string;
+        extraData?: StepDataItems;
     } | {
         type: 'pickOne';
         options: FileStep[];
