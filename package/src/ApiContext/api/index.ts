@@ -19,7 +19,9 @@ const sentryHub = new Hub(sentryClient);
 
 const authenticate = (pk: string) => {
     headers.set('Authorization', `Basic ${pk}`)
-    headers.set('X-Widget-Referer', document.referrer)
+    if (document.referrer) {
+        headers.set('X-Widget-Referer', document.referrer)
+    }
     sentryHub.addBreadcrumb({message:`Authenticated with API key '${pk}'`, category:'auth'})
 }
 
