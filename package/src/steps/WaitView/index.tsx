@@ -19,7 +19,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   const [error, setError] = useState("");
   const { handleInputChange } = inputInterface;
   const { nextStep } = props;
-  const [collectedStore] = useState(collected)
+  const [collectedStore] = useState(collected);
 
   useEffect(() => {
     const callback = async () => {
@@ -31,12 +31,19 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
           let payload = { partnerContext: collectedStore.partnerContext };
           if (newNextStep.extraData && newNextStep.extraData.length > 0) {
             newNextStep.extraData.forEach((data) => {
+              let value = collectedStore[data.name];
+              if (data.name === "cryptocurrencyAddress")
+                value = collectedStore[data.name]?.address;
+              else if (data.name === "cryptocurrencyAddressTag")
+                value = collectedStore["cryptocurrencyAddress"]?.memo;
+              else value = collectedStore[data.name];
               payload = {
                 ...payload,
-                [data.name]: collectedStore[data.name],
+                [data.name]: value,
               };
             });
           }
+          console.log('payload', payload)
           newNextStep = await executeStep(newNextStep, payload);
           handleInputChange("isPartnerContextSent", true);
         } catch (error) {

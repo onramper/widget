@@ -343,10 +343,11 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // save to state.collected
       handleInputChange("selectedCrypto", actualCrypto);
-      handleInputChange(
-        "cryptocurrencyAddress",
-        state.collected.defaultAddrs[actualCrypto.id]?.address
-      );
+      const addrs = state.collected.defaultAddrs[actualCrypto.id];
+      handleInputChange("cryptocurrencyAddress", {
+        address: addrs?.address,
+        memo: addrs?.memo,
+      } as any);
       // save to state.date
       addData({
         availableCurrencies: mappedAvailableCurrencies,
