@@ -9,6 +9,7 @@ import type { CryptoAddrType } from '../initialState'
 
 import { BASE_API } from './constants'
 
+// Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers()
 // See https://github.com/getsentry/sentry-javascript/issues/1656#issuecomment-430295616
 const sentryClient = new BrowserClient({
