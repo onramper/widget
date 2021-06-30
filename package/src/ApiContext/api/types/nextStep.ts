@@ -63,6 +63,7 @@ type NextStep =
         type: 'information';
         url: string;
         message: string;
+        extraData?: StepDataItems;
     } | {
         type: 'form';
         url: string;

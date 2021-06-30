@@ -16,6 +16,7 @@ const InformationView: React.FC<{
   const { apiInterface, collected } = useContext(APIContext);
   const [error, setError] = React.useState<string>();
   const [buttonText, setButtonText] = React.useState<string>(error ? "Close" : "Got it!");
+  const [collectedStore] = React.useState(collected);
 
   React.useEffect(()=>{
     setButtonText(error ? "Close" : "Got it!")
@@ -24,11 +25,27 @@ const InformationView: React.FC<{
   const handleButtonAction = async () => {
     try {
       setButtonText("Loading...")
-      const payload = { partnerContext: collected.partnerContext };
-      const newNextStep = await apiInterface.executeStep(
-        props.nextStep,
-        payload
-      );
+      let payload = { partnerContext: collectedStore.partnerContext };
+      let newNextStep: NextStep = props.nextStep;
+      if (
+        newNextStep.type === "information" &&
+        newNextStep.extraData &&
+        newNextStep.extraData.length > 0
+      ) {
+        newNextStep.extraData.forEach((data) => {
+          let value = collectedStore[data.name];
+          if (data.name === "cryptocurrencyAddress")
+            value = collectedStore[data.name]?.address;
+          else if (data.name === "cryptocurrencyAddressTag")
+            value = collectedStore["cryptocurrencyAddress"]?.memo;
+          else value = collectedStore[data.name];
+          payload = {
+            ...payload,
+            [data.name]: value,
+          };
+        });
+      }
+      newNextStep = await apiInterface.executeStep(newNextStep, payload);
       setButtonText("Got it!")
       replaceScreen(<Step nextStep={newNextStep} />);
       return true;
