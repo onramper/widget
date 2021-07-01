@@ -837,7 +837,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
                   ?.supportsAddressTag
             )
       )
-      .filter((o) => o[1].length > 1)
+      .filter((o) => o[1].length >= 1)
       .map(([identifier, payments]) => {
         return {
           identifier: identifier,
