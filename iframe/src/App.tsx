@@ -35,6 +35,7 @@ const amountInCrypto = getParam("amountInCrypto")
 const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display=swap')
 const partnerContext = getJSONParam("partnerContext", undefined)
 const redirectURL = getParam("redirectURL", undefined)
+const minAmountEur = Number(getParam("minAmountEur", "0"))
 
 if (gFontPath)
   loadGoogleFont(gFontPath)
@@ -82,6 +83,7 @@ function App() {
             amountInCrypto={amountInCrypto === undefined ? undefined : amountInCrypto === "true"}
             partnerContext={partnerContext}
             redirectURL={redirectURL}
+            minAmountEur={minAmountEur}
           />
         </div>
       </div>
