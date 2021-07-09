@@ -23,11 +23,11 @@ const authenticate = (pk: string) => {
     if (document.referrer) {
         headers.set('X-Widget-Referer', document.referrer)
     }
-    sentryHub.addBreadcrumb({message:`Authenticated with API key '${pk}'`, category:'auth'})
+    sentryHub.addBreadcrumb({ message: `Authenticated with API key '${pk}'`, category: 'auth' })
 }
 
-export function logRequest(url:string){
-    sentryHub.addBreadcrumb({message:`Sent a request to '${url}'`})
+export function logRequest(url: string) {
+    sentryHub.addBreadcrumb({ message: `Sent a request to '${url}'` })
 }
 
 /**
@@ -91,6 +91,7 @@ interface FetchResponse { //should be replaced by a complete fetch type
 const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
 
     if (step.type !== 'information' && step.type !== 'form' && step.type !== 'file' && step.type !== 'wait') throw new Error('Unexpected error: Invalid step end.')
+    if (step.url === undefined) throw new Error('Unexpected error: Invalid step end.')
 
     const method = step.type === 'file' ? 'PUT' : 'POST'
     const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
@@ -131,7 +132,7 @@ export const processResponse = async (response: FetchResponse): Promise<any> => 
                 errorResponse = { message: "Error parsing the response" }
             }
         }
-        sentryHub.addBreadcrumb({message:"Error received from request", data:errorResponse})
+        sentryHub.addBreadcrumb({ message: "Error received from request", data: errorResponse })
         sentryHub.captureException(new ApiError(errorResponse.message));
         throw new NextStepError(errorResponse)
     }
