@@ -61,7 +61,7 @@ type NextStep =
     FileStep
     | {
         type: 'information';
-        url: string;
+        url?: string;
         message: string;
         extraData?: StepDataItems;
     } | {
