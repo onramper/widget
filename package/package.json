@@ -34,7 +34,7 @@
     "prepublishOnly": "npm run build:prod"
   },
   "dependencies": {
-    "@onramper/moonpay-adapter": "^1.5.2",
+    "@onramper/moonpay-adapter": "^1.5.3",
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
     "abort-controller": "^3.0.0",
