@@ -567,7 +567,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           includeIcons: true,
           address,
           addressTag,
-          minAmountEur: state.collected.minAmountEur,
+          minAmountEur: props.minAmountEur,
         },
         signal
       );
@@ -702,6 +702,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     processErrors,
     clearErrors,
     props.filters?.onlyGateways,
+    props.minAmountEur,
   ]);
 
   useEffect(() => {
