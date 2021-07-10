@@ -304,6 +304,26 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             />
                                         )}
                                     label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} icon={icons[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} />
+                            )) || ((field.type === 'choice') && (
+                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
+                                    error={errorObj?.[field.name]}
+                                    onClick={
+                                        () => nextScreen(
+                                            <PickView
+                                                title={field.humanName}
+                                                name={field.name}
+                                                onItemClick={(name, index, item) => {
+                                                    onChange(name, item.name)
+                                                    backScreen()
+                                                }}
+                                                items={field.options.map((option) => ({
+                                                    id: option,
+                                                    name: option
+                                                }))}
+                                                searchable
+                                            />
+                                        )}
+                                    label={field.humanName} selectedOption={collected[field.name] ?? `Select ${field.humanName}`} />
                             )) || ((field.name === 'state') && (
                                 collected.country === 'us' || collected.country === 'ca'
                                     ? <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child} onClick={

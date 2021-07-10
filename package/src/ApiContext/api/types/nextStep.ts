@@ -1,44 +1,55 @@
-type StepDataItems = Array<
-    {
-        type: 'string' | 'integer';
-        humanName: string;
-        name: string;
-        hint?: string;
-        required?: boolean;
-    }
-    | {
-        type: 'date';
-        name: string;
-        humanName: string;
-        hint?: string;
-        required?: boolean;
-        data: [
-            {
-                type: 'integer';
-                humanName: 'Day';
-                name: 'day';
-            },
-            {
-                type: 'integer';
-                humanName: 'Month';
-                name: 'month';
-            },
-            {
-                type: 'integer';
-                humanName: 'Year';
-                name: 'year';
-            }
-        ];
-    }
-    | {
-        type: 'boolean';
-        name: 'termsOfUse';
-        terms: {
-            url: string;
-            humanName: string;
-        }[];
-    }
->;
+type StepDataItem =
+| {
+    type: 'string' | 'integer';
+    humanName: string;
+    name: string;
+    hint?: string;
+    required?: boolean;
+  }
+| {
+    type: 'choice',
+    options: string[],
+    humanName: string;
+    name: string;
+    hint?: string;
+    required?: boolean;
+  }
+| {
+    type: 'date';
+    name: string;
+    humanName: string;
+    hint?: string;
+    required?: boolean;
+    data: [
+      {
+        type: 'integer';
+        humanName: 'Day';
+        name: 'day';
+      },
+      {
+        type: 'integer';
+        humanName: 'Month';
+        name: 'month';
+      },
+      {
+        type: 'integer';
+        humanName: 'Year';
+        name: 'year';
+      }
+    ];
+  }
+| {
+    type: 'boolean';
+    name: 'termsOfUse';
+    terms: {
+      url: string;
+      humanName: string;
+    }[];
+  }
+
+
+
+type StepDataItems = Array<StepDataItem>;
 
 interface FileStep {
     type: 'file';
