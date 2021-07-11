@@ -301,12 +301,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             />
                                         )}
                                     label={field.humanName}
-                                    selectedOption={field.options.find(v=>{
-                                        console.log(v.value, collected[field.name])
-                                        console.log(v, field, field.options)
-
-                                        return v.value===collected[field.name]
-                                    })?.humanName ?? "Please select"}
+                                    selectedOption={field.options.find(v=>v.value===collected[field.name])?.humanName ?? "Please select"}
                                 />
                             ))
                             || ((field.name === 'country') && (
