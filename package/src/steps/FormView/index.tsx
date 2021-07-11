@@ -19,8 +19,8 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
   const [errorObj, setErrorObj] = useState<{ [key: string]: string | undefined }>()
-  const [title, setTitle] = useState('Purchase form')
-  const [infoMsg, setInfoMsg] = useState('')
+  const [title, setTitle] = useState(nextStep.humanName ?? 'Purchase form')
+  const [infoMsg, setInfoMsg] = useState(nextStep.hint ?? '')
 
   const { data: nextStepData = [] } = nextStep
 

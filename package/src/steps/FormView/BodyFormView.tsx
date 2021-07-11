@@ -282,6 +282,33 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                                     }.</label>
                             ))
+                            || ((field.type === 'select') && (
+                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
+                                    error={errorObj?.[field.name]}
+                                    onClick={
+                                        () => nextScreen(
+                                            <PickView
+                                                title={field.humanName}
+                                                name={field.name}
+                                                onItemClick={(name, index, item) => {
+                                                    onChange(name, item.id)
+                                                    backScreen()
+                                                }}
+                                                items={field.options.map((option) => ({
+                                                    id: option.value,
+                                                    name: option.humanName
+                                                }))}
+                                            />
+                                        )}
+                                    label={field.humanName}
+                                    selectedOption={field.options.find(v=>{
+                                        console.log(v.value, collected[field.name])
+                                        console.log(v, field, field.options)
+
+                                        return v.value===collected[field.name]
+                                    })?.humanName ?? "Please select"}
+                                />
+                            ))
                             || ((field.name === 'country') && (
                                 <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
                                     error={errorObj?.[field.name]}

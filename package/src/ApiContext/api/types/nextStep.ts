@@ -1,5 +1,16 @@
 type StepDataItems = Array<
-    {
+    | {
+        type: "select";
+        name: string;
+        humanName: string;
+        options: {
+            value: string;
+            humanName: string;
+        }[];
+        hint?: string;
+        required?: boolean;
+    }
+    | {
         type: 'string' | 'integer';
         humanName: string;
         name: string;
@@ -68,6 +79,8 @@ type NextStep =
         type: 'form';
         url: string;
         data: StepDataItems;
+        humanName?: string; // TODO: force all forms to have humanName
+        hint?: string;
     } | {
         type: 'iframe';
         url: string;
