@@ -24,7 +24,8 @@ const Menu: React.FC = () => {
         backScreen()
         triggerChat()
         break; */
-      case 4:
+      // WHEN ADDING CHAT BACK, MAKE SURE TO CHANGE FIX THE IDS!!!
+      case 3:
         window.open("https://onramper.com/about")
         break;
       default:
