@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
     return (
         <footer className={styles.footer}>
             <span>Powered by</span>
-            <img src={LogoOnramper} alt="logo"></img>
+            <img style={{opacity: 0.5, marginLeft: '0.5rem'}}src={LogoOnramper} alt="logo"></img>
         </footer>
     )
 }
