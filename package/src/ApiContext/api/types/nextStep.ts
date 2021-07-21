@@ -86,10 +86,12 @@ type NextStep =
         url: string;
         fullscreen: boolean;
         neededFeatures?: string;
+        humanName?: string; // TODO: force all forms to have humanName
     } | {
         type: 'redirect';
         url: string;
         hint?: string;
+        humanName?: string; // TODO: force all forms to have humanName
     } | {
         type: 'wait';
         url: string;

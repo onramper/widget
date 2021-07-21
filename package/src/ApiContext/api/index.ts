@@ -1,5 +1,5 @@
 import "abort-controller/polyfill"
-import { RateResponse } from './types/rate'
+import { GatewayRate, RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
@@ -258,6 +258,23 @@ const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[
     })
 }
 
+interface SellParams {
+    country?: string
+    amountInCrypto?: boolean,
+}
+
+const sell = async (crypto: string, amount: number, paymentMethod: string, params?: SellParams): Promise<GatewayRate> => {
+    const urlParams = createUrlParamsFromObject(params ?? {})
+    const ratesUrl = `${BASE_API}/sell/${crypto}/${paymentMethod}/${amount}?${urlParams}`
+    logRequest(ratesUrl)
+    const ratesRes = await fetch(ratesUrl, {
+        headers,
+        credentials: 'include'
+    })
+    const rates: GatewayRate = await processResponse(ratesRes)
+    return rates
+}
+
 export {
     authenticate,
     gateways,
@@ -265,6 +282,7 @@ export {
     executeStep,
     filterGatewaysResponse,
     filterRatesResponse,
+    sell,
     NextStepError,
     sentryHub,
     ApiError

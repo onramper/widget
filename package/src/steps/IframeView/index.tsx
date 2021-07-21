@@ -98,7 +98,7 @@ const IframeView: React.FC<{
   return (
     <div className={styles.view}>
       <Header
-        title="Complete payment"
+        title={nextStep.humanName ?? "Complete payment"}
         hideBurgerButton={nextStep.type === "iframe" && nextStep.fullscreen}
         backButton
       />
