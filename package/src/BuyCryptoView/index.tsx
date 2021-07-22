@@ -8,11 +8,11 @@ import ErrorView from "../common/ErrorView";
 import Step from "../steps/Step";
 import { NavContext } from "../NavContext";
 import { APIContext, ItemType, NextStep } from "../ApiContext";
-import * as API from "../ApiContext/api";
+/* import * as API from "../ApiContext/api"; */
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
-  const [buyStep, setBuyStep] = useState<NextStep>();
+  /* const [buyStep, setBuyStep] = useState<NextStep>(); */
 
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } =
@@ -64,7 +64,7 @@ const BuyCryptoView: React.FC = () => {
     collected.amount,
   ]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     (async () => {
       try {
         const nextStep = await API.sell("BTC", 0.1, "blockchain", {
@@ -77,16 +77,16 @@ const BuyCryptoView: React.FC = () => {
         console.error(error);
       }
     })();
-  }, [collected.selectedCountry]);
+  }, [collected.selectedCountry]); */
 
   return (
     <div className={styles.view}>
       <Header
         title="Buy crypto"
-        secondaryTitle={buyStep ? "Sell crypto" : undefined}
+        /* secondaryTitle={buyStep ? "Sell crypto" : undefined}
         onSecondaryTitleClick={() => {
           nextScreen(<Step nextStep={buyStep} />);
-        }}
+        }} */
       />
       <BodyBuyCrypto
         onBuyCrypto={() => nextScreen(<ChooseGatewayView />)}
