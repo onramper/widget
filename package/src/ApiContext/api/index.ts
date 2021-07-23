@@ -88,19 +88,39 @@ interface FetchResponse { //should be replaced by a complete fetch type
     text: () => Promise<string>
 }
 
+const tob64 = async (file: File): Promise<string | ArrayBuffer | null> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+            resolve(reader.result);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
 const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
 
     if (step.type !== 'information' && step.type !== 'form' && step.type !== 'file' && step.type !== 'wait') throw new Error('Unexpected error: Invalid step end.')
 
-    const method = step.type === 'file' ? 'PUT' : 'POST'
-    const body = step.type === 'file' ? data as File : JSON.stringify({ ...data })
+    const isMoonpay = isMoonpayStep(step.url)
+    const isFile = step.type === 'file'
+    const isMoonpayFile = isFile && isMoonpay
+    const method = isMoonpayFile ? 'PUT' : 'POST'
+    let body
+    if (isMoonpayFile)
+        body = data as File
+    else if (isFile)
+        body = (await tob64(data as File)) as unknown as string
+    else
+        body = JSON.stringify({ ...data })
 
     const urlParams = createUrlParamsFromObject(params ?? {})
 
     logRequest(step.url)
     const nextStepType = step.url.split('/')[5]
     let nextStep: FetchResponse;
-    if (isMoonpayStep(step.url) && nextStepType !== "iframe") {
+    if (isMoonpay && nextStepType !== "iframe") {
         nextStep = await processMoonpayStep(step.url, { method, headers, body });
     } else {
         nextStep = await fetch(`${step.url}?${urlParams}`, { method, headers, body })
