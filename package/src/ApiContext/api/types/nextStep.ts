@@ -11,6 +11,14 @@ type StepDataItems = Array<
         required?: boolean;
     }
     | {
+        type: 'choice',
+        options: string[],
+        humanName: string;
+        name: string;
+        hint?: string;
+        required?: boolean;
+    }
+    | {
         type: 'string' | 'integer';
         humanName: string;
         name: string;
