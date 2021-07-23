@@ -64,6 +64,7 @@ interface APIProviderType {
   amountInCrypto?: boolean;
   partnerContext?: { [key: string]: any };
   redirectURL?: string;
+  minAmountEur?: number;
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -92,6 +93,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         props.amountInCrypto ?? initialState.collected.amountInCrypto,
       partnerContext: props.partnerContext,
       redirectURL: props.redirectURL,
+      minAmountEur: props.minAmountEur,
     },
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
@@ -565,6 +567,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           includeIcons: true,
           address,
           addressTag,
+          minAmountEur: props.minAmountEur,
         },
         signal
       );
@@ -699,6 +702,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     processErrors,
     clearErrors,
     props.filters?.onlyGateways,
+    props.minAmountEur,
   ]);
 
   useEffect(() => {

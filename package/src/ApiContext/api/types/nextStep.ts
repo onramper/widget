@@ -1,55 +1,63 @@
-type StepDataItem =
-| {
-    type: 'string' | 'integer';
-    humanName: string;
-    name: string;
-    hint?: string;
-    required?: boolean;
-  }
-| {
-    type: 'choice',
-    options: string[],
-    humanName: string;
-    name: string;
-    hint?: string;
-    required?: boolean;
-  }
-| {
-    type: 'date';
-    name: string;
-    humanName: string;
-    hint?: string;
-    required?: boolean;
-    data: [
-      {
-        type: 'integer';
-        humanName: 'Day';
-        name: 'day';
-      },
-      {
-        type: 'integer';
-        humanName: 'Month';
-        name: 'month';
-      },
-      {
-        type: 'integer';
-        humanName: 'Year';
-        name: 'year';
-      }
-    ];
-  }
-| {
-    type: 'boolean';
-    name: 'termsOfUse';
-    terms: {
-      url: string;
-      humanName: string;
-    }[];
-  }
-
-
-
-type StepDataItems = Array<StepDataItem>;
+type StepDataItems = Array<
+    | {
+        type: "select";
+        name: string;
+        humanName: string;
+        options: {
+            value: string;
+            humanName: string;
+        }[];
+        hint?: string;
+        required?: boolean;
+    }
+    | {
+        type: 'choice',
+        options: string[],
+        humanName: string;
+        name: string;
+        hint?: string;
+        required?: boolean;
+    }
+    | {
+        type: 'string' | 'integer';
+        humanName: string;
+        name: string;
+        hint?: string;
+        required?: boolean;
+    }
+    | {
+        type: 'date';
+        name: string;
+        humanName: string;
+        hint?: string;
+        required?: boolean;
+        data: [
+            {
+                type: 'integer';
+                humanName: 'Day';
+                name: 'day';
+            },
+            {
+                type: 'integer';
+                humanName: 'Month';
+                name: 'month';
+            },
+            {
+                type: 'integer';
+                humanName: 'Year';
+                name: 'year';
+            }
+        ];
+    }
+    | {
+        type: 'boolean';
+        name: 'termsOfUse';
+        terms: {
+            url: string;
+            humanName: string;
+        }[];
+    }
+>;
 
 interface FileStep {
     type: 'file';
@@ -72,22 +80,26 @@ type NextStep =
     FileStep
     | {
         type: 'information';
-        url: string;
+        url?: string;
         message: string;
         extraData?: StepDataItems;
     } | {
         type: 'form';
         url: string;
         data: StepDataItems;
+        humanName?: string; // TODO: force all forms to have humanName
+        hint?: string;
     } | {
         type: 'iframe';
         url: string;
         fullscreen: boolean;
         neededFeatures?: string;
+        humanName?: string; // TODO: force all forms to have humanName
     } | {
         type: 'redirect';
         url: string;
         hint?: string;
+        humanName?: string; // TODO: force all forms to have humanName
     } | {
         type: 'wait';
         url: string;

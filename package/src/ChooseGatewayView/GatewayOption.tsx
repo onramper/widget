@@ -156,7 +156,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         }
                         {/* </CSSTransition> */}
                         {available ?
-                            <span className={styles['receive-amount']}> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {receivedCrypto}</span>
+                            <span className={styles['receive-amount']}> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {collected.amountInCrypto ? receivedCrypto : receivedCrypto.toFixed(5)}</span>
                             : <span>{!error?.message ? 'Try again later' : error?.message}</span>
                         }
                     </div>

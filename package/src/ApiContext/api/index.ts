@@ -1,5 +1,5 @@
 import "abort-controller/polyfill"
-import { RateResponse } from './types/rate'
+import { GatewayRate, RateResponse } from './types/rate'
 import { GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
@@ -23,11 +23,11 @@ const authenticate = (pk: string) => {
     if (document.referrer) {
         headers.set('X-Widget-Referer', document.referrer)
     }
-    sentryHub.addBreadcrumb({message:`Authenticated with API key '${pk}'`, category:'auth'})
+    sentryHub.addBreadcrumb({ message: `Authenticated with API key '${pk}'`, category: 'auth' })
 }
 
-export function logRequest(url:string){
-    sentryHub.addBreadcrumb({message:`Sent a request to '${url}'`})
+export function logRequest(url: string) {
+    sentryHub.addBreadcrumb({ message: `Sent a request to '${url}'` })
 }
 
 /**
@@ -102,6 +102,7 @@ const tob64 = async (file: File): Promise<string | ArrayBuffer | null> => {
 const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
 
     if (step.type !== 'information' && step.type !== 'form' && step.type !== 'file' && step.type !== 'wait') throw new Error('Unexpected error: Invalid step end.')
+    if (step.url === undefined) throw new Error('Unexpected error: Invalid step end.')
 
     const isMoonpay = isMoonpayStep(step.url)
     const isFile = step.type === 'file'
@@ -151,7 +152,7 @@ export const processResponse = async (response: FetchResponse): Promise<any> => 
                 errorResponse = { message: "Error parsing the response" }
             }
         }
-        sentryHub.addBreadcrumb({message:"Error received from request", data:errorResponse})
+        sentryHub.addBreadcrumb({ message: "Error received from request", data: errorResponse })
         sentryHub.captureException(new ApiError(errorResponse.message));
         throw new NextStepError(errorResponse)
     }
@@ -277,6 +278,23 @@ const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[
     })
 }
 
+interface SellParams {
+    country?: string
+    amountInCrypto?: boolean,
+}
+
+const sell = async (crypto: string, amount: number, paymentMethod: string, params?: SellParams): Promise<GatewayRate> => {
+    const urlParams = createUrlParamsFromObject(params ?? {})
+    const ratesUrl = `${BASE_API}/sell/${crypto}/${paymentMethod}/${amount}?${urlParams}`
+    logRequest(ratesUrl)
+    const ratesRes = await fetch(ratesUrl, {
+        headers,
+        credentials: 'include'
+    })
+    const rates: GatewayRate = await processResponse(ratesRes)
+    return rates
+}
+
 export {
     authenticate,
     gateways,
@@ -284,6 +302,7 @@ export {
     executeStep,
     filterGatewaysResponse,
     filterRatesResponse,
+    sell,
     NextStepError,
     sentryHub,
     ApiError

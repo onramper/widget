@@ -12,21 +12,27 @@ import ErrorView from "../../common/ErrorView";
 const InformationView: React.FC<{
   nextStep: NextStep & { type: "information" };
 }> = (props) => {
-  const { replaceScreen } = useContext(NavContext);
+  const { replaceScreen, backScreen } = useContext(NavContext);
   const { apiInterface, collected } = useContext(APIContext);
   const [error, setError] = React.useState<string>();
-  const [buttonText, setButtonText] = React.useState<string>(error ? "Close" : "Got it!");
+  const [buttonText, setButtonText] = React.useState<string>(
+    error ? "Close" : "Got it!"
+  );
   const [collectedStore] = React.useState(collected);
 
-  React.useEffect(()=>{
-    setButtonText(error ? "Close" : "Got it!")
-  }, [error])
+  React.useEffect(() => {
+    setButtonText(error ? "Close" : "Got it!");
+  }, [error]);
 
   const handleButtonAction = async () => {
     try {
-      setButtonText("Loading...")
+      setButtonText("Loading...");
       let payload = { partnerContext: collectedStore.partnerContext };
       let newNextStep: NextStep = props.nextStep;
+      if (newNextStep.type === "information" && newNextStep.url === undefined) {
+        backScreen();
+        return false;
+      }
       if (
         newNextStep.type === "information" &&
         newNextStep.extraData &&
@@ -46,7 +52,7 @@ const InformationView: React.FC<{
         });
       }
       newNextStep = await apiInterface.executeStep(newNextStep, payload);
-      setButtonText("Got it!")
+      setButtonText("Got it!");
       replaceScreen(<Step nextStep={newNextStep} />);
       return true;
     } catch (error) {
