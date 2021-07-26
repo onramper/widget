@@ -54,8 +54,8 @@ export type CollectedStateType = {
     themeColor: string,
     displayChatBubble?: boolean,
     partnerContext?: {[key:string]:any}
-    isPartnerContextSent: boolean
-    redirectURL?: string
+    isPartnerContextSent: boolean,
+    redirectURL?: string,
     [key: string]: any
 }
 
@@ -119,6 +119,7 @@ export const initialState: StateType = {
         displayChatBubble: false,
         partnerContext: undefined,
         isPartnerContextSent: false,
+        transactionTypes: ["SELL", "BUY"],
         redirectURL: undefined
     },
     data: {
