@@ -36,6 +36,7 @@ const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display
 const partnerContext = getJSONParam("partnerContext", undefined)
 const redirectURL = getParam("redirectURL", undefined)
 const minAmountEur = Number(getParam("minAmountEur", "0"))
+const transactionTypes = getArrayParam("transactionTypes", ["BUY", "SELL"]);
 
 if (gFontPath)
   loadGoogleFont(gFontPath)
@@ -84,6 +85,7 @@ function App() {
             partnerContext={partnerContext}
             redirectURL={redirectURL}
             minAmountEur={minAmountEur}
+            transactionTypes={transactionTypes}
           />
         </div>
       </div>
@@ -102,8 +104,8 @@ function getParam(name: string, defaultValue?: string): string | undefined {
   }
 }
 
-function getArrayParam(paramName: string) {
-  return getParam(paramName, undefined)
+function getArrayParam(paramName: string, defaultValue?: string[]) {
+  return getParam(paramName, defaultValue?.join(","))
     ?.split(",")
     .map((code) => code.trim());
 }

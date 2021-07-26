@@ -48,7 +48,7 @@ const DEFAULT_DISPLAYCHATBUBBLE = true;
 //Creating context
 const APIContext = createContext<StateType>(initialState);
 
-interface APIProviderType {
+interface  APIProviderType {
   API_KEY?: string;
   defaultAmount?: number;
   defaultAddrs?: { [denom: string]: CryptoAddrType };
@@ -56,6 +56,7 @@ interface APIProviderType {
   defaultFiat?: string;
   defaultFiatSoft?: string;
   defaultPaymentMethod?: string;
+  transactionTypes?: ("BUY" | "SELL")[];
   filters?: Filters;
   country?: string;
   isAddressEditable?: boolean;
@@ -94,6 +95,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       partnerContext: props.partnerContext,
       redirectURL: props.redirectURL,
       minAmountEur: props.minAmountEur,
+      transactionTypes: props.transactionTypes
     },
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
