@@ -33,7 +33,7 @@ const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
             type="notification"
             className={`${stylesCommon.body__child}`}
           >
-            {"The displayed aounts are an approximate calculation of the crypto received after fees."}
+            {"The displayed amounts are an approximate calculation of the crypto that you will receive after fees."}
           </InfoBox>
           <div className={`${stylesCommon.body__child}`}>
             <RatesList
