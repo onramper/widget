@@ -48,7 +48,7 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
         {isLoading ? "Fetching best price..." : `${expectedCrypto} ${denom}`}
       </span>
       <span className={styles["expected-crypto__info"]}>
-        {amountInCrypto ? "Amount you pay" : "You will receive"}
+        {amountInCrypto ? "Amount you pay" : "Best offer found (approximate)"}
       </span>
     </div>
   );
