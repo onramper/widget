@@ -56,7 +56,6 @@ interface  APIProviderType {
   defaultFiat?: string;
   defaultFiatSoft?: string;
   defaultPaymentMethod?: string;
-  transactionTypes?: ("BUY" | "SELL")[];
   filters?: Filters;
   country?: string;
   isAddressEditable?: boolean;
@@ -66,6 +65,8 @@ interface  APIProviderType {
   partnerContext?: { [key: string]: any };
   redirectURL?: string;
   minAmountEur?: number;
+  supportSell: boolean;
+  supportBuy: boolean;
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -95,7 +96,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       partnerContext: props.partnerContext,
       redirectURL: props.redirectURL,
       minAmountEur: props.minAmountEur,
-      transactionTypes: props.transactionTypes
+      supportSell: props.supportSell,
+      supportBuy: props.supportBuy,
     },
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);

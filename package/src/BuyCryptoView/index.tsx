@@ -83,7 +83,7 @@ const BuyCryptoView: React.FC = () => {
     <div className={styles.view}>
       <Header
         title="Buy crypto"
-        secondaryTitle={buyStep && collected.transactionTypes.includes("SELL") ? "Sell crypto" : undefined}
+        secondaryTitle={buyStep && collected.supportSell ? "Sell crypto" : undefined}
         onSecondaryTitleClick={() => {
           nextScreen(<Step nextStep={buyStep} />);
         }}

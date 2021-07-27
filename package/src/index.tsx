@@ -68,7 +68,8 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             partnerContext={props.partnerContext}
             redirectURL={props.redirectURL}
             minAmountEur={props.minAmountEur}
-            transactionTypes={props.transactionTypes}
+            supportSell={props.supportSell}
+            supportBuy={props.supportBuy}
           >
             <div style={{ flexGrow: 1, display: "flex" }}>
               <NavContainer home={<BuyCryptoView />} />
