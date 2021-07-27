@@ -36,7 +36,8 @@ const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display
 const partnerContext = getJSONParam("partnerContext", undefined)
 const redirectURL = getParam("redirectURL", undefined)
 const minAmountEur = Number(getParam("minAmountEur", "0"))
-const transactionTypes = getArrayParam("transactionTypes", ["BUY", "SELL"]);
+const supportSell = Boolean(getParam("supportSell", "true"));
+const supportBuy = Boolean(getParam("supportBuy", "true"));
 
 if (gFontPath)
   loadGoogleFont(gFontPath)
@@ -85,7 +86,8 @@ function App() {
             partnerContext={partnerContext}
             redirectURL={redirectURL}
             minAmountEur={minAmountEur}
-            transactionTypes={transactionTypes}
+            supportSell={supportSell}
+            supportBuy={supportBuy}
           />
         </div>
       </div>
