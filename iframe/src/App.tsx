@@ -8,8 +8,8 @@ const defaultApiKey =
   window.self !== window.top
     ? undefined
     : window.location.origin.split(".")[2] === "com"
-      ? com_key
-      : dev_key;
+    ? com_key
+    : dev_key;
 
 const apiKey = getParam("apiKey", defaultApiKey);
 const defaultColor = `#${getParam("color", "266678")}`;
@@ -30,29 +30,30 @@ const onlyFiat = getArrayParam("onlyFiat");
 const country = getParam("country");
 const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
-const displayChatBubble = getParam("displayChatBubble", "false")
-const amountInCrypto = getParam("amountInCrypto")
-const gFontPath = getParam("gFontPath", 'css2?family=Roboto:wght@400;500&display=swap')
-const partnerContext = getJSONParam("partnerContext", undefined)
-const redirectURL = getParam("redirectURL", undefined)
-const minAmountEur = Number(getParam("minAmountEur", "0"))
-const supportSell = Boolean(getParam("supportSell", "true"));
-const supportBuy = Boolean(getParam("supportBuy", "true"));
+const displayChatBubble = getParam("displayChatBubble", "false");
+const amountInCrypto = getParam("amountInCrypto");
+const gFontPath = getParam(
+  "gFontPath",
+  "css2?family=Roboto:wght@400;500&display=swap"
+);
+const partnerContext = getJSONParam("partnerContext", undefined);
+const redirectURL = getParam("redirectURL", undefined);
+const minAmountEur = Number(getParam("minAmountEur", "0"));
+const supportSell = getParam("supportSell", "true") === "true";
+const supportBuy = getParam("supportBuy", "true") === "true";
 
-if (gFontPath)
-  loadGoogleFont(gFontPath)
+if (gFontPath) loadGoogleFont(gFontPath);
 
-Onramper.on(Onramper.EVENTS.ALL, (context)=>{
-  window.parent.postMessage(context,"*");  //  `*` on any domain
-})
+Onramper.on(Onramper.EVENTS.ALL, (context) => {
+  window.parent.postMessage(context, "*"); //  `*` on any domain
+});
 
 function App() {
-
   const style = {
     display: "flex",
     flexDirection: "row",
     height: "100%",
-    backgroundColor: inIframe() ? "transparent" : "whitesmoke"
+    backgroundColor: inIframe() ? "transparent" : "whitesmoke",
   } as React.CSSProperties;
 
   return (
@@ -80,9 +81,21 @@ function App() {
               onlyFiat: onlyFiat,
             }}
             country={country}
-            isAddressEditable={isAddressEditable === undefined ? undefined : isAddressEditable === "true"}
-            displayChatBubble={displayChatBubble === undefined ? undefined : displayChatBubble === "true"}
-            amountInCrypto={amountInCrypto === undefined ? undefined : amountInCrypto === "true"}
+            isAddressEditable={
+              isAddressEditable === undefined
+                ? undefined
+                : isAddressEditable === "true"
+            }
+            displayChatBubble={
+              displayChatBubble === undefined
+                ? undefined
+                : displayChatBubble === "true"
+            }
+            amountInCrypto={
+              amountInCrypto === undefined
+                ? undefined
+                : amountInCrypto === "true"
+            }
             partnerContext={partnerContext}
             redirectURL={redirectURL}
             minAmountEur={minAmountEur}
@@ -96,13 +109,13 @@ function App() {
 }
 
 function getParam(name: string, defaultValue?: string): string | undefined {
+  console.error(window.location.search, "s");
   const value = new URLSearchParams(window.location.search).get(name);
-  if (value === null)
-      return defaultValue
+  if (value === null) return defaultValue;
   try {
-    return decodeURIComponent(value)
+    return decodeURIComponent(value);
   } catch (error) {
-    throw new Error(`Couldn't decode ${name} parameter!`)
+    throw new Error(`Couldn't decode ${name} parameter!`);
   }
 }
 
@@ -116,9 +129,9 @@ function getWalletsParam() {
   return getParam("wallets", undefined)
     ?.split(",")
     .reduce((acc, wallet) => {
-      const paramSplitted = wallet.split(":")
+      const paramSplitted = wallet.split(":");
       const denom = paramSplitted[0];
-      const walletAddr = paramSplitted.slice(1).join(":").split(";")
+      const walletAddr = paramSplitted.slice(1).join(":").split(";");
       if (walletAddr && walletAddr.length > 2) return acc;
       let address;
       let memo;
@@ -132,13 +145,13 @@ function getWalletsParam() {
 }
 
 function getAddressesParam() {
-  const addrs = JSON.parse(getParam("addresses", "{}") ?? "{}")
+  const addrs = JSON.parse(getParam("addresses", "{}") ?? "{}");
   return Object.entries(addrs).reduce((acc, [key, address]) => {
     return {
       ...acc,
-      [key]: { address }
-    }
-  }, {})
+      [key]: { address },
+    };
+  }, {});
 }
 
 function inIframe() {
@@ -149,24 +162,23 @@ function inIframe() {
   }
 }
 
-function loadGoogleFont (gFontPath: string) {
-  const css = `@import url('https://fonts.googleapis.com/${gFontPath}');`
-  const head = document.getElementsByTagName('head')[0]
-  const style = document.createElement('style');
+function loadGoogleFont(gFontPath: string) {
+  const css = `@import url('https://fonts.googleapis.com/${gFontPath}');`;
+  const head = document.getElementsByTagName("head")[0];
+  const style = document.createElement("style");
   style.appendChild(document.createTextNode(css));
   /* head.appendChild(style); */
-  head.prepend(style)
+  head.prepend(style);
 }
 
 function getJSONParam(name: string, defaultValue?: string) {
   try {
     const value = new URLSearchParams(window.location.search).get(name);
-    if (!value) return defaultValue
-    return JSON.parse(decodeURIComponent(value))
+    if (!value) return defaultValue;
+    return JSON.parse(decodeURIComponent(value));
   } catch (error) {
-    throw new Error(`Invalid value for ${name} parameter!`)
+    throw new Error(`Invalid value for ${name} parameter!`);
   }
 }
-
 
 export default App;
