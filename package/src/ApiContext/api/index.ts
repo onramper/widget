@@ -54,10 +54,12 @@ const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
 
 interface RateParams {
     country?: string
-    amountInCrypto?: boolean,
-    address?: string,
+    amountInCrypto?: boolean
+    address?: string
+    addressTag?: string
     gateway?: string
-    [key: string]: any
+    includeIcons?: boolean
+    minAmountEur?: number
 }
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, signal?: AbortSignal): Promise<RateResponse> => {
