@@ -106,7 +106,7 @@ type NextStep =
         extraData?: StepDataItems;
     } | {
         type: 'pickOne';
-        options: NextStep[];
+        options: FileStep[];
         humanName?: string
     } | {
         type: 'completed',
