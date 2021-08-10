@@ -44,6 +44,7 @@ export const DEFAULT_US_STATE = "AL";
 export const DEFAULT_CA_STATE = "AB";
 const NO_CHAT_COUNTRIES = ["ng"];
 const DEFAULT_DISPLAYCHATBUBBLE = true;
+const DEFAULT_PAYMENT_METHOD = 'creditCard'
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -75,6 +76,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     defaultAddrs = {},
     API_KEY,
     isAddressEditable = true,
+    defaultPaymentMethod = DEFAULT_PAYMENT_METHOD
   } = props;
   const defaultFiat = props.defaultFiat?.toUpperCase();
   const defaultFiatSoft =
@@ -488,10 +490,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (!selectedPaymentMethod)
         _selectedPaymentMethod =
           state.collected.selectedPaymentMethod ||
-          (props.defaultPaymentMethod
+          (defaultPaymentMethod
             ? {
-                id: props.defaultPaymentMethod,
-                name: props.defaultPaymentMethod,
+                id: defaultPaymentMethod,
+                name: defaultPaymentMethod,
               }
             : undefined);
       else _selectedPaymentMethod = selectedPaymentMethod;
@@ -517,7 +519,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       state.data.availablePaymentMethods,
       state.data.responseGateways,
       state.collected.selectedPaymentMethod,
-      props.defaultPaymentMethod,
+      defaultPaymentMethod
     ]
   );
 
