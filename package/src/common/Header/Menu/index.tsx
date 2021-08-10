@@ -24,7 +24,7 @@ const Menu: React.FC = () => {
         backScreen()
         triggerChat()
         break; */
-      case 4:
+      case 3:
         window.open("https://onramper.com/about")
         break;
       default:
