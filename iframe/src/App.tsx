@@ -109,7 +109,6 @@ function App() {
 }
 
 function getParam(name: string, defaultValue?: string): string | undefined {
-  console.error(window.location.search, "s");
   const value = new URLSearchParams(window.location.search).get(name);
   if (value === null) return defaultValue;
   try {

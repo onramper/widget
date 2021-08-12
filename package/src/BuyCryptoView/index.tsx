@@ -71,7 +71,6 @@ const BuyCryptoView: React.FC = () => {
           amountInCrypto: true,
           country: collected.selectedCountry,
         });
-        console.log(nextStep);
         setBuyStep(nextStep.nextStep);
       } catch (error) {
         console.error(error);
