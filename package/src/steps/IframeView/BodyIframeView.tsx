@@ -74,7 +74,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
         //if opened -> all is ok
         if (windowObjectReference) {
             const interval = 250
-            const times2Count = 60000 / 250
+            const times2Count = 1000 * 60 / interval
             let count = 0
             const checkIfClosed = setInterval(() => {
                 if (windowObjectReference.closed || count > times2Count) {
@@ -191,7 +191,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                             {
                                 userClosedPopup && (
                                     <div className={styles.block} style={{ fontSize: '0.75rem' }}>
-                                        <hr className={styles.divisor}></hr>
+                                        <hr className={stylesCommon.divisor}></hr>
                                         <span>
                                             <div>Or, if you already finished the transaction:</div>
                                         </span>
@@ -205,16 +205,35 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     ))
                     || ((type === 'redirect' && autoRedirect) && (
                         <div className={`${styles.center}`}>
-                            <span>Redirecting you to finish the process...</span>
-                            <span>A new window should be opened, if not, click the button below to finish the process.</span>
+                            
+                            {
+                                !userClosedPopup ? 
+                                (
+                                    <>
+                                    <span>Redirecting you to finish the process...</span>
+                            <span>A new window should be opened, if not, click the button below to finish the process. </span>
                             <span style={{ width: '40%' }}>
                                 <ButtonAction text="Finish process" size='small' onClick={() => redirect(iframeUrl)} />
                             </span>
+                            </>
+                                ):(
+                                    <div className={styles.block}>
+                                        <span>A new window should have been opened to complete the transaction</span>
+                                        <hr className={stylesCommon.divisor}></hr>
+                                        <span>
+                                            <div>If you already completed the transaction</div>
+                                        </span>
+                                        <span style={{ width: '40%' }}>
+                                            <ButtonAction text="Buy more crypto" size='small' onClick={restartWidget} />
+                                        </span>
+                                    </div>
+                                )
+                            }
                         </div>
                     ))
                     || ((type === 'redirect' && !autoRedirect) && (
                         <div className={`${styles.center}`}>
-                            <span className={`${stylesCommon.body__child} `}>Please, click the button below to finish the process.</span>
+                            <span className={`${stylesCommon.body__child} `}>Please, click the button below to finish the process. </span>
                             <span style={{ width: '30%' }}>
                                 <ButtonAction text="Finish process" size='small' onClick={() => redirect(iframeUrl)} />
                             </span>
