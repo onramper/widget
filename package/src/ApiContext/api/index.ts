@@ -20,7 +20,7 @@ const sentryHub = new Hub(sentryClient);
 
 const authenticate = (pk: string) => {
     headers.set('Authorization', `Basic ${pk}`)
-    const referrer = document.referrer || window.parent.location.hostname || window.location.hostname
+    const referrer = document.referrer || window.parent.location.origin || window.location.origin
     if (referrer) {
         headers.set('X-Widget-Referer', referrer)
     }
