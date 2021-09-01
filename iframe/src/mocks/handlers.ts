@@ -77,6 +77,12 @@ export const handlers = [
             case 'Wyre':
                 nextStep = Wyre.getNextStep(currentStep)
                 break
+            case 'Mercuryo':
+                nextStep = Mercuryo.getNextStep(currentStep)
+                break
+            case 'Coinify':
+                nextStep = Coinify.getNextStep(currentStep)
+                break
             default:
                 nextStep = { type: 'completed' }
                 break
