@@ -3,6 +3,8 @@ import { gatewaysAllParams/* , noGatewaysAllParams */ } from './responses/gatewa
 import { ratesAllParams/* , ratesAllUnavailable */ } from './responses/rates'
 import CCPro from './responses/steps/Cryptocoin.pro'
 import Moonpay from './responses/steps/Moonpay'
+import Mercuryo from './responses/steps/Mercuryo'
+import Coinify from './responses/steps/Coinify'
 import Wyre from './responses/steps/Wyre'
 import { BASE_API } from './constants'
 
