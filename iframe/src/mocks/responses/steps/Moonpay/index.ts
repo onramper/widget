@@ -18,11 +18,11 @@ const getNextStep = (currentStep: string) => {
         case 'residence_permit':
         case 'driving_licence':
         case 'selfie':
-            return uploadStep(getDocumetnHumanName(currentStep))
-        case 'registerBank':
-            return bankStep
-        case 'iframe':
-            return iframeStep
+            return uploadStep(getDocumentHumanName(currentStep))
+        case 'payment':
+            return paymentStep
+        case 'completed':
+            return completedStep
     }
 }
 
@@ -204,7 +204,7 @@ const pickOneStep = {
 const uploadStep = (fileName: string) => ({
     "type": "file",
     "humanName": fileName + (fileName === 'Selfie' ? '' : " - Back"),
-    "url": `${BASE_API}/transaction/Moonpay/${fileName === 'Selfie' ? 'registerBank' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+    "url": `${BASE_API}/transaction/Moonpay/${fileName === 'Selfie' ? 'payment' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
     "acceptedContentTypes": [
         "image/jpeg",
         "image/png",
@@ -212,26 +212,40 @@ const uploadStep = (fileName: string) => ({
     ]
 })
 
-const bankStep = {
-    "type": "requestBankTransaction",
-    "depositBankAccount": {
-        "iban": "ZZ135790000087654321",
-        "bic": "ABCDZZ21XXX",
-        "bankName": "Cosmic Bank",
-        "bankAddress": "123 Luna Lane, London LL1 1LL, United Kingdom",
-        "accountName": "Moon Pay Limited",
-        "accountAddress": "Triq l-Uqija, Swieqi SWQ 2332, Malta"
-    },
-    "reference": "jTxDd17ATQ",
-    "hint": "Transfer 100$ into the bank account provided to complete the transaction. Your transaction must cite the reference jTxDd17ATQ to be valid. We sent this data to your email."
+const paymentStep = {
+    "type": "form",
+    "url": `${BASE_API}/transaction/Moonpay/completed/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+    "humanName": "Complete payment",
+    "hint": "Complete your payment. The form below is in a secure sandbox.",
+    "data": [
+        {
+            type: "string",
+            name: "ccNumber",
+            humanName: "Credit Card Number",
+          },
+          {
+            type: "string",
+            name: "ccMonth",
+            humanName: "Credit Card Expiration Month",
+          },
+          {
+            type: "string",
+            name: "ccYear",
+            humanName: "Credit Card Expiration Year",
+          },
+          {
+            type: "string",
+            name: "ccCVV",
+            humanName: "Credit Card CVV",
+          },
+    ]
 }
 
-const iframeStep = {
-    "type": "iframe",
-    "url": "https://moonpay.sandbox.staging.onramper.tech/?customerId=demo&transactionId=0&customerAddress=e30=&apiKey=1"
+const completedStep = {
+    "type": "completed"
 }
 
-const getDocumetnHumanName = (doc: string) => {
+const getDocumentHumanName = (doc: string) => {
     switch (doc) {
         case 'passport':
             return 'Passport';
@@ -244,7 +258,7 @@ const getDocumetnHumanName = (doc: string) => {
         case 'selfie':
             return "Selfie";
         default:
-            return 'registerBank'
+            return '';
     }
 }
 
