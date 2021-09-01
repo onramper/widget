@@ -6,6 +6,7 @@ import Moonpay from './responses/steps/Moonpay'
 import Mercuryo from './responses/steps/Mercuryo'
 import Coinify from './responses/steps/Coinify'
 import Wyre from './responses/steps/Wyre'
+import Indacoin from './responses/steps/Indacoin'
 import { BASE_API } from './constants'
 
 let moonpayKYCStepsCount = 0
@@ -82,6 +83,9 @@ export const handlers = [
                 break
             case 'Coinify':
                 nextStep = Coinify.getNextStep(currentStep)
+                break
+            case 'Indacoin':
+                nextStep = Indacoin.getNextStep(currentStep)
                 break
             default:
                 nextStep = { type: 'completed' }
