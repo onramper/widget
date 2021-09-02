@@ -24,6 +24,7 @@ const List: React.FC<ListProps> = (props) => {
             || item.name.toLowerCase().toLowerCase().startsWith(query)
             || item.info?.split(' ').some((substring) => substring.toLowerCase().startsWith(query))
             || item.info?.toLowerCase().startsWith(query)
+            || item.network?.toLowerCase().startsWith(query)
             || searchWords?.split(' ').some((substring) => substring.toLowerCase().startsWith(query))
             || searchWords?.toLowerCase().startsWith(query)
     }, [query])
@@ -45,6 +46,7 @@ const List: React.FC<ListProps> = (props) => {
                             name={item.name}
                             info={item.info}
                             icon={item.icon}
+                            network={item.network}
                             onClick={() => handleItemClick(i, item)} />
                     )
                 }
@@ -59,7 +61,7 @@ type ListItemProps = {
 } & ItemType
 
 const ListItem: React.FC<ListItemProps> = (props) => {
-    const { index, name, info, icon } = props
+    const { id, index, name, info, icon, network } = props
     const { onClick = () => null } = props
     return (
         <div className={`${styles['list-item']}`} onClick={() => onClick(index)}>
@@ -67,6 +69,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
             <div className={styles['list-item__child']}>
                 <span>{name}</span>
                 {info && <span className={`${styles['list-item__info']}`}>{info}</span>}
+                {network && <div className={`${styles['list-item_network']}`}>{network}</div>}
             </div>
         </div>
     )

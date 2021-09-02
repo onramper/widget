@@ -49,7 +49,7 @@ const DEFAULT_PAYMENT_METHOD = 'creditCard'
 //Creating context
 const APIContext = createContext<StateType>(initialState);
 
-interface  APIProviderType {
+interface APIProviderType {
   API_KEY?: string;
   defaultAmount?: number;
   defaultAddrs?: { [denom: string]: CryptoAddrType };
@@ -231,7 +231,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           responseGateways.gateways[i].cryptoCurrencies
         );
       }
-      availableCryptos = arrayObjUnique(availableCryptos, "code");
+      availableCryptos = arrayObjUnique(availableCryptos, "id");
       if (availableCryptos.length <= 0) {
         return processErrors({
           GATEWAYS: {
@@ -243,16 +243,22 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // MAP AVAILABLE CRYPTOS LIST (CURRENCY LIST) TO AN ITEMTYPE LIST
       const mappedAvailableCryptos: ItemType[] = availableCryptos.map(
-        (crypto) => ({
-          id: crypto.code,
-          name: crypto.code,
-          info: ICONS_MAP[crypto.code]?.name || "Cryptocurrency",
-          icon: ICONS_MAP[crypto.code]?.icon,
-          precision: crypto.precision,
-          symbol: crypto.code,
-          supportsAddressTag: crypto.supportsAddressTag,
-          currencyType: ItemCategory.Crypto,
-        })
+        (crypto) => {
+          return {
+            id: crypto.id,
+            name: crypto.code,
+            info:
+              crypto.displayName ||
+              ICONS_MAP[crypto.code]?.name ||
+              "Cryptocurrency",
+            icon: ICONS_MAP[crypto.code]?.icon,
+            precision: crypto.precision,
+            symbol: crypto.code,
+            supportsAddressTag: crypto.supportsAddressTag,
+            currencyType: ItemCategory.Crypto,
+            network: crypto.network,
+          };
+        }
       );
 
       // save to state.collected
@@ -313,7 +319,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CRYPTO
       const filtredGatewaysByCrypto = gateways.filter((item) =>
-        item.cryptoCurrencies.some((crypto) => crypto.code === actualCrypto.id)
+        item.cryptoCurrencies.some((crypto) => crypto.id === actualCrypto.id)
       );
 
       // GET ALL AVAILABLE FIAT CURRENCIES THAT CAN BE USED TO BUY THE SELECTED CRYPTO
@@ -325,7 +331,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           filtredGatewaysByCrypto[i].fiatCurrencies
         );
       }
-      availableCurrencies = arrayObjUnique(availableCurrencies, "code");
+
+      availableCurrencies = arrayObjUnique(availableCurrencies, "id");
       if (availableCurrencies.length <= 0) {
         return processErrors({
           GATEWAYS: {
@@ -339,7 +346,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       const ICONS_MAP = state.data.responseGateways.icons || {};
       const mappedAvailableCurrencies: ItemType[] = availableCurrencies.map(
         (currency) => ({
-          id: currency.code,
+          id: currency.id,
           name: currency.code,
           info: ICONS_MAP[currency.code]?.name || "Currency",
           icon: ICONS_MAP[currency.code]?.icon,
@@ -426,7 +433,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) =>
         item.fiatCurrencies.some(
-          (currency) => currency.code === actualCurrency.id
+          (currency) => currency.id === actualCurrency.id
         )
       );
 
@@ -733,7 +740,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     // gateways not availables for current crypto, fiat and payment method that includes crypto selection
     const hiddenRatesWithMyCrypto = hiddenRates?.filter((rate) =>
       rate.cryptoCurrencies.some(
-        (crypto) => crypto.code === state.collected.selectedCrypto?.id
+        (crypto) => crypto.id === state.collected.selectedCrypto?.id
       )
     );
     // gateways not availables for current crypto, fiat and payment method that includes crypto selection and fiat selection
@@ -790,7 +797,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             ?.filter((g) => g.identifier === identifier)
             ?.some(
               (g) =>
-                g.cryptoCurrencies.find((c) => c.code === selectedCrypto)
+                g.cryptoCurrencies.find((c) => c.id === selectedCrypto)
                   ?.supportsAddressTag
             )
       )
@@ -843,7 +850,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             ?.filter((g) => g.identifier === identifier)
             ?.some(
               (g) =>
-                g.cryptoCurrencies.find((c) => c.code === selectedCrypto)
+                g.cryptoCurrencies.find((c) => c.id === selectedCrypto)
                   ?.supportsAddressTag
             )
       )

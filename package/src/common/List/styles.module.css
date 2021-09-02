@@ -27,6 +27,12 @@
     margin-left: var(--component-content-spacing);
 }
 
+.list-item__child {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 .list-item__icon {
     width: 100%;
     max-height: 1.75rem;
@@ -37,6 +43,16 @@
     font-size: 0.75em;
     margin-left: var(--component-content-spacing);
     opacity: 0.25;
+}
+
+.list-item_network {
+    margin-left: auto;
+    background-color: salmon;
+    border-radius: var(--border-radius);
+    font-size: 0.75em;
+    color: white;
+    padding: 0.35rem;
+    opacity: 0.5;
 }
 
 .search-box {

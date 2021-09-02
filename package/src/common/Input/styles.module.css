@@ -37,6 +37,17 @@
     text-decoration: unset;
 }
 
+.network__bubble {
+    margin-left: auto;
+    margin-right: var(--component-content-spacing);
+    background-color: gray;
+    border-radius: var(--border-radius);
+    font-size: 0.75em;
+    color: white;
+    padding: 0.35rem;
+    opacity: 0.5;
+}
+
 /*common to all input types*/
 .input__type {
     background-color: white;

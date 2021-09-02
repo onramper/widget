@@ -15,6 +15,7 @@ export interface ItemType {
     currencyType?: string
     searchWords?: string //format "word1 word2"
     supportsAddressTag?: boolean
+    network?: string
 }
 
 export enum ItemCategory {

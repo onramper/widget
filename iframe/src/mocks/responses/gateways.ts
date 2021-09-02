@@ -9,60 +9,74 @@ const gatewaysAllParams: GatewaysResponse = {
             "fiatCurrencies": [
                 {
                     "code": "AUD",
+                    "id": "AUD",
                     "precision": 2
                 },
                 {
                     "code": "GBP",
+                    "id": "GBP",
                     "precision": 2
                 },
                 {
                     "code": "USD",
+                    "id": "USD",
                     "precision": 2
                 },
                 {
                     "code": "EUR",
+                    "id": "EUR",
                     "precision": 2
                 },
                 {
                     "code": "CAD",
+                    "id": "CAD",
                     "precision": 2
                 }
             ],
             "cryptoCurrencies": [
                 {
                     "code": "DAI",
+                    "id": "DAI",
                     "precision": 8
                 },
                 {
                     "code": "ETH",
+                    "id": "ETH",
                     "precision": 8
                 },
                 {
                     "code": "USDC",
+                    "id": "USDC",
                     "precision": 6
                 },
                 {
                     "code": "BTC",
+                    "id": "BTC",
                     "precision": 8
                 },
                 {
                     "code": "BUSD",
+                    "id": "BUSD",
                     "precision": 8
                 },
                 {
                     "code": "GUSD",
+                    "id": "GUSD",
                     "precision": 2
                 },
                 {
                     "code": "HUSD",
+                    "id": "HUSD",
                     "precision": 8
                 },
                 {
                     "code": "PAX",
+                    "id": "PAX",
                     "precision": 8
                 },
                 {
                     "code": "USDS",
+                    "id": "USDS",
                     "precision": 6
                 }
             ]
@@ -75,16 +89,19 @@ const gatewaysAllParams: GatewaysResponse = {
             "fiatCurrencies": [
                 {
                     "code": "USD",
+                    "id": "USD",
                     "precision": 2
                 },
                 {
                     "code": "CAD",
+                    "id": "CAD",
                     "precision": 2
                 }
             ],
             "cryptoCurrencies": [
                 {
                     "code": "USDT",
+                    "id": "USDT",
                     "precision": 6
                 }
             ]
@@ -97,328 +114,409 @@ const gatewaysAllParams: GatewaysResponse = {
             "fiatCurrencies": [
                 {
                     "code": "EUR",
+                    "id": "EUR",
                     "precision": 2
                 },
                 {
                     "code": "GBP",
+                    "id": "GBP",
                     "precision": 2
                 }
             ],
             "cryptoCurrencies": [
                 {
                     "code": "BCH",
+                    "id": "BCH",
                     "precision": 4
                 },
                 {
                     "code": "BTC",
+                    "id": "BTC",
                     "precision": 5
                 },
                 {
                     "code": "DAI",
+                    "id": "DAI",
                     "precision": 2
                 },
                 {
                     "code": "EOS",
+                    "id": "EOS",
                     "precision": 1
                 },
                 {
                     "code": "ETH",
+                    "id": "ETH",
                     "precision": 4
                 },
                 {
                     "code": "LTC",
+                    "id": "LTC",
                     "precision": 3
                 },
                 {
                     "code": "PAX",
+                    "id": "PAX",
                     "precision": 2
                 },
                 {
                     "code": "TUSD",
+                    "id": "TUSD",
                     "precision": 2
                 },
                 {
                     "code": "USDC",
+                    "id": "USDC",
                     "precision": 2
                 },
                 {
                     "code": "USDT",
+                    "id": "USDT",
                     "precision": 2
                 },
                 {
                     "code": "XLM",
+                    "id": "XLM",
                     "precision": 0
                 },
                 {
                     "code": "XRP",
+                    "id": "XRP",
                     "precision": 0
                 },
                 {
                     "code": "ADA",
+                    "id": "ADA",
                     "precision": 1
                 },
                 {
                     "code": "ALGO",
+                    "id": "ALGO",
                     "precision": 0
                 },
                 {
                     "code": "ATOM",
+                    "id": "ATOM",
                     "precision": 1
                 },
                 {
                     "code": "AVA",
+                    "id": "AVA",
                     "precision": 2
                 },
                 {
                     "code": "BAND",
+                    "id": "BAND",
                     "precision": 2
                 },
                 {
                     "code": "BAT",
+                    "id": "BAT",
                     "precision": 0
                 },
                 {
                     "code": "BCH",
+                    "id": "BCH",
                     "precision": 4
                 },
                 {
                     "code": "BNB",
+                    "id": "BNB",
                     "precision": 2
                 },
                 {
                     "code": "BTC",
+                    "id": "BTC",
                     "precision": 5
                 },
                 {
                     "code": "BTT",
+                    "id": "BTT",
                     "precision": 0
                 },
                 {
                     "code": "BUSD",
+                    "id": "BUSD",
                     "precision": 2
                 },
                 {
                     "code": "CELO",
+                    "id": "CELO",
                     "precision": 2
                 },
                 {
                     "code": "CHZ",
+                    "id": "CHZ",
                     "precision": 0
                 },
                 {
                     "code": "COMP",
+                    "id": "COMP",
                     "precision": 3
                 },
                 {
                     "code": "CVC",
+                    "id": "CVC",
                     "precision": 0
                 },
                 {
                     "code": "DAI",
+                    "id": "DAI",
                     "precision": 2
                 },
                 {
                     "code": "DASH",
+                    "id": "DASH",
                     "precision": 3
                 },
                 {
                     "code": "DGB",
+                    "id": "DGB",
                     "precision": 1
                 },
                 {
                     "code": "DOGE",
+                    "id": "DOGE",
                     "precision": 0
                 },
                 {
                     "code": "DOT",
+                    "id": "DOT",
                     "precision": 2
                 },
                 {
                     "code": "EOS",
+                    "id": "EOS",
                     "precision": 1
                 },
                 {
                     "code": "EOSDT",
+                    id: "EOSDT",
                     "precision": 2
                 },
                 {
                     "code": "ETC",
+                    "id": "ETC",
                     "precision": 2
                 },
                 {
                     "code": "ETH",
+                    "id": "ETH",
                     "precision": 4
                 },
                 {
                     "code": "FUN",
+                    "id": "FUN",
                     "precision": 0
                 },
                 {
                     "code": "HBAR",
+                    "id": "HBAR",
                     "precision": 1
                 },
                 {
                     "code": "HIVE",
+                    "id": "HIVE",
                     "precision": 2
                 },
                 {
                     "code": "KAVA",
+                    "id": "KAVA",
                     "precision": 2
                 },
                 {
                     "code": "KRT",
+                    "id": "KRT",
                     "precision": 4
                 },
                 {
                     "code": "LINK",
+                    "id": "LINK",
                     "precision": 2
                 },
                 {
                     "code": "LTC",
+                    "id": "LTC",
                     "precision": 3
                 },
                 {
                     "code": "LUNA",
+                    "id": "LUNA",
                     "precision": 2
                 },
                 {
                     "code": "MANA",
+                    "id": "MANA",
                     "precision": 0
                 },
                 {
                     "code": "MATIC",
+                    id: "MATIC",
                     "precision": 1
                 },
                 {
                     "code": "MIOTA",
+                    id: "MIOTA",
                     "precision": 2
                 },
                 {
                     "code": "MKR",
+                    "id": "MKR",
                     "precision": 4
                 },
                 {
                     "code": "NANO",
+                    "id": "NANO",
                     "precision": 2
                 },
                 {
                     "code": "NEO",
+                    "id": "NEO",
                     "precision": 0
                 },
                 {
                     "code": "OCEAN",
+                    id: "OCEAN",
                     "precision": 2
                 },
                 {
                     "code": "OKB",
+                    "id": "OKB",
                     "precision": 4
                 },
                 {
                     "code": "OMG",
+                    "id": "OMG",
                     "precision": 1
                 },
                 {
                     "code": "ONG",
+                    "id": "ONG",
                     "precision": 2
                 },
                 {
                     "code": "ONT",
+                    "id": "ONT",
                     "precision": 0
                 },
                 {
                     "code": "PAX",
+                    "id": "PAX",
                     "precision": 2
                 },
                 {
                     "code": "PAXG",
+                    "id": "PAXG",
                     "precision": 6
                 },
                 {
                     "code": "QTUM",
+                    "id": "QTUM",
                     "precision": 3
                 },
                 {
                     "code": "REP",
+                    "id": "REP",
                     "precision": 3
                 },
                 {
                     "code": "RVN",
+                    "id": "RVN",
                     "precision": 1
                 },
                 {
                     "code": "SDT",
+                    "id": "SDT",
                     "precision": 4
                 },
                 {
                     "code": "SOL",
+                    "id": "SOL",
                     "precision": 2
                 },
                 {
                     "code": "STMX",
+                    "id": "STMX",
                     "precision": 0
                 },
                 {
                     "code": "TOMO",
+                    "id": "TOMO",
                     "precision": 2
                 },
                 {
                     "code": "TRX",
+                    "id": "TRX",
                     "precision": 1
                 },
                 {
                     "code": "TUSD",
+                    "id": "TUSD",
                     "precision": 2
                 },
                 {
                     "code": "UNI",
+                    "id": "UNI",
                     "precision": 2
                 },
                 {
                     "code": "USDC",
+                    "id": "USDC",
                     "precision": 2
                 },
                 {
                     "code": "USDT",
+                    "id": "USDT",
                     "precision": 2
                 },
                 {
                     "code": "VET",
+                    "id": "VET",
                     "precision": 0
                 },
                 {
                     "code": "WAVES",
+                    id: "WAVES",
                     "precision": 2
                 },
                 {
                     "code": "WAXP",
+                    "id": "WAXP",
                     "precision": 0
                 },
                 {
                     "code": "WBTC",
+                    "id": "WBTC",
                     "precision": 5
                 },
                 {
                     "code": "XLM",
+                    "id": "XLM",
                     "precision": 0
                 },
                 {
                     "code": "XRP",
+                    "id": "XRP",
                     "precision": 0
                 },
                 {
                     "code": "XTZ",
+                    "id": "XTZ",
                     "precision": 2
                 },
                 {
                     "code": "ZEC",
+                    "id": "ZEC",
                     "precision": 5
                 },
                 {
                     "code": "ZIL",
+                    "id": "ZIL",
                     "precision": 1
                 },
                 {
                     "code": "ZRX",
+                    "id": "ZRX",
                     "precision": 2
                 }
             ]
@@ -431,464 +529,579 @@ const gatewaysAllParams: GatewaysResponse = {
             "fiatCurrencies": [
                 {
                     "code": "AUD",
+                    "id": "AUD",
                     "precision": 2
                 },
                 {
                     "code": "BGN",
+                    "id": "BGN",
                     "precision": 2
                 },
                 {
                     "code": "CAD",
+                    "id": "CAD",
                     "precision": 2
                 },
                 {
                     "code": "CHF",
+                    "id": "CHF",
                     "precision": 2
                 },
                 {
                     "code": "CNY",
+                    "id": "CNY",
                     "precision": 2
                 },
                 {
                     "code": "COP",
+                    "id": "COP",
                     "precision": 2
                 },
                 {
                     "code": "CZK",
+                    "id": "CZK",
                     "precision": 2
                 },
                 {
                     "code": "DKK",
+                    "id": "DKK",
                     "precision": 2
                 },
                 {
                     "code": "DOP",
+                    "id": "DOP",
                     "precision": 2
                 },
                 {
                     "code": "EGP",
+                    "id": "EGP",
                     "precision": 2
                 },
                 {
                     "code": "EUR",
+                    "id": "EUR",
                     "precision": 2
                 },
                 {
                     "code": "GBP",
+                    "id": "GBP",
                     "precision": 2
                 },
                 {
                     "code": "HKD",
+                    "id": "HKD",
                     "precision": 2
                 },
                 {
                     "code": "HRK",
+                    "id": "HRK",
                     "precision": 2
                 },
                 {
                     "code": "IDR",
+                    "id": "IDR",
                     "precision": 2
                 },
                 {
                     "code": "ILS",
+                    "id": "ILS",
                     "precision": 2
                 },
                 {
                     "code": "KES",
+                    "id": "KES",
                     "precision": 2
                 },
                 {
                     "code": "LKR",
+                    "id": "LKR",
                     "precision": 2
                 },
                 {
                     "code": "MAD",
+                    "id": "MAD",
                     "precision": 2
                 },
                 {
                     "code": "MXN",
+                    "id": "MXN",
                     "precision": 2
                 },
                 {
                     "code": "MYR",
+                    "id": "MYR",
                     "precision": 2
                 },
                 {
                     "code": "NGN",
+                    "id": "NGN",
                     "precision": 2
                 },
                 {
                     "code": "NOK",
+                    "id": "NOK",
                     "precision": 2
                 },
                 {
                     "code": "NZD",
+                    "id": "NZD",
                     "precision": 2
                 },
                 {
                     "code": "PEN",
+                    "id": "PEN",
                     "precision": 2
                 },
                 {
                     "code": "PKR",
+                    "id": "PKR",
                     "precision": 2
                 },
                 {
                     "code": "PLN",
+                    "id": "PLN",
                     "precision": 2
                 },
                 {
                     "code": "RON",
+                    "id": "RON",
                     "precision": 2
                 },
                 {
                     "code": "RUB",
+                    "id": "RUB",
                     "precision": 2
                 },
                 {
                     "code": "SEK",
+                    "id": "SEK",
                     "precision": 2
                 },
                 {
                     "code": "SGD",
+                    "id": "SGD",
                     "precision": 2
                 },
                 {
                     "code": "THB",
+                    "id": "THB",
                     "precision": 2
                 },
                 {
                     "code": "TRY",
+                    "id": "TRY",
                     "precision": 2
                 },
                 {
                     "code": "TWD",
+                    "id": "TWD",
                     "precision": 2
                 },
                 {
                     "code": "USD",
+                    "id": "USD",
                     "precision": 2
                 },
                 {
                     "code": "ZAR",
+                    "id": "ZAR",
                     "precision": 2
                 }
             ],
             "cryptoCurrencies": [
                 {
                     "code": "BCH",
+                    "id": "BCH",
                     "precision": 4
                 },
                 {
                     "code": "BTC",
+                    "id": "BTC",
                     "precision": 5
                 },
                 {
                     "code": "DAI",
+                    "id": "DAI",
                     "precision": 2
                 },
                 {
                     "code": "EOS",
+                    "id": "EOS",
                     "precision": 1
                 },
                 {
                     "code": "ETH",
+                    "id": "ETH",
                     "precision": 4
                 },
                 {
                     "code": "LTC",
+                    "id": "LTC",
                     "precision": 3
                 },
                 {
                     "code": "PAX",
+                    "id": "PAX",
                     "precision": 2
                 },
                 {
                     "code": "TUSD",
+                    "id": "TUSD",
                     "precision": 2
                 },
                 {
                     "code": "USDC",
+                    "id": "USDC",
                     "precision": 2
                 },
                 {
                     "code": "USDT",
+                    "id": "USDT",
                     "precision": 2
                 },
                 {
                     "code": "XLM",
+                    "id": "XLM",
                     "precision": 0
                 },
                 {
                     "code": "XRP",
+                    "id": "XRP",
                     "precision": 0
                 },
                 {
                     "code": "ADA",
+                    "id": "ADA",
                     "precision": 1
                 },
                 {
                     "code": "ALGO",
+                    "id": "ALGO",
                     "precision": 0
                 },
                 {
                     "code": "ATOM",
+                    "id": "ATOM",
                     "precision": 1
                 },
                 {
                     "code": "AVA",
+                    "id": "AVA",
                     "precision": 2
                 },
                 {
                     "code": "BAND",
+                    "id": "BAND",
                     "precision": 2
                 },
                 {
                     "code": "BAT",
+                    "id": "BAT",
                     "precision": 0
                 },
                 {
                     "code": "BCH",
+                    "id": "BCH",
                     "precision": 4
                 },
                 {
                     "code": "BNB",
+                    "id": "BNB",
                     "precision": 2
                 },
                 {
                     "code": "BTC",
+                    "id": "BTC",
                     "precision": 5
                 },
                 {
                     "code": "BTT",
+                    "id": "BTT",
                     "precision": 0
                 },
                 {
                     "code": "BUSD",
+                    "id": "BUSD",
                     "precision": 2
                 },
                 {
                     "code": "CELO",
+                    "id": "CELO",
                     "precision": 2
                 },
                 {
                     "code": "CHZ",
+                    "id": "CHZ",
                     "precision": 0
                 },
                 {
                     "code": "COMP",
+                    "id": "COMP",
                     "precision": 3
                 },
                 {
                     "code": "CVC",
+                    "id": "CVC",
                     "precision": 0
                 },
                 {
                     "code": "DAI",
+                    "id": "DAI",
                     "precision": 2
                 },
                 {
                     "code": "DASH",
+                    "id": "DASH",
                     "precision": 3
                 },
                 {
                     "code": "DGB",
+                    "id": "DGB",
                     "precision": 1
                 },
                 {
                     "code": "DOGE",
+                    "id": "DOGE",
                     "precision": 0
                 },
                 {
                     "code": "DOT",
+                    "id": "DOT",
                     "precision": 2
                 },
                 {
                     "code": "EOS",
+                    "id": "EOS",
                     "precision": 1
                 },
                 {
                     "code": "EOSDT",
+                    id: "EOSDT",
                     "precision": 2
                 },
                 {
                     "code": "ETC",
+                    "id": "ETC",
                     "precision": 2
                 },
                 {
                     "code": "ETH",
+                    "id": "ETH",
                     "precision": 4
                 },
                 {
                     "code": "FUN",
+                    "id": "FUN",
                     "precision": 0
                 },
                 {
                     "code": "HBAR",
+                    "id": "HBAR",
                     "precision": 1
                 },
                 {
                     "code": "HIVE",
+                    "id": "HIVE",
                     "precision": 2
                 },
                 {
                     "code": "KAVA",
+                    "id": "KAVA",
                     "precision": 2
                 },
                 {
                     "code": "KRT",
+                    "id": "KRT",
                     "precision": 4
                 },
                 {
                     "code": "LINK",
+                    "id": "LINK",
                     "precision": 2
                 },
                 {
                     "code": "LTC",
+                    "id": "LTC",
                     "precision": 3
                 },
                 {
                     "code": "LUNA",
+                    "id": "LUNA",
                     "precision": 2
                 },
                 {
                     "code": "MANA",
+                    "id": "MANA",
                     "precision": 0
                 },
                 {
                     "code": "MATIC",
+                    id: "MATIC",
                     "precision": 1
                 },
                 {
                     "code": "MIOTA",
+                    id: "MIOTA",
                     "precision": 2
                 },
                 {
                     "code": "MKR",
+                    "id": "MKR",
                     "precision": 4
                 },
                 {
                     "code": "NANO",
+                    "id": "NANO",
                     "precision": 2
                 },
                 {
                     "code": "NEO",
+                    "id": "NEO",
                     "precision": 0
                 },
                 {
                     "code": "OCEAN",
+                    id: "OCEAN",
                     "precision": 2
                 },
                 {
                     "code": "OKB",
+                    "id": "OKB",
                     "precision": 4
                 },
                 {
                     "code": "OMG",
+                    "id": "OMG",
                     "precision": 1
                 },
                 {
                     "code": "ONG",
+                    "id": "ONG",
                     "precision": 2
                 },
                 {
                     "code": "ONT",
+                    "id": "ONT",
                     "precision": 0
                 },
                 {
                     "code": "PAX",
+                    "id": "PAX",
                     "precision": 2
                 },
                 {
                     "code": "PAXG",
+                    "id": "PAXG",
                     "precision": 6
                 },
                 {
                     "code": "QTUM",
+                    "id": "QTUM",
                     "precision": 3
                 },
                 {
                     "code": "REP",
+                    "id": "REP",
                     "precision": 3
                 },
                 {
                     "code": "RVN",
+                    "id": "RVN",
                     "precision": 1
                 },
                 {
                     "code": "SDT",
+                    "id": "SDT",
                     "precision": 4
                 },
                 {
                     "code": "SOL",
+                    "id": "SOL",
                     "precision": 2
                 },
                 {
                     "code": "STMX",
+                    "id": "STMX",
                     "precision": 0
                 },
                 {
                     "code": "TOMO",
+                    "id": "TOMO",
                     "precision": 2
                 },
                 {
                     "code": "TRX",
+                    "id": "TRX",
                     "precision": 1
                 },
                 {
                     "code": "TUSD",
+                    "id": "TUSD",
                     "precision": 2
                 },
                 {
                     "code": "UNI",
+                    "id": "UNI",
                     "precision": 2
                 },
                 {
                     "code": "USDC",
+                    "id": "USDC",
                     "precision": 2
                 },
                 {
                     "code": "USDT",
+                    "id": "USDT",
                     "precision": 2
                 },
                 {
                     "code": "VET",
+                    "id": "VET",
                     "precision": 0
                 },
                 {
                     "code": "WAVES",
+                    id: "WAVES",
                     "precision": 2
                 },
                 {
                     "code": "WAXP",
+                    "id": "WAXP",
                     "precision": 0
                 },
                 {
                     "code": "WBTC",
+                    "id": "WBTC",
                     "precision": 5
                 },
                 {
                     "code": "XLM",
+                    "id": "XLM",
                     "precision": 0
                 },
                 {
                     "code": "XRP",
+                    "id": "XRP",
                     "precision": 0
                 },
                 {
                     "code": "XTZ",
+                    "id": "XTZ",
                     "precision": 2
                 },
                 {
                     "code": "ZEC",
+                    "id": "ZEC",
                     "precision": 5
                 },
                 {
                     "code": "ZIL",
+                    "id": "ZIL",
                     "precision": 1
                 },
                 {
                     "code": "ZRX",
+                    "id": "ZRX",
                     "precision": 2
                 }
             ]

@@ -19,8 +19,11 @@ interface GatewaysResponse {
 }
 
 interface Currency {
-    code: string
+    code: string // display only
+    id: string // internal id e.g. bnb-bep20
     precision: number
+    network?: string
+    displayName?: string
     supportsAddressTag?: boolean
 }
 
