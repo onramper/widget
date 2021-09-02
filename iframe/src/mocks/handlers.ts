@@ -7,6 +7,7 @@ import Mercuryo from './responses/steps/Mercuryo'
 import Coinify from './responses/steps/Coinify'
 import Wyre from './responses/steps/Wyre'
 import Indacoin from './responses/steps/Indacoin'
+import BTCDirect from './responses/steps/BTCDirect'
 import { BASE_API } from './constants'
 
 let moonpayKYCStepsCount = 0
@@ -86,6 +87,9 @@ export const handlers = [
                 break
             case 'Indacoin':
                 nextStep = Indacoin.getNextStep(currentStep)
+                break
+            case 'BTCDirect':
+                nextStep = BTCDirect.getNextStep(currentStep)
                 break
             default:
                 nextStep = { type: 'completed' }
