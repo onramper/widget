@@ -91,12 +91,17 @@ interface FetchResponse { //should be replaced by a complete fetch type
     text: () => Promise<string>
 }
 
-const tob64 = async (file: File): Promise<string | ArrayBuffer | null> => {
+const tob64 = async (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onerror = reject;
         reader.onload = () => {
-            resolve(reader.result);
+            // Casted to string because we are using readAsDataURL and will alwas return a string, unless fail.
+            // For more information check out: https://developer.mozilla.org/en-US/docs/Web/API/FileReader/result#value
+            const result = reader.result as string;
+            if (result === null)
+                return reject(new Error('FileReader: Reading is not yet complete or was unsuccessful.'));
+            return resolve(result);
         };
         reader.readAsDataURL(file);
     });
@@ -108,14 +113,20 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
     if (step.url === undefined) throw new Error('Unexpected error: Invalid step end.')
 
     const isMoonpay = isMoonpayStep(step.url)
-    const isFile = step.type === 'file'
-    const isMoonpayFile = isFile && isMoonpay
+    const isFileStep = step.type === 'file'
+    const isMoonpayFile = isFileStep && isMoonpay
     const method = isMoonpayFile ? 'PUT' : 'POST'
     let body
     if (isMoonpayFile)
-        body = data as File
-    else if (isFile)
-        body = (await tob64(data as File)) as unknown as string
+        body = data as File;
+    else if (isFileStep && data instanceof File) {
+        // The data parameter is undefined when the user doesn't upload a file and still executes the step.
+        try {
+            body = (await tob64(data as File)) ?? ''
+        } catch {
+            body = ''
+        }
+    }
     else
         body = JSON.stringify({ ...data })
 
