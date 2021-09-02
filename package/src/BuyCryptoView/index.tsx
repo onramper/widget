@@ -24,11 +24,11 @@ const BuyCryptoView: React.FC = () => {
   } = data;
   const { init } = apiInterface;
   const { errors } = collected;
-
+  const popularCrypto = ["BTC", "ETH", "USDT", "BNB_BEP20", "USDC"];
   //flagEffectInit used to call init again
   useEffect(() => {
     init();
-  }, [init/* , flagEffectInit */]);
+  }, [init /* , flagEffectInit */]);
 
   const handleItemClick = (name: string, index: number, item: ItemType) => {
     if (name === "crypto") handleCryptoChange(item);
@@ -78,11 +78,22 @@ const BuyCryptoView: React.FC = () => {
     })();
   }, [collected.selectedCountry]);
 
+  const sortedCrypto = popularCrypto
+    .map((c) => data.availableCryptos.filter((crypto) => crypto.id === c)[0])
+    .filter((c) => c !== undefined)
+    .concat(
+      data.availableCryptos
+        .filter((crypto) => !popularCrypto.includes(crypto.id))
+        .sort((a, b) => (a.id == b.id ? 0 : a.id > b.id ? 1 : -1))
+    );
+
   return (
     <div className={styles.view}>
       <Header
         title="Buy crypto"
-        secondaryTitle={buyStep && collected.supportSell ? "Sell crypto" : undefined}
+        secondaryTitle={
+          buyStep && collected.supportSell ? "Sell crypto" : undefined
+        }
         onSecondaryTitleClick={() => {
           nextScreen(<Step nextStep={buyStep} />);
         }}
@@ -96,7 +107,7 @@ const BuyCryptoView: React.FC = () => {
                   <PickView
                     name="crypto"
                     title="Select cryptocurrency"
-                    items={data.availableCryptos}
+                    items={sortedCrypto}
                     onItemClick={handleItemClick}
                     searchable
                   />
