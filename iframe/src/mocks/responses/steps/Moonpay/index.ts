@@ -171,7 +171,7 @@ const pickOneStep = {
         {
             "type": "file",
             "humanName": "Driver's License - Front",
-            "url": `${BASE_API}/transaction/Moonpay/national_identity_card/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+            "url": `${BASE_API}/transaction/Moonpay/driving_licence/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "acceptedContentTypes": [
                 "image/jpeg",
                 "image/png",
@@ -181,7 +181,7 @@ const pickOneStep = {
         {
             "type": "file",
             "humanName": "National Identity Card - Front",
-            "url": `${BASE_API}/transaction/Moonpay/residence_permit/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+            "url": `${BASE_API}/transaction/Moonpay/national_identity_card/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "acceptedContentTypes": [
                 "image/jpeg",
                 "image/png",
@@ -191,7 +191,7 @@ const pickOneStep = {
         {
             "type": "file",
             "humanName": "Residence Card - Front",
-            "url": `${BASE_API}/transaction/Moonpay/driving_licence/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+            "url": `${BASE_API}/transaction/Moonpay/residence_permit/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "acceptedContentTypes": [
                 "image/jpeg",
                 "image/png",

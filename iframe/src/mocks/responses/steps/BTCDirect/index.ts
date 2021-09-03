@@ -145,21 +145,21 @@ const tryLoginStep = {
 const registerUserStep = {
   type: 'file',
   url: `${BASE_API}/transaction/BTCDirect/verifyIDFront/token`,
-  humanName: 'IdentityCard - Front',
+  humanName: 'Identity Card - Front',
   acceptedContentTypes: ['image/jpeg', 'image/png', 'application/pdf'],
 }
 
 const verifyIDFrontStep = {
   type: 'file',
   url: `${BASE_API}/transaction/BTCDirect/verifyIDBack/token`,
-  humanName: 'IdentityCard - Back',
+  humanName: 'Identity Card - Back',
   acceptedContentTypes: ['image/jpeg', 'image/png', 'application/pdf'],
 }
 
 const verifyIDBackStep = {
   type: 'file',
   url: `${BASE_API}/transaction/BTCDirect/verifyIDSelfie/token`,
-  humanName: 'IdentityCard - Selfie',
+  humanName: 'Identity Card - Selfie',
   acceptedContentTypes: ['image/jpeg', 'image/png', 'application/pdf'],
 }
 
