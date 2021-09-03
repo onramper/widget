@@ -10,7 +10,7 @@ const ratesAllParams = [
         nextStep: {
             type: 'information',
             url: `${BASE_API}/transaction/Coinify/iframe/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
-            message: `In the next screen, Coinify will display a lower amount: [amount - fee] EUR, because fees are added to their calculation later, so we ahead of time subtracted [fee] EUR in fees to keep the total amount within your purchasing power.`,
+            message: `In the next screen, Coinify will display a lower amount: 191 EUR, because fees are added to their calculation later, so we ahead of time subtracted 9 EUR in fees to keep the total amount within your purchasing power.`,
             extraData: [
                 {
                     "type": "string",
