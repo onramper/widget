@@ -1808,8 +1808,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "SGD",
                     "precision": 2
                 },
-                // Additional fiatcurrencies are added here so that the this Xanpool
-                // payment method is shown even when fiat currencies other than SGD are selected.
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
                 {
                     "code": "EUR",
                     "precision": 2
@@ -1860,8 +1860,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "HKD",
                     "precision": 2
                 },
-                // Additional fiatcurrencies are added here so that the this Xanpool
-                // payment method is shown even when fiat currencies other than SGD are selected.
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
                 {
                     "code": "EUR",
                     "precision": 2
@@ -1913,8 +1913,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "THB",
                     "precision": 2
                 },
-                                // Additional fiatcurrencies are added here so that the this Xanpool
-                // payment method is shown even when fiat currencies other than SGD are selected.
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
                 {
                     "code": "EUR",
                     "precision": 2
@@ -1965,8 +1965,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "PHP",
                     "precision": 2
                 },
-                // Additional fiatcurrencies are added here so that the this Xanpool
-                // payment method is shown even when fiat currencies other than SGD are selected.
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
                 {
                     "code": "EUR",
                     "precision": 2
@@ -2017,8 +2017,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "INR",
                     "precision": 2
                 },
-                // Additional fiatcurrencies are added here so that the this Xanpool
-                // payment method is shown even when fiat currencies other than SGD are selected.
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
                 {
                     "code": "EUR",
                     "precision": 2
@@ -2069,8 +2069,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "IDR",
                     "precision": 2
                 },
-                // Additional fiatcurrencies are added here so that the this Xanpool
-                // payment method is shown even when fiat currencies other than SGD are selected.
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
                 {
                     "code": "EUR",
                     "precision": 2
@@ -2121,8 +2121,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "VND",
                     "precision": 2
                 },
-                // Additional fiatcurrencies are added here so that the this Xanpool
-                // payment method is shown even when fiat currencies other than SGD are selected.
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
                 {
                     "code": "EUR",
                     "precision": 2
@@ -2173,8 +2173,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "code": "MYR",
                     "precision": 2
                 },
-                // Additional fiatcurrencies are added here so that the this Xanpool
-                // payment method is shown even when fiat currencies other than SGD are selected.
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
                 {
                     "code": "EUR",
                     "precision": 2
@@ -2216,6 +2216,112 @@ const gatewaysAllParams: GatewaysResponse = {
             ],
             "paymentMethods": [
                 "duit-now"
+            ],
+            "identifier": "Xanpool"
+        },
+        // At the time of writing this the payment methods below aren't supported in the live widget yet. They will be
+        // soon, so they have been added here manually so that the demo widget already displays these.
+        {
+            "fiatCurrencies": [
+                {
+                    "code": "NZD",
+                    "precision": 2
+                },
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
+                {
+                    "code": "EUR",
+                    "precision": 2
+                },
+                {
+                    "code": "USD",
+                    "precision": 2
+                },
+                {
+                    "code": "AUD",
+                    "precision": 2
+                },
+                {
+                    "code": "CAD",
+                    "precision": 2
+                },
+                {
+                    "code": "GBP",
+                    "precision": 2
+                }
+            ],
+            "cryptoCurrencies": [
+                {
+                    "code": "BTC",
+                    "precision": 6
+                },
+                {
+                    "code": "ETH",
+                    "precision": 3
+                },
+                {
+                    "code": "USDT",
+                    "precision": 2
+                },
+                {
+                    "code": "ZIL",
+                    "precision": 2
+                }
+            ],
+            "paymentMethods": [
+                "nz-bank-transfer"
+            ],
+            "identifier": "Xanpool"
+        },
+        {
+            "fiatCurrencies": [
+                {
+                    "code": "AUD",
+                    "precision": 2
+                },
+                // Additional fiatcurrencies are added here so that this Xanpool
+                // payment method is shown even when fiat currencies other than the one above are selected.
+                {
+                    "code": "EUR",
+                    "precision": 2
+                },
+                {
+                    "code": "USD",
+                    "precision": 2
+                },
+                {
+                    "code": "AUD",
+                    "precision": 2
+                },
+                {
+                    "code": "CAD",
+                    "precision": 2
+                },
+                {
+                    "code": "GBP",
+                    "precision": 2
+                }
+            ],
+            "cryptoCurrencies": [
+                {
+                    "code": "BTC",
+                    "precision": 6
+                },
+                {
+                    "code": "ETH",
+                    "precision": 3
+                },
+                {
+                    "code": "USDT",
+                    "precision": 2
+                },
+                {
+                    "code": "ZIL",
+                    "precision": 2
+                }
+            ],
+            "paymentMethods": [
+                "pay-id"
             ],
             "identifier": "Xanpool"
         }
@@ -3097,6 +3203,14 @@ const gatewaysAllParams: GatewaysResponse = {
         "duit-now": {
             "name": "DuitNow",
             "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAaCAYAAADFTB7LAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AYht+mSkUrDnYQcchQnSyIiqiTVqEIFUKt0KqDyaU/QpOGJMXFUXAtOPizWHVwcdbVwVUQBH9AnBydFF2kxO+SQosY7zju4b3vfbn7DhBqJaZZbSOApttmKhEXM9kVMfSKMLpoTmFaZpYxK0lJ+I6vewT4fhfjWf51f45uNWcxICASzzDDtInXiSc2bYPzPnGEFWWV+Jx42KQLEj9yXfH4jXPBZYFnRsx0ao44QiwWWlhpYVY0NeJx4qiq6ZQvZDxWOW9x1koV1rgnf2E4py8vcZ3WABJYwCIkiFBQwQZKsBGjXSfFQorO4z7+ftcvkUsh1wYYOeZRhgbZ9YP/we/eWvmxUS8pHAfaXxznYxAI7QL1quN8HztO/QQIPgNXetNfrgGTn6RXm1r0COjZBi6um5qyB1zuAH1PhmzKrhSkJeTzwPsZfVMW6L0FOle9vjXOcfoApKlXyRvg4BAYKlD2ms+7O1r79m9No38/3iBy0qyefOcAAAAGYktHRAD/AP8A/6C9p5MAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkDAsMORqpDBSQAAADY0lEQVRYw72XTWwUZRjHf887szP70RYobaq2CLRSW9eP6EUlMaGR+NmEC0qiJ00gxoDEm8YDB7iYKCbEaEyIHzHBjwsHEowxfsQD4aAoUBArNCG1abFFMXXb7s7M+3how1JmS3fbWSbZOezkffKb//953/k/oqpKApfOvwGCyPLrustZbCNLeHGEYGCQ8PQQdngcghBW5nB71uDeswEv3400ZBERlsIrtSqoCooS/HaBqYOHsd+e54ZSrfDwXn6C7NObMLkMUqOsNQGqgi0FFD47QvDO12Ck7Ogi9pve1eT27sDrWluT9VUDKmCLJSb3f0z0xYkltYQ0umQ/2I1/14aq7TZVq2eVwieHq4arBKCTIVM73yX4cyx5BWdOnKHwwoGK/Sb5Frxn+3A7OxA/hb38L6VjJwk/PV5Zlb4umt58FcdzkwGMgpDJ7fuIfh2LGe+/voX0lkdxfT8mW3FomMLeD9FfRmM1s+/tILPxgWQsDs4OVoADf89Wctuewk37FT31OtfQ8PZupLs59qz4+Teo1WQAS8dPxxdu6iLb33eVS1UJxsYpnb9INFPEqiJAatVKMq89z/Xb3f4wRHhpYvkHtaoSHTsX+z+9bTMmNbvcWsvUoSMU3/pqFr57Ndn9u/A7bkEE0vf2MJ1vQ8/8Va5rhHB4lNStrctTUIMQe/I6e63iru8oK/z70FU4ADt4men3vyxr5hhSj+TjtSf+ScDiMJr9zVPV4mTSZaCRS/GN9eMfaGjLu3FFQxywWEruHLzxQRdvdvfxuzFuuXz095V4jYxf37BwLZ/MJRkFzMZ1ZLZvLT8OI6LvBuLqtDTfHMDUg/eROnoHiKBicFubMa4z167KzE+n0Avz+02s4q697SYBNjVCU2M8jqkSjo4zve9QvEOe7MVtWVVPQFk0kpUGBins+QhG/ou33zObq4peSwIUEYqnzmFymTi0KtHEFYrf/4w9erbiezj9ebz7e+uYqI1haufBBYVVneOqJFB7A9lXnsM4Tv0j/4I7eiHl27LkDuzCbW2uulzygAuJ/vDtZN94kVR7G6aGSF1/wHVNpF/qJ9P3EMb3kp/qVMB5rBsRQ1XJ1gjS0oTT2Y7Ts570nZ2Il1r6WbFYYFVVah1wZe7jl8BYXPvYeS24JDGZL3L9D6eYQ5dT3OxFAAAAAElFTkSuQmCC"
+        },
+        "nz-bank-transfer": {
+            "name": "Bank transfer",
+            "icon": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI0LjMuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkNhcGFfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgkgdmlld0JveD0iMCAwIDMyIDMyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAzMiAzMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxwYXRoIGQ9Ik01Ljg1LDIyLjJjMC4zMy0wLjE3LDAuOTgtMC40OSwwLjk4LTEuNjRjMC0wLjgzLTAuNS0yLjA2LTIuNDctMi4wNkgwLjQ3djguMDFoMy4zOWMxLjY0LDAsMi4wOC0wLjI4LDIuNTMtMC43MwoJCQljMC40Mi0wLjQxLDAuNjktMS4wMSwwLjY5LTEuNjVDNy4wOSwyMy4zNSw2Ljg0LDIyLjU3LDUuODUsMjIuMnogTTIuMDgsMTkuODlINGMwLjc2LDAsMS4yMywwLjIsMS4yMywwLjg2CgkJCWMwLDAuNjQtMC41MiwwLjg5LTEuMTgsMC44OUgyLjA4VjE5Ljg5eiBNNC4xMywyNS4xNEgyLjA4di0yLjE0aDIuMTNjMC42LDAsMS4yLDAuMjcsMS4yLDAuOTdDNS40MiwyNC43OCw0Ljk1LDI1LjE0LDQuMTMsMjUuMTR6CgkJCSIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBvbHlnb24gcG9pbnRzPSIwLjQ4LDI3Ljc5IDAuNDgsMjguNTIgMS43MiwyOC41MiAxLjcyLDMxLjg5IDIuNTcsMzEuODkgMi41NywyOC41MiAzLjgxLDI4LjUyIDMuODEsMjcuNzkgCQkiLz4KCTwvZz4KPC9nPgo8Zz4KCTxnPgoJCTxwb2x5Z29uIHBvaW50cz0iMjguMDcsMjEuNzkgMzEuMzQsMTguNSAyOS4xNywxOC41IDI2LjExLDIxLjc2IDI2LjExLDE4LjUgMjQuNDQsMTguNSAyNC40NCwyNi41MiAyNi4xMSwyNi41MiAyNi4xMSwyMy44MSAKCQkJMjYuOSwyMyAyOS4zNywyNi41MiAzMS41MiwyNi41MiAJCSIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTEyLjM2LDE4LjVoLTEuOTNsLTIuODUsOC4wMWgxLjc2bDAuNTYtMS42NWgyLjk2bDAuNTEsMS42NWgxLjgyTDEyLjM2LDE4LjV6IE0xMC4zNCwyMy40OGwxLjAzLTMuMTdoMC4wMmwwLjk5LDMuMTcKCQkJSDEwLjM0eiIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTE5LjgzLDIuODFjLTAuNS0wLjU5LTEuMDYtMS4xNS0xLjctMS42MmMtMC4zMi0wLjI0LTAuNjctMC40Ny0xLjA0LTAuNjdDMTYuNywwLjMyLDE2LjMxLDAuMTMsMTUuODUsMAoJCQljMC4wMSwwLjQ4LDAuMDksMC45MSwwLjE5LDEuMzJjMC4wOSwwLjQsMC4yMiwwLjc4LDAuMzcsMS4xNWMtMC4zNSwwLjEtMC43OCwwLjI1LTEuMjcsMC40NGMtMC4zMSwwLjE0LTAuNjYsMC4yNy0xLDAuNDUKCQkJYy0wLjM1LDAuMTctMC43MSwwLjM3LTEuMDcsMC42QzEyLjcsNC4xNywxMi4zNiw0LjQ2LDEyLDQuNzJjLTAuMzMsMC4zMS0wLjY5LDAuNTgtMC45OCwwLjkzYy0wLjMsMC4zNC0wLjYsMC42OC0wLjgyLDEuMDYKCQkJQzEwLjA5LDYuOSw5Ljk1LDcuMDcsOS44Niw3LjI2QzkuNzcsNy40NSw5LjY4LDcuNjUsOS41OSw3Ljg0QzkuNCw4LjIsOS4zMSw4LjU5LDkuMjEsOC45NWMtMC4xMiwwLjM1LTAuMTYsMC43LTAuMiwxLjAyCgkJCWMtMC4wMywwLjMyLTAuMDksMC42LTAuMDgsMC44NmMwLjAxLDAuMjYsMC4wMSwwLjQ4LDAuMDIsMC42NmMwLjAxLDAuMzYsMC4wMSwwLjU3LDAuMDEsMC41N3MwLjA0LTAuMiwwLjEtMC41NgoJCQljMC4wMy0wLjE4LDAuMDctMC4zOSwwLjEyLTAuNjRjMC4wNC0wLjI0LDAuMTYtMC41MSwwLjI1LTAuNzljMC4wOS0wLjI5LDAuMi0wLjU5LDAuMzgtMC44OWMwLjE2LTAuMywwLjMxLTAuNjIsMC41Ni0wLjkKCQkJYzAuMTEtMC4xNCwwLjIyLTAuMjksMC4zMy0wLjQ0YzAuMTItMC4xNCwwLjI3LTAuMjcsMC40LTAuNGMwLjI1LTAuMjgsMC41Ni0wLjUsMC44Ny0wLjcyYzAuMjktMC4yMywwLjY1LTAuMzksMC45Ni0wLjU4CgkJCUMxMy4yOSw2LDEzLjYsNS44MywxMy45NSw1LjcyYzAuMzMtMC4xMiwwLjY1LTAuMjIsMC45Ny0wLjI5YzAuMzEtMC4wOSwwLjYyLTAuMTMsMC44OS0wLjE5YzAuMTctMC4wMywwLjMzLTAuMDUsMC40OS0wLjA3CgkJCWMtMC4wMiwwLjA1LTAuMDQsMC4wOS0wLjA1LDAuMTRjLTAuMTYsMC40My0wLjI4LDAuODktMC4zNywxLjM3Yy0wLjA0LDAuMjQtMC4wNywwLjQ5LTAuMSwwLjc0Yy0wLjAyLDAuMjYtMC4wMiwwLjUyLTAuMDEsMC44CgkJCWMwLjI2LTAuMSwwLjUtMC4yMSwwLjcyLTAuMzRjMC4yMi0wLjEzLDAuNDMtMC4yNiwwLjYzLTAuMzljMC40LTAuMjgsMC43Ny0wLjU4LDEuMDktMC45YzAuNjYtMC42NCwxLjIxLTEuMzYsMS42Ny0yLjEzbDAuMDYtMC4xCgkJCUMyMC4yNCwzLjg4LDIwLjIxLDMuMjUsMTkuODMsMi44MXoiLz4KCTwvZz4KPC9nPgo8Zz4KCTxnPgoJCTxwYXRoIGQ9Ik03LjU4LDMwLjk3YzAtMC43Ny0wLjE4LTAuODktMC41Mi0xLjA0YzAuNDEtMC4xNCwwLjY0LTAuNTIsMC42NC0wLjk4YzAtMC4zNS0wLjItMS4xNi0xLjI5LTEuMTZINC4zMnY0LjFoMC44NHYtMS42CgkJCWgwLjg5YzAuNjQsMCwwLjY3LDAuMjIsMC42NywwLjc4YzAsMC40MiwwLjAzLDAuNjQsMC4wOSwwLjgzaDAuOTV2LTAuMTFDNy41OCwzMS43MSw3LjU4LDMxLjU2LDcuNTgsMzAuOTd6IE02LjE3LDI5LjZoLTF2LTEuMQoJCQloMS4wN2MwLjUsMCwwLjYsMC4zMiwwLjYsMC41NEM2LjgzLDI5LjQ0LDYuNjIsMjkuNiw2LjE3LDI5LjZ6Ii8+Cgk8L2c+CjwvZz4KPGc+Cgk8Zz4KCQk8cG9seWdvbiBwb2ludHM9IjIzLjM0LDI4LjUyIDIzLjM0LDI3Ljc5IDIwLjQyLDI3Ljc5IDIwLjQyLDMxLjg5IDIxLjI4LDMxLjg5IDIxLjI4LDMwLjE3IDIzLjA4LDMwLjE3IDIzLjA4LDI5LjQ0IDIxLjI4LDI5LjQ0IAoJCQkyMS4yOCwyOC41MiAJCSIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBvbHlnb24gcG9pbnRzPSIyNC43NSwzMS4xNyAyNC43NSwzMC4xIDI2Ljc1LDMwLjEgMjYuNzUsMjkuMzggMjQuNzUsMjkuMzggMjQuNzUsMjguNTIgMjYuOTMsMjguNTIgMjYuOTMsMjcuNzkgMjMuOTIsMjcuNzkgCgkJCTIzLjkyLDMxLjg5IDI3LjAzLDMxLjg5IDI3LjAzLDMxLjE3IAkJIi8+Cgk8L2c+CjwvZz4KPGc+Cgk8Zz4KCQk8cGF0aCBkPSJNMTguNjksMjkuNTVsLTEtMC4yNWMtMC4xNy0wLjA0LTAuNDQtMC4xMS0wLjQ0LTAuNDNjMC0wLjM3LDAuMzktMC40OSwwLjcyLTAuNDljMC43NSwwLDAuODIsMC40MywwLjg0LDAuNjJoMC44MgoJCQljLTAuMDEtMC41LTAuMzQtMS4zMy0xLjYtMS4zM2MtMS4zMywwLTEuNTgsMC44MS0xLjU4LDEuMjZjMCwwLjksMC42NCwxLjA2LDEuMywxLjIxbDAuNDQsMC4xYzAuNDMsMC4xLDAuNzQsMC4xOSwwLjc0LDAuNTEKCQkJYzAsMC40My0wLjQ1LDAuNTMtMC44NiwwLjUzYy0wLjc1LDAtMC44Ni0wLjQzLTAuODctMC42NmgtMC44MmMwLDAuNTEsMC4yNSwxLjM3LDEuNzUsMS4zN2MwLjM2LDAsMS42Mi0wLjExLDEuNjItMS4zNAoJCQlDMTkuNzYsMjkuOTIsMTkuMjUsMjkuNjksMTguNjksMjkuNTV6Ii8+Cgk8L2c+CjwvZz4KPGc+Cgk8Zz4KCQk8cGF0aCBkPSJNMzAuOTgsMzAuOTdjMC0wLjc3LTAuMTktMC44OS0wLjUyLTEuMDRjMC40LTAuMTQsMC42NC0wLjUyLDAuNjQtMC45OGMwLTAuMzUtMC4yLTEuMTYtMS4yOS0xLjE2aC0yLjA3djQuMWgwLjg0di0xLjYKCQkJaDAuODljMC42MywwLDAuNjcsMC4yMiwwLjY3LDAuNzhjMCwwLjQyLDAuMDMsMC42NCwwLjA5LDAuODNoMC45NXYtMC4xMUMzMC45OCwzMS43MSwzMC45OCwzMS41NiwzMC45OCwzMC45N3ogTTI5LjU4LDI5LjZoLTEKCQkJdi0xLjFoMS4wN2MwLjUsMCwwLjYsMC4zMiwwLjYsMC41NEMzMC4yNCwyOS40NCwzMC4wMiwyOS42LDI5LjU4LDI5LjZ6Ii8+Cgk8L2c+CjwvZz4KPGc+Cgk8Zz4KCQk8cG9seWdvbiBwb2ludHM9IjIxLjE1LDE4LjUxIDIxLjE1LDI0LjA5IDIxLjEyLDI0LjA5IDE3Ljk0LDE4LjUxIDE2LjE4LDE4LjUxIDE2LjE4LDI2LjUyIDE3Ljc0LDI2LjUyIDE3Ljc0LDIwLjgxIDE3Ljc2LDIwLjgxIAoJCQkyMS4wMywyNi41MiAyMi43MSwyNi41MiAyMi43MSwxOC41MSAJCSIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTEwLjQ3LDI3Ljc5SDkuNDhsLTEuNDYsNC4xaDAuOWwwLjI4LTAuODVoMS41MWwwLjI2LDAuODVoMC45M0wxMC40NywyNy43OXogTTkuNDQsMzAuMzRsMC41My0xLjYyaDAuMDFsMC41MSwxLjYySDkuNDR6CgkJCSIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBvbHlnb24gcG9pbnRzPSIxNC45OCwyNy43OSAxNC45OCwzMC42NCAxNC45NywzMC42NCAxMy4zMywyNy43OSAxMi40MywyNy43OSAxMi40MywzMS44OSAxMy4yMywzMS44OSAxMy4yMywyOC45NiAxMy4yNCwyOC45NiAKCQkJMTQuOTIsMzEuODkgMTUuNzgsMzEuODkgMTUuNzgsMjcuNzkgCQkiLz4KCTwvZz4KPC9nPgo8Zz4KCTxnPgoJCTxwYXRoIGQ9Ik0yMS45Niw1LjY2Yy0wLjAyLTAuMzYtMC4wMy0wLjU3LTAuMDMtMC41N3MtMC4wMywwLjItMC4wOSwwLjU2Yy0wLjAzLDAuMTgtMC4wNiwwLjM5LTAuMSwwLjY0CgkJCWMtMC4wMywwLjI1LTAuMTUsMC41MS0wLjIzLDAuOGMtMC4wOCwwLjI5LTAuMTgsMC42LTAuMzUsMC45Yy0wLjE1LDAuMy0wLjI5LDAuNjMtMC41MywwLjkyYy0wLjEsMC4xNS0wLjIxLDAuMy0wLjMyLDAuNDUKCQkJYy0wLjExLDAuMTUtMC4yNiwwLjI3LTAuMzksMC40MWMtMC4yNCwwLjI4LTAuNTUsMC41Mi0wLjg1LDAuNzVjLTAuMjgsMC4yNC0wLjY0LDAuNDEtMC45NCwwLjYxYy0wLjM1LDAuMTUtMC42NSwwLjM0LTAuOTksMC40NQoJCQljLTAuMzMsMC4xMy0wLjY1LDAuMjQtMC45NiwwLjMyYy0wLjMxLDAuMS0wLjYxLDAuMTUtMC44OCwwLjIxYy0wLjE3LDAuMDMtMC4zMywwLjA2LTAuNDksMC4wOGMwLjAxLTAuMDUsMC4wMy0wLjA5LDAuMDUtMC4xNAoJCQljMC4xNC0wLjQ0LDAuMjUtMC45LDAuMzMtMS4zOGMwLjAzLTAuMjQsMC4wNS0wLjQ5LDAuMDctMC43NGMwLjAxLTAuMjYsMC4wMS0wLjUyLTAuMDItMC44Yy0wLjI2LDAuMTEtMC40OSwwLjIzLTAuNzEsMC4zNgoJCQlDMTQuMyw5LjYzLDE0LjEsOS43NiwxMy45LDkuOTFjLTAuMzksMC4yOS0wLjc1LDAuNi0xLjA2LDAuOTNjLTAuNjQsMC42Ni0xLjE3LDEuMzktMS42MSwyLjE4bC0wLjA2LDAuMQoJCQljLTAuMjcsMC40OS0wLjIyLDEuMTEsMC4xOCwxLjU1YzAuNTIsMC41OCwxLjA5LDEuMTEsMS43NSwxLjU3YzAuMzMsMC4yMywwLjY4LDAuNDQsMS4wNiwwLjYzYzAuMzgsMC4xOSwwLjc4LDAuMzYsMS4yNSwwLjQ4CgkJCWMtMC4wMi0wLjQ4LTAuMTItMC45LTAuMjMtMS4zMmMtMC4xMS0wLjQtMC4yNC0wLjc4LTAuNC0xLjE0YzAuMzUtMC4xMSwwLjc3LTAuMjcsMS4yNS0wLjQ4YzAuMzEtMC4xNSwwLjY1LTAuMjksMC45OS0wLjQ4CgkJCWMwLjM0LTAuMTgsMC43LTAuMzksMS4wNS0wLjYzYzAuMzYtMC4yMiwwLjY5LTAuNTIsMS4wNS0wLjc5YzAuMzItMC4zMiwwLjY3LTAuNiwwLjk1LTAuOTZjMC4yOS0wLjM1LDAuNTctMC42OSwwLjc5LTEuMDgKCQkJYzAuMTEtMC4xOSwwLjI0LTAuMzcsMC4zMy0wLjU2YzAuMDgtMC4yLDAuMTctMC4zOSwwLjI1LTAuNThjMC4xOC0wLjM3LDAuMjYtMC43NywwLjM1LTEuMTJjMC4xMS0wLjM2LDAuMTQtMC43LDAuMTctMS4wMwoJCQljMC4wMi0wLjMyLDAuMDgtMC42LDAuMDUtMC44NkMyMS45OCw2LjA3LDIxLjk3LDUuODQsMjEuOTYsNS42NnoiLz4KCTwvZz4KPC9nPgo8L3N2Zz4K"
+        },
+        "pay-id": {
+            "name": "PayID",
+            "icon": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI0LjMuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA0MzguNSA0MzgiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQzOC41IDQzODsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxwYXRoIGQ9Ik05Ny45LDI3MS42aDQwLjVjNy4xLDAsMTMuNiwwLjYsMTkuMywxLjljNS43LDEuMywxMC42LDMuNCwxNC43LDYuM2M0LjEsMi45LDcuMyw2LjcsOS41LDExLjJjMi4yLDQuNiwzLjMsMTAuMSwzLjMsMTYuNQoJCWMwLDYuOS0xLjMsMTIuNy0zLjksMTcuNGMtMi42LDQuNy02LjEsOC41LTEwLjQsMTEuM2MtNC40LDIuOS05LjUsNC45LTE1LjQsNi4yYy01LjksMS4zLTEyLjEsMS45LTE4LjYsMS45aC0xN3Y1MS40SDk3LjkKCQlMOTcuOSwyNzEuNkw5Ny45LDI3MS42eiBNMTM1LjQsMzI1LjhjMy42LDAsNy4xLTAuMywxMC40LTAuOGMzLjMtMC41LDYuMi0xLjUsOC44LTIuOGMyLjYtMS4zLDQuNi0zLjIsNi4xLTUuNQoJCWMxLjUtMi4zLDIuMy01LjQsMi4zLTkuMWMwLTMuNi0wLjgtNi42LTIuMy04LjljLTEuNS0yLjMtMy41LTQuMS02LjEtNS40Yy0yLjUtMS4zLTUuNC0yLjEtOC42LTIuNWMtMy4yLTAuNC02LjUtMC42LTkuOS0wLjZIMTIwCgkJdjM1LjZMMTM1LjQsMzI1LjhMMTM1LjQsMzI1Ljh6Ii8+Cgk8cGF0aCBkPSJNMjQ2LjMsMzg1LjJoLTAuNWMtMi4xLDMuNy01LjUsNi44LTEwLjIsOS4yYy00LjcsMi40LTEwLDMuNi0xNiwzLjZjLTMuNCwwLTYuOS0wLjQtMTAuNi0xLjNjLTMuNy0wLjktNy4xLTIuMy0xMC4yLTQuNAoJCWMtMy4xLTItNS43LTQuNy03LjctOC4xYy0yLTMuMy0zLjEtNy41LTMuMS0xMi40YzAtNi4zLDEuOC0xMS4zLDUuNC0xNS4xYzMuNi0zLjcsOC4yLTYuNiwxMy44LTguNmM1LjYtMiwxMS44LTMuMywxOC43LTMuOQoJCWM2LjgtMC42LDEzLjUtMSwyMC4xLTF2LTIuMWMwLTUuMy0xLjktOS4yLTUuNy0xMS43Yy0zLjgtMi41LTguMy0zLjgtMTMuNi0zLjhjLTQuNCwwLTguNywwLjktMTIuOCwyLjhjLTQuMSwxLjktNy41LDQuMi0xMC4yLDYuOAoJCWwtMTAuOS0xMi44YzQuOC00LjQsMTAuMy03LjgsMTYuNi0xMGM2LjMtMi4yLDEyLjYtMy4zLDE5LTMuM2M3LjUsMCwxMy43LDEuMSwxOC41LDMuMmM0LjksMi4xLDguNyw0LjksMTEuNSw4LjIKCQljMi44LDMuNCw0LjgsNy4yLDUuOSwxMS40YzEuMSw0LjIsMS43LDguNCwxLjcsMTIuNnY1MS4yaC0xOS43TDI0Ni4zLDM4NS4yTDI0Ni4zLDM4NS4yeiBNMjQ2LDM1Ny40aC00LjdjLTMuNCwwLTcsMC4xLTEwLjcsMC40CgkJYy0zLjcsMC4zLTcuMiwwLjktMTAuNCwxLjljLTMuMiwxLTUuOCwyLjQtNy45LDQuMmMtMi4xLDEuOC0zLjIsNC4zLTMuMiw3LjVjMCwyLDAuNCwzLjcsMS4zLDVjMC45LDEuMywyLDIuNCwzLjQsMy4yCgkJYzEuNCwwLjgsMywxLjQsNC43LDEuOGMxLjgsMC40LDMuNSwwLjUsNS4zLDAuNWM3LjMsMCwxMi44LTEuOSwxNi41LTUuOGMzLjctMy45LDUuNi05LjEsNS42LTE1LjhMMjQ2LDM1Ny40TDI0NiwzNTcuNHoiLz4KCTxwYXRoIGQ9Ik0yNzIuMywzMTEuNmgyMy4zbDIzLjUsNjEuMmgwLjRsMjAuOS02MS4yaDIxLjlsLTM5LjgsMTAyLjNjLTEuNSwzLjktMy4yLDcuMy00LjksMTAuM3MtMy45LDUuNS02LjMsNy41CgkJYy0yLjUsMi01LjQsMy42LTguNyw0LjdjLTMuMywxLjEtNy4zLDEuNi0xMiwxLjZjLTEuOCwwLTMuNS0wLjEtNS40LTAuM2MtMS44LTAuMi0zLjctMC41LTUuNS0xbDEuOC0xOC4zYzEuNCwwLjUsMi44LDAuOCw0LjEsMQoJCWMxLjMsMC4yLDIuNiwwLjMsMy44LDAuM2MyLjIsMCw0LjEtMC4zLDUuNi0wLjhjMS41LTAuNSwyLjgtMS4zLDMuOS0yLjVjMS4xLTEuMSwyLTIuNSwyLjgtNC4xYzAuOC0xLjYsMS43LTMuNiwyLjYtNS44bDQuMi0xMC43CgkJTDI3Mi4zLDMxMS42eiIvPgo8L2c+CjxwYXRoIGQ9Ik0yODQuNCwxMS45SDE0My44Yy0zMi4xLDAtNTgsMjYtNTgsNTh2MTQwLjZjMCwzMi4xLDI2LDU4LDU4LDU4aDE0MC42YzMyLjEsMCw1OC0yNiw1OC01OFY3MAoJQzM0Mi41LDM3LjksMzE2LjUsMTEuOSwyODQuNCwxMS45eiBNMTk0LjYsNzQuNGw3LjMtMC45YzAuNi0wLjEsMTUuMy0xLjgsMzIuMywxLjhjMjMuNSw0LjksNDAuMiwxNy42LDQ4LjIsMzYuNmwtMTUuMyw2LjQKCWMtMTAuOS0yNS45LTQxLjgtMjguOC01NS45LTI4Ljd2NzdoLTE2LjZMMTk0LjYsNzQuNEwxOTQuNiw3NC40eiBNMTQyLjIsODQuOWMwLTYuOSw1LjYtMTIuNCwxMi40LTEyLjRTMTY3LDc4LDE2Nyw4NC45CglzLTUuNiwxMi40LTEyLjQsMTIuNFMxNDIuMiw5MS43LDE0Mi4yLDg0Ljl6IE0yODYuNCwxNTUuNWMtMC45LDUuOS0yLjMsMTEuMi00LDE1LjNjLTExLjIsMjYuNC0zNy41LDM5LjgtNzcuOSwzOS44aC01OC45VjExOWgxNi42Cgl2NzVoNDIuM2MzMy4yLDAsNTQuMi0xMCw2Mi42LTI5LjdjMS0yLjMsMS44LTUuMywyLjQtOC44bC0xMy44LDBsMjMuNy0yOS43bDIzLjcsMjkuOEwyODYuNCwxNTUuNXoiLz4KPC9zdmc+Cg=="
         },
         "applePay": {
             "name": "Apple Pay",
