@@ -10,6 +10,8 @@ import { NavContext } from "../NavContext";
 import { APIContext, ItemType, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
 
+const popularCrypto = ["BTC", "ETH", "USDT", "BNB_BEP20", "USDC"];
+
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
   const [buyStep, setBuyStep] = useState<NextStep>();
@@ -17,6 +19,7 @@ const BuyCryptoView: React.FC = () => {
   const { nextScreen, backScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } =
     useContext(APIContext);
+  const [sortedCrypto, setSortedCrypto] = useState(data.availableCryptos);
   const {
     handleCryptoChange,
     handleCurrencyChange,
@@ -24,7 +27,7 @@ const BuyCryptoView: React.FC = () => {
   } = data;
   const { init } = apiInterface;
   const { errors } = collected;
-  const popularCrypto = ["BTC", "ETH", "USDT", "BNB_BEP20", "USDC"];
+
   //flagEffectInit used to call init again
   useEffect(() => {
     init();
@@ -78,14 +81,17 @@ const BuyCryptoView: React.FC = () => {
     })();
   }, [collected.selectedCountry]);
 
-  const sortedCrypto = popularCrypto
-    .map((c) => data.availableCryptos.filter((crypto) => crypto.id === c)[0])
-    .filter((c) => c !== undefined)
-    .concat(
-      data.availableCryptos
-        .filter((crypto) => !popularCrypto.includes(crypto.id))
-        .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
-    );
+  useEffect(() => {
+    const auxSortedCrypto = popularCrypto
+      .map((c) => data.availableCryptos.filter((crypto) => crypto.id === c)[0])
+      .filter((c) => c !== undefined)
+      .concat(
+        data.availableCryptos
+          .filter((crypto) => !popularCrypto.includes(crypto.id))
+          .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
+      );
+    setSortedCrypto(auxSortedCrypto);
+  }, [data.availableCryptos]);
 
   return (
     <div className={styles.view}>
