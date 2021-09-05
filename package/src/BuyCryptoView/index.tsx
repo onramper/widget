@@ -28,7 +28,7 @@ const BuyCryptoView: React.FC = () => {
   //flagEffectInit used to call init again
   useEffect(() => {
     init();
-  }, [init /* , flagEffectInit */]);
+  }, [init/* , flagEffectInit */]);
 
   const handleItemClick = (name: string, index: number, item: ItemType) => {
     if (name === "crypto") handleCryptoChange(item);
@@ -84,7 +84,7 @@ const BuyCryptoView: React.FC = () => {
     .concat(
       data.availableCryptos
         .filter((crypto) => !popularCrypto.includes(crypto.id))
-        .sort((a, b) => (a.id == b.id ? 0 : a.id > b.id ? 1 : -1))
+        .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
     );
 
   return (
