@@ -61,7 +61,7 @@ type ListItemProps = {
 } & ItemType
 
 const ListItem: React.FC<ListItemProps> = (props) => {
-    const { id, index, name, info, icon, network } = props
+    const { index, name, info, icon, network } = props
     const { onClick = () => null } = props
     return (
         <div className={`${styles['list-item']}`} onClick={() => onClick(index)}>
