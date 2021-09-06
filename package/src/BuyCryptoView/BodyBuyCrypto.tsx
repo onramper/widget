@@ -119,7 +119,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             <div className={`${stylesCommon.body__child}`}>
                 <ButtonAction
                     onClick={onBuyCrypto}
-                    text={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE' ? 'See gateways' : `Buy ${selectedCrypto.id}`}
+                    text={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE' ? 'See gateways' : `Buy ${selectedCrypto.name}`}
                     disabled={!isFilled || collected.isCalculatingAmount || !!minMaxErrorsMsg || collected.errors?.RATE?.type === 'NO_RATES'}
                 />
             </div>
