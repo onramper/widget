@@ -44,7 +44,7 @@ export const DEFAULT_US_STATE = "AL";
 export const DEFAULT_CA_STATE = "AB";
 const NO_CHAT_COUNTRIES = ["ng"];
 const DEFAULT_DISPLAYCHATBUBBLE = true;
-const DEFAULT_PAYMENT_METHOD = 'creditCard'
+const DEFAULT_PAYMENT_METHOD = "creditCard";
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -76,7 +76,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     defaultAddrs = {},
     API_KEY,
     isAddressEditable = true,
-    defaultPaymentMethod = DEFAULT_PAYMENT_METHOD
+    defaultPaymentMethod = DEFAULT_PAYMENT_METHOD,
   } = props;
   const defaultFiat = props.defaultFiat?.toUpperCase();
   const defaultFiatSoft =
@@ -526,7 +526,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       state.data.availablePaymentMethods,
       state.data.responseGateways,
       state.collected.selectedPaymentMethod,
-      defaultPaymentMethod
+      defaultPaymentMethod,
     ]
   );
 
@@ -801,7 +801,11 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
                   ?.supportsAddressTag
             )
       )
-      .filter((o) => o[1].length > 1)
+      .filter(
+        (o) =>
+          o[1].length > 1 &&
+          !o[1].includes(state.collected.selectedCurrency?.id ?? "")
+      )
       .map(([identifier, currencies]) => {
         return {
           identifier: identifier,
@@ -854,7 +858,11 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
                   ?.supportsAddressTag
             )
       )
-      .filter((o) => o[1].length >= 1)
+      .filter(
+        (o) =>
+          o[1].length >= 1 &&
+          !o[1].includes(state.collected.selectedPaymentMethod?.id ?? "")
+      )
       .map(([identifier, payments]) => {
         return {
           identifier: identifier,
