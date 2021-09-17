@@ -212,8 +212,8 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, filters?: Fi
 
     const { onlyCryptos, excludeCryptos, onlyPaymentMethods, excludePaymentMethods, excludeFiat, onlyGateways, onlyFiat } = filters
 
-    const _onlyCryptos = onlyCryptos?.map(code => code.toUpperCase())
-    const _excludeCryptos = excludeCryptos?.map(code => code.toUpperCase())
+    const _onlyCryptos = onlyCryptos?.map(id => id.toUpperCase())
+    const _excludeCryptos = excludeCryptos?.map(id => id.toUpperCase())
 
     const _onlyPaymentMethods = onlyPaymentMethods
     const _excludePaymentMethods = excludePaymentMethods
@@ -227,9 +227,9 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, filters?: Fi
         let fiatList = gateway.fiatCurrencies
 
         if (_onlyCryptos && _onlyCryptos?.length > 0)
-            cryptosList = cryptosList.filter(crypto => _onlyCryptos.includes(crypto.code))
+            cryptosList = cryptosList.filter(crypto => _onlyCryptos.includes(crypto.id))
         if (_excludeCryptos && _excludeCryptos?.length > 0)
-            cryptosList = cryptosList.filter(crypto => !_excludeCryptos.includes(crypto.code))
+            cryptosList = cryptosList.filter(crypto => !_excludeCryptos.includes(crypto.id))
 
         if (_onlyPaymentMethods && _onlyPaymentMethods?.length > 0)
             paymentMethodsList = paymentMethodsList.filter(paymentMethod => _onlyPaymentMethods.includes(paymentMethod))
