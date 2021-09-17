@@ -8,7 +8,7 @@ export const documents = [
 export const BASE_API =
   process.env.STAGE === "prod"
     ? "https://onramper.tech"
-    : "https://staging.onramper.tech";
+    : "https://onramper.tech";
 
 export const SANDBOX_HOSTNAME =
   process.env.STAGE === "prod"
