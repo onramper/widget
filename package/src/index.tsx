@@ -70,6 +70,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             minAmountEur={props.minAmountEur}
             supportSell={props.supportSell}
             supportBuy={props.supportBuy}
+            isAmountEditable={props.isAmountEditable}
           >
             <div style={{ flexGrow: 1, display: "flex" }}>
               <NavContainer home={<BuyCryptoView />} />

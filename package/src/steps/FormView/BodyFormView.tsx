@@ -108,7 +108,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
         if (name === 'verifyPhoneCode' || name === 'verifyEmailCode')
             setVerifyCode(v)
-            
+
         handleInputChange(name, v)
 
         if (name === 'country')
@@ -214,7 +214,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     onDismissClick={() => props.onErrorDismissClick('FATAL')}
                     canBeDismissed
                 >
-                    <span>{"Posible solutions:"}</span><br />
+                    <span>{"Possible solutions:"}</span><br />
                     <span>· Use a differrent credit card.</span><br />
                     <span>· If you didn't use your real identity, start the process again providing it.</span><br />
                     <span>· Try another gateway.</span><br />

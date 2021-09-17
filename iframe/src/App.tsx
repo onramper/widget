@@ -41,6 +41,7 @@ const redirectURL = getParam("redirectURL", undefined);
 const minAmountEur = Number(getParam("minAmountEur", "0"));
 const supportSell = getParam("supportSell", "true") === "true";
 const supportBuy = getParam("supportBuy", "true") === "true";
+const isAmountEditable = getParam("isAmountEditable", "true") === "true";
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -101,6 +102,7 @@ function App() {
             minAmountEur={minAmountEur}
             supportSell={supportSell}
             supportBuy={supportBuy}
+            isAmountEditable={isAmountEditable}
           />
         </div>
       </div>

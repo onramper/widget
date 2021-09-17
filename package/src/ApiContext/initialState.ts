@@ -59,6 +59,7 @@ export type CollectedStateType = {
     redirectURL?: string,
     supportSell: boolean,
     supportBuy: boolean,
+    isAmountEditable?: boolean,
     [key: string]: any
 }
 
@@ -124,6 +125,7 @@ export const initialState: StateType = {
         isPartnerContextSent: false,
         supportSell: true,
         supportBuy: true,
+        isAmountEditable: true,
         redirectURL: undefined
     },
     data: {
