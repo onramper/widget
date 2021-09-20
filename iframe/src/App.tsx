@@ -2,7 +2,7 @@ import React from "react";
 import OnramperWidget, { Onramper } from "@onramper/widget";
 
 const com_key = "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00";
-const dev_key = "pk_test_oDsXkHokDdr06zZ0_sxJGw00";
+const dev_key = "pk_test_wv2Di4ElCvFagVevYs7THLE0V9RyfsX0_vNOMcg59xQ0";
 
 const defaultApiKey =
   window.self !== window.top
