@@ -108,6 +108,7 @@ type NextStep =
         type: 'pickOne';
         options: FileStep[];
         humanName?: string
+        hint?: string
     } | {
         type: 'completed',
         trackingUrl: string

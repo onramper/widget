@@ -15,7 +15,7 @@ const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = (
   const nextStepOptions = nextStep.options || []
 
   const [selectedOption, setSelectedOption] = useState(nextStepOptions[0])
-  const infoMsg = 'Choose one option'
+  const infoMsg = nextStep.hint ? useState(nextStep.hint) : 'Choose one option'
 
   const handleButtonAction = async () => {
     nextScreen(<Step nextStep={selectedOption} />)
