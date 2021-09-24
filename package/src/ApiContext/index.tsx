@@ -68,7 +68,7 @@ interface APIProviderType {
   minAmountEur?: number;
   supportSell: boolean;
   supportBuy: boolean;
-  isAmountEditable: boolean;
+  isAmountEditable?: boolean;
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -101,7 +101,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       minAmountEur: props.minAmountEur,
       supportSell: props.supportSell,
       supportBuy: props.supportBuy,
-      isAmountEditable: props.isAmountEditable,
+      isAmountEditable: props.isAmountEditable ?? initialState.collected.isAmountEditable,
     },
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
