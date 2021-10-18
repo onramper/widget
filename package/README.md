@@ -3,22 +3,6 @@ Onramper allows your users to buy cryptocurrency with fiat, directly from your w
 
 For docs and examples visit: [docs.onramper.com](https://docs.onramper.com/)
 
-###### Developement
-```shell
-$ cd iframe
-$ npm ci
-$ cd ../package
-$ npm ci --omit peer
-```
-
-###### Connecting to local server
-```shell
-$ cd package
-$ npm run start:local
-$ cd ../iframe
-$ npm run start:local
-```
-
 ###### Installation
 
 ```shell

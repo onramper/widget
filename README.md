@@ -4,6 +4,22 @@
 
 This project is created using create-react-app with typescript, here you will find some notes about how to customize or build the widget from the source files. In this repo you will find the source files of Onramper's buy page ([`widget.onramper.com`](https://widget.onramper.com)) and the source files of the widget component ([`@onramper/widget`](https://npmjs.org/package/@onramper/widget))
 
+###### Developement
+```shell
+$ cd iframe
+$ npm ci
+$ cd ../package
+$ npm ci --omit peer
+```
+
+###### Connecting to local server
+```shell
+$ cd package
+$ npm run start:local
+$ cd ../iframe
+$ npm run start:local
+```
+
 Directory structure (only main files listed):  
 ```
 .
