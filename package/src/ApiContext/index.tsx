@@ -362,7 +362,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       handleInputChange("selectedCrypto", actualCrypto);
       const addrs = state.collected.defaultAddrs[actualCrypto.id];
       const addrs2 = Object.entries(state.collected.defaultAddrs).find(
-        ([k, _]) => k.includes(state.collected.selectedCrypto?.name ?? "-1")
+        ([k]) => k.includes(state.collected.selectedCrypto?.name ?? "-1")
       );
       handleInputChange("cryptocurrencyAddress", {
         address: addrs?.address ?? addrs2?.[1]?.address,

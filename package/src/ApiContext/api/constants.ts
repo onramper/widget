@@ -6,9 +6,11 @@ export const documents = [
 ];
 
 export const BASE_API =
-  process.env.STAGE === "prod"
-    ? "https://onramper.tech"
-    : "https://staging.onramper.tech";
+  process.env.STAGE === 'local' ?
+    "http://localhost:3000/dev" :
+    process.env.STAGE === "prod"
+      ? "https://onramper.tech"
+      : "https://staging.onramper.tech";
 
 export const SANDBOX_HOSTNAME =
   process.env.STAGE === "prod"

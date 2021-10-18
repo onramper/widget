@@ -47,7 +47,7 @@ const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
     logRequest(gatewaysUrl)
     const gatewaysRes = await fetch(gatewaysUrl, {
         headers,
-        credentials: 'include'
+        credentials: process.env.STAGE === 'local' ? 'omit' : 'include'
     })
     const gateways: GatewaysResponse = await processResponse(gatewaysRes)
     return gateways
@@ -70,7 +70,7 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
     const ratesRes = await fetch(ratesUrl, {
         headers,
         signal,
-        credentials: 'include'
+        credentials: process.env.STAGE === 'local' ? 'omit' : 'include'
     })
     const rates: RateResponse = await processResponse(ratesRes)
     return rates
@@ -292,7 +292,7 @@ const sell = async (crypto: string, amount: number, paymentMethod: string, param
     logRequest(ratesUrl)
     const ratesRes = await fetch(ratesUrl, {
         headers,
-        credentials: 'include'
+        credentials: process.env.STAGE === 'local' ? 'omit' : 'include'
     })
     const rates: GatewayRate = await processResponse(ratesRes)
     return rates
