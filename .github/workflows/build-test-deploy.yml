@@ -60,7 +60,7 @@ jobs:
         domain: ${{ steps.git-branch.outputs.domain }}
         publish_dir: './iframe/build'
   publish:
-    needs: [build, lint, test]
+    needs: [lint-and-build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
