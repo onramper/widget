@@ -71,7 +71,7 @@ jobs:
         node-version: '12.x'
         registry-url: 'https://registry.npmjs.org'
     - name: Clean install and build
-      run: (cd package && npm ci && npm run build:$STAGE)
+      run: (cd package && npm ci && npm run build:prod)
     - name: Publish to npm
       run: (cd package && npm publish)
       env:
