@@ -1,11 +1,12 @@
 import { StateType, DataStateType, ErrorObjectType } from './initialState'
-import { ItemType } from '.';
+import { CollectedStateType, ItemType } from '.';
 
 export enum CollectedActionsType {
     AddField = 'ADD_FIELD',
     AddFile = 'ADD_FILE',
     DeleteFile = 'DELETE_FILE',
-    AddError = 'ADD_ERROR'
+    AddError = 'ADD_ERROR',
+    ResetCollected = 'RESET_COLLECTED',
 }
 
 export enum DataActionsType {
@@ -41,6 +42,11 @@ export type DataActions = {
     type: CollectedActionsType.AddError;
     payload: {
         value: ErrorObjectType | undefined
+    };
+} | {
+    type: CollectedActionsType.ResetCollected;
+    payload: {
+        value: CollectedStateType
     };
 }
 
@@ -88,6 +94,9 @@ export const collectedReducer = (state: StateType, action: DataActions) => {
                 errors: { ...state.collected.errors, ...error }
             }
             else return state.collected
+        }
+        case CollectedActionsType.ResetCollected: {
+            return action.payload.value
         }
         default:
             return state.collected
