@@ -25,12 +25,13 @@ interface ErrorViewProps {
 
 const ErrorView: React.FC<ErrorViewProps> = (props) => {
   const { onlyScreen } = useContext(NavContext)
-  const { apiInterface, collected } = useContext(APIContext)
+  const { apiInterface, collected, data } = useContext(APIContext)
 
   const [isRestartCalled, setIsRestartCalled] = useState(false)
 
   const restartWidget = () => {
     apiInterface.clearErrors()
+    data.restartWidget();
     setIsRestartCalled(true)
   }
 

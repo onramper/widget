@@ -85,6 +85,7 @@ export type DataStateType = {
     handleCryptoChange: (crypto?: ItemType) => | undefined | {}
     handleCurrencyChange: (currency?: ItemType) => | undefined | {}
     handlePaymentMethodChange: (paymentMehtod?: ItemType) => | undefined | {}
+    restartWidget: () => void
     //remote responses
     responseGateways?: GatewaysResponse
     filtredGatewaysByCrypto: GatewaysResponse['gateways']
@@ -136,6 +137,7 @@ export const initialState: StateType = {
         handleCryptoChange: () => undefined,
         handleCurrencyChange: () => undefined,
         handlePaymentMethodChange: () => undefined,
+        restartWidget: () => undefined,
         responseGateways: undefined,
         filtredGatewaysByCrypto: [],
         filtredGatewaysByCurrency: [],

@@ -83,9 +83,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const defaultFiatSoft =
     props.defaultFiatSoft?.toUpperCase() || DEFAULT_CURRENCY;
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO;
-  const iniState: StateType = {
-    ...initialState,
-    collected: {
+
+  const generateInitialCollectedState = useCallback(():CollectedStateType => {
+    return {
       ...initialState.collected,
       amount: defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
       defaultAddrs: Object.entries(defaultAddrs).reduce(
@@ -102,7 +102,24 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       supportSell: props.supportSell,
       supportBuy: props.supportBuy,
       isAmountEditable: props.isAmountEditable ?? initialState.collected.isAmountEditable,
-    },
+    };
+  }, [
+    defaultAddrs,
+    isAddressEditable,
+    defaultAmount,
+    props.themeColor,
+    props.amountInCrypto,
+    props.partnerContext,
+    props.redirectURL,
+    props.minAmountEur,
+    props.supportSell,
+    props.supportBuy,
+    props.isAmountEditable
+  ])
+
+  const iniState: StateType = {
+    ...initialState,
+    collected: generateInitialCollectedState(),
   };
   const [state, dispatch] = useReducer(mainReducer, iniState);
   const [lastCall, setLastCall] = useState<AbortController>();
@@ -168,6 +185,13 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       payload: { value: undefined },
     });
   }, []);
+
+  const restartWidget = useCallback(() => {
+    dispatch({
+      type: CollectedActionsType.ResetCollected,
+      payload: { value: generateInitialCollectedState() },
+    });
+  }, [generateInitialCollectedState]);
 
   /* *********** */
   const init = useCallback(
@@ -938,6 +962,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           handleCryptoChange,
           handleCurrencyChange,
           handlePaymentMethodChange,
+          restartWidget
         },
         apiInterface: { init, executeStep, getRates, clearErrors },
       }}
