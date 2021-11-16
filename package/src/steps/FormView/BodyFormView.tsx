@@ -466,14 +466,20 @@ const getValueByField = (field: BodyFormViewType['fields'][0], collected: Collec
 const getInputType = (field: BodyFormViewType['fields'][0]) => {
     if (field.type === 'integer')
         return 'number'
-    else if (field.type === 'string')
-        return 'text'
-    else if (field.type === 'boolean')
-        return 'checkbox'
-    else if (field.name === 'email')
+    
+    if (field.name === 'email')
         return 'email'
-    else
-        return field.type
+    
+    if (field.name === 'password')
+        return 'password'
+    
+    if (field.type === 'string')
+        return 'text'
+    
+    if (field.type === 'boolean')
+        return 'checkbox'
+    
+    return field.type
 }
 
 BodyFormView.defaultProps = {
