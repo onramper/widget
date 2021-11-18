@@ -1,6 +1,6 @@
 import "abort-controller/polyfill"
 import { GatewayRate, RateResponse } from './types/rate'
-import { GatewaysResponse } from './types/gateways'
+import { Currency, GatewaysResponse } from './types/gateways'
 import { FieldError } from './types/nextStep'
 import { NextStep } from '..'
 import processMoonpayStep, { moonpayUrlRegex } from '@onramper/moonpay-adapter'
@@ -259,6 +259,20 @@ const filterGatewaysResponse = (gatewaysResponse: GatewaysResponse, filters?: Fi
     }
 }
 
+const sortCryptoByRecommended = (availableCryptos: Currency[], recommendedCryptoCurrencies?: string[]): Currency[] => {
+    if(!recommendedCryptoCurrencies) return availableCryptos;
+
+    return availableCryptos.sort((c1:Currency, c2:Currency) => {
+        const c1Index = recommendedCryptoCurrencies.indexOf(c1.id);
+        const c2Index = recommendedCryptoCurrencies.indexOf(c2.id);
+    
+        if(c1Index === c2Index)  return 0;
+        if(c2Index === -1) return -1;
+        if(c1Index === -1) return 1;
+        return c1Index < c2Index ? -1 : 1;
+    });
+}
+
 type DefaultAddrs = {
     [denom: string]: CryptoAddrType | undefined;
 }
@@ -304,6 +318,7 @@ export {
     rate,
     executeStep,
     filterGatewaysResponse,
+    sortCryptoByRecommended,
     filterRatesResponse,
     sell,
     NextStepError,

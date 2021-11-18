@@ -69,6 +69,7 @@ interface APIProviderType {
   supportSell: boolean;
   supportBuy: boolean;
   isAmountEditable?: boolean;
+  recommendedCryptoCurrencies?: string[]
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -84,7 +85,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.defaultFiatSoft?.toUpperCase() || DEFAULT_CURRENCY;
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO;
 
-  const generateInitialCollectedState = useCallback(():CollectedStateType => {
+  const generateInitialCollectedState = useCallback((): CollectedStateType => {
     return {
       ...initialState.collected,
       amount: defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
@@ -101,7 +102,11 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       minAmountEur: props.minAmountEur,
       supportSell: props.supportSell,
       supportBuy: props.supportBuy,
-      isAmountEditable: props.isAmountEditable ?? initialState.collected.isAmountEditable,
+      isAmountEditable:
+        props.isAmountEditable ?? initialState.collected.isAmountEditable,
+      recommendedCryptoCurrencies: props.recommendedCryptoCurrencies
+        ? arrayUnique(props.recommendedCryptoCurrencies)
+        : undefined,
     };
   }, [
     defaultAddrs,
@@ -114,8 +119,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.minAmountEur,
     props.supportSell,
     props.supportBuy,
-    props.isAmountEditable
-  ])
+    props.isAmountEditable,
+    props.recommendedCryptoCurrencies,
+  ]);
 
   const iniState: StateType = {
     ...initialState,
@@ -266,6 +272,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           },
         });
       }
+
+      availableCryptos = API.sortCryptoByRecommended(availableCryptos, props.recommendedCryptoCurrencies);
 
       // MAP AVAILABLE CRYPTOS LIST (CURRENCY LIST) TO AN ITEMTYPE LIST
       const mappedAvailableCryptos: ItemType[] = availableCryptos.map(
