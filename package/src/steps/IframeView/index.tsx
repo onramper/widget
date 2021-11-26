@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../../common/Header";
 import BodyIframeView from "./BodyIframeView";
 import styles from "../../styles.module.css";
 /* import ErrorView from '../../common/ErrorView' */
@@ -15,6 +14,7 @@ import {
 } from "@onramper/moonpay-adapter";
 
 import { NavContext } from "../../NavContext";
+import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
 
 const btcdirectFinishedOrigin = "https://btcdirect.sandbox.staging.onramper.tech";
 
@@ -99,7 +99,7 @@ const IframeView: React.FC<{
 
   return (
     <div className={styles.view}>
-      <Header
+      <HeaderPicker
         title={nextStep.humanName ?? "Complete payment"}
         hideBurgerButton={nextStep.type === "iframe" && nextStep.fullscreen}
         backButton

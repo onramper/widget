@@ -1,0 +1,19 @@
+.text-status {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 14px;
+  color: #7c7d82;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.error-text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 14px;
+  color: #e35757;
+  text-align: center;
+  margin-top: 12px;
+}

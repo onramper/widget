@@ -1,7 +1,16 @@
+
+@font-face {
+    font-family: 'Open Sauce Sans';
+    src: url('./assets/fonts/OpenSauceSans-Regular.woff2') format('woff2'),
+         url('./assets/fonts/OpenSauceSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /*********
 theme styles
 *********/
-
 .theme {
     --primary-color: #31a5ff;
     /* default color*/
@@ -13,9 +22,8 @@ theme styles
     --heigth: 100%;
     --background-color: white;
     --padding-top: 1.75rem;
-    --padding-rl: 1.88rem;
+    --padding-rl: 1.563rem;
     --padding-bottom: 1.125rem;
-    font-family: 'Roboto', sans-serif;
     font-family: var(--font-family);
     width: var(--width);
     min-width: 250px;
@@ -105,6 +113,13 @@ components
     flex-shrink: 0;
 }
 
+.body__child-grow {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-grow: 1;
+}
+
 .row-fields {
     display: flex;
     flex-direction: row;
@@ -189,4 +204,81 @@ components
     border-radius: 5px;
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.flex-all {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-default {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+.btn-default:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+/* skeleton loading */
+.skeleton-wrapper {
+    overflow-x: hidden;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.skeleton-box {
+    position: relative;
+    overflow: hidden;
+}
+
+div.skeleton-box {
+    box-shadow: none;
+}
+
+.skeleton-box::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #efefef;
+    content: '';
+    cursor: default;
+}
+
+.skeleton-box::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0.5) 60%,
+      rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 2s infinite;
+    content: '';
+    cursor: default;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
 }

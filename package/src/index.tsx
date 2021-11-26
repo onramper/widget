@@ -24,7 +24,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   const [flagRestart, setFlagRestart] = React.useState(0);
 
   const {
-    color = "#266678",
+    color = "#0316C1",
     fontFamily = props.fontFamily,
     className = "",
   } = props;

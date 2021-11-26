@@ -3,12 +3,12 @@ import styles from "./styles.module.css";
 
 import IconMenu from "../../icons/menu.svg";
 import IconLeftArrow from "../../icons/arrow-left.svg";
-import IconClose from "../../icons/close.svg";
+import IconClose from "../../icons/close-menu.svg";
 
 import { NavContext } from "../../NavContext";
 import Menu from "./Menu";
 
-type HeaderType = {
+export type HeaderType = {
   title: string;
   secondaryTitle?: string;
   backButton?: boolean;

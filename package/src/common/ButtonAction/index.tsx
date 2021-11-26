@@ -23,7 +23,7 @@ const ButtonAction: React.FC<ButtonActionType> = (props) => {
       onClick={onClick}
       className={`${styles["button-action"]} ${
         size === "small" ? styles["button-action--small"] : ""
-      } ${disabled ? styles["button-action--disabled"] : ""} ${className}`}
+      } ${className}`}
       disabled={disabled}
     >
       {text}

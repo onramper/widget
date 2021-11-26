@@ -3,26 +3,37 @@
 .button-action {
     outline: none;
     cursor: pointer;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     border-style: solid;
-    border-radius: 5px;
+    border-radius: 3.9375rem;
     border-width: 0px;
     border-color: #DEDEDE;
-    padding: 0.78rem;
     color: white;
-    font-size: 1.25em;
+    font-size: 1rem;
+    padding: 1.125rem;
     width: 100%;
     margin-top: auto;
     height: fit-content;
     height: -moz-fit-content;
-}
-
-.button-action--disabled {
-    background-color: darkgray;
-    cursor: unset;
+    box-shadow: 0px 24px 24px rgba(0, 75, 235, 0.1);
+    transition: background-color 0.1s;
 }
 
 .button-action--small {
     font-size: 1em;
     padding: 0.625em 1em;
+}
+
+.button-action:hover {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #004BEB;
+}
+
+.button-action:active {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25)), #004BEB;
+}
+
+.button-action:disabled {
+    background: #C3C8EF;
+    box-shadow: none;
+    cursor: unset;
 }

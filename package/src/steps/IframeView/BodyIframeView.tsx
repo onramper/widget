@@ -10,7 +10,7 @@ import { NavContext } from '../../NavContext'
 
 import BuyCryptoView from '../../BuyCryptoView'
 import ButtonAction from '../../common/ButtonAction'
-import ChooseGatewayView from '../../ChooseGatewayView'
+import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
 
 interface BodyIframeViewType {
     src: string

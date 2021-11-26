@@ -8,7 +8,11 @@
     justify-content: center;
     border-radius: 0 0 var(--border-radius) var(--border-radius);
     padding: 0.438rem var(--padding-rl) 0.625rem var(--padding-rl);
-    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #7C7D82;
 }
 
 .footer > * {
@@ -16,5 +20,5 @@
 }
 
 .footer img {
-    height: 2.083em;
+    height: 21px;
 }

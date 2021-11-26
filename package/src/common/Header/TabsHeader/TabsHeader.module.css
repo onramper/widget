@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  padding-left: var(--padding-rl);
+  padding-right: var(--padding-rl);
+  border-radius: 10px 10px 0 0;
+  font-size: 1rem;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.header__burger-icon {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+}

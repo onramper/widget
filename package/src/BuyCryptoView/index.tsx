@@ -1,17 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../common/Header";
 import BodyBuyCrypto from "./BodyBuyCrypto";
 import styles from "../styles.module.css";
 import PickView from "../PickView";
-import ChooseGatewayView from "../ChooseGatewayView";
+import ChooseGatewayView from "../ChooseGatewayView/ChooseGatewayView";
 import ErrorView from "../common/ErrorView";
 import Step from "../steps/Step";
 import { NavContext } from "../NavContext";
 import { APIContext, ItemType, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
 import { arrayUnique } from "../utils";
-
-const popularCrypto = ["BTC", "ETH", "USDT", "BNB_BEP20", "USDC"];
+import TabsHeader from "../common/Header/TabsHeader/TabsHeader";
+import { tabNames, popularCrypto } from "./constants";
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -21,6 +20,8 @@ const BuyCryptoView: React.FC = () => {
   const { data, inputInterface, collected, apiInterface } =
     useContext(APIContext);
   const [sortedCrypto, setSortedCrypto] = useState(data.availableCryptos);
+  const [initLoadingFinished, setInitLoadingFinished] = useState(false);
+
   const {
     handleCryptoChange,
     handleCurrencyChange,
@@ -31,7 +32,9 @@ const BuyCryptoView: React.FC = () => {
 
   //flagEffectInit used to call init again
   useEffect(() => {
-    init();
+    init().finally(() => {
+      setInitLoadingFinished(true);
+    });
   }, [init/* , flagEffectInit */]);
 
   const handleItemClick = (name: string, index: number, item: ItemType) => {
@@ -97,12 +100,11 @@ const BuyCryptoView: React.FC = () => {
 
   return (
     <div className={styles.view}>
-      <Header
-        title="Buy crypto"
-        secondaryTitle={
-          buyStep && collected.supportSell ? "Sell crypto" : undefined
-        }
-        onSecondaryTitleClick={() => {
+      <TabsHeader
+        tabs={buyStep && collected.supportSell ? tabNames : tabNames.filter((s, i) => i !== 1)}
+        tabSelected={0}
+        onClickItem={(i: number) => {
+          if (i === 0) return;
           nextScreen(<Step nextStep={buyStep} />);
         }}
       />
@@ -154,6 +156,8 @@ const BuyCryptoView: React.FC = () => {
         selectedPaymentMethod={collected.selectedPaymentMethod}
         handleInputChange={inputInterface.handleInputChange}
         isFilled={isFilled}
+        handlePaymentMethodChange={handlePaymentMethodChange}
+        initLoadingFinished={initLoadingFinished}
       />
     </div>
   );

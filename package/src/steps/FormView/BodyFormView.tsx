@@ -25,7 +25,7 @@ import caStates from '../../ApiContext/utils/caStates'
 import { scrollTo } from '../../utils'
 import { GroupFieldsController } from './utils'
 import BuyCryptoView from '../../BuyCryptoView'
-import ChooseGatewayView from '../../ChooseGatewayView'
+import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']

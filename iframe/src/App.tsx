@@ -12,8 +12,8 @@ const defaultApiKey =
     : dev_key;
 
 const apiKey = getParam("apiKey", defaultApiKey);
-const defaultColor = `#${getParam("color", "266678")}`;
-const fontFamily = getParam("fontFamily", "'Roboto', sans-serif");
+const defaultColor = `#${getParam("color", "0316C1")}`;
+const fontFamily = getParam("fontFamily", "Open Sauce Sans");
 const defaultAmount = Number(getParam("defaultAmount", "200"));
 const defaultCrypto = getParam("defaultCrypto", "BTC");
 const defaultFiat = getParam("defaultFiat");
@@ -32,10 +32,7 @@ const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble", "false");
 const amountInCrypto = getParam("amountInCrypto");
-const gFontPath = getParam(
-  "gFontPath",
-  "css2?family=Roboto:wght@400;500&display=swap"
-);
+const gFontPath = getParam( "gFontPath");
 const partnerContext = getJSONParam("partnerContext", undefined);
 const redirectURL = getParam("redirectURL", undefined);
 const minAmountEur = Number(getParam("minAmountEur", "0"));

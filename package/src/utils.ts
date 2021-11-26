@@ -87,6 +87,35 @@ export const scrollTo = (element: HTMLElement | null, to: number, duration: numb
     animateScroll();
 }
 
+let lastId = 0;
+export function idGenerator(prefix='id') {
+    return `${prefix}${lastId++}`;
+}
+
+export function onChangeTextNumber(
+  targetValue: string,
+  precision: number = 1
+): string | number | false {
+
+  let value: string | number = targetValue.replace(",", ".");
+  if (value.split(".").length > 2 || !isFinite(Number(value))) return false;
+
+  if (!value.match(/\.(0+)?$|,(0+)?$|^\.(0+)?|^,(0+)?/) &&
+       value !== "" &&
+       value.charAt(value.length - 1) !== "0") 
+    {
+    value = toMaxDecimalsRound(value ?? 0, precision ?? 1);   
+  }
+
+  if (value !== 0 && value !== "" && !value) return false;
+
+  return value; 
+}
+
+export function toStringOrDefault(value: number|undefined) {
+    return String(value || 0);
+}
+
 //ADD TYPES
 /* export function usePromise(promiseOrFunction, defaultValue) {
     const [state, setState] = React.useState({ value: defaultValue, error: null, isPending: true })

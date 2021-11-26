@@ -21,7 +21,7 @@ export default function OnramperWidgetContainer() {
   return (
     <div style={{maxWidth: '440px',  maxHeight: '595px',  height: '100%',  width: '100%'}}>
       <OnramperWidget
-        color="#266678"
+        color="#0316C1"
         defaultAmount={200}
         defaultCrypto="BTC"
         API_KEY="pk_live_YOUR-API-KEY"

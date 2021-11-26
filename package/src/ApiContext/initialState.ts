@@ -120,7 +120,7 @@ export const initialState: StateType = {
         defaultAddrs: {},
         errors: undefined,
         isAddressEditable: true,
-        themeColor: "266678",
+        themeColor: "0316C1",
         displayChatBubble: false,
         partnerContext: undefined,
         isPartnerContextSent: false,

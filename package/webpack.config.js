@@ -75,6 +75,12 @@ module.exports = env => ({
                         loader: 'url-loader'
                     }
                 ],
+            },
+            {
+                test: /\.(woff|woff2)$/,
+                use: {
+                  loader: 'url-loader',
+                },
             }
         ]
     },
