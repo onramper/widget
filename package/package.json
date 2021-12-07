@@ -39,8 +39,11 @@
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
     "abort-controller": "^3.0.0",
+    "i18next": "^21.5.5",
+    "i18next-browser-languagedetector": "^6.1.2",
     "iso3166-alpha-converter": "^1.0.0",
     "react-calendar": "^3.2.0",
+    "react-i18next": "^11.14.3",
     "react-transition-group": "^4.4.1",
     "rendered-country-flags": "^1.2.0"
   },

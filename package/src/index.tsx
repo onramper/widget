@@ -12,6 +12,7 @@ import Footer from "./common/Footer";
 import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
+import './i18n/setup';
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
