@@ -1,3 +1,5 @@
+import { GatewayRateOption } from "./ApiContext";
+
 export const copyToClipBoard = async (text: string, copied: (status: boolean, text: string) => void) => {
     try {
         await navigator.clipboard.writeText(text);
@@ -114,6 +116,55 @@ export function onChangeTextNumber(
 
 export function toStringOrDefault(value: number|undefined) {
     return String(value || 0);
+}
+
+export const getArrOfMinsMaxs = (list: { name: string, value: number }[], min: boolean) => {
+    let lowest = min ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
+    let tmp;
+    let easiests: string[] = []
+
+    for (let i = list.length - 1; i >= 0; i--) {
+        tmp = list[i].value;
+        if (min) {
+            if (tmp < lowest) {
+                lowest = tmp;
+                easiests = [list[i].name]
+            }
+            else if (tmp === lowest) {
+                lowest = tmp;
+                easiests.push(list[i].name)
+            }
+        }
+        else {
+            if (tmp > lowest) {
+                lowest = tmp;
+                easiests = [list[i].name]
+            }
+            else if (tmp === lowest) {
+                lowest = tmp;
+                easiests.push(list[i].name)
+            }
+        }
+    }
+    return easiests
+}
+
+export function getBestAvailableGateway(allRates: GatewayRateOption[], amountInCrypto: boolean) {
+    
+    let lowest = amountInCrypto ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
+    const comparator = (tmp: number, lowest: number) =>amountInCrypto ? tmp < lowest : tmp > lowest;
+    const availbaleRates = allRates.filter((item) => item.available);
+    
+    let bestGateway:GatewayRateOption|undefined;
+    for (let i = availbaleRates.length - 1; i >= 0; i--) {
+      const amount = availbaleRates[i].receivedCrypto ?? 0;
+      if (comparator(amount, lowest)) {
+        lowest = amount;
+        bestGateway = availbaleRates[i];
+      }
+    }
+
+    return bestGateway;
 }
 
 //ADD TYPES
