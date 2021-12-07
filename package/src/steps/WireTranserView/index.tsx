@@ -8,9 +8,12 @@ import { APIContext, NextStep } from '../../ApiContext'
 
 import { copyToClipBoard } from './utils'
 import { NavContext } from '../../NavContext'
+import { useTranslation } from 'react-i18next';
 
 
 const WireTransferView: React.FC<{ nextStep: NextStep & { type: 'requestBankTransaction' } }> = ({ nextStep }) => {
+  const { t } = useTranslation();
+
   const { nextScreen } = useContext(NavContext);
   const { collected } = useContext(APIContext);
 
@@ -20,7 +23,7 @@ const WireTransferView: React.FC<{ nextStep: NextStep & { type: 'requestBankTran
 
   return (
     <div className={styles.view}>
-      <Header title="Wire transfer details" />
+      <Header title={t('header.wireTransferDetails')} />
       <BodyWireTransfer
         onActionButton={() => nextScreen(<SuccessView txType='pending' nextStep={{ type: "completed" }} />)}
         amount={collected.amount.toString()}
@@ -28,7 +31,7 @@ const WireTransferView: React.FC<{ nextStep: NextStep & { type: 'requestBankTran
         symbol={collected.selectedCurrency?.symbol ?? ''}
         textInfo={nextStep.hint}
         onIconClick={handleIconClick}
-        reference={nextStep.reference ?? 'No reference'}
+        reference={nextStep.reference ?? t('kycScreens.noReference')}
       />
     </div>
   );

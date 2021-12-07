@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import resources from './translations';
 
 /* i18n was set up using the following guide:
  * https://dev.to/adrai/how-to-properly-internationalize-a-react-application-using-i18next-3hdb
@@ -17,7 +18,7 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-    resources: {}
+    resources: resources
   });
 
 export default i18n;

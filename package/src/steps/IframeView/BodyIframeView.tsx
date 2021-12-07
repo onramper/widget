@@ -11,6 +11,7 @@ import { NavContext } from '../../NavContext'
 import BuyCryptoView from '../../BuyCryptoView'
 import ButtonAction from '../../common/ButtonAction'
 import ChooseGatewayView from '../../ChooseGatewayView'
+import { useTranslation } from 'react-i18next'
 
 interface BodyIframeViewType {
     src: string
@@ -36,6 +37,8 @@ const getHostname = (href: string) => {
 };
 
 const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
+    const { t } = useTranslation();
+
     const { textInfo, type, error } = props
     const [autoRedirect, setAutoRedirect] = useState(true)
     /* const [isAGateway, setisAGateway] = useState(true) */
@@ -141,7 +144,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                         {textInfo}
                     </InfoBox>
                     <InfoBox in={!autoRedirect} className={`${stylesCommon.body__child} ${styles.body__child}`} type='notification'>
-                        {"We couldn't auto-redirect you to finish the process, please click the button below to finish the process."}
+                        {t('iframeScreen.autoRedirectFailed')}
                     </InfoBox>
                     <InfoBox in={!!error} className={`${stylesCommon.body__child} ${styles.body__child}`} type='error' canBeDismissed onDismissClick={() => props.onErrorDismissClick()} >
                         {error}
@@ -151,12 +154,12 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                         type='error'
                         message={props.fatalError}
                         className={`${stylesCommon.body__child} ${styles.body__child}`}
-                        actionText="Try another gateway"
+                        actionText={t('iframeScreen.tryOtherGateway')}
                         onActionClick={restartWidget}
                         onDismissClick={() => props.onErrorDismissClick('FATAL')}
                         canBeDismissed
                     >
-                        <span>{"It's posible that your bank rejected the transaction. Please. use another credit card or try with another gateway."}</span>
+                        <span>{t('iframeScreen.bankRejection')}</span>
                     </InfoBox>
                 </>
             }
@@ -173,18 +176,18 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                                 {
                                     countDown <= 0 ?
                                         <>
-                                            <span>You have been redirected to finish the purchase with {selectedGateway?.identifier}.</span>
+                                            <span>{t('iframeScreen.redirect.message')} {selectedGateway?.identifier}.</span>
                                             <span style={{ width: '50%' }}>
-                                                If nothing happened, please, click the button below.
+                                                {t('iframeScreen.redirect.clickButton')}
                                             </span>
                                             <span style={{ width: '50%', marginBottom: '1rem' }}>
-                                                <ButtonAction text="Complete purchase" size='small' onClick={() => redirect(iframeUrl)} />
+                                                <ButtonAction text={t('iframeScreen.completePurchase')} size='small' onClick={() => redirect(iframeUrl)} />
                                             </span>
                                         </>
                                         :
                                         <>
-                                            <span>You will be redirected to finish the purchase with {selectedGateway?.identifier}.</span>
-                                            <span><div>Redirecting you in</div><div style={{ fontSize: '1.5rem' }}>{countDown}</div></span>
+                                            <span>{t('iframeScreen.redirect.beRedirected')} {selectedGateway?.identifier}.</span>
+                                            <span><div>{t('iframeScreen.redirect.redirectCountdown')}</div><div style={{ fontSize: '1.5rem' }}>{countDown}</div></span>
                                         </>
                                 }
                             </div>
@@ -193,10 +196,10 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                                     <div className={styles.block} style={{ fontSize: '0.75rem' }}>
                                         <hr className={stylesCommon.divisor}></hr>
                                         <span>
-                                            <div>Or, if you already finished the transaction:</div>
+                                            <div>{t('iframeScreen.redirect.transactionFinished')}</div>
                                         </span>
                                         <span>
-                                            <ButtonAction text="Buy more crypto" size='small' onClick={restartWidget} />
+                                            <ButtonAction text={t('iframeScreen.redirect.buyMoreCrypto')} size='small' onClick={restartWidget} />
                                         </span>
                                     </div>
                                 )
@@ -205,26 +208,26 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     ))
                     || ((type === 'redirect' && autoRedirect) && (
                         <div className={`${styles.center}`}>
-                            
+
                             {
-                                !userClosedPopup ? 
+                                !userClosedPopup ?
                                 (
                                     <>
-                                    <span>Redirecting you to finish the process...</span>
-                            <span>A new window should be opened, if not, click the button below to finish the process. </span>
+                                    <span>{t('iframeScreen.autoRedirect.redirecting')}</span>
+                            <span>{t('iframeScreen.autoRedirect.newWindow')}</span>
                             <span style={{ width: '40%' }}>
-                                <ButtonAction text="Finish process" size='small' onClick={() => redirect(iframeUrl)} />
+                                <ButtonAction text={t('iframeScreen.autoRedirect.finishProcess')} size='small' onClick={() => redirect(iframeUrl)} />
                             </span>
                             </>
                                 ):(
                                     <div className={styles.block}>
-                                        <span>A new window should have been opened to complete the transaction</span>
+                                        <span>{t('iframeScreen.autoRedirect.newWindowComplete')}</span>
                                         <hr className={stylesCommon.divisor}></hr>
                                         <span>
-                                            <div>If you already completed the transaction</div>
+                                            <div>{t('iframeScreen.autoRedirect.alreadyCompleted')}</div>
                                         </span>
                                         <span style={{ width: '40%' }}>
-                                            <ButtonAction text="Buy more crypto" size='small' onClick={restartWidget} />
+                                            <ButtonAction text={t('iframeScreen.redirect.buyMoreCrypto')} size='small' onClick={restartWidget} />
                                         </span>
                                     </div>
                                 )
@@ -233,9 +236,9 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     ))
                     || ((type === 'redirect' && !autoRedirect) && (
                         <div className={`${styles.center}`}>
-                            <span className={`${stylesCommon.body__child} `}>Please, click the button below to finish the process. </span>
+                            <span className={`${stylesCommon.body__child} `}>{t('iframeScreen.autoRedirect.pleaseClick')}</span>
                             <span style={{ width: '30%' }}>
-                                <ButtonAction text="Finish process" size='small' onClick={() => redirect(iframeUrl)} />
+                                <ButtonAction text={t('iframeScreen.autoRedirect.finishProcess')} size='small' onClick={() => redirect(iframeUrl)} />
                             </span>
                         </div>
                     ))
