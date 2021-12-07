@@ -18,6 +18,7 @@ import TopScreenB2 from './TopScreenB2/TopScreenB2'
 import NotificationSection from './NotificationSection/NotificationSection'
 import Step from "./../steps/Step"
 import TopScreenA from './ScreenA/TopScreenA'
+import { getBestAvailableGateway } from '../utils'
 
 interface BodyBuyCryptoProps {
     onBuyCrypto: () => void
@@ -115,9 +116,8 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     }, [collected.amountInCrypto])
 
     useEffect(() => {
-      const availableRates = allRates.filter(g => g.available);
-      handleInputChange('selectedGateway', availableRates?.[0]);
-    }, [allRates, collected.selectedCrypto, collected.selectedCurrency, collected.selectedGateway, collected.selectedPaymentMethod, handleInputChange])
+      handleInputChange('selectedGateway', getBestAvailableGateway(allRates, !!collected.amountInCrypto));
+    }, [allRates, collected.amountInCrypto, collected.selectedCrypto, collected.selectedCurrency, collected.selectedPaymentMethod, handleInputChange])
   
     useEffect(() => {
       if(isGatewayInitialLoading) {
