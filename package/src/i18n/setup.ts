@@ -8,6 +8,8 @@ import resources from './translations';
  *
  * Language detector: https://github.com/i18next/i18next-browser-languageDetector
  * i18next options: https://www.i18next.com/overview/configuration-options
+ *
+ * Add `?lng=LANGUAGE` to URL to set language. See `translations.ts` for the available languages.
  */
 i18n
   .use(LanguageDetector)
