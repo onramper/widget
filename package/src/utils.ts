@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export const copyToClipBoard = async (text: string, copied: (status: boolean, text: string) => void) => {
     try {
         await navigator.clipboard.writeText(text);
@@ -37,24 +39,24 @@ export const toMaxDecimalsRound = (n: number | string, decimals: number) => {
     return !isFinite(nRound) ? 0 : nRound
 }
 
-const ordredMagnitudes = [
-    { magnitude: 'seconds', magnitudeShort: 's', factor: 1 },
-    { magnitude: 'minutes', magnitudeShort: 'm', factor: 60 },
-    { magnitude: 'hours', magnitudeShort: 'h', factor: 3600 },
-    { magnitude: 'days', magnitudeShort: 'd', factor: 86400 }
-]
+const orderedMagnitudes = [
+    { magnitude: i18next.t('timeMagnitudes.second'), magnitudeShort: 's', factor: 1 },
+    { magnitude: i18next.t('timeMagnitudes.minute'), magnitudeShort: 'm', factor: 60 },
+    { magnitude: i18next.t('timeMagnitudes.hour'), magnitudeShort: 'h', factor: 3600 },
+    { magnitude: i18next.t('timeMagnitudes.day'), magnitudeShort: 'd', factor: 86400 }
+];
 export const formatSeconds = (s: number) => {
     let value = s
     let i = 0
-    for (i; i < ordredMagnitudes.length; i++) {
-        const nextValue = s / ordredMagnitudes[i].factor
+    for (i; i < orderedMagnitudes.length; i++) {
+        const nextValue = s / orderedMagnitudes[i].factor
         if (nextValue < 1) break
         value = nextValue
     }
     return {
         n: value,
-        magnitude: ordredMagnitudes[i - 1].magnitude,
-        magnitudeShort: ordredMagnitudes[i - 1].magnitudeShort
+        magnitude: orderedMagnitudes[i - 1].magnitude,
+        magnitudeShort: orderedMagnitudes[i - 1].magnitudeShort
     }
 }
 

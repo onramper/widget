@@ -26,6 +26,7 @@ import { scrollTo } from '../../utils'
 import { GroupFieldsController } from './utils'
 import BuyCryptoView from '../../BuyCryptoView'
 import ChooseGatewayView from '../../ChooseGatewayView'
+import { useTranslation } from 'react-i18next'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -44,6 +45,8 @@ type BodyFormViewType = {
 }
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
+    const { t } = useTranslation();
+
     const { handleInputChange, onActionButton, fields = [] } = props
     const { collected, apiInterface } = useContext(APIContext);
     const { backScreen, nextScreen, onlyScreen } = useContext(NavContext)
@@ -454,7 +457,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     })
                 }
                 <div className={`${stylesCommon.body__child} ${push2Bottom ? '' : stylesCommon.grow}`}>
-                    <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled || isLoading} />
+                    <ButtonAction onClick={onActionButton} text={isLoading ? t('kycScreens.sendingProgressMessage') : t('kycScreens.continueButtonText')} disabled={!isFilled || isLoading} />
                 </div>
             </>
         </main >

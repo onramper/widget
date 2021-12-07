@@ -8,6 +8,7 @@ import IconKYCReq from '../icons/card.png'
 import { CSSTransition } from 'react-transition-group';
 
 import { APIContext, GatewayRateOption } from '../ApiContext'
+import { useTranslation } from 'react-i18next';
 
 const transitionPropsCollapse = {
     timeout: 500,
@@ -44,12 +45,13 @@ type GateWayOptionProps = {
 } & GatewayRateOption
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
+    const { t } = useTranslation();
     const { collected } = useContext(APIContext)
     /* const [transitionRefs] = useState(Array(3).map(() => React.useRef(null))) */
     const transitionRefs1 = React.useRef(null)
     const transitionRefs2 = React.useRef(null)
     const transitionRefs3 = React.useRef(null)
-    const [badge, setBadge] = useState("Alternative")
+    const [badge, setBadge] = useState(t('gatewayScreen.gatewayBadges.alternative'))
 
     const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change
     const { onClick } = props
@@ -80,28 +82,28 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     useEffect(() => {
         if (name === 'Wyre') {
             if (badges[name]?.bestOffer)
-                setBadge('Best offer')
+                setBadge(t('gatewayScreen.gatewayBadges.bestOffer'))
             else
-                setBadge('Easiest')
+                setBadge(t('gatewayScreen.gatewayBadges.easiest'))
             return
         }
 
         if (props.index === 0 && badges[name]?.count > 1) {
-            setBadge('Best option')
+            setBadge(t('gatewayScreen.gatewayBadges.bestOption'))
         }
         else if (badges[name]?.bestOffer) {
-            setBadge('Best offer')
+            setBadge(t('gatewayScreen.gatewayBadges.bestOffer'))
         }
         else if (badges[name]?.easiest) {
-            setBadge('Easiest')
+            setBadge(t('gatewayScreen.gatewayBadges.easiest'))
         }
         else if (badges[name]?.fastest) {
-            setBadge('Fastest')
+            setBadge(t('gatewayScreen.gatewayBadges.fastest'))
         }
         else if (badges[name]?.fast) {
-            setBadge('Fast')
+            setBadge(t('gatewayScreen.gatewayBadges.fast'))
         }
-    }, [badges, name, props.index])
+    }, [badges, name, props.index, t])
 
     return (
         <div
@@ -124,7 +126,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                             <div className={`${styles.details}`} >
                                 {duration && <div style={{ height: '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
                                 {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>{duration.message}</span></div>}
-                                {<div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>{props.badges?.[props.name].noId ? "No ID required" : "Identification required"}</span></div>}
+                                {<div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>{props.badges?.[props.name].noId ? t('gatewayScreen.gatewayIdProperties.noIdRequired') : t('gatewayScreen.gatewayIdProperties.idRequired')}</span></div>}
                             </div>
                         </div>
                     </CSSTransition>
@@ -147,7 +149,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         </CSSTransition> */}
                         {/* <CSSTransition in={isOpen && available} {...transitionPropsPrice}> */}
                         {
-                            ((isOpen && available) && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You receive:'}</span>)
+                            ((isOpen && available) && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? `${t('gatewayScreen.gatewayOfferActionInCrypto')}:` : `${t('gatewayScreen.gatewayOfferActionInFiat')}:`}</span>)
                             || (available && !isOpen && !isAnOption && !(error?.type.match(/MIN|MAX/)) &&
                                     /* available ? */
                                     <span ref={transitionRefs3} style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
@@ -157,7 +159,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         {/* </CSSTransition> */}
                         {available ?
                             <span className={styles['receive-amount']}> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {collected.amountInCrypto ? receivedCrypto : receivedCrypto.toFixed(5)}</span>
-                            : <span>{!error?.message ? 'Try again later' : error?.message}</span>
+                            : <span>{!error?.message ? t('gatewayScreen.errorTryAgainMessage') : error?.message}</span>
                         }
                     </div>
                 </div>
