@@ -4,9 +4,12 @@ import List from '../../List'
 import styles from '../../../styles.module.css'
 
 import { NavContext } from '../../../NavContext'
+import { useTranslation } from 'react-i18next';
 
 
 const Menu: React.FC = () => {
+  const { t } = useTranslation();
+
   const { backScreen/* , triggerChat */ } = useContext(NavContext)
 
   const handleItemClick = (i: number) => {
@@ -35,27 +38,27 @@ const Menu: React.FC = () => {
 
   return (
     <main className={styles.view}>
-      <Header title="Menu" onMenuClick={() => backScreen()} />
+      <Header title={t('menu.title')} onMenuClick={() => backScreen()} />
       <List onItemClick={handleItemClick} items={[
         {
           id: 'faq',
-          name: 'FAQ/support'
+          name: t('menu.faq')
         },
         {
           id: 'legal',
-          name: 'Privacy Policy'
+          name: t('menu.legal')
         },
         {
           id: 'terms',
-          name: 'Terms of use'
+          name: t('menu.terms')
         },
 /*         {
           id: 'liveChat',
-          name: 'Live chat'
+          name: t('menu.liveChat')
         }, */
         {
           id: 'about',
-          name: 'About Onramper'
+          name: t('menu.about')
         }
       ]} />
     </main>

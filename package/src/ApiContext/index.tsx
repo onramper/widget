@@ -35,6 +35,7 @@ import type {
 import { NextStepError } from "./api";
 import type { Filters } from "./api";
 import phoneCodes from "./utils/phoneCodes";
+import { useTranslation } from "react-i18next";
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
@@ -73,6 +74,8 @@ interface APIProviderType {
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
+  const { t } = useTranslation();
+
   const {
     defaultAmount = 100,
     defaultAddrs = {},
@@ -132,9 +135,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
   // INITIALIZING AUTHENTICATION
   useEffect(() => {
-    if (!API_KEY) throw new Error("API KEY NOT PROVIDED");
+    if (!API_KEY) throw new Error(t('apiProvider.apiKeyNotProvidedErrorMessage'));
     API.authenticate(API_KEY);
-  }, [API_KEY]);
+  }, [API_KEY, t]);
 
   /* DEFINING INPUT INTERFACES */
   const handleInputChange = useCallback(
@@ -240,14 +243,14 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           return processErrors({
             GATEWAYS: {
               type: "DISABLED_GATEWAYS",
-              message: "Gateways disabled by filters.",
+              message: t('apiProvider.gatewaysDisabledByFilters'),
             },
           });
         }
         return processErrors({
           GATEWAYS: {
             type: "NO_GATEWAYS",
-            message: "No gateways found.",
+            message: t('apiProvider.noGatewaysFound'),
           },
         });
       }
@@ -268,7 +271,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         return processErrors({
           GATEWAYS: {
             type: "NO_ITEMS",
-            message: "No cryptos found.",
+            message: t('apiProvider.noCryptosFound'),
           },
         });
       }
@@ -326,6 +329,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       clearErrors,
       props.country,
       props.displayChatBubble,
+      props.recommendedCryptoCurrencies,
+      t
     ]
   );
 
@@ -371,7 +376,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         return processErrors({
           GATEWAYS: {
             type: "NO_ITEMS",
-            message: "No fiat currencies found.",
+            message: t('apiProvider.noFiatsFound'),
           },
         });
       }
@@ -415,6 +420,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       processErrors,
       defaultCrypto,
       state.collected.defaultAddrs,
+      t
     ]
   );
 
@@ -488,7 +494,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         return processErrors({
           GATEWAYS: {
             type: "NO_ITEMS",
-            message: "No payment methods availables found.",
+            message: t('apiProvider.noPaymentMethodsFound'),
           },
         });
       }
@@ -525,6 +531,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       defaultFiat,
       defaultFiatSoft,
       props.amountInCrypto,
+      t
     ]
   );
 
@@ -650,7 +657,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       return processErrors({
         RATE: {
           type: "NO_RATES",
-          message: `We tried but... we haven't found any gateway for this combination of cryptocurrency, fiat currency, payment method and/or prefilled ${outCurrency} wallet address. Please, try with another one or contact us.`,
+          message: t('apiProvider.noGatewayForCombination', { outCurrency }),
         },
       });
     }
@@ -722,8 +729,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         return processErrors({
           RATE: {
             type: "ALL_UNAVAILABLE",
-            message:
-              "No gateways connected at this moment, please, try again in some minutes.",
+            message: t('apiProvider.noGatewaysConnected'),
           },
         });
       }
@@ -753,6 +759,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     clearErrors,
     props.filters?.onlyGateways,
     props.minAmountEur,
+    t
   ]);
 
   useEffect(() => {
@@ -866,7 +873,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
                 fiats.push("other currencies");
               return fiats.reduce((acc, currency, index, arr) => {
                 const currencyName = currency;
-                if (acc === "") return `Available paying with ${currencyName}`;
+                if (acc === "") return `${t('apiProvider.sellerAvailablePayingWith')} ${currencyName}`;
                 else if (index < arr.length - 1)
                   return `${acc}, ${currencyName}`;
                 else if (index === arr.length - 1)
@@ -908,10 +915,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             type: "OPTION",
             message: payments.reduce((acc, payment, index, arr) => {
               const paymentName = state.data.ICONS_MAP?.[payment].name;
-              if (acc === "") return `Available paying with ${paymentName}`;
+              if (acc === "") return `${t('apiProvider.sellerAvailablePayingWith')} ${paymentName}`;
               else if (index < arr.length - 1) return `${acc}, ${paymentName}`;
               else if (index === arr.length - 1)
-                return `${acc} or ${paymentName}`;
+                return `${acc} ${t('apiProvider.sellerAvailableOr')} ${paymentName}`;
               else return acc;
             }, ""),
           },
@@ -937,6 +944,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     addData,
     state.data.ICONS_MAP,
     state.collected.defaultAddrs,
+    t
   ]);
 
   useEffect(() => {
@@ -949,12 +957,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const executeStep = useCallback(
     async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
       if (step.type !== "file" && props.partnerContext !== data.partnerContext)
-        throw new Error("Partner context not set properly");
+        throw new Error(t('apiProvider.partnerContextErrorMessage'));
       return await API.executeStep(step, data, {
         country: state.collected.selectedCountry,
       });
     },
-    [state.collected.selectedCountry, props.partnerContext]
+    [state.collected.selectedCountry, props.partnerContext, t]
   );
 
   return (

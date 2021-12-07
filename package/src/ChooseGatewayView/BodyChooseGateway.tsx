@@ -7,6 +7,7 @@ import { APIContext, GatewayRateOption } from "../ApiContext";
 import InfoBox from "../common/InfoBox";
 import ErrorVisual from "../common/ErrorVisual";
 import RatesList from "./RatesList";
+import { useTranslation } from "react-i18next";
 
 type BodyChooseGatewayType = {
   onActionButton?: () => void;
@@ -15,6 +16,7 @@ type BodyChooseGatewayType = {
 };
 
 const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
+  const { t } = useTranslation();
   const { data } = useContext(APIContext);
 
   const { onActionButton, onItemClick } = props;
@@ -33,7 +35,7 @@ const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
             type="notification"
             className={`${stylesCommon.body__child}`}
           >
-            {"The displayed amounts are an approximate calculation of the crypto that you will receive after fees."}
+            {t('gatewayScreen.noteAboutApproximation')}
           </InfoBox>
           <div className={`${stylesCommon.body__child}`}>
             <RatesList
@@ -51,17 +53,17 @@ const BodyChooseGateway: React.FC<BodyChooseGatewayType> = (props) => {
             type="info"
             className={`${stylesCommon.body__child}`}
           >
-            No prices available at this time.
+            {t('gatewayScreen.noPricesAvailable')}
           </InfoBox>
           <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
-            <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
+            <ErrorVisual message={t('gatewayScreen.errorConnectingToServerMessage')} />
           </div>
         </>
       )}
       <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
         <ButtonAction
           onClick={onActionButton}
-          text="Continue"
+          text={t('gatewayScreen.continueButtonText')}
           disabled={availableRates.length < 1}
         />
       </div>

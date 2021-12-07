@@ -6,10 +6,13 @@ import { NavContext } from '../NavContext'
 import { APIContext, GatewayRateOption } from '../ApiContext'
 
 import Step from '../steps/Step'
+import { useTranslation } from 'react-i18next';
 
 /* import WalletAddressView from '../steps/WalletAddressView' */
 
 const ChooseGatewayView = () => {
+  const { t } = useTranslation();
+
   const { nextScreen } = useContext(NavContext)
   const { data, inputInterface } = useContext(APIContext)
   const { handleInputChange } = inputInterface
@@ -38,7 +41,7 @@ const ChooseGatewayView = () => {
 
   return (
     <div className={styles.view}>
-      <Header title="Choose seller" backButton />
+      <Header title={t('header.chooseSeller')} backButton />
       <BodyChooseGateway
         onItemClick={(i) => setSelectedGatewayIndex(i)}
         ratesList={data.allRates}
