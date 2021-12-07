@@ -10,10 +10,13 @@ import { NavContext } from "../NavContext";
 import { APIContext, ItemType, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
 import { arrayUnique } from "../utils";
+import { useTranslation } from "react-i18next";
 
 const popularCrypto = ["BTC", "ETH", "USDT", "BNB_BEP20", "USDC"];
 
 const BuyCryptoView: React.FC = () => {
+  const { t } = useTranslation();
+
   const [isFilled, setIsFilled] = useState(false);
   const [buyStep, setBuyStep] = useState<NextStep>();
 
@@ -98,9 +101,9 @@ const BuyCryptoView: React.FC = () => {
   return (
     <div className={styles.view}>
       <Header
-        title="Buy crypto"
+        title={t('header.buyCrypto')}
         secondaryTitle={
-          buyStep && collected.supportSell ? "Sell crypto" : undefined
+          buyStep && collected.supportSell ? t('header.sellCrypto') : undefined
         }
         onSecondaryTitleClick={() => {
           nextScreen(<Step nextStep={buyStep} />);
@@ -114,7 +117,7 @@ const BuyCryptoView: React.FC = () => {
                 nextScreen(
                   <PickView
                     name="crypto"
-                    title="Select cryptocurrency"
+                    title={t('header.selectCrypto')}
                     items={sortedCrypto}
                     onItemClick={handleItemClick}
                     searchable
@@ -128,7 +131,7 @@ const BuyCryptoView: React.FC = () => {
                 nextScreen(
                   <PickView
                     name="currency"
-                    title="Select fiat currency"
+                    title={t('header.selectFiat')}
                     items={data.availableCurrencies}
                     onItemClick={handleItemClick}
                     searchable
@@ -142,7 +145,7 @@ const BuyCryptoView: React.FC = () => {
                 nextScreen(
                   <PickView
                     name="paymentMethod"
-                    title="Select payment method"
+                    title={t('header.selectPaymentMethod')}
                     items={data.availablePaymentMethods}
                     onItemClick={handleItemClick}
                   />

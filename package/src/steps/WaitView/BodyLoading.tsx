@@ -3,6 +3,7 @@ import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
 import { ReactComponent as ErrorIllustration } from "../../icons/error.svg";
 import Loading from "../../common/Loading";
+import { useTranslation } from "react-i18next";
 
 interface BodyLoadingType {
   error: string;
@@ -13,18 +14,11 @@ interface BodyLoadingType {
   height: "10rem",
 }; */
 
-const cryptoFacts = shuffle([
-  "The majority of bitcoin mining takes place in China, Georgia, Sweden and Canada",
-  "No one knows the real identity of the creator of Bitcoin",
-  "Over 16 million of Bitcoins are in circulation",
-  "In 2010, someone bought a pizza with 10000 BTC",
-  "The FBI is owning one of the largest Bitcoin wallets",
-  "A unit of Bitcoin is called a 'Satoshi byte'",
-  "You can't ban Bitcoin",
-  "Bitcoin is created through mining",
-]);
 
 const BodyLoading: React.FC<BodyLoadingType> = (props) => {
+  const { t } = useTranslation();
+
+  const cryptoFacts = shuffle(t('loadingScreen.cryptoFacts', { returnObjects: true }));
   const [factIndex, setFactIndex] = React.useState(0);
 
   React.useEffect(() => {
@@ -33,7 +27,7 @@ const BodyLoading: React.FC<BodyLoadingType> = (props) => {
       1000 * 10
     );
     return () => clearInterval(t);
-  }, []);
+  }, [cryptoFacts.length]);
 
   return (
     <main className={`${stylesCommon.body} ${styles.body}`}>
@@ -43,11 +37,11 @@ const BodyLoading: React.FC<BodyLoadingType> = (props) => {
         <Loading />
       )}
       <p style={{ fontSize: "1.4375rem", marginBottom: "0rem" }}>
-        {props.error ? props.error : "Checking your information"}
+        {props.error ? props.error : t('loadingScreen.title')}
       </p>
       {!props.error && (
         <p style={{ color: "#252525", fontSize: "0.9rem" }}>
-          We are creating your order... please wait.
+          {t('loadingScreen.creatingOrder')}
         </p>
       )}
       <span
@@ -58,7 +52,7 @@ const BodyLoading: React.FC<BodyLoadingType> = (props) => {
           marginTop: "1.5rem",
         }}
       >
-        {props.error ? "Did you know..." : "While, did you know..."}
+        {props.error ? t('loadingScreen.didYouKnow') : t('loadingScreen.whileDidYouKnow')}
       </span>
       <p
         style={{

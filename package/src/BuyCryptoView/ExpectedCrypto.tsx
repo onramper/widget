@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
 import { APIContext } from "../ApiContext";
+import { useTranslation } from "react-i18next";
 
 type ExpectedCryptoType = {
   denom: string;
@@ -11,6 +12,8 @@ type ExpectedCryptoType = {
 };
 
 const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
+  const { t } = useTranslation();
+
   const { denom, className, isLoading, amountInCrypto = false } = props;
 
   const [expectedCrypto, setExpectedCrypto] = useState(0);
@@ -45,10 +48,10 @@ const ExpectedCrypto: React.FC<ExpectedCryptoType> = (props) => {
   return (
     <div className={`${styles["expected-crypto"]} ${className}`}>
       <span className={styles["expected-crypto__amount"]}>
-        {isLoading ? "Fetching best price..." : `${expectedCrypto.toFixed(amountInCrypto ? 2 : 8)} ${denom}`}
+        {isLoading ? t('mainScreen.progressMessage') : `${expectedCrypto.toFixed(amountInCrypto ? 2 : 8)} ${denom}`}
       </span>
       <span className={styles["expected-crypto__info"]}>
-        {amountInCrypto ? "Amount you pay" : "Best offer found (approximate)"}
+        {amountInCrypto ? t('mainScreen.noteForFiatAmount') : t('mainScreen.noteForCryptoAmount')}
       </span>
     </div>
   );

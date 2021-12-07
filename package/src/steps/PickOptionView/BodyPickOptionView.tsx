@@ -6,6 +6,7 @@ import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
 import { FileStep } from '../../ApiContext'
+import { useTranslation } from 'react-i18next'
 
 type BodyPickOptionType = {
     onActionButton: () => void
@@ -18,6 +19,8 @@ type BodyPickOptionType = {
 }
 
 const BodyPickOption: React.FC<BodyPickOptionType> = (props) => {
+    const { t } = useTranslation();
+
     const { onActionButton, steps = [] } = props
     const { isFilled = false, isLoading = false, infoMsg } = props
 
@@ -30,7 +33,7 @@ const BodyPickOption: React.FC<BodyPickOptionType> = (props) => {
                 <InputRadio options={steps.map((item) => ({ name: item.humanName, value: item.humanName }))} onItemClick={props.handleOptionChange} />
             </div>
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
-                <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled} />
+                <ButtonAction onClick={onActionButton} text={isLoading ? t('kycScreens.sendingProgressMessage') : t('kycScreens.continueButtonText')} disabled={!isFilled} />
             </div>
         </main >
     )
@@ -45,6 +48,8 @@ interface InputRadioType {
 }
 
 const InputRadio: React.FC<InputRadioType> = ({ options, onItemClick = () => null }) => {
+    const { t } = useTranslation();
+
     const [itemClicked, setIndexClicked] = useState(0)
     const onClick = (i: number) => {
         setIndexClicked(i)
@@ -56,7 +61,7 @@ const InputRadio: React.FC<InputRadioType> = ({ options, onItemClick = () => nul
             {
                 options.map((item, i) =>
                     <div className={styles.option} key={i}>
-                        <label><input className={styles['input--radio']} type="radio" value={item.value ?? ('Item ' + i)} checked={i === itemClicked} onChange={() => onClick(i)} />{item.name ?? ('Item ' + i)}</label>
+                        <label><input className={styles['input--radio']} type="radio" value={item.value ?? `${t('kycScreens.itemPrefix')} ${i}`} checked={i === itemClicked} onChange={() => onClick(i)} />{item.name ?? `${t('kycScreens.itemPrefix')} ${i}`}</label>
                     </div>
                 )
             }
