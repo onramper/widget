@@ -28,7 +28,7 @@
     font-weight: normal;
     font-size: 13px;
     line-height: 16px;
-    color: #7C7D82;
+    color: var(--text-light-color);
     text-align: left;
     margin-bottom: 4px;
 }
@@ -41,7 +41,7 @@
     font-weight: 500;
     font-size: 16px;
     line-height: 19px;
-    color: #292D32;
+    color: var(--text-dark-color);
 }
 
 .option-handle > img  {
@@ -54,8 +54,7 @@
     font-weight: normal;
     font-size: 11px;
     line-height: 13px;
-    text-align: right;
-    color: #7C7D82;
+    color: var(--text-light-color);
     margin: 4px 0px;
     text-align: right;
     word-break: break-all;

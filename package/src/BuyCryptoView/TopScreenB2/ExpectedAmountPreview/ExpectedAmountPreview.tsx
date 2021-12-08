@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./ExpectedAmountPreview.module.css";
 import commonStyles from "../../../styles.module.css";
 import { APIContext } from "../../../ApiContext";
+import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
 
 const ExpectedAmountPreview: React.FC = () => {
   const { data, inputInterface, collected } = useContext(APIContext);
@@ -49,8 +50,12 @@ const ExpectedAmountPreview: React.FC = () => {
     );
   }, [collected.errors]);
 
-  if(errorMessage) {
-    return <div className={styles["error-text"]}> {errorMessage}</div>;
+  if (errorMessage) {
+    return (
+      <div className={styles["error-text"]}>
+        <ErrorMessage text={errorMessage} />
+      </div>
+    );
   }
 
   return (

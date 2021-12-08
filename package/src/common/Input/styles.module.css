@@ -92,7 +92,7 @@
 /***input type=number***/
 .input__type--number--error,
 .input__type--selector--error {
-    border-color: #E35757;
+    border-color: var(--error-color);
 }
 
 .input__type--number--disabled {
@@ -148,7 +148,7 @@
 }
 
 .text-error {
-    color: #E35757;
+    color: var(--error-color);
     font-size: 0.75em;
     margin-top: 0.2727em;
 }

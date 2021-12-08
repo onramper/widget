@@ -1,7 +1,17 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .text-error {
-    color: #E35757;
-    font-size: 12px;
-    line-height: 15px;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.08px;
+  color: var(--error-color);
+}
+
+.err-icon {
+  margin-right: 6px;
 }
 
 .collapse-enter {

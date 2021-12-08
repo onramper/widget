@@ -21,6 +21,6 @@
 }
 
 .option-wrapper.selected {
-    border-bottom: 2px solid #0316C1;
-    color: #292D32;
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--text-dark-color);
 }

@@ -18,7 +18,7 @@ ul {
     padding-top: 0.563rem;
     font-size: 13px;
     line-height: 16px;
-    color: #7C7D82;
+    color: var(--text-light-color);
     cursor: pointer;
     border: 0.0938rem solid transparent;
     border-radius: 0.5rem;
@@ -40,8 +40,6 @@ ul {
     margin-bottom: 0.25rem;
     line-height: 1.2369rem;
     font-size: 1rem;
-    color: #7C7D82;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,7 +60,7 @@ ul {
 }
 
 .option-wrapper.selected {
-    color: #292D32;
+    color: var(--text-dark-color);
     border-color: #6C77DC;
 }
 
@@ -78,7 +76,7 @@ ul {
 .title {
     font-size: 0.875rem;
     line-height: 1.0625rem;
-    color: #7C7D82;
+    color: var(--text-light-color);
     margin-bottom: 1rem;
 }
 
