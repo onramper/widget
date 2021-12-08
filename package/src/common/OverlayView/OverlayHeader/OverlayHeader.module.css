@@ -6,7 +6,7 @@
     font-size: 16px;
     line-height: 20px;
     text-align: center;    
-    color: #292D32;
+    color: var(--text-dark-color);
     position: relative;
 }
 

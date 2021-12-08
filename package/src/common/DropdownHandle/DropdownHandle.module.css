@@ -19,7 +19,7 @@
     font-weight: normal;
     font-size: 12px;
     line-height: 15px;
-    color: #292D32;
+    color: var(--text-dark-color);
     margin-right: 9px;
 }
 
@@ -33,7 +33,7 @@
     display: flex;
     align-items: center;
     padding: 9px;
-    background: #F7FAFD;
+    background: var(--input-bg-color);
     border-radius: 162px;
     cursor: pointer;
 }
