@@ -5,7 +5,7 @@ import { ListItemProps } from "./List.models";
 const ListItem: React.FC<ListItemProps> = (props: ListItemProps) => {
   return (
     <div
-      className={styles["list-item"]}
+      className={`${styles["list-item"]} ${props.isSelected ? styles["list-item--selected"] : ""}`}
       onClick={() => props.onClick(props.index)}
     >
       {props.icon && (<img

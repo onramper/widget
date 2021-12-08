@@ -13,6 +13,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
         onItemClick={(index, item) => onItemClick(name, index, item)} 
         items={props.items} 
         searchable={!!props.searchable} 
+        indexSelected={props.indexSelected}
       />
     </OverlayView>
   );

@@ -103,16 +103,19 @@ const CurrencySwitcher: React.FC = () => {
    */
   const openPickCrypto = useCallback(() => {
     if(data.availableCryptos.length > 1) {
+      const items = getSortedCryptoListItem();
+      
       nextScreen(
         <OverlayPicker
           name="crypto"
+          indexSelected={items.findIndex(m => m.id === collected.selectedCrypto?.id)}
           title="Select cryptocurrency"
-          items={getSortedCryptoListItem()}
+          items={items}
           onItemClick={handleItemClick}
           searchable
         />);
     } 
-  }, [data.availableCryptos.length, getSortedCryptoListItem, handleItemClick, nextScreen]);
+  }, [collected.selectedCrypto?.id, data.availableCryptos.length, getSortedCryptoListItem, handleItemClick, nextScreen]);
 
    /**
    * TODO: add OverlayPicker to SCREEN A as well
@@ -123,12 +126,13 @@ const CurrencySwitcher: React.FC = () => {
         <OverlayPicker
           name="currency"
           title="Select fiat currency"
+          indexSelected={data.availableCurrencies.findIndex(m => m.id === collected.selectedCurrency?.id)}
           items={data.availableCurrencies}
           onItemClick={handleItemClick}
           searchable
         />);
     };
-  }, [data.availableCurrencies, handleItemClick, nextScreen]);
+  }, [collected.selectedCurrency?.id, data.availableCurrencies, handleItemClick, nextScreen]);
 
   const handleDropdown = useCallback((item?:ItemType) => {
     if(item?.currencyType === ItemCategory.Crypto) {

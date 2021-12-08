@@ -21,15 +21,7 @@
     flex-shrink: 0;
     padding: 19px 22px;
     background: #FFFFFF;
-}
-
-.list-item:hover {
     cursor: pointer;
-    background-color: #F7FAFD;
-}
-
-.list-item:active {
-    background: #6C77DC;
 }
 
 .list-item__icon {
@@ -64,6 +56,20 @@
 .list-item__right-child {
     flex-shrink: 0;
 }
+
+.list-item:hover {
+    background: #F7FAFD;
+}
+
+.list-item.list-item--selected,
+.list-item:active {
+    background: #6C77DC;
+}
+
+.list-item--selected .list-item__name,
+.list-item--selected .list-item__right-child,
+.list-item--selected .list-item__info,
+.list-item--selected .list-item__right-child .list-text,
 
 .list-item:active .list-item__name,
 .list-item:active .list-item__right-child,

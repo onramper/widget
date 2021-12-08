@@ -7,11 +7,13 @@ export type ListItemType = {
 
 export type ListItemProps = {
     index: number,
-    onClick: (index: number) => void
+    onClick: (index: number) => void,
+    isSelected?: boolean
 } & ItemType & ListItemType
 
 export type ListProps = {
     items: ListItemType[]
     onItemClick?: (index: number, item: ItemType) => void
-    searchable?: boolean
+    searchable?: boolean;
+    indexSelected?: number;
 }

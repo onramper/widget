@@ -16,8 +16,10 @@ const List: React.FC<ListProps> = (props: ListProps) => {
 
     const [isSmallHeightScreen] = useState(determineIsSmallScreen());
     const [query, setQuery] = useState("");
+    const [indexSelected, setIndexSelected] = useState(props.indexSelected)
 
     const handleItemClick = useCallback((index: number, item: ListItemType) => {
+        setIndexSelected(index);
         onItemClick(index, item)
     }, [onItemClick]);
 
@@ -56,6 +58,7 @@ const List: React.FC<ListProps> = (props: ListProps) => {
                   icon={item.icon}
                   network={item.network}
                   onClick={() => handleItemClick(i, item)}
+                  isSelected={indexSelected === i}
                   rightSection={item.rightSection}
                 />
               )
