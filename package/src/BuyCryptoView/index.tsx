@@ -110,20 +110,6 @@ const BuyCryptoView: React.FC = () => {
       />
       <BodyBuyCrypto
         onBuyCrypto={() => nextScreen(<ChooseGatewayView />)}
-        openPickCrypto={
-          data.availableCryptos.length > 1
-            ? () =>
-                nextScreen(
-                  <PickView
-                    name="crypto"
-                    title="Select cryptocurrency"
-                    items={sortedCrypto}
-                    onItemClick={handleItemClick}
-                    searchable
-                  />
-                )
-            : undefined
-        }
         openPickCurrency={
           data.availableCurrencies.length > 1
             ? () =>

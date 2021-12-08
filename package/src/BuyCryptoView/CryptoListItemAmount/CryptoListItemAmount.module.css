@@ -1,0 +1,20 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    font-style: normal;
+    font-weight: normal;
+    text-align: right;
+}
+
+.amount  {
+    font-size: 14px;
+    line-height: 17px;
+    color: #292D32;
+}
+
+.network {
+    font-size: 12px;
+    line-height: 15px;
+    color: #7C7D82;
+    margin-top: 2px;
+}

@@ -21,7 +21,6 @@ import TopScreenA from './ScreenA/TopScreenA'
 
 interface BodyBuyCryptoProps {
     onBuyCrypto: () => void
-    openPickCrypto?: () => void
     openPickCurrency?: () => void
     openPickPayment?: () => void
     selectedCrypto?: ItemType
@@ -45,7 +44,7 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
 }
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
-    const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
+    const { onBuyCrypto, openPickCurrency, openPickPayment } = props
     const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
     const { handleInputChange } = props
     const { collected, data: {availablePaymentMethods, allRates} } = useContext(APIContext);
@@ -134,14 +133,8 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
       <main className={stylesCommon.body}>
         <NotificationSection onBuyCrypto={onBuyCrypto} />
 
-        {/* <InputButton
-          onClick={openPickCrypto}
-          className={stylesCommon.body__child}
-          label="I want to buy"
-          selectedOption={selectedCrypto.name}
-          icon={selectedCrypto.icon}
-          network={selectedCrypto.network}
-        />
+        {/* 
+        
 
         <div
           className={`${stylesCommon.body__child} ${stylesCommon["row-fields"]}`}
