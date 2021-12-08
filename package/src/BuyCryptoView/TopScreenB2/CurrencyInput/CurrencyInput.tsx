@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useState, useRef, useCallback } from "react";
 import styles from "./CurrencyInput.module.css";
-import commonStyles from "../../../styles.module.css";
 import { APIContext } from "../../../ApiContext";
 import { onChangeTextNumber } from "../../../utils";
 
