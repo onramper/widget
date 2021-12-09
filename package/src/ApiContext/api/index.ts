@@ -8,9 +8,13 @@ import { BrowserClient, Hub } from "@sentry/browser";
 import type { CryptoAddrType } from '../initialState'
 
 import { BASE_API } from './constants'
+import i18n from "../../i18n/setup"
 
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
-const headers = new Headers()
+const headers = new Headers();
+// Accept-Language header is set here for i18n. The backend will use this to set the language of the responses.
+headers.set('Accept-Language', i18n.language);
+
 // See https://github.com/getsentry/sentry-javascript/issues/1656#issuecomment-430295616
 const sentryClient = new BrowserClient({
     dsn: "https://283a138678d94cc295852f634d4cdd1c@o506512.ingest.sentry.io/5638949",
