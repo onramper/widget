@@ -5,10 +5,11 @@ export interface GatewayIndicatorProps {
     selectedGateway?: IGatewaySelected;
     isLoading: boolean;
     isInitialLoading: boolean;
+    amountInCrypto: boolean;
 }
 
 export interface IGatewaySelected {
     name: string;
-    rate: string;
+    rate: number | undefined;
     icon: string;
 }

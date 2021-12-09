@@ -58,6 +58,7 @@
     color: #7C7D82;
     margin: 4px 0px;
     text-align: right;
+    word-break: break-all;
 }
 
 .sk-option-body {

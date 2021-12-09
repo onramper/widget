@@ -40,7 +40,7 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
   return {
       name: selectedGateway.name,
       icon: selectedGateway.icon || "",
-      rate: selectedGateway.rate ? selectedGateway.rate.toLocaleString() : ""
+      rate: selectedGateway.rate
   }
 }
 
@@ -198,6 +198,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
               openMoreOptions={onBuyCrypto}
               isLoading={collected.isCalculatingAmount}
               isInitialLoading={isGatewayInitialLoading}
+              amountInCrypto={!!collected.amountInCrypto}
             />
           )}
 
