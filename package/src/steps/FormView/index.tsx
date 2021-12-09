@@ -10,16 +10,18 @@ import { NavContext } from '../../NavContext'
 import { areAllKeysFilled } from '../utils'
 
 import { processError } from '../Step/utils'
+import { useTranslation } from 'react-i18next';
 
 
 const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextStep }) => {
+  const { t } = useTranslation();
   const { nextScreen } = useContext(NavContext);
   const { inputInterface, collected, apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
   const [errorObj, setErrorObj] = useState<{ [key: string]: string | undefined }>()
-  const [title, setTitle] = useState(nextStep.humanName ?? 'Purchase form')
+  const [title, setTitle] = useState(nextStep.humanName ?? t('formView.defaultTitle'))
   const [infoMsg, setInfoMsg] = useState(nextStep.hint ?? '')
 
   const { data: nextStepData = [] } = nextStep
@@ -29,19 +31,19 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
 
     // set title
     if (nextStepData.some(field => field.name === 'email') && nextStepData.length <= 2) {
-      setTitle('Input your email')
+      setTitle(t('formView.emailTitle'))
     }
     else if (nextStepData.some(field => field.name === 'phoneNumber') && nextStepData.length <= 2) {
-      setTitle('Input phone number')
+      setTitle(t('formView.phoneNumberTitle'))
     }
     else if (nextStepData.some(field => field.name === 'verifyEmailCode') && nextStepData.length <= 2) {
-      setTitle('Verify your email')
+      setTitle(t('formView.verifyEmailCodeTitle'))
     }
     else if (nextStepData[0].name === 'verifyPhoneCode' || nextStepData[0].name === 'verifyCreditCard') {
       if (nextStepData.length === 2 && (nextStepData[1].name === 'verifyPhoneCode' || nextStepData[1].name === 'verifyCreditCard'))
-        setTitle('Enter verification codes')
+        setTitle(t('formView.enterVerificationCodesTitle'))
       else if (nextStepData.length === 1)
-        setTitle('Enter verification code')
+        setTitle(t('formView.enterVerificationCodeTitle'))
     }
     /* else if (
       (nextStepData.some(field => field.name === 'state') || nextStepData.length === 1)
@@ -56,8 +58,8 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
 
     // set infoMsg if needed
     if (nextStepData.some(field => field.name === 'bankIban') && nextStepData.length <= 2)
-      setInfoMsg('Please, fill in the bank account number that you will use to send the wire transfer.')
-  }, [nextStepData])
+      setInfoMsg(t('formView.bankIbanInfoMsg'))
+  }, [nextStepData, t])
 
   const handleButtonAction = async () => {
     setIsLoading(true)
