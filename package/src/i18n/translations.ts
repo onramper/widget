@@ -66,6 +66,16 @@ const resources = {
         itemPrefix: `Item`,
         noReference: `No reference`,
       },
+      formView: {
+        defaultTitle: "Purchase form",
+        emailTitle: "Input your email",
+        phoneNumberTitle: "Input phone number",
+        verifyEmailCodeTitle: "Verify your email",
+        enterVerificationCodesTitle: "Enter verification codes",
+        enterVerificationCodeTitle: "Enter verification code",
+        bankIbanInfoMsg:
+          "Please, fill in the bank account number that you will use to send the wire transfer.",
+      },
       loadingScreen: {
         title: `Checking your information`,
         didYouKnow: `Did you know...`,
@@ -97,6 +107,9 @@ const resources = {
         partnerContextErrorMessage: `Partner context not set properly`,
         apiKeyNotProvidedErrorMessage: `API KEY NOT PROVIDED`,
       },
+      apiContent: {
+        processResponseError: "Error parsing the response",
+      },
       iframeScreen: {
         autoRedirectFailed: `We couldn't auto-redirect you to finish the process, please click the button below to finish the process.`,
         tryOtherGateway: `Try another gateway`,
@@ -125,6 +138,7 @@ const resources = {
         hour: `hours`,
         day: `days`,
       },
+      misc: { searchbarPlaceholderText: "Search..." },
     },
   },
   ko: {
@@ -188,6 +202,16 @@ const resources = {
         itemPrefix: "안건",
         noReference: "참조 없음",
       },
+      formView: {
+        defaultTitle: "구매 양식",
+        emailTitle: "이메일을 입력하십시오",
+        phoneNumberTitle: "입력 전화 번호",
+        verifyEmailCodeTitle: "이메일 확인하십시오",
+        enterVerificationCodesTitle: "확인 코드를 입력하십시오",
+        enterVerificationCodeTitle: "확인 코드를 입력하십시오",
+        bankIbanInfoMsg:
+          "철사 전송을 보내는 데 사용할 은행 계좌 번호를 작성하십시오.",
+      },
       loadingScreen: {
         title: "귀하의 정보 확인",
         didYouKnow: "알다시피 ...",
@@ -223,6 +247,9 @@ const resources = {
           "파트너 컨텍스트가 제대로 설정되지 않았습니다.",
         apiKeyNotProvidedErrorMessage: "API 키가 제공되지 않음",
       },
+      apiContent: {
+        processResponseError: "응답 구문 분석 오류",
+      },
       iframeScreen: {
         autoRedirectFailed:
           "우리는 프로세스를 완료하도록 자동 리디렉션 할 수 없었습니다. 아래 버튼을 클릭하여 프로세스를 완료하십시오.",
@@ -250,6 +277,7 @@ const resources = {
         },
       },
       timeMagnitudes: { second: "초", minute: "분", hour: "시간", day: "날" },
+      misc: { searchbarPlaceholderText: "찾다..." },
     },
   },
   ja: {
@@ -319,6 +347,16 @@ const resources = {
         itemPrefix: "アイテム",
         noReference: "参照なし",
       },
+      formView: {
+        defaultTitle: "購入書を購入する",
+        emailTitle: "あなたのEメールを入力してください",
+        phoneNumberTitle: "入力電話番号",
+        verifyEmailCodeTitle: "あなたの電子メールを確認します",
+        enterVerificationCodesTitle: "検証コードを入力してください",
+        enterVerificationCodeTitle: "認証コードを入力してください",
+        bankIbanInfoMsg:
+          "ワイヤー転送を送信するために使用する銀行口座番号を入力してください。",
+      },
       loadingScreen: {
         title: "あなたの情報をチェックしてください",
         didYouKnow: "知ってますか...",
@@ -356,6 +394,9 @@ const resources = {
           "パートナーコンテキストが正しく設定されていません",
         apiKeyNotProvidedErrorMessage: "APIキーは提供されていません",
       },
+      apiContent: {
+        processResponseError: "応答の解析中にエラーが発生しました",
+      },
       iframeScreen: {
         autoRedirectFailed:
           "プロセスを終了するように自動的にリダイレクトすることはできませんでした、下のボタンをクリックしてプロセスを終了してください。",
@@ -384,6 +425,7 @@ const resources = {
         },
       },
       timeMagnitudes: { second: "秒数", minute: "分", hour: "時間", day: "日" },
+      misc: { searchbarPlaceholderText: "検索..." },
     },
   },
 };
