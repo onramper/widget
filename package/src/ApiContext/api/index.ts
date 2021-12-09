@@ -9,6 +9,7 @@ import type { CryptoAddrType } from '../initialState'
 
 import { BASE_API } from './constants'
 import i18n from "../../i18n/setup"
+import { t } from "i18next"
 
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers();
@@ -156,7 +157,7 @@ export const processResponse = async (response: FetchResponse): Promise<any> => 
             try {
                 errorResponse = { message: await response.text() }
             } catch (error) {
-                errorResponse = { message: "Error parsing the response" }
+                errorResponse = { message: t('apiContent.processResponseError') }
             }
         }
         sentryHub.addBreadcrumb({ message: "Error received from request", data: errorResponse })
@@ -269,7 +270,7 @@ const sortCryptoByRecommended = (availableCryptos: Currency[], recommendedCrypto
     return availableCryptos.sort((c1:Currency, c2:Currency) => {
         const c1Index = recommendedCryptoCurrencies.indexOf(c1.id);
         const c2Index = recommendedCryptoCurrencies.indexOf(c2.id);
-    
+
         if(c1Index === c2Index)  return 0;
         if(c2Index === -1) return -1;
         if(c1Index === -1) return 1;
