@@ -16,7 +16,6 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 1.125rem var(--padding-rl);
     height: var(--component-content-height);
     flex-shrink: 0;
     padding: 19px 22px;

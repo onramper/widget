@@ -10,7 +10,7 @@ import { arrayUnique } from "../../../utils";
 import { ItemCategory } from "./../../../ApiContext/initialState";
 import OverlayPicker from "../../../common/OverlayPicker/OverlayPicker";
 import { ListItemType } from "../../../common/ListRedesign/List.models";
-import CryptoListItemAmount from "../../CryptoListItemAmount/CryptoListItemAmount";
+import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
 
 const Skeleton: React.FC = () => {
   const handleJsx = (
@@ -47,32 +47,6 @@ const CurrencySwitcher: React.FC = () => {
     backScreen();
   }, [backScreen, data]);
 
-  const getFiatAmountForCrypto = useCallback(
-    (item: ItemType) => {
-      if (!collected.selectedCurrency) {
-        return;
-      }
-
-      /**
-       * TODO: update API then update this to get the amount
-       */
-      const precision =
-        collected.selectedCurrency.precision === undefined
-          ? 2
-          : collected.selectedCurrency.precision;
-
-      return `${
-        collected.selectedCurrency.symbol
-          ? `${collected.selectedCurrency.symbol} `
-          : ""
-      }${(53866.63).toLocaleString(undefined, {
-        minimumFractionDigits: precision,
-        maximumFractionDigits: precision,
-      })}`;
-    },
-    [collected]
-  );
-
   const getSortedCryptoListItem = useCallback(
     () => {
 
@@ -89,18 +63,12 @@ const CurrencySwitcher: React.FC = () => {
             .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
         ).map(item => ({
           ...item,
-          rightSection: <CryptoListItemAmount 
-                          amount={getFiatAmountForCrypto(item)} 
-                          network={item.network} 
-                        />
+          rightSection: <CryptoListItemRight network={item.network} />
         } as ListItemType));
     },
-    [collected.recommendedCryptoCurrencies, data.availableCryptos, getFiatAmountForCrypto],
+    [collected.recommendedCryptoCurrencies, data.availableCryptos]
   );
 
-  /**
-   * TODO: add OverlayPicker to SCREEN A as well
-   */
   const openPickCrypto = useCallback(() => {
     if(data.availableCryptos.length > 1) {
       const items = getSortedCryptoListItem();
@@ -117,9 +85,6 @@ const CurrencySwitcher: React.FC = () => {
     } 
   }, [collected.selectedCrypto?.id, data.availableCryptos.length, getSortedCryptoListItem, handleItemClick, nextScreen]);
 
-   /**
-   * TODO: add OverlayPicker to SCREEN A as well
-   */
   const openPickCurrency = useCallback(() => {
     if(data.availableCurrencies.length > 1) {
       nextScreen(
