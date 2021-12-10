@@ -6,6 +6,8 @@ import Loading from "../../common/Loading";
 
 interface BodyLoadingType {
   error: string;
+  title?: string;
+  message?: string;
 }
 
 /* const IconSVGStyles = {
@@ -43,11 +45,14 @@ const BodyLoading: React.FC<BodyLoadingType> = (props) => {
         <Loading />
       )}
       <p style={{ fontSize: "1.4375rem", marginBottom: "0rem" }}>
-        {props.error ? props.error : "Checking your information"}
+        {
+           props.error ? props.error : ( props.title ? props.title : "Checking your information")
+
+        }
       </p>
       {!props.error && (
         <p style={{ color: "#252525", fontSize: "0.9rem" }}>
-          We are creating your order... please wait.
+          { props.message ? props.message : "We are creating your order... please wait." }
         </p>
       )}
       <span
