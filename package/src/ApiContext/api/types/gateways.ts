@@ -1,5 +1,10 @@
 interface GatewaysResponse {
-    gateways: IGatewayItem[]
+    gateways: {
+        identifier: string
+        paymentMethods: string[]
+        fiatCurrencies: Currency[]
+        cryptoCurrencies: Currency[]
+    }[]
     localization: {
         country: string,
         state: string | null,
@@ -28,16 +33,7 @@ interface IconGatewaysResponse {
     symbol?: string
 }
 
-interface IGatewayItem {
-    identifier: string
-    paymentMethods: string[]
-    fiatCurrencies: Currency[]
-    cryptoCurrencies: Currency[]
-}
-
 export type {
     GatewaysResponse,
-    IconGatewaysResponse,
-    IGatewayItem,
-    Currency
+    IconGatewaysResponse
 }

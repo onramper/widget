@@ -127,8 +127,7 @@ export const initialState: StateType = {
         supportSell: true,
         supportBuy: true,
         isAmountEditable: true,
-        redirectURL: undefined,
-        recommendedCryptoCurrencies: undefined
+        redirectURL: undefined
     },
     data: {
         availableCryptos: [],

@@ -9,7 +9,6 @@ import Step from "../steps/Step";
 import { NavContext } from "../NavContext";
 import { APIContext, ItemType, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
-import { arrayUnique } from "../utils";
 
 const popularCrypto = ["BTC", "ETH", "USDT", "BNB_BEP20", "USDC"];
 
@@ -83,17 +82,16 @@ const BuyCryptoView: React.FC = () => {
   }, [collected.selectedCountry]);
 
   useEffect(() => {
-    const prioritizedCrypto = !collected.recommendedCryptoCurrencies ? popularCrypto : arrayUnique([...collected.recommendedCryptoCurrencies, ...popularCrypto]);
-    const auxSortedCrypto = prioritizedCrypto
+    const auxSortedCrypto = popularCrypto
       .map((c) => data.availableCryptos.filter((crypto) => crypto.id === c)[0])
       .filter((c) => c !== undefined)
       .concat(
         data.availableCryptos
-          .filter((crypto) => !prioritizedCrypto.includes(crypto.id))
+          .filter((crypto) => !popularCrypto.includes(crypto.id))
           .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
       );
     setSortedCrypto(auxSortedCrypto);
-  }, [collected.recommendedCryptoCurrencies, data.availableCryptos]);
+  }, [data.availableCryptos]);
 
   return (
     <div className={styles.view}>

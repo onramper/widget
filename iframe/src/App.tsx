@@ -42,7 +42,6 @@ const minAmountEur = Number(getParam("minAmountEur", "0"));
 const supportSell = getParam("supportSell", "true") === "true";
 const supportBuy = getParam("supportBuy", "true") === "true";
 const isAmountEditable = getParam("isAmountEditable", "true") === "true";
-const recommendedCryptoCurrencies = getArrayParam("recommendedCryptoCurrencies");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -104,7 +103,6 @@ function App() {
             supportSell={supportSell}
             supportBuy={supportBuy}
             isAmountEditable={isAmountEditable}
-            recommendedCryptoCurrencies={recommendedCryptoCurrencies}
           />
         </div>
       </div>
