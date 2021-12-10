@@ -16,9 +16,6 @@ import { NavContext } from "../../NavContext";
 
 import { APIContext, NextStep } from "../../ApiContext";
 import InformationView from "../InformationView";
-import PopupLauncherView from "../PopupView/PopupView";
-import PopupView from "../PopupView";
-import ActionableErrorView from "../ActionableErrorView";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -74,12 +71,6 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         break;
       case "redirect":
         replaceScreen(<IframeView nextStep={nextStep} />);
-        break;
-      case "popup":
-        replaceScreen(<PopupView nextStep={nextStep} />);
-        break;
-      case "actionable-error":
-        replaceScreen(<ActionableErrorView nextStep={nextStep}/>);
         break;
       case "wait":
         replaceScreen(<WaitView nextStep={nextStep} />);

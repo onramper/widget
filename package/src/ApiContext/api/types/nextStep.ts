@@ -51,12 +51,6 @@ type StepDataItems = Array<
     }
     | {
         type: 'boolean';
-        name: string;
-        humanName: string;
-        required: boolean;
-      }
-    | {
-        type: 'boolean';
         name: 'termsOfUse';
         terms: {
             url: string;
@@ -107,25 +101,6 @@ type NextStep =
         hint?: string;
         humanName?: string; // TODO: force all forms to have humanName
     } | {
-        type: 'popup';
-        url: string;
-        restartUrl: string;
-        humanName: string;
-        hint?: string;
-        nextStep: NextStep;
-        failStep: NextStep;
-        neededFeatures?: string;
-      }
-    | {
-        type: 'actionable-error';
-        nextStep?: NextStep;
-        humanName: string;
-        title: string;
-        message: string;
-        fatal?: boolean;
-        optionalUrl?: string;
-      }
-    | {
         type: 'wait';
         url: string;
         extraData?: StepDataItems;
