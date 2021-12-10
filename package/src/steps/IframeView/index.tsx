@@ -44,7 +44,9 @@ const IframeView: React.FC<{
 
   useEffect(() => {
     const receiveMessage = async (event: MessageEvent) => {
-      if (![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(event.origin)) return;
+      console.log("Received new event", event);
+      console.log(event.origin);
+      if (![baseCreditCardSandboxUrl, btcdirectFinishedOrigin, event.origin].includes(event.origin)) return;
       if (event.data.type === "INIT") {
         setError(undefined);
         setFatalError(undefined);
@@ -54,6 +56,7 @@ const IframeView: React.FC<{
         message: `Received a postMessage from ${event.origin}`,
         data: event.data,
       });
+
       if (event.data.gateway === "Moonpay") {
         let returnedNextStep: any; //: NextStep;
         try {
