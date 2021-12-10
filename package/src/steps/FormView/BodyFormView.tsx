@@ -282,6 +282,12 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                                     }.</label>
                             ))
+                            || ((field.type === 'boolean' && field.name !== 'termsOfUse') && (
+                                <label key={i} className={`${stylesCommon.body__child} ${styles.terms}`}>
+                                    <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;{
+                                    field.humanName
+                                    }</label>
+                            ))
                             || ((field.type === 'select') && (
                                 <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
                                     error={errorObj?.[field.name]}
@@ -466,19 +472,19 @@ const getValueByField = (field: BodyFormViewType['fields'][0], collected: Collec
 const getInputType = (field: BodyFormViewType['fields'][0]) => {
     if (field.type === 'integer')
         return 'number'
-    
+
     if (field.name === 'email')
         return 'email'
-    
+
     if (field.name === 'password')
         return 'password'
-    
+
     if (field.type === 'string')
         return 'text'
-    
+
     if (field.type === 'boolean')
         return 'checkbox'
-    
+
     return field.type
 }
 
