@@ -73,7 +73,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   return (
     <div className={styles.view}>
       <Header title="" backButton />
-      <BodyLoading error={error} title={props.nextStep.title} message={props.nextStep.message} />
+      <BodyLoading error={error} />
     </div>
   );
 };

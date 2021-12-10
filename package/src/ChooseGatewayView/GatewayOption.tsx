@@ -51,7 +51,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const transitionRefs3 = React.useRef(null)
     const [badge, setBadge] = useState("Alternative")
 
-    const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change
+    const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change 
     const { onClick } = props
     const isAnOption = error?.type==="OPTION"
 
@@ -156,7 +156,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         }
                         {/* </CSSTransition> */}
                         {available ?
-                            <span className={styles['receive-amount']}> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {"collected.amountInCrypto ? receivedCrypto : receivedCrypto.toFixed(5)"}</span>
+                            <span className={styles['receive-amount']}> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {collected.amountInCrypto ? receivedCrypto : receivedCrypto.toFixed(5)}</span>
                             : <span>{!error?.message ? 'Try again later' : error?.message}</span>
                         }
                     </div>

@@ -129,8 +129,6 @@ type NextStep =
         type: 'wait';
         url: string;
         extraData?: StepDataItems;
-        title?: string;
-        message?: string;
     } | {
         type: 'pickOne';
         options: FileStep[];
