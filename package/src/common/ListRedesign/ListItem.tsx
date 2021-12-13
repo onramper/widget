@@ -10,14 +10,14 @@ const ListItem: React.FC<ListItemProps> = (props: ListItemProps) => {
     >
       {props.icon && (<img
           alt="Icon"
-          className={styles["list-item__icon"]}
+          className={styles["list-item-icon"]}
           src={props.icon}
         />
       )}
       
-      <div className={styles["list-item__child"]}>
-        <div className={styles["list-item__name"]}> {props.name} </div>
-        {props.info && (<div className={`${styles["list-item__info"]}`}> {props.info} </div>)}
+      <div className={styles["list-item-child"]}>
+        <div className={styles["list-item-name"]}> {props.name} </div>
+        {props.info && (<div className={`${styles["list-item-info"]}`}> {props.info} </div>)}
       </div>
 
       {props.rightSection && <> {props.rightSection} </>}

@@ -23,19 +23,19 @@
     cursor: pointer;
 }
 
-.list-item__icon {
+.list-item-icon {
     width: 100%;
     max-height: 32px;
     max-width: 32px;
 }
 
-.list-item__child {
+.list-item-child {
     width: 100%;
     flex-grow: 1;
     margin-left: 20px;
 }
 
-.list-item__name {
+.list-item-name {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -44,7 +44,7 @@
     color: #292D32;
 }
 
-.list-item__info {
+.list-item-info {
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
@@ -52,7 +52,7 @@
     color: #7C7D82;
 }
 
-.list-item__right-child {
+.list-item-right-child {
     flex-shrink: 0;
 }
 
@@ -65,14 +65,14 @@
     background: #6C77DC;
 }
 
-.list li.selected .list-item__name,
-.list li.selected .list-item__right-child,
-.list li.selected .list-item__info,
-.list li.selected .list-item__right-child .list-text,
+.list li.selected .list-item-name,
+.list li.selected .list-item-right-child,
+.list li.selected .list-item-info,
+.list li.selected .list-item-right-child .list-text,
 
-.list li:active .list-item__name,
-.list li:active .list-item__right-child,
-.list li:active .list-item__info,
-.list li:active .list-item__right-child .list-text {
+.list li:active .list-item-name,
+.list li:active .list-item-right-child,
+.list li:active .list-item-info,
+.list li:active .list-item-right-child .list-text {
     color: #FFFFFF;
 }

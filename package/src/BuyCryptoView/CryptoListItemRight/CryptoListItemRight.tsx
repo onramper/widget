@@ -5,7 +5,7 @@ import listStyles from "./../../common/ListRedesign/List.module.css";
 
 const CryptoListItemRight: React.FC<CryptoListItemRightProps> = (props) => {
     return (
-        <div className={`${listStyles["list-item__right-child"]} ${styles["wrapper"]}`}>
+        <div className={`${listStyles["list-item-right-child"]} ${styles["wrapper"]}`}>
             {props.network && (
                 <div className={`${styles["network"]} ${listStyles["list-text"]}`}>{props.network}</div>
             )}
