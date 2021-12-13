@@ -9,7 +9,7 @@ const SearchInput: React.FC<SearchInputProps> = (props: SearchInputProps) => {
 
   return (
     <div
-      className={`${styles["wrapper"]} ${isFocused ? styles["wrapper--focused"] : ""}`}
+      className={`${styles["wrapper"]} ${isFocused ? styles["wrapper-focused"] : ""}`}
     >
       <div
         className={`${styles["search-icon-wrapper"]} ${commonStyles["flex-all"]}`}
