@@ -13,8 +13,6 @@
 .search-input {
     min-width: 0;
     flex-grow: 1;
-    font-style: normal;
-    font-weight: normal;
     font-size: 14px;
     line-height: 17px;
     color: #ABADB8;
