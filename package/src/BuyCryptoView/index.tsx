@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import BodyBuyCrypto from "./BodyBuyCrypto";
 import styles from "../styles.module.css";
-import PickView from "../PickView";
 import ChooseGatewayView from "../ChooseGatewayView/ChooseGatewayView";
 import ErrorView from "../common/ErrorView";
 import Step from "../steps/Step";
