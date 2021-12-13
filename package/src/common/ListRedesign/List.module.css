@@ -11,7 +11,7 @@
     flex-grow: 1;
 }
 
-.list-item {
+.list li {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -56,23 +56,23 @@
     flex-shrink: 0;
 }
 
-.list-item:hover {
+.list li:hover {
     background: #F7FAFD;
 }
 
-.list-item.list-item--selected,
-.list-item:active {
+.list li.selected,
+.list li:active {
     background: #6C77DC;
 }
 
-.list-item--selected .list-item__name,
-.list-item--selected .list-item__right-child,
-.list-item--selected .list-item__info,
-.list-item--selected .list-item__right-child .list-text,
+.list li.selected .list-item__name,
+.list li.selected .list-item__right-child,
+.list li.selected .list-item__info,
+.list li.selected .list-item__right-child .list-text,
 
-.list-item:active .list-item__name,
-.list-item:active .list-item__right-child,
-.list-item:active .list-item__info,
-.list-item:active .list-item__right-child .list-text {
+.list li:active .list-item__name,
+.list li:active .list-item__right-child,
+.list li:active .list-item__info,
+.list li:active .list-item__right-child .list-text {
     color: #FFFFFF;
 }

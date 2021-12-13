@@ -4,8 +4,8 @@ import { ListItemProps } from "./List.models";
 
 const ListItem: React.FC<ListItemProps> = (props: ListItemProps) => {
   return (
-    <div
-      className={`${styles["list-item"]} ${props.isSelected ? styles["list-item--selected"] : ""}`}
+    <li
+      className={`${props.isSelected ? styles["selected"] : ""}`}
       onClick={() => props.onClick(props.index)}
     >
       {props.icon && (<img
@@ -21,7 +21,7 @@ const ListItem: React.FC<ListItemProps> = (props: ListItemProps) => {
       </div>
 
       {props.rightSection && <> {props.rightSection} </>}
-    </div>
+    </li>
   );
 };
 

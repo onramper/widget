@@ -45,7 +45,7 @@ const List: React.FC<ListProps> = (props: ListProps) => {
             />
           </div>
         )}
-        <div className={`${styles.list}`}>
+        <ul className={`${styles.list}`}>
           {props.items.map(
             (item, i) =>
               itemIsVisible(item) && (
@@ -63,7 +63,7 @@ const List: React.FC<ListProps> = (props: ListProps) => {
                 />
               )
           )}
-        </div>
+        </ul>
       </>
     );
 };

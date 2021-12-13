@@ -238,6 +238,16 @@ components
     opacity: 0.5;
 }
 
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
 /* skeleton loading */
 .skeleton-wrapper {
     overflow-x: hidden;
@@ -284,6 +294,7 @@ div.skeleton-box {
     content: '';
     cursor: default;
 }
+
 
 @keyframes shimmer {
     100% {
