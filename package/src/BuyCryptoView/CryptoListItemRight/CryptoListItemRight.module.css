@@ -1,8 +1,6 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    font-style: normal;
-    font-weight: normal;
     text-align: right;
 }
 

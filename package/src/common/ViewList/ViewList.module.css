@@ -36,8 +36,6 @@
 }
 
 .list-item-name {
-    font-style: normal;
-    font-weight: normal;
     font-size: 14px;
     line-height: 17px;
     margin-bottom: 2px;
@@ -45,8 +43,6 @@
 }
 
 .list-item-info {
-    font-style: normal;
-    font-weight: normal;
     font-size: 12px;
     line-height: 15px;
     color: #7C7D82;
