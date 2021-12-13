@@ -13,6 +13,10 @@ theme styles
 *********/
 .theme {
     --primary-color: #31a5ff;
+    --error-color: #D25656;
+    --text-dark-color: #292D32;
+    --text-light-color: #7C7D82;
+    --input-bg-color: #F7FAFD;
     /* default color*/
     --max-width: 1rem;
     --max-height: 1rem;
@@ -54,6 +58,10 @@ theme styles
 .theme input[type=number]::-webkit-outer-spin-button, .theme input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.theme input {
+    caret-color: var(--primary-color);
 }
 
 /*********

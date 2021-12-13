@@ -19,6 +19,7 @@ import NotificationSection from './NotificationSection/NotificationSection'
 import Step from "./../steps/Step"
 import TopScreenA from './ScreenA/TopScreenA'
 import OverlayPicker from '../common/OverlayPicker/OverlayPicker'
+import { getBestAvailableGateway } from '../utils'
 
 interface BodyBuyCryptoProps {
     onBuyCrypto: () => void
@@ -38,7 +39,7 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
   return {
       name: selectedGateway.name,
       icon: selectedGateway.icon || "",
-      rate: selectedGateway.rate ? selectedGateway.rate.toLocaleString() : ""
+      rate: selectedGateway.rate
   }
 }
 
@@ -130,9 +131,8 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     }, [collected.amountInCrypto])
 
     useEffect(() => {
-      const availableRates = allRates.filter(g => g.available);
-      handleInputChange('selectedGateway', availableRates?.[0]);
-    }, [allRates, collected.selectedCrypto, collected.selectedCurrency, collected.selectedGateway, collected.selectedPaymentMethod, handleInputChange])
+      handleInputChange('selectedGateway', getBestAvailableGateway(allRates, !!collected.amountInCrypto));
+    }, [allRates, collected.amountInCrypto, collected.selectedCrypto, collected.selectedCurrency, collected.selectedPaymentMethod, handleInputChange])
   
     useEffect(() => {
       if(isGatewayInitialLoading) {
@@ -168,6 +168,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
               openMoreOptions={onBuyCrypto}
               isLoading={collected.isCalculatingAmount}
               isInitialLoading={isGatewayInitialLoading}
+              amountInCrypto={!!collected.amountInCrypto}
             />
           )}
 

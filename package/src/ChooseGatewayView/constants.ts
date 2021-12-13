@@ -1,1 +1,0 @@
-export const cryptoAmountsWarning = "The displayed amounts are an approximate calculation of the crypto that you will receive after fees.";

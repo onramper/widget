@@ -6,7 +6,7 @@
     font-size: 16px;
     line-height: 20px;
     text-align: center;    
-    color: #292D32;
+    color: var(--text-dark-color);
     flex-shrink: 0;
     display: flex;
 }
@@ -15,6 +15,8 @@
     flex-grow: 1;
     text-align: center;
     padding-left: 34px;
+    color: var(--text-dark-color);
+    position: relative;
 }
 
 .close-icon-wrapper {

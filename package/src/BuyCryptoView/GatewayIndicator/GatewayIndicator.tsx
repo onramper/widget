@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GatewayIndicatorProps } from './GatewayIndicator.models';
 import arrowDownIcon from "./../../icons/arrow-down.svg";
 import styles from "./GatewayIndicator.module.css";
@@ -20,7 +20,25 @@ const Skeleton: React.FC = () => {
     </div>);
 }
 
+const determineRate = (amountInCrypto:boolean, oneDirectionRate: number|undefined) => {
+    if(!oneDirectionRate) return 0;
+    
+    const format = (n:number) => n.toLocaleString(undefined, {maximumFractionDigits: 5});
+
+    if(!amountInCrypto) {
+        return format(oneDirectionRate);
+    }
+
+    return format(1 / oneDirectionRate)
+}
+
 const GatewayIndicator: React.FC<GatewayIndicatorProps> = (props: GatewayIndicatorProps) => {
+    const [rate, setRate] = useState(determineRate(props.amountInCrypto, props.selectedGateway?.rate));
+
+    useEffect(() => {
+        setRate(determineRate(props.amountInCrypto, props.selectedGateway?.rate));
+    }, [props.amountInCrypto, props.selectedGateway?.rate]);
+
     if (props.isInitialLoading || !props.selectedGateway) return <Skeleton />;
     
     if(props.isLoading) {
@@ -42,7 +60,7 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (props: GatewayIndicat
             </div>
         </div>
         <div className={styles["option-info"]}>
-            1 {props.unitCrypto} ≈ {props.selectedGateway.rate} {props.unitFiat}
+            1 {props.unitCrypto} ≈ {rate} {props.unitFiat}
             <br />Includes all fees
         </div>
     </div>);

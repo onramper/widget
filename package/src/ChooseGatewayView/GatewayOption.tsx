@@ -1,181 +1,166 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import styles from './styles.module.css'
-/* import IconDetailKYC from '../icons/kyc_level.svg'
-import IconDetailTxTime from '../icons/tx_time.svg' */
-import IconFastTime from '../icons/fast-time.png'
-import IconKYCReq from '../icons/card.png'
-
+import commonStyles from './../styles.module.css';
 import { CSSTransition } from 'react-transition-group';
-
-import { APIContext, GatewayRateOption } from '../ApiContext'
-
-const transitionPropsCollapse = {
-    timeout: 500,
-    classNames: {
-        enter: styles['collapse-enter'],
-        enterActive: styles['collapse-enter-active'],
-        exit: styles['collapse-exit'],
-        exitActive: styles['collapse-exit-active']
-    },
-    unmountOnExit: true
-}
-
-/* const transitionPropsPrice = {
-    timeout: {
-        enter: 500,
-        exit: 100
-    },
-    classNames: {
-        enter: styles['fade-enter'],
-        enterActive: styles['fade-enter-active'],
-        exit: styles['fade-exit'],
-        exitActive: styles['fade-exit-active']
-    },
-    unmountOnExit: true
-} */
-
-
-type GateWayOptionProps = {
-    index: number
-    isOpen: boolean
-    selectedReceivedCrypto?: number
-    badges?: badgeType
-    onClick?: (index: number, id: number) => void
-} & GatewayRateOption
+import { APIContext } from '../ApiContext'
+import { transitionPropsCollapse, badgeItemMap } from './constants';
+import { GateWayOptionProps, BadgeType } from "./ChooseGatewayView.models";
+import ArrowUpSvg from '../common/icons/ArrowUpSvg';
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { collected } = useContext(APIContext)
-    /* const [transitionRefs] = useState(Array(3).map(() => React.useRef(null))) */
-    const transitionRefs1 = React.useRef(null)
-    const transitionRefs2 = React.useRef(null)
-    const transitionRefs3 = React.useRef(null)
-    const [badge, setBadge] = useState("Alternative")
+    const [badgeList, setBadgeList] = useState<{label: string, icon: string}[]>([]);
+    const [percentage, setPercentage] = useState((0).toFixed(2));
+    
+    const percentTransRef = React.useRef(null);
+    const amountLabelTransRef = React.useRef(null);
+    const wrapperTransRef = React.useRef(null);
 
-    const { name, duration, receivedCrypto = 0, isOpen, selectedReceivedCrypto = 0, available, error, badges = {} } = props //todo change 
-    const { onClick } = props
-    const isAnOption = error?.type==="OPTION"
+    const isAnOption = props.error?.type === "OPTION";
 
-    let diffPercent: number;
-    let isDiffPositive: boolean;
-    if (receivedCrypto > selectedReceivedCrypto) {
-        diffPercent = (((receivedCrypto / selectedReceivedCrypto) - 1) * 100)
-        isDiffPositive = true;
-    } else {
-        diffPercent = ((1 - (receivedCrypto / selectedReceivedCrypto)) * 100)
-        isDiffPositive = false;
-    }
-    const diff2Render = diffPercent.toFixed(2)
+    const getPercentage = useCallback(() => {
+        const receivedCrypto = props.receivedCrypto || 0;
+        const selectedReceivedCrypto = props.selectedReceivedCrypto || 0;
 
-    const styleColorUpDownDiff = {
-        "--diff-up-color": collected.amountInCrypto ? '#E85858' : '#008000',
-        "--diff-down-color": collected.amountInCrypto ? '#008000' : '#E85858'
-    } as React.CSSProperties;
+        const diffPercent = receivedCrypto > selectedReceivedCrypto 
+                            ? (((receivedCrypto / selectedReceivedCrypto) - 1) * 100)
+                            : ((1 - (receivedCrypto / selectedReceivedCrypto)) * 100);
+
+        return diffPercent.toFixed(2);
+    }, [props.receivedCrypto, props.selectedReceivedCrypto]);
+
+    const getReceivedAmount = useCallback(() => {
+        const receivedCrypto = props.receivedCrypto || 0;
+
+        const name = collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name;
+        const amount = collected.amountInCrypto ? receivedCrypto : receivedCrypto.toFixed(5); 
+        return `${name} ${amount}`;
+    }, [
+        collected.amountInCrypto, 
+        collected.selectedCrypto?.name, 
+        collected.selectedCurrency?.name, 
+        props.receivedCrypto
+    ])
+
+    const getMainBadge = useCallback(() => {
+        if(!props.stats) {
+            return;
+        }
+
+        if (props.stats[props.name]?.cheapest) {
+            return badgeItemMap[BadgeType.Cheapest];
+        }
+        
+        if (props.stats[props.name]?.fast) {
+            return badgeItemMap[BadgeType.Fast];
+        }
+
+        return undefined;
+    }, [props.name, props.stats])
+
+    const updateBadgeList = useCallback(() => {
+        const  results = [];
+
+        const mainBadge = getMainBadge();
+        if(mainBadge) {
+            results.push(mainBadge);
+        }
+
+        if(props.stats?.[props.name].noId) {
+            results.push(badgeItemMap[BadgeType.NoIdRequired]);
+        }
+        
+        setBadgeList(results);
+    }, [getMainBadge, props.stats, props.name])
+
+    const isPercentageVisible = useCallback(() => {
+        return props.available && !props.isOpen && !isAnOption && !(props.error?.type.match(/MIN|MAX/));
+    }, [isAnOption, props.available, props.error?.type, props.isOpen]);
+
+    const getSyleColorUpDownDiff = useCallback(() => {
+        return {
+            "--diff-up-color": collected.amountInCrypto ? '#D25656' : '#3AD66F',
+            "--diff-down-color": collected.amountInCrypto ? '#3AD66F' : '#D25656'
+        } as React.CSSProperties
+    }, [collected.amountInCrypto]);
 
     useEffect(() => {
-        if (props.index === 0 && isOpen) {
-            onClick?.(props.index, props.badges?.[name]._id ?? 0)
-        }
-    }, [onClick, props.index, props.badges, name, isOpen])
+        updateBadgeList();
+    }, [updateBadgeList]);
 
     useEffect(() => {
-        if (name === 'Wyre') {
-            if (badges[name]?.bestOffer)
-                setBadge('Best offer')
-            else
-                setBadge('Easiest')
-            return
+        if(isPercentageVisible()) {
+            setPercentage(getPercentage());
         }
+    }, [getPercentage, isPercentageVisible]);
 
-        if (props.index === 0 && badges[name]?.count > 1) {
-            setBadge('Best option')
-        }
-        else if (badges[name]?.bestOffer) {
-            setBadge('Best offer')
-        }
-        else if (badges[name]?.easiest) {
-            setBadge('Easiest')
-        }
-        else if (badges[name]?.fastest) {
-            setBadge('Fastest')
-        }
-        else if (badges[name]?.fast) {
-            setBadge('Fast')
-        }
-    }, [badges, name, props.index])
+    const isSelected  = props.available && props.isOpen;
+    const isDiffPositive = (props.receivedCrypto || 0) > (props.selectedReceivedCrypto || 0);
 
     return (
-        <div
-            onClick={() => onClick?.(props.index, props.badges?.[name]._id ?? 0)}
-            className={`${styles['option-container']} ${!available || !isOpen ? `${styles['option-container--collapsed']} ${!available ? styles['option-container--disabled'] : ''} ${isAnOption?styles['option-container--option']:''}` : ''}`}
+        <div 
+            ref={wrapperTransRef}
+            className={`${styles["option-wrapper"]} ${isSelected ? styles["option-wrapper--selected"] : ""} ${!props.available ? styles["option-container--disabled"] : ""}`}
+            onClick={() => props.onClick?.()}
         >
-            <div className={styles['option-container__radio']}>
-                <input type='radio' checked={available && isOpen} readOnly disabled={!available}></input>
-            </div>
-            <div className={`${styles['option-container__content']}`}>
-                <div className={`${styles.content__info}`} >
-                    <div className={styles['title-container']} >
-                        <div className={`${styles['logo-container']}`}>
-                            <img alt='' src={props.icon} />
-                        </div>
-                        <div className={`${styles.title}`}>{name}</div>
-                    </div>
-                    <CSSTransition nodeRef={transitionRefs1} {...transitionPropsCollapse} in={isOpen && available}>
-                        <div ref={transitionRefs1} className={styles['collapsable-section']}>
-                            <div className={`${styles.details}`} >
-                                {duration && <div style={{ height: '0.4375rem' }} className={styles.details__item}><div></div><span></span></div>} {/* Used as margin-top */}
-                                {duration && <div className={styles.details__item}><div><img alt='' src={IconFastTime} /></div><span>{duration.message}</span></div>}
-                                {<div className={styles.details__item}><div><img alt='' src={IconKYCReq} /></div><span>{props.badges?.[props.name].noId ? "No ID required" : "Identification required"}</span></div>}
-                            </div>
-                        </div>
-                    </CSSTransition>
-                </div>
-                <div className={styles.content__price}>
-                    <CSSTransition nodeRef={transitionRefs2} {...transitionPropsCollapse} in={isOpen && available}>
-                        <div ref={transitionRefs2} >
-                            <div className={`${styles['gateway-badge']}`}>
-                                {/* {icon && <img alt="Gateway logo" src={icon} />} */}
-                                <span>{badge}</span>
-                            </div>
-                        </div>
-                    </CSSTransition>
-                    <div>
-                        {/* <CSSTransition nodeRef={transitionRefs3} in={(!available || !isOpen) && !isAnOption && !(error?.type.match(/MIN|MAX/))} {...transitionPropsPrice}>
-                            {available ?
-                                <span ref={transitionRefs3} style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
-                                : <span ref={transitionRefs3} >Unavailable</span>
-                            }
-                        </CSSTransition> */}
-                        {/* <CSSTransition in={isOpen && available} {...transitionPropsPrice}> */}
-                        {
-                            ((isOpen && available) && <span className={`${styles['receive-diff']}`} > {collected.amountInCrypto ? 'You pay:' : 'You receive:'}</span>)
-                            || (available && !isOpen && !isAnOption && !(error?.type.match(/MIN|MAX/)) &&
-                                    /* available ? */
-                                    <span ref={transitionRefs3} style={styleColorUpDownDiff} className={`${styles['receive-diff']} ${styles['receive-diff--diff']} ${`${isDiffPositive ? styles['diff--up'] : styles['diff--down']}`} `} > {`${diff2Render}%`}</span>
-                                   /*  : <span ref={transitionRefs3} >Unavailable</span> */
-                                )
-                        }
-                        {/* </CSSTransition> */}
-                        {available ?
-                            <span className={styles['receive-amount']}> {collected.amountInCrypto ? collected.selectedCurrency?.name : collected.selectedCrypto?.name} {collected.amountInCrypto ? receivedCrypto : receivedCrypto.toFixed(5)}</span>
-                            : <span>{!error?.message ? 'Try again later' : error?.message}</span>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div >
-    )
-}
+            <input
+                className={styles["option-checkbox"]}
+                type="radio" 
+                checked={isSelected} 
+                readOnly 
+                disabled={!props.available} 
+            />
+            <div className={`${commonStyles["flex-all"]} ${styles["icon-container"]}`}>
+                <img alt="icon-gateway" src={props.icon} />
+            </div>      
 
-export interface badgeType {
-    [key: string]: {
-        _id: number
-        fast: boolean
-        noId: boolean
-        fastest: boolean
-        easiest: boolean
-        bestOffer: boolean
-        count: number
-    }
+            <div className={styles["option-info-wrapper"]}>
+                <div className={styles["option-title"]}>{props.name}</div>
+                <div className={styles["option-badges-wrapper"]}>
+                    {badgeList.map((item, index) => (
+                        <div key={index} className={styles["badge-wrapper"]}> 
+                            {item.icon && <img className={styles["badge-icon"]} src={item.icon} alt="icon-badge" />}
+                            <div className={styles["tag-text"]}>{item.label}</div>
+                        </div>))}
+                </div>
+                
+                {isSelected && !!props.duration && <div className={styles["tag-text"]}>{props.duration.message}</div>}
+                
+                {!props.available && <div className={styles["tag-text"]}>{props.error?.message || 'Try again later'}</div>}
+            </div>
+
+            <div className={styles["option-right-wrapper"]}>
+                <div className={styles["option-right-sub"]}>
+                    <CSSTransition nodeRef={percentTransRef} {...transitionPropsCollapse} in={isPercentageVisible()}>
+                        <div 
+                            ref={percentTransRef}
+                            style={getSyleColorUpDownDiff()} 
+                            className={`${styles["percentage-wrapper"]} ${!isDiffPositive ? styles['diff--down'] : ""}`}
+                        >
+                            {`${percentage}%`}
+                            <ArrowUpSvg className={styles["percentage-arrow"]} />
+                        </div>
+                    </CSSTransition>
+
+                    <div className={styles["amount-wrapper"]}>
+                        <CSSTransition nodeRef={amountLabelTransRef} {...transitionPropsCollapse} in={isSelected}>
+                            <div ref={amountLabelTransRef}>
+                                <div className={`${styles["tag-text"]} ${styles["amount-label"]}`} > 
+                                    {collected.amountInCrypto ? 'You pay:' : 'You receive:'}
+                                </div>
+                            </div>
+                        </CSSTransition>
+
+                        {props.available && (
+                            <div className={styles['amount']}> 
+                                {getReceivedAmount()}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default GatewayOption
