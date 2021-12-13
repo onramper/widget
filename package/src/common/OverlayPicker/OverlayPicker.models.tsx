@@ -1,9 +1,9 @@
 import { ItemType } from "../../ApiContext";
-import { ListItemType } from "../ListRedesign/List.models";
+import { ViewListItemType } from "../ViewList/ViewList.models";
 
 export type OverlayPickerProps = {
   title: string;
-  items: ListItemType[];
+  items: ViewListItemType[];
   name?: string;
   indexSelected?: number;
   searchable?: boolean;

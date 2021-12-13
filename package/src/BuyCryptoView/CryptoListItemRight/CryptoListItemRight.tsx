@@ -1,7 +1,7 @@
 import React from "react";
 import { CryptoListItemRightProps } from "./CryptoListItemRight.models";
 import styles from "./CryptoListItemRight.module.css";
-import listStyles from "./../../common/ListRedesign/List.module.css";
+import listStyles from "./../../common/ViewList/ViewList.module.css";
 
 const CryptoListItemRight: React.FC<CryptoListItemRightProps> = (props) => {
     return (

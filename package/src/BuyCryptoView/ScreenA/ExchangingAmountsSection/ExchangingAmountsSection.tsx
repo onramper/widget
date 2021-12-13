@@ -6,7 +6,7 @@ import { onChangeTextNumber, toStringOrDefault, arrayUnique } from "../../../uti
 import { popularCrypto } from "../../constants";
 import { NavContext } from "../../../NavContext";
 import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
-import { ListItemType } from "../../../common/ListRedesign/List.models";
+import { ViewListItemType } from "../../../common/ViewList/ViewList.models";
 import OverlayPicker from "../../../common/OverlayPicker/OverlayPicker";
 
 const ExchangingAmountsSection: React.FC = () => {
@@ -65,7 +65,7 @@ const ExchangingAmountsSection: React.FC = () => {
         ).map(item => ({
           ...item,
           rightSection: <CryptoListItemRight network={item.network} />
-        } as ListItemType));
+        } as ViewListItemType));
     },
     [collected.recommendedCryptoCurrencies, data.availableCryptos],
   );

@@ -1,18 +1,18 @@
 import { ItemType } from "../../ApiContext"
 import { ReactNode } from "react"
 
-export type ListItemType = {
+export type ViewListItemType = {
     rightSection?: ReactNode;
 } & ItemType
 
-export type ListItemProps = {
+export type ViewListItemProps = {
     index: number,
     onClick: (index: number) => void,
     isSelected?: boolean
-} & ItemType & ListItemType
+} & ItemType & ViewListItemType
 
-export type ListProps = {
-    items: ListItemType[]
+export type ViewListProps = {
+    items: ViewListItemType[]
     onItemClick?: (index: number, item: ItemType) => void
     searchable?: boolean;
     indexSelected?: number;

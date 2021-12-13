@@ -9,7 +9,7 @@ import { popularCrypto } from "../../constants";
 import { arrayUnique } from "../../../utils";
 import { ItemCategory } from "./../../../ApiContext/initialState";
 import OverlayPicker from "../../../common/OverlayPicker/OverlayPicker";
-import { ListItemType } from "../../../common/ListRedesign/List.models";
+import { ViewListItemType } from "../../../common/ViewList/ViewList.models";
 import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
 
 const Skeleton: React.FC = () => {
@@ -64,7 +64,7 @@ const CurrencySwitcher: React.FC = () => {
         ).map(item => ({
           ...item,
           rightSection: <CryptoListItemRight network={item.network} />
-        } as ListItemType));
+        } as ViewListItemType));
     },
     [collected.recommendedCryptoCurrencies, data.availableCryptos]
   );

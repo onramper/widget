@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "./List.module.css";
-import { ListItemProps } from "./List.models";
+import styles from "./ViewList.module.css";
+import { ViewListItemProps } from "./ViewList.models";
 
-const ListItem: React.FC<ListItemProps> = (props: ListItemProps) => {
+const ListItem: React.FC<ViewListItemProps> = (props: ViewListItemProps) => {
   return (
     <li
       className={`${props.isSelected ? styles["selected"] : ""}`}

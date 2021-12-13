@@ -1,29 +1,24 @@
 import React, { useCallback, useState } from "react";
-import styles from "./List.module.css";
-import { ListItemType, ListProps } from "./List.models";
-import ListItem from "./ListItem";
+import styles from "./ViewList.module.css";
+import { ViewListItemType, ViewListProps } from "./ViewList.models";
+import ListItem from "./ViewListItem";
 import SearchInput from "../SearchInput/SearchInput";
 
 const determineIsSmallScreen = () => window.screen.height <= 615 || window.screen.width <= 575;
 
-/**
- * TODO:
- * Rename /ListRedesign to /List once the old list component will become completely legacy 
- */
-
-const List: React.FC<ListProps> = (props: ListProps) => {
+const ViewList: React.FC<ViewListProps> = (props: ViewListProps) => {
     const { onItemClick = () => null } = props;
 
     const [isSmallHeightScreen] = useState(determineIsSmallScreen());
     const [query, setQuery] = useState("");
     const [indexSelected, setIndexSelected] = useState(props.indexSelected)
 
-    const handleItemClick = useCallback((index: number, item: ListItemType) => {
+    const handleItemClick = useCallback((index: number, item: ViewListItemType) => {
         setIndexSelected(index);
         onItemClick(index, item)
     }, [onItemClick]);
 
-    const itemIsVisible = useCallback((item: ListItemType) => {
+    const itemIsVisible = useCallback((item: ViewListItemType) => {
         const searchWords = item.searchWords?.replace(/[+/-]/g, ' ')
         return item.name.toLowerCase().split(' ').some((substring) => substring.toLowerCase().startsWith(query))
             || item.name.toLowerCase().toLowerCase().startsWith(query)
@@ -68,4 +63,4 @@ const List: React.FC<ListProps> = (props: ListProps) => {
     );
 };
 
-export default List;
+export default ViewList;
