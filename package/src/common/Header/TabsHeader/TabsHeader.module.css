@@ -10,7 +10,7 @@
   z-index: 1;
 }
 
-.header__burger-icon {
+.header-burger-icon {
   cursor: pointer;
   width: 32px;
   height: 32px;
