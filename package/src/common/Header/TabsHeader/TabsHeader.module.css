@@ -9,9 +9,3 @@
   flex-shrink: 0;
   z-index: 1;
 }
-
-.header-burger-icon {
-  cursor: pointer;
-  width: 32px;
-  height: 32px;
-}

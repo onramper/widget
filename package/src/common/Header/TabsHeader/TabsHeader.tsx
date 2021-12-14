@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-import styles from "./TabsHeader.module.css";
+import classes from "./TabsHeader.module.css";
+import headerClasses from "../Header.module.css";
 import Menu from "../Menu";
 import { NavContext } from "../../../NavContext";
 import TabGroup from "../../TabGroup/TabGroup";
-import IconMenu from "../../../icons/menu-var-2.svg";
+import iconMenu from "../../../icons/menu-var-2.svg";
 
 export type ITabsHeaderProps = {
   onMenuClick?: () => void;
@@ -17,7 +18,7 @@ const TabsHeader: React.FC<ITabsHeaderProps> = (props: ITabsHeaderProps) => {
   const { onMenuClick = () => nextScreen(<Menu />) } = props;
 
   return (
-    <nav className={styles.header}>
+    <nav className={classes.header}>
       <TabGroup
         items={props.tabs}
         indexSelected={props.tabSelected}
@@ -26,8 +27,8 @@ const TabsHeader: React.FC<ITabsHeaderProps> = (props: ITabsHeaderProps) => {
       <img
         onClick={onMenuClick}
         alt="menu"
-        className={`${styles["header-burger-icon"]}`}
-        src={IconMenu}
+        className={`${headerClasses["header-burger-icon"]}`}
+        src={iconMenu}
       />
     </nav>
   );

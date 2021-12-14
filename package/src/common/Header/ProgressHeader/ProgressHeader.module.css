@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 82px;
+  padding-top: 12px;
+  padding-left: var(--padding-rl);
+  padding-right: var(--padding-rl);
+  border-radius: 10px 10px 0 0;
+  --h-border-width: 2px;
+  /* TODO: establish if this color may be used a variable (within current story timeframe) */
+  border-bottom: var(--h-border-width) solid #EFF0F4;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.header * {
+    box-sizing: border-box;
+}
+
+.arrow-back {
+  cursor: pointer;
+}
+
+.middle-content {
+    flex-grow: 1;
+    padding: 8px 12px;
+    box-sizing: border-box;
+}
+
+.header-text {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: var(--text-dark-color);
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progress-bar {
+    width: 50%;
+    height: var(--h-border-width);
+    position: absolute;
+    left: 0;
+    bottom: calc(-1 * var(--h-border-width));
+    background-color: var(--primary-color);
+    overflow: hidden;
+    transition: width 0.2s;
+}
