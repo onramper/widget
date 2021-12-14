@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import BodyBuyCrypto from "./BodyBuyCrypto";
 import styles from "../styles.module.css";
-import PickView from "../PickView";
 import ChooseGatewayView from "../ChooseGatewayView/ChooseGatewayView";
 import ErrorView from "../common/ErrorView";
 import Step from "../steps/Step";
@@ -110,47 +109,6 @@ const BuyCryptoView: React.FC = () => {
       />
       <BodyBuyCrypto
         onBuyCrypto={() => nextScreen(<ChooseGatewayView />)}
-        openPickCrypto={
-          data.availableCryptos.length > 1
-            ? () =>
-                nextScreen(
-                  <PickView
-                    name="crypto"
-                    title="Select cryptocurrency"
-                    items={sortedCrypto}
-                    onItemClick={handleItemClick}
-                    searchable
-                  />
-                )
-            : undefined
-        }
-        openPickCurrency={
-          data.availableCurrencies.length > 1
-            ? () =>
-                nextScreen(
-                  <PickView
-                    name="currency"
-                    title="Select fiat currency"
-                    items={data.availableCurrencies}
-                    onItemClick={handleItemClick}
-                    searchable
-                  />
-                )
-            : undefined
-        }
-        openPickPayment={
-          data.availablePaymentMethods.length > 1
-            ? () =>
-                nextScreen(
-                  <PickView
-                    name="paymentMethod"
-                    title="Select payment method"
-                    items={data.availablePaymentMethods}
-                    onItemClick={handleItemClick}
-                  />
-                )
-            : undefined
-        }
         selectedCrypto={collected.selectedCrypto}
         selectedCurrency={collected.selectedCurrency}
         selectedPaymentMethod={collected.selectedPaymentMethod}

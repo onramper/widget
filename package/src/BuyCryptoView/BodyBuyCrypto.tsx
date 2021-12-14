@@ -18,13 +18,11 @@ import TopScreenB2 from './TopScreenB2/TopScreenB2'
 import NotificationSection from './NotificationSection/NotificationSection'
 import Step from "./../steps/Step"
 import TopScreenA from './ScreenA/TopScreenA'
+import OverlayPicker from '../common/OverlayPicker/OverlayPicker'
 import { getBestAvailableGateway } from '../utils'
 
 interface BodyBuyCryptoProps {
     onBuyCrypto: () => void
-    openPickCrypto?: () => void
-    openPickCurrency?: () => void
-    openPickPayment?: () => void
     selectedCrypto?: ItemType
     selectedCurrency?: ItemType
     selectedPaymentMethod?: ItemType
@@ -46,11 +44,11 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
 }
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
-    const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
+    const { onBuyCrypto } = props
     const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
     const { handleInputChange } = props
-    const { collected, data: {availablePaymentMethods, allRates} } = useContext(APIContext);
-    const { triggerChat, nextScreen } = useContext(NavContext)
+    const { collected, data: {availablePaymentMethods, allRates, handlePaymentMethodChange} } = useContext(APIContext);
+    const { triggerChat, nextScreen, backScreen } = useContext(NavContext)
 
     const [pairs, setPairs] = useState<ItemType[]>()
     const [amountInCrypto, setAmountInCrypto] = useState<boolean>(collected.amountInCrypto??false)
@@ -106,6 +104,23 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
       [collected.selectedGateway, isNextStepConfirmed, nextScreen]
     );
 
+    const openMoreOptions = useCallback(() => {
+      if(availablePaymentMethods.length > 1) {
+            nextScreen(
+              <OverlayPicker
+                name="paymentMethod"
+                title="Select payment method"
+                indexSelected={availablePaymentMethods.findIndex(m => m.id === collected.selectedPaymentMethod?.id)}
+                items={availablePaymentMethods}
+                onItemClick={(name: string, index: number, item: ItemType) => {
+                  handlePaymentMethodChange(item);
+                  backScreen();
+                }}
+              />
+            );
+      };
+    }, [availablePaymentMethods, backScreen, collected.selectedPaymentMethod?.id, handlePaymentMethodChange, nextScreen]);
+
     const firstRender = useRef(true)
     useEffect(() => {
         if (firstRender.current) {
@@ -125,7 +140,6 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
       }
     }, [props.initLoadingFinished, collected.isCalculatingAmount, isGatewayInitialLoading]);
 
-    
     useLayoutEffect(() => {
       setShowScreenA(new URLSearchParams(window.location.search).get("showScreenA") === "1");
     }, []);
@@ -134,55 +148,11 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
       <main className={stylesCommon.body}>
         <NotificationSection onBuyCrypto={onBuyCrypto} />
 
-        {/* <InputButton
-          onClick={openPickCrypto}
-          className={stylesCommon.body__child}
-          label="I want to buy"
-          selectedOption={selectedCrypto.name}
-          icon={selectedCrypto.icon}
-          network={selectedCrypto.network}
-        />
-
-        <div
-          className={`${stylesCommon.body__child} ${stylesCommon["row-fields"]}`}
-        >
-          <InputTextAmount
-            error={minMaxErrorsMsg}
-            name="amount"
-            type="number"
-            value={collected.amount}
-            onChange={handleInputChange}
-            className={`${stylesCommon["row-fields__child"]} ${stylesCommon.grow}`}
-            label="Amount"
-            symbol={selectedCurrency.symbol}
-            placeholder="100"
-            symbols={pairs}
-            onSymbolChange={handleSymbolChange}
-            disabled={!collected.isAmountEditable}
-          />
-          <InputButton
-            onClick={openPickCurrency}
-            className={stylesCommon["row-fields__child"]}
-            label="Currency"
-            selectedOption={selectedCurrency.name}
-            icon={selectedCurrency.icon}
-          />
-        </div> */}
-
-        {/* <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon.body__child} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} /> */}
-
-        {/* <ExpectedCrypto
-          className={`${stylesCommon.body__child} ${stylesCommon.grow}`}
-          amountInCrypto={amountInCrypto}
-          denom={amountInCrypto ? selectedCurrency.name : selectedCrypto.name}
-          isLoading={collected.isCalculatingAmount}
-        /> */}
-
         {showScreenA && <TopScreenA />}
         {!showScreenA && <TopScreenB2 />}
 
         <PaymentMethodPicker
-          openMoreOptions={openPickPayment}
+          openMoreOptions={openMoreOptions}
           selectedId={selectedPaymentMethod.id}
           items={availablePaymentMethods}
           onChange={props.handlePaymentMethodChange}

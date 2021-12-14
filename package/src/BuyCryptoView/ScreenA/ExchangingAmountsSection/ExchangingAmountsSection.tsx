@@ -3,9 +3,11 @@ import style from "./ExchangingAmountsSection.module.css";
 import InputDropdown from "../InputDropdown/InputDropdown";
 import { ItemCategory, APIContext, ItemType } from "../../../ApiContext";
 import { onChangeTextNumber, toStringOrDefault, arrayUnique } from "../../../utils";
-import PickView from "../../../PickView";
 import { popularCrypto } from "../../constants";
 import { NavContext } from "../../../NavContext";
+import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
+import { ViewListItemType } from "../../../common/ViewList/ViewList.models";
+import OverlayPicker from "../../../common/OverlayPicker/OverlayPicker";
 
 const ExchangingAmountsSection: React.FC = () => {
   const {
@@ -47,7 +49,7 @@ const ExchangingAmountsSection: React.FC = () => {
     backScreen();
   }, [backScreen, data]);
 
-  const getSortedCrypto = useCallback(
+  const getSortedCryptoListItem = useCallback(
     () => {
       const prioritizedCrypto = !collected.recommendedCryptoCurrencies
         ? popularCrypto
@@ -60,36 +62,43 @@ const ExchangingAmountsSection: React.FC = () => {
           data.availableCryptos
             .filter((crypto) => !prioritizedCrypto.includes(crypto.id))
             .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
-        );
+        ).map(item => ({
+          ...item,
+          rightSection: <CryptoListItemRight network={item.network} />
+        } as ViewListItemType));
     },
     [collected.recommendedCryptoCurrencies, data.availableCryptos],
   );
 
   const openPickCrypto = useCallback(() => {
     if(data.availableCryptos.length > 1) {
+      const items = getSortedCryptoListItem();
+
       nextScreen(
-        <PickView
+        <OverlayPicker
           name="crypto"
+          indexSelected={items.findIndex(m => m.id === collected.selectedCrypto?.id)}
           title="Select cryptocurrency"
-          items={getSortedCrypto()}
+          items={items}
           onItemClick={handleItemClick}
           searchable
         />);
     } 
-  }, [data.availableCryptos.length, getSortedCrypto, handleItemClick, nextScreen]);
+  }, [collected.selectedCrypto?.id, data.availableCryptos.length, getSortedCryptoListItem, handleItemClick, nextScreen]);
 
   const openPickCurrency = useCallback(() => {
     if(data.availableCurrencies.length > 1) {
-      nextScreen(
-        <PickView
-          name="currency"
-          title="Select fiat currency"
-          items={data.availableCurrencies}
-          onItemClick={handleItemClick}
-          searchable
-        />);
+        nextScreen(
+          <OverlayPicker
+            name="currency"
+            title="Select fiat currency"
+            indexSelected={data.availableCurrencies.findIndex(m => m.id === collected.selectedCurrency?.id)}
+            items={data.availableCurrencies}
+            onItemClick={handleItemClick}
+            searchable
+          />);
     };
-  }, [data.availableCurrencies, handleItemClick, nextScreen]);
+  }, [collected.selectedCurrency?.id, data.availableCurrencies, handleItemClick, nextScreen]);
 
   const handleDropdown = useCallback((item?:ItemType) => {
     if(item?.currencyType === ItemCategory.Crypto) {

@@ -1,0 +1,37 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    background: #F7FAFD;
+    border: 1px solid #F7FAFD;
+    border-radius: 25px;
+    height: 48px;
+    flex-shrink: 0;
+    transition: border-color 0.1s;
+}
+
+.search-input {
+    min-width: 0;
+    flex-grow: 1;
+    font-size: 14px;
+    line-height: 17px;
+    color: #ABADB8;
+    caret-color: #6C77DC;
+    border: none;
+    background: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.search-icon-wrapper {
+    flex-shrink: 0;
+    width: 50px;
+}
+
+.wrapper-focused {
+    border-color:#6C77DC;
+}
+
+.search-input:focus {
+    color: black;
+    outline: none;
+}

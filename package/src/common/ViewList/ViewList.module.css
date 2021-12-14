@@ -1,0 +1,74 @@
+
+/*-------------------list-------------------*/
+.input-wrapper {
+    padding: 0 22px 12px 24px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.list li {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: var(--component-content-height);
+    flex-shrink: 0;
+    padding: 19px 22px;
+    background: #FFFFFF;
+    cursor: pointer;
+}
+
+.list-item-icon {
+    width: 100%;
+    max-height: 32px;
+    max-width: 32px;
+}
+
+.list-item-child {
+    width: 100%;
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.list-item-name {
+    font-size: 14px;
+    line-height: 17px;
+    margin-bottom: 2px;
+    color: #292D32;
+}
+
+.list-item-info {
+    font-size: 12px;
+    line-height: 15px;
+    color: #7C7D82;
+}
+
+.list-item-right-child {
+    flex-shrink: 0;
+}
+
+.list li:hover {
+    background: #F7FAFD;
+}
+
+.list li.selected,
+.list li:active {
+    background: #6C77DC;
+}
+
+.list li.selected .list-item-name,
+.list li.selected .list-item-right-child,
+.list li.selected .list-item-info,
+.list li.selected .list-item-right-child .list-text,
+
+.list li:active .list-item-name,
+.list li:active .list-item-right-child,
+.list li:active .list-item-info,
+.list li:active .list-item-right-child .list-text {
+    color: #FFFFFF;
+}

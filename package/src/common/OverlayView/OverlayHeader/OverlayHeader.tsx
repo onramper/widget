@@ -7,7 +7,7 @@ import { OverlayHeaderProps } from "./OverlayHeader.models";
 const OverlayHeader: React.FC<OverlayHeaderProps> = (props: OverlayHeaderProps) => {
   return (
     <div className={`${styles["wrapper"]} ${commonStyles["flex-all"]}`}>
-      {props.text}
+      <div className={styles["text"]}> {props.text} </div>
       <button className={`${commonStyles["btn-default"]} ${commonStyles["flex-all"]} ${styles["close-icon-wrapper"]}`} onClick={() => props.close()}>
         <img src={closeIcon} alt="close-icon" />
       </button>

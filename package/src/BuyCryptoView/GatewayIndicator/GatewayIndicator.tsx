@@ -61,7 +61,7 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (props: GatewayIndicat
         </div>
         <div className={styles["option-info"]}>
             1 {props.unitCrypto} ≈ {rate} {props.unitFiat}
-            <br />Includes all feees
+            <br />Includes all fees
         </div>
     </div>);
 }
