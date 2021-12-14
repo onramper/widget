@@ -26,7 +26,7 @@ const TabsHeader: React.FC<ITabsHeaderProps> = (props: ITabsHeaderProps) => {
       <img
         onClick={onMenuClick}
         alt="menu"
-        className={`${styles["header__burger-icon"]}`}
+        className={`${styles["header-burger-icon"]}`}
         src={IconMenu}
       />
     </nav>
