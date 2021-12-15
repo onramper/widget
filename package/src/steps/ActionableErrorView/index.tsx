@@ -1,10 +1,7 @@
 import React from "react";
 import Header from "../../common/Header";
-import BodySuccessView from "./BodyActionableErrorView";
 import styles from "../../styles.module.css";
-import { NextStep, NextStepError } from "../../ApiContext";
-import { APIContext } from "../../ApiContext";
-import { EVENTS, emit } from "../../Onramper";
+import { NextStep} from "../../ApiContext";
 import BodyActionableErrorView from "./BodyActionableErrorView";
 
 type ActionableErrorProps = {
@@ -12,9 +9,6 @@ type ActionableErrorProps = {
 };
 
 const ActionableErrorView: React.FC<ActionableErrorProps> = (props) => {
-  const { collected } = React.useContext(APIContext);
-
-
   return (
     <div className={styles.view}>
       <Header
