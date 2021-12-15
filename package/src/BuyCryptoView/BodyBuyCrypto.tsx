@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback, useRef, useLayoutEffect } from 'react'
+import React, { useContext, useEffect, useState, useCallback, useLayoutEffect } from 'react'
 import stylesCommon from '../styles.module.css'
 
 import InputButton from '../common/Input/InputButton'
@@ -45,14 +45,10 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     const { onBuyCrypto } = props
-    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
+    const { selectedCrypto = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
     const { handleInputChange } = props
     const { collected, data: {availablePaymentMethods, allRates, handlePaymentMethodChange} } = useContext(APIContext);
-    const { triggerChat, nextScreen, backScreen } = useContext(NavContext)
-
-    const [pairs, setPairs] = useState<ItemType[]>()
-    const [amountInCrypto, setAmountInCrypto] = useState<boolean>(collected.amountInCrypto??false)
-    const [symbolRecentlyChanged, setSymbolRecentlyChanged] = useState(false)
+    const { nextScreen, backScreen } = useContext(NavContext)
 
     const [minMaxErrorsMsg, setMinMaxErrorsMsg] = useState<string>()
     const [isGatewayInitialLoading, setIsGatewayInitialLoading] = useState<boolean>(true);
@@ -65,24 +61,6 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                 ? collected.errors.RATE.message
                 : undefined)
     }, [collected.errors])
-
-    useEffect(() => {
-        setPairs([selectedCurrency, selectedCrypto])
-    }, [selectedCurrency, selectedCrypto])
-
-    const handleSymbolChange = useCallback(
-        (item: ItemType | undefined) => {
-            if (item) {
-                if (symbolRecentlyChanged) {
-                    if (collected.bestExpectedCrypto !== 0)
-                        handleInputChange('amount', collected.bestExpectedCrypto)
-                    setSymbolRecentlyChanged(false)
-                }
-                handleInputChange('amountInCrypto', item.currencyType === ItemCategory.Crypto)
-                setAmountInCrypto(item.currencyType === ItemCategory.Crypto)
-            }
-        }, [handleInputChange, collected.bestExpectedCrypto, symbolRecentlyChanged]
-    )
 
     const isNextStepConfirmed = useCallback(() => {
       if(!collected.selectedGateway) return false;
@@ -120,15 +98,6 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             );
       };
     }, [availablePaymentMethods, backScreen, collected.selectedPaymentMethod?.id, handlePaymentMethodChange, nextScreen]);
-
-    const firstRender = useRef(true)
-    useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false
-            return
-        }
-        setSymbolRecentlyChanged(true)
-    }, [collected.amountInCrypto])
 
     useEffect(() => {
       handleInputChange('selectedGateway', getBestAvailableGateway(allRates, !!collected.amountInCrypto));
