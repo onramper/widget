@@ -4,13 +4,11 @@
     box-sizing: border-box;
 }
 
-/*-------------------gateway list-------------------*/
 .rates-list {
     width: 100%;
     font-size: 1rem;
 }
 
-/*-------------------gateway option redesign -------------------*/
 .option-wrapper {
     display: flex;
     padding: 8px 16px;
@@ -28,19 +26,19 @@
     box-sizing: border-box;
 }
 
-.option-container--disabled {
+.option-container-disabled {
     cursor: default;
     flex-wrap: nowrap;
 }
 
-.option-wrapper--selected {
+.option-wrapper-selected {
     background: #FFFFFF;
     border-color:rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
     position: relative;
 }
 
-.option-wrapper--selected::before {
+.option-wrapper-selected::before {
     content: ' ';
     position: absolute;
     top: 0;
@@ -53,11 +51,11 @@
     transition: opacity 600ms;
 }
 
-.option-wrapper--selected.collapse-option-enter::before {
+.option-wrapper-selected.collapse-option-enter::before {
     opacity: 0;
 }
 
-.option-wrapper--selected.collapse-option-enter-active::before {
+.option-wrapper-selected.collapse-option-enter-active::before {
     opacity: 1;
 }
 
@@ -114,7 +112,7 @@
     transition: opacity 0.2s;
 }
 
-.option-wrapper--selected .duration-field {
+.option-wrapper-selected .duration-field {
     opacity: 1;
 }
 
@@ -153,15 +151,15 @@
     stroke: var(--diff-up-color);
 }
 
-.percentage-wrapper.diff--down {
+.percentage-wrapper.diff-down {
     color: var(--diff-down-color);
 }
 
-.percentage-wrapper.diff--down .percentage-arrow {
+.percentage-wrapper.diff-down .percentage-arrow {
     transform: scaleY(-1);
 }
 
-.percentage-wrapper.diff--down .percentage-arrow path {
+.percentage-wrapper.diff-down .percentage-arrow path {
     stroke: var(--diff-down-color);
 }
 
