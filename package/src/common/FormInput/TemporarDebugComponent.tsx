@@ -45,16 +45,49 @@ const TemporarDebugComponent: React.FC = () => {
       {Object.entries(propsToUse).map(([name, value]) => {
         if(typeof initialProps[name] === "function") return "";
 
-        return (
-          <button key={name} 
-          style={{margin: "2px", borderColor: value ? "blue" : "gray" }}
-          onClick={() => {
-            if(typeof initialProps[name] === "boolean") {
-              setPropsToUse({...propsToUse, [name]: !value}) 
-            }
+        if(name === "type") {
+          return (
+            <button 
+            key={name} 
+            style={{margin: "2px", width: "126px", borderColor: value ? "blue" : "gray" }}
+            onClick={() => {
+                const types = ["text", "number", "date"];
+                let nextIndex = types.findIndex(item => item === value) + 1;
+                if(nextIndex >= types.length) {
+                  nextIndex = 0;
+                }
+                setPropsToUse({...propsToUse, [name]: types[nextIndex]});
+            }}
+          >
+            {name}:<span style={{fontStyle: "italic"}}>{value}</span>
+          </button>
+          )
+        }
 
-            setPropsToUse({...propsToUse, [name]: value ? undefined : initialProps[name]}) 
-          }}>
+        return (
+          <button 
+            key={name} 
+            style={{margin: "2px", borderColor: value ? "blue" : "gray" }}
+            onClick={() => {
+
+              if(name === "type") {
+                const types = ["text", "number", "date"];
+                let nextIndex = types.findIndex(item => item === value) + 1;
+                if(nextIndex >= types.length) {
+                  nextIndex = 0;
+                }
+                setPropsToUse({...propsToUse, [name]: types[nextIndex]});
+                return;
+              }
+
+              if(typeof initialProps[name] === "boolean") {
+                setPropsToUse({...propsToUse, [name]: !value});
+                return;
+              }
+
+              setPropsToUse({...propsToUse, [name]: value ? undefined : initialProps[name]}) 
+            }}
+          >
             {name}:<span style={{fontStyle: "italic"}}>{name === "icon" ? "ICON" : initialProps[name]}{" "}</span>
           </button>
         );
@@ -64,21 +97,23 @@ const TemporarDebugComponent: React.FC = () => {
 
   return (
     <div style={{ flexGrow: 1 }}>
-      <InputText
-        {...(propsToUse as InputProps)}
-        onChange={(name: string, value: string) => {
-          setValue(value);
-        }}
-        value={value}
-      />
+      <div style={{height: "265px"}}>
+        <InputText
+          {...(propsToUse as InputProps)}
+          onChange={(name: string, value: string) => {
+            setValue(value);
+          }}
+          value={value}
+        />
 
-      <InputRedesign
-         {...(propsToUse as InputProps)}
-         onChange={(name: string, value: string) => {
-          setValue(value);
-        }}
-        value={value}
-      />
+        <InputRedesign
+          {...(propsToUse as InputProps)}
+          onChange={(name: string, value: string) => {
+            setValue(value);
+          }}
+          value={value}
+        />
+      </div>
 
       {constrolPropsToggle}
     </div>
