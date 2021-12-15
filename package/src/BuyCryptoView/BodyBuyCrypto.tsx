@@ -50,17 +50,17 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     const { collected, data: {availablePaymentMethods, allRates, handlePaymentMethodChange} } = useContext(APIContext);
     const { nextScreen, backScreen } = useContext(NavContext)
 
-    const [minMaxErrorsMsg, setMinMaxErrorsMsg] = useState<string>()
+    const [hasMinMaxErrorsMsg, setHasMinMaxErrorsMsg] = useState<boolean>()
     const [isGatewayInitialLoading, setIsGatewayInitialLoading] = useState<boolean>(true);
     const [showScreenA, setShowScreenA] = useState(false);
 
     useEffect(() => {
-        setMinMaxErrorsMsg(
-            collected.errors?.RATE?.type === 'MIN'
-                || collected.errors?.RATE?.type === 'MAX'
-                ? collected.errors.RATE.message
-                : undefined)
-    }, [collected.errors])
+      const errType = collected.errors?.RATE?.type;
+      setHasMinMaxErrorsMsg(
+        [errorTypes.MIN, errorTypes.MAX].some((i) => i === errType) &&
+          !!collected.errors?.RATE?.message
+      );
+    }, [collected.errors]);
 
     const isNextStepConfirmed = useCallback(() => {
       if(!collected.selectedGateway) return false;
@@ -148,7 +148,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             disabled={
               !isFilled ||
               collected.isCalculatingAmount ||
-              !!minMaxErrorsMsg ||
+              hasMinMaxErrorsMsg ||
               [errorTypes.ALL_UNAVAILABLE, errorTypes.NO_RATES].indexOf(
                 collected.errors?.RATE?.type || ""
               ) > -1
