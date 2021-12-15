@@ -20,7 +20,7 @@
     flex-direction: column;
 }
 
-.help-pane--fixed {
+.help-pane-fixed {
     height: 350px;
     height: var(--pane-max-height);
 }
@@ -46,22 +46,22 @@
     transition: max-height 250ms;
 }
 
-.collapse-enter--fixed {
+.collapse-enter-fixed {
     height: 0;
 }
 
-.collapse-enter-active--fixed {
+.collapse-enter-active-fixed {
     height: var(--pane-max-height);
     overflow: hidden;
     transition: height 250ms;
 }
 
-.collapse-exit--fixed {
+.collapse-exit-fixed {
     overflow: hidden;
     height: var(--pane-max-height);
 }
 
-.collapse-exit-active--fixed {
+.collapse-exit-active-fixed {
     height: 0px;
     transition: height 250ms;
 }
