@@ -4,8 +4,12 @@ import IconMetamask from "../../icons/metamask.png";
 import IconImToken from "../../icons/imtoken.png";
 import InputRedesign from "./Input/Input";
 
+/* TODO: at the very final test cases each combination of props:
+  PS: you can create a bunch of inputs and compare how each works and looks
+*/
+
 const TemporarDebugComponent: React.FC = () => {
-    const [value, setValue] = useState("");
+  const [value, setValue] = useState("");
 
 
   return (
