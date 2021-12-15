@@ -40,10 +40,10 @@ const getHostname = (href: string) => {
 };
 
 const PopupLauncherView: React.FC<PopupLauncherViewType> = (props) => {
-    const { textInfo, type, error } = props
+    const { type } = props
     const [iframeUrl, setIframeUrl] = useState(props.src)
 
-    const { collected, apiInterface } = useContext(APIContext)
+    const { collected } = useContext(APIContext)
     const { selectedGateway } = collected
     const [isRestartCalled, setIsRestartCalled] = useState(false)
 
@@ -74,9 +74,7 @@ const PopupLauncherView: React.FC<PopupLauncherViewType> = (props) => {
                 }
                 count++
             }, interval)
-            return
         }
-        //if not opened -> warn user about popup blocked + ask user for click a button
     }, [])
 
     useEffect(() => {
@@ -127,9 +125,9 @@ const PopupLauncherView: React.FC<PopupLauncherViewType> = (props) => {
                                     (!props.processFinished && !props.uploadFailed) ?
                                         () => {
                                             console.log("tried to do redirect at: ", iframeUrl)
-                                            redirect(iframeUrl)}
+                                            redirect(iframeUrl)
+                                        }
                                         :() => {
-
                                             console.log("tried to do fail step", props.processFinished, props.uploadFailed)
                                             replaceScreen(<Step nextStep={props.failStep} />);
                                         }
