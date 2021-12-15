@@ -39,9 +39,13 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
 }
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
-    const { onBuyCrypto } = props
-    const { selectedCrypto = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
-    const { handleInputChange } = props
+    const {
+      onBuyCrypto,
+      handleInputChange,
+      selectedCrypto = LoadingItem,
+      selectedPaymentMethod = LoadingItem,
+      isFilled = true,
+    } = props;
     const { collected, data: {availablePaymentMethods, allRates, handlePaymentMethodChange} } = useContext(APIContext);
     const { nextScreen, backScreen } = useContext(NavContext)
 
