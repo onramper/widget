@@ -124,7 +124,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         </div>))}
                 </div>
                 
-                {isSelected && !!props.duration && <div className={styles["tag-text"]}>{props.duration.message}</div>}
+                {!!props.duration && props.available && <div className={`${styles["tag-text"]} ${styles["duration-field"]}`}>{props.duration.message}</div>}
                 
                 {!props.available && <div className={styles["tag-text"]}>{props.error?.message || 'Try again later'}</div>}
             </div>
