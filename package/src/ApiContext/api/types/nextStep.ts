@@ -50,8 +50,8 @@ type StepDataItems = Array<
         ];
     }
     | {
-        type: 'boolean2';
-        name: string;
+        type: 'boolean';
+        name: 'areFundsFromLegalSources';
         humanName: string;
         required: boolean;
       }
