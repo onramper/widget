@@ -9,11 +9,7 @@ import InputTransition from "./InputTransition";
 const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
   const transitionRef = React.createRef<HTMLDivElement>();
 
-  const {
-    label = "\u00A0",
-    type = "text",
-    symbolPosition = "end"
-  } = props;
+  const { label = "\u00A0", type = "text", symbolPosition = "end" } = props;
   const placeholder = props.disabled ? "" : props.placeholder;
   const clickableIcon = !!(props.clickableIcon || props.onIconClick);
 
@@ -71,7 +67,9 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
           <img
             src={props.icon}
             className={`${classes["input-wrapper-child"]} ${classes.input__icon} ${
-              props.iconPosition === "end" ? `${classes["icon-left"]} ${classes["icon-chevron"]}` : ""
+              props.iconPosition === "end"
+                ? `${classes["icon-left"]} ${classes["icon-chevron"]}`
+                : ""
             } ${clickableIcon ? classes["clickable-icon"] : ""}`}
             onClick={_onIconClick}
             title={props.iconTitle}
@@ -134,7 +132,7 @@ InputText.defaultProps = {
   iconPosition: "start",
   disabled: false,
   type: "text",
-  isRequired: true
+  isRequired: true,
 };
 
 export default InputText;
