@@ -20,6 +20,7 @@ import Step from "./../steps/Step"
 import TopScreenA from './ScreenA/TopScreenA'
 import OverlayPicker from '../common/OverlayPicker/OverlayPicker'
 import { getBestAvailableGateway } from '../utils'
+import { LoadingItem } from './constants'
 
 interface BodyBuyCryptoProps {
     onBuyCrypto: () => void
@@ -157,12 +158,6 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         </div>
       </main>
     );
-}
-
-const LOAGIND_TEXT = 'Loading...'
-const LoadingItem: ItemType = {
-    id: '',
-    name: LOAGIND_TEXT,
 }
 
 export default BodyBuyCrypto
