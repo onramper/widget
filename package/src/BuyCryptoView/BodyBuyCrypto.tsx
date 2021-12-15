@@ -15,17 +15,7 @@ import TopScreenA from './ScreenA/TopScreenA'
 import OverlayPicker from '../common/OverlayPicker/OverlayPicker'
 import { getBestAvailableGateway } from '../utils'
 import { LoadingItem } from './constants'
-
-interface BodyBuyCryptoProps {
-    onBuyCrypto: () => void
-    selectedCrypto?: ItemType
-    selectedCurrency?: ItemType
-    selectedPaymentMethod?: ItemType
-    handleInputChange: (name: string, value: any) => void
-    isFilled?: boolean,
-    handlePaymentMethodChange: (item: ItemType) => void,
-    initLoadingFinished: boolean
-}
+import { IBodyBuyCryptoProps } from './BuyCryptoView.models'
 
 function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGatewaySelected | undefined) {
   if(!selectedGateway) {
@@ -38,7 +28,7 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
   }
 }
 
-const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
+const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     const {
       onBuyCrypto,
       handleInputChange,
