@@ -18,6 +18,8 @@
     align-items: center;
     cursor: pointer;
     justify-content: flex-end;
+    border-radius: 14px;
+    border: 1px solid transparent;
     --diff-up-color: #3AD66F;
     --diff-down-color: #D25656;
 }
@@ -33,10 +35,8 @@
 
 .option-wrapper--selected {
     background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-color:rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
-    border-radius: 14px;
-    padding: 15px 16px;
     position: relative;
 }
 
@@ -107,6 +107,15 @@
 .badge-icon {
     height: 14px;
     margin-right: 5px;
+}
+
+.duration-field {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.option-wrapper--selected .duration-field {
+    opacity: 1;
 }
 
 .tag-text {
