@@ -1,13 +1,12 @@
 /*------------------inputs--------------------*/
-/*container label+type*/
-.input {
+.wrapper {
     display: flex;
     flex-direction: column;
     font-size: 1rem;
     min-width: 6rem;
 }
 
-.input > label {
+.wrapper > label {
     margin-bottom: 0.56rem;
     font-size: 0.875rem;
     display: flex;
@@ -15,41 +14,12 @@
     align-items: baseline;
 }
 
-.label__title {
-    margin-right: auto;
+.optional-txt {
+    font-size: 0.75rem;
+    opacity: 0.75;
 }
 
-.label__symbol {
-    font-size: 0.875em;
-}
-
-.label__symbol:hover {
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.label__symbol--selected {
-    font-weight: 700;
-}
-
-.label__symbol--selected:hover {
-    cursor: unset;
-    text-decoration: unset;
-}
-
-.network__bubble {
-    margin-left: auto;
-    margin-right: var(--component-content-spacing);
-    background-color: gray;
-    border-radius: var(--border-radius);
-    font-size: 0.75em;
-    color: white;
-    padding: 0.35rem;
-    opacity: 0.5;
-}
-
-/*common to all input types*/
-.input__type {
+.input-wrapper {
     background-color: white;
     border-style: solid;
     border-radius: 5px;
@@ -62,44 +32,27 @@
     align-items: center;
 }
 
-/*apply space between input__type childs*/
-.input__type__child+.input__type__child {
+.input-wrapper-child + .input-wrapper-child {
     margin-left: var(--component-content-spacing);
 }
 
-.input__type__child--new-first {
+.input-wrapper-right-icon {
     margin-left: 0!important;
 }
 
-.input__type__child--old-first {
+.icon-left {
     margin-left: var(--component-content-spacing);
 }
 
-/***input type=selector***/
-.input__type--selector {
-    cursor: pointer;
-    align-items: center;
-}
-
-.input__type--selector span{
-    flex-grow: 1;
-}
-
-.input__type--selector--disabled {
-    cursor: unset;
-}
-
-/***input type=number***/
-.input__type--number--error,
-.input__type--selector--error {
+.input-wrapper-error {
     border-color: var(--error-color);
 }
 
-.input__type--number--disabled {
+.input-wrapper-disabled {
     background-color: #F8F8F8;
 }
 
-.input__type--number input {
+.input-wrapper input {
     outline: none;
     font-size: 1rem;
     border: 0;
@@ -135,7 +88,7 @@
     height: var(--component-content-height);
 }
 
-.input__icon--chevron {
+.icon-chevron {
     height: 0.75rem;
 }
 
@@ -159,14 +112,14 @@
     margin-top: 0.2727em;
 }
 
-.text-hint--link {
+.text-hint.with-link {
     text-decoration: underline;
     cursor: pointer;
     color: #4c4c4c;
     margin-top: 6px;
 }
 
-/********error display transition*********/
+/******** error display transition *********/
 .collapse-enter {
     max-height: 0px;
     opacity: 0;

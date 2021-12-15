@@ -1,9 +1,11 @@
 import React, { useCallback } from "react";
-import styles from "./Input.module.css";
+import classes from "./Input.module.css";
 import { InputProps } from "./Input.models";
 import InputTransition from "./InputTransition";
 
 // TODO: add a component that uses this one to create a date input
+// TODO: style according to new design
+
 const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
   const transitionRef = React.createRef<HTMLDivElement>();
 
@@ -49,46 +51,42 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
 
   // TODO: raname classes and rework css
   return (
-    <div ref={ref} className={`${styles.input} ${props.className}`}>
+    <div ref={ref} className={`${classes.wrapper} ${props.className}`}>
       {label && (
         <label>
           <span>{label}</span>
           {!props.isRequired && (
             // TODO:  add a class here instead
-            <span style={{ fontSize: ".75rem", opacity: ".75" }}>&nbsp;(Optional)</span>
+            <span className={classes["optional-txt"]}>&nbsp;(Optional)</span>
           )}
         </label>
       )}
 
       <div
-        className={`${styles.input__type} ${styles["input__type--number"]}  ${
-          props.error || props.error === "" ? styles["input__type--number--error"] : ""
-        } ${props.disabled ? styles["input__type--number--disabled"] : ""}`}
+        className={`${classes["input-wrapper"]}  ${
+          props.error || props.error === "" ? classes["input-wrapper-error"] : ""
+        } ${props.disabled ? classes["input-wrapper-disabled"] : ""}`}
       >
         {props.icon && (
           <img
-            title={props.iconTitle}
-            onClick={_onIconClick}
-            alt="Icon"
             src={props.icon}
-            className={`${styles.input__type__child} ${styles.input__icon} ${
-              props.iconPosition === "end"
-                ? `${styles["input__type__child--old-first"]} ${
-                    styles["input__icon--chevron"]
-                  }`
-                : ""
-            } ${clickableIcon ? styles["clickable-icon"] : ""}`}
+            className={`${classes["input-wrapper-child"]} ${classes.input__icon} ${
+              props.iconPosition === "end" ? `${classes["icon-left"]} ${classes["icon-chevron"]}` : ""
+            } ${clickableIcon ? classes["clickable-icon"] : ""}`}
+            onClick={_onIconClick}
+            title={props.iconTitle}
             data-value={props.value}
+            alt="Icon"
           />
         )}
-        
+
         <span
+          style={{ order: props.iconPosition === "end" ? -1 : "unset" }}
+          className={`${classes["input-wrapper-child"]} ${classes.symbol}  ${
+            props.iconPosition === "end" ? classes["input-wrapper-right-icon"] : ""
+          }`}
           before-content={symbolPosition === "start" ? props.symbol : undefined}
           after-content={symbolPosition === "end" ? props.symbol : undefined}
-          className={`${styles.input__type__child} ${styles.symbol}  ${
-            props.iconPosition === "end" ? styles["input__type__child--new-first"] : ""
-          }`}
-          style={{ order: props.iconPosition === "end" ? -1 : "unset" }}
         >
           <input
             type={type}
@@ -106,7 +104,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
 
       <InputTransition ref={transitionRef} in={!!props.error}>
         {props.error ? (
-          <span ref={transitionRef} className={`${styles["text-error"]}`}>
+          <span ref={transitionRef} className={`${classes["text-error"]}`}>
             {props.error}
           </span>
         ) : (
@@ -117,14 +115,14 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
       {props.hint && (
         <span
           onClick={props.onHintClick}
-          className={`${styles["text-hint"]} ${props.onHintClick ? styles["text-hint--link"] : ""}`}
+          className={`${classes["text-hint"]} ${props.onHintClick ? classes["with-link"] : ""}`}
         >
           {props.hint}
         </span>
       )}
 
       <InputTransition nodeRef={transitionRef} in={!!props.info}>
-        <span className={`${styles["text-hint"]}`}>{props.info}</span>
+        <span className={`${classes["text-hint"]}`}>{props.info}</span>
       </InputTransition>
     </div>
   );
