@@ -20,6 +20,7 @@ import Step from "./../steps/Step"
 import TopScreenA from './ScreenA/TopScreenA'
 import OverlayPicker from '../common/OverlayPicker/OverlayPicker'
 import { getBestAvailableGateway } from '../utils'
+import TemporarDebugComponent from '../common/FormInput/TemporarDebugComponent'
 
 interface BodyBuyCryptoProps {
     onBuyCrypto: () => void
@@ -146,6 +147,8 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
 
     return (
       <main className={stylesCommon.body}>
+        <TemporarDebugComponent />
+        
         <NotificationSection onBuyCrypto={onBuyCrypto} />
 
         {showScreenA && <TopScreenA />}
