@@ -5,26 +5,15 @@ import InputTransition from "./InputTransition";
 
 // TODO: add a component that uses this one to create a date input
 const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
-  const {
-    symbol,
-    label = "\u00A0",
-    className,
-    disabled,
-    value,
-    type = "text",
-    name,
-    error,
-    symbolPosition = "end",
-    hint,
-  } = props;
-
-  const placeholder = disabled ? "" : props.placeholder;
-  const clickableIcon = !!(props.clickableIcon || props.onIconClick);
-  const { onIconClick } = props;
-  const icon = props.icon;
-  const iconPosition = props.iconPosition;
-  const classPrefix = "--chevron";
   const transitionRef = React.createRef<HTMLDivElement>();
+
+  const {
+    label = "\u00A0",
+    type = "text",
+    symbolPosition = "end"
+  } = props;
+  const placeholder = props.disabled ? "" : props.placeholder;
+  const clickableIcon = !!(props.clickableIcon || props.onIconClick);
 
   const handleChangeNumber = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,17 +38,18 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
     [handleChangeNumber, props, type]
   );
 
+  // TODO: review how this can be used
   const formatValue = (value?: any, type?: string) => {
     return value;
   };
 
   const _onIconClick = () => {
-    onIconClick?.(name, formatValue(value, type), label);
+    props.onIconClick?.(props.name, formatValue(props.value, type), label);
   };
 
   // TODO: raname classes and rework css
   return (
-    <div ref={ref} className={`${styles.input} ${className}`}>
+    <div ref={ref} className={`${styles.input} ${props.className}`}>
       {label && (
         <label>
           <span>{label}</span>
@@ -72,41 +62,41 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
 
       <div
         className={`${styles.input__type} ${styles["input__type--number"]}  ${
-          error || error === "" ? styles["input__type--number--error"] : ""
-        } ${disabled ? styles["input__type--number--disabled"] : ""}`}
+          props.error || props.error === "" ? styles["input__type--number--error"] : ""
+        } ${props.disabled ? styles["input__type--number--disabled"] : ""}`}
       >
-        {icon && (
+        {props.icon && (
           <img
             title={props.iconTitle}
             onClick={_onIconClick}
             alt="Icon"
-            src={icon}
+            src={props.icon}
             className={`${styles.input__type__child} ${styles.input__icon} ${
-              iconPosition === "end"
+              props.iconPosition === "end"
                 ? `${styles["input__type__child--old-first"]} ${
-                    styles["input__icon" + classPrefix]
+                    styles["input__icon--chevron"]
                   }`
                 : ""
             } ${clickableIcon ? styles["clickable-icon"] : ""}`}
-            data-value={value}
+            data-value={props.value}
           />
         )}
         
         <span
-          before-content={symbolPosition === "start" ? symbol : undefined}
-          after-content={symbolPosition === "end" ? symbol : undefined}
+          before-content={symbolPosition === "start" ? props.symbol : undefined}
+          after-content={symbolPosition === "end" ? props.symbol : undefined}
           className={`${styles.input__type__child} ${styles.symbol}  ${
-            iconPosition === "end" ? styles["input__type__child--new-first"] : ""
+            props.iconPosition === "end" ? styles["input__type__child--new-first"] : ""
           }`}
-          style={{ order: iconPosition === "end" ? -1 : "unset" }}
+          style={{ order: props.iconPosition === "end" ? -1 : "unset" }}
         >
           <input
             type={type}
-            name={name}
-            value={formatValue(value, type) ?? ""}
+            name={props.name}
+            value={formatValue(props.value, type) ?? ""}
             onChange={(e) => handleInputChange(e)}
             placeholder={placeholder}
-            disabled={disabled}
+            disabled={props.disabled}
             max={props.max}
             min="0"
             maxLength={props.maxLength}
@@ -114,22 +104,22 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
         </span>
       </div>
 
-      <InputTransition ref={transitionRef} in={!!error}>
-        {error ? (
+      <InputTransition ref={transitionRef} in={!!props.error}>
+        {props.error ? (
           <span ref={transitionRef} className={`${styles["text-error"]}`}>
-            {error}
+            {props.error}
           </span>
         ) : (
           <></>
         )}
       </InputTransition>
 
-      {hint && (
+      {props.hint && (
         <span
           onClick={props.onHintClick}
           className={`${styles["text-hint"]} ${props.onHintClick ? styles["text-hint--link"] : ""}`}
         >
-          {hint}
+          {props.hint}
         </span>
       )}
 
@@ -140,14 +130,13 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
   );
 });
 
-// TODO: see why default props are used twice
 InputText.defaultProps = {
   label: "\u00A0",
   className: "",
   iconPosition: "start",
   disabled: false,
   type: "text",
-  isRequired: true,
+  isRequired: true
 };
 
 export default InputText;

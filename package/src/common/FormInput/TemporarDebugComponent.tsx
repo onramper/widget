@@ -45,7 +45,7 @@ const TemporarDebugComponent: React.FC = () => {
         disabled={false}
         symbol="This input symbol"
         placeholder="input placeholder"
-        label={`This input label`}
+        // label={`This input label`}
         className="some-class"
         icon={IconImToken}
         iconPosition="end"
