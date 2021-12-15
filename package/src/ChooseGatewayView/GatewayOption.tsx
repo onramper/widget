@@ -98,7 +98,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const isDiffPositive = (props.receivedCrypto || 0) > (props.selectedReceivedCrypto || 0);
 
     return (
-        <div 
+        <li 
             ref={wrapperTransRef}
             className={`${styles["option-wrapper"]} ${isSelected ? styles["option-wrapper-selected"] : ""} ${!props.available ? styles["option-container-disabled"] : ""}`}
             onClick={() => props.onClick?.()}
@@ -159,7 +159,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </li>
     )
 }
 
