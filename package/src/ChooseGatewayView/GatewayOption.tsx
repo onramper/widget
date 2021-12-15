@@ -100,7 +100,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     return (
         <div 
             ref={wrapperTransRef}
-            className={`${styles["option-wrapper"]} ${isSelected ? styles["option-wrapper--selected"] : ""} ${!props.available ? styles["option-container--disabled"] : ""}`}
+            className={`${styles["option-wrapper"]} ${isSelected ? styles["option-wrapper-selected"] : ""} ${!props.available ? styles["option-container-disabled"] : ""}`}
             onClick={() => props.onClick?.()}
         >
             <input
@@ -135,7 +135,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         <div 
                             ref={percentTransRef}
                             style={getSyleColorUpDownDiff()} 
-                            className={`${styles["percentage-wrapper"]} ${!isDiffPositive ? styles['diff--down'] : ""}`}
+                            className={`${styles["percentage-wrapper"]} ${!isDiffPositive ? styles['diff-down'] : ""}`}
                         >
                             {`${percentage}%`}
                             <ArrowUpSvg className={styles["percentage-arrow"]} />
