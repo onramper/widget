@@ -82,7 +82,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
       [collected.selectedGateway, isNextStepConfirmed, nextScreen]
     );
 
-    const openMoreOptions = useCallback(() => {
+    const openMorePaymentOptions = useCallback(() => {
       if(availablePaymentMethods.length > 1) {
             nextScreen(
               <OverlayPicker
@@ -121,7 +121,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         {!showScreenA && <TopScreenB2 />}
 
         <PaymentMethodPicker
-          openMoreOptions={openMoreOptions}
+          openMoreOptions={openMorePaymentOptions}
           selectedId={selectedPaymentMethod.id}
           items={availablePaymentMethods}
           onChange={props.handlePaymentMethodChange}
