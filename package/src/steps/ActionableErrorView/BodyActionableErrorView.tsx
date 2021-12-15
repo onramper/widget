@@ -3,7 +3,7 @@ import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
 
 import { NavContext } from "../../NavContext";
-import { APIContext, NextStep } from "../../ApiContext";
+import { NextStep } from "../../ApiContext";
 
 import { ReactComponent as ERROR } from "../../icons/error.svg";
 import ChooseGatewayView from "../../ChooseGatewayView";
