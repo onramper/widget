@@ -11,6 +11,7 @@
 
 .option-wrapper {
     display: flex;
+    flex-grow: 1;
 }
 
 .option-icon {
@@ -58,6 +59,7 @@
     margin: 4px 0px;
     text-align: right;
     word-break: break-all;
+    flex-shrink: 0;
 }
 
 .sk-option-body {
