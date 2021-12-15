@@ -1,15 +1,9 @@
 import React, { useContext, useEffect, useState, useCallback, useLayoutEffect } from 'react'
 import stylesCommon from '../styles.module.css'
-
-import InputButton from '../common/Input/InputButton'
-import InputTextAmount from '../common/Input/InputTextAmount'
 import ButtonAction from '../common/ButtonAction'
-import ExpectedCrypto from './ExpectedCrypto'
-
-import { APIContext, GatewayRateOption, ItemCategory } from '../ApiContext'
+import { APIContext, GatewayRateOption } from '../ApiContext'
 import type { ItemType } from '../ApiContext'
 import { NavContext } from '../NavContext'
-
 import PaymentMethodPicker from './PaymentMethodPicker/PaymentMethodPicker'
 import GatewayIndicator from './GatewayIndicator/GatewayIndicator'
 import { IGatewaySelected } from './GatewayIndicator/GatewayIndicator.models'
