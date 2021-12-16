@@ -3,7 +3,6 @@ import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
 import CreditCardInput from './renderers/creditCard'
-import InputText from '../../common/Input/InputText'
 import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
 import InputButton from '../../common/Input/InputButton'
