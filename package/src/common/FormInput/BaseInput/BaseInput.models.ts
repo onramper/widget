@@ -1,6 +1,6 @@
-import type { DateType } from "./../../Input/DatePicker";
+import type { DateType } from "../../Input/DatePicker";
 
-export type InputProps = {
+export type BaseInputProps = {
     max?: string;
     disabled?: boolean;
     symbol?: string;

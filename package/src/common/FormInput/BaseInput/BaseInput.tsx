@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
-import classes from "./Input.module.css";
-import { InputProps } from "./Input.models";
-import InputTransition from "./InputTransition";
+import classes from "./BaseInput.module.css";
+import { BaseInputProps } from "./BaseInput.models";
+import InputTransition from "./BaseInputTransition";
 
 // TODO: add a component that uses this one to create a date input
 // TODO: style according to new design
 
-const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
+const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) => {
   const transitionRef = React.createRef<HTMLDivElement>();
 
   const { label = "\u00A0", type = "text", symbolPosition = "end" } = props;
@@ -45,14 +45,12 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
     props.onIconClick?.(props.name, formatValue(props.value, type), label);
   };
 
-  // TODO: raname classes and rework css
   return (
     <div ref={ref} className={`${classes.wrapper} ${props.className}`}>
       {label && (
         <label>
           <span>{label}</span>
           {!props.isRequired && (
-            // TODO:  add a class here instead
             <span className={classes["optional-txt"]}>&nbsp;(Optional)</span>
           )}
         </label>
@@ -126,7 +124,7 @@ const InputText = React.forwardRef<HTMLDivElement, InputProps>((props, ref) => {
   );
 });
 
-InputText.defaultProps = {
+BaseInput.defaultProps = {
   label: "\u00A0",
   className: "",
   iconPosition: "start",
@@ -135,4 +133,4 @@ InputText.defaultProps = {
   isRequired: true,
 };
 
-export default InputText;
+export default BaseInput;
