@@ -6,7 +6,7 @@ import { NavContext } from "../../NavContext";
 import DatePicker, { DateType } from "../Input/DatePicker";
 import DateModule from "../Input/DatePicker/DateModule";
 
-const DateInput: React.FC<InputFacadeProps> = (props) => {
+const DateInput = React.forwardRef<HTMLDivElement, InputFacadeProps>((props, ref) => {
   const { backScreen, nextScreen } = useContext(NavContext);
 
   const [inputNotSupported] = useState(!isTypeSupported("date"));
@@ -60,6 +60,7 @@ const DateInput: React.FC<InputFacadeProps> = (props) => {
   return (
     <BaseInput
       {...props}
+      ref={ref}
       icon={icon}
       iconPosition={iconPosition}
       type="date"
@@ -72,7 +73,7 @@ const DateInput: React.FC<InputFacadeProps> = (props) => {
       inputSupportFallbackNode={inputAlternative}
     />
   );
-};
+});
 
 const isTypeSupported = (type: string) => {
   const datefield = document.createElement("input");

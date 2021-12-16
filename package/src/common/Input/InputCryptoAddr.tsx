@@ -7,10 +7,8 @@ import {
   ProviderManager,
   ProviderNames,
 } from "../../ApiContext/ProvidersManager";
-
-import InputText from "../../common/Input/InputText";
-
 import { APIContext } from "../../ApiContext";
+import InputDelegator from "../FormInput/InputDelegator";
 
 type InputCryptoAddrType = {
   handleInputChange: (name: string, value: any) => void;
@@ -106,7 +104,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
     }, [collected.selectedCrypto?.id, collected.selectedCrypto?.info]);
 
     return (
-      <InputText
+      <InputDelegator
         hintButton
         onHintClick={ProviderManager.providerName ? getWalletAddrs : () => {}}
         /* symbol='Import address' */
