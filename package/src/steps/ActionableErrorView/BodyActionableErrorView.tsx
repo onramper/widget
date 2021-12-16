@@ -41,7 +41,7 @@ const BodyActionableErrorView: React.FC<ActionableErrorViewType> = (props) => {
 
         {!!props.optionalUrl  && (
           <button
-          onClick={ () => window.open(props.optionalUrl, "_parent") }
+          onClick={ () => window.open(props.optionalUrl) }
           className={`${styles["button--basic"]} ${
             styles["button--instant"]
           }`}
@@ -64,7 +64,7 @@ const BodyActionableErrorView: React.FC<ActionableErrorViewType> = (props) => {
               styles["button--instant"]
             }`}
           >
-            { props.fatal === false ? "Try again" : "Finish" }
+            { props.fatal === false ? "Try again" : "Try another gateway" }
           </button>
           )}
       </div>
