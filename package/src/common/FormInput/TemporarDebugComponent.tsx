@@ -1,13 +1,13 @@
 import React, { Fragment, useState } from "react";
 import InputText from "../Input/InputText";
-import InputRedesign from "./Input/Input";
-import {InputProps} from "./Input/Input.models";
+import InputRedesign from "./BaseInput/BaseInput";
+import {BaseInputProps} from "./BaseInput/BaseInput.models";
 
 /* TODO: at the very final test cases each combination of props:
   PS: you can create a bunch of inputs and compare how each works and looks
 */
 
-const initialProps: {[key:string]: string|boolean|number|undefined} | InputProps = {
+const initialProps: {[key:string]: string|boolean|number|undefined} | BaseInputProps = {
   disabled: false,
   symbol: "This input symbol",
   placeholder: "input placeholder",
@@ -99,7 +99,7 @@ const TemporarDebugComponent: React.FC = () => {
     <div style={{ flexGrow: 1 }}>
       <div style={{height: "265px"}}>
         <InputText
-          {...(propsToUse as InputProps)}
+          {...(propsToUse as BaseInputProps)}
           onChange={(name: string, value: string) => {
             setValue(value);
           }}
@@ -107,7 +107,7 @@ const TemporarDebugComponent: React.FC = () => {
         />
 
         <InputRedesign
-          {...(propsToUse as InputProps)}
+          {...(propsToUse as BaseInputProps)}
           onChange={(name: string, value: string) => {
             setValue(value);
           }}
