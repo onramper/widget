@@ -1,6 +1,7 @@
+import { ReactChild } from "react";
 import type { DateType } from "../../Input/DatePicker";
 
-export type BaseInputProps = {
+export type InputFacadeProps = {
     max?: string;
     disabled?: boolean;
     symbol?: string;
@@ -24,4 +25,12 @@ export type BaseInputProps = {
     info?: string;
     iconTitle?: string;
     isRequired?: boolean;
+}
+
+export type BaseInputProps = Omit<InputFacadeProps, "onChange"> & {
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void  | boolean
+    iconClassName?: "icon-chevron" | "icon-date",
+    inputSupportFallbackNode?: ReactChild,
+    inputNotSupported?: boolean,
+    formatValue?: (value?: any) => string
 }

@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import InputText from "../Input/InputText";
-import InputRedesign from "./BaseInput/BaseInput";
 import {BaseInputProps} from "./BaseInput/BaseInput.models";
+import InputDelegator from "./InputDelegator";
 
 /* TODO: at the very final test cases each combination of props:
   PS: you can create a bunch of inputs and compare how each works and looks
@@ -106,7 +106,7 @@ const TemporarDebugComponent: React.FC = () => {
           value={value}
         />
 
-        <InputRedesign
+        <InputDelegator
           {...(propsToUse as BaseInputProps)}
           onChange={(name: string, value: string) => {
             setValue(value);

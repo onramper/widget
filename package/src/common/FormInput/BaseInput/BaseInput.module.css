@@ -35,7 +35,7 @@
     margin-left: var(--component-content-spacing);
 }
 
-.input-wrapper-right-icon {
+.with-right-icon {
     margin-left: 0!important;
 }
 
@@ -83,7 +83,7 @@
     flex-grow: 1;
 }
 
-.input__icon {
+.input-icon {
     height: var(--component-content-height);
 }
 
@@ -91,7 +91,7 @@
     height: 0.75rem;
 }
 
-.input__icon--date {
+.icon-date {
     height: 1rem;
 }
 
