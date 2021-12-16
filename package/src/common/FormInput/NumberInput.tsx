@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import BaseInput from "./BaseInput/BaseInput";
 import { InputFacadeProps } from "./BaseInput/BaseInput.models";
 
-const NumberInput: React.FC<InputFacadeProps> = (props) => {
+const NumberInput = React.forwardRef<HTMLDivElement, InputFacadeProps>((props, ref) => {
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,10 +18,11 @@ const NumberInput: React.FC<InputFacadeProps> = (props) => {
   return (
     <BaseInput
       {...props}
+      ref={ref}
       type="number"
       handleInputChange={handleInputChange}
     />
   );
-};
+});
 
 export default NumberInput;

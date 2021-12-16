@@ -4,23 +4,24 @@ import { InputFacadeProps } from "./BaseInput/BaseInput.models";
 import DateInput from "./DateInput";
 import NumberInput from "./NumberInput";
 
-const InputDelegator: React.FC<InputFacadeProps> = (props) => {
+const InputDelegator = React.forwardRef<HTMLDivElement, InputFacadeProps>((props, ref) => {
   if (props.type === "number") {
-    return <NumberInput {...props} />;
+    return <NumberInput ref={ref} {...props} />;
   }
 
   if (props.type === "date") {
-    return <DateInput {...props} />;
+    return <DateInput ref={ref} {...props} />;
   }
 
   return (
     <BaseInput
       {...props}
+      ref={ref} 
       handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         props.onChange?.(e.currentTarget.name, e.currentTarget.value, e.currentTarget.type);
       }}
     />
   );
-};
+});
 
 export default InputDelegator;
