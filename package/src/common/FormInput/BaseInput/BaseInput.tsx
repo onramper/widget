@@ -3,46 +3,37 @@ import classes from "./BaseInput.module.css";
 import { BaseInputProps } from "./BaseInput.models";
 import InputTransition from "./BaseInputTransition";
 
-// TODO: add a component that uses this one to create a date input
 // TODO: style according to new design
-
 const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) => {
   const transitionRef = React.createRef<HTMLDivElement>();
 
   const { label = "\u00A0", type = "text", symbolPosition = "end" } = props;
-  const placeholder = props.disabled ? "" : props.placeholder;
-  const clickableIcon = !!(props.clickableIcon || props.onIconClick);
+  
+  const getIconClasName = useCallback(() => {
+    const clickableIcon = !!(props.clickableIcon || props.onIconClick);
 
-  const handleChangeNumber = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.currentTarget.value === "" ? "" : +e.currentTarget.value;
+    return `${classes["input-wrapper-child"]} ${classes["input-icon"]} ${
+      props.iconPosition === "end"
+        ? `${classes["icon-left"]} ${classes[props.iconClassName || "icon-chevron"]}`
+        : ""
+    } ${clickableIcon ? classes["clickable-icon"] : ""}`;
+  }, [props.clickableIcon, props.iconClassName, props.iconPosition, props.onIconClick]);
 
-      if (!value && value !== "") return false;
+  const getInputWrapperChildClass = useCallback(() => {
+    return `${classes["input-wrapper-child"]} ${classes.symbol}  ${
+      props.iconPosition === "end" ? classes["with-right-icon"] : ""
+    }`;
+  }, [props.iconPosition]);
 
-      props.onChange?.(e.currentTarget.name, value, e.currentTarget.type);
-    },
-    [props]
-  );
-
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (type === "number") {
-        return handleChangeNumber(e);
-      }
-
-      const value = e.currentTarget.value === "" ? "" : e.currentTarget.value;
-      props.onChange?.(e.currentTarget.name, value, e.currentTarget.type);
-    },
-    [handleChangeNumber, props, type]
-  );
-
-  // TODO: review how this can be used
-  const formatValue = (value?: any, type?: string) => {
+  const formatValue = (value?: any) => {
+    if(props.formatValue) {
+      return props.formatValue(value);
+    }
     return value;
   };
 
-  const _onIconClick = () => {
-    props.onIconClick?.(props.name, formatValue(props.value, type), label);
+  const onIconClick = () => {
+    props.onIconClick?.(props.name, formatValue(props.value), label);
   };
 
   return (
@@ -64,12 +55,8 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
         {props.icon && (
           <img
             src={props.icon}
-            className={`${classes["input-wrapper-child"]} ${classes.input__icon} ${
-              props.iconPosition === "end"
-                ? `${classes["icon-left"]} ${classes["icon-chevron"]}`
-                : ""
-            } ${clickableIcon ? classes["clickable-icon"] : ""}`}
-            onClick={_onIconClick}
+            className={getIconClasName()}
+            onClick={onIconClick}
             title={props.iconTitle}
             data-value={props.value}
             alt="Icon"
@@ -78,23 +65,25 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
 
         <span
           style={{ order: props.iconPosition === "end" ? -1 : "unset" }}
-          className={`${classes["input-wrapper-child"]} ${classes.symbol}  ${
-            props.iconPosition === "end" ? classes["input-wrapper-right-icon"] : ""
-          }`}
+          className={getInputWrapperChildClass()}
           before-content={symbolPosition === "start" ? props.symbol : undefined}
           after-content={symbolPosition === "end" ? props.symbol : undefined}
         >
-          <input
-            type={type}
-            name={props.name}
-            value={formatValue(props.value, type) ?? ""}
-            onChange={(e) => handleInputChange(e)}
-            placeholder={placeholder}
-            disabled={props.disabled}
-            max={props.max}
-            min="0"
-            maxLength={props.maxLength}
-          />
+          {!props.inputNotSupported ? (
+            <input
+              type={type}
+              name={props.name}
+              value={formatValue(props.value)}
+              onChange={props.handleInputChange}
+              placeholder={props.disabled ? "" : props.placeholder}
+              disabled={props.disabled}
+              max={props.max}
+              min="0"
+              maxLength={props.maxLength}
+            />
+          ) : (
+            <> {props.inputSupportFallbackNode} </>
+          )}
         </span>
       </div>
 
