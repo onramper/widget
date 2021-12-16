@@ -27,6 +27,7 @@ import { GroupFieldsController } from './utils'
 import BuyCryptoView from '../../BuyCryptoView'
 import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
 import Footer from '../../common/Footer'
+import InputDelegator from '../../common/FormInput/InputDelegator'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -238,7 +239,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             ))
                             || ((field.name === 'verifyCreditCard') && (
                                 <React.Fragment key={i}>
-                                    <InputText
+                                    <InputDelegator
                                         value={collected[field.name] ?? ''}
                                         isRequired={field.required !== false}
                                         ref={inputRefs[i].ref}
@@ -260,7 +261,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                             ))
                             || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
                                 <React.Fragment key={i}>
-                                    <InputText
+                                    <InputDelegator
                                         isRequired={field.required !== false}
                                         ref={inputRefs[i].ref}
                                         hint={field.hint}
@@ -414,7 +415,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             selectedOption={'+' + collected.phoneCountryCode ?? phoneCodes[(collected.country ?? 'gb').toUpperCase()].phoneCode}
                                             error={errorObj?.phoneCountryCode}
                                         />
-                                        <InputText
+                                        <InputDelegator
                                             error={errorObj?.phoneNumber}
                                             ref={inputRefs[fields.findIndex((field) => field.name === 'phoneNumber')].ref}
                                             name='phoneNumber'
@@ -430,7 +431,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     </div>
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((field.type !== 'boolean') && (
-                                <InputText
+                                <InputDelegator
                                     isRequired={field.required !== false}
                                     ref={inputRefs[i].ref}
                                     key={i}
