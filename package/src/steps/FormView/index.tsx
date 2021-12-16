@@ -5,7 +5,7 @@ import styles from '../../styles.module.css'
 import Step from '../Step'
 /* import ErrorView from '../../common/ErrorView' */
 
-import { APIContext, NextStep } from '../../ApiContext'
+import { APIContext, NextStep, NextStepError } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import { areAllKeysFilled } from '../utils'
 
@@ -77,7 +77,8 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
       const newNextStep = await apiInterface.executeStep(nextStep, payload);
       inputInterface.handleInputChange('isPartnerContextSent', true)
       nextScreen(<Step nextStep={newNextStep} />)
-    } catch (error) {
+    } catch (_error) {
+      const error = _error as NextStepError;
       const processedError = processError(error, nextStepData)
       if (error.fatal) {
         //nextScreen(<ErrorView type="TX" message={error.message} />)
