@@ -2,9 +2,9 @@
 import * as React from 'react';
 import { CSSTransition } from "react-transition-group";
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
-import styles from "./Input.module.css";
+import styles from "./BaseInput.module.css";
 
-const InputTransition = React.forwardRef<HTMLDivElement, CSSTransitionProps>((props, ref) => {
+const BaseInputTransition = React.forwardRef<HTMLDivElement, CSSTransitionProps>((props, ref) => {
   return (
     <CSSTransition
       nodeRef={ref}
@@ -23,4 +23,4 @@ const InputTransition = React.forwardRef<HTMLDivElement, CSSTransitionProps>((pr
   );
 });
 
-export default InputTransition;
+export default BaseInputTransition;

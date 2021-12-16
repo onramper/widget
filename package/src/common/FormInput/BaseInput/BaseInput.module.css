@@ -2,20 +2,19 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    font-size: 1rem;
-    min-width: 6rem;
+    min-width: 96px;
 }
 
 .wrapper > label {
-    margin-bottom: 0.56rem;
-    font-size: 0.875rem;
+    margin-bottom: 8.96px;
+    font-size: 14px;
     display: flex;
     flex-direction: row;
     align-items: baseline;
 }
 
 .optional-txt {
-    font-size: 0.75rem;
+    font-size: 12px;
     opacity: 0.75;
 }
 
@@ -54,7 +53,7 @@
 
 .input-wrapper input {
     outline: none;
-    font-size: 1rem;
+    font-size: 16px;
     border: 0;
     width: 100%;
     background-color: transparent;
@@ -63,7 +62,7 @@
 
 .symbol::before {
     position: relative;
-    top: -0.025rem;
+    top: -0.4px;
     content: attr(before-content);
     align-self: center;
     white-space: nowrap;
@@ -72,7 +71,7 @@
 
 .symbol::after {
     position: relative;
-    top: -0.025rem;
+    top: -0.4px;
     content: attr(after-content);
     align-self: center;
     white-space: nowrap;
@@ -102,14 +101,14 @@
 
 .text-error {
     color: var(--error-color);
-    font-size: 0.75em;
-    margin-top: 0.2727em;
+    font-size: 12px;
+    margin-top: 4.3632px;
 }
 
 .text-hint {
     color: inherit;
-    font-size: 0.75em;
-    margin-top: 0.2727em;
+    font-size: 12px;
+    margin-top: 4.3632px;
 }
 
 .text-hint.with-link {
