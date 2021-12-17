@@ -139,6 +139,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
             ? `Import address from ${ProviderManager.providerName}`
             : undefined
         }
+        placeholder="e.g 3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"
       />
     );
   }
