@@ -2,9 +2,12 @@ import React, { useCallback } from "react";
 import classes from "./BaseInput.module.css";
 import { BaseInputProps } from "./BaseInput.models";
 import InputTransition from "./BaseInputTransition";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 // TODO: style according to new design
 const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) => {
+  const [isFocused, setIsFocused] = React.useState<boolean>(false);
+  const [isMouseOver, setIsMouseOver] = React.useState<boolean>(false);
   const transitionRef = React.createRef<HTMLDivElement>();
 
   const { label = "\u00A0", type = "text", symbolPosition = "end" } = props;
@@ -48,7 +51,11 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
       )}
 
       <div
-        className={`${classes["input-wrapper"]}  ${
+        className={`${classes["input-wrapper"]} ${
+          isMouseOver ? classes["input-wrapper-hovered"] : ""
+        } ${
+          isFocused ? classes["input-wrapper-focused"] : ""
+        } ${
           props.error || props.error === "" ? classes["input-wrapper-error"] : ""
         } ${props.disabled ? classes["input-wrapper-disabled"] : ""}`}
       >
@@ -80,6 +87,10 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
               max={props.max}
               min="0"
               maxLength={props.maxLength}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onMouseOver={() => setIsMouseOver(true)}
+              onMouseOut={() => setIsMouseOver(false)}
             />
           ) : (
             <> {props.inputSupportFallbackNode} </>
@@ -87,15 +98,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
         </span>
       </div>
 
-      <InputTransition ref={transitionRef} in={!!props.error}>
-        {props.error ? (
-          <span ref={transitionRef} className={`${classes["text-error"]}`}>
-            {props.error}
-          </span>
-        ) : (
-          <></>
-        )}
-      </InputTransition>
+      <ErrorMessage text={props.error} className={`${classes["text-error"]}`}/>
 
       {props.hint && (
         <span

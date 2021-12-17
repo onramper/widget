@@ -6,7 +6,9 @@ theme styles
     --error-color: #D25656;
     --text-dark-color: #292D32;
     --text-light-color: #7C7D82;
+    --grey-light-color: #ABADB8;
     --input-bg-color: #F7FAFD;
+    --input-stroke-color: #D7D9E0;
     /* default color*/
     --max-width: 1rem;
     --max-height: 1rem;

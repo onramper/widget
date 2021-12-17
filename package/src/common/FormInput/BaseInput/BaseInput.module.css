@@ -5,30 +5,64 @@
     min-width: 96px;
 }
 
+.wrapper, .wrapper * {
+    box-sizing: border-box;
+}
+
 .wrapper > label {
-    margin-bottom: 8.96px;
-    font-size: 14px;
     display: flex;
     flex-direction: row;
     align-items: baseline;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.01em;
+    color: var(--text-dark-color);
+    margin-bottom: 12px;
 }
 
 .optional-txt {
-    font-size: 12px;
     opacity: 0.75;
 }
 
 .input-wrapper {
-    background-color: white;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 1px;
-    border-color: #DEDEDE;
-    padding: var(--component-padding);
     display: flex;
+    padding: 15px;
+    height: 48px;
     flex-direction: row;
-    height: var(--component-content-height);
     align-items: center;
+    border-radius: 12px;
+    border: 1.5px solid var(--input-stroke-color);
+    background-color: var(--input-bg-color);
+    transition: border-color 0.2s;
+}
+
+.input-wrapper input::-webkit-input-placeholder,
+.input-wrapper input:-ms-input-placeholder,
+.input-wrapper input::placeholder {
+    color: var(--input-stroke-color);
+}
+
+.input-wrapper input {
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.005em;
+    color: var(--text-dark-color);
+    background-color: transparent;
+}
+
+.input-wrapper-hovered {
+    border-color: var(--grey-light-color); 
+}
+
+.input-wrapper-hovered input::-webkit-input-placeholder,
+.input-wrapper-hovered input:-ms-input-placeholder,
+.input-wrapper-hovered input::placeholder {
+    color: var(--grey-light-color); 
+}
+
+.input-wrapper-focused {
+    border-color: var(--primary-color);
 }
 
 .input-wrapper-child + .input-wrapper-child {
@@ -88,7 +122,7 @@
 }
 
 .icon-chevron {
-    height: 0.75rem;
+    height: 0.75em;
 }
 
 .icon-date {
@@ -102,13 +136,15 @@
 .text-error {
     color: var(--error-color);
     font-size: 12px;
-    margin-top: 4.3632px;
+    line-height: 15px;
+    letter-spacing: 0.005em;
+    margin-top: 10px;
 }
 
 .text-hint {
     color: inherit;
     font-size: 12px;
-    margin-top: 4.3632px;
+    margin-top: 10px;
 }
 
 .text-hint.with-link {
@@ -118,7 +154,6 @@
     margin-top: 6px;
 }
 
-/******** error display transition *********/
 .collapse-enter {
     max-height: 0px;
     opacity: 0;

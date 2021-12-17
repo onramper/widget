@@ -15,7 +15,7 @@
     flex-grow: 1;
     font-size: 14px;
     line-height: 17px;
-    color: #ABADB8;
+    color: var(--grey-light-color);
     caret-color: #6C77DC;
     border: none;
     background: none;
