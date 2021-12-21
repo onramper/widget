@@ -97,7 +97,7 @@ const TemporarDebugComponent: React.FC = () => {
 
   return (
     <div style={{ flexGrow: 1 }}>
-      <div style={{height: "265px"}}>
+      <div style={{height: "290px"}}>
         <InputText
           {...(propsToUse as BaseInputProps)}
           onChange={(name: string, value: string) => {
