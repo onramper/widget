@@ -26,7 +26,7 @@ import { GroupFieldsController } from './utils'
 import BuyCryptoView from '../../BuyCryptoView'
 import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
 import Footer from '../../common/Footer'
-import InputDelegator from '../../common/FormInput/InputDelegator'
+import InputDelegator from '../../common/Input/InputDelegator'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']

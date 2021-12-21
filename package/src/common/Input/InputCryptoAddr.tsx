@@ -8,7 +8,7 @@ import {
   ProviderNames,
 } from "../../ApiContext/ProvidersManager";
 import { APIContext } from "../../ApiContext";
-import InputDelegator from "../FormInput/InputDelegator";
+import InputDelegator from "./InputDelegator";
 
 type InputCryptoAddrType = {
   handleInputChange: (name: string, value: any) => void;
