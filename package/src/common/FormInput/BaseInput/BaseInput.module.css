@@ -49,6 +49,8 @@
     letter-spacing: 0.005em;
     color: var(--text-dark-color);
     background-color: transparent;
+    position: relative;
+    height: 48px;
 }
 
 .input-wrapper-hovered {
