@@ -26,7 +26,7 @@
     color: black;
     margin-top: 1rem;
     text-decoration: underline;
-    
+
 }
 
 .button--link:hover {
@@ -52,7 +52,7 @@
 }
 
 .button--instant {
-    margin-top: 0;
+    margin-top: 1rem;
     font-size: 0.8125rem;
     background-color: var(--primary-color);
 }
