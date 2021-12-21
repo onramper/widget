@@ -3,6 +3,8 @@ import classes from "./BaseInput.module.css";
 import { BaseInputProps } from "./BaseInput.models";
 import InputTransition from "./BaseInputTransition";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
+import hintIcon from "../../../icons/hint.svg";
+import infoIcon from "../../../icons/info.svg";
 
 // TODO: style according to new design
 const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) => {
@@ -23,10 +25,12 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
   }, [props.clickableIcon, props.iconClassName, props.iconPosition, props.onIconClick]);
 
   const getInputWrapperChildClass = useCallback(() => {
-    return `${classes["input-wrapper-child"]} ${classes.symbol}  ${
+    return `${classes["input-wrapper-child"]} ${
+      classes.symbol} ${!props.symbol ? "" : classes[`symbol-position-${symbolPosition}`]
+    }  ${
       props.iconPosition === "end" ? classes["with-right-icon"] : ""
     }`;
-  }, [props.iconPosition]);
+  }, [props.iconPosition, props.symbol, symbolPosition]);
 
   const formatValue = (value?: any) => {
     if(props.formatValue) {
@@ -98,19 +102,21 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
         </span>
       </div>
 
-      <ErrorMessage text={props.error} className={`${classes["text-error"]}`}/>
+      <ErrorMessage text={props.error} className={`${classes["text-error-wrapper"]}`}/>
 
       {props.hint && (
-        <span
-          onClick={props.onHintClick}
-          className={`${classes["text-hint"]} ${props.onHintClick ? classes["with-link"] : ""}`}
-        >
-          {props.hint}
-        </span>
+        <div className={`${classes["text-under"]} ${props.onHintClick ? classes["with-link"] : ""}`} onClick={props.onHintClick}>
+            <img src={hintIcon} />
+            <span> {props.hint}</span>
+        </div>
+        
       )}
 
       <InputTransition nodeRef={transitionRef} in={!!props.info}>
-        <span className={`${classes["text-hint"]}`}>{props.info}</span>
+        <div className={`${classes["text-under"]}`} >
+            <img src={infoIcon} />
+            <span> {props.info}</span>
+        </div>
       </InputTransition>
     </div>
   );
