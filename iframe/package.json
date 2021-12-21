@@ -15,7 +15,7 @@
     "checklint": "eslint src --ext ts,js,tsx --no-ignore",
     "start": "react-scripts start",
     "start:prod": "export REACT_APP_STAGE=prod&&npm start",
-    "start:demo": "export REACT_APP_STAGE=demo&&npm start",
+    "start:demo": "set REACT_APP_STAGE=demo&&npm start",
     "start:local": "set PORT=3001&&npm start",
     "build": "react-scripts build",
     "build:dev": "react-scripts build",
