@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import stylesCommon from '../../../styles.module.css'
-import InputDelegator from '../../../common/FormInput/InputDelegator'
+import InputDelegator from '../../../common/Input/InputDelegator'
 
 type CreditCardInputType = {
     handleInputChange: (name: string, value: any) => void

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import stylesCommon from '../../styles.module.css'
 
-import InputDelegator from '../../common/FormInput/InputDelegator'
+import InputDelegator from '../../common/Input/InputDelegator'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 

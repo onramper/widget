@@ -105,8 +105,6 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
 
     return (
       <main className={stylesCommon.body}>
-        <TemporarDebugComponent />
-        
         <NotificationSection onBuyCrypto={onBuyCrypto} />
 
         {showScreenA && <TopScreenA />}
