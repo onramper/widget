@@ -32,14 +32,26 @@ const firstStep = {
     "data": [
         {
             "type": "string",
-            "name": "email",
-            "humanName": "Email",
-            "hint": "We will send a code to your email."
+            "name": "cryptocurrencyAddress",
+            "humanName": "Cryptocurrency wallet address",
+            "placeholder": "e.g 3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"
         },
         {
             "type": "string",
-            "name": "cryptocurrencyAddress",
-            "humanName": "Cryptocurrency wallet address"
+            "name": "fullname",
+            "humanName": "Full name",
+            "placeholder": "e.g JohnDoe"
+        },
+        {
+            "type": "integer",
+            "name": "phoneCountryCode",
+            "humanName": "Phone country code"
+        },
+        {
+            "type": "integer",
+            "name": "phoneNumber",
+            "humanName": "Phone number",
+            "placeholder": "654 56 84 56"
         }
     ]
 }
