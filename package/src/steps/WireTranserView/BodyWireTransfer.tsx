@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import stylesCommon from '../../styles.module.css'
 
-import InputText from '../../common/Input/InputText'
+import InputDelegator from '../../common/FormInput/InputDelegator'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
@@ -41,17 +41,17 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
                 {copiedText}
             </InfoBox>
             <div className={`${stylesCommon.body__child} ${stylesCommon['row-fields']}`}>
-                <InputText symbol={symbol} symbolPosition={'start'} value={amount} name='amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
-                <InputText value={props.reference} name='reference' className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+                <InputDelegator symbol={symbol} symbolPosition={'start'} value={amount} name='amount' className={stylesCommon['row-fields__child']} label="Amount" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+                <InputDelegator value={props.reference} name='reference' className={stylesCommon['row-fields__child']} label="Reference" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             </div>
-            <InputText value={bankDetails?.iban} name='iban' className={stylesCommon.body__child} label="IBAN" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
-            <InputText value={bankDetails?.bankName} name='bankName' className={stylesCommon.body__child} label="Bank name" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+            <InputDelegator value={bankDetails?.iban} name='iban' className={stylesCommon.body__child} label="IBAN" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+            <InputDelegator value={bankDetails?.bankName} name='bankName' className={stylesCommon.body__child} label="Bank name" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             <div className={`${stylesCommon.body__child} ${stylesCommon['row-fields']}`}>
-                <InputText value={bankDetails?.bic} name='bic' className={stylesCommon['row-fields__child']} label="BIC / SWIFT" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
-                <InputText value={bankDetails?.accountName} name='accountName' className={stylesCommon['row-fields__child']} label="Account name" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+                <InputDelegator value={bankDetails?.bic} name='bic' className={stylesCommon['row-fields__child']} label="BIC / SWIFT" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+                <InputDelegator value={bankDetails?.accountName} name='accountName' className={stylesCommon['row-fields__child']} label="Account name" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             </div>
-            <InputText value={bankDetails?.accountAddress} name='accountAddress' className={stylesCommon.body__child} label="Account address" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
-            <InputText value={bankDetails?.bankAddress} name='bankAddress' className={stylesCommon.body__child} label="Bank address" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+            <InputDelegator value={bankDetails?.accountAddress} name='accountAddress' className={stylesCommon.body__child} label="Account address" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
+            <InputDelegator value={bankDetails?.bankAddress} name='bankAddress' className={stylesCommon.body__child} label="Bank address" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             {
                 onActionButton &&
                 <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
