@@ -1,5 +1,5 @@
 type StepDataItems = Array<
-    | {
+    { placeholder?: string } & (| {
         type: "select";
         name: string;
         humanName: string;
@@ -56,7 +56,7 @@ type StepDataItems = Array<
             url: string;
             humanName: string;
         }[];
-    }
+    })
 >;
 
 interface FileStep {

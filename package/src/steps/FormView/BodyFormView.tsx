@@ -249,9 +249,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         hint={"Where do I find this code?"}
                                         name={field.name} onChange={onChange}
                                         label={field.humanName}
-                                        placeholder=""
+                                        placeholder={field.placeholder}
                                         error={errorObj?.[field.name]}
-                                        className={stylesCommon.body__child}
+                                        className={stylesCommon["body-form-child"]}
                                         type={getInputType(field)}
                                     />
                                     <span key={998} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
@@ -266,9 +266,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         name={field.name}
                                         onChange={onChange}
                                         label={field.humanName}
-                                        placeholder=""
+                                        placeholder={field.placeholder}
                                         error={errorObj?.[field.name]}
-                                        className={stylesCommon.body__child}
+                                        className={stylesCommon["body-form-child"]}
                                         type={getInputType(field)}
                                         value={verifyCode}
                                     />
@@ -386,7 +386,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((GroupFieldsController.isGroupRequired(field.name, PHONE_NUMBER_FIELDS_NAME_GROUP, fields.map((f) => f.name))) && (
                                 !GroupFieldsController.isGroupAdded(PHONE_NUMBER_FIELDS_NAME_GROUP)
-                                    ? <div key={i} className={`${stylesCommon.body__child} ${stylesCommon['row-fields']}`}>
+                                    ? <div key={i} className={`${stylesCommon["body-form-child"]} ${stylesCommon['row-fields']}`}>
                                         <InputButton
                                             hint={groupedFieldDataPHONE['phoneCountryCode']?.hint}
                                             ref={inputRefs[fields.findIndex((field) => field.name === 'phoneCountryCode')]?.ref}
@@ -423,7 +423,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             className={`${stylesCommon['row-fields__child']}
                                             ${stylesCommon.grow}`}
                                             label="Phone number"
-                                            placeholder="654 56 84 56"
+                                            placeholder={groupedFieldDataPHONE['phoneNumber']?.placeholder}
                                             hint={groupedFieldDataPHONE['phoneNumber']?.hint}
                                         />
                                     </div>
@@ -438,16 +438,17 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     name={field.name}
                                     value={getValueByField(field, collected)}
                                     onChange={onChange}
-                                    className={stylesCommon.body__child}
+                                    className={stylesCommon["body-form-child"]}
                                     label={field.humanName}
                                     type={getInputType(field)}
+                                    placeholder={field.placeholder}
                                     disabled={field.name === 'cryptocurrencyAddressTag' && !collected.isAddressEditable}
                                 />
                             ))
                         )
                     })
                 }
-                <div className={`${stylesCommon.body__child} ${push2Bottom ? '' : stylesCommon.grow}`}>
+                <div className={`${stylesCommon["body-form-child"]} ${push2Bottom ? '' : stylesCommon.grow}`}>
                     <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled || isLoading} />
                 </div>
             </>
