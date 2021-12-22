@@ -228,6 +228,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         return (
                             (field.name === 'cryptocurrencyAddress' && (
                                 <InputCryptoAddr
+                                    label={field.humanName}
                                     ref={inputRefs[i].ref}
                                     hint={field.hint}
                                     type={getInputType(field)}
@@ -418,7 +419,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                         searchable
                                                     />
                                                 )}
-                                            className={stylesCommon['row-fields__child']} label="Country code"
+                                            className={stylesCommon['row-fields__child']} label={groupedFieldDataPHONE['phoneCountryCode'].humanName}
                                             selectedOption={'+' + collected.phoneCountryCode ?? phoneCodes[(collected.country ?? 'gb').toUpperCase()].phoneCode}
                                             error={errorObj?.phoneCountryCode}
                                         />
@@ -431,7 +432,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             onChange={onChange}
                                             className={`${stylesCommon['row-fields__child']}
                                             ${stylesCommon.grow}`}
-                                            label="Phone number"
+                                            label={groupedFieldDataPHONE['phoneNumber'].humanName}
                                             placeholder="654 56 84 56"
                                             hint={groupedFieldDataPHONE['phoneNumber']?.hint}
                                         />

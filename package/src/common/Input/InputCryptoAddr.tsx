@@ -13,6 +13,7 @@ import InputText from "../../common/Input/InputText";
 import { APIContext } from "../../ApiContext";
 
 type InputCryptoAddrType = {
+  label: string;
   handleInputChange: (name: string, value: any) => void;
   error?: string;
   className: string;
@@ -130,7 +131,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
         name="cryptocurrencyAddress"
         onChange={onChange}
         className={props.className}
-        label={`Your ${collected.selectedCrypto?.name} wallet address`}
+        label={props.label}
         disabled={
           disabled &&
           !!collected.defaultAddrs[collected.selectedCrypto?.id ?? ""]

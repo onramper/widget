@@ -75,6 +75,7 @@ const resources = {
         enterVerificationCodeTitle: "Enter verification code",
         bankIbanInfoMsg:
           "Please, fill in the bank account number that you will use to send the wire transfer.",
+        inputExpiryDate: 'Expiry date'
       },
       loadingScreen: {
         title: `Checking your information`,
@@ -211,6 +212,7 @@ const resources = {
         enterVerificationCodeTitle: "확인 코드를 입력하십시오",
         bankIbanInfoMsg:
           "철사 전송을 보내는 데 사용할 은행 계좌 번호를 작성하십시오.",
+        inputExpiryDate: '만료일'
       },
       loadingScreen: {
         title: "귀하의 정보 확인",
@@ -356,6 +358,7 @@ const resources = {
         enterVerificationCodeTitle: "認証コードを入力してください",
         bankIbanInfoMsg:
           "ワイヤー転送を送信するために使用する銀行口座番号を入力してください。",
+        inputExpiryDate: '有効期限'
       },
       loadingScreen: {
         title: "あなたの情報をチェックしてください",
