@@ -120,7 +120,7 @@ components
     margin-top: var(--body-space-childs);
 }
 
-.body-form-child {
+.body-form-child+.body-form-child {
     margin-top: var(--form-field-space);
 }
 
