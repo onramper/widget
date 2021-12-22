@@ -4,13 +4,11 @@
     box-sizing: border-box;
 }
 
-/*-------------------gateway list-------------------*/
 .rates-list {
     width: 100%;
     font-size: 1rem;
 }
 
-/*-------------------gateway option redesign -------------------*/
 .option-wrapper {
     display: flex;
     padding: 8px 16px;
@@ -18,6 +16,8 @@
     align-items: center;
     cursor: pointer;
     justify-content: flex-end;
+    border-radius: 14px;
+    border: 1px solid transparent;
     --diff-up-color: #3AD66F;
     --diff-down-color: #D25656;
 }
@@ -26,21 +26,19 @@
     box-sizing: border-box;
 }
 
-.option-container--disabled {
+.option-container-disabled {
     cursor: default;
     flex-wrap: nowrap;
 }
 
-.option-wrapper--selected {
+.option-wrapper-selected {
     background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-color:rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
-    border-radius: 14px;
-    padding: 15px 16px;
     position: relative;
 }
 
-.option-wrapper--selected::before {
+.option-wrapper-selected::before {
     content: ' ';
     position: absolute;
     top: 0;
@@ -53,11 +51,11 @@
     transition: opacity 600ms;
 }
 
-.option-wrapper--selected.collapse-option-enter::before {
+.option-wrapper-selected.collapse-option-enter::before {
     opacity: 0;
 }
 
-.option-wrapper--selected.collapse-option-enter-active::before {
+.option-wrapper-selected.collapse-option-enter-active::before {
     opacity: 1;
 }
 
@@ -109,6 +107,15 @@
     margin-right: 5px;
 }
 
+.duration-field {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.option-wrapper-selected .duration-field {
+    opacity: 1;
+}
+
 .tag-text {
     font-size: 10px;
     line-height: 12px;
@@ -144,15 +151,15 @@
     stroke: var(--diff-up-color);
 }
 
-.percentage-wrapper.diff--down {
+.percentage-wrapper.diff-down {
     color: var(--diff-down-color);
 }
 
-.percentage-wrapper.diff--down .percentage-arrow {
+.percentage-wrapper.diff-down .percentage-arrow {
     transform: scaleY(-1);
 }
 
-.percentage-wrapper.diff--down .percentage-arrow path {
+.percentage-wrapper.diff-down .percentage-arrow path {
     stroke: var(--diff-down-color);
 }
 

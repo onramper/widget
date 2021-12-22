@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import stylesCommon from "../styles.module.css";
 import styles from "./styles.module.css";
 import { APIContext, GatewayRateOption } from "../ApiContext";

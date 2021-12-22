@@ -1,15 +1,9 @@
-import React, { useContext, useEffect, useState, useCallback, useRef, useLayoutEffect } from 'react'
+import React, { useContext, useEffect, useState, useCallback, useLayoutEffect } from 'react'
 import stylesCommon from '../styles.module.css'
-
-import InputButton from '../common/Input/InputButton'
-import InputTextAmount from '../common/Input/InputTextAmount'
 import ButtonAction from '../common/ButtonAction'
-import ExpectedCrypto from './ExpectedCrypto'
-
-import { APIContext, GatewayRateOption, ItemCategory } from '../ApiContext'
+import { APIContext, GatewayRateOption } from '../ApiContext'
 import type { ItemType } from '../ApiContext'
 import { NavContext } from '../NavContext'
-
 import PaymentMethodPicker from './PaymentMethodPicker/PaymentMethodPicker'
 import GatewayIndicator from './GatewayIndicator/GatewayIndicator'
 import { IGatewaySelected } from './GatewayIndicator/GatewayIndicator.models'
@@ -20,17 +14,8 @@ import Step from "./../steps/Step"
 import TopScreenA from './ScreenA/TopScreenA'
 import OverlayPicker from '../common/OverlayPicker/OverlayPicker'
 import { getBestAvailableGateway } from '../utils'
-
-interface BodyBuyCryptoProps {
-    onBuyCrypto: () => void
-    selectedCrypto?: ItemType
-    selectedCurrency?: ItemType
-    selectedPaymentMethod?: ItemType
-    handleInputChange: (name: string, value: any) => void
-    isFilled?: boolean,
-    handlePaymentMethodChange: (item: ItemType) => void,
-    initLoadingFinished: boolean
-}
+import { LoadingItem } from './constants'
+import { IBodyBuyCryptoProps } from './BuyCryptoView.models'
 
 function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGatewaySelected | undefined) {
   if(!selectedGateway) {
@@ -43,46 +28,28 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
   }
 }
 
-const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
-    const { onBuyCrypto } = props
-    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
-    const { handleInputChange } = props
+const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
+    const {
+      onBuyCrypto,
+      handleInputChange,
+      selectedCrypto = LoadingItem,
+      selectedPaymentMethod = LoadingItem,
+      isFilled = true,
+    } = props;
     const { collected, data: {availablePaymentMethods, allRates, handlePaymentMethodChange} } = useContext(APIContext);
-    const { triggerChat, nextScreen, backScreen } = useContext(NavContext)
+    const { nextScreen, backScreen } = useContext(NavContext)
 
-    const [pairs, setPairs] = useState<ItemType[]>()
-    const [amountInCrypto, setAmountInCrypto] = useState<boolean>(collected.amountInCrypto??false)
-    const [symbolRecentlyChanged, setSymbolRecentlyChanged] = useState(false)
-
-    const [minMaxErrorsMsg, setMinMaxErrorsMsg] = useState<string>()
+    const [hasMinMaxErrorsMsg, setHasMinMaxErrorsMsg] = useState<boolean>()
     const [isGatewayInitialLoading, setIsGatewayInitialLoading] = useState<boolean>(true);
     const [showScreenA, setShowScreenA] = useState(false);
 
     useEffect(() => {
-        setMinMaxErrorsMsg(
-            collected.errors?.RATE?.type === 'MIN'
-                || collected.errors?.RATE?.type === 'MAX'
-                ? collected.errors.RATE.message
-                : undefined)
-    }, [collected.errors])
-
-    useEffect(() => {
-        setPairs([selectedCurrency, selectedCrypto])
-    }, [selectedCurrency, selectedCrypto])
-
-    const handleSymbolChange = useCallback(
-        (item: ItemType | undefined) => {
-            if (item) {
-                if (symbolRecentlyChanged) {
-                    if (collected.bestExpectedCrypto !== 0)
-                        handleInputChange('amount', collected.bestExpectedCrypto)
-                    setSymbolRecentlyChanged(false)
-                }
-                handleInputChange('amountInCrypto', item.currencyType === ItemCategory.Crypto)
-                setAmountInCrypto(item.currencyType === ItemCategory.Crypto)
-            }
-        }, [handleInputChange, collected.bestExpectedCrypto, symbolRecentlyChanged]
-    )
+      const errType = collected.errors?.RATE?.type;
+      setHasMinMaxErrorsMsg(
+        [errorTypes.MIN, errorTypes.MAX].some((i) => i === errType) &&
+          !!collected.errors?.RATE?.message
+      );
+    }, [collected.errors]);
 
     const isNextStepConfirmed = useCallback(() => {
       if(!collected.selectedGateway) return false;
@@ -104,7 +71,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
       [collected.selectedGateway, isNextStepConfirmed, nextScreen]
     );
 
-    const openMoreOptions = useCallback(() => {
+    const openMorePaymentOptions = useCallback(() => {
       if(availablePaymentMethods.length > 1) {
             nextScreen(
               <OverlayPicker
@@ -120,15 +87,6 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             );
       };
     }, [availablePaymentMethods, backScreen, collected.selectedPaymentMethod?.id, handlePaymentMethodChange, nextScreen]);
-
-    const firstRender = useRef(true)
-    useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false
-            return
-        }
-        setSymbolRecentlyChanged(true)
-    }, [collected.amountInCrypto])
 
     useEffect(() => {
       handleInputChange('selectedGateway', getBestAvailableGateway(allRates, !!collected.amountInCrypto));
@@ -152,7 +110,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         {!showScreenA && <TopScreenB2 />}
 
         <PaymentMethodPicker
-          openMoreOptions={openMoreOptions}
+          openMoreOptions={openMorePaymentOptions}
           selectedId={selectedPaymentMethod.id}
           items={availablePaymentMethods}
           onChange={props.handlePaymentMethodChange}
@@ -179,7 +137,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             disabled={
               !isFilled ||
               collected.isCalculatingAmount ||
-              !!minMaxErrorsMsg ||
+              hasMinMaxErrorsMsg ||
               [errorTypes.ALL_UNAVAILABLE, errorTypes.NO_RATES].indexOf(
                 collected.errors?.RATE?.type || ""
               ) > -1
@@ -188,12 +146,6 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         </div>
       </main>
     );
-}
-
-const LOAGIND_TEXT = 'Loading...'
-const LoadingItem: ItemType = {
-    id: '',
-    name: LOAGIND_TEXT,
 }
 
 export default BodyBuyCrypto
