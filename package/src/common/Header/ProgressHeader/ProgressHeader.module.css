@@ -9,13 +9,13 @@
   border-radius: 10px 10px 0 0;
   --h-border-width: 2px;
   /* TODO: establish if this color may be used a variable (within current story timeframe) */
-  border-bottom: var(--h-border-width) solid #EFF0F4;
+  border-bottom: var(--h-border-width) solid #eff0f4;
   box-sizing: border-box;
   position: relative;
 }
 
 .header * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .arrow-back {
@@ -23,9 +23,9 @@
 }
 
 .middle-content {
-    flex-grow: 1;
-    padding: 8px 12px;
-    box-sizing: border-box;
+  flex-grow: 1;
+  padding: 8px 12px;
+  box-sizing: border-box;
 }
 
 .header-text {
@@ -41,12 +41,12 @@
 }
 
 .progress-bar {
-    width: 50%;
-    height: var(--h-border-width);
-    position: absolute;
-    left: 0;
-    bottom: calc(-1 * var(--h-border-width));
-    background-color: var(--primary-color);
-    overflow: hidden;
-    transition: width 0.2s;
+  width: 50%;
+  height: var(--h-border-width);
+  position: absolute;
+  left: 0;
+  bottom: calc(-1 * var(--h-border-width));
+  background-color: var(--primary-color);
+  overflow: hidden;
+  transition: width 0.2s;
 }
