@@ -5,13 +5,13 @@ import styles from './styles.module.css'
 import CreditCardInput from './renderers/creditCard'
 import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
-import InputButton from '../../common/Input/InputButton'
+import InputButton from '../../common/Input/InputButton/InputButton'
 import InfoBox from '../../common/InfoBox'
 import PickView from '../../PickView'
 import HelpView from '../../common/HelpView'
 import Help2FACreditCard from './renderers/Help2FACreditCard'
 
-import { APIContext, StepDataItems, DEFAULT_US_STATE, DEFAULT_CA_STATE, DEFAULT_COUNTRY } from '../../ApiContext'
+import { APIContext, StepDataItems, DEFAULT_US_STATE, DEFAULT_CA_STATE, DEFAULT_COUNTRY, ItemType } from '../../ApiContext'
 import type { CollectedStateType } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
@@ -27,6 +27,7 @@ import BuyCryptoView from '../../BuyCryptoView'
 import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
 import InputDelegator from '../../common/Input/InputDelegator'
 import Heading from '../../common/Heading/Heading'
+import OverlayPicker from '../../common/OverlayPicker/OverlayPicker'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -397,10 +398,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             ref={inputRefs[fields.findIndex((field) => field.name === 'phoneCountryCode')]?.ref}
                                             onClick={
                                                 () => nextScreen(
-                                                    <PickView
+                                                    <OverlayPicker
                                                         title={'Country code'}
                                                         name={'phoneCountryCode'}
-                                                        onItemClick={(name, _, item) => {
+                                                        onItemClick={(name:string, _:any, item: ItemType) => {
                                                             onChange(name, +item.name)
                                                             onChange('country', item.id.toLowerCase())
                                                             backScreen()
@@ -414,7 +415,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                         searchable
                                                     />
                                                 )}
-                                            className={stylesCommon['row-fields__child']} label="Country code"
+                                            className={stylesCommon['row-fields__child']} label="Phone number"
                                             selectedOption={'+' + collected.phoneCountryCode ?? phoneCodes[(collected.country ?? 'gb').toUpperCase()].phoneCode}
                                             error={errorObj?.phoneCountryCode}
                                         />
@@ -427,7 +428,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             onChange={onChange}
                                             className={`${stylesCommon['row-fields__child']}
                                             ${stylesCommon.grow}`}
-                                            label="Phone number"
                                             placeholder={groupedFieldDataPHONE['phoneNumber']?.placeholder}
                                             hint={groupedFieldDataPHONE['phoneNumber']?.hint}
                                         />
