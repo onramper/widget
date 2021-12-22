@@ -84,6 +84,7 @@ components
 
 .body {
     --body-space-childs: 1.25rem;
+    --form-field-space: 28px;
     /* var(--padding-bottom); */
     display: flex;
     flex-direction: column;
@@ -101,6 +102,10 @@ components
 
 .body__child+.body__child {
     margin-top: var(--body-space-childs);
+}
+
+.body-form-child {
+    margin-top: var(--form-field-space);
 }
 
 .body__child {
