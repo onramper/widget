@@ -198,10 +198,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     return (
         <main ref={formContainer} className={stylesCommon.body}>
             <>
-                <InfoBox in={!!infoMsg} type='info' className={`${stylesCommon.body__child}`} >
+                <InfoBox in={!!infoMsg} type='info' className={`${stylesCommon["body-form-child"]}`} >
                     {infoMsg}
                 </InfoBox>
-                <InfoBox ref={generalErrorRef} in={!!errorMsg} type='error' canBeDismissed onDismissClick={() => props.onErrorDismissClick()} className={`${stylesCommon.body__child}`} >
+                <InfoBox ref={generalErrorRef} in={!!errorMsg} type='error' canBeDismissed onDismissClick={() => props.onErrorDismissClick()} className={`${stylesCommon["body-form-child"]}`} >
                     {errorMsg}
                 </InfoBox>
                 <InfoBox
@@ -209,7 +209,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     in={!!errorObj?.['FATAL']}
                     type='error'
                     message={errorObj?.['FATAL']}
-                    className={`${stylesCommon.body__child}`}
+                    className={`${stylesCommon["body-form-child"]}`}
                     actionText="Try another gateway"
                     onActionClick={restartToAnotherGateway}
                     onDismissClick={() => props.onErrorDismissClick('FATAL')}
@@ -230,7 +230,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     hint={field.hint}
                                     type={getInputType(field)}
                                     key={i}
-                                    className={stylesCommon.body__child}
+                                    className={stylesCommon["body-form-child"]}
                                     handleInputChange={onChange}
                                     error={errorObj?.[field.name]}
                                     disabled={!collected.isAddressEditable}
@@ -277,14 +277,14 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                 </React.Fragment>
                             ))
                             || ((field.type === 'boolean' && field.name === 'termsOfUse') && (
-                                <label key={i} className={`${stylesCommon.body__child} ${styles.terms}`}>
+                                <label key={i} className={`${stylesCommon["body-form-child"]} ${styles.terms}`}>
                                     <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;I accept {
                                         field.terms?.map<React.ReactNode>((term, i) => <a key={i} href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
                                             .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
                                     }.</label>
                             ))
                             || ((field.type === 'select') && (
-                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
+                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon["body-form-child"]}
                                     error={errorObj?.[field.name]}
                                     onClick={
                                         () => nextScreen(
@@ -306,7 +306,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                 />
                             ))
                             || ((field.name === 'country') && (
-                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
+                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon["body-form-child"]}
                                     error={errorObj?.[field.name]}
                                     onClick={
                                         () => nextScreen(
@@ -328,7 +328,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         )}
                                     label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} icon={icons[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} />
                             )) || ((field.type === 'choice') && (
-                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
+                                <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon["body-form-child"]}
                                     error={errorObj?.[field.name]}
                                     onClick={
                                         () => nextScreen(
@@ -349,7 +349,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     label={field.humanName} selectedOption={collected[field.name] ?? `Select ${field.humanName}`} />
                             )) || ((field.name === 'state') && (
                                 collected.country === 'us' || collected.country === 'ca'
-                                    ? <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child} onClick={
+                                    ? <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon["body-form-child"]} onClick={
                                         () => nextScreen(
                                             <PickView
                                                 title={field.humanName}
