@@ -25,8 +25,8 @@ import { scrollTo } from '../../utils'
 import { GroupFieldsController } from './utils'
 import BuyCryptoView from '../../BuyCryptoView'
 import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
-import InputDelegator from '../../common/Input/InputDelegator'
 import Heading from '../../common/Heading/Heading'
+import InputDelegator from '../../common/Input/InputDelegator'
 import OverlayPicker from '../../common/OverlayPicker/OverlayPicker'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
