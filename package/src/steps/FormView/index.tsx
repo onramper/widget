@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import Header from '../../common/Header'
 import BodyForm from './BodyFormView'
 import styles from '../../styles.module.css'
 import Step from '../Step'
@@ -10,6 +9,7 @@ import { NavContext } from '../../NavContext'
 import { areAllKeysFilled } from '../utils'
 
 import { processError } from '../Step/utils'
+import ProgressHeader from '../../common/Header/ProgressHeader/ProgressHeader';
 
 
 const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextStep }) => {
@@ -107,7 +107,8 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
 
   return (
     <div className={styles.view}>
-      <Header title={title} backButton />
+      {/* TODO: percentage value should be dynamic */}
+      <ProgressHeader percentValue={30} title={title} useBackButton />
       <BodyForm
         fields={nextStepData}
         onActionButton={handleButtonAction}
