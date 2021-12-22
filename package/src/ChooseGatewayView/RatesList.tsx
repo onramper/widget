@@ -77,7 +77,7 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
     const _minMaxUnavailableRates = unavailableRates.filter(ur => ur.error?.type.match(/MIN|MAX/))
 
     return (
-        <div className={`${styles['rates-list']}`}>{/* TODO: change all custom lists to general list */}
+        <ul className={`${styles['rates-list']}`}>{/* TODO: change all custom lists to general list */}
             {
                 sortedAvailableRates.map((item, i) =>
                     <GatewayOption
@@ -128,7 +128,7 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
                     />
                 )
             }
-        </div>
+        </ul>
     )
 }
 

@@ -5,27 +5,21 @@ import ChooseGatewayView from "../ChooseGatewayView/ChooseGatewayView";
 import ErrorView from "../common/ErrorView";
 import Step from "../steps/Step";
 import { NavContext } from "../NavContext";
-import { APIContext, ItemType, NextStep } from "../ApiContext";
+import { APIContext, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
-import { arrayUnique } from "../utils";
 import TabsHeader from "../common/Header/TabsHeader/TabsHeader";
-import { tabNames, popularCrypto } from "./constants";
+import { tabNames } from "./constants";
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
   const [buyStep, setBuyStep] = useState<NextStep>();
 
-  const { nextScreen, backScreen } = useContext(NavContext);
+  const { nextScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } =
     useContext(APIContext);
-  const [sortedCrypto, setSortedCrypto] = useState(data.availableCryptos);
   const [initLoadingFinished, setInitLoadingFinished] = useState(false);
 
-  const {
-    handleCryptoChange,
-    handleCurrencyChange,
-    handlePaymentMethodChange,
-  } = data;
+  const { handlePaymentMethodChange } = data;
   const { init } = apiInterface;
   const { errors } = collected;
 
@@ -35,14 +29,6 @@ const BuyCryptoView: React.FC = () => {
       setInitLoadingFinished(true);
     });
   }, [init/* , flagEffectInit */]);
-
-  const handleItemClick = (name: string, index: number, item: ItemType) => {
-    if (name === "crypto") handleCryptoChange(item);
-    else if (name === "currency") handleCurrencyChange(item);
-    else if (name === "paymentMethod") handlePaymentMethodChange(item);
-
-    backScreen();
-  };
 
   //listening to errors sent by APIContext
   useEffect(() => {
@@ -83,19 +69,6 @@ const BuyCryptoView: React.FC = () => {
       }
     })();
   }, [collected.selectedCountry]);
-
-  useEffect(() => {
-    const prioritizedCrypto = !collected.recommendedCryptoCurrencies ? popularCrypto : arrayUnique([...collected.recommendedCryptoCurrencies, ...popularCrypto]);
-    const auxSortedCrypto = prioritizedCrypto
-      .map((c) => data.availableCryptos.filter((crypto) => crypto.id === c)[0])
-      .filter((c) => c !== undefined)
-      .concat(
-        data.availableCryptos
-          .filter((crypto) => !prioritizedCrypto.includes(crypto.id))
-          .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
-      );
-    setSortedCrypto(auxSortedCrypto);
-  }, [collected.recommendedCryptoCurrencies, data.availableCryptos]);
 
   return (
     <div className={styles.view}>

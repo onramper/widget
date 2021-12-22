@@ -13,7 +13,7 @@ const OverlayView: React.FC<IOverlayViewProps> = (props) => {
   const [isActive, setIsActive] = useState(false)
 
   const { maxHeight = defaultMaxHeight, fixedHeight = false } = props
-  const classPrefix = fixedHeight ? '--fixed' : ''
+  const classPrefix = fixedHeight ? '-fixed' : ''
 
   useEffect(() => {
     setIsActive(true)

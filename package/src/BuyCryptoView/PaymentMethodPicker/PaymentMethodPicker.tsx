@@ -66,13 +66,17 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   };
 
   useEffect(() => {
-    calculateDistribution();
-
     window.addEventListener("resize", calculateDistribution);
     return () => {
       window.removeEventListener("resize", calculateDistribution);
     };
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      calculateDistribution();
+    }, 0);
+  }, [props.isLoading]);
 
   useEffect(() => {
     const getListWithSelected = (): ItemType[] => {
