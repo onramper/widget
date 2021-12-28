@@ -49,12 +49,12 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (props: GatewayIndicat
         );
     }
 
-    return (<div className={styles.wrapper}>
+    return (<div className={styles.wrapper} onClick={props.openMoreOptions}>
         <div className={styles["option-wrapper"]}>
             <img className={styles["option-icon"]} src={props.selectedGateway.icon} alt="selected-icon" />
             <div className={styles["option-body"]} >
                 <div className={`${styles["option-label"]}`}>Best rate via</div>
-                <div className={styles["option-handle"]} onClick={props.openMoreOptions}>
+                <div className={styles["option-handle"]}>
                     <span>{props.selectedGateway.name}</span> <img src={arrowDownIcon} />
                 </div>
             </div>

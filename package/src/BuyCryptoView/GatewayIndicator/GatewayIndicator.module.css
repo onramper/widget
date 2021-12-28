@@ -7,6 +7,7 @@
     margin-bottom: 20px;
 
     background: rgba(255, 255, 255, 0.01);
+    cursor: pointer;
 }
 
 .option-wrapper {
