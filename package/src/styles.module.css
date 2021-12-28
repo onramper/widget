@@ -302,6 +302,18 @@ div.skeleton-box {
     cursor: default;
 }
 
+::-webkit-input-placeholder { 
+    color: var(--grey-light-color);
+}
+:-moz-placeholder { 
+    color: var(--grey-light-color);
+}
+::-moz-placeholder { 
+    color: var(--grey-light-color);
+}
+:-ms-input-placeholder { 
+    color: var(--grey-light-color);
+}
 
 @keyframes shimmer {
     100% {
