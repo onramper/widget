@@ -7,7 +7,7 @@ import ExpectedAmountPreview from "./ExpectedAmountPreview/ExpectedAmountPreview
 const TopScreenB: React.FC<{}> = () => {
     return <>
         <div className={styles["heading"]}>
-            How much you want to spend?
+            How much do you want to buy?
         </div>
 
         <div className={styles["exchange-ui-wrapper"]}>
