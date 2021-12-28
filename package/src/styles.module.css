@@ -1,13 +1,3 @@
-
-@font-face {
-    font-family: 'Open Sauce Sans';
-    src: url('./assets/fonts/OpenSauceSans-Regular.woff2') format('woff2'),
-         url('./assets/fonts/OpenSauceSans-Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
 /*********
 theme styles
 *********/
