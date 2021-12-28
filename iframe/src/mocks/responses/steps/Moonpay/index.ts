@@ -28,7 +28,10 @@ const getNextStep = (currentStep: string) => {
 
 const firstStep = {
     "type": "form",
+    "humanName": "Your Details",
     "url": `${BASE_API}/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+    "title": "Your details",
+    "useHeading": true,
     "data": [
         {
             "type": "string",
