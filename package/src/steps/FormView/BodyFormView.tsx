@@ -27,6 +27,7 @@ import BuyCryptoView from '../../BuyCryptoView'
 import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
 import Footer from '../../common/Footer'
 import InputDelegator from '../../common/Input/InputDelegator'
+import Heading from '../../common/Heading/Heading'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -42,6 +43,7 @@ type BodyFormViewType = {
     infoMsg?: string
     inputName?: string
     onErrorDismissClick: (field?: string) => void
+    heading?: string
 }
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
@@ -221,6 +223,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     <span>· Try another gateway.</span><br />
                     <span>· Contact us.</span>
                 </InfoBox>
+                
+                {!!props.heading && (<Heading text={props.heading} />)}
+
                 {
                     fields.map((field, i) => {
                         return (

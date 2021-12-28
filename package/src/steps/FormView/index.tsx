@@ -19,13 +19,22 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string>()
   const [errorObj, setErrorObj] = useState<{ [key: string]: string | undefined }>()
-  const [title, setTitle] = useState(nextStep.humanName ?? 'Purchase form')
+  const [title, setTitle] = useState(nextStep.title || (nextStep.humanName ?? 'Purchase form'))
+  const [useHeading] = useState(!!nextStep.useHeading)
   const [infoMsg, setInfoMsg] = useState(nextStep.hint ?? '')
 
   const { data: nextStepData = [] } = nextStep
 
   useEffect(() => {
     if (nextStepData.length === 0) return
+
+    // set infoMsg if needed
+    if (nextStepData.some(field => field.name === 'bankIban') && nextStepData.length <= 2)
+      setInfoMsg('Please, fill in the bank account number that you will use to send the wire transfer.')
+
+    if(nextStep.title) {
+      return;
+    }
 
     // set title
     if (nextStepData.some(field => field.name === 'email') && nextStepData.length <= 2) {
@@ -53,11 +62,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
     ) {
       setTitle('Your personal information')
     } */
-
-    // set infoMsg if needed
-    if (nextStepData.some(field => field.name === 'bankIban') && nextStepData.length <= 2)
-      setInfoMsg('Please, fill in the bank account number that you will use to send the wire transfer.')
-  }, [nextStepData])
+  }, [nextStep.title, nextStepData])
 
   const handleButtonAction = async () => {
     setIsLoading(true)
@@ -108,7 +113,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
   return (
     <div className={styles.view}>
       {/* TODO: percentage value should be dynamic */}
-      <ProgressHeader percentValue={30} title={title} useBackButton />
+      <ProgressHeader percentValue={30} title={!useHeading ? title : undefined} useBackButton />
       <BodyForm
         fields={nextStepData}
         onActionButton={handleButtonAction}
@@ -122,6 +127,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
           else setErrorMsg(undefined)
         }}
         errorObj={errorObj}
+        heading={useHeading ? title : undefined}
       />
     </div>
   );

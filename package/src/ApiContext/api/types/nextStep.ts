@@ -77,7 +77,7 @@ interface InfoDepositBankAccount {
 }
 
 type NextStep =
-    FileStep
+    { useHeading?: boolean, title?: string } & (FileStep
     | {
         type: 'information';
         url?: string;
@@ -117,7 +117,7 @@ type NextStep =
         depositBankAccount: InfoDepositBankAccount;
         reference: string;
         hint: string;
-    };
+    });
 
 interface FieldError {
     field: string
