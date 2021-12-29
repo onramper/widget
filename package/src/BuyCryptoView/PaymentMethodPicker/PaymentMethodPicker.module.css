@@ -1,6 +1,6 @@
 .wrapper {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     margin-bottom: 1.75rem;
     min-height: 57px;
 }
