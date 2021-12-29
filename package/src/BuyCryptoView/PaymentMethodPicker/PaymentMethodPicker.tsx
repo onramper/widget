@@ -6,15 +6,15 @@ import commonStyles from "../../styles.module.css";
 
 const Skeleton = React.forwardRef<
   HTMLUListElement,
-  { maxLength: number }
->(({ maxLength }, ref) => {
+  { maxLength: number, style: React.CSSProperties }
+>(({ maxLength, style }, ref) => {
   return (
     <>
       <div className={`${styles.title}`}>
         <span>Payment method</span>
       </div>
 
-      <ul className={styles.wrapper} style={{ maxWidth: "100%" }} ref={ref}>
+      <ul className={styles.wrapper} style={{ maxWidth: "100%", ...style }} ref={ref} >
         {[...[1, 2, 3, 4, 5].slice(0, maxLength), 1].map((n: any, i: number) => (
           <li
             itemProp="option"
@@ -33,11 +33,18 @@ const Skeleton = React.forwardRef<
 const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   props: PaymentMethodPickerProps
 ) => {
-  const [maxLength, setMaxLength] = useState(2);
+  const [maxLength, _setMaxLength] = useState(2);
+  const [maxLengthUpdated, setMaxLengthUpdated] = useState<number>(0);
   const [items, setItems] = useState(props.items);
+  const [style, setStyle] = useState<React.CSSProperties>({});
 
   const containerRef = useRef<HTMLUListElement>(null);
   const itemsLengthRef = useRef<Number>(items.length);
+
+  const setMaxLength = (value: number) => {
+    _setMaxLength(value);
+    setMaxLengthUpdated(Date.now());
+  }
 
   const calculateDistribution = () => {
     if (itemsLengthRef.current === 1) {
@@ -60,10 +67,40 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     setMaxLength(maxLengthAux > 0 ? maxLengthAux : 0);
   };
 
+  const getRemainingWidth = () => {
+    if (!containerRef.current) return -1;
+
+    const optionNodeList = containerRef.current.querySelectorAll(`[itemProp="option"]`);
+    if(optionNodeList.length === 0) return -1;
+
+    const marginRight = Number(getComputedStyle(optionNodeList[0]).marginRight.replace("px", ""));
+
+    let width = containerRef.current.clientWidth;
+    for(let i = 0; i < optionNodeList.length; i++) {
+      width -= optionNodeList[0].getBoundingClientRect().width;
+
+      if(i < optionNodeList.length -1) {
+        width -= marginRight;
+      }
+    }
+
+    return width;
+  }
+
   const setItemsAux = (list: ItemType[]) => {
     itemsLengthRef.current = list.length;
     setItems(list);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(getRemainingWidth() >= 0 && getRemainingWidth() < 36) {
+        setStyle({justifyContent: "space-between"});
+        return;
+      }
+      setStyle({});
+    }, 10);
+  }, [maxLengthUpdated]);
 
   useEffect(() => {
     window.addEventListener("resize", calculateDistribution);
@@ -110,13 +147,13 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     }
   }, [items, maxLength, props.items, props.selectedId]);
 
-  if (props.isLoading) return <Skeleton maxLength={maxLength} ref={containerRef} />;
+  if (props.isLoading) return <Skeleton style={style} maxLength={maxLength} ref={containerRef} />;
 
   return (
     <>
       <div className={styles.title}>Payment method</div>
 
-      <ul ref={containerRef} className={styles.wrapper}>
+      <ul ref={containerRef} className={styles.wrapper} style={style}>
         {items.slice(0, maxLength).map((item: ItemType, i: number) => (
           <li
             itemProp="option"
