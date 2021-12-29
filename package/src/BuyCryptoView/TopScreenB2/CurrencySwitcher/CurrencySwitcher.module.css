@@ -21,3 +21,9 @@ div.fiat-icon {
 .fiat-icon img {
     filter: brightness(0) invert(1);
 }
+
+@media (max-width: 330px) { 
+    .arrow-right {
+        margin: 0 10px;
+    }
+}

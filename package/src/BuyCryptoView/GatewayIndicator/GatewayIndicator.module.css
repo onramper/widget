@@ -3,7 +3,7 @@
     justify-content: space-between;
     box-sizing: border-box;
     min-height: 71px;
-    padding: 16px 9px;
+    padding: 16px 0;
     margin-bottom: 20px;
 
     background: rgba(255, 255, 255, 0.01);
@@ -12,7 +12,6 @@
 
 .option-wrapper {
     display: flex;
-    flex-grow: 1;
 }
 
 .option-icon {
@@ -33,6 +32,7 @@
     color: var(--text-light-color);
     text-align: left;
     margin-bottom: 4px;
+    white-space: nowrap;
 }
 
 .option-handle {
@@ -60,7 +60,7 @@
     margin: 4px 0px;
     text-align: right;
     word-break: break-all;
-    flex-shrink: 0;
+    flex-shrink: 1;
 }
 
 .sk-option-body {
@@ -73,17 +73,23 @@
     height: 32px;
 }
 
+.loader {
+    position: relative;
+    bottom: 10px;
+}
+
 @media (max-width: 375px) { 
     .wrapper {
         min-height: 64px;
-        padding: 16px 9px;
         margin-bottom: 16px;
-
-        border-radius: 68px;
     }
     
     .option-icon {
         margin-top: 0;
+    }
+
+    .option-body {
+        padding-left: 12px;
     }
     
     .option-label {
@@ -96,6 +102,11 @@
         font-size: 10px;
         line-height: 12px;
         margin: 4px 0px;
+    }
+
+    .option-handle {
+        font-size: 14px;
+        line-height: 17px;
     }
 }
 

@@ -36,3 +36,9 @@
 .symbol {
   margin-right: 1px;
 }
+
+@media (max-width: 340px) { 
+  .input-box {
+    min-width: 100%;
+  }
+}

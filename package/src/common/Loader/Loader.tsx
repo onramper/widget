@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./Loader.module.css";
 
-const Loader = () => {
+const Loader: React.FC<{className?:string}> = (props) => {
   return (
-      <div className={styles["wrapper"]} >
+      <div className={`${styles["wrapper"]} ${props.className || ""}`} >
         <div className={styles["sub-wrapper"]}>
             <div className={`${styles["ball"]} ${styles["ball1"]}`}></div>
             <div className={`${styles["ball"]} ${styles["ball2"]}`}></div>

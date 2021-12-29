@@ -16,7 +16,7 @@ theme styles
     --heigth: 100%;
     --background-color: white;
     --padding-top: 1.75rem;
-    --padding-rl: 1.563rem;
+    --padding-rl: 35px;
     --padding-bottom: 1.125rem;
     font-family: var(--font-family);
     width: var(--width);
@@ -236,6 +236,10 @@ ul {
 
 li {
     list-style: none;
+}
+
+.txt-no-wrap {
+    white-space: nowrap;
 }
 
 /* skeleton loading */
