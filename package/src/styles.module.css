@@ -26,6 +26,7 @@ theme styles
     flex-direction: column;
     direction: ltr;
     -webkit-tap-highlight-color: transparent;
+    scrollbar-color: #dbdbdb transparent;
 }
 
 .theme ::-webkit-scrollbar {
