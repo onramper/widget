@@ -26,6 +26,7 @@ import { scrollTo } from '../../utils'
 import { GroupFieldsController } from './utils'
 import BuyCryptoView from '../../BuyCryptoView'
 import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
+import Footer from '../../common/Footer'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -447,8 +448,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         )
                     })
                 }
-                <div className={`${stylesCommon.body__child} ${push2Bottom ? '' : stylesCommon.grow}`}>
+                <div className={`${stylesCommon.body__child} ${push2Bottom ? '' : stylesCommon["grow-col"]}`}>
                     <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled || isLoading} />
+                    <Footer />
                 </div>
             </>
         </main >

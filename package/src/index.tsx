@@ -8,7 +8,6 @@ import { APIProvider } from "./ApiContext";
 import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
-import Footer from "./common/Footer";
 import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
@@ -76,7 +75,6 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             <div style={{ flexGrow: 1, display: "flex" }}>
               <NavContainer home={<BuyCryptoView />} />
             </div>
-            <Footer />
           </APIProvider>
         </NavProvider>
       </ErrorBoundary>

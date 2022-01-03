@@ -20,7 +20,7 @@ const DatePicker: React.FC<DatePickerType> = (props) => {
     let startDate = Object.values(value).some(v => !Number.isInteger(+v)) ? undefined : new Date(`${value.year}/${value.month}/${value.day}`)
     startDate = startDate?.toString() === "Invalid Date" ? undefined : startDate
     return (
-        <HelpView maxHeight={'315px'} fixedHeight>
+        <HelpView maxHeight={'315px'} noFooter fixedHeight>
             <Calendar
                 maxDate={new Date()}
                 onChange={date => {

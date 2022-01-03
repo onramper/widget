@@ -5,6 +5,7 @@ import commonStyles from '../../styles.module.css'
 import { NavContext } from '../../NavContext'
 import { CSSTransition } from 'react-transition-group';
 import ButtonAction from '../ButtonAction'
+import Footer from '../Footer';
 
 interface HelpViewProps {
   buttonText?: string
@@ -13,6 +14,7 @@ interface HelpViewProps {
   onActionClick?: () => Promise<boolean>
   error?: string
   dismissAfterClick?: boolean
+  noFooter?: boolean
 }
 
 const HelpView: React.FC<HelpViewProps> = (props) => {
@@ -22,7 +24,7 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
   const [isActive, setIsActive] = useState(false)
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
-  const { maxHeight = '350px', fixedHeight = false, dismissAfterClick=false } = props
+  const { maxHeight = '388px', fixedHeight = false, dismissAfterClick=false } = props
   const classPrefix = fixedHeight ? '--fixed' : ''
 
   const ANIMATION_TIMEOUT = 250
@@ -67,10 +69,9 @@ const HelpView: React.FC<HelpViewProps> = (props) => {
         <div ref={transitionRef} style={style} onClick={(e) => e.stopPropagation()} className={`${commonStyles.body} ${styles['help-pane']} ${styles['help-pane' + classPrefix]}`} >
           {props.children}
           {props.buttonText && <ButtonAction onClick={props.error ? handleDismiss : handleOnButtonClick} text={props.buttonText} disabled={buttonDisabled} />}
+          {!props.noFooter && <Footer />}
         </div>
       </CSSTransition>
-
-
     </div>
   );
 };

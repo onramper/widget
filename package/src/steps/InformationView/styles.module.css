@@ -3,6 +3,7 @@
   align-content: center;
   justify-content: center;
   text-align: center;
+  padding: var(--body-space-childs) 0;
 }
 
 .container-icon {

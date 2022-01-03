@@ -1,8 +1,8 @@
 .body {
-    padding: 0 calc(var(--padding-rl) - 10px) 0 var(--padding-rl);
+    padding: 0 calc(var(--padding-rl) - 10px) var(--body-space-childs) var(--padding-rl);
     min-width: 320px;
     box-sizing: border-box;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .rates-list {

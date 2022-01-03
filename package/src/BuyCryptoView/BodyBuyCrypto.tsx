@@ -16,6 +16,7 @@ import OverlayPicker from '../common/OverlayPicker/OverlayPicker'
 import { getBestAvailableGateway } from '../utils'
 import { LoadingItem } from './constants'
 import { IBodyBuyCryptoProps } from './BuyCryptoView.models'
+import Footer from '../common/Footer'
 
 function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGatewaySelected | undefined) {
   if(!selectedGateway) {
@@ -144,6 +145,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
             }
           />
         </div>
+        <Footer />
       </main>
     );
 }

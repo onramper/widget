@@ -5,6 +5,7 @@ import InfoBox from '../../common/InfoBox'
 import ButtonAction from '../../common/ButtonAction'
 import UploadBox from './UploadBox'
 import { isFileUploaded } from '../utils'
+import Footer from '../../common/Footer'
 
 type BodyUploadType = {
     onActionButton: (file: File) => void,
@@ -73,6 +74,7 @@ const BodyUpload: React.FC<BodyUploadType> = (props) => {
             </div>
             <div className={`${stylesCommon.body__child}`}>
                 <ButtonAction onClick={() => onActionButton(existingFiles[0])} text={isLoading ? 'Verifying...' : 'Continue'} disabled={!isFileUploaded(existingFiles) || isLoading} />
+                <Footer />
             </div>
         </main>
     )

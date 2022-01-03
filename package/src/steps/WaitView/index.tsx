@@ -9,6 +9,7 @@ import { delay } from "../utils";
 import { NextStep } from "../../ApiContext/api/types/nextStep";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
+import Footer from "../../common/Footer";
 
 const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   props
@@ -74,6 +75,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
     <div className={styles.view}>
       <Header title="" backButton />
       <BodyLoading error={error} />
+      <Footer />
     </div>
   );
 };

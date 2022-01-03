@@ -92,13 +92,6 @@ components
     flex-grow: 1;
 }
 
-/*workaround to fix this https://bugzilla.mozilla.org/show_bug.cgi?id=748518*/
-
-.body:after {
-    content: '';
-    display: block;
-    padding-bottom: var(--body-space-childs);
-}
 
 .body--full_screen:after {
     content: none;
@@ -117,6 +110,12 @@ components
     flex-direction: column;
     align-items: flex-end;
     flex-grow: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.body .footer {
+    margin-top: var(--body-space-childs);
 }
 
 .row-fields {
@@ -140,6 +139,16 @@ components
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+}
+
+.grow-col {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.flex-end {
+    justify-content: flex-end;
 }
 
 @media (max-width: 410px) {
@@ -250,10 +259,16 @@ li {
     user-select: none;
 }
 
+.body .footer.mg-t-0,
+.mg-t-0 {
+    margin-top: 0;
+}
+
 /* skeleton loading */
 .skeleton-wrapper {
     overflow-x: hidden;
     background: rgba(0, 0, 0, 0.02);
+    cursor: default;
 }
 
 .skeleton-box {
