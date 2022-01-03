@@ -12,3 +12,11 @@
   padding-top: 11px;
   min-height: 15px;
 }
+
+.crypto-switcher {
+  cursor: pointer;
+}
+
+.crypto-switcher:hover {
+  text-decoration: underline;
+}

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import styles from "./ExpectedAmountPreview.module.css";
 import commonStyles from "../../../styles.module.css";
 import { APIContext } from "../../../ApiContext";
@@ -14,6 +14,16 @@ const ExpectedAmountPreview: React.FC = () => {
   const unitName = collected.amountInCrypto
     ? collected.selectedCurrency?.name
     : collected.selectedCrypto?.name;
+
+  const swapCategories = useCallback(() => {
+      if(collected.bestExpectedCrypto !== 0) {
+        inputInterface.handleInputChange('amount', collected.bestExpectedCrypto);
+      }
+      inputInterface.handleInputChange('amountInCrypto', !collected.amountInCrypto);
+      
+      const inputNode = document.getElementById("editable-amount");
+      inputNode && inputNode.focus();
+    }, [collected.amountInCrypto, collected.bestExpectedCrypto, inputInterface]);
 
   useEffect(() => {
     const setAmountByBestRateAvailable = () => {
@@ -68,10 +78,10 @@ const ExpectedAmountPreview: React.FC = () => {
         const qtyText = `${expectedCrypto.toFixed(collected.amountInCrypto ? 2 : 8)} ${unitName}`;
         const qtyDescription = collected.amountInCrypto ? `Amount you pay: ` : `You get `;
         return (
-          <>
+          <span className={`${styles["crypto-switcher"]} ${commonStyles["clickable-txt"]}`} onClick={() => swapCategories()}>
             {qtyDescription}
             <span className={commonStyles["bold"]}>{qtyText}</span>
-          </>
+          </span>
         );
       })()}
     </div>

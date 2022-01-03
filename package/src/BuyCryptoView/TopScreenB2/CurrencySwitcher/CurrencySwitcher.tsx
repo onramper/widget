@@ -107,16 +107,6 @@ const CurrencySwitcher: React.FC = () => {
     openPickCurrency();
   }, [openPickCrypto, openPickCurrency]);
 
-  const swapCategories = useCallback(() => {
-    if(collected.bestExpectedCrypto !== 0) {
-      inputInterface.handleInputChange('amount', collected.bestExpectedCrypto);
-    }
-    inputInterface.handleInputChange('amountInCrypto', !collected.amountInCrypto);
-    
-    const inputNode = document.getElementById("editable-amount");
-    inputNode && inputNode.focus();
-  }, [collected.amountInCrypto, collected.bestExpectedCrypto, inputInterface]);
-
   const getIconClassName = useCallback(
     (item?: ItemType) =>
       item?.currencyType === ItemCategory.Crypto ? styles["crypto-icon"] : styles["fiat-icon"],
@@ -144,9 +134,9 @@ const CurrencySwitcher: React.FC = () => {
         onClick={() => handleDropdown(pair[0])}
       />
 
-      <button className={commonStyles["btn-default"]} onClick={() => swapCategories()} disabled={collected.isCalculatingAmount}>
+      <div className={commonStyles["flex-all"]} >
         <img className={styles["arrow-right"]} src={arrowRightIcon} alt="arrow-right" />
-      </button>
+      </div>
 
       <DropdownHandle
         icon={pair[1]?.icon}
