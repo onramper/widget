@@ -8,6 +8,7 @@ import BuyCryptoView from "../../BuyCryptoView";
 
 import { ReactComponent as TICK_GREEN } from "../../icons/success_green.svg";
 import { ReactComponent as TICK_BLUE } from "../../icons/success_blue.svg";
+import Footer from "../../common/Footer";
 
 type BodySuccessViewType = {
   txType: "instant" | "pending";
@@ -80,6 +81,7 @@ const BodySuccessView: React.FC<BodySuccessViewType> = (props) => {
           {collected.redirectURL ? "Finish" : "Buy more crypto"}
         </button>
       </div>
+      <Footer />
     </main>
   );
 };

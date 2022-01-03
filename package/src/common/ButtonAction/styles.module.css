@@ -17,6 +17,8 @@
     height: -moz-fit-content;
     box-shadow: 0px 24px 24px rgba(0, 75, 235, 0.1);
     transition: background-color 0.1s;
+    position: relative;
+    z-index: 2;
 }
 
 .button-action--small {

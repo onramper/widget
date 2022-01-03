@@ -11,6 +11,7 @@ import { NavContext } from '../../NavContext'
 import BuyCryptoView from '../../BuyCryptoView'
 import ButtonAction from '../../common/ButtonAction'
 import ChooseGatewayView from '../../ChooseGatewayView/ChooseGatewayView'
+import Footer from '../../common/Footer'
 
 interface BodyIframeViewType {
     src: string
@@ -251,6 +252,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
                     />
                 }
             </div>
+            <Footer className={stylesCommon["mg-t-0"]} />
         </main >
     )
 }

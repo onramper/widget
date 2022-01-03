@@ -28,6 +28,10 @@
     padding: 0;
 }
 
+.footer {
+    margin-top: 0;
+}
+
 .body__child {
     margin-right: var(--padding-rl);
     margin-left: var(--padding-rl);

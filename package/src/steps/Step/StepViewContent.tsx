@@ -16,6 +16,7 @@ import { NavContext } from "../../NavContext";
 
 import { APIContext, NextStep } from "../../ApiContext";
 import InformationView from "../InformationView";
+import Footer from "../../common/Footer";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -109,6 +110,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
           <ErrorVisual message="An error occurred while trying to connect to server. Please try again later." />
         </div>
       )}
+      <Footer />
     </main>
   );
 };

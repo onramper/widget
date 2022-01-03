@@ -4,6 +4,7 @@ import List from '../common/List'
 import styles from '../styles.module.css'
 
 import { ItemType } from '../ApiContext'
+import Footer from '../common/Footer';
 
 interface PickViewProps {
   title: string,
@@ -20,6 +21,7 @@ const PickView: React.FC<PickViewProps> = (props) => {
     <main className={styles.view}>
       <Header backButton title={title} />
       <List onItemClick={(index, item) => onItemClick(name, index, item)} items={items} searchable={searchable} />
+      <Footer />
     </main>
   );
 };

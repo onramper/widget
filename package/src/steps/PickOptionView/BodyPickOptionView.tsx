@@ -6,6 +6,7 @@ import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
 import { FileStep } from '../../ApiContext'
+import Footer from '../../common/Footer'
 
 type BodyPickOptionType = {
     onActionButton: () => void
@@ -29,8 +30,9 @@ const BodyPickOption: React.FC<BodyPickOptionType> = (props) => {
             <div className={`${stylesCommon.body__child}`}>
                 <InputRadio options={steps.map((item) => ({ name: item.humanName, value: item.humanName }))} onItemClick={props.handleOptionChange} />
             </div>
-            <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
+            <div className={`${stylesCommon.body__child} ${stylesCommon["grow-col"]}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled} />
+                <Footer />
             </div>
         </main >
     )

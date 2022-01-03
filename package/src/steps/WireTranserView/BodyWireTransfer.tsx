@@ -8,6 +8,7 @@ import InfoBox from '../../common/InfoBox'
 import IconCopy from '../../icons/copy.svg'
 
 import { InfoDepositBankAccount } from '../../ApiContext'
+import Footer from '../../common/Footer'
 
 type BodyWireTransferType = {
     onActionButton?: () => void,
@@ -52,12 +53,12 @@ const BodyWireTransfer: React.FC<BodyWireTransferType> = (props) => {
             </div>
             <InputText value={bankDetails?.accountAddress} name='accountAddress' className={stylesCommon.body__child} label="Account address" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
             <InputText value={bankDetails?.bankAddress} name='bankAddress' className={stylesCommon.body__child} label="Bank address" disabled icon={IconCopy} iconPosition='end' onIconClick={onClick} />
-            {
-                onActionButton &&
-                <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
-                    <ButtonAction onClick={onActionButton} text='Finish' />
-                </div>
-            }
+            
+            <div className={`${stylesCommon.body__child} ${stylesCommon["grow-col"]}`}>
+                {onActionButton && <ButtonAction onClick={onActionButton} text='Finish' />}
+                <Footer />
+            </div>
+            
         </main>
     )
 }

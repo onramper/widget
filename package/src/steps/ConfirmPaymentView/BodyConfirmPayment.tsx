@@ -11,6 +11,7 @@ import { ReactComponent as IconExpectedtime } from '../../icons/expected_time.sv
 import { CSSTransition } from 'react-transition-group';
 
 import ButtonAction from '../../common/ButtonAction'
+import Footer from '../../common/Footer'
 
 
 type BodyConfirmPaymentViewType = {
@@ -83,6 +84,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
             </div>
             <div className={`${stylesCommon.body__child}`}>
                 <ButtonAction onClick={onActionButton} text='Continue' disabled={!props.isFilled} />
+                <Footer />  
             </div>
         </main >
     )

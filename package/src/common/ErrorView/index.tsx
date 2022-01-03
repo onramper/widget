@@ -13,6 +13,7 @@ import Header from '../../common/Header'
 import { NavContext } from '../../NavContext'
 import BuyCryptoView from '../../BuyCryptoView'
 import { APIContext } from '../../ApiContext';
+import Footer from '../Footer';
 
 interface ErrorViewProps {
   buttonText?: string
@@ -63,12 +64,15 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
   })()
 
   return (
-    <div className={stylesCommon.view}>
-      {props.type !== 'CRASH' && <Header title="" noSeparator />}
-      <div className={`${stylesCommon.body} ${styles.body}`}>
-        {CurrentError}
-      </div>
-    </div >
+    <>
+      <div className={stylesCommon.view}>
+        {props.type !== 'CRASH' && <Header title="" noSeparator />}
+        <div className={`${stylesCommon.body} ${styles.body}`}>
+          {CurrentError}
+        </div>
+      </div >
+      <Footer />
+    </>
   );
 };
 
