@@ -1,7 +1,8 @@
 .body {
-    padding: 0 16px;
+    padding: 0 calc(var(--padding-rl) - 10px) 0 var(--padding-rl);
     min-width: 320px;
     box-sizing: border-box;
+    overflow: scroll;
 }
 
 .rates-list {
@@ -11,8 +12,8 @@
 
 .option-wrapper {
     display: flex;
-    padding: 8px 16px;
-    min-height: 70px;
+    padding: 16px 16px 15px 16px;
+    height: 85px;
     align-items: center;
     cursor: pointer;
     justify-content: flex-end;
@@ -33,9 +34,9 @@
 
 .option-wrapper-selected {
     background: #FFFFFF;
-    border-color:rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
     position: relative;
+    cursor: default;
 }
 
 .option-wrapper-selected::before {
@@ -60,16 +61,17 @@
 }
 
 .option-checkbox {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
     margin-right: 16px;
+    flex-shrink: 0;
 }
 
 .icon-container {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
 }
 .icon-container img {
     max-width: 100%;
@@ -92,14 +94,14 @@
 
 .option-badges-wrapper {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .badge-wrapper {
     display: flex;
     align-items: center;
-    padding-right: 6px;
-    padding-bottom: 6px;
+    margin-right: 8px;
+    margin-bottom: 6px;
 }
 
 .badge-icon {
@@ -127,6 +129,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    min-height: 60px;
 }
 
 .option-right-sub {
@@ -145,6 +148,10 @@
     line-height: 17px;
     text-align: center;
     color: var(--diff-up-color);
+}
+
+.percentage-wrapper .percentage-arrow { 
+    margin-left: 1.5px;
 }
 
 .percentage-wrapper .percentage-arrow path {
@@ -182,7 +189,13 @@
     white-space: nowrap;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
+    .option-badges-wrapper {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 420px) {
     .option-checkbox {
         width: 10px;
         height: 15px;
@@ -200,10 +213,6 @@
         padding: 0 8px;
     }
 
-    .option-badges-wrapper {
-        flex-direction: column;
-    }
-
     .option-right-sub {    
         flex-wrap: nowrap;
         flex-direction: column-reverse;
@@ -211,6 +220,51 @@
 
     .amount-wrapper {
         padding-left: 7px;
+    }
+}
+
+@media (max-width: 380px) {
+    .option-wrapper-selected::before {
+        width: calc(100% + 12px);
+        left: -6px;
+    }
+
+    .option-wrapper {
+        height: auto;
+	    padding: 16px 10px 15px 10px
+    }
+    
+    .option-checkbox {
+        max-width: 15px;
+        max-height: 15px;
+        margin-right: 10px;
+    }
+
+    .icon-container {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+    }
+
+    .option-info-wrapper {
+        padding: 0 2px 0 7px
+    }
+
+    .option-title {
+    	font-size: 12px;
+    	line-height: 14px;
+    }
+
+    .option-right-wrapper {
+        height: 49px
+    }
+
+    .percentage-wrapper {
+        font-size: 11px;
+    }
+
+    .amount {
+        font-size: 12px;
     }
 }
 

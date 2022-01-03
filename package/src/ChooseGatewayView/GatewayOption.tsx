@@ -6,6 +6,7 @@ import { APIContext } from '../ApiContext'
 import { transitionPropsCollapse, badgeItemMap } from './constants';
 import { GateWayOptionProps, BadgeType } from "./ChooseGatewayView.models";
 import ArrowUpSvg from '../common/icons/ArrowUpSvg';
+import Checkbox from '../common/Checkbox/Checkbox';
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const { collected } = useContext(APIContext)
@@ -103,11 +104,9 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
             className={`${styles["option-wrapper"]} ${isSelected ? styles["option-wrapper-selected"] : ""} ${!props.available ? styles["option-container-disabled"] : ""}`}
             onClick={() => props.onClick?.()}
         >
-            <input
-                className={styles["option-checkbox"]}
-                type="radio" 
-                checked={isSelected} 
-                readOnly 
+            <Checkbox 
+                className={styles["option-checkbox"]} 
+                checked={isSelected}  
                 disabled={!props.available} 
             />
             <div className={`${commonStyles["flex-all"]} ${styles["icon-container"]}`}>
@@ -120,13 +119,13 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                     {badgeList.map((item, index) => (
                         <div key={index} className={styles["badge-wrapper"]}> 
                             {item.icon && <img className={styles["badge-icon"]} src={item.icon} alt="icon-badge" />}
-                            <div className={styles["tag-text"]}>{item.label}</div>
+                            <div className={`${styles["tag-text"]} ${commonStyles["txt-no-wrap"]}`}>{item.label}</div>
                         </div>))}
                 </div>
                 
-                {!!props.duration && props.available && <div className={`${styles["tag-text"]} ${styles["duration-field"]}`}>{props.duration.message}</div>}
+                {!!props.duration && props.available && <div className={`${styles["tag-text"]} ${commonStyles["txt-no-wrap"]} ${styles["duration-field"]}`}>{props.duration.message}</div>}
                 
-                {!props.available && <div className={styles["tag-text"]}>{props.error?.message || 'Try again later'}</div>}
+                {!props.available && <div className={`${styles["tag-text"]}`} >{props.error?.message || 'Try again later'}</div>}
             </div>
 
             <div className={styles["option-right-wrapper"]}>
@@ -142,10 +141,10 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                         </div>
                     </CSSTransition>
 
-                    <div className={styles["amount-wrapper"]}>
+                    <div className={styles["amount-wrapper"]} >
                         <CSSTransition nodeRef={amountLabelTransRef} {...transitionPropsCollapse} in={isSelected}>
                             <div ref={amountLabelTransRef}>
-                                <div className={`${styles["tag-text"]} ${styles["amount-label"]}`} > 
+                                <div className={`${styles["tag-text"]} ${commonStyles["txt-no-wrap"]} ${styles["amount-label"]}`} > 
                                     {collected.amountInCrypto ? 'You pay:' : 'You receive:'}
                                 </div>
                             </div>

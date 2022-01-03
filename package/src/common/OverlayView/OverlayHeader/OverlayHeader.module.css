@@ -9,18 +9,25 @@
     color: var(--text-dark-color);
     flex-shrink: 0;
     display: flex;
+    padding: 0 var(--padding-rl);
 }
 
 .text {
     flex-grow: 1;
     text-align: center;
-    padding-left: 34px;
+    padding-left: 12px;
     color: var(--text-dark-color);
     position: relative;
 }
 
 .close-icon-wrapper {
+    position: relative;
+}
+
+.clickable-area {
+    position: absolute;
     width: 24px;
     height: 24px;
-    margin-right: 34px;
+    left: -6px;
+    top: -6px;
 }
