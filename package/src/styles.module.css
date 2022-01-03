@@ -243,6 +243,13 @@ li {
     white-space: nowrap;
 }
 
+.clickable-txt:active {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 /* skeleton loading */
 .skeleton-wrapper {
     overflow-x: hidden;
