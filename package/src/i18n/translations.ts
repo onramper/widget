@@ -75,7 +75,8 @@ const resources = {
         enterVerificationCodeTitle: "Enter verification code",
         bankIbanInfoMsg:
           "Please, fill in the bank account number that you will use to send the wire transfer.",
-        inputExpiryDate: 'Expiry date'
+        inputExpiryDate: 'Expiry date',
+        termsAgreement: 'I accept'
       },
       loadingScreen: {
         title: `Checking your information`,
@@ -139,7 +140,7 @@ const resources = {
         hour: `hours`,
         day: `days`,
       },
-      misc: { searchbarPlaceholderText: "Search..." },
+      misc: { searchbarPlaceholderText: "Search...", and: 'and' },
     },
   },
   ko: {
@@ -212,7 +213,8 @@ const resources = {
         enterVerificationCodeTitle: "확인 코드를 입력하십시오",
         bankIbanInfoMsg:
           "철사 전송을 보내는 데 사용할 은행 계좌 번호를 작성하십시오.",
-        inputExpiryDate: '만료일'
+        inputExpiryDate: '만료일',
+        termsAgreement: '동의 함'
       },
       loadingScreen: {
         title: "귀하의 정보 확인",
@@ -279,7 +281,7 @@ const resources = {
         },
       },
       timeMagnitudes: { second: "초", minute: "분", hour: "시간", day: "날" },
-      misc: { searchbarPlaceholderText: "찾다..." },
+      misc: { searchbarPlaceholderText: "찾다...", and: '그리고' },
     },
   },
   ja: {
@@ -358,7 +360,8 @@ const resources = {
         enterVerificationCodeTitle: "認証コードを入力してください",
         bankIbanInfoMsg:
           "ワイヤー転送を送信するために使用する銀行口座番号を入力してください。",
-        inputExpiryDate: '有効期限'
+        inputExpiryDate: '有効期限',
+        termsAgreement: '承諾します'
       },
       loadingScreen: {
         title: "あなたの情報をチェックしてください",
@@ -428,7 +431,7 @@ const resources = {
         },
       },
       timeMagnitudes: { second: "秒数", minute: "分", hour: "時間", day: "日" },
-      misc: { searchbarPlaceholderText: "検索..." },
+      misc: { searchbarPlaceholderText: "検索...", and: 'と' },
     },
   },
 };
