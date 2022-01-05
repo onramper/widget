@@ -6,6 +6,7 @@ import Step from "../Step";
 
 import { NavContext } from "../../NavContext";
 import { APIContext, NextStep } from "../../ApiContext";
+import { t } from "i18next";
 
 const ConfirmPaymentView: React.FC<{
   nextStep: NextStep;
@@ -33,7 +34,7 @@ const ConfirmPaymentView: React.FC<{
 
   return (
     <div className={styles.view}>
-      <Header title="Payment review" backButton />
+      <Header title={t('paymentReviewScreen.title')} backButton />
       <BodyConfirmPayment
         onActionButton={() =>
           nextScreen(<Step nextStep={props.nextStep} isConfirmed />)
