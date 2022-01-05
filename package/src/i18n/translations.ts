@@ -1,3 +1,4 @@
+import countries from "./countries";
 const resources = {
   en: {
     translation: {
@@ -150,6 +151,7 @@ const resources = {
         addressTag: "Address tag",
       },
       misc: { searchbarPlaceholderText: "Search...", and: 'and', continue: "Continue" },
+      countries: countries.en
     },
   },
   ko: {
@@ -300,6 +302,7 @@ const resources = {
         addressTag: "주소 태그",
       },
       misc: { searchbarPlaceholderText: "찾다...", and: '그리고', continue: "계속하다" },
+      countries: countries.ko
     },
   },
   ja: {
@@ -459,6 +462,7 @@ const resources = {
         addressTag: "アドレスタグ",
       },
       misc: { searchbarPlaceholderText: "検索...", and: 'と', continue: "継続する" },
+      countries: countries.ja
     },
   },
 };
