@@ -326,16 +326,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                     onChange(name, item.id.toLowerCase())
                                                     backScreen()
                                                 }}
-                                                items={Object.entries(countryNames).map(([code, name]) => ({
+                                                items={Object.entries(countryNames).map(([code]) => ({
                                                     id: code,
-                                                    name,
+                                                    name: t(`countries.${code}`),
                                                     icon: icons[code],
                                                     info: code
                                                 }))}
                                                 searchable
                                             />
                                         )}
-                                    label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} icon={icons[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} />
+                                    label={field.humanName} selectedOption={t(`countries.${(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()}`)} icon={icons[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} />
                             )) || ((field.type === 'choice') && (
                                 <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
                                     error={errorObj?.[field.name]}
@@ -413,7 +413,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                         items={Object.entries(phoneCodes).map(([code, infoObj]) => ({
                                                             id: code,
                                                             name: infoObj.phoneCode,
-                                                            info: infoObj.name,
+                                                            info: t(`countries.${code}`),
                                                             searchWords: infoObj.searchWords
                                                         }))}
                                                         searchable

@@ -3,9 +3,12 @@ import { ReactComponent as ErrorIllustration } from '../../icons/error.svg'
 import countryNames from '../../ApiContext/utils/contryNames'
 import styles from './styles.module.css'
 import ButtonAction from '../ButtonAction'
+import { t } from 'i18next'
 
 export const COUNTRY_NOT_SUPPORTED = (country?: string): JSX.Element => {
-    const _country = countryNames[country?.toUpperCase() ?? ''] ?? country?.toUpperCase()
+    const existingCountry = countryNames[country?.toUpperCase() ?? ''];
+    const _country = existingCountry ? t(`countries.${country?.toUpperCase()}`) : country?.toUpperCase();
+
     return (
         <>
             <ErrorIllustration className={styles['content-image']} />
