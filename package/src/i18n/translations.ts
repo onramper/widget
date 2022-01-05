@@ -151,7 +151,38 @@ const resources = {
         addressTag: "Address tag",
         title: "Payment review",
       },
-      misc: { searchbarPlaceholderText: "Search...", and: 'and', continue: "Continue" },
+      errorCountriesNotSupported: {
+        title: "Country not supported",
+        isNotSupportedBy: "is not yet supported by Onramper.",
+        description: "We're working hard to make it available for you as soon as possible!"
+      },
+      errorDisabledGateways: {
+        title: "It's not you...",
+        description: "Looks like this Onramper integration has disabled some of the available gateways in this area."
+      },
+      errorApi: {
+        title: "Couldn't continue",
+        description: "For more information of the error, read our FAQs or contact us."
+      },
+      errorCrash: {
+        title: "It's not about you...",
+        description: "Something went really wrong. Please, restart the widget.",
+      },
+      errorNoItemsFound: {
+        title: "We tried but...",
+        someItemsDisabled: "looks like this Onramper integration has disabled some items."
+      },
+      errorScreens: {
+        readFaqs: "Read our FAQs",
+        forMoreInfo: "For more information read our FAQs or contact us."
+      },
+      misc: {
+        searchbarPlaceholderText: "Search...",
+        and: 'and',
+        continue: "Continue",
+        tryAgain: "Try again",
+        restart: "Restart"
+      },
       countries: countries.en
     },
   },
@@ -303,7 +334,38 @@ const resources = {
         addressTag: "주소 태그",
         title: "지불 검토",
       },
-      misc: { searchbarPlaceholderText: "찾다...", and: '그리고', continue: "계속하다" },
+      errorCountriesNotSupported: {
+        title: "국가가 지원되지 않음",
+        isNotSupportedBy: "아직 Onramper에서 지원하지 않습니다.",
+        description: "가능한 한 빨리 사용할 수 있도록 최선을 다하고 있습니다!"
+      },
+      errorDisabledGateways: {
+        title: "네가 아니야...",
+        description: "이 Onramper 통합으로 인해 이 영역에서 사용 가능한 게이트웨이 중 일부가 비활성화된 것 같습니다."
+      },
+      errorApi: {
+        title: "계속하지 못했습니다",
+        description: "오류에 대한 자세한 내용은 자주 묻는 질문을 읽거나 당사에 문의하십시오.",
+      },
+      errorCrash: {
+        title: "너 때문이 아니야...",
+        description: "문제가 발생했습니다. 위젯을 다시 시작하세요.",
+      },
+      errorNoItemsFound: {
+        title: "우리는 시도했지만...",
+        someItemsDisabled: "이 Onramper 통합으로 인해 일부 항목이 비활성화된 것 같습니다.",
+      },
+      errorScreens: {
+        readFaqs: "자주 묻는 질문을 읽어보세요.",
+        forMoreInfo: "자세한 내용은 자주 묻는 질문을 읽거나 당사에 문의하십시오.",
+      },
+      misc: { 
+        searchbarPlaceholderText: "찾다...",
+        and: '그리고',
+        continue: "계속하다",
+        tryAgain: "다시 시도하십시오",
+        restart: "다시 시작"
+      },
       countries: countries.ko
     },
   },
@@ -464,7 +526,38 @@ const resources = {
         addressTag: "アドレスタグ",
         title: "支払いレビュー"
       },
-      misc: { searchbarPlaceholderText: "検索...", and: 'と', continue: "継続する" },
+      errorCountriesNotSupported: {
+        title: "国はサポートされていません",
+        isNotSupportedBy: "Onramperではまだサポートされていません。",
+        description: "私たちはあなたができるだけ早くそれを利用できるようにするために一生懸命取り組んでいます!"
+      },
+      errorDisabledGateways: {
+        title: "それはあなたではありません...",
+        description: "このOnramper統合により、このエリアで利用可能なゲートウェイの一部が無効になっているようです。"
+      },
+      errorApi: {
+        title: "続行できませんでした",
+        description: "エラーの詳細については、よくある質問を読むか、お問い合わせください。"
+      },
+      errorCrash: {
+        title: "それはあなたのことではありません...",
+        description: "何かが本当にうまくいかなかった。 ウィジェットを再起動してください。",
+      },
+      errorNoItemsFound: {
+        title: "私たちはそれを試しましたが しかし...",
+        someItemsDisabled: "このOnramper統合により、一部のアイテムが無効になっているようです。"
+      },
+      errorScreens: {
+        readFaqs: "よくある質問を読む",
+        forMoreInfo: "詳細については、よくある質問を読むか、お問い合わせください。"
+      },
+      misc: { 
+        searchbarPlaceholderText: "検索...",
+        and: 'と',
+        continue: "継続する",
+        tryAgain: "再試行する",
+        restart: "再起動"
+      },
       countries: countries.ja
     },
   },
