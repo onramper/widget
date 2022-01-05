@@ -149,6 +149,7 @@ const resources = {
         expectedTransTime: "Expected transaction time",
         walletAddress: "wallet address",
         addressTag: "Address tag",
+        title: "Payment review",
       },
       misc: { searchbarPlaceholderText: "Search...", and: 'and', continue: "Continue" },
       countries: countries.en
@@ -300,6 +301,7 @@ const resources = {
         expectedTransTime: "예상 트랜잭션 시간",
         walletAddress: "지갑 주소",
         addressTag: "주소 태그",
+        title: "지불 검토",
       },
       misc: { searchbarPlaceholderText: "찾다...", and: '그리고', continue: "계속하다" },
       countries: countries.ko
@@ -460,6 +462,7 @@ const resources = {
         expectedTransTime: "予想されるトランザクション時間",
         walletAddress: "ウォレットアドレス",
         addressTag: "アドレスタグ",
+        title: "支払いレビュー"
       },
       misc: { searchbarPlaceholderText: "検索...", and: 'と', continue: "継続する" },
       countries: countries.ja
