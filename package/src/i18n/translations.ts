@@ -170,7 +170,7 @@ const resources = {
       },
       errorNoItemsFound: {
         title: "We tried but...",
-        someItemsDisabled: "Looks like this Onramper integration has disabled some items."
+        someItemsDisabled: "looks like this Onramper integration has disabled some items."
       },
       errorScreens: {
         readFaqs: "Read our FAQs",
