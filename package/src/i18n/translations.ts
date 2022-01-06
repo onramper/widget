@@ -170,7 +170,7 @@ const resources = {
       },
       errorNoItemsFound: {
         title: "We tried but...",
-        someItemsDisabled: "looks like this Onramper integration has disabled some items."
+        someItemsDisabled: "Looks like this Onramper integration has disabled some items."
       },
       errorScreens: {
         readFaqs: "Read our FAQs",
@@ -359,7 +359,7 @@ const resources = {
         readFaqs: "자주 묻는 질문을 읽어보세요.",
         forMoreInfo: "자세한 내용은 자주 묻는 질문을 읽거나 당사에 문의하십시오.",
       },
-      misc: { 
+      misc: {
         searchbarPlaceholderText: "찾다...",
         and: '그리고',
         continue: "계속하다",
@@ -551,7 +551,7 @@ const resources = {
         readFaqs: "よくある質問を読む",
         forMoreInfo: "詳細については、よくある質問を読むか、お問い合わせください。"
       },
-      misc: { 
+      misc: {
         searchbarPlaceholderText: "検索...",
         and: 'と',
         continue: "継続する",
