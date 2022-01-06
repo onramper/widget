@@ -109,6 +109,7 @@ const resources = {
         sellerAvailableOr: `or`,
         partnerContextErrorMessage: `Partner context not set properly`,
         apiKeyNotProvidedErrorMessage: `API KEY NOT PROVIDED`,
+        otherCurrencies: `other currencies`,
       },
       apiContent: {
         processResponseError: "Error parsing the response",
@@ -293,6 +294,7 @@ const resources = {
         partnerContextErrorMessage:
           "파트너 컨텍스트가 제대로 설정되지 않았습니다.",
         apiKeyNotProvidedErrorMessage: "API 키가 제공되지 않음",
+        otherCurrencies: `다른 통화`,
       },
       apiContent: {
         processResponseError: "응답 구문 분석 오류",
@@ -484,6 +486,7 @@ const resources = {
         partnerContextErrorMessage:
           "パートナーコンテキストが正しく設定されていません",
         apiKeyNotProvidedErrorMessage: "APIキーは提供されていません",
+        otherCurrencies: `他の通貨`,
       },
       apiContent: {
         processResponseError: "応答の解析中にエラーが発生しました",
