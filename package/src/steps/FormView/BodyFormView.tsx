@@ -17,7 +17,7 @@ import type { CollectedStateType } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
 
-import countryNames from '../../ApiContext/utils/contryNames'
+import countryNames from '../../ApiContext/utils/countryNames'
 import phoneCodes from '../../ApiContext/utils/phoneCodes'
 import usStates from '../../ApiContext/utils/usStates'
 import caStates from '../../ApiContext/utils/caStates'

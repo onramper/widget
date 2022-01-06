@@ -1,6 +1,6 @@
 import React from 'react'
 import { ReactComponent as ErrorIllustration } from '../../icons/error.svg'
-import countryNames from '../../ApiContext/utils/contryNames'
+import countryNames from '../../ApiContext/utils/countryNames'
 import styles from './styles.module.css'
 import ButtonAction from '../ButtonAction'
 import { t } from 'i18next'
@@ -31,7 +31,7 @@ export const DISABLED_GATEWAYS =
         <ErrorIllustration className={styles['content-image']} />
         <span className={styles['content-title']}>{t('errorDisabledGateways.title')}</span>
         <span className={styles['content-description']}>
-            {t('errorDisabledGateways.description')}<br /> 
+            {t('errorDisabledGateways.description')}<br />
             {t('errorScreens.forMoreInfo')}<br /><br />
         </span>
         <div className={styles['content-description']}>
