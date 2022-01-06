@@ -29,10 +29,10 @@
     flex-direction: row;
     align-items: center;
     padding: 15px;
-    height: 48px;
+    height: var(--input-form-height);
     border-radius: 12px;
     border: 1.5px solid var(--input-stroke-color);
-    background-color: var(--input-bg-color);
+    background-color: var(--input-form-bg-color);
     transition: border-color 0.2s;
 }
 
