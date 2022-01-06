@@ -28,33 +28,18 @@ const getNextStep = (currentStep: string) => {
 
 const firstStep = {
     "type": "form",
-    "humanName": "Your Details",
     "url": `${BASE_API}/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
-    "title": "Your details",
-    "useHeading": true,
     "data": [
         {
             "type": "string",
-            "name": "cryptocurrencyAddress",
-            "humanName": "Cryptocurrency wallet address",
-            "placeholder": "e.g 3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"
+            "name": "email",
+            "humanName": "Email",
+            "hint": "We will send a code to your email."
         },
         {
             "type": "string",
-            "name": "fullname",
-            "humanName": "Full name",
-            "placeholder": "e.g JohnDoe"
-        },
-        {
-            "type": "integer",
-            "name": "phoneCountryCode",
-            "humanName": "Phone country code"
-        },
-        {
-            "type": "integer",
-            "name": "phoneNumber",
-            "humanName": "Phone number",
-            "placeholder": "654 56 84 56"
+            "name": "cryptocurrencyAddress",
+            "humanName": "Cryptocurrency wallet address"
         }
     ]
 }
