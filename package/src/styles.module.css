@@ -19,6 +19,7 @@ theme styles
     --grey-light-color: #ABADB8;
     --input-bg-color: #F7FAFD;
     --input-stroke-color: #D7D9E0;
+    --input-disabled-bg-color: #F8F8F8;
     /* default color*/
     --max-width: 1rem;
     --max-height: 1rem;

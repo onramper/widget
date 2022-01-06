@@ -96,7 +96,7 @@
 }
 
 .input__type--number--disabled {
-    background-color: #F8F8F8;
+    background-color: var(--input-disabled-bg-color);
 }
 
 .input__type--number input {
@@ -157,13 +157,6 @@
     color: inherit;
     font-size: 0.75em;
     margin-top: 0.2727em;
-}
-
-.text-hint--link {
-    text-decoration: underline;
-    cursor: pointer;
-    color: #4c4c4c;
-    margin-top: 6px;
 }
 
 /********error display transition*********/
