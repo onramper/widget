@@ -870,14 +870,14 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
                   if (currencyToDisplay) fiats.push(currencyToDisplay);
                 }
               if (currencies.length > fiats.length)
-                fiats.push("other currencies");
+                fiats.push(t('apiProvider.otherCurrencies'));
               return fiats.reduce((acc, currency, index, arr) => {
                 const currencyName = currency;
                 if (acc === "") return `${t('apiProvider.sellerAvailablePayingWith')} ${currencyName}`;
                 else if (index < arr.length - 1)
                   return `${acc}, ${currencyName}`;
                 else if (index === arr.length - 1)
-                  return `${acc} or ${currencyName}`;
+                  return `${acc} ${t('apiProvider.sellerAvailableOr')} ${currencyName}`;
                 else return acc;
               }, "");
             })(),
