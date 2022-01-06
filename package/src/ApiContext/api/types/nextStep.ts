@@ -115,6 +115,7 @@ type NextStep =
         nextStep: NextStep;
         failStep: NextStep;
         neededFeatures?: string;
+        fullscreen: boolean;
       }
     | {
         type: 'actionable-error';
