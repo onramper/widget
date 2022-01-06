@@ -13,8 +13,14 @@ import { t } from "i18next"
 
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers();
+
 // Accept-Language header is set here for i18n. The backend will use this to set the language of the responses.
-headers.set('Accept-Language', i18n.language);
+const updateAcceptLanguageHeader = () => {
+    const currentLanguage = i18n.language;
+    if (headers.get('Accept-Language') !== currentLanguage)
+        headers.set('Accept-Language', currentLanguage);
+}
+updateAcceptLanguageHeader();
 
 // See https://github.com/getsentry/sentry-javascript/issues/1656#issuecomment-430295616
 const sentryClient = new BrowserClient({
@@ -328,5 +334,6 @@ export {
     sell,
     NextStepError,
     sentryHub,
-    ApiError
+    ApiError,
+    updateAcceptLanguageHeader,
 }
