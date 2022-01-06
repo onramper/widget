@@ -6,7 +6,6 @@ import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import hintIcon from "../../../icons/hint.svg";
 import infoIcon from "../../../icons/info.svg";
 
-// TODO: style according to new design
 const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) => {
   const [isFocused, setIsFocused] = React.useState<boolean>(false);
   const [isMouseOver, setIsMouseOver] = React.useState<boolean>(false);
