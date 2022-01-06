@@ -1,7 +1,7 @@
 .terms {
 /*     margin-left: calc( var(--icon-width) / 2); */
     font-size: 0.75rem;
-    padding-top: 28px;
+    padding-top: var(--form-field-space);
 }
 
 .terms:first-of-type {
