@@ -36,6 +36,8 @@ import { NextStepError } from "./api";
 import type { Filters } from "./api";
 import phoneCodes from "./utils/phoneCodes";
 import { useTranslation } from "react-i18next";
+import i18n from "../i18n/setup";
+import { getDefaultLanguageForCountry } from "./utils/countryLanguagePairings";
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
@@ -202,10 +204,32 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     });
   }, [generateInitialCollectedState]);
 
+  /**
+   * Given the country will check if the language of the widget should be changed based on its current language and the
+   * default language for the provided country.
+   *
+   * @param country The Alpha-2 ISO 3166 country code. E.g. 'JP'. See:
+   * https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
+   */
+  function updateLanguageIfRequired(country?: string) {
+    const widgetsLanguage = getDefaultLanguageForCountry(country);
+    if (i18n.language !== widgetsLanguage) {
+      i18n.changeLanguage(widgetsLanguage);
+      API.updateAcceptLanguageHeader();
+    }
+  }
+
   /* *********** */
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
+      // Source: The queryParameter '?country=' or from an argument to the init function, is undefined most of the time.
       const actualCountry = props.country || country;
+
+      /* If undefined this shouldn't be triggered as that would reset the language back to the default. We don't want
+       * that because then the language change triggered below after the gateway call will be reverted. */
+      if (actualCountry)
+        updateLanguageIfRequired(actualCountry);
+
       // REQUEST AVAILABLE GATEWAYS
       let rawResponseGateways: GatewaysResponse;
       let responseGateways: GatewaysResponse;
@@ -230,8 +254,16 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }
       const widgetsCountry =
         actualCountry ||
-        responseGateways.localization.country ||
+        responseGateways.localization.country || // This is the CloudFront country from the backend.
         DEFAULT_COUNTRY;
+
+      /* If the country retrieved from the backend response is different then the `actualCountry` then the language
+       * should be adjusted. One instance when this occurs is when no country query parameter is provided and our
+       * backend detects the user's location by the CloudFront country and sends it back to the widget. */
+      if (actualCountry !== widgetsCountry) {
+        updateLanguageIfRequired(widgetsCountry);
+      }
+
       handleInputChange("selectedCountry", widgetsCountry);
       if (
         !NO_CHAT_COUNTRIES.includes(widgetsCountry) &&
