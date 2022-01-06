@@ -1,5 +1,4 @@
 import { BASE_API } from '../constants'
-import moonpay from "./steps/Moonpay";
 
 const ratesAllParams = [
     {
@@ -60,7 +59,31 @@ const ratesAllParams = [
             "selfie"
         ],
         "receivedCrypto": 0.00598,
-        "nextStep": moonpay.getNextStep('firstStep')
+        "nextStep": {
+            /* "type": "completed",
+            "trackingUrl": "https://onramper.com" */
+            "type": "form",
+            "url": `${BASE_API}/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+            "data": [
+                {
+                    "type": "string",
+                    "name": "email",
+                    "humanName": "Email",
+                    "hint": "We will send a code to your email."
+                },
+                {
+                    "type": "string",
+                    "name": "cryptocurrencyAddress",
+                    "humanName": "Cryptocurrency wallet address"
+                },
+                {
+                    "type":"string",
+                    "name":"cryptocurrencyAddressTag",
+                    "humanName":"Cryptocurrency address tag",
+                    "required":false
+                }
+            ]
+        }
     },
     {
         "identifier": "Wyre",
