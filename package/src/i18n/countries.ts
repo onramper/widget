@@ -1,8 +1,8 @@
-import contryNames from "../ApiContext/utils/contryNames";
+import countryNames from "../ApiContext/utils/countryNames";
 
 export default {
     en: {
-        ...contryNames,
+        ...countryNames,
     },
     ko: {
         AF: "아프가니스탄",
