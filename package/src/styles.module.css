@@ -18,8 +18,10 @@ theme styles
     --text-light-color: #7C7D82;
     --grey-light-color: #ABADB8;
     --input-bg-color: #F7FAFD;
+    --input-form-bg-color: #fff;
     --input-stroke-color: #D7D9E0;
     --input-disabled-bg-color: #F8F8F8;
+    --input-form-height: 48px;
     /* default color*/
     --max-width: 1rem;
     --max-height: 1rem;

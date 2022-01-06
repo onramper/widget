@@ -28,12 +28,12 @@
 .input-wrapper {
     display: flex;
     padding: 15px;
-    height: 48px;
+    height: var(--input-form-height);
     flex-direction: row;
     align-items: center;
     border-radius: 12px;
     border: 1.5px solid var(--input-stroke-color);
-    background-color: white;
+    background-color: var(--input-form-bg-color);;
     transition: border-color 0.2s;
 }
 
@@ -50,7 +50,7 @@
     color: var(--text-dark-color);
     background-color: transparent;
     position: relative;
-    height: 48px;
+    height: var(--input-form-height);
 }
 
 .input-wrapper input:-webkit-autofill {
