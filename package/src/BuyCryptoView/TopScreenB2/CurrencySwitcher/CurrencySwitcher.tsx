@@ -35,7 +35,7 @@ const Skeleton: React.FC = () => {
 };
 
 const CurrencySwitcher: React.FC = () => {
-  const { collected, data, inputInterface } = useContext(APIContext);
+  const { collected, data } = useContext(APIContext);
   const { nextScreen, backScreen } = useContext(NavContext);
 
   const [pair, setPair] = useState<(ItemType | undefined)[]>([]);
