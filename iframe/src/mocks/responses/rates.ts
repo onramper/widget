@@ -1,4 +1,5 @@
 import { BASE_API } from '../constants'
+import testGatewayResponse from './steps/TestGateway/gatewayResponse'
 
 const ratesAllParams = [
     {
@@ -227,7 +228,8 @@ const ratesAllParams = [
             "url": "https://widget.xanpool.com?apiKey=89eed7612765d2ef7a1ed34221a023e9&cryptoCurrency=BTC&currency=PHP&transactionType=buy&partnerData=pk_test_oDsXkHokDdr06zZ0_sxJGw00",
             "fullscreen": true
         }
-    }
+    },
+    testGatewayResponse
 ]
 
 const ratesAllUnavailable = [
