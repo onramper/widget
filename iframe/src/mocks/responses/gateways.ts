@@ -1,4 +1,6 @@
 import type { GatewaysResponse } from '@onramper/widget/dist/ApiContext/api/types/gateways'
+import gatewayParameters from './steps/TestGateway/gatewayParamers'
+
 const gatewaysAllParams: GatewaysResponse = {
     "gateways": [
         {
@@ -1105,7 +1107,8 @@ const gatewaysAllParams: GatewaysResponse = {
                     "precision": 2
                 }
             ]
-        }
+        },
+        gatewayParameters
     ],
     "localization": {
         "country": "es",
