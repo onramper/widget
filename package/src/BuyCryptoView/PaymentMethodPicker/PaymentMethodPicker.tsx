@@ -70,16 +70,16 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   const getRemainingWidth = () => {
     if (!containerRef.current) return -1;
 
-    const optionNodeList = containerRef.current.querySelectorAll(`[itemProp="option"]`);
-    if(optionNodeList.length === 0) return -1;
+    const optionNodes = containerRef.current.querySelectorAll(`[itemProp="option"]`);
+    if(optionNodes.length === 0) return -1;
 
-    const marginRight = Number(getComputedStyle(optionNodeList[0]).marginRight.replace("px", ""));
+    const marginRight = Number(getComputedStyle(optionNodes[0]).marginRight.replace("px", ""));
 
     let width = containerRef.current.clientWidth;
-    for(let i = 0; i < optionNodeList.length; i++) {
-      width -= optionNodeList[0].getBoundingClientRect().width;
+    for(let i = 0; i < optionNodes.length; i++) {
+      width -= optionNodes[i].getBoundingClientRect().width;
 
-      if(i < optionNodeList.length -1) {
+      if(i < optionNodes.length -1) {
         width -= marginRight;
       }
     }
@@ -94,7 +94,8 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
 
   useEffect(() => {
     setTimeout(() => {
-      if(getRemainingWidth() >= 0 && getRemainingWidth() < 36) {
+      const remainingWidth = getRemainingWidth();
+      if(remainingWidth >= 0 && remainingWidth < 36) {
         setStyle({justifyContent: "space-between"});
         return;
       }
