@@ -85,7 +85,7 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             id: '',
             name: t('mainScreen.loadingText')
         });
-    }, [i18n.language]);
+    }, [i18n.language, t]);
 
     return (
         <main className={stylesCommon.body}>
