@@ -33,7 +33,9 @@ const CurrencyInput: React.FC = () => {
   }, [handleInputChange, precision]);
 
   useEffect(() => {
-    inputRef.current && resizeInput(inputRef.current);
+    setTimeout(() => {
+      inputRef.current && resizeInput(inputRef.current);
+    }, 0);
   }, [collected.amount]);
 
   useEffect(() => {
