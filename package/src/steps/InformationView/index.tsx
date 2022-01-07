@@ -8,6 +8,7 @@ import { NextStep } from "../../ApiContext/api/types/nextStep";
 import HelpView from "../../common/HelpView";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
+import { t } from "i18next";
 
 const InformationView: React.FC<{
   nextStep: NextStep & { type: "information" };
@@ -16,17 +17,17 @@ const InformationView: React.FC<{
   const { apiInterface, collected } = useContext(APIContext);
   const [error, setError] = React.useState<string>();
   const [buttonText, setButtonText] = React.useState<string>(
-    error ? "Close" : "Got it!"
+    error ? t('informationView.close') : t('informationView.gotIt')
   );
   const [collectedStore] = React.useState(collected);
 
   React.useEffect(() => {
-    setButtonText(error ? "Close" : "Got it!");
+    setButtonText(error ? t('informationView.close') : t('informationView.gotIt'));
   }, [error]);
 
   const handleButtonAction = async () => {
     try {
-      setButtonText("Loading...");
+      setButtonText(t('mainScreen.loadingText'));
       let payload = { partnerContext: collectedStore.partnerContext };
       let newNextStep: NextStep = props.nextStep;
       if (newNextStep.type === "information" && newNextStep.url === undefined) {
@@ -52,7 +53,7 @@ const InformationView: React.FC<{
         });
       }
       newNextStep = await apiInterface.executeStep(newNextStep, payload);
-      setButtonText("Got it!");
+      setButtonText(t('informationView.gotIt'));
       replaceScreen(<Step nextStep={newNextStep} />);
       return true;
     } catch (error) {
