@@ -29,15 +29,14 @@ interface BodyBuyCryptoProps {
 
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
     const { t } = useTranslation();
-
-    const LOADING_TEXT = t('mainScreen.loadingText')
-    const LoadingItem: ItemType = {
+    //NOTE: be aware of this if in the future changing the language without page load is wanted
+    const [loadingItem] = useState<ItemType>({
         id: '',
-        name: LOADING_TEXT
-    }
+        name: t('mainScreen.loadingText')
+    });
 
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
-    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
+    const { selectedCrypto = loadingItem, selectedCurrency = loadingItem, selectedPaymentMethod = loadingItem, isFilled = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
     const { triggerChat } = useContext(NavContext)
