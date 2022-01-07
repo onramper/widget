@@ -61,8 +61,6 @@ const ratesAllParams = [
         ],
         "receivedCrypto": 0.00598,
         "nextStep": {
-            /* "type": "completed",
-            "trackingUrl": "https://onramper.com" */
             "type": "form",
             "url": `${BASE_API}/transaction/Moonpay/email/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
             "data": [
