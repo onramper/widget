@@ -13,12 +13,13 @@ const resources = {
         infoBox: {
           seeAllGateways: `See all gateways`,
           contact: `Contact us`,
+          seeMore: `See more`,
         },
         button: {
           viewGateways: `See gateways`,
           purchasePrefix: `Buy`,
         },
-        loadingText: `Loading..`,
+        loadingText: `Loading...`,
       },
       gatewayScreen: {
         noteAboutApproximation: `The displayed amounts are an approximate calculation of the crypto that you will receive after fees.`,
@@ -78,6 +79,10 @@ const resources = {
           "Please, fill in the bank account number that you will use to send the wire transfer.",
         inputExpiryDate: 'Expiry date',
         termsAgreement: 'I accept'
+      },
+      informationView: {
+        close: `Close`,
+        gotIt: `Got it!`,
       },
       loadingScreen: {
         title: `Checking your information`,
@@ -197,9 +202,9 @@ const resources = {
         noteForCryptoAmount: "최고의 제안 (근사)",
         noteForFiatAmount: "금액 지불",
         progressMessage: "최고의 가격 가져 오기 ...",
-        infoBox: { seeAllGateways: "모든 게이트웨이보기", contact: "문의하기" },
+        infoBox: { seeAllGateways: "모든 게이트웨이보기", contact: "문의하기", seeMore: `더보기`, },
         button: { viewGateways: "게이트웨이보기", purchasePrefix: "구입" },
-        loadingText: "적재 ..",
+        loadingText: "로드 중...",
       },
       gatewayScreen: {
         noteAboutApproximation:
@@ -259,6 +264,10 @@ const resources = {
           "철사 전송을 보내는 데 사용할 은행 계좌 번호를 작성하십시오.",
         inputExpiryDate: '만료일',
         termsAgreement: '동의 함'
+      },
+      informationView: {
+        close: `닫기`,
+        gotIt: `알았어요!`,
       },
       loadingScreen: {
         title: "귀하의 정보 확인",
@@ -384,12 +393,13 @@ const resources = {
         infoBox: {
           seeAllGateways: "すべてのゲートウェイを見る",
           contact: "お問い合わせ",
+          seeMore: `続きを見る`,
         },
         button: {
           viewGateways: "ゲートウェイを見てください",
           purchasePrefix: "買う",
         },
-        loadingText: "積載",
+        loadingText: "読み込み中...",
       },
       gatewayScreen: {
         noteAboutApproximation:
@@ -449,6 +459,10 @@ const resources = {
           "ワイヤー転送を送信するために使用する銀行口座番号を入力してください。",
         inputExpiryDate: '有効期限',
         termsAgreement: '承諾します'
+      },
+      informationView: {
+        close: `閉じる`,
+        gotIt: `了解しました。`,
       },
       loadingScreen: {
         title: "あなたの情報をチェックしてください",
