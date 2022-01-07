@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import ButtonAction from '../ButtonAction'
 import { APIContext } from '../../ApiContext'
 import {URLize} from './utils'
+import { t } from 'i18next';
 
 type InfoBoxType = {
     type?: 'info' | 'error' | 'notification'
@@ -25,7 +26,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
         onDismissClick = () => null,
         canBeDismissed = false,
         className = '',
-        actionText = 'See more'
+        actionText = t('mainScreen.infoBox.seeMore') ?? 'See more',
     } = props
     const defaultRef = ref || React.createRef<HTMLDivElement>();
     let classBoxType = ''
@@ -98,7 +99,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
                         ? <span className={styles.text}>
                             {message}
                         </span>
-                        : 
+                        :
                          <span className={styles.text}>
                              {props.children}
                          </span>
@@ -106,7 +107,7 @@ const InfoBox = React.forwardRef<HTMLDivElement, React.PropsWithChildren<InfoBox
                     {
                         props.onActionClick &&
                         <span style={{ fontSize: '0.7rem', marginRight: canBeDismissed ? '0.75rem' : 'unset' }}>
-                            <ButtonAction className={`${styles['button-action']}`} size='small' text={disableButton ? 'Loading...' : actionText} onClick={_onActionClick} /* disabled={disableButton} */ />
+                            <ButtonAction className={`${styles['button-action']}`} size='small' text={disableButton ? t('mainScreen.loadingText') ?? 'Loading...' : actionText} onClick={_onActionClick} /* disabled={disableButton} */ />
                         </span>
                     }
                 </div>
