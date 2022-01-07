@@ -47,6 +47,10 @@ jobs:
         then
           echo "::set-output name=stage::dev"
           echo "::set-output name=domain::iceberg.onramper.dev"
+        elif [ $REF == 'refs/heads/ice-dev' ]
+        then
+          echo "::set-output name=stage::demo"
+          echo "::set-output name=domain::demo.iceberg.onramper.dev"
         elif [ $REF == 'refs/heads/demo' ]
         then
           echo "::set-output name=stage::demo"
