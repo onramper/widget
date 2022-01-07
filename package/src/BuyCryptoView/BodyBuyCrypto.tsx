@@ -25,12 +25,10 @@ interface BodyBuyCryptoProps {
     isFilled?: boolean
 }
 
-
-
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     //NOTE: be aware of this if in the future changing the language without page load is wanted
-    const [loadingItem] = useState<ItemType>({
+    const [loadingItem, setLoadingItem] = useState<ItemType>({
         id: '',
         name: t('mainScreen.loadingText')
     });
@@ -81,6 +79,13 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         }
         setSymbolRecentlyChanged(true)
     }, [collected.amountInCrypto])
+
+    useEffect(() => {
+        setLoadingItem({
+            id: '',
+            name: t('mainScreen.loadingText')
+        });
+    }, [i18n.language]);
 
     return (
         <main className={stylesCommon.body}>
