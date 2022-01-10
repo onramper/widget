@@ -15,6 +15,7 @@ import {
 } from "@onramper/moonpay-adapter";
 
 import { NavContext } from "../../NavContext";
+import { t } from "i18next";
 
 const btcdirectFinishedOrigin = "https://btcdirect.sandbox.staging.onramper.tech";
 
@@ -103,7 +104,7 @@ const IframeView: React.FC<{
   return (
     <div className={styles.view}>
       <Header
-        title={nextStep.humanName ?? "Complete payment"}
+        title={nextStep.humanName ?? t('miscViews.completePayment')}
         hideBurgerButton={nextStep.type === "iframe" && nextStep.fullscreen}
         backButton
       />
