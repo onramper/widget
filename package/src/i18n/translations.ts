@@ -84,6 +84,9 @@ const resources = {
         close: `Close`,
         gotIt: `Got it!`,
       },
+      miscViews: {
+        completePayment: `Complete payment`,
+      },
       loadingScreen: {
         title: `Checking your information`,
         didYouKnow: `Did you know...`,
@@ -268,6 +271,9 @@ const resources = {
       informationView: {
         close: `닫기`,
         gotIt: `알았어요!`,
+      },
+      miscViews: {
+        completePayment: `결제 완료`,
       },
       loadingScreen: {
         title: "고객님의 정보 확인 중 입니다",
@@ -463,6 +469,9 @@ const resources = {
       informationView: {
         close: `閉じる`,
         gotIt: `了解しました。`,
+      },
+      miscViews: {
+        completePayment: `完全な支払い`,
       },
       loadingScreen: {
         title: "お客様の情報を確認中",
