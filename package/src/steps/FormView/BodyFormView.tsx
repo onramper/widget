@@ -7,7 +7,6 @@ import InputCryptoAddr from '../../common/Input/InputCryptoAddr'
 import ButtonAction from '../../common/ButtonAction'
 import InputButton from '../../common/Input/InputButton/InputButton'
 import InfoBox from '../../common/InfoBox'
-import PickView from '../../PickView'
 import HelpView from '../../common/HelpView'
 import Help2FACreditCard from './renderers/Help2FACreditCard'
 
@@ -46,8 +45,6 @@ type BodyFormViewType = {
     onErrorDismissClick: (field?: string) => void
     heading?: string
 }
-
-// TODO: add separtor to form view ; add temporary input as a component for testing
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { handleInputChange, onActionButton, fields = [] } = props
@@ -296,7 +293,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     error={errorObj?.[field.name]}
                                     onClick={
                                         () => nextScreen(
-                                            <PickView
+                                            <OverlayPicker
                                                 title={field.humanName}
                                                 name={field.name}
                                                 onItemClick={(name, index, item) => {
@@ -318,7 +315,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     error={errorObj?.[field.name]}
                                     onClick={
                                         () => nextScreen(
-                                            <PickView
+                                            <OverlayPicker
                                                 title={field.humanName}
                                                 name={field.name}
                                                 onItemClick={(name, index, item) => {
@@ -340,7 +337,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     error={errorObj?.[field.name]}
                                     onClick={
                                         () => nextScreen(
-                                            <PickView
+                                            <OverlayPicker
                                                 title={field.humanName}
                                                 name={field.name}
                                                 onItemClick={(name, index, item) => {
@@ -359,7 +356,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                 collected.country === 'us' || collected.country === 'ca'
                                     ? <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon["body-form-child"]} onClick={
                                         () => nextScreen(
-                                            <PickView
+                                            <OverlayPicker
                                                 title={field.humanName}
                                                 name={field.name}
                                                 onItemClick={(name, index, item) => {

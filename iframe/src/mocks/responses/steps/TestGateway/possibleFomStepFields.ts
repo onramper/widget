@@ -153,6 +153,12 @@ const allFormFields = [
     ]
   },
   {
+    type: "string",
+    name: "state",
+    humanName: "Select state",
+    required: false,
+  },
+  {
     type: "choice",
     humanName: "Type of identity document (choice)",
     name: "documentType",
@@ -160,13 +166,6 @@ const allFormFields = [
         "Identity card",
         "Passport"
     ],
-  },
-  {
-    type: "string",
-    name: "state",
-    humanName: "State",
-    hint: "Only required if your address is in the US",
-    required: false,
   },
   ...creditCardFormFieldsGroup,
   ...phoneNumberFormFieldsGroup,
