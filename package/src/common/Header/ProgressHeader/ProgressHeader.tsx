@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { NavContext } from "../../../NavContext";
-import Menu from "../Menu";
+import Menu from "../Menu/Menu";
 import { ProgressHeaderProps } from "./ProgressHeader.models";
 import classes from "./ProgressHeader.module.css";
 import headerClasses from "../Header.module.css";
@@ -9,7 +9,7 @@ import iconLeftArrow from "../../../icons/arrow-left.svg";
 
 const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { onMenuClick = () => nextScreen(<Menu />) } = props;
+  const { onMenuClick = () => nextScreen(<Menu className={headerClasses["header-menu"]}/>) } = props;
 
   return (
     <nav className={classes["header"]}>
