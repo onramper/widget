@@ -6,7 +6,7 @@ import {ReactComponent as IconLeftArrow} from "../../icons/arrow-left.svg";
 import IconClose from "../../icons/close-menu.svg";
 
 import { NavContext } from "../../NavContext";
-import Menu from "./Menu";
+import Menu from "./Menu/Menu";
 
 export type HeaderType = {
   title: string;
