@@ -55,7 +55,7 @@
 
 .option-wrapper.selected {
     color: var(--text-dark-color);
-    border-color: #6C77DC;
+    border-color: var(--list-active-color);
 }
 
 .option-wrapper.selected .option-logo-wrapper img {

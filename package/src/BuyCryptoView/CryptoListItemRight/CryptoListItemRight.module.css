@@ -7,6 +7,6 @@
 .network {
     font-size: 12px;
     line-height: 15px;
-    color: #7C7D82;
+    color: var(--text-light-color);
     margin-top: 2px;
 }

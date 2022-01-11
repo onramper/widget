@@ -7,12 +7,16 @@ theme styles
     --text-dark-color: #292D32;
     --text-light-color: #7C7D82;
     --grey-light-color: #ABADB8;
+    --seperator-color: #eff0f4;
+    --overlay-backdrop-color: rgba(17, 32, 62, 0.32);
+    --icon-backdrop-color: #F0F3FE;
+    /* inputs */
     --input-bg-color: #F7FAFD;
     --input-form-bg-color: #fff;
     --input-stroke-color: #D7D9E0;
     --input-disabled-bg-color: #F8F8F8;
     --input-form-height: 48px;
-    /* default color*/
+    /* spacing */
     --max-width: 1rem;
     --max-height: 1rem;
     --min-width: 1rem;
@@ -23,6 +27,13 @@ theme styles
     --padding-top: 1.75rem;
     --padding-rl: 35px;
     --padding-bottom: 1.125rem;
+    /* header */
+    --header-height: 82px;
+    --header-tabs-height: 63px;
+    /* lists */
+    --list-hover-color: #F7FAFD;
+    --list-active-color: #6C77DC;
+    --list-active-txt-color: #fff;
     font-family: var(--font-family);
     width: var(--width);
     min-width: 250px;
@@ -60,6 +71,12 @@ theme styles
     caret-color: var(--primary-color);
 }
 
+.theme nav {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+}
+
 /*********
 general styles
 *********/
@@ -71,7 +88,7 @@ general styles
     --component-content-height: 1.27rem;
     display: flex;
     flex-direction: column;
-    border-radius: var(--border-radius) var(--border-radius) 0px 0px;
+    border-radius: var(--border-radius);
     background-color: var(--background-color);
     width: 100%;
     height: 100%;
@@ -280,6 +297,10 @@ li {
 .body .footer.mg-t-0,
 .mg-t-0 {
     margin-top: 0;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 
 /* skeleton loading */
