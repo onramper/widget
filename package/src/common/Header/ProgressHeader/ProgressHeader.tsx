@@ -36,7 +36,7 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
 
       <div
         className={classes["progress-bar"]}
-        style={{ width: `${props.percentValue}%` }}
+        style={{ width: `${props.percentage}%` }}
       ></div>
     </nav>
   );

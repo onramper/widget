@@ -1,5 +1,5 @@
 export type ProgressHeaderProps = {
-    percentValue: number;
+    percentage: number;
     title?: string;
     useBackButton?: boolean;
     onMenuClick?: () => {}
