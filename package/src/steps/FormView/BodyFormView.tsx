@@ -47,6 +47,8 @@ type BodyFormViewType = {
     heading?: string
 }
 
+// TODO: add separtor to form view ; add temporary input as a component for testing
+
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     const { handleInputChange, onActionButton, fields = [] } = props
     const { collected, apiInterface } = useContext(APIContext);
@@ -382,14 +384,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((GroupFieldsController.isGroupRequired(field.name, CREDIT_CARD_FIELDS_NAME_GROUP, fields.map((f) => f.name))) && (
                                 !GroupFieldsController.isGroupAdded(CREDIT_CARD_FIELDS_NAME_GROUP)
-                                    ? <CreditCardInput
-                                        fieldsGroup={groupedFieldDataCC}
-                                        ref={inputRefs[i].ref}
-                                        ccNumberValue={collected.ccNumber}
-                                        ccMonthValue={collected.ccMonth}
-                                        ccYearValue={collected.ccYear}
-                                        ccCVVValue={collected.ccCVV}
-                                        key={i} handleInputChange={onChange} errorObj={errorObj} />
+                                    ? <div key={i} className={`${stylesCommon["body-form-child"]}`}>
+                                        <CreditCardInput
+                                            fieldsGroup={groupedFieldDataCC}
+                                            ref={inputRefs[i].ref}
+                                            ccNumberValue={collected.ccNumber}
+                                            ccMonthValue={collected.ccMonth}
+                                            ccYearValue={collected.ccYear}
+                                            ccCVVValue={collected.ccCVV}
+                                            key={i} handleInputChange={onChange} errorObj={errorObj} />
+                                        </div>
                                     : <React.Fragment key={i}></React.Fragment>
                             )) || ((GroupFieldsController.isGroupRequired(field.name, PHONE_NUMBER_FIELDS_NAME_GROUP, fields.map((f) => f.name))) && (
                                 !GroupFieldsController.isGroupAdded(PHONE_NUMBER_FIELDS_NAME_GROUP)

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styles from "./styles.module.css";
 
 import IconMenu from "../../icons/menu.svg";
-import IconLeftArrow from "../../icons/arrow-left.svg";
+import {ReactComponent as IconLeftArrow} from "../../icons/arrow-left.svg";
 import IconClose from "../../icons/close-menu.svg";
 
 import { NavContext } from "../../NavContext";
@@ -34,11 +34,9 @@ const Header: React.FC<HeaderType> = (props) => {
       } ${props.secondaryTitle ? styles["header--secondary"] : ""}`}
     >
       {backButton && (
-        <img
+        <IconLeftArrow 
+          className={`${styles.header__child}`} 
           onClick={() => backScreen()}
-          className={`${styles.header__child} ${styles["header__back-icon"]}`}
-          alt="Back"
-          src={IconLeftArrow}
         />
       )}
       <span
