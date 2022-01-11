@@ -39,13 +39,13 @@
     font-size: 14px;
     line-height: 17px;
     margin-bottom: 2px;
-    color: #292D32;
+    color: var(--text-dark-color);
 }
 
 .list-item-info {
     font-size: 12px;
     line-height: 15px;
-    color: #7C7D82;
+    color: var(--text-light-color);
 }
 
 .list-item-right-child {
@@ -53,12 +53,12 @@
 }
 
 .list li:hover {
-    background: #F7FAFD;
+    background: var(--list-hover-color);
 }
 
 .list li.selected,
 .list li:active {
-    background: #6C77DC;
+    background: var(--list-active-color);
 }
 
 .list li.selected .list-item-name,
@@ -70,5 +70,5 @@
 .list li:active .list-item-right-child,
 .list li:active .list-item-info,
 .list li:active .list-item-right-child .list-text {
-    color: #FFFFFF;
+    color: var(--background-color);
 }

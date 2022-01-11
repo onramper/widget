@@ -2,14 +2,13 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  height: 82px;
+  height: var(--header-height);
   padding-top: 12px;
   padding-left: var(--padding-rl);
   padding-right: var(--padding-rl);
   border-radius: 10px 10px 0 0;
   --h-border-width: 2px;
-  /* TODO: establish if this color may be used a variable (within current story timeframe) */
-  border-bottom: var(--h-border-width) solid #eff0f4;
+  border-bottom: var(--h-border-width) solid var(--seperator-color);
   box-sizing: border-box;
   position: relative;
 }
@@ -29,9 +28,6 @@
 }
 
 .header-text {
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
   text-align: center;
   color: var(--text-dark-color);
   width: 100%;

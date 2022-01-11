@@ -88,7 +88,7 @@
     font-weight: 500;
     font-size: 15px;
     line-height: 18px;
-    color: #292D32;
+    color: var(--text-dark-color);
     padding-bottom: 4px;
 }
 
@@ -122,7 +122,7 @@
     font-size: 10px;
     line-height: 12px;
     text-align: left;
-    color: #7C7D82;
+    color: var(--text-light-color);
 }
 
 .option-right-wrapper {
@@ -185,7 +185,7 @@
     font-size: 14px;
     line-height: 17px;
     text-align: center;
-    color: #0316C1;
+    color: var(--primary-color);
     white-space: nowrap;
 }
 
