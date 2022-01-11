@@ -77,7 +77,7 @@ interface InfoDepositBankAccount {
 }
 
 type NextStep =
-    { useHeading?: boolean, title?: string } & (FileStep
+    { useHeading?: boolean, title?: string, progress?: number } & (FileStep
     | {
         type: 'information';
         url?: string;

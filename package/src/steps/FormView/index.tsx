@@ -112,8 +112,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
 
   return (
     <div className={styles.view}>
-      {/* TODO: percentage value should be dynamic */}
-      <ProgressHeader percentValue={30} title={!useHeading ? title : undefined} useBackButton />
+      <ProgressHeader percentage={nextStep.progress || 0} title={!useHeading ? title : undefined} useBackButton />
       <BodyForm
         fields={nextStepData}
         onActionButton={handleButtonAction}

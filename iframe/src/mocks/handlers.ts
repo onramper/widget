@@ -4,7 +4,10 @@ import { ratesAllParams/* , ratesAllUnavailable */ } from './responses/rates'
 import CCPro from './responses/steps/Cryptocoin.pro'
 import Moonpay from './responses/steps/Moonpay'
 import Wyre from './responses/steps/Wyre'
+import TestGateway from './responses/steps/TestGateway/steps';
 import { BASE_API } from './constants'
+
+const gatewayMap:{[key:string]: object } = { CCPro, Wyre, TestGateway };
 
 let moonpayKYCStepsCount = 0
 
@@ -247,5 +250,16 @@ export const handlers = [
             ctx.status(200),
             ctx.json({ type: "completed" })
         )
-    })
+    }),
+    rest.post(`${BASE_API}/GoTo/*`, async (req, res, ctx) => {
+        const gatewayName = req.url.pathname.split('/')[2];
+        const gateway = gatewayMap[gatewayName] as { getNextStep: (value:string) => any };
+        const stepName = req.url.pathname.split('/')[3];
+        const nextStep = gateway ? gateway.getNextStep(stepName) : { type: 'completed' };
+
+        return res(
+            ctx.status(200),
+            ctx.json(nextStep)
+        )
+    }),
 ]
