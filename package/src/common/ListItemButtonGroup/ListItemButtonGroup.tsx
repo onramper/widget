@@ -16,11 +16,11 @@ const ListItemButtonGroup: React.FC<ListItemButtonGroupProps> = (props) => {
   };
 
   return (
-    <ul className={`${classes["wrapper"]} ${props.className || ""}`}>
+    <div className={`${classes["wrapper"]} ${props.className || ""}`}>
       {props.items.map((item) => (
         <ListItemButton key={item.id} parent={item} onClick={onClick} />
       ))}
-    </ul>
+    </div>
   );
 };
 
