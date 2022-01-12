@@ -37,7 +37,7 @@ const firstStep = {
 
 const nextStep: { [key: string]: any } = {
   firstStep, 
-  completed: { type: "completed", progress: 99, trackingUrl: "/" }
+  completed: { type: "completed", progress: 100, trackingUrl: "/" }
 };
 
 const getNextStep = (currentStep: string) => {
