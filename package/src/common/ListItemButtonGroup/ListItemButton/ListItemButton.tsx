@@ -8,7 +8,7 @@ import commonClasses from "./../../../styles.module.css";
 import { ListItemType } from "../ListItemButtonGroup.models";
 import { ReactComponent as CheckvronUp } from "./../../../icons/chevron-up.svg";
 
-// todo: add transitions
+
 const ListItem: React.FC<ListItemButtonChildProps> = (props) => {
   return (
     <li
