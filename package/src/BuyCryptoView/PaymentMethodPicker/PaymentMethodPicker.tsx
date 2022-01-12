@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ItemType } from "../../ApiContext";
 import { PaymentMethodPickerProps } from "./PaymentMethodPicker.models";
 import styles from "./PaymentMethodPicker.module.css";
@@ -46,7 +46,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     setMaxLengthUpdated(Date.now());
   }
 
-  const calculateDistribution = () => {
+  const calculateDistribution = useCallback(() => {
     if (itemsLengthRef.current === 1) {
       setMaxLength(1);
       return;
@@ -65,7 +65,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
 
     const maxLengthAux = Math.floor(availableWidth / cellWidth);
     setMaxLength(maxLengthAux > 0 ? maxLengthAux : 0);
-  };
+  }, []);
 
   const getRemainingWidth = () => {
     if (!containerRef.current) return -1;
@@ -108,13 +108,13 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     return () => {
       window.removeEventListener("resize", calculateDistribution);
     };
-  }, []);
+  }, [calculateDistribution]);
 
   useEffect(() => {
     setTimeout(() => {
       calculateDistribution();
     }, 0);
-  }, [props.isLoading]);
+  }, [calculateDistribution, props.isLoading]);
 
   useEffect(() => {
     const getListWithSelected = (): ItemType[] => {
@@ -146,7 +146,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
       setItemsAux(newList);
       calculateDistribution();
     }
-  }, [items, maxLength, props.items, props.selectedId]);
+  }, [calculateDistribution, items, maxLength, props.items, props.selectedId]);
 
   if (props.isLoading) return <Skeleton style={style} maxLength={maxLength} ref={containerRef} />;
 
