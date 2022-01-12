@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   ListItemButtonChildProps,
   ListItemButtonProps,
@@ -7,11 +7,11 @@ import classes from "./ListItemButton.module.css";
 import commonClasses from "./../../../styles.module.css";
 import { ListItemType } from "../ListItemButtonGroup.models";
 import { ReactComponent as CheckvronUp } from "./../../../icons/chevron-up.svg";
-
+import { CSSTransition } from "react-transition-group";
 
 const ListItem: React.FC<ListItemButtonChildProps> = (props) => {
   return (
-    <li
+    <div
       onClick={props.onClick}
       className={`${classes["list-item"]} ${
         props.link ? commonClasses["cursor-pointer"] : ""
@@ -21,7 +21,9 @@ const ListItem: React.FC<ListItemButtonChildProps> = (props) => {
         <img src={props.icon} />
       </div>
 
-      <div className={`${classes["list-text"]} ${commonClasses["clickable-txt"]}`}>
+      <div
+        className={`${classes["list-text"]} ${commonClasses["clickable-txt"]}`}
+      >
         {!props.link && <>{props.text}</>}
         {!!props.link && (
           <a
@@ -42,12 +44,14 @@ const ListItem: React.FC<ListItemButtonChildProps> = (props) => {
           }`}
         />
       )}
-    </li>
+    </div>
   );
 };
 
 const ListItemButton: React.FC<ListItemButtonProps> = (props) => {
   const [childrenVisible, setChildrenVisible] = useState(false);
+
+  const childrenWrapperRef = useRef<HTMLDivElement>(null);
 
   const onClickItem = (item: ListItemType) => {
     if (props.parent.items && item.id === props.parent.id) {
@@ -69,21 +73,33 @@ const ListItemButton: React.FC<ListItemButtonProps> = (props) => {
         hasChildren={!!props.parent.items}
       />
 
-      {!!props.parent.items && childrenVisible && (
-        <>
-          {props.parent.items.map((item) => (
-            <ListItem
-              className={classes["child"]}
-              id={item.id}
-              key={item.id}
-              link={item.link}
-              onClick={() => props.onClick(item)}
-              icon={item.icon}
-              text={item.text}
-            />
-          ))}
-        </>
-      )}
+      <CSSTransition
+        in={!!props.parent.items && childrenVisible}
+        nodeRef={childrenWrapperRef}
+        timeout={200}
+        unmountOnExit={true}
+        classNames={{
+          enter: commonClasses["collapse-enter"],
+          enterActive: commonClasses["collapse-enter-active"],
+          exit: commonClasses["collapse-exit"],
+          exitActive: commonClasses["collapse-exit-active"]
+        }}
+      >
+        <div ref={childrenWrapperRef}>
+          {props.parent.items &&
+            props.parent.items.map((item) => (
+              <ListItem
+                className={classes["child"]}
+                id={item.id}
+                key={item.id}
+                link={item.link}
+                onClick={() => props.onClick(item)}
+                icon={item.icon}
+                text={item.text}
+              />
+            ))}
+        </div>
+      </CSSTransition>
     </>
   );
 };

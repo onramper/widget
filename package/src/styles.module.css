@@ -303,6 +303,29 @@ li {
     cursor: pointer;
 }
 
+/* general transition */
+.collapse-enter {
+    max-height: 0;
+    overflow: hidden;
+}
+
+.collapse-enter-active {
+    max-height: 1000px;
+    transition: max-height 200ms;
+    overflow: hidden;
+}
+
+.collapse-exit {
+    max-height: 1000px;
+    overflow: hidden;
+}
+
+.collapse-exit-active {
+    max-height: 0;
+    transition: max-height 200ms;
+    overflow: hidden;
+}
+
 /* skeleton loading */
 .skeleton-wrapper {
     overflow-x: hidden;

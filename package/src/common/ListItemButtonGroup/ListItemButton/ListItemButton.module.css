@@ -9,6 +9,8 @@
     font-size: 18px;
     line-height: 22px; 
     cursor: pointer;
+    background-color: var(--background-color);
+    transition: 200ms background-color;
 }
 
 .list-text {
@@ -42,18 +44,22 @@
     color: var(--text-light-color);
 }
 
+.chevron-toggle {
+    transition: 200ms transform;
+}
+
 .chevron-toggle.down {
     -webkit-transform: scaleY(-1);
     transform: scaleY(-1);
 }
 
 .list-item:hover {
-    background: var(--list-hover-color);
+    background-color: var(--list-hover-color);
 }
 
 .list-item:active {
     color: var(--list-active-txt-color);
-    background: var(--list-active-color);
+    background-color: var(--list-active-color);
 }
 .list-item:active .chevron-toggle path {
     stroke: var(--list-active-txt-color);
