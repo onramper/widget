@@ -15,3 +15,15 @@ const defaultLanguageForUndefinedCountries = 'en';
 export function getDefaultLanguageForCountry(country?: string) {
     return countryLanguagePairings[country ? country.toUpperCase() : ''] ?? defaultLanguageForUndefinedCountries;
 }
+
+export const supportedLanguages: string[] = [...new Set(Object.values(countryLanguagePairings))]
+
+/**
+ * Returns whether the language provided is supported by the i18n implementation.
+ *
+ * @param language The ISO 639-1 language code. E.g. 'ja'. See: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ * @returns A boolean indicating whether or not the widget has i18n support for the language
+ */
+export function isLanguageSupported(language: string) {
+    return supportedLanguages.includes(language);
+}
