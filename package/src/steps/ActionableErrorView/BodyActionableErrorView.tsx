@@ -1,14 +1,12 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
 
 import { NavContext } from "../../NavContext";
 import { APIContext, NextStep } from "../../ApiContext";
-import BuyCryptoView from "../../BuyCryptoView";
 
 import { ReactComponent as ERROR } from "../../icons/error.svg";
 import ChooseGatewayView from "../../ChooseGatewayView";
-import { executeStep } from "../../ApiContext/api";
 import Step from "../Step";
 
 type ActionableErrorViewType = {
@@ -22,7 +20,6 @@ type ActionableErrorViewType = {
 const BodyActionableErrorView: React.FC<ActionableErrorViewType> = (props) => {
 
   const { replaceScreen, nextScreen } = useContext(NavContext);
-  const { collected } = useContext(APIContext);
 
   return (
     <main className={`${stylesCommon.body}`}>
