@@ -50,7 +50,7 @@ type StepDataItems = Array<
         ];
     }
     | {
-        type: 'boolean';
+        type: 'boolean2';
         name: string;
         humanName: string;
         required: boolean;
