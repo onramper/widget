@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 
 interface BodyLoadingType {
   error: string;
+  title?: string;
+  message?: string;
 }
 
 /* const IconSVGStyles = {
@@ -37,11 +39,13 @@ const BodyLoading: React.FC<BodyLoadingType> = (props) => {
         <Loading />
       )}
       <p style={{ fontSize: "1.4375rem", marginBottom: "0rem" }}>
-        {props.error ? props.error : t('loadingScreen.title')}
+        {
+           props.error ? props.error : ( props.title ? props.title : t('loadingScreen.title'))
+        }
       </p>
       {!props.error && (
         <p style={{ color: "#252525", fontSize: "0.9rem" }}>
-          {t('loadingScreen.creatingOrder')}
+          { props.message ? props.message : t('loadingScreen.creatingOrder') }
         </p>
       )}
       <span
