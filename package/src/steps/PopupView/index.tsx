@@ -70,7 +70,7 @@ const PopupView: React.FC<{
     };
     window.addEventListener("message", receiveMessage);
     return () => window.removeEventListener("message", receiveMessage);
-  }, [replaceScreen, nextStep.type, nextStep.url, nextScreen]);
+  }, [replaceScreen, nextStep.nextStep, nextStep.type, nextStep.url, nextScreen]);
 
   return (
     <div className={styles.view}>
