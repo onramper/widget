@@ -286,7 +286,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ` ${t('misc.and')} ` : ', ', actual])
                                     }.</label>
                             ))
-                            || ((field.type === 'boolean2') && (
+                            || ((field.type === 'boolean') && (field.name === 'areFundsFromLegalSources') && (
                                 <label key={i} className={`${stylesCommon.body__child} ${styles.terms}`}>
                                     <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;{
                                     field.humanName
