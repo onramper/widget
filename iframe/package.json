@@ -17,6 +17,7 @@
     "start:prod": "export REACT_APP_STAGE=prod&&npm start",
     "start:demo": "export REACT_APP_STAGE=demo&&npm start",
     "start:demo-win": "set REACT_APP_STAGE=demo&&npm start",
+    "start:l2": "set REACT_APP_STAGE=l2&&npm start",
     "start:local": "set PORT=3001&&npm start",
     "build": "react-scripts build",
     "build:dev": "react-scripts build",

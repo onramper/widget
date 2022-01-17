@@ -3,10 +3,13 @@ import OnramperWidget, { Onramper } from "@onramper/widget";
 
 const com_key = "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00";
 const dev_key = "pk_test_oDsXkHokDdr06zZ0_sxJGw00";
+const l2_key = "pk_test_RJ3mpUzEyukuEvCeCvyByDY0B0zsDD1myjYUhRhu0480";
 
 const defaultApiKey =
   window.self !== window.top
     ? undefined
+    : process.env.REACT_APP_STAGE === "l2"
+    ? l2_key
     : window.location.origin.split(".")[2] === "com"
     ? com_key
     : dev_key;
@@ -32,14 +35,19 @@ const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble", "false");
 const amountInCrypto = getParam("amountInCrypto");
-const gFontPath = getParam("gFontPath", "css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+const gFontPath = getParam(
+  "gFontPath",
+  "css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+);
 const partnerContext = getJSONParam("partnerContext", undefined);
 const redirectURL = getParam("redirectURL", undefined);
 const minAmountEur = Number(getParam("minAmountEur", "0"));
 const supportSell = getParam("supportSell", "true") === "true";
 const supportBuy = getParam("supportBuy", "true") === "true";
 const isAmountEditable = getParam("isAmountEditable", "true") === "true";
-const recommendedCryptoCurrencies = getArrayParam("recommendedCryptoCurrencies");
+const recommendedCryptoCurrencies = getArrayParam(
+  "recommendedCryptoCurrencies"
+);
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
