@@ -2,7 +2,7 @@ name: Build & deploy
 
 on:
   push:
-    branches: [ master, dev, ice-master, ice-dev, demo ]
+    branches: [ master, dev, ice-master, ice-dev, demo, ice-demo ]
   pull_request:
 
 jobs:
@@ -47,10 +47,10 @@ jobs:
         then
           echo "::set-output name=stage::dev"
           echo "::set-output name=domain::iceberg.onramper.dev"
-        elif [ $REF == 'refs/heads/ice-dev' ]
+        elif [ $REF == 'refs/heads/ice-demo' ]
         then
           echo "::set-output name=stage::demo"
-          echo "::set-output name=domain::demoiceberg.onramper.dev"
+          echo "::set-output name=domain::icebergdemo.onramper.dev"
         elif [ $REF == 'refs/heads/demo' ]
         then
           echo "::set-output name=stage::demo"
