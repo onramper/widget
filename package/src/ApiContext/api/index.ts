@@ -56,12 +56,26 @@ interface GatewaysParams {
     [key: string]: any
 }
 
+/**
+ * No cache flags are added to the headers to make sure the i18n language changes are processed immediatly. If the
+ * `/gateways` or `/rate` response is cached from a previous fetch, then the cached response will be returned even
+ * though the 'content-language' header might have changed. This means the user ends up with the cached result which
+ * hasn't accounted for a possible language change.
+ * @returns The default headers with 'no cache' properties added.
+ */
+function createNoCacheHeaders() {
+    const noCacheHeaders = new Headers(headers);
+    noCacheHeaders.append('pragma', 'no-cache');
+    noCacheHeaders.append('Cache-Control', 'no-cache');
+    return noCacheHeaders;
+}
+
 const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
     const gatewaysUrl = `${BASE_API}/gateways?${urlParams}`
     logRequest(gatewaysUrl)
     const gatewaysRes = await fetch(gatewaysUrl, {
-        headers,
+        headers: createNoCacheHeaders(),
         credentials: process.env.STAGE === 'local' ? 'omit' : 'include'
     })
     const gateways: GatewaysResponse = await processResponse(gatewaysRes)
@@ -83,7 +97,7 @@ const rate = async (currency: string, crypto: string, amount: number, paymentMet
     const ratesUrl = `${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`
     logRequest(ratesUrl)
     const ratesRes = await fetch(ratesUrl, {
-        headers,
+        headers: createNoCacheHeaders(),
         signal,
         credentials: process.env.STAGE === 'local' ? 'omit' : 'include'
     })
@@ -339,5 +353,6 @@ export {
     NextStepError,
     sentryHub,
     ApiError,
+    getAcceptLanguageHeader,
     updateAcceptLanguageHeader,
 }
