@@ -88,19 +88,6 @@ function updateLanguageIfRequired(language: string) {
     API.updateAcceptLanguageHeader();
 }
 
-// Remnants of expanded i18n implementation
-// /**
-//  * Given the country will check if the language of the widget should be changed based on its current language and the
-//  * default language for the provided country.
-//  *
-//  * @param country The Alpha-2 ISO 3166 country code. E.g. 'JP'. See:
-//  * https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
-//  */
-// function updateLanguageByCountryIfRequired(country?: string) {
-//   const widgetsLanguage = getDefaultLanguageForCountry(country);
-//   updateLanguageIfRequired(widgetsLanguage);
-// }
-
 const APIProvider: React.FC<APIProviderType> = (props) => {
   const { t } = useTranslation();
 
@@ -249,11 +236,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       if (explicitLanguage)
         updateLanguageIfRequired(explicitLanguage);
-      // Remnants of expanded i18n implementation
-      // else if (actualCountry)
-      //   /* If undefined this shouldn't be triggered as that would reset the language back to the default. We don't want
-      //    * that because then the language change triggered below after the gateway call will be reverted. */
-      //   updateLanguageByCountryIfRequired(actualCountry);
 
       // REQUEST AVAILABLE GATEWAYS
       let rawResponseGateways: GatewaysResponse;
@@ -281,13 +263,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         actualCountry ||
         responseGateways.localization.country || // This is the CloudFront country from the backend.
         DEFAULT_COUNTRY;
-
-      // Remnants of expanded i18n implementation
-      // /* If the country retrieved from the backend response is different then the `actualCountry` then the language
-      //  * should be adjusted. One instance when this occurs is when no country query parameter is provided and our
-      //  * backend detects the user's location by the CloudFront country and sends it back to the widget. */
-      // if (!explicitLanguage && actualCountry !== widgetsCountry)
-      //   updateLanguageByCountryIfRequired(widgetsCountry);
 
       handleInputChange("selectedCountry", widgetsCountry);
       if (

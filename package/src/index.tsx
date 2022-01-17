@@ -41,9 +41,6 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   useEffect(() => {
     if (props.language && isLanguageSupported(props.language))
       i18n.changeLanguage(props.language);
-    // Remnants of expanded i18n implementation
-    // else if (props.country)
-    //   i18n.changeLanguage(getDefaultLanguageForCountry(props.country));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
