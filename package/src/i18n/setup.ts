@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+// Remnants of expanded i18n implementation
+// import LanguageDetector from 'i18next-browser-languagedetector';
 import resources from './translations';
 
 /* i18n was set up using the following guide:
@@ -12,7 +13,8 @@ import resources from './translations';
  * Add `?lng=LANGUAGE` to URL to set language. See `translations.ts` for the available languages.
  */
 i18n
-  .use(LanguageDetector)
+  // Remnants of expanded i18n implementation
+  // .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     debug: false,
