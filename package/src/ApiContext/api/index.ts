@@ -9,22 +9,39 @@ import type { CryptoAddrType } from '../initialState'
 
 import { BASE_API } from './constants'
 import i18n from "../../i18n/setup"
-import { t } from "i18next"
+import i18next, { t } from "i18next"
+import { defaultLanguage } from "../utils/languages"
 
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers();
+// The language that will be appended to every request as a query parameter. This will indicate the language we want the
+// content of the backend to be in.
+let currentAcceptLanguage = i18next.language;
+// The 'key' for the language query parameter.
+const languageQueryParameter = 'acceptLanguage';
 
-const getAcceptLanguageHeader = () => {
-    return headers.get('Accept-Language');
+const getAcceptLanguageParameter = () => {
+    return currentAcceptLanguage;
 }
 
-// Accept-Language header is set here for i18n. The backend will use this to set the language of the responses.
-const updateAcceptLanguageHeader = () => {
-    const currentLanguage = i18n.language;
-    if (headers.get('Accept-Language') !== currentLanguage)
-        headers.set('Accept-Language', currentLanguage);
+// Language parameter is set here for i18n. The backend will use this to set the language of the responses.
+const updateAcceptLanguageParameter = () => {
+    const currentI18nLanguage = i18n.language;
+    if (currentAcceptLanguage !== currentI18nLanguage)
+        currentAcceptLanguage = currentI18nLanguage;
 }
-updateAcceptLanguageHeader();
+updateAcceptLanguageParameter();
+
+/**
+ * Wrapper to add the language parameter to the params object. If the current language equals the default one, then the
+ * language param isn't added.
+ */
+const addLanguageParamToParams = (params: {[key: string]: any}) => {
+    // Don't add the param if we are using the default language.
+    if (params && currentAcceptLanguage !== defaultLanguage)
+        params[languageQueryParameter] = currentAcceptLanguage;
+    return params;
+}
 
 // See https://github.com/getsentry/sentry-javascript/issues/1656#issuecomment-430295616
 const sentryClient = new BrowserClient({
@@ -56,26 +73,12 @@ interface GatewaysParams {
     [key: string]: any
 }
 
-/**
- * No cache flags are added to the headers to make sure the i18n language changes are processed immediatly. If the
- * `/gateways` or `/rate` response is cached from a previous fetch, then the cached response will be returned even
- * though the 'content-language' header might have changed. This means the user ends up with the cached result which
- * hasn't accounted for a possible language change.
- * @returns The default headers with 'no cache' properties added.
- */
-function createNoCacheHeaders() {
-    const noCacheHeaders = new Headers(headers);
-    noCacheHeaders.append('pragma', 'no-cache');
-    noCacheHeaders.append('Cache-Control', 'no-cache');
-    return noCacheHeaders;
-}
-
 const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
-    const urlParams = createUrlParamsFromObject(params)
+    const urlParams = createUrlParamsFromObject(addLanguageParamToParams(params))
     const gatewaysUrl = `${BASE_API}/gateways?${urlParams}`
     logRequest(gatewaysUrl)
     const gatewaysRes = await fetch(gatewaysUrl, {
-        headers: createNoCacheHeaders(),
+        headers,
         credentials: process.env.STAGE === 'local' ? 'omit' : 'include'
     })
     const gateways: GatewaysResponse = await processResponse(gatewaysRes)
@@ -93,11 +96,11 @@ interface RateParams {
 }
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, signal?: AbortSignal): Promise<RateResponse> => {
-    const urlParams = createUrlParamsFromObject(params ?? {})
+    const urlParams = createUrlParamsFromObject(params ? addLanguageParamToParams(params) : {})
     const ratesUrl = `${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`
     logRequest(ratesUrl)
     const ratesRes = await fetch(ratesUrl, {
-        headers: createNoCacheHeaders(),
+        headers,
         signal,
         credentials: process.env.STAGE === 'local' ? 'omit' : 'include'
     })
@@ -148,7 +151,7 @@ const executeStep = async (step: NextStep, data: { [key: string]: any } | File, 
     else
         body = JSON.stringify({ ...data })
 
-    const urlParams = createUrlParamsFromObject(params ?? {})
+    const urlParams = createUrlParamsFromObject(params ? addLanguageParamToParams(params) : {})
 
     logRequest(step.url)
     const nextStepType = step.url.split('/')[5]
@@ -330,7 +333,7 @@ interface SellParams {
 }
 
 const sell = async (crypto: string, amount: number, paymentMethod: string, params?: SellParams): Promise<GatewayRate> => {
-    const urlParams = createUrlParamsFromObject(params ?? {})
+    const urlParams = createUrlParamsFromObject(params ? addLanguageParamToParams(params) : {})
     const ratesUrl = `${BASE_API}/sell/${crypto}/${paymentMethod}/${amount}?${urlParams}`
     logRequest(ratesUrl)
     const ratesRes = await fetch(ratesUrl, {
@@ -353,6 +356,6 @@ export {
     NextStepError,
     sentryHub,
     ApiError,
-    getAcceptLanguageHeader,
-    updateAcceptLanguageHeader,
+    getAcceptLanguageParameter,
+    updateAcceptLanguageParameter,
 }
