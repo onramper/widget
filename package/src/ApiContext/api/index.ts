@@ -14,6 +14,10 @@ import { t } from "i18next"
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers();
 
+const getAcceptLanguageHeader = () => {
+    return headers.get('Accept-Language');
+}
+
 // Accept-Language header is set here for i18n. The backend will use this to set the language of the responses.
 const updateAcceptLanguageHeader = () => {
     const currentLanguage = i18n.language;

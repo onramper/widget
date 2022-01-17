@@ -36,8 +36,8 @@ import { NextStepError } from "./api";
 import type { Filters } from "./api";
 import phoneCodes from "./utils/phoneCodes";
 import { useTranslation } from "react-i18next";
+import { isLanguageSupported, supportedLanguages } from "./utils/languages";
 import i18n from "../i18n/setup";
-import { getDefaultLanguageForCountry } from "./utils/countryLanguagePairings";
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
@@ -62,6 +62,7 @@ interface APIProviderType {
   defaultPaymentMethod?: string;
   filters?: Filters;
   country?: string;
+  language?: string;
   isAddressEditable?: boolean;
   themeColor: string;
   displayChatBubble?: boolean;
@@ -74,6 +75,31 @@ interface APIProviderType {
   isAmountEditable?: boolean;
   recommendedCryptoCurrencies?: string[]
 }
+
+/**
+ * Provided a language will update the i18n and headers if required.
+ *
+ * @param language The ISO 639-1 language code. E.g. 'ja'. See: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ */
+function updateLanguageIfRequired(language: string) {
+  if (i18n.language !== language)
+    i18n.changeLanguage(language);
+  if (API.getAcceptLanguageHeader() !== language)
+    API.updateAcceptLanguageHeader();
+}
+
+// Remnants of expanded i18n implementation
+// /**
+//  * Given the country will check if the language of the widget should be changed based on its current language and the
+//  * default language for the provided country.
+//  *
+//  * @param country The Alpha-2 ISO 3166 country code. E.g. 'JP'. See:
+//  * https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
+//  */
+// function updateLanguageByCountryIfRequired(country?: string) {
+//   const widgetsLanguage = getDefaultLanguageForCountry(country);
+//   updateLanguageIfRequired(widgetsLanguage);
+// }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
   const { t } = useTranslation();
@@ -204,31 +230,30 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     });
   }, [generateInitialCollectedState]);
 
-  /**
-   * Given the country will check if the language of the widget should be changed based on its current language and the
-   * default language for the provided country.
-   *
-   * @param country The Alpha-2 ISO 3166 country code. E.g. 'JP'. See:
-   * https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
-   */
-  function updateLanguageIfRequired(country?: string) {
-    const widgetsLanguage = getDefaultLanguageForCountry(country);
-    if (i18n.language !== widgetsLanguage) {
-      i18n.changeLanguage(widgetsLanguage);
-      API.updateAcceptLanguageHeader();
-    }
-  }
-
   /* *********** */
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       // Source: The queryParameter '?country=' or from an argument to the init function, is undefined most of the time.
       const actualCountry = props.country || country;
 
-      /* If undefined this shouldn't be triggered as that would reset the language back to the default. We don't want
-       * that because then the language change triggered below after the gateway call will be reverted. */
-      if (actualCountry)
-        updateLanguageIfRequired(actualCountry);
+      // The language provided explicitly via the '?language=' query parameter.
+      let explicitLanguage;
+      if (props.language) {
+        if (isLanguageSupported(props.language))
+          explicitLanguage = props.language;
+        else
+          console.error(`The language set by the query parameter '?language=${props.language}' is not supported. ` +
+            `The following languages are currently supported by Onramper: [${supportedLanguages}]. ` +
+            `For more information, see: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes.`);
+      }
+
+      if (explicitLanguage)
+        updateLanguageIfRequired(explicitLanguage);
+      // Remnants of expanded i18n implementation
+      // else if (actualCountry)
+      //   /* If undefined this shouldn't be triggered as that would reset the language back to the default. We don't want
+      //    * that because then the language change triggered below after the gateway call will be reverted. */
+      //   updateLanguageByCountryIfRequired(actualCountry);
 
       // REQUEST AVAILABLE GATEWAYS
       let rawResponseGateways: GatewaysResponse;
@@ -257,12 +282,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         responseGateways.localization.country || // This is the CloudFront country from the backend.
         DEFAULT_COUNTRY;
 
-      /* If the country retrieved from the backend response is different then the `actualCountry` then the language
-       * should be adjusted. One instance when this occurs is when no country query parameter is provided and our
-       * backend detects the user's location by the CloudFront country and sends it back to the widget. */
-      if (actualCountry !== widgetsCountry) {
-        updateLanguageIfRequired(widgetsCountry);
-      }
+      // Remnants of expanded i18n implementation
+      // /* If the country retrieved from the backend response is different then the `actualCountry` then the language
+      //  * should be adjusted. One instance when this occurs is when no country query parameter is provided and our
+      //  * backend detects the user's location by the CloudFront country and sends it back to the widget. */
+      // if (!explicitLanguage && actualCountry !== widgetsCountry)
+      //   updateLanguageByCountryIfRequired(widgetsCountry);
 
       handleInputChange("selectedCountry", widgetsCountry);
       if (
@@ -360,6 +385,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       processErrors,
       clearErrors,
       props.country,
+      props.language,
       props.displayChatBubble,
       props.recommendedCryptoCurrencies,
       t

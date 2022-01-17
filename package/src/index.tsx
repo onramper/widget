@@ -14,6 +14,7 @@ import "./isolateinheritance.css";
 import "./normalize.min.css";
 import './i18n/setup';
 import { useTranslation } from "react-i18next";
+import { isLanguageSupported } from "./ApiContext/utils/languages";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -36,9 +37,13 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     "--primary-color": color,
     "--font-family": fontFamily,
   } as React.CSSProperties;
-  
+
   useEffect(() => {
-    props.country && i18n.changeLanguage(props.country);
+    if (props.language && isLanguageSupported(props.language))
+      i18n.changeLanguage(props.language);
+    // Remnants of expanded i18n implementation
+    // else if (props.country)
+    //   i18n.changeLanguage(getDefaultLanguageForCountry(props.country));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -69,6 +74,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             defaultPaymentMethod={props.defaultPaymentMethod}
             filters={props.filters}
             country={props.country}
+            language={props.language}
             isAddressEditable={props.isAddressEditable}
             themeColor={color.slice(1)}
             displayChatBubble={props.displayChatBubble}
