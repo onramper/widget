@@ -84,8 +84,8 @@ interface APIProviderType {
 function updateLanguageIfRequired(language: string) {
   if (i18n.language !== language)
     i18n.changeLanguage(language);
-  if (API.getAcceptLanguageHeader() !== language)
-    API.updateAcceptLanguageHeader();
+  if (API.getAcceptLanguageParameter() !== language)
+    API.updateAcceptLanguageParameter();
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {

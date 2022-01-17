@@ -3,7 +3,7 @@ const countryLanguagePairings: {[key: string]: string} = {
     KR: 'ko',
     // Undefined countries will use the default language defined below.
 };
-const defaultLanguageForUndefinedCountries = 'en';
+export const defaultLanguage = 'en';
 
 /**
  * Will return the code for the default language spoken in the provided country.
@@ -13,9 +13,10 @@ const defaultLanguageForUndefinedCountries = 'en';
  * @returns The ISO 639-1 language code. E.g. 'ja'. See: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
  */
 export function getDefaultLanguageForCountry(country?: string) {
-    return countryLanguagePairings[country ? country.toUpperCase() : ''] ?? defaultLanguageForUndefinedCountries;
+    return countryLanguagePairings[country ? country.toUpperCase() : ''] ?? defaultLanguage;
 }
 
+// A list of the languages supported by Onramper currently (in the ISO 639-1 language code format).
 export const supportedLanguages: string[] = [...new Set(Object.values(countryLanguagePairings))]
 
 /**
