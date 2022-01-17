@@ -24,7 +24,7 @@ jobs:
        github.ref == 'refs/heads/dev' ||
        github.ref == 'refs/heads/ice-master' ||
        github.ref == 'refs/heads/ice-dev' ||
-       github.ref == 'refs/heads/demo')
+       github.ref == 'refs/heads/demo' ||
        github.ref == 'refs/heads/ice-demo')
     runs-on: ubuntu-latest
     steps:
