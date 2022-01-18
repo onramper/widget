@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
@@ -13,8 +13,6 @@ import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 import './i18n/setup';
-import { useTranslation } from "react-i18next";
-import { isLanguageSupported } from "./ApiContext/utils/languages";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -25,7 +23,6 @@ type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   const [flagRestart, setFlagRestart] = React.useState(0);
-  const { i18n } = useTranslation();
 
   const {
     color = "#266678",
@@ -37,12 +34,6 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     "--primary-color": color,
     "--font-family": fontFamily,
   } as React.CSSProperties;
-
-  useEffect(() => {
-    if (props.language && isLanguageSupported(props.language))
-      i18n.changeLanguage(props.language);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div
