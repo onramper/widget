@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { InputButtonProps } from "./InputButton.models";
 import classes from "./InputButton.module.css";
 import HintIcon from "../../HintIcon";
@@ -8,6 +8,16 @@ import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 const InputButton = React.forwardRef<HTMLDivElement, InputButtonProps>((props, ref) => {
     const { selectedOption, label, icon, className, iconPosition, error, network } = props;
+
+    const generateIconClassName = useCallback(
+      () =>
+        `${classes["input-wrapper-child"]} ${classes["input-icon"]} ${
+          iconPosition === "end" ? classes["input-wrapper-child-old-first"] : ""
+        }`,
+      [iconPosition]
+    );
+    const iconClassName = generateIconClassName();
+
     return (
       <div ref={ref} className={`${classes.wrapper} ${className}`}>
         {label && (
@@ -32,11 +42,11 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonProps>((props, r
             <img
               alt="Icon"
               src={icon}
-              className={`${classes["input-wrapper-child"]} ${classes["input-icon"]} ${
-                iconPosition === "end" ? classes["input-wrapper-child-old-first"] : ""
-              }`}
+              className={iconClassName}
             />
           )}
+          {props.renderIconSvg && (props.renderIconSvg({className: iconClassName}))}
+
           <span
             style={{ order: iconPosition === "end" ? -1 : "unset" }}
             className={`${classes["input-wrapper-child"]} ${classes["option-text"]} ${

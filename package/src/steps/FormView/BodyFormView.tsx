@@ -28,6 +28,7 @@ import Footer from '../../common/Footer'
 import Heading from '../../common/Heading/Heading'
 import InputDelegator from '../../common/Input/InputDelegator'
 import OverlayPicker from '../../common/OverlayPicker/OverlayPicker'
+import { CountryIcon } from '@onramper/flag-icons'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -326,7 +327,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                 items={Object.entries(countryNames).map(([code, name]) => ({
                                                     id: code,
                                                     name,
-                                                    icon: icons[code],
+                                                    iconSvg: <CountryIcon name={code} />,
                                                     info: code
                                                 }))}
                                                 searchable
@@ -413,7 +414,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                             id: code,
                                                             name: infoObj.phoneCode,
                                                             info: infoObj.name,
-                                                            searchWords: infoObj.searchWords
+                                                            searchWords: infoObj.searchWords,
+                                                            iconSvg: <CountryIcon name={code} />,
                                                         }))}
                                                         searchable
                                                     />
@@ -421,6 +423,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             className={`${stylesCommon['row-fields__child']} ${stylesCommon['shrink-0']}`} label="Country code"
                                             selectedOption={'+' + collected.phoneCountryCode ?? phoneCodes[(collected.country ?? 'gb').toUpperCase()].phoneCode}
                                             error={errorObj?.phoneCountryCode}
+                                            renderIconSvg={(props) => <CountryIcon {...props} name={(collected.country || 'GB').toUpperCase()} />}
                                         />
                                         <InputDelegator
                                             error={errorObj?.phoneNumber}

@@ -11,6 +11,7 @@ import { ItemCategory } from "./../../../ApiContext/initialState";
 import OverlayPicker from "../../../common/OverlayPicker/OverlayPicker";
 import { ViewListItemType } from "../../../common/ViewList/ViewList.models";
 import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
+import { CurrencyIcon } from "@onramper/flag-icons";
 
 const Skeleton: React.FC = () => {
   const handleJsx = (
@@ -92,7 +93,7 @@ const CurrencySwitcher: React.FC = () => {
           name="currency"
           title="Select fiat currency"
           indexSelected={data.availableCurrencies.findIndex(m => m.id === collected.selectedCurrency?.id)}
-          items={data.availableCurrencies}
+          items={data.availableCurrencies.map(i => ({...i, iconSvg: <CurrencyIcon name={i.id} />, icon: undefined}))}
           onItemClick={handleItemClick}
           searchable
         />);

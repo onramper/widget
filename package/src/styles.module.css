@@ -307,6 +307,10 @@ li {
     cursor: pointer;
 }
 
+.shrink-0 {
+    flex-shrink: 0;
+}
+
 /* general transition */
 .collapse-enter {
     max-height: 0;
