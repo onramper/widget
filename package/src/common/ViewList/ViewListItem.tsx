@@ -14,6 +14,7 @@ const ListItem: React.FC<ViewListItemProps> = (props: ViewListItemProps) => {
           src={props.icon}
         />
       )}
+      {props.iconSvg && <> {props.iconSvg} </>}
       
       <div className={styles["list-item-child"]}>
         <div className={styles["list-item-name"]}> {props.name} </div>

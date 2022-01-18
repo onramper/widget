@@ -36,6 +36,7 @@
     "prepublishOnly": "npm run build:prod"
   },
   "dependencies": {
+    "@onramper/flag-icons": "file:../../icons/flag-icons",
     "@onramper/moonpay-adapter": "^1.6.15",
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
