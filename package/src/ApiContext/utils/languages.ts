@@ -17,7 +17,7 @@ export function getDefaultLanguageForCountry(country?: string) {
 }
 
 // A list of the languages supported by Onramper currently (in the ISO 639-1 language code format).
-export const supportedLanguages: string[] = [...new Set(Object.values(countryLanguagePairings))]
+export const supportedLanguages: string[] = [...new Set(Object.values(countryLanguagePairings)).add(defaultLanguage)]
 
 /**
  * Returns whether the language provided is supported by the i18n implementation.
