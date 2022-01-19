@@ -131,11 +131,20 @@ const allFormFields = [
     type: "select",
     name: "name for select",
     humanName: "Select's label",
-    hint: "Select's hint (is required on purpose)",
+    hint: "Select's hint",
     options: [
       { humanName: "Test option #1", value: "#1" },
       { humanName: "Test option #2", value: "#2" },
       { humanName: "Test option #3", value: "#3" },
+    ]
+  },
+  {
+    type: "select",
+    name: "name for select (1 item)",
+    humanName: "Select's label (1 item)",
+    hint: "Select's hint",
+    options: [
+      { humanName: "Test option #1", value: "#1" }
     ]
   },
   {
@@ -153,6 +162,15 @@ const allFormFields = [
     ]
   },
   {
+    name: "country",
+    humanName: "Select country (1 item)",
+    type: "select",
+    placeholder: "A placeholder",
+    options: [
+      { humanName: "Algeria", value: "DZ" }
+    ]
+  },
+  {
     type: "string",
     name: "state",
     humanName: "Select state",
@@ -165,6 +183,14 @@ const allFormFields = [
     options: [
         "Identity card",
         "Passport"
+    ],
+  },
+  {
+    type: "choice",
+    humanName: "Type of identity document (choice - 1 item)",
+    name: "documentType",
+    options: [
+        "Identity card"
     ],
   },
   ...creditCardFormFieldsGroup,
