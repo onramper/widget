@@ -115,6 +115,10 @@ components
     flex-grow: 1;
 }
 
+.body > div,
+.body > footer {
+    flex-shrink: 0;
+}
 
 .body--full_screen:after {
     content: none;
@@ -251,6 +255,10 @@ components
     align-items: center;
 }
 
+.shrink-0 {
+    flex-shrink: 0;
+}
+
 .btn-default {
     background: none;
 	color: inherit;
@@ -260,6 +268,7 @@ components
 	cursor: pointer;
 	outline: inherit;
 }
+
 .btn-default:disabled {
     cursor: default;
     opacity: 0.5;
