@@ -114,11 +114,7 @@ const CurrencySwitcher: React.FC = () => {
   );
 
   useEffect(() => {
-    setPair(
-      collected.amountInCrypto
-        ? [collected.selectedCrypto, collected.selectedCurrency]
-        : [collected.selectedCurrency, collected.selectedCrypto]
-    );
+    setPair([collected.selectedCurrency, collected.selectedCrypto]);
   }, [collected.amountInCrypto, collected.selectedCurrency, collected.selectedCrypto]);
 
   if (pair.length === 0 || pair.some((i) => !i)) {
