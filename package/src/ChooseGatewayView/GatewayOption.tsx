@@ -81,9 +81,10 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
     const getSyleColorUpDownDiff = useCallback(() => {
         return {
             "--diff-up-color": collected.amountInCrypto ? '#D25656' : '#3AD66F',
-            "--diff-down-color": collected.amountInCrypto ? '#3AD66F' : '#D25656'
+            "--diff-down-color": collected.amountInCrypto ? '#3AD66F' : '#D25656',
+            visibility: isPercentageVisible() ? "visible" : "hidden"
         } as React.CSSProperties
-    }, [collected.amountInCrypto]);
+    }, [collected.amountInCrypto, isPercentageVisible]);
 
     useEffect(() => {
         updateBadgeList();
@@ -128,9 +129,17 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                 {!props.available && <div className={`${styles["tag-text"]}`} >{props.error?.message || 'Try again later'}</div>}
             </div>
 
-            <div className={styles["option-right-wrapper"]}>
+            {props.available && <div className={styles["option-right-wrapper"]}>
                 <div className={styles["option-right-sub"]}>
-                    <CSSTransition nodeRef={percentTransRef} {...transitionPropsCollapse} in={isPercentageVisible()}>
+                    <div className={`${styles["amount-wrapper"]} ${isSelected ? styles["selected"] : ""}`} >
+                        <div ref={amountLabelTransRef} className={`${styles["tag-text"]} ${commonStyles["txt-no-wrap"]} ${styles["amount-label"]}`} > 
+                            {collected.amountInCrypto ? 'You pay:' : 'You receive:'}
+                        </div>
+                        
+                        <div className={styles['amount']}> 
+                            {getReceivedAmount()}
+                        </div>
+
                         <div 
                             ref={percentTransRef}
                             style={getSyleColorUpDownDiff()} 
@@ -139,25 +148,9 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
                             {`${percentage}%`}
                             <ArrowUpSvg className={styles["percentage-arrow"]} />
                         </div>
-                    </CSSTransition>
-
-                    <div className={styles["amount-wrapper"]} >
-                        <CSSTransition nodeRef={amountLabelTransRef} {...transitionPropsCollapse} in={isSelected}>
-                            <div ref={amountLabelTransRef}>
-                                <div className={`${styles["tag-text"]} ${commonStyles["txt-no-wrap"]} ${styles["amount-label"]}`} > 
-                                    {collected.amountInCrypto ? 'You pay:' : 'You receive:'}
-                                </div>
-                            </div>
-                        </CSSTransition>
-
-                        {props.available && (
-                            <div className={styles['amount']}> 
-                                {getReceivedAmount()}
-                            </div>
-                        )}
                     </div>
                 </div>
-            </div>
+            </div>}
         </li>
     )
 }
