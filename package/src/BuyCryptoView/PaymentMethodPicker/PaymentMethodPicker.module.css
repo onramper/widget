@@ -3,10 +3,11 @@
     flex-wrap: nowrap;
     margin-bottom: 1.75rem;
     min-height: 57px;
+    --item-width: 124px;
 }
 
 .option-wrapper {
-    width: 124px;
+    min-width: var(--item-width);
     height: 57px;
     padding: 0.5rem;
     padding-top: 0.563rem;
@@ -26,6 +27,11 @@
     box-shadow: 0px 0.25rem 1rem rgba(0, 0, 0, 0.08);
 
     margin-right: 1.25rem;
+}
+
+.wrapper[num-children="2"] .option-wrapper,
+.wrapper[num-children="3"] .option-wrapper {
+    flex: 1;
 }
 
 .option-logo-wrapper {
@@ -76,7 +82,7 @@
 
 @media (max-width: 375px) { 
     .option-wrapper {
-        width: 89.33px;
+        --item-width: 89.33px;
         height: 57px;
         margin-right: 16px;
 
