@@ -21,6 +21,7 @@
     border: 1px solid transparent;
     --diff-up-color: #3AD66F;
     --diff-down-color: #D25656;
+    --amount-label-height: 16px;
 }
 .option-wrapper, 
 .option-wrapper * {
@@ -135,19 +136,23 @@
 .option-right-sub {
     display: flex;
     justify-content: flex-end;
-    align-items: flex-end;
-    flex-wrap: wrap-reverse;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+    height: 40px;
 }
 
 .percentage-wrapper {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     font-style: normal;
     font-weight: 600;
     font-size: 12px;
     line-height: 17px;
     text-align: center;
     color: var(--diff-up-color);
+    height: 27px;
 }
 
 .percentage-wrapper .percentage-arrow { 
@@ -171,10 +176,17 @@
 }
 
 .amount-wrapper {
+    transform: translateY(calc(-1 * var(--amount-label-height)));
+    transition: transform 200ms;
     padding-left: 16px;
 }
 
+.amount-wrapper.selected {
+    transform: translateY(0);
+}
+
 .amount-label {
+    height: var(--amount-label-height);
     padding-bottom: 4px;
     text-align: right;
 }
@@ -187,12 +199,6 @@
     text-align: center;
     color: var(--primary-color);
     white-space: nowrap;
-}
-
-@media (max-width: 420px) {
-    .option-badges-wrapper {
-        flex-direction: column;
-    }
 }
 
 @media (max-width: 420px) {
@@ -214,7 +220,6 @@
     }
 
     .option-right-sub {    
-        flex-wrap: nowrap;
         flex-direction: column-reverse;
     }
 
@@ -271,22 +276,26 @@
 /******************transitions***********************/
 .collapse-enter {
     max-height: 0rem;
+    overflow: hidden;
     opacity: 0;
 }
 
 .collapse-enter-active {
     max-height: 1000px;
+    overflow: hidden;
     opacity: 1;
-    transition: max-height 200ms linear, opacity 300ms cubic-bezier(.99,.01,.4,.94);
+    transition: max-height 200ms, opacity 200ms cubic-bezier(.99,.01,.4,.94);
 }
 
 .collapse-exit {
     max-height: 1000px;
+    overflow: hidden;
     opacity: 1;
 }
 
 .collapse-exit-active {
     max-height: 0rem;
+    overflow: hidden;
     opacity: 0;
-    transition: max-height 200ms linear, opacity 100ms linear;
+    transition: max-height 200ms, opacity 200ms;
 }
