@@ -248,7 +248,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         isRequired={field.required !== false}
                                         ref={inputRefs[i].ref}
                                         onHintClick={() => nextScreen(
-                                            <HelpView buttonText={"Got it👌"} dismissAfterClick>
+                                            <HelpView buttonText={"Got it!"} dismissAfterClick>
                                                 <Help2FACreditCard />
                                             </HelpView>
                                         )}
