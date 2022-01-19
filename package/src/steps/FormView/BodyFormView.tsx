@@ -242,7 +242,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                 />
                             ))
                             || ((field.name === 'verifyCreditCard') && (
-                                <React.Fragment key={i}>
+                                <div className={stylesCommon["body-form-child"]} key={i}>
                                     <InputDelegator
                                         value={collected[field.name] ?? ''}
                                         isRequired={field.required !== false}
@@ -260,11 +260,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         className={stylesCommon["body-form-child"]}
                                         type={getInputType(field)}
                                     />
-                                    <span key={998} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
-                                </React.Fragment>
+                                    <div key={998} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</div>
+                                </div>
                             ))
                             || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
-                                <React.Fragment key={i}>
+                                <div className={stylesCommon["body-form-child"]} key={i}>
                                     <InputDelegator
                                         isRequired={field.required !== false}
                                         ref={inputRefs[i].ref}
@@ -278,8 +278,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         type={getInputType(field)}
                                         value={verifyCode}
                                     />
-                                    <span key={999} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
-                                </React.Fragment>
+                                    <div key={999} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</div>
+                                </div>
                             ))
                             || ((field.type === 'boolean' && field.name === 'termsOfUse') && (
                                 <label key={i} className={`${stylesCommon["body-form-child"]} ${styles.terms}`}>
@@ -417,7 +417,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                         searchable
                                                     />
                                                 )}
-                                            className={stylesCommon['row-fields__child']} label="Phone number"
+                                            className={`${stylesCommon['row-fields__child']} ${stylesCommon['shrink-0']}`} label="Country code"
                                             selectedOption={'+' + collected.phoneCountryCode ?? phoneCodes[(collected.country ?? 'gb').toUpperCase()].phoneCode}
                                             error={errorObj?.phoneCountryCode}
                                         />
@@ -432,6 +432,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             ${stylesCommon.grow}`}
                                             placeholder={groupedFieldDataPHONE['phoneNumber']?.placeholder}
                                             hint={groupedFieldDataPHONE['phoneNumber']?.hint}
+                                            label="Phone number"
                                         />
                                     </div>
                                     : <React.Fragment key={i}></React.Fragment>
