@@ -106,7 +106,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
     return (
       <InputDelegator
         hintButton
-        onHintClick={ProviderManager.providerName ? getWalletAddrs : () => {}}
+        onHintClick={ProviderManager.providerName ? getWalletAddrs : undefined}
         /* symbol='Import address' */
         clickableIcon
         icon={
