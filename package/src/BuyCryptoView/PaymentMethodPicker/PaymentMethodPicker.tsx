@@ -30,6 +30,17 @@ const Skeleton = React.forwardRef<
   );
 });
 
+const getOptionNodeSpacing = (optionNode: Element) => {
+  const itemCss = getComputedStyle(optionNode);
+  const marginRight = Number(itemCss.marginRight.replace("px", ""));
+  const width = window.innerWidth < 320 ? optionNode.getBoundingClientRect().width : Number(itemCss.minWidth.replace("px", ""));
+
+  return {
+    marginRight,
+    width
+  };
+}
+
 const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   props: PaymentMethodPickerProps
 ) => {
@@ -57,8 +68,10 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     const optionNode = containerRef.current.querySelector(`[itemProp="option"]`);
     if (!optionNode) return;
 
-    const marginRight = Number(getComputedStyle(optionNode).marginRight.replace("px", ""));
-    const width = optionNode.getBoundingClientRect().width;
+    const {
+      width,
+      marginRight
+    } = getOptionNodeSpacing(optionNode);
 
     const availableWidth = containerRef.current.clientWidth - width;
     const cellWidth = width + marginRight;
@@ -73,11 +86,14 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     const optionNodes = containerRef.current.querySelectorAll(`[itemProp="option"]`);
     if(optionNodes.length === 0) return -1;
 
-    const marginRight = Number(getComputedStyle(optionNodes[0]).marginRight.replace("px", ""));
+    const {
+      width: itemMinWidth,
+      marginRight
+    } = getOptionNodeSpacing(optionNodes[0]);
 
     let width = containerRef.current.clientWidth;
     for(let i = 0; i < optionNodes.length; i++) {
-      width -= optionNodes[i].getBoundingClientRect().width;
+      width -= itemMinWidth;
 
       if(i < optionNodes.length -1) {
         width -= marginRight;
@@ -150,11 +166,13 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
 
   if (props.isLoading) return <Skeleton style={style} maxLength={maxLength} ref={containerRef} />;
 
+  const numChildren = maxLength + (maxLength < props.items.length ? 1 : 0);
+
   return (
     <>
       <div className={styles.title}>Payment method</div>
 
-      <ul ref={containerRef} className={styles.wrapper} style={style}>
+      <ul ref={containerRef} className={styles.wrapper} style={style} num-children={numChildren}>
         {items.slice(0, maxLength).map((item: ItemType, i: number) => (
           <li
             itemProp="option"
