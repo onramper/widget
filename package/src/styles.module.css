@@ -25,7 +25,7 @@ theme styles
     --width: 100%;
     --heigth: 100%;
     --background-color: white;
-    --padding-top: 1.75rem;
+    --padding-top: 1.25rem;
     --padding-rl: 35px;
     --padding-bottom: 1.125rem;
     /* header */
@@ -106,12 +106,10 @@ components
 .body {
     --body-space-childs: 1.25rem;
     --form-field-space: 28px;
-    /* var(--padding-bottom); */
     display: flex;
     flex-direction: column;
-    padding: var(--body-space-childs) var(--padding-rl);
+    padding: var(--padding-top) var(--padding-rl);
     padding-bottom: 0px;
-    /*margin bottom set in body:after*/
     overflow: auto;
     flex-grow: 1;
 }
