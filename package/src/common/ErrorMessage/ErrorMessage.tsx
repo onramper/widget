@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import styles from "./ErrorMessage.module.css";
 import { CSSTransition } from "react-transition-group";
-import errorIcon from "./../../icons/exclamation-triangle.svg";
+import {ReactComponent as ErrorIcon} from "./../../icons/exclamation-triangle.svg";
 
 const ErrorMessage: React.FC<{ text?: string; className?: string }> = ({ text, className }) => {
   const transitionRef = useRef(null);
@@ -21,7 +21,7 @@ const ErrorMessage: React.FC<{ text?: string; className?: string }> = ({ text, c
     >
       {text ? (
         <div ref={transitionRef} className={`${styles["wrapper"]} ${className || ""}`} >
-          <img className={styles["err-icon"]} src={errorIcon} alt="error-icon"/>
+          <ErrorIcon className={styles["err-icon"]} />
           <span className={`${styles["text-error"]}`}>{text}</span>
         </div>
       ) : (

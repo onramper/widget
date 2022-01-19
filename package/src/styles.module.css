@@ -4,6 +4,7 @@ theme styles
 .theme {
     --primary-color: #0316C1;
     --error-color: #D25656;
+    --success-color: #3AD66F;
     --text-dark-color: #292D32;
     --text-light-color: #7C7D82;
     --grey-light-color: #ABADB8;
