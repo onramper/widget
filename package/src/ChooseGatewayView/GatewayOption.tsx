@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react'
 import styles from './styles.module.css'
 import commonStyles from './../styles.module.css';
-import { CSSTransition } from 'react-transition-group';
 import { APIContext } from '../ApiContext'
-import { transitionPropsCollapse, badgeItemMap } from './constants';
+import { badgeItemMap } from './constants';
 import { GateWayOptionProps, BadgeType } from "./ChooseGatewayView.models";
-import ArrowUpSvg from '../common/icons/ArrowUpSvg';
+import { ReactComponent as ArrowUpSvg } from '../icons/arrow-up.svg';
 import Checkbox from '../common/Checkbox/Checkbox';
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
