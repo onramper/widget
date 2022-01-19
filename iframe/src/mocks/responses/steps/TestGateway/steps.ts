@@ -11,12 +11,6 @@ const firstStep = {
   data: [
     {
       type: "string",
-      name: "cryptocurrencyAddress",
-      humanName: "Cryptocurrency wallet address",
-      placeholder: "e.g 3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5",
-    },
-    {
-      type: "string",
       name: "fullname",
       humanName: "Full name",
       placeholder: "e.g JohnDoe",
