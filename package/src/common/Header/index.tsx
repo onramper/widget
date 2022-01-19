@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import styles from "./styles.module.css";
+import classes from "./styles.module.css";
+import commonClasses from "../../styles.module.css";
 
 import IconMenu from "../../icons/menu.svg";
 import {ReactComponent as IconLeftArrow} from "../../icons/arrow-left.svg";
@@ -29,24 +30,24 @@ const Header: React.FC<HeaderType> = (props) => {
 
   return (
     <nav
-      className={`${styles.header} ${
-        props.noSeparator ? styles["header--no-separator"] : ""
-      } ${props.secondaryTitle ? styles["header--secondary"] : ""}`}
+      className={`${classes.header} ${
+        props.noSeparator ? classes["header--no-separator"] : ""
+      } ${props.secondaryTitle ? classes["header--secondary"] : ""}`}
     >
       {backButton && (
         <IconLeftArrow 
-          className={`${styles.header__child}`} 
+          className={`${classes.header__child} ${commonClasses["cursor-pointer"]}`} 
           onClick={() => backScreen()}
         />
       )}
       <span
-        className={`${styles.header__child} ${styles["header__child--title"]}`}
+        className={`${classes.header__child} ${classes["header__child--title"]}`}
       >
         <h1>{title}</h1>
         {props.secondaryTitle && (
           <h1
             onClick={props.onSecondaryTitleClick}
-            className={`${styles["header-title--secondary"]}`}
+            className={`${classes["header-title--secondary"]}`}
           >
             {props.secondaryTitle}
           </h1>
@@ -56,7 +57,7 @@ const Header: React.FC<HeaderType> = (props) => {
         <img
           onClick={onMenuClick}
           alt="menu"
-          className={`${styles.header__child} ${styles["header__burger-icon"]}`}
+          className={`${classes.header__child} ${classes["header__burger-icon"]}`}
           src={title === "Menu" ? IconClose : IconMenu}
         />
       )}
