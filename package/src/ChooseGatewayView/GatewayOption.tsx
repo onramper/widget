@@ -79,8 +79,8 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
 
     const getSyleColorUpDownDiff = useCallback(() => {
         return {
-            "--diff-up-color": collected.amountInCrypto ? '#D25656' : '#3AD66F',
-            "--diff-down-color": collected.amountInCrypto ? '#3AD66F' : '#D25656',
+            "--diff-up-color": collected.amountInCrypto ? 'var(--error-color)' : 'var(--success-color)',
+            "--diff-down-color": collected.amountInCrypto ? 'var(--success-color)' : 'var(--error-color)',
             visibility: isPercentageVisible() ? "visible" : "hidden"
         } as React.CSSProperties
     }, [collected.amountInCrypto, isPercentageVisible]);

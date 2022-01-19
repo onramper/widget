@@ -19,8 +19,8 @@
     justify-content: flex-end;
     border-radius: 14px;
     border: 1px solid transparent;
-    --diff-up-color: #3AD66F;
-    --diff-down-color: #D25656;
+    --diff-up-color: var(--success-color);
+    --diff-down-color: var(--error-color);
     --amount-label-height: 16px;
 }
 .option-wrapper, 
