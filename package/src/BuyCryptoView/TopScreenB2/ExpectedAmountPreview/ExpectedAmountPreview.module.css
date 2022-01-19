@@ -15,8 +15,16 @@
 
 .crypto-switcher {
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .crypto-switcher:hover {
   text-decoration: underline;
+}
+
+.swap-icon {
+  width: 12px;
+  height: 12px;
+  margin-left: 5px;
 }

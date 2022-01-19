@@ -1,8 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import styles from "./ExpectedAmountPreview.module.css";
-import commonStyles from "../../../styles.module.css";
+import classes from "./ExpectedAmountPreview.module.css";
+import commonClasses from "../../../styles.module.css";
 import { APIContext } from "../../../ApiContext";
 import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
+import { ReactComponent as ArrowSwapIcon } from "../../../icons/swap-arrows.svg";
 
 const ExpectedAmountPreview: React.FC = () => {
   const { data, inputInterface, collected } = useContext(APIContext);
@@ -62,14 +63,14 @@ const ExpectedAmountPreview: React.FC = () => {
 
   if (errorMessage) {
     return (
-      <div className={styles["error-text"]}>
+      <div className={classes["error-text"]}>
         <ErrorMessage text={errorMessage} />
       </div>
     );
   }
 
   return (
-    <div className={styles["text-status"]}>
+    <div className={classes["text-status"]}>
       {(() => {
         if (collected.isCalculatingAmount) {
           return "Fetching best price...";
@@ -78,10 +79,15 @@ const ExpectedAmountPreview: React.FC = () => {
         const qtyText = `${expectedCrypto.toFixed(collected.amountInCrypto ? 2 : 8)} ${unitName}`;
         const qtyDescription = collected.amountInCrypto ? `Amount you pay: ` : `You get `;
         return (
-          <span className={`${styles["crypto-switcher"]} ${commonStyles["clickable-txt"]}`} onClick={() => swapCategories()}>
-            {qtyDescription}
-            <span className={commonStyles["bold"]}>{qtyText}</span>
-          </span>
+          <div
+            className={`${classes["crypto-switcher"]} ${commonClasses["clickable-txt"]}`}
+            onClick={() => swapCategories()}
+          >
+            <span>
+              {qtyDescription} <strong> {qtyText} </strong>
+            </span>
+            <ArrowSwapIcon className={classes["swap-icon"]} />
+          </div>
         );
       })()}
     </div>
