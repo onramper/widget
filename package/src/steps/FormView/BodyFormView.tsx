@@ -450,6 +450,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                     type={getInputType(field)}
                                     placeholder={field.placeholder}
                                     disabled={field.name === 'cryptocurrencyAddressTag' && !collected.isAddressEditable}
+                                    icon={field.icon}
+                                    iconPosition={field.iconPosition}
                                 />
                             ))
                         )

@@ -1,5 +1,11 @@
+type StepFormBaseField = { 
+    placeholder?: string;
+    icon?: string;
+    iconPosition?: "start" | "end";
+}; 
+
 type StepDataItems = Array<
-    { placeholder?: string } & (| {
+    StepFormBaseField & (| {
         type: "select";
         name: string;
         humanName: string;
