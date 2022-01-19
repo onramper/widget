@@ -1,5 +1,5 @@
 .body {
-    padding: 0 calc(var(--padding-rl) - 10px) var(--body-space-childs) var(--padding-rl);
+    padding: var(--body-space-childs) calc(var(--padding-rl) - 10px) var(--body-space-childs) var(--padding-rl);
     min-width: 320px;
     box-sizing: border-box;
     overflow-y: scroll;

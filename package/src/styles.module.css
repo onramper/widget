@@ -245,10 +245,6 @@ components
     margin-bottom: 1rem;
 }
 
-.bold {
-    font-weight: 700;
-}
-
 .flex-all {
     display: flex;
     justify-content: center;
