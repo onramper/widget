@@ -40,7 +40,7 @@ const BodyLoading: React.FC<BodyLoadingType> = (props) => {
       )}
       <p style={{ fontSize: "1.4375rem", marginBottom: "0rem" }}>
         {
-           props.error ? props.error : ( props.title ? props.title : t('loadingScreen.title'))
+           props.error ? props.error : (props.title ? props.title : t('loadingScreen.title'))
         }
       </p>
       {!props.error && (
