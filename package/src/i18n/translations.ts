@@ -71,6 +71,7 @@ const resources = {
       formView: {
         defaultTitle: "Purchase form",
         emailTitle: "Input your email",
+        loginRegisterTitle: "Login/Register",
         phoneNumberTitle: "Input phone number",
         verifyEmailCodeTitle: "Verify your email",
         enterVerificationCodesTitle: "Enter verification codes",
