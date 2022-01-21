@@ -12,6 +12,7 @@ type StepDataItems = Array<
         options: {
             value: string;
             humanName: string;
+            icon?: string;
         }[];
         hint?: string;
         required?: boolean;

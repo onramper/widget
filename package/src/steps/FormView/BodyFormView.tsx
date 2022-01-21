@@ -302,7 +302,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                 }}
                                                 items={field.options.map((option) => ({
                                                     id: option.value,
-                                                    name: option.humanName
+                                                    name: option.humanName,
+                                                    icon: option.icon
                                                 }))}
                                             />
                                         )}
