@@ -52,11 +52,11 @@ jobs:
         then
           echo "::set-output name=stage::demo"
           echo "::set-output name=domain::demo.onramper.dev"
-	    elif [ $REF == 'refs/heads/coinify-integration-fixed' ]
+        elif [ $REF == 'refs/heads/coinify-integration-fixed' ]
         then
-	      echo "::set-output name=stage::dev"
+          echo "::set-output name=stage::dev"
           echo "::set-output name=domain::widget.onramper.dev"
-	    else
+        else
           exit 1
         fi
       env:
