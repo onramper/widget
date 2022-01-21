@@ -23,8 +23,7 @@ const firstStep = {
     {
       type: "integer",
       name: "phoneNumber",
-      humanName: "Phone number",
-      placeholder: "654 56 84 56",
+      humanName: "Phone number"
     },
   ],
 };
