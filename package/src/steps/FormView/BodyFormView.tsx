@@ -430,7 +430,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             onChange={onChange}
                                             className={`${stylesCommon['row-fields__child']}
                                             ${stylesCommon.grow}`}
-                                            placeholder={groupedFieldDataPHONE['phoneNumber']?.placeholder}
+                                            placeholder={groupedFieldDataPHONE['phoneNumber']?.placeholder || "654 56 84 56"}
                                             hint={groupedFieldDataPHONE['phoneNumber']?.hint}
                                             label="Phone number"
                                         />
