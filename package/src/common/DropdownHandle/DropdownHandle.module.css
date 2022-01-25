@@ -41,3 +41,7 @@
 .handle-wrapper.disabled {
     cursor: default;
 }
+
+.handle-wrapper.disabled .icon-down {
+    opacity: 0.5;
+}
