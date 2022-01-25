@@ -4,10 +4,12 @@ import {
   getExplorerTransactionLink,
   Mainnet,
   Rinkeby,
+  DAppProvider,
 } from '@usedapp/core';
 import { Interface, Fragment, JsonFragment } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import { ERC20 } from '../abis';
+import React, { ReactNode } from 'react';
 
 export const CHAIN_ID = parseInt(process.env.REACT_APP_CHAIN_ID as string);
 export const NODE_URL = process.env.REACT_APP_RPC_ENDPOINT as string;
@@ -96,3 +98,9 @@ export const getConfig = (): Config => {
     },
   };
 };
+
+// TODO: find correct type for children
+export function Layer2Provider(children: any) {
+  const config = getConfig();
+  return <DAppProvider config={config}>{children}</DAppProvider>;
+}

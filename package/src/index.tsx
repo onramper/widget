@@ -1,18 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import BuyCryptoView from "./BuyCryptoView";
-import ErrorView from "./common/ErrorView";
-import styles from "./styles.module.css";
-import { NavProvider, NavContainer } from "./NavContext";
-import { APIProvider } from "./ApiContext";
-import type { APIProviderType } from "./ApiContext";
-import "./polyfills/composedpath.polyfill";
-import { ErrorBoundary } from "@sentry/react";
-import { on, EVENTS } from "./Onramper";
-import "./isolateinheritance.css";
-import "./normalize.min.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import BuyCryptoView from './BuyCryptoView';
+import ErrorView from './common/ErrorView';
+import styles from './styles.module.css';
+import { NavProvider, NavContainer } from './NavContext';
+import { APIProvider } from './ApiContext';
+import type { APIProviderType } from './ApiContext';
+import './polyfills/composedpath.polyfill';
+import { ErrorBoundary } from '@sentry/react';
+import { on, EVENTS } from './Onramper';
+import './isolateinheritance.css';
+import './normalize.min.css';
+import { Layer2Provider } from '../layer2/config/config';
 
-type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
+type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & {
   color?: string;
   fontFamily?: string;
   className?: string;
@@ -23,14 +24,14 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   const [flagRestart, setFlagRestart] = React.useState(0);
 
   const {
-    color = "#0316C1",
+    color = '#0316C1',
     fontFamily = props.fontFamily,
-    className = "",
+    className = '',
   } = props;
 
   const style = {
-    "--primary-color": color,
-    "--font-family": fontFamily,
+    '--primary-color': color,
+    '--font-family': fontFamily,
   } as React.CSSProperties;
 
   return (
@@ -49,34 +50,36 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           setFlagRestart((old) => ++old);
         }}
       >
-        <NavProvider>
-          <APIProvider
-            API_KEY={props.API_KEY}
-            defaultAmount={props.defaultAmount}
-            defaultAddrs={props.defaultAddrs}
-            defaultCrypto={props.defaultCrypto}
-            defaultFiat={props.defaultFiat}
-            defaultFiatSoft={props.defaultFiatSoft}
-            defaultPaymentMethod={props.defaultPaymentMethod}
-            filters={props.filters}
-            country={props.country}
-            isAddressEditable={props.isAddressEditable}
-            themeColor={color.slice(1)}
-            displayChatBubble={props.displayChatBubble}
-            amountInCrypto={props.amountInCrypto}
-            partnerContext={props.partnerContext}
-            redirectURL={props.redirectURL}
-            minAmountEur={props.minAmountEur}
-            supportSell={props.supportSell}
-            supportBuy={props.supportBuy}
-            isAmountEditable={props.isAmountEditable}
-            recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
-          >
-            <div style={{ flexGrow: 1, display: "flex" }}>
-              <NavContainer home={<BuyCryptoView />} />
-            </div>
-          </APIProvider>
-        </NavProvider>
+        <Layer2Provider>
+          <NavProvider>
+            <APIProvider
+              API_KEY={props.API_KEY}
+              defaultAmount={props.defaultAmount}
+              defaultAddrs={props.defaultAddrs}
+              defaultCrypto={props.defaultCrypto}
+              defaultFiat={props.defaultFiat}
+              defaultFiatSoft={props.defaultFiatSoft}
+              defaultPaymentMethod={props.defaultPaymentMethod}
+              filters={props.filters}
+              country={props.country}
+              isAddressEditable={props.isAddressEditable}
+              themeColor={color.slice(1)}
+              displayChatBubble={props.displayChatBubble}
+              amountInCrypto={props.amountInCrypto}
+              partnerContext={props.partnerContext}
+              redirectURL={props.redirectURL}
+              minAmountEur={props.minAmountEur}
+              supportSell={props.supportSell}
+              supportBuy={props.supportBuy}
+              isAmountEditable={props.isAmountEditable}
+              recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
+            >
+              <div style={{ flexGrow: 1, display: 'flex' }}>
+                <NavContainer home={<BuyCryptoView />} />
+              </div>
+            </APIProvider>
+          </NavProvider>
+        </Layer2Provider>
       </ErrorBoundary>
     </div>
   );
