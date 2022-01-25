@@ -93,7 +93,7 @@ const CurrencySwitcher: React.FC = () => {
           name="currency"
           title="Select fiat currency"
           indexSelected={data.availableCurrencies.findIndex(m => m.id === collected.selectedCurrency?.id)}
-          items={data.availableCurrencies.map(i => ({...i, iconSvg: <CurrencyIcon name={i.id} />, icon: undefined}))}
+          items={data.availableCurrencies.map(i => ({...i, iconSvg: <CurrencyIcon name={i.id} /> }))}
           onItemClick={handleItemClick}
           searchable
         />);
