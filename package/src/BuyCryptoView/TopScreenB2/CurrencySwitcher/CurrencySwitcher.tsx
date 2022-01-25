@@ -38,7 +38,7 @@ const CurrencySwitcher: React.FC = () => {
   const { collected, data } = useContext(APIContext);
   const { nextScreen, backScreen } = useContext(NavContext);
 
-  const [pair, setPair] = useState<(ItemType | undefined)[]>([]);
+  const [pair, setPair] = useState<({item?: ItemType, hasOptions: boolean } | undefined)[]>([]);
 
   const handleItemClick = useCallback((name: string, index: number, item: ItemType) => {
     if (name === "crypto") data.handleCryptoChange(item);
@@ -114,8 +114,24 @@ const CurrencySwitcher: React.FC = () => {
   );
 
   useEffect(() => {
-    setPair([collected.selectedCurrency, collected.selectedCrypto]);
-  }, [collected.amountInCrypto, collected.selectedCurrency, collected.selectedCrypto]);
+    setPair([
+      {
+        item: collected.selectedCurrency,
+        hasOptions: data.availableCurrencies.length > 1,
+      },
+      {
+        item: collected.selectedCrypto,
+        hasOptions: getSortedCryptoListItem().length > 1,
+      },
+    ]);
+  }, [
+    collected.amountInCrypto,
+    collected.selectedCurrency,
+    collected.selectedCrypto,
+    data.availableCurrencies.length,
+    data.availableCryptos.length,
+    getSortedCryptoListItem
+  ]);
 
   if (pair.length === 0 || pair.some((i) => !i)) {
     return <Skeleton />;
@@ -124,10 +140,11 @@ const CurrencySwitcher: React.FC = () => {
   return (
     <div className={styles["switcher-wrapper"]}>
       <DropdownHandle
-        icon={pair[0]?.icon}
-        value={pair[0]?.name || ""}
-        iconClassname={getIconClassName(pair[0])}
-        onClick={() => handleDropdown(pair[0])}
+        icon={pair[0]?.item?.icon}
+        value={pair[0]?.item?.name || ""}
+        iconClassname={getIconClassName(pair[0]?.item)}
+        onClick={() => handleDropdown(pair[0]?.item)}
+        disabled={!pair[0]?.hasOptions}
       />
 
       <div className={commonStyles["flex-all"]} >
@@ -135,10 +152,11 @@ const CurrencySwitcher: React.FC = () => {
       </div>
 
       <DropdownHandle
-        icon={pair[1]?.icon}
-        value={pair[1]?.name || ""}
-        iconClassname={getIconClassName(pair[1])}
-        onClick={() => handleDropdown(pair[1])}
+        icon={pair[1]?.item?.icon}
+        value={pair[1]?.item?.name || ""}
+        iconClassname={getIconClassName(pair[1]?.item)}
+        onClick={() => handleDropdown(pair[1]?.item)}
+        disabled={!pair[1]?.hasOptions}
       />
     </div>
   );

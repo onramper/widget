@@ -30,11 +30,8 @@ const InputDropdown: React.FC<InputDropdownProps> = (props: InputDropdownProps) 
           <input disabled={props.disabled} onFocus={props.onFocus || (() => {})} onChange={props.onChange} type="text" id={id} value={props.value} className={styles["input"]} />
         </div>
         <DropdownHandle
+          {...props.handleProps}
           className={styles["dropdown-handle"]}
-          icon={props.handleProps.icon}
-          iconClassname={props.handleProps.iconClassname}
-          value={props.handleProps.value}
-          onClick={props.handleProps.onClick}
         />
       </div>
 
