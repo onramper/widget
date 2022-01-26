@@ -1,9 +1,18 @@
 import { BASE_API } from "../../../constants";
 import possibleFormFieldsStep from "./possibleFomStepFields";
 
+const paymentReviewStep = {
+  type: "paymentReview",
+  progress: 30,
+  useHeading: true,
+  title: "Review Payment",
+  description: "Please verify the details below carefully",
+  url: `${BASE_API}/GoTo/TestGateway/personalInfoStep/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+}
+
 const personalInfoStep = {
   type: "form",
-  progress: 30,
+  progress: 40,
   url: `${BASE_API}/GoTo/TestGateway/emailVerificationStep/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
   title: "Your details",
   useHeading: true,
@@ -48,7 +57,8 @@ const orderComplete = {
 };
 
 const nextStep: { [key: string]: any } = {
-  firstStep: personalInfoStep,
+  firstStep: paymentReviewStep,
+  personalInfoStep,
   emailVerificationStep,
   possibleFormFieldsStep,
   orderComplete
