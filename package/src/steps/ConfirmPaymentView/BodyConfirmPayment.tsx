@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import stylesCommon from '../../styles.module.css'
 import styles from './styles.module.css'
 
@@ -12,6 +12,8 @@ import { CSSTransition } from 'react-transition-group';
 
 import ButtonAction from '../../common/ButtonAction'
 import Footer from '../../common/Footer'
+import Heading from '../../common/Heading/Heading'
+import InfoBox from '../../common/InfoBox'
 
 
 type BodyConfirmPaymentViewType = {
@@ -19,7 +21,6 @@ type BodyConfirmPaymentViewType = {
     payAmount: number
     fees?: number
     currency?: string
-
     cryptoAmount: number
     cryptoDenom: string
     cryptoAddr?: string
@@ -27,18 +28,31 @@ type BodyConfirmPaymentViewType = {
     paymentMethod?: string
     cryptoIcon?: string
     txTime?: { seconds: number, message: string }
-    isFilled?: boolean
     conversionRate?: number
+    heading?: string;
+    subHeading?: string;
+    errorMessage?: string;
+    isLoading?: boolean;
 }
 
 const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => {
     const [isExpanded, setIsExpanded] = useState(false)
-    const transitionRef = React.useRef(null)
-    const { onActionButton } = props
+    const transitionRef = React.useRef(null);
+    
+    const [errorControlMsg, setErrorControlMsg] = useState<string>();
+    useEffect(() => {
+        setErrorControlMsg(props.errorMessage);
+    }, [props.errorMessage]);
 
     return (
         <main className={stylesCommon.body}>
+            <InfoBox type='error' in={!!errorControlMsg} className={`${stylesCommon.body__child}`} canBeDismissed onDismissClick={() => setErrorControlMsg(undefined)}>
+                {errorControlMsg}
+            </InfoBox>
+
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow} ${styles.container}`}>
+                {(props.heading || props.subHeading) && <Heading text={props.heading} textSubHeading={props.subHeading} /> }
+
                 <ul className={`${styles.wrapper}`}>
                     <Item type='main' icon={<IconPay className={styles.icon} />} title='Pay' content={`${props.payAmount} ${props.currency}`} onClick={props.conversionRate || props.fees ? () => setIsExpanded(actual => !actual) : undefined} isExpanded={isExpanded} />
                     <CSSTransition
@@ -83,7 +97,11 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 {/* <label className={styles['terms']}><input type="checkbox" name='agreementCheckbox' onChange={(e) => inputInterface.handleInputChange(e.currentTarget.name, e.currentTarget.checked)} /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label> */}
             </div>
             <div className={`${stylesCommon.body__child}`}>
-                <ButtonAction onClick={onActionButton} text='Continue' disabled={!props.isFilled} />
+                <ButtonAction
+                    onClick={props.onActionButton}
+                    text={props.isLoading ? "Loading..." : "Continue"}
+                    disabled={!!props.isLoading}
+                />
                 <Footer />  
             </div>
         </main >
