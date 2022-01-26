@@ -83,8 +83,21 @@ interface InfoDepositBankAccount {
     accountAddress: string;
 }
 
+type NextStepBase = { 
+    useHeading?: boolean;
+    title?: string;
+    progress?: number;
+    humanName?: string;
+    description?: string;
+}
+
+type PaymentReviewStep = {
+    type: "paymentReview",
+    url?: string;
+}
+
 type NextStep =
-    { useHeading?: boolean, title?: string, progress?: number } & (FileStep
+    NextStepBase & (FileStep
     | {
         type: 'information';
         url?: string;
@@ -94,19 +107,16 @@ type NextStep =
         type: 'form';
         url: string;
         data: StepDataItems;
-        humanName?: string; // TODO: force all forms to have humanName
         hint?: string;
     } | {
         type: 'iframe';
         url: string;
         fullscreen: boolean;
         neededFeatures?: string;
-        humanName?: string; // TODO: force all forms to have humanName
     } | {
         type: 'redirect';
         url: string;
         hint?: string;
-        humanName?: string; // TODO: force all forms to have humanName
     } | {
         type: 'wait';
         url: string;
@@ -124,7 +134,7 @@ type NextStep =
         depositBankAccount: InfoDepositBankAccount;
         reference: string;
         hint: string;
-    });
+    } | PaymentReviewStep);
 
 interface FieldError {
     field: string

@@ -28,6 +28,8 @@ theme styles
     --padding-top: 1.25rem;
     --padding-rl: 35px;
     --padding-bottom: 1.125rem;
+    --pt-heading: 12px;
+    --pb-heading: 35px;
     /* header */
     --header-height: 82px;
     --header-tabs-height: 63px;
@@ -269,7 +271,8 @@ components
     opacity: 0.5;
 }
 
-h1.remove-default {
+h1.remove-default,
+h2.remove-default {
     margin: 0;
     padding: 0;
     font-size: 1em;
