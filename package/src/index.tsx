@@ -11,6 +11,7 @@ import { ErrorBoundary } from '@sentry/react';
 import { on, EVENTS } from './Onramper';
 import './isolateinheritance.css';
 import './normalize.min.css';
+import { Layer2Provider } from 'layer2';
 
 type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & {
   color?: string;
@@ -49,34 +50,36 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           setFlagRestart((old) => ++old);
         }}
       >
-        <NavProvider>
-          <APIProvider
-            API_KEY={props.API_KEY}
-            defaultAmount={props.defaultAmount}
-            defaultAddrs={props.defaultAddrs}
-            defaultCrypto={props.defaultCrypto}
-            defaultFiat={props.defaultFiat}
-            defaultFiatSoft={props.defaultFiatSoft}
-            defaultPaymentMethod={props.defaultPaymentMethod}
-            filters={props.filters}
-            country={props.country}
-            isAddressEditable={props.isAddressEditable}
-            themeColor={color.slice(1)}
-            displayChatBubble={props.displayChatBubble}
-            amountInCrypto={props.amountInCrypto}
-            partnerContext={props.partnerContext}
-            redirectURL={props.redirectURL}
-            minAmountEur={props.minAmountEur}
-            supportSell={props.supportSell}
-            supportBuy={props.supportBuy}
-            isAmountEditable={props.isAmountEditable}
-            recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
-          >
-            <div style={{ flexGrow: 1, display: 'flex' }}>
-              <NavContainer home={<BuyCryptoView />} />
-            </div>
-          </APIProvider>
-        </NavProvider>
+        <Layer2Provider>
+          <NavProvider>
+            <APIProvider
+              API_KEY={props.API_KEY}
+              defaultAmount={props.defaultAmount}
+              defaultAddrs={props.defaultAddrs}
+              defaultCrypto={props.defaultCrypto}
+              defaultFiat={props.defaultFiat}
+              defaultFiatSoft={props.defaultFiatSoft}
+              defaultPaymentMethod={props.defaultPaymentMethod}
+              filters={props.filters}
+              country={props.country}
+              isAddressEditable={props.isAddressEditable}
+              themeColor={color.slice(1)}
+              displayChatBubble={props.displayChatBubble}
+              amountInCrypto={props.amountInCrypto}
+              partnerContext={props.partnerContext}
+              redirectURL={props.redirectURL}
+              minAmountEur={props.minAmountEur}
+              supportSell={props.supportSell}
+              supportBuy={props.supportBuy}
+              isAmountEditable={props.isAmountEditable}
+              recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
+            >
+              <div style={{ flexGrow: 1, display: 'flex' }}>
+                <NavContainer home={<BuyCryptoView />} />
+              </div>
+            </APIProvider>
+          </NavProvider>
+        </Layer2Provider>
       </ErrorBoundary>
     </div>
   );
