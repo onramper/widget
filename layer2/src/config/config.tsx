@@ -9,6 +9,7 @@ import {
 import { Interface, Fragment, JsonFragment } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import { ERC20 } from '../abis';
+import React from 'react';
 
 // TODO: create class, take in vars from constructor
 
@@ -102,7 +103,7 @@ export const getConfig = (): Config => {
 };
 
 // TODO: find correct type for children
-export function Layer2Provider() {
+export function Layer2Provider({ children }: any) {
   const config = getConfig();
-  return (children: any) => DAppProvider({ config, children });
+  return <DAppProvider config={config}>{children}</DAppProvider>;
 }
