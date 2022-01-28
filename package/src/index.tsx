@@ -11,7 +11,7 @@ import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
-import Web3 from "../layer2.config";
+import layer2 from "../layer2.config";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -50,7 +50,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           setFlagRestart((old) => ++old);
         }}
       >
-        <Web3.Provider>
+        <layer2.Provider>
           <NavProvider>
             <APIProvider
               API_KEY={props.API_KEY}
@@ -79,7 +79,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               </div>
             </APIProvider>
           </NavProvider>
-        </Web3.Provider>
+        </layer2.Provider>
       </ErrorBoundary>
     </div>
   );
