@@ -1,6 +1,5 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { AbstractConnector } from '@web3-react/abstract-connector';
-import { CHAIN_ID } from './config';
 
 export interface Wallet {
   name: string;
@@ -10,14 +9,17 @@ export interface Wallet {
   //   cleanUp: null | (() => void);
 }
 
-export const injectedConnector = new InjectedConnector({
-  supportedChainIds: [CHAIN_ID],
-});
-
-export const wallets: Wallet[] = [
-  {
-    name: 'metamask',
-    connector: injectedConnector,
-    // cleanUp: null,
-  },
-];
+export const initializeWallets = (
+  chainID: number
+  //nodeURL?: string
+): Wallet[] => {
+  return [
+    {
+      name: 'metamask',
+      connector: new InjectedConnector({
+        supportedChainIds: [chainID],
+      }),
+      // cleanUp: null,
+    },
+  ];
+};

@@ -11,10 +11,14 @@ import { ErrorBoundary } from '@sentry/react';
 import { on, EVENTS } from './Onramper';
 import './isolateinheritance.css';
 import './normalize.min.css';
-import { Layer2Provider, interfaces, getConfig } from 'layer2';
+import { Layer2 } from 'layer2';
 
-console.log(interfaces);
-console.log(getConfig());
+const layer2 = new Layer2(
+  4,
+  'https://eth-rinkeby.alchemyapi.io/v2/f6UW9EauWWDD4JL4bHcsY76Cf5wiq-xk'
+);
+
+console.log(layer2);
 
 type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & {
   color?: string;
@@ -53,7 +57,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           setFlagRestart((old) => ++old);
         }}
       >
-        <Layer2Provider>
+        <layer2.Provider>
           <NavProvider>
             <APIProvider
               API_KEY={props.API_KEY}
@@ -82,7 +86,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               </div>
             </APIProvider>
           </NavProvider>
-        </Layer2Provider>
+        </layer2.Provider>
       </ErrorBoundary>
     </div>
   );
