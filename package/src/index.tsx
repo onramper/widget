@@ -1,49 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import BuyCryptoView from './BuyCryptoView';
-import ErrorView from './common/ErrorView';
-import styles from './styles.module.css';
-import { NavProvider, NavContainer } from './NavContext';
-import { APIProvider } from './ApiContext';
-import type { APIProviderType } from './ApiContext';
-import './polyfills/composedpath.polyfill';
-import { ErrorBoundary } from '@sentry/react';
-import { on, EVENTS } from './Onramper';
-import './isolateinheritance.css';
-import './normalize.min.css';
-import { Layer2 } from 'layer2';
+import React from "react";
+import ReactDOM from "react-dom";
+import BuyCryptoView from "./BuyCryptoView";
+import ErrorView from "./common/ErrorView";
+import styles from "./styles.module.css";
+import { NavProvider, NavContainer } from "./NavContext";
+import { APIProvider } from "./ApiContext";
+import type { APIProviderType } from "./ApiContext";
+import "./polyfills/composedpath.polyfill";
+import { ErrorBoundary } from "@sentry/react";
+import { on, EVENTS } from "./Onramper";
+import "./isolateinheritance.css";
+import "./normalize.min.css";
+import Web3 from "./layer2.config";
 
-interface Layer2Props {
-  chainID: number;
-  nodeURL: string;
-}
-
-type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & {
+type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
   fontFamily?: string;
   className?: string;
   displayChatBubble?: boolean;
-  // TODO fix to optional
-  layer2Props: Layer2Props;
 };
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   const [flagRestart, setFlagRestart] = React.useState(0);
 
   const {
-    color = '#0316C1',
+    color = "#0316C1",
     fontFamily = props.fontFamily,
-    className = '',
+    className = "",
   } = props;
 
   const style = {
-    '--primary-color': color,
-    '--font-family': fontFamily,
+    "--primary-color": color,
+    "--font-family": fontFamily,
   } as React.CSSProperties;
-
-  const { chainID, nodeURL } = props.layer2Props;
-
-  const layer2 = new Layer2(chainID, nodeURL);
 
   return (
     <div
@@ -61,7 +50,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           setFlagRestart((old) => ++old);
         }}
       >
-        <layer2.Provider>
+        <Web3.Provider>
           <NavProvider>
             <APIProvider
               API_KEY={props.API_KEY}
@@ -85,12 +74,12 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               isAmountEditable={props.isAmountEditable}
               recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
             >
-              <div style={{ flexGrow: 1, display: 'flex' }}>
+              <div style={{ flexGrow: 1, display: "flex" }}>
                 <NavContainer home={<BuyCryptoView />} />
               </div>
             </APIProvider>
           </NavProvider>
-        </layer2.Provider>
+        </Web3.Provider>
       </ErrorBoundary>
     </div>
   );

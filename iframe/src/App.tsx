@@ -14,12 +14,6 @@ const defaultApiKey =
     ? com_key
     : dev_key;
 
-const layer2Props = {
-  chainID: Number(process.env.REACT_APP_CHAIN_ID as string),
-  nodeURL: process.env.REACT_APP_NODE_URL as string,
-};
-
-console.table(layer2Props);
 const apiKey = getParam("apiKey", defaultApiKey);
 const defaultColor = `#${getParam("color", "0316C1")}`;
 const fontFamily = getParam("fontFamily", "'Inter', sans-serif");
@@ -75,7 +69,6 @@ function App() {
         {/*         <div className={'onramper-pane'}></div> */}
         <div className={"widget-container"}>
           <OnramperWidget
-            layer2Props={layer2Props}
             API_KEY={apiKey}
             color={defaultColor}
             fontFamily={fontFamily}
