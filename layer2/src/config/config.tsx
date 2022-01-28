@@ -91,6 +91,7 @@ export const contracts: { [key: string]: Contract } = {
 
 export const getConfig = (): Config => {
   return {
+    autoConnect: false,
     notifications: {
       expirationPeriod: 30000,
       checkInterval: 2000,
