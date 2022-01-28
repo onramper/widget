@@ -1,3 +1,3 @@
-import { Layer2Provider } from './config/config';
-
-export { Layer2Provider };
+export * from './config/config';
+export * from './config/wallets';
+export * from './utils';
