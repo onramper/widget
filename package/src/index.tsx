@@ -11,7 +11,7 @@ import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
-import Web3 from "./layer2.config";
+import Web3 from "../layer2.config";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;

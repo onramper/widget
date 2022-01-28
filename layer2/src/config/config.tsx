@@ -12,7 +12,6 @@ import { ReactNode } from 'react';
 import { Wallet, initializeWallets } from './wallets';
 
 // Interfaces
-
 interface ProviderProps {
   children?: ReactNode;
 }
@@ -137,7 +136,7 @@ export class Layer2 {
           type: 'ERC20',
           options: {
             address: address,
-            symbol: 'ERC_20',
+            symbol: 'DAI',
             decimals: decimals,
           },
         } as WatchAssetParams,
@@ -154,33 +153,3 @@ export class Layer2 {
     return account;
   };
 }
-
-// const layer2 = new Layer2(
-//   4,
-//   'https://eth-rinkeby.alchemyapi.io/v2/f6UW9EauWWDD4JL4bHcsY76Cf5wiq-xk'
-// );
-
-// // export const CHAIN_ID = 4;
-// // export const NODE_URL =
-// //   'https://eth-rinkeby.alchemyapi.io/v2/f6UW9EauWWDD4JL4bHcsY76Cf5wiq-xk';
-// // export const IS_PROD = process.env.NODE_ENV === 'production';
-
-// //ADDRESSES
-// export const ERC_20_ADDRESS = '0x95b58a6bff3d14b7db2f5cb5f0ad413dc2940658';
-
-// export const tokenDecimals = {
-//   erc20: 18,
-//   eth: 18,
-// };
-
-// export enum TokenNames {
-//   eth = 'eth',
-//   erc20 = 'erc20',
-// }
-
-// export const chainToNetwork = {
-//   1: Mainnet,
-//   4: Rinkeby,
-// };
-
-// export const validTokenList = ['eth', 'erc20'];

@@ -9,6 +9,8 @@ import { APIContext, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
 import TabsHeader from "../common/Header/TabsHeader/TabsHeader";
 import { tabNames } from "./constants";
+import Web3 from "../../layer2.config";
+import { useEthers } from "layer2";
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -17,6 +19,15 @@ const BuyCryptoView: React.FC = () => {
   const { data, inputInterface, collected, apiInterface } =
     useContext(APIContext);
   const [initLoadingFinished, setInitLoadingFinished] = useState(false);
+  const { library } = useEthers();
+
+  const handleClick = () => {
+    Web3.addTokenToMetamask(
+      library,
+      "0x95b58a6bff3d14b7db2f5cb5f0ad413dc2940658",
+      18
+    );
+  };
 
   const { handlePaymentMethodChange } = data;
   const { init } = apiInterface;
@@ -68,10 +79,6 @@ const BuyCryptoView: React.FC = () => {
       }
     })();
   }, [collected.selectedCountry]);
-
-  const handleClick = () => {
-    alert("hello");
-  };
 
   return (
     <div className={styles.view}>
