@@ -1,3 +1,3 @@
 dist
 /*.tgz
-.env
+yarn.lock

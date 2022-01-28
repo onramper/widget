@@ -3,6 +3,7 @@ import {
   getExplorerAddressLink,
   getExplorerTransactionLink,
   DAppProvider,
+  useEthers,
 } from '@usedapp/core';
 import { Interface, Fragment, JsonFragment } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
@@ -52,7 +53,7 @@ export class Layer2 {
     this.wallets = initializeWallets(chainID);
 
     this.config = {
-      autoConnect: false,
+      autoConnect: true,
       notifications: {
         expirationPeriod: 30000,
         checkInterval: 2000,
@@ -146,6 +147,11 @@ export class Layer2 {
     } catch (error) {
       return false;
     }
+  };
+
+  getUserAddress = (): string | null | undefined => {
+    const { account } = useEthers();
+    return account;
   };
 }
 

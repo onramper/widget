@@ -13,18 +13,18 @@ import './isolateinheritance.css';
 import './normalize.min.css';
 import { Layer2 } from 'layer2';
 
-const layer2 = new Layer2(
-  4,
-  'https://eth-rinkeby.alchemyapi.io/v2/f6UW9EauWWDD4JL4bHcsY76Cf5wiq-xk'
-);
-
-console.log(layer2);
+interface Layer2Props {
+  chainID: number;
+  nodeURL: string;
+}
 
 type OnramperWidgetProps = Omit<APIProviderType, 'themeColor'> & {
   color?: string;
   fontFamily?: string;
   className?: string;
   displayChatBubble?: boolean;
+  // TODO fix to optional
+  layer2Props: Layer2Props;
 };
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
@@ -40,6 +40,10 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     '--primary-color': color,
     '--font-family': fontFamily,
   } as React.CSSProperties;
+
+  const { chainID, nodeURL } = props.layer2Props;
+
+  const layer2 = new Layer2(chainID, nodeURL);
 
   return (
     <div

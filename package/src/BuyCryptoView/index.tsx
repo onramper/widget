@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import BodyBuyCrypto from "./BodyBuyCrypto";
-import styles from "../styles.module.css";
-import ChooseGatewayView from "../ChooseGatewayView/ChooseGatewayView";
-import ErrorView from "../common/ErrorView";
-import Step from "../steps/Step";
-import { NavContext } from "../NavContext";
-import { APIContext, NextStep } from "../ApiContext";
-import * as API from "../ApiContext/api";
-import TabsHeader from "../common/Header/TabsHeader/TabsHeader";
-import { tabNames } from "./constants";
+import React, { useContext, useEffect, useState } from 'react';
+import BodyBuyCrypto from './BodyBuyCrypto';
+import styles from '../styles.module.css';
+import ChooseGatewayView from '../ChooseGatewayView/ChooseGatewayView';
+import ErrorView from '../common/ErrorView';
+import Step from '../steps/Step';
+import { NavContext } from '../NavContext';
+import { APIContext, NextStep } from '../ApiContext';
+import * as API from '../ApiContext/api';
+import TabsHeader from '../common/Header/TabsHeader/TabsHeader';
+import { tabNames } from './constants';
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
   const [buyStep, setBuyStep] = useState<NextStep>();
-
   const { nextScreen } = useContext(NavContext);
   const { data, inputInterface, collected, apiInterface } =
     useContext(APIContext);
@@ -28,14 +27,14 @@ const BuyCryptoView: React.FC = () => {
     init().finally(() => {
       setInitLoadingFinished(true);
     });
-  }, [init/* , flagEffectInit */]);
+  }, [init]);
 
   //listening to errors sent by APIContext
   useEffect(() => {
     if (!errors || Object.keys(errors).length <= 0) return;
     const key = Object.keys(errors)[0] as keyof typeof errors;
     const type = errors?.[key]?.type;
-    if (type && !["MIN", "MAX", "ALL_UNAVAILABLE", "NO_RATES"].includes(type))
+    if (type && !['MIN', 'MAX', 'ALL_UNAVAILABLE', 'NO_RATES'].includes(type))
       nextScreen(<ErrorView type={type} message={errors?.[key]?.message} />);
   }, [errors, nextScreen]);
 
@@ -59,7 +58,7 @@ const BuyCryptoView: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const nextStep = await API.sell("BTC", 0.1, "blockchain", {
+        const nextStep = await API.sell('BTC', 0.1, 'blockchain', {
           amountInCrypto: true,
           country: collected.selectedCountry,
         });
@@ -73,7 +72,11 @@ const BuyCryptoView: React.FC = () => {
   return (
     <div className={styles.view}>
       <TabsHeader
-        tabs={buyStep && collected.supportSell ? tabNames : tabNames.filter((s, i) => i !== 1)}
+        tabs={
+          buyStep && collected.supportSell
+            ? tabNames
+            : tabNames.filter((s, i) => i !== 1)
+        }
         tabSelected={0}
         onClickItem={(i: number) => {
           if (i === 0) return;
