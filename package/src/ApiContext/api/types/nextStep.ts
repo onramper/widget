@@ -83,6 +83,18 @@ interface InfoDepositBankAccount {
     accountAddress: string;
 }
 
+type EmailVerificationStep = {
+  type: "emailVerification";
+  url?: string;
+  description?: string;
+  data: {
+    humanName: string;
+    name: string;
+    hint?: string;
+    placeholder: string;
+  };
+};
+
 type NextStep =
     { useHeading?: boolean, title?: string, progress?: number } & (FileStep
     | {
@@ -124,7 +136,8 @@ type NextStep =
         depositBankAccount: InfoDepositBankAccount;
         reference: string;
         hint: string;
-    });
+    } | EmailVerificationStep
+    );
 
 interface FieldError {
     field: string
