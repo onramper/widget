@@ -187,5 +187,4 @@
 
 .fiat-step div[itemProp="icon-wrapper"] img[itemProp="icon"] {
     filter: brightness(0) invert(1);
-    padding: 5px;
 }

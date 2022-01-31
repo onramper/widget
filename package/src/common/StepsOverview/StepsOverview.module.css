@@ -5,6 +5,8 @@
     calc(var(--icon-size) / 2) - calc(var(--border-size) / 2)
   );
   --icon-bg-color: transparent;
+  --icon-padding: none;
+  --icon-mg-t: 12px;
   margin-bottom: 10px;
 }
 
@@ -19,7 +21,6 @@
 .item {
   display: flex;
   flex-direction: row;
-  align-items: center;
   position: relative;
   padding: 10px 0;
 }
@@ -29,9 +30,11 @@
   width: var(--icon-size);
   height: var(--icon-size);
   background-color: var(--icon-bg-color);
+  padding: var(--icon-padding);
   position: relative;
   z-index: 1;
   flex-shrink: 0;
+  margin-top: var(--icon-mg-t);
 }
 
 .item > .icon-wrapper img {
@@ -116,20 +119,29 @@
 .border-left::before {
   content: "";
   width: var(--border-size);
-  height: calc(102% + var(--sub-item-padding));
+  height: 100%;
   background-color: var(--border-color);
   position: absolute;
   transform: translateX(var(--translate-x));
+  top: 0;
+}
+
+.border-left.sub-item::before {
+  height: calc(102% + var(--sub-item-padding));
 }
 
 .item.border-left:first-child::before {
-  height: 51%;
-  transform: translateX(var(--translate-x)) translateY(50%);
+  height: calc(100% - calc(var(--icon-size) + var(--icon-mg-t)));
+  top: unset;
+  bottom: 0;
 }
 
-.item.border-left:last-child::before {
-  height: 51%;
-  transform: translateX(var(--translate-x)) translateY(-50%);
+.item.border-left:not(.is-expanded):last-child::before {
+  height: calc(var(--icon-mg-t) + var(--icon-size));
+}
+
+.item.border-left.single-child::before {
+  content: none;
 }
 
 /* info
