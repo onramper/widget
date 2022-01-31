@@ -22,6 +22,7 @@ const StepsOverview: React.FC<StepsOverviewProps> = (props) => {
         <StepOverviewItem
           {...step}
           key={index}
+          isSingleChild={props.items.length === 1}
           onClick={() => {
             props.onClickItem && props.onClickItem(index);
           }}

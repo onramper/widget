@@ -21,9 +21,20 @@ const StepOverviewItem: React.FC<StepOverviewItemProps> = (props) => {
 
   const computeStyle = React.useCallback(() => {
     return props.iconBgColor
-      ? ({ "--icon-bg-color": props.iconBgColor } as React.CSSProperties)
+      ? ({
+          "--icon-bg-color": props.iconBgColor,
+          "--icon-padding": "5px"
+        } as React.CSSProperties)
       : {};
   }, [props.iconBgColor]);
+
+  const computeMainItemClassName = React.useCallback(
+    () =>
+      `${classes["item"]} ${classes["border-left"]} ${props.className || ""} ${
+        props.isSingleChild ? classes["single-child"] : ""
+      } ${isExpanded ? classes["is-expanded"] : ""}`,
+    [isExpanded, props.className, props.isSingleChild]
+  );
 
   const isExpandable = !!props.items?.length;
 
@@ -34,9 +45,7 @@ const StepOverviewItem: React.FC<StepOverviewItemProps> = (props) => {
   return (
     <React.Fragment>
       <li
-        className={`${classes["item"]} ${classes["border-left"]} ${
-          props.className || ""
-        }`}
+        className={computeMainItemClassName()}
         style={computeStyle()}
       >
         <div

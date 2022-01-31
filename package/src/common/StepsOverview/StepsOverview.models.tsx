@@ -21,6 +21,7 @@ export type OverviewStepSubItemProps = OverviewStepSubItem;
 export type StepOverviewItemProps = OverviewStepItem & {
   onClick?: () => void;
   onClickInfo?: () => void;
+  isSingleChild: boolean;
 };
 
 export type StepsOverviewProps = {
