@@ -14,7 +14,7 @@ import ButtonAction from '../../common/ButtonAction'
 import Footer from '../../common/Footer'
 import Heading from '../../common/Heading/Heading'
 import InfoBox from '../../common/InfoBox'
-
+import StepsOverview from '../../common/StepsOverview/StepsOverview'
 
 type BodyConfirmPaymentViewType = {
     onActionButton: () => void
@@ -26,6 +26,7 @@ type BodyConfirmPaymentViewType = {
     cryptoAddr?: string
     cryptoAddrTag?: string
     paymentMethod?: string
+    fiatIcon?: string
     cryptoIcon?: string
     txTime?: { seconds: number, message: string }
     conversionRate?: number
@@ -43,6 +44,116 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
     useEffect(() => {
         setErrorControlMsg(props.errorMessage);
     }, [props.errorMessage]);
+
+    const generateOverview = () => [
+      {
+        description: "You pay",
+        title: "200 EUR",
+        icon: props.fiatIcon,
+        className: styles["fiat-step"],
+        items: [
+          {
+            content: (
+              <>
+                Conversion Rate{" "}
+                <span className={stylesCommon["semibold"]}>
+                  {" "}
+                  1 BTC = 39.799.41{" "}
+                </span>
+              </>
+            ),
+          },
+          {
+            content: (
+              <>
+                Transfer Fee{" "}
+                <span className={stylesCommon["semibold"]}> 9.34 EUR </span>
+              </>
+            ),
+          },
+
+          {
+            content: (
+              <>
+                Transfer Fee{" "}
+                <span className={stylesCommon["semibold"]}> 9.34 EUR </span>
+              </>
+            ),
+          },
+        ],
+      },
+      {
+        description: "You receive",
+        title: "0.00472 BTC",
+        icon: props.cryptoIcon,
+        info: "This might differ due to vollatility of the marketof the marketof the marketof the marketof the marketof the marketof the market",
+        items: [
+            {
+                content: (
+                  <>
+                    Conversion Rate{" "}
+                    <span className={stylesCommon["semibold"]}>
+                      {" "}
+                      1 BTC = 39.799.41{" "}
+                    </span>
+                  </>
+                ),
+              },
+              {
+                content: (
+                  <>
+                    Transfer Fee{" "}
+                    <span className={stylesCommon["semibold"]}> 9.34 EUR </span>
+                  </>
+                ),
+              },
+    
+              {
+                content: (
+                  <>
+                    Transfer Fee{" "}
+                    <span className={stylesCommon["semibold"]}> 9.34 EUR </span>
+                  </>
+                ),
+              },
+        ]
+      },
+      {
+        description: "You receive",
+        title: "0.00472 BTC",
+        icon: props.cryptoIcon,
+        items: [
+            {
+                content: (
+                  <>
+                    Conversion Rate{" "}
+                    <span className={stylesCommon["semibold"]}>
+                      {" "}
+                      1 BTC = 39.799.41{" "}
+                    </span>
+                  </>
+                ),
+              },
+              {
+                content: (
+                  <>
+                    Transfer Fee{" "}
+                    <span className={stylesCommon["semibold"]}> 9.34 EUR </span>
+                  </>
+                ),
+              },
+    
+              {
+                content: (
+                  <>
+                    Transfer Fee{" "}
+                    <span className={stylesCommon["semibold"]}> 9.34 EUR </span>
+                  </>
+                ),
+              },
+        ]
+      },
+    ];
 
     return (
         <main className={stylesCommon.body}>
@@ -96,6 +207,12 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                 </ul>
                 {/* <label className={styles['terms']}><input type="checkbox" name='agreementCheckbox' onChange={(e) => inputInterface.handleInputChange(e.currentTarget.name, e.currentTarget.checked)} /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label> */}
             </div>
+            
+            <StepsOverview
+                className={stylesCommon["shrink-0"]}
+                items={generateOverview()}
+            />
+
             <div className={`${stylesCommon.body__child}`}>
                 <ButtonAction
                     onClick={props.onActionButton}
