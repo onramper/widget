@@ -8,9 +8,12 @@ theme styles
     --text-dark-color: #292D32;
     --text-light-color: #7C7D82;
     --grey-light-color: #ABADB8;
+    --text-negative-color: #fff;
+    --text-negative-secondary-color: #D5D7E7;
     --seperator-color: #eff0f4;
     --overlay-backdrop-color: rgba(17, 32, 62, 0.32);
     --icon-backdrop-color: #F0F3FE;
+    --light-grey-color: #fafafb;
     /* inputs */
     --input-bg-color: #F7FAFD;
     --input-form-bg-color: #fff;
@@ -320,6 +323,10 @@ li {
 
 .shrink-0 {
     flex-shrink: 0;
+}
+
+.semibold {
+    font-weight: 600;
 }
 
 /* general transition */

@@ -77,6 +77,7 @@ const ConfirmPaymentView: React.FC<PaymentReviewProps> = (props) => {
         txTime={collected.selectedGateway?.duration}
         cryptoAddr={walletAddr?.address}
         cryptoAddrTag={walletAddr?.memo}
+        fiatIcon={collected.selectedCurrency?.icon}
         cryptoIcon={collected.selectedCrypto?.icon}
         paymentMethod={collected.selectedPaymentMethod?.name}
         conversionRate={collected.selectedGateway?.rate}

@@ -113,7 +113,6 @@
     cursor: pointer;
 }
 
-
 .item .chevron {
     cursor: pointer;
 }
@@ -184,4 +183,13 @@
     /* transform: scale(0.9); */
     max-height: 0;
     transition: opacity 250ms, transform 500ms, max-height 500ms;
+}
+
+.fiat-step div[itemProp="icon-wrapper"] {
+    background-color: var(--primary-color);
+}
+
+.fiat-step div[itemProp="icon-wrapper"] img[itemProp="icon"] {
+    filter: brightness(0) invert(1);
+    padding: 5px;
 }
