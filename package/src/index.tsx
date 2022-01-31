@@ -23,6 +23,8 @@ type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   const [flagRestart, setFlagRestart] = React.useState(0);
 
+  //TODO: implement context for layer2 instance
+
   const {
     color = "#0316C1",
     fontFamily = props.fontFamily,

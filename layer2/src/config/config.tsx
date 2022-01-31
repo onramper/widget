@@ -52,7 +52,7 @@ export class Layer2 {
     this.wallets = initializeWallets(chainID);
 
     this.config = {
-      autoConnect: true,
+      autoConnect: false,
       notifications: {
         expirationPeriod: 30000,
         checkInterval: 2000,
