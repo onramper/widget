@@ -50,6 +50,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
         description: "You pay",
         title: "200 EUR",
         icon: props.fiatIcon,
+        iconBgColor: "var(--primary-color)",
         className: styles["fiat-step"],
         items: [
           {

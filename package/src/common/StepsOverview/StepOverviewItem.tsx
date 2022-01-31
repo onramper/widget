@@ -19,8 +19,14 @@ const StepOverviewItem: React.FC<StepOverviewItemProps> = (props) => {
     props.onClick && props.onClick();
   };
 
+  const computeStyle = React.useCallback(() => {
+    return props.iconBgColor
+      ? ({ "--icon-bg-color": props.iconBgColor } as React.CSSProperties)
+      : {};
+  }, [props.iconBgColor]);
+
   const isExpandable = !!props.items?.length;
-  
+
   const iconClassName = `${classes["icon-wrapper"]} ${
     commonClasses["flex-all"]
   } ${isExpandable ? commonClasses["cursor-pointer"] : ""}`;
@@ -31,6 +37,7 @@ const StepOverviewItem: React.FC<StepOverviewItemProps> = (props) => {
         className={`${classes["item"]} ${classes["border-left"]} ${
           props.className || ""
         }`}
+        style={computeStyle()}
       >
         <div
           className={iconClassName}
