@@ -71,7 +71,7 @@ const DevStepView: React.FC<{ nextStep: NextStep }> = (props) => {
           if (subItem.values?.length > 1) {
             subItem.content = (
               <>
-                {subItem.values[0]}
+                {subItem.values[0]}{" "}
                 <span className={stylesCommon["semibold"]}>
                   {subItem.values[1]}
                 </span>
