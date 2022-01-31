@@ -4,6 +4,7 @@
   --translate-x: calc(
     calc(var(--icon-size) / 2) - calc(var(--border-size) / 2)
   );
+  --icon-bg-color: transparent;
   margin-bottom: 10px;
 }
 
@@ -27,6 +28,7 @@
   border-radius: 50%;
   width: var(--icon-size);
   height: var(--icon-size);
+  background-color: var(--icon-bg-color);
   position: relative;
   z-index: 1;
   flex-shrink: 0;

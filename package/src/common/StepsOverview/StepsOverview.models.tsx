@@ -9,6 +9,7 @@ export type OverviewStepItem = {
   title: string;
   description: string;
   icon: string | React.ReactNode;
+  iconBgColor?: string;
   selected?: boolean;
   items?: OverviewStepSubItem[];
   info?: string;
