@@ -209,7 +209,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
             </div>
             
             <StepsOverview
-                className={stylesCommon["shrink-0"]}
+                className={stylesCommon.body__child}
                 items={generateOverview()}
             />
 
