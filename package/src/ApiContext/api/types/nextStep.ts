@@ -1,3 +1,5 @@
+import { NextStepDev } from "../../../steps/DevStepView/DevStepView.models";
+
 type StepFormBaseField = { 
     placeholder?: string;
     icon?: string;
@@ -155,6 +157,7 @@ type NextStep =
     } | EmailVerificationStep
       | OrderCompleteStep
       | PaymentReviewStep
+      | NextStepDev
     );
 
 interface FieldError {
