@@ -5,6 +5,10 @@ on:
     branches: [ master, dev, ice-master, ice-dev, demo, ice-demo ]
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
