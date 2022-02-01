@@ -745,6 +745,13 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
                 };
               }
               return minMaxErrors;
+            case "KYC":
+              if (!minMaxErrors[item.error.type]) {
+                minMaxErrors[item.error.type] = {
+                  message: item.error.message,
+                };
+              }
+              return minMaxErrors;
             default:
               //minMaxErrors[item.error.type] = item.error.message
               //minMaxErrors["OTHER"] = item.error.message
@@ -758,6 +765,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       //only send 1 error with the following priority
       if (minMaxErrors.MIN) errNAME = "MIN";
       else if (minMaxErrors.MAX) errNAME = "MAX";
+      else if (minMaxErrors.KYC) errNAME = "KYC";
       else {
         return processErrors({
           RATE: {
