@@ -11,19 +11,22 @@ import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
-import layer2 from "../layer2.config";
+import { L2Provider } from "layer2";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
   fontFamily?: string;
   className?: string;
   displayChatBubble?: boolean;
+  //? Config items for DApp provider, from iframe
+  layer2Config: {
+    chainID: number;
+    nodeURL: string;
+  };
 };
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   const [flagRestart, setFlagRestart] = React.useState(0);
-
-  //TODO: implement context for layer2 instance
 
   const {
     color = "#0316C1",
@@ -52,7 +55,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           setFlagRestart((old) => ++old);
         }}
       >
-        <layer2.Provider>
+        <L2Provider layer2Args={props.layer2Config}>
           <NavProvider>
             <APIProvider
               API_KEY={props.API_KEY}
@@ -81,7 +84,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               </div>
             </APIProvider>
           </NavProvider>
-        </layer2.Provider>
+        </L2Provider>
       </ErrorBoundary>
     </div>
   );

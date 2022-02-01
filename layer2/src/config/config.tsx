@@ -8,12 +8,13 @@ import {
 import { Interface, Fragment, JsonFragment } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import { ERC20 } from '../abis';
-import { ReactNode } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 import { Wallet, initializeWallets } from './wallets';
 
 // Interfaces
 interface ProviderProps {
   children?: ReactNode;
+  layer2Args: Layer2Args;
 }
 
 // use this interface for type assertion inside addERC20ToMetamask()
@@ -35,8 +36,9 @@ export interface Info {
   blockExplorerUrls?: string[];
 }
 
-interface ProviderProps {
-  children?: ReactNode;
+interface Layer2Args {
+  chainID: number;
+  nodeURL: string;
 }
 
 export class Layer2 {
@@ -46,7 +48,7 @@ export class Layer2 {
   public chainIdToNetworkInfo: { [network: string]: Info };
   public config: Config;
 
-  constructor(chainID: number, nodeURL: string) {
+  constructor({ chainID, nodeURL }: Layer2Args) {
     this.CHAIN_ID = chainID;
     this.NODE_URL = nodeURL;
     this.wallets = initializeWallets(chainID);
@@ -92,29 +94,27 @@ export class Layer2 {
   };
 
   // return user's transaction info page on Etherscan
-  blockExplorerTransactionLink = (
-    transactionHash: string
-  ): string | undefined => {
+  blockExplorerTransactionLink(transactionHash: string): string | undefined {
     return getExplorerTransactionLink(transactionHash, this.CHAIN_ID);
-  };
+  }
 
   // pass in [JSON].abi
-  public loadInterface = (
+  public loadInterface(
     abi: string | ReadonlyArray<Fragment | JsonFragment | string>
-  ): Interface => {
+  ): Interface {
     return new Interface(abi);
-  };
+  }
 
   // pass in [JSON].abi & address
-  public loadContract = (
+  public loadContract(
     abi: string | ReadonlyArray<Fragment | JsonFragment | string>,
     address: string
-  ): Contract => {
+  ): Contract {
     const contractInterface = this.loadInterface(abi);
     const contract = new Contract(address, contractInterface);
 
     return contract;
-  };
+  }
 
   interfaces: { [key: string]: Interface } = {
     erc20Interface: this.loadInterface(ERC20),
@@ -124,32 +124,86 @@ export class Layer2 {
   //   erc20Contract: this.loadContract(ERC20, ERC_20_ADDRESS),
   // };
 
-  public addTokenToMetamask = async (
+  getUserAddress(): string | null | undefined {
+    const { account } = useEthers();
+    return account;
+  }
+}
+
+interface ConfigArgs {
+  chainID: number;
+  nodeURL: string;
+}
+
+export const addTokenToMetamask = async (
+  library: any,
+  address: string,
+  decimals: number
+): Promise<boolean> => {
+  try {
+    const result = await library.provider?.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: address,
+          symbol: 'DAI',
+          decimals: decimals,
+        },
+      } as WatchAssetParams,
+    });
+
+    return result;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const getConfig = ({ chainID, nodeURL }: ConfigArgs): Config => {
+  return {
+    autoConnect: false,
+    notifications: {
+      expirationPeriod: 30000,
+      checkInterval: 2000,
+    },
+    readOnlyChainId: chainID,
+    readOnlyUrls: {
+      [chainID]: nodeURL,
+    },
+  };
+};
+
+export interface ContextProps {
+  layer2: Layer2;
+  addTokenToMetamask: (
     library: any,
     address: string,
     decimals: number
-  ): Promise<boolean> => {
-    try {
-      const result = await library.provider?.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: {
-            address: address,
-            symbol: 'DAI',
-            decimals: decimals,
-          },
-        } as WatchAssetParams,
-      });
-
-      return result;
-    } catch (error) {
-      return false;
-    }
-  };
-
-  getUserAddress = (): string | null | undefined => {
-    const { account } = useEthers();
-    return account;
-  };
+  ) => Promise<boolean>;
+  config: Config;
+  wallets: Wallet[];
 }
+
+export const L2Context = createContext({} as ContextProps);
+
+export const L2Provider = ({ children, layer2Args }: ProviderProps) => {
+  const layer2 = new Layer2(layer2Args);
+  const config = getConfig(layer2Args);
+  const wallets = layer2.wallets;
+
+  const value = {
+    layer2,
+    addTokenToMetamask,
+    config,
+    wallets,
+  };
+  return (
+    <L2Context.Provider value={value}>
+      <DAppProvider config={config}>{children}</DAppProvider>
+    </L2Context.Provider>
+  );
+};
+
+export const useLayer2 = () => {
+  return useContext(L2Context);
+};
