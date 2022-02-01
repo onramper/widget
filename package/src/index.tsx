@@ -12,6 +12,7 @@ import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 import { L2Provider } from "layer2";
+import SwapCryptoView from "./SwapCryptoView";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -80,7 +81,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
             >
               <div style={{ flexGrow: 1, display: "flex" }}>
-                <NavContainer home={<BuyCryptoView />} />
+                <NavContainer home={<SwapCryptoView />} />
               </div>
             </APIProvider>
           </NavProvider>

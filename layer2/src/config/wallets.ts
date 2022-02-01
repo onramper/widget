@@ -15,7 +15,7 @@ export const initializeWallets = (
 ): Wallet[] => {
   return [
     {
-      name: 'metamask',
+      name: '🦊 metamask',
       connector: new InjectedConnector({
         supportedChainIds: [chainID],
       }),
