@@ -34,7 +34,9 @@
     "start:local": "webpack --env NODE_ENV=development --env STAGE=local",
     "start:l2": "webpack --env NODE_ENV=development --env STAGE=l2",
     "setup": "npm ci --omit=peer",
-    "prepublishOnly": "npm run build:prod"
+    "prepublishOnly": "npm run build:prod",
+    "lint": "eslint src --ext ts,js,tsx --no-ignore --fix --cache",
+    "checklint": "eslint src --ext ts,js,tsx --no-ignore --cache"
   },
   "dependencies": {
     "@onramper/flag-icons": "^1.0.0",

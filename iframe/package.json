@@ -12,8 +12,8 @@
     "react-gtm-module": "^2.0.11"
   },
   "scripts": {
-    "lint": "eslint src --ext ts,js,tsx --no-ignore --fix",
-    "checklint": "eslint src --ext ts,js,tsx --no-ignore",
+    "lint": "eslint src --ext ts,js,tsx --no-ignore --fix --cache",
+    "checklint": "eslint src --ext ts,js,tsx --no-ignore --cache",
     "start": "react-scripts start",
     "start:prod": "export REACT_APP_STAGE=prod&&npm start",
     "start:demo": "export REACT_APP_STAGE=demo&&npm start",
