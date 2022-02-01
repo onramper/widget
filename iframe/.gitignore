@@ -1,1 +1,4 @@
 build
+
+# ES lint cache
+.eslintcache
