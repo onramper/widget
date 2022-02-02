@@ -91,9 +91,15 @@ type EmailVerificationStep = {
     humanName: string;
     name: string;
     hint?: string;
+    initialValue?: string;
     placeholder: string;
   };
 };
+
+type OrderCompleteStep = {
+    type: "orderComplete";
+    description?: string;
+}
 
 type NextStep =
     { useHeading?: boolean, title?: string, progress?: number } & (FileStep
@@ -137,6 +143,7 @@ type NextStep =
         reference: string;
         hint: string;
     } | EmailVerificationStep
+      | OrderCompleteStep
     );
 
 interface FieldError {
