@@ -18,6 +18,7 @@ import { APIContext, NextStep } from "../../ApiContext";
 import InformationView from "../InformationView";
 import Footer from "../../common/Footer";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
+import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -91,6 +92,9 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         break;
       case "emailVerification":
         replaceScreen(<EmailVerificationView nextStep={nextStep} />);
+        break;
+      case "orderComplete":
+        replaceScreen(<OrderCompleteView nextStep={nextStep} />);
         break;
       default:
         break;

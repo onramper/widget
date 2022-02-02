@@ -265,5 +265,5 @@ export default {
   progress: 59,
   humanName: "Possible form fields",
   data: allFormFields,
-  url: `${BASE_API}/GoTo/TestGateway/completed/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+  url: `${BASE_API}/GoTo/TestGateway/orderComplete/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
 };
