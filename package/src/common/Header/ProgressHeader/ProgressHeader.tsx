@@ -4,40 +4,46 @@ import Menu from "../Menu/Menu";
 import { ProgressHeaderProps } from "./ProgressHeader.models";
 import classes from "./ProgressHeader.module.css";
 import headerClasses from "../Header.module.css";
-import iconMenu from "../../../icons/menu-var-2.svg";
-import iconLeftArrow from "../../../icons/arrow-left.svg";
+import { ReactComponent as IconMenu } from "../../../icons/menu-var-2.svg";
+import { ReactComponent as ArrowLeftIcon } from "../../../icons/arrow-left.svg";
 
 const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { onMenuClick = () => nextScreen(<Menu className={headerClasses["header-menu"]}/>) } = props;
+  const {
+    onMenuClick = () =>
+      nextScreen(<Menu className={headerClasses["header-menu"]} />),
+  } = props;
 
   return (
-    <nav className={classes["header"]}>
+    <nav
+      className={`${classes["default"]} ${
+        props.primary ? classes.primary : ""
+      } ${classes["header"]}`}
+    >
       {props.useBackButton && (
-        <img
-          src={iconLeftArrow}
-          onClick={() => backScreen()}
+        <ArrowLeftIcon
           className={classes["arrow-back"]}
-          alt="back"
+          onClick={() => backScreen()}
         />
       )}
 
       <div className={`${classes["middle-content"]} ${classes["header-text"]}`}>
         {props.title || ""}
       </div>
-      <div className={classes["header-burger-icon"]}>
-        <img
+
+      <div className={headerClasses["header-icon-container"]}>
+        <IconMenu
+          className={classes["header-burger-icon"]}
           onClick={onMenuClick}
-          alt="menu"
-          className={`${headerClasses["header-burger-icon"]}`}
-          src={iconMenu}
         />
       </div>
 
-      <div
-        className={classes["progress-bar"]}
-        style={{ width: `${props.percentage || 0}%` }}
-      ></div>
+      {props.noSeparator && (
+        <div
+          className={classes["progress-bar"]}
+          style={{ width: `${props.percentage || 0}%` }}
+        ></div>
+      )}
     </nav>
   );
 };
