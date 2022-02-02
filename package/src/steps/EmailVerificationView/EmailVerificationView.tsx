@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { APIContext, NextStep } from "../../ApiContext";
 import classes from "./EmailVerificationView.module.css";
 import commonClasses from "./../../styles.module.css";
@@ -46,6 +46,12 @@ const EmailVerificationView: React.FC<{
     [inputInterface]
   );
 
+  useEffect(() => {
+    if (field.initialValue) {
+      onChange(field.name, field.initialValue);
+    }
+  }, []);
+
   const value = collected[field.name] ?? "";
   const isFilled = !!value;
 
@@ -56,7 +62,7 @@ const EmailVerificationView: React.FC<{
         <div className={classes["logo-wrapper"]}>
           <img src={logo} />
         </div>
-        
+
         <h1 className={commonClasses["remove-default"]}>{nextStep.title}</h1>
         <h2 className={commonClasses["remove-default"]}>
           {nextStep.description}
