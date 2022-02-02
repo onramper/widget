@@ -7,10 +7,12 @@ import {
 } from '@usedapp/core';
 import { Interface, Fragment, JsonFragment } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
-import { ERC20 } from '../abis';
+import { ERC20, SwapRouter } from '../abis';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { Wallet, initializeWallets } from './wallets';
 
+// No need change the address, same is for all testnets and mainnet
+const SWAP_ROUTER_ADDRESS = '0xE592427A0AEce92De3Edee1F18E0157C05861564';
 // Interfaces
 interface ProviderProps {
   children?: ReactNode;
@@ -118,11 +120,12 @@ export class Layer2 {
 
   interfaces: { [key: string]: Interface } = {
     erc20Interface: this.loadInterface(ERC20),
+    swapRouterInterface: this.loadInterface(SwapRouter.abi),
   };
 
-  // contracts: { [key: string]: Contract } = {
-  //   erc20Contract: this.loadContract(ERC20, ERC_20_ADDRESS),
-  // };
+  contracts: { [key: string]: Contract } = {
+    swapRouterContract: this.loadContract(SwapRouter.abi, SWAP_ROUTER_ADDRESS),
+  };
 
   getUserAddress(): string | null | undefined {
     const { account } = useEthers();
