@@ -35,6 +35,12 @@ theme styles
     --list-hover-color: #F7FAFD;
     --list-active-color: #6C77DC;
     --list-active-txt-color: #fff;
+    /* variants - screens with different color schemes */
+    --primary-var-bg-color: var(--primary-color);
+    --primary-var-text-color: #fff;
+    --primary-var-text-secondary-color: #D5D7E7;
+    --primary-var-selection-color: #4656EC;
+    --primary-var-border-color: #6B78F1;
     font-family: var(--font-family);
     width: var(--width);
     min-width: 250px;

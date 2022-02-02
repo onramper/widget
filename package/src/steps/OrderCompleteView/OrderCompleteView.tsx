@@ -23,12 +23,11 @@ const OrderCompleteView: React.FC<{
   }, [collected.redirectURL, onlyScreen]);
 
   return (
-    <div className={commonClasses.view}>
-      <ProgressHeader useBackButton />
+    <div className={`${commonClasses.view} ${classes["view"]}`}>
+      <ProgressHeader useBackButton primary noSeparator />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <h2>Complete screen</h2>
         <ButtonAction onClick={navigateHome} text={"Buy more crypto"} />
-        <Footer />
       </main>
     </div>
   );
