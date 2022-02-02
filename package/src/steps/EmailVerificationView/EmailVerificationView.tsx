@@ -65,13 +65,13 @@ const EmailVerificationView: React.FC<{
         <InputDelegator
           hint={field.hint}
           error={errorMessage}
-          name="email"
+          name={field.name}
           value={value}
           onChange={onChange}
           className={commonClasses["body-form-child"]}
           label={field.humanName}
-          type="text"
           placeholder={field.placeholder}
+          type="text"
         />
 
         <div
