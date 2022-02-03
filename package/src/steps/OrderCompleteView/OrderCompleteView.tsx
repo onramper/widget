@@ -1,33 +1,24 @@
-import React, { useCallback, useContext } from "react";
-import { APIContext, NextStep } from "../../ApiContext";
-import BuyCryptoView from "../../BuyCryptoView";
-import { NavContext } from "../../NavContext";
+import React from "react";
+import { NextStep } from "../../ApiContext";
 import classes from "./OrderCompleteView.module.css";
 import commonClasses from "./../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-import ButtonAction from "../../common/ButtonAction";
-import Footer from "../../common/Footer";
+import { ReactComponent as CheckmarkSuccessIcon } from "../../icons/checkmark-success.svg";
 
 const OrderCompleteView: React.FC<{
   nextStep: NextStep & { type: "orderComplete" };
-}> = () => {
-  const { collected } = useContext(APIContext);
-  const { onlyScreen } = useContext(NavContext);
-
-  const navigateHome = useCallback(() => {
-    if (collected.redirectURL) {
-      window.open(collected.redirectURL, "_parent");
-      return;
-    }
-    onlyScreen(<BuyCryptoView />);
-  }, [collected.redirectURL, onlyScreen]);
-
+}> = ({ nextStep }) => {
   return (
     <div className={`${commonClasses.view} ${classes["view"]}`}>
       <ProgressHeader useBackButton primary noSeparator />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
-        <h2>Complete screen</h2>
-        <ButtonAction onClick={navigateHome} text={"Buy more crypto"} />
+        <div className={classes["checkmark-wrapper"]}>
+          <CheckmarkSuccessIcon />
+        </div>
+        <h1 className={commonClasses["remove-default"]}> {nextStep.title} </h1>
+        <h2 className={commonClasses["remove-default"]}>
+          {nextStep.description}
+        </h2>
       </main>
     </div>
   );
