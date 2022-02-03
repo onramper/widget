@@ -1,11 +1,4 @@
-import {
-  Config,
-  DAppProvider,
-  Mainnet,
-  Chain,
-  Rinkeby,
-  // Currency,
-} from '@usedapp/core';
+import { Config, DAppProvider, Mainnet, Chain, Rinkeby } from '@usedapp/core';
 import { Interface, Fragment, JsonFragment } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import { ERC20, SwapRouter } from '../abis';
@@ -15,7 +8,7 @@ import { BigNumber } from 'ethers';
 import { parseEther } from '@ethersproject/units';
 
 // No need change the address, same is for all testnets and mainnet
-export const SWAP_ROUTER_ADDRESS = '0xE592427A0AEce92De3Edee1F18E0157C05861564'; // or 0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45 ??
+export const SWAP_ROUTER_ADDRESS = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45';
 export const ROUTER_API =
   'https://a7sf9dqtif.execute-api.eu-central-1.amazonaws.com/prod';
 export const TOKEN_LIST = 'https://tokens.uniswap.org/';
@@ -29,6 +22,7 @@ export interface SwapParams {
   data: string; // route.methodParameters.calldata,
   to: string; //  V3_SWAP_ROUTER_ADDRESS,
   value: BigNumber; // BigNumber.from(route.methodParameters.value),
+  gasPrice: BigNumber;
 }
 // Interfaces
 interface ProviderProps {
@@ -154,7 +148,7 @@ export class Layer2 {
   ): Promise<QuoteResult | unknown> {
     const tradeType = exactOut ? 'exactOut' : 'exactIn';
     const formattedAmount = parseEther(inputAmount.toString()).toString();
-    debugger;
+
     try {
       const res = await fetch(
         `${ROUTER_API}/quote?tokenInAddress=${this.chainIdToNetworkInfo.symbol}&tokenInChainId=${this.CHAIN_ID}&tokenOutAddress=${tokenOut}&tokenOutChainId=${this.CHAIN_ID}&amount=${formattedAmount}&type=${tradeType}`
@@ -203,6 +197,7 @@ export class Layer2 {
         data: calldata,
         to: SWAP_ROUTER_ADDRESS,
         value: BigNumber.from(value),
+        gasPrice: BigNumber.from(routeResult.gasPriceWei),
       } as SwapParams;
     } catch (error) {
       return error;

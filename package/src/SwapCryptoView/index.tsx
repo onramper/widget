@@ -16,7 +16,7 @@ const SwapCryptoView = () => {
   const balance = useEtherBalance(account);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [inputAmount, setInputAmount] = useState<string>("");
-  const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("");
   const [quote, setQuote] = useState<QuoteResult>({} as QuoteResult);
   const { sendTransaction, state } = useSendTransaction();
 
@@ -31,11 +31,13 @@ const SwapCryptoView = () => {
         "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
         account
       );
+
       sendTransaction({
         data: res.data,
         to: res.to,
         value: res.value,
         from: account,
+        gasPrice: res.gasPrice,
       });
       console.log(res);
     } else {
@@ -45,14 +47,14 @@ const SwapCryptoView = () => {
 
   const handleQuote = async () => {
     if (inputAmount) {
-      setLoading(true);
+      setLoadingMessage("fetching quote");
       const quote = await layer2.getQuote(
         Number(inputAmount),
         "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
       );
       if (quote) {
         setQuote(quote as QuoteResult);
-        setLoading(false);
+        setLoadingMessage("");
       }
     } else {
       alert("🤷 enter an amount!");
@@ -86,7 +88,7 @@ const SwapCryptoView = () => {
       {showWalletModal && (
         <WalletModal closeModal={() => setShowWalletModal(false)} />
       )}
-      {loading && <p>fetching quote...</p>}
+      {loadingMessage && <p>{loadingMessage}</p>}
       {quote && <p>{quote.quoteDecimals}</p>}
       {quote && <p>{quote.routeString}</p>}
       {state && <p>{`transaction status: ${state.status}`}</p>}
