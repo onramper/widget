@@ -8,7 +8,7 @@ interface Props {
 }
 
 function WalletModal({ closeModal }: Props) {
-  const { activate, deactivate, account, active } = useEthers();
+  const { activateBrowserWallet, deactivate, account, active } = useEthers();
   const [activatingConnector, setActivatingConnector] = useState<any>();
   const { wallets } = useLayer2();
 
@@ -28,7 +28,7 @@ function WalletModal({ closeModal }: Props) {
     const connectFunction = () => {
       setActivatingConnector(wallet.connector);
       try {
-        activate(wallet.connector);
+        activateBrowserWallet();
       } catch {
         deactivate();
       }

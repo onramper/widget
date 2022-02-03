@@ -1,10 +1,4 @@
-import {
-  Config,
-  getExplorerAddressLink,
-  getExplorerTransactionLink,
-  DAppProvider,
-  useEthers,
-} from '@usedapp/core';
+import { Config, DAppProvider, Mainnet, Chain, Rinkeby } from '@usedapp/core';
 import { Interface, Fragment, JsonFragment } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import { ERC20, SwapRouter } from '../abis';
@@ -12,7 +6,9 @@ import React, { createContext, ReactNode, useContext } from 'react';
 import { Wallet, initializeWallets } from './wallets';
 
 // No need change the address, same is for all testnets and mainnet
-const SWAP_ROUTER_ADDRESS = '0xE592427A0AEce92De3Edee1F18E0157C05861564';
+export const SWAP_ROUTER_ADDRESS = '0xE592427A0AEce92De3Edee1F18E0157C05861564';
+export const RouterAPI =
+  'https://a7sf9dqtif.execute-api.eu-central-1.amazonaws.com/prod';
 // Interfaces
 interface ProviderProps {
   children?: ReactNode;
@@ -32,10 +28,26 @@ interface WatchAssetParams {
 
 export interface Info {
   name: string;
-  symbol?: string;
-  decimals?: number;
-  rpcUrls?: string[];
-  blockExplorerUrls?: string[];
+  symbol: string;
+  decimals: number;
+}
+
+export interface QuoteResult {
+  blockNumber: string;
+  amount: string;
+  amountDecimals: string;
+  quote: string;
+  quoteDecimals: string;
+  quoteGasAdjusted: string;
+  quoteGasAdjustedDecimals: string;
+  gasUseEstimateQuote: string;
+  gasUseEstimateQuoteDecimals: string;
+  gasUseEstimate: string;
+  gasUseEstimateUSD: string;
+  gasPriceWei: string;
+  route: any[][];
+  routeString: string;
+  quoteId: string;
 }
 
 interface Layer2Args {
@@ -43,17 +55,39 @@ interface Layer2Args {
   nodeURL: string;
 }
 
+const chainIdToNetwork: { [key: number]: Chain } = {
+  1: Mainnet,
+  4: Rinkeby,
+};
+
+const chainIDToNetworkInfo: { [key: number]: Info } = {
+  1: {
+    name: 'mainnet',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  4: {
+    name: 'rinkeby',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+};
+
 export class Layer2 {
   public CHAIN_ID: number;
   public NODE_URL: string;
   public wallets: Wallet[];
-  public chainIdToNetworkInfo: { [network: string]: Info };
+  public chainIdToNetworkInfo: Info;
   public config: Config;
+  public chainInfo: Chain;
+  public interfaces: { [key: string]: Interface };
+  public contracts: { [key: string]: Contract };
 
   constructor({ chainID, nodeURL }: Layer2Args) {
     this.CHAIN_ID = chainID;
     this.NODE_URL = nodeURL;
     this.wallets = initializeWallets(chainID);
+    this.chainInfo = chainIdToNetwork[chainID];
 
     this.config = {
       autoConnect: false,
@@ -67,21 +101,43 @@ export class Layer2 {
       },
     };
 
-    this.chainIdToNetworkInfo = {
-      1: {
-        name: 'mainnet',
-        symbol: 'ETH',
-        decimals: 18,
-        rpcUrls: [this.NODE_URL],
-        blockExplorerUrls: ['https://etherscan.io/'],
-      },
+    this.chainIdToNetworkInfo = chainIDToNetworkInfo[chainID];
+
+    this.interfaces = {
+      erc20Interface: this.loadInterface(ERC20),
+      swapRouterInterface: this.loadInterface(SwapRouter.abi),
     };
+
+    this.contracts = {
+      swapRouterContract: this.loadContract(
+        SwapRouter.abi,
+        SWAP_ROUTER_ADDRESS
+      ),
+    };
+
+    // this.getContractFunctionArgs = {
+    //   interface: this.contracts.swapRouterInterface,
+    //   functionName: 'exactInputSingle',
+    //   transactionOptions: {},
+    // };
   }
 
-  // pre-fill config values for context provider.
-  // wrap your application with this
-  Provider = ({ children }: ProviderProps) =>
-    DAppProvider({ config: this.config, children: children });
+  public async getQuote(
+    inputAmount: number,
+    tokenOut: string,
+    exactOut: boolean = false
+  ) {
+    const tradeType = exactOut ? 'exactOut' : 'exactIn';
+
+    try {
+      const res = await fetch(
+        `${RouterAPI}/quote?tokenInAddress=${this.chainIdToNetworkInfo.symbol}&tokenInChainId=${this.CHAIN_ID}&tokenOutAddress=${tokenOut}&tokenOutChainId=${this.CHAIN_ID}&amount=${inputAmount}&type=${tradeType}`
+      );
+      return res.json();
+    } catch (error) {
+      return error;
+    }
+  }
 
   printVars(): void {
     console.table({
@@ -91,13 +147,13 @@ export class Layer2 {
   }
 
   // return user's address page on Etherscan
-  blockExplorerAddressLink = (address: string): string | undefined => {
-    return getExplorerAddressLink(address, this.CHAIN_ID);
-  };
+  blockExplorerAddressLink(address: string): string | undefined {
+    return this.chainInfo.getExplorerAddressLink(address);
+  }
 
   // return user's transaction info page on Etherscan
   blockExplorerTransactionLink(transactionHash: string): string | undefined {
-    return getExplorerTransactionLink(transactionHash, this.CHAIN_ID);
+    return this.chainInfo.getExplorerTransactionLink(transactionHash);
   }
 
   // pass in [JSON].abi
@@ -116,20 +172,6 @@ export class Layer2 {
     const contract = new Contract(address, contractInterface);
 
     return contract;
-  }
-
-  interfaces: { [key: string]: Interface } = {
-    erc20Interface: this.loadInterface(ERC20),
-    swapRouterInterface: this.loadInterface(SwapRouter.abi),
-  };
-
-  contracts: { [key: string]: Contract } = {
-    swapRouterContract: this.loadContract(SwapRouter.abi, SWAP_ROUTER_ADDRESS),
-  };
-
-  getUserAddress(): string | null | undefined {
-    const { account } = useEthers();
-    return account;
   }
 }
 
