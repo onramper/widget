@@ -102,9 +102,9 @@ const tob64 = async (file: File): Promise<string | ArrayBuffer | null> => {
     });
 }
 
-const executeStep = async (_step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
-    const step = _step as (NextStep & {url?: string});
-    if (!step.url) throw new Error('Unexpected error: Invalid step end.');
+const executeStep = async (step: NextStep, data: { [key: string]: any } | File, params?: ExecuteStepParams): Promise<NextStep> => {
+    if (!('url' in step)) throw new Error('Invalid step.')
+    if (step.url === undefined) throw new Error('Unexpected error: Invalid step end.')
 
     const isMoonpay = isMoonpayStep(step.url)
     const isFile = step.type === 'file'
