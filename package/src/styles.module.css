@@ -36,7 +36,9 @@ theme styles
     --list-active-color: #6C77DC;
     --list-active-txt-color: #fff;
     /* variants - screens with different color schemes */
-    --primary-var-bg-color: var(--primary-color);
+    --primary-var-bg-color: #0e21cc;
+    --primary-var-sec-color:#3044fa; 
+    --primary-var-gradient-color: rgb(24, 43, 212);
     --primary-var-text-color: #fff;
     --primary-var-text-secondary-color: #D5D7E7;
     --primary-var-selection-color: #4656EC;
