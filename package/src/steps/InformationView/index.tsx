@@ -39,6 +39,19 @@ const InformationView: React.FC<{
         newNextStep.extraData &&
         newNextStep.extraData.length > 0
       ) {
+        const isCoinifyFormStep = newNextStep.extraData.find((stepData) => {
+          return stepData.type === "choice" && stepData.name === "mainSourceOfIncome";
+        });
+        if (isCoinifyFormStep) {
+          const newNext: NextStep = {
+            type: "form",
+            url: newNextStep.url ?? "",
+            data: newNextStep.extraData
+          }
+
+          replaceScreen(<Step nextStep={newNext} />);
+        }
+
         newNextStep.extraData.forEach((data) => {
           let value = collectedStore[data.name];
           if (data.name === "cryptocurrencyAddress")
