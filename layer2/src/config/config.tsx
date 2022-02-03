@@ -1,14 +1,35 @@
-import { Config, DAppProvider, Mainnet, Chain, Rinkeby } from '@usedapp/core';
+import {
+  Config,
+  DAppProvider,
+  Mainnet,
+  Chain,
+  Rinkeby,
+  // Currency,
+} from '@usedapp/core';
 import { Interface, Fragment, JsonFragment } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
 import { ERC20, SwapRouter } from '../abis';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { Wallet, initializeWallets } from './wallets';
+import { BigNumber } from 'ethers';
+import { parseEther } from '@ethersproject/units';
 
 // No need change the address, same is for all testnets and mainnet
-export const SWAP_ROUTER_ADDRESS = '0xE592427A0AEce92De3Edee1F18E0157C05861564';
-export const RouterAPI =
+export const SWAP_ROUTER_ADDRESS = '0xE592427A0AEce92De3Edee1F18E0157C05861564'; // or 0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45 ??
+export const ROUTER_API =
   'https://a7sf9dqtif.execute-api.eu-central-1.amazonaws.com/prod';
+export const TOKEN_LIST = 'https://tokens.uniswap.org/';
+
+export const DEFAULTS = {
+  slippageTolerance: 5,
+  deadline: 200,
+};
+
+export interface SwapParams {
+  data: string; // route.methodParameters.calldata,
+  to: string; //  V3_SWAP_ROUTER_ADDRESS,
+  value: BigNumber; // BigNumber.from(route.methodParameters.value),
+}
 // Interfaces
 interface ProviderProps {
   children?: ReactNode;
@@ -30,6 +51,7 @@ export interface Info {
   name: string;
   symbol: string;
   decimals: number;
+  wethAddress: string;
 }
 
 export interface QuoteResult {
@@ -50,6 +72,13 @@ export interface QuoteResult {
   quoteId: string;
 }
 
+export interface RouteResult extends QuoteResult {
+  methodParameters: {
+    calldata: string; // long-ass hexString
+    value: string; // 0x00
+  };
+}
+
 interface Layer2Args {
   chainID: number;
   nodeURL: string;
@@ -65,11 +94,13 @@ const chainIDToNetworkInfo: { [key: number]: Info } = {
     name: 'mainnet',
     symbol: 'ETH',
     decimals: 18,
+    wethAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
   },
   4: {
     name: 'rinkeby',
     symbol: 'ETH',
     decimals: 18,
+    wethAddress: '0xc778417E063141139Fce010982780140Aa0cD5Ab',
   },
 };
 
@@ -114,25 +145,73 @@ export class Layer2 {
         SWAP_ROUTER_ADDRESS
       ),
     };
-
-    // this.getContractFunctionArgs = {
-    //   interface: this.contracts.swapRouterInterface,
-    //   functionName: 'exactInputSingle',
-    //   transactionOptions: {},
-    // };
   }
 
   public async getQuote(
-    inputAmount: number,
+    inputAmount: number, // not formatted
     tokenOut: string,
     exactOut: boolean = false
-  ) {
+  ): Promise<QuoteResult | unknown> {
     const tradeType = exactOut ? 'exactOut' : 'exactIn';
-
+    const formattedAmount = parseEther(inputAmount.toString()).toString();
+    debugger;
     try {
       const res = await fetch(
-        `${RouterAPI}/quote?tokenInAddress=${this.chainIdToNetworkInfo.symbol}&tokenInChainId=${this.CHAIN_ID}&tokenOutAddress=${tokenOut}&tokenOutChainId=${this.CHAIN_ID}&amount=${inputAmount}&type=${tradeType}`
+        `${ROUTER_API}/quote?tokenInAddress=${this.chainIdToNetworkInfo.symbol}&tokenInChainId=${this.CHAIN_ID}&tokenOutAddress=${tokenOut}&tokenOutChainId=${this.CHAIN_ID}&amount=${formattedAmount}&type=${tradeType}`
       );
+      return res.json();
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async getRoute(
+    inputAmount: number,
+    tokenOut: string,
+    recipient: string,
+    exactOut: boolean = false
+  ): Promise<RouteResult | unknown> {
+    const tradeType = exactOut ? 'exactOut' : 'exactIn';
+    const formattedAmount = parseEther(inputAmount.toString()).toString();
+    const { slippageTolerance, deadline } = DEFAULTS;
+    try {
+      const res = await fetch(
+        `${ROUTER_API}/quote?tokenInAddress=${this.chainIdToNetworkInfo.symbol}&tokenInChainId=${this.CHAIN_ID}&tokenOutAddress=${tokenOut}&tokenOutChainId=${this.CHAIN_ID}&amount=${formattedAmount}&type=${tradeType}&slippageTolerance=${slippageTolerance}&deadline=${deadline}&recipient=${recipient}`
+      );
+      return res.json();
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async getSwapParams(
+    inputAmount: number,
+    tokenOut: string,
+    recipient: string,
+    exactOut: boolean = false
+  ): Promise<SwapParams | unknown> {
+    try {
+      const res = await this.getRoute(
+        inputAmount,
+        tokenOut,
+        recipient,
+        exactOut
+      );
+      const routeResult = res as RouteResult;
+      const { calldata, value } = routeResult.methodParameters;
+      return {
+        data: calldata,
+        to: SWAP_ROUTER_ADDRESS,
+        value: BigNumber.from(value),
+      } as SwapParams;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async getTokens() {
+    try {
+      const res = await fetch(TOKEN_LIST);
       return res.json();
     } catch (error) {
       return error;
