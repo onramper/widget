@@ -27,12 +27,13 @@ const SwapCryptoView = () => {
 
   const handleSwap = async () => {
     if (account) {
+      setLoadingMessage("fetching swap data...");
       const res = (await layer2.getSwapParams(
         Number(inputAmount),
         "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
         account
       )) as SwapParams;
-
+      if (res) setLoadingMessage("");
       sendTransaction({
         data: res.data,
         to: res.to,
@@ -48,7 +49,7 @@ const SwapCryptoView = () => {
 
   const handleQuote = async () => {
     if (inputAmount) {
-      setLoadingMessage("fetching quote");
+      setLoadingMessage("fetching quote...");
       const quote = await layer2.getQuote(
         Number(inputAmount),
         "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
@@ -116,7 +117,9 @@ const SwapCryptoView = () => {
       {loadingMessage && <p>{loadingMessage}</p>}
       {quote && (
         <div>
-          <button onClick={() => setQuote(null)}>X</button>
+          <button style={buttonStyles} onClick={() => setQuote(null)}>
+            X
+          </button>
           <p>fee breakdown:</p>
           <p>{`Quote: ${quote.quoteDecimals}`}</p>
           <p>{`(estimated gas: ${quote.gasUseEstimate})`}</p>
@@ -124,7 +127,7 @@ const SwapCryptoView = () => {
           <p>{`Final: ${quote.quoteGasAdjustedDecimals}`}</p>
         </div>
       )}
-      {state.status === "Mining" && <p>{"Mining..."}</p>}
+      {state.status !== "None" && <p>{state.status}</p>}
     </div>
   );
 };
