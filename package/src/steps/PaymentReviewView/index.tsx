@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import BodyConfirmPayment from "./BodyConfirmPayment";
+import BodyConfirmPayment from "./BodyPaymentReview";
 import commonClasses from "../../styles.module.css";
 import classes from "./PaymentReview.module.css";
 import Step from "../Step";

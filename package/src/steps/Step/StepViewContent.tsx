@@ -3,7 +3,7 @@ import stylesCommon from "../../styles.module.css";
 
 import ErrorVisual from "../../common/ErrorVisual";
 
-import PaymentReview from "../ConfirmPaymentView";
+import PaymentReview from "../PaymentReviewView";
 import UploadView from "../UploadView";
 import PickOptionView from "../PickOptionView";
 import FormView from "../FormView";
@@ -19,7 +19,7 @@ import InformationView from "../InformationView";
 import Footer from "../../common/Footer";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
-import PaymentReviewDecorator from "../ConfirmPaymentView/PaymentReviewDecorator";
+import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 
 export interface NewStepProps {
   nextStep?: NextStep;

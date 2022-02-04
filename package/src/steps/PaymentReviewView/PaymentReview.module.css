@@ -7,6 +7,6 @@
     --icon-padding: 5px;
 }
 
-.fiat-currency [itemProp="icon"] {
+.fiat-currency img[itemProp="icon"] {
     filter: invert(1);
 }

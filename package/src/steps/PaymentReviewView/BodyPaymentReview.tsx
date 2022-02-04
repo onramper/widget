@@ -6,17 +6,8 @@ import ButtonAction from "../../common/ButtonAction";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import InfoBox from "../../common/InfoBox";
-import { PayamentReviewDataItem } from "../../ApiContext/api/types/nextStep";
 import StepsOverview from "../../common/StepsOverview/StepsOverview";
-
-type BodyConfirmPaymentViewType = {
-  onActionButton: () => void;
-  heading?: string;
-  subHeading?: string;
-  errorMessage?: string;
-  isLoading?: boolean;
-  overviewSteps: PayamentReviewDataItem[];
-};
+import { BodyConfirmPaymentViewType } from "./PaymentReview.models";
 
 const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (
   props
