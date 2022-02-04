@@ -1,15 +1,7 @@
 import { BASE_API } from "../../../constants";
 import possibleFormFieldsStep from "./possibleFomStepFields";
-import devView from "./stepDev";
-
-const paymentReviewStep = {
-  type: "paymentReview",
-  progress: 30,
-  useHeading: true,
-  title: "Review Payment",
-  description: "Please verify the details below carefully",
-  url: `${BASE_API}/GoTo/TestGateway/personalInfoStep/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
-}
+import devView from "./stepPaymentReview";
+import paymentReviewStep from "./stepPaymentReview";
 
 const personalInfoStep = {
   type: "form",
@@ -54,7 +46,7 @@ const emailVerificationStep = {
 const orderComplete = {
   type: "orderComplete",
   title: "We've successfully received your order",
-  description: `We have emailed confirmation link about your order to thijs@onramper.com. Your order is being processed and it may take upto 1-3 working days.`
+  description: `We have emailed confirmation link about your order to thijs@onramper.com. Your order is being processed and it may take up to 1-3 working days.`
 };
 
 const nextStep: { [key: string]: any } = {

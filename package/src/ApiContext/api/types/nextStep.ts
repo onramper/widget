@@ -1,4 +1,4 @@
-import { NextStepDev } from "../../../steps/DevStepView/DevStepView.models";
+import { OverviewStepItem } from "../../../common/StepsOverview/StepsOverview.models";
 
 type StepFormBaseField = { 
     placeholder?: string;
@@ -111,9 +111,15 @@ type NextStepBase = {
     description?: string;
 }
 
-type PaymentReviewStep = {
+export type PayamentReviewDataItem = {
+    type: "StepsOverview",
+    items: OverviewStepItem[]
+}
+
+export type PaymentReviewStep = {
     type: "paymentReview",
     url?: string;
+    data: PayamentReviewDataItem[]
 }
 
 type NextStep =
@@ -157,7 +163,6 @@ type NextStep =
     } | EmailVerificationStep
       | OrderCompleteStep
       | PaymentReviewStep
-      | NextStepDev
     );
 
 interface FieldError {

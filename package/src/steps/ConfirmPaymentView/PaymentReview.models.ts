@@ -1,7 +1,7 @@
 import { NextStep } from "../../ApiContext";
 
 export type PaymentReviewProps = {
-  nextStep: NextStep;
+  nextStep: NextStep & { type: "paymentReview" };
   includeCryptoAddr?: boolean;
   onButtonAction?: () => void;
 };

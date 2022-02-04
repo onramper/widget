@@ -12,8 +12,16 @@ const StepOverviewDetailItem: React.FC<OverviewStepSubItemProps> = (props) => {
         <i className={classes.dot} />
       </div>
       <span className={classes.content}>
-          {props.content && props.content}
-        </span>
+        {props.content && props.content}
+        {props.contentValues && (
+          <>
+            {props.contentValues.label}{" "}
+            <span className={commonClasses["semibold"]}>
+              {props.contentValues.value}
+            </span>
+          </>
+        )}
+      </span>
     </div>
   );
 };
