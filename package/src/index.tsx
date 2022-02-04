@@ -22,7 +22,7 @@ type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   //? Config items for DApp provider, from iframe
   layer2Config: {
     chainID: number;
-    nodeURL: string;
+    readOnlyNodeURL?: string;
   };
 };
 

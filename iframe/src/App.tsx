@@ -15,7 +15,7 @@ const defaultApiKey =
     : dev_key;
 const layer2Config = {
   chainID: Number(process.env.REACT_APP_CHAIN_ID as string),
-  nodeURL: process.env.REACT_APP_NODE_URL as string,
+  readOnlyNodeURL: (process.env.REACT_APP_NODE_URL as string) ?? null,
 };
 const apiKey = getParam("apiKey", defaultApiKey);
 const defaultColor = `#${getParam("color", "0316C1")}`;

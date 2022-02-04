@@ -52,7 +52,7 @@ const SwapCryptoView = () => {
       setLoadingMessage("fetching quote...");
       const quote = await layer2.getQuote(
         Number(inputAmount),
-        "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+        "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984" // uni
       );
       if (quote) {
         setQuote(quote as QuoteResult);

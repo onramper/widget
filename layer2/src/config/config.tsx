@@ -75,7 +75,7 @@ export interface RouteResult extends QuoteResult {
 
 interface Layer2Args {
   chainID: number;
-  nodeURL: string;
+  readOnlyNodeURL?: string;
 }
 
 const chainIdToNetwork: { [key: number]: Chain } = {
@@ -100,7 +100,7 @@ const chainIDToNetworkInfo: { [key: number]: Info } = {
 
 export class Layer2 {
   public CHAIN_ID: number;
-  public NODE_URL: string;
+  public NODE_URL: string | null;
   public wallets: Wallet[];
   public chainIdToNetworkInfo: Info;
   public config: Config;
@@ -108,9 +108,9 @@ export class Layer2 {
   public interfaces: { [key: string]: Interface };
   public contracts: { [key: string]: Contract };
 
-  constructor({ chainID, nodeURL }: Layer2Args) {
+  constructor({ chainID, readOnlyNodeURL }: Layer2Args) {
     this.CHAIN_ID = chainID;
-    this.NODE_URL = nodeURL;
+    this.NODE_URL = readOnlyNodeURL ?? null;
     this.wallets = initializeWallets(chainID);
     this.chainInfo = chainIdToNetwork[chainID];
 
@@ -121,9 +121,11 @@ export class Layer2 {
         checkInterval: 2000,
       },
       readOnlyChainId: this.CHAIN_ID,
-      readOnlyUrls: {
-        [this.CHAIN_ID]: this.NODE_URL,
-      },
+      readOnlyUrls: this.NODE_URL
+        ? {
+            [this.CHAIN_ID]: this.NODE_URL,
+          }
+        : {},
     };
 
     this.chainIdToNetworkInfo = chainIDToNetworkInfo[chainID];
@@ -251,7 +253,7 @@ export class Layer2 {
 
 interface ConfigArgs {
   chainID: number;
-  nodeURL: string;
+  readOnlyNodeURL?: string;
 }
 
 export const addTokenToMetamask = async (
@@ -278,7 +280,7 @@ export const addTokenToMetamask = async (
   }
 };
 
-export const getConfig = ({ chainID, nodeURL }: ConfigArgs): Config => {
+export const getConfig = ({ chainID, readOnlyNodeURL }: ConfigArgs): Config => {
   return {
     autoConnect: false,
     notifications: {
@@ -286,9 +288,11 @@ export const getConfig = ({ chainID, nodeURL }: ConfigArgs): Config => {
       checkInterval: 2000,
     },
     readOnlyChainId: chainID,
-    readOnlyUrls: {
-      [chainID]: nodeURL,
-    },
+    readOnlyUrls: readOnlyNodeURL
+      ? {
+          [chainID]: readOnlyNodeURL,
+        }
+      : {},
   };
 };
 
