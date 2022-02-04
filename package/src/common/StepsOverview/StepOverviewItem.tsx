@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useCallback, useState, useRef } from "react";
 import classes from "./StepsOverview.module.css";
 import commonClasses from "../.../../../styles.module.css";
 import { StepOverviewItemProps } from "./StepsOverview.models";
@@ -9,8 +9,8 @@ import { transitionClasses } from "./constants";
 import { ReactComponent as ChevronRightIcon } from "./../../icons/chevron-right.svg";
 
 const StepOverviewItem: React.FC<StepOverviewItemProps> = (props) => {
-  const [isExpanded, setIsExpanded] = React.useState(false);
-  const transitionRef = React.useRef<HTMLDivElement>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const transitionRef = useRef<HTMLDivElement>(null);
 
   const onClick = () => {
     if (props.items?.length) {
@@ -19,37 +19,36 @@ const StepOverviewItem: React.FC<StepOverviewItemProps> = (props) => {
     props.onClick && props.onClick();
   };
 
-  const computeStyle = React.useCallback(() => {
-    return props.iconBgColor
-      ? ({
-          "--icon-bg-color": props.iconBgColor,
-          "--icon-padding": "5px"
-        } as React.CSSProperties)
-      : {};
-  }, [props.iconBgColor]);
-
-  const computeMainItemClassName = React.useCallback(
-    () =>
-      `${classes["item"]} ${classes["border-left"]} ${props.className || ""} ${
-        props.isSingleChild ? classes["single-child"] : ""
-      } ${isExpanded ? classes["is-expanded"] : ""}`,
-    [isExpanded, props.className, props.isSingleChild]
+  const computeIsExpandable = useCallback(
+    () => !!props.items?.length,
+    [props.items?.length]
   );
 
-  const isExpandable = !!props.items?.length;
+  const computeMainItemClassName = useCallback(() => {
+    const hasSvgIconClass =
+      typeof props.icon !== "string" ? classes["wrapper-with-svg-icon"] : "";
+    const singleChildClass = props.isSingleChild ? classes["single-child"] : "";
+    const isExpandedClass = isExpanded ? classes["is-expanded"] : "";
+    const className = props.className || "";
 
-  const iconClassName = `${classes["icon-wrapper"]} ${
-    commonClasses["flex-all"]
-  } ${isExpandable ? commonClasses["cursor-pointer"] : ""}`;
+    return `${classes["item"]} ${classes["border-left"]} ${hasSvgIconClass} ${className} ${singleChildClass} ${isExpandedClass}`;
+  }, [isExpanded, props.className, props.icon, props.isSingleChild]);
+
+  const computeIconClassName = useCallback(() => {
+    const isExpandableClass = computeIsExpandable()
+      ? commonClasses["cursor-pointer"]
+      : "";
+
+    return `${classes["icon-wrapper"]} ${commonClasses["flex-all"]} ${isExpandableClass}`;
+  }, [computeIsExpandable]);
+
+  const isExpandable = computeIsExpandable();
 
   return (
     <React.Fragment>
-      <li
-        className={computeMainItemClassName()}
-        style={computeStyle()}
-      >
+      <li className={computeMainItemClassName()}>
         <div
-          className={iconClassName}
+          className={computeIconClassName()}
           itemProp="icon-wrapper"
           onClick={onClick}
         >

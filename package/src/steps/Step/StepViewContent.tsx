@@ -20,7 +20,6 @@ import Footer from "../../common/Footer";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../ConfirmPaymentView/PaymentReviewDecorator";
-import DevStepView from "../DevStepView/DevStepView";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -65,7 +64,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       return;
     }
 
-    const showPaymentReview = () => {
+    const showPaymentReview = (nextStep: NextStep & { type: "paymentReview" }) => {
       if (!collected.isAddressEditable) {
         const newAddress =
           collected.defaultAddrs[collected.selectedCrypto?.id ?? ""];
@@ -116,10 +115,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         replaceScreen(<OrderCompleteView nextStep={nextStep} />);
         break;
       case "paymentReview":
-        showPaymentReview();
-        break;
-      case "devStep":
-        replaceScreen(<DevStepView nextStep={nextStep} />);
+        showPaymentReview(nextStep);
         break;
       default:
         break;
