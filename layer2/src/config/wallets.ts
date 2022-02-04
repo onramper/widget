@@ -2,6 +2,7 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 
 export interface Wallet {
+  id: number;
   name: string;
   connector: AbstractConnector;
   //   //! Some wallets (like Torus) will require extra clean-up to unmount an iframe.
@@ -15,7 +16,8 @@ export const initializeWallets = (
 ): Wallet[] => {
   return [
     {
-      name: '🦊 metamask',
+      id: 0,
+      name: 'metamask',
       connector: new InjectedConnector({
         supportedChainIds: [chainID],
       }),
