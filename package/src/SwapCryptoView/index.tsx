@@ -17,7 +17,7 @@ const SwapCryptoView = () => {
   const balance = useEtherBalance(account);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [inputAmount, setInputAmount] = useState<string>("");
-  const [loadingMessage, setLoadingMessage] = useState("");
+  const [loadingMessage, setLoadingMessage] = useState<string>("");
   const [quote, setQuote] = useState<QuoteResult | null>(null);
   const { sendTransaction, state } = useSendTransaction();
 
@@ -30,7 +30,7 @@ const SwapCryptoView = () => {
       setLoadingMessage("fetching swap data...");
       const res = (await layer2.getSwapParams(
         Number(inputAmount),
-        "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+        "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984", // uni address
         account
       )) as SwapParams;
       if (res) setLoadingMessage("");
