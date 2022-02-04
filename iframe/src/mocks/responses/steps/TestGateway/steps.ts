@@ -1,6 +1,5 @@
 import { BASE_API } from "../../../constants";
 import possibleFormFieldsStep from "./possibleFomStepFields";
-import devView from "./stepPaymentReview";
 import paymentReviewStep from "./stepPaymentReview";
 
 const personalInfoStep = {
