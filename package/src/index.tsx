@@ -56,7 +56,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           setFlagRestart((old) => ++old);
         }}
       >
-        <L2Provider layer2Args={props.layer2Config}>
+        <L2Provider>
           <NavProvider>
             <APIProvider
               API_KEY={props.API_KEY}

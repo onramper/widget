@@ -25,10 +25,13 @@ const SwapCryptoView = () => {
     setInputAmount(e.currentTarget.value);
   };
 
+  const CHAIN_ID = 4;
+
   const handleSwap = async () => {
     if (account) {
       setLoadingMessage("fetching swap data...");
       const res = (await layer2.getSwapParams(
+        CHAIN_ID,
         Number(inputAmount),
         "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984", // uni address
         account
@@ -51,6 +54,7 @@ const SwapCryptoView = () => {
     if (inputAmount) {
       setLoadingMessage("fetching quote...");
       const quote = await layer2.getQuote(
+        CHAIN_ID,
         Number(inputAmount),
         "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984" // uni
       );
