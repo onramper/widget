@@ -10,21 +10,23 @@
 .content-wrapper {
     display: flex;
     align-items: center;
-    height: 88px;
     background: rgba(255, 255, 255, 0.01);
     border: 1px solid rgba(0, 75, 235, 0.04);
     box-shadow: 0px 3.88908px 40px rgba(26, 60, 85, 0.09);
     border-radius: 160px;
 }
 
-.input-wrapper {
+.input-section {
     flex-grow: 1;
     padding: 20px 10px 17px 32px;
+    overflow: hidden;
 }
 
 .input {
     display: inline-block;
-    width: 100%;
+    min-width: 50px;
+    max-width: 100%;
+    flex: 1;
     outline: none;
     border: 0;
     margin: 2px 0px;
@@ -35,7 +37,7 @@
     padding: 0;
 }
 
-.input, 
+.input,
 .input:disabled {
     background-color: transparent;
 }
@@ -51,6 +53,57 @@
 
 .wrapper.has-error .content-wrapper {
     border: 1px solid var(--error-color);
+}
+
+.input-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.input-right {
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+  color: var(--text-light-color);
+}
+
+.input-right > .child + .child {
+  margin-left: 4px;
+}
+
+.suffix {
+  letter-spacing: 0.015em;
+  font-size: 11px;
+  line-height: 12px;
+}
+
+.edit-icon {
+  cursor: pointer;
+}
+
+.hint-section {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.hint-section > .child + .child {
+  margin-left: 5px;
+}
+
+.aux-button {
+  background: rgba(3, 22, 193, 0.13);
+  border-radius: 10px;
+  padding: 3px 5px;
+  font-size: 10px;
+  line-height: 12px;
+  color: var(--text-light-color);
+}
+
+.hint {
+  font-size: 10px;
+  line-height: 12px;
+  color: var(--text-light-color);
 }
 
 .error-wrapper {
