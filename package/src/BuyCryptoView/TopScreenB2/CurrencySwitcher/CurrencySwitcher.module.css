@@ -16,6 +16,7 @@ div.crypto-icon {
 
 div.fiat-icon {
     padding: 3px;
+    background-color: var(--primary-color);
 }
 
 .fiat-icon img {
