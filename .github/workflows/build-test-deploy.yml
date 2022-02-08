@@ -10,10 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1 # ! We only skip if the tippy top commit says so!
+          persist-credentials: false
       - name: Get Node.js
         uses: actions/setup-node@v1
         with:
           node-version: "14.x"
+      - name: Reconfigure git to use HTTP authentication
+              run: >
+                git config --global url."https://github.com/".insteadOf ssh://git@github.com/
       - run: (cd package && npm ci &&  npm run build:dev)
       - run: (cd iframe && npm ci &&  npm run build)
   deploy:
