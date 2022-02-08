@@ -89,7 +89,6 @@ type NextStep =
         data: StepDataItems;
         humanName?: string; // TODO: force all forms to have humanName
         hint?: string;
-        extraData?: StepDataItems;
     } | {
         type: 'iframe';
         url: string;
@@ -107,7 +106,7 @@ type NextStep =
         extraData?: StepDataItems;
     } | {
         type: 'pickOne';
-        options: NextStep[];
+        options: FileStep[];
         humanName?: string
         hint?: string
     } | {
