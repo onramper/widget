@@ -18,7 +18,9 @@ jobs:
         with:
           node-version: "14.x"
       - name: Reconfigure git to use HTTP authentication
-              run: git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+              run: >
+                git config --global url."https://github.com/".insteadOf
+                ssh://git@github.com/
       - run: (cd package && npm ci &&  npm run build:dev)
       - run: (cd iframe && npm ci &&  npm run build)
   deploy:
