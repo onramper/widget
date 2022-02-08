@@ -1,4 +1,4 @@
-import { DropdownHandleProps } from "../../../common/DropdownHandle/DropdownHandle.models";
+import { DropdownHandleProps } from "../DropdownHandle/DropdownHandle.models";
 
 export type InputDropdownProps = {
     label: string;

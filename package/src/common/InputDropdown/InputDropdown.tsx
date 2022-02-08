@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./InputDropdown.module.css";
-import commonStyles from "./../../../styles.module.css";
-import { idGenerator } from "../../../utils";
+import commonStyles from "./../../styles.module.css";
+import { idGenerator } from "../../utils";
 import { InputDropdownProps } from "./InputDropdown.models";
-import DropdownHandle from "../../../common/DropdownHandle/DropdownHandle";
-import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
+import DropdownHandle from "../DropdownHandle/DropdownHandle";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 
 const Skeleton: React.FC<{ className?: string }> = ({ className }) => (
