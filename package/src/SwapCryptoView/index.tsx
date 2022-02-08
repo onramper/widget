@@ -28,7 +28,6 @@ const SwapCryptoView = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputAmount(e.currentTarget.value);
   };
-
   const CHAIN_ID = 4;
 
   const handleSwap = async () => {
