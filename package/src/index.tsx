@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import styles from "./styles.module.css";
 // import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
-import styles from "./styles.module.css";
 import { NavProvider, NavContainer } from "./NavContext";
 import { APIProvider } from "./ApiContext";
 import type { APIProviderType } from "./ApiContext";
