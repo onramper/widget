@@ -5,6 +5,7 @@ export type InputButtonProps = {
   className?: string;
   iconPosition?: "start" | "end";
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  renderIconSvg?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
   error?: string;
   onHelpClick?: () => void;
   hint?: string;

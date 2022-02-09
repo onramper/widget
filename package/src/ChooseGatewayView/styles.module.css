@@ -95,7 +95,7 @@
 
 .option-badges-wrapper {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 }
 
 .badge-wrapper {
@@ -136,7 +136,6 @@
 .option-right-sub {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
     flex-wrap: wrap;
     overflow: hidden;
     height: 40px;
