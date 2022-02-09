@@ -160,6 +160,11 @@ const resources = {
         addressTag: "Address tag",
         title: "Payment review",
       },
+      verifyCreditCardScreen: {
+        hint: "Where do I find this code?",
+        resendCode: "Resend code",
+        gotIt: "Got it👌",
+      },
       errorCountriesNotSupported: {
         title: "Country not supported",
         isNotSupportedBy: "is not yet supported by Onramper.",
@@ -350,6 +355,11 @@ const resources = {
         walletAddress: "지갑 주소",
         addressTag: "주소 태그",
         title: "지불 검토",
+      },
+      verifyCreditCardScreen: {
+        hint: "이 코드는 어디에서 찾을 수 있습니까?",
+        resendCode: "코드 재전송",
+        gotIt: "알았어요",
       },
       errorCountriesNotSupported: {
         title: "국가가 지원되지 않음",
@@ -551,6 +561,11 @@ const resources = {
         walletAddress: "ウォレットアドレス",
         addressTag: "アドレスタグ",
         title: "支払いレビュー"
+      },
+      verifyCreditCardScreen: {
+        hint: "このコードはどこにありますか？",
+        resendCode: "コードを再送する",
+        gotIt: "とった",
       },
       errorCountriesNotSupported: {
         title: "国はサポートされていません",
