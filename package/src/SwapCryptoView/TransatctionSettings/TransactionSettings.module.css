@@ -1,0 +1,77 @@
+.wrapper {
+  position: relative;
+  z-index: 2;
+  width: 20px;
+}
+
+.icon {
+  color: var(--secondary-color);
+  cursor: pointer;
+}
+
+.settings-wrapper {
+  width: 225px;
+  padding: 16px;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background-color: var(--background-color);
+  box-shadow: 0px 0px 60px rgba(86, 94, 160, 0.2); /* TODO: maybe a variable here */
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.settings-wrapper > .heading {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 12px;
+  color: var(--text-dark-color);
+  padding-bottom: 12px;
+}
+
+.setting-item {
+  width: 100%;
+  align-items: center;
+}
+
+.setting-item + .setting-item {
+  padding-top: 12px;
+}
+
+.setting-name {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--text-dark-color);
+  padding-bottom: 12px;
+}
+
+.setting-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* transition
+   ============================= */
+   .collapse-enter {
+    max-height: 0px;
+    opacity: 0;
+  }
+  
+  .collapse-enter-active {
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 200ms, opacity 200ms;
+  }
+  
+  .collapse-exit {
+    max-height: 1000px;
+    opacity: 1;
+  }
+  
+  .collapse-exit-active {
+    max-height: 0px;
+    opacity: 0;
+    transition: max-height 200ms, opacity 200ms;
+  }

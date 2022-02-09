@@ -25,6 +25,7 @@ export type InputFacadeProps = {
     info?: string;
     iconTitle?: string;
     isRequired?: boolean;
+    variant?: "setting"
 }
 
 export type BaseInputProps = Omit<InputFacadeProps, "onChange"> & {

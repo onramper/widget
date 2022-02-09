@@ -3,6 +3,7 @@ theme styles
 *********/
 .theme {
     --primary-color: #0316C1;
+    --secondary-color: #7680D9;
     --error-color: #D25656;
     --success-color: #3AD66F;
     --text-dark-color: #292D32;
@@ -218,6 +219,19 @@ components
     text-decoration: none;
     color: #083d8d;
     cursor: pointer;
+}
+
+.secondary-btn {
+    font-size: 15px;
+    line-height: 12px;
+    color: var(--background-color);
+    /* TODO: add active, hover states */
+    /* TODO: add variable */
+    background: #6271FF; 
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
 }
 
 /* help */
