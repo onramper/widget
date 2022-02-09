@@ -246,11 +246,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         isRequired={field.required !== false}
                                         ref={inputRefs[i].ref}
                                         onHintClick={() => nextScreen(
-                                            <HelpView buttonText={"Got it👌"} dismissAfterClick>
+                                            <HelpView buttonText={t('verifyCreditCardScreen.gotIt')} dismissAfterClick>
                                                 <Help2FACreditCard />
                                             </HelpView>
                                         )}
-                                        hint={"Where do I find this code?"}
+                                        hint={t('verifyCreditCardScreen.hint')}
                                         name={field.name} onChange={onChange}
                                         label={field.humanName}
                                         placeholder=""
@@ -258,7 +258,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         className={stylesCommon.body__child}
                                         type={getInputType(field)}
                                     />
-                                    <span key={998} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
+                                    <span key={998} onClick={() => backScreen()} className={styles.resend}>{t('verifyCreditCardScreen.resendCode')}&nbsp;</span>
                                 </React.Fragment>
                             ))
                             || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
@@ -276,7 +276,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         type={getInputType(field)}
                                         value={verifyCode}
                                     />
-                                    <span key={999} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
+                                    <span key={999} onClick={() => backScreen()} className={styles.resend}>{t('verifyCreditCardScreen.resendCode')}&nbsp;</span>
                                 </React.Fragment>
                             ))
                             || ((field.type === 'boolean' && field.name === 'termsOfUse') && (
