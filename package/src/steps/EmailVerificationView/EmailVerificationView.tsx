@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { APIContext, NextStep } from "../../ApiContext";
 import classes from "./EmailVerificationView.module.css";
 import commonClasses from "./../../styles.module.css";
@@ -17,6 +17,7 @@ const EmailVerificationView: React.FC<{
   const [field] = useState(nextStep.data);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
+  const firstRender = useRef(true);
 
   const { nextScreen } = useContext(NavContext);
   const { apiInterface, inputInterface, collected } = useContext(APIContext);
@@ -47,10 +48,15 @@ const EmailVerificationView: React.FC<{
   );
 
   useEffect(() => {
+    if(!firstRender.current) {
+      return;
+    }
+    
+    firstRender.current = false;
     if (field.initialValue) {
       onChange(field.name, field.initialValue);
     }
-  }, []);
+  }, [field.initialValue, field.name, onChange]);
 
   const value = collected[field.name] ?? "";
   const isFilled = !!value;
