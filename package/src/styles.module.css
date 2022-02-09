@@ -222,7 +222,7 @@ components
 }
 
 .secondary-btn {
-    font-size: 15px;
+    font-size: 12px;
     line-height: 12px;
     color: var(--background-color);
     /* TODO: add active, hover states */

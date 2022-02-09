@@ -34,14 +34,17 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
     props.defaultSlippage.toFixed(2)
   );
   const [deadline, setDeadline] = useState(
-    String(Math.floor(props.defaultDeadline / 60 * 100) / 100)
+    String(Math.floor((props.defaultDeadline / 60) * 100) / 100)
   );
   const wrapperRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
 
   const computeSlippageAutoBtnClass = useCallback(() => {
-    const outlineClass = props.defaultSlippage === Number(slippage) ? "" : commonClasses["outline"];
-    return `${commonClasses["secondary-btn"]} ${outlineClass} ${classes["auto-btn"]}`
+    const outlineClass =
+      props.defaultSlippage === Number(slippage)
+        ? ""
+        : commonClasses["outline"];
+    return `${commonClasses["secondary-btn"]} ${outlineClass} ${classes["auto-btn"]}`;
   }, [props.defaultSlippage, slippage]);
 
   const resetSlippage = useCallback(() => {
@@ -107,7 +110,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 onChange={(name: string, value: string) => setDeadline(value)}
                 className={classes["deadline-input"]}
               />
-              <div>Minutes</div>
+              <div className={classes["setting-label"]}>Minutes</div>
             </div>
           </div>
 

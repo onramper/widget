@@ -47,6 +47,12 @@
   padding-bottom: 12px;
 }
 
+.setting-label {
+  font-size: 15px;
+  line-height: 17px;
+  color: var(--text-dark-color);
+}
+
 .setting-content {
   width: 100%;
   display: flex;
@@ -68,6 +74,7 @@
 }
 
 .add-btn {
+  width: 100%;
   margin-top: 12px;
 }
 
