@@ -227,11 +227,24 @@ components
     color: var(--background-color);
     /* TODO: add active, hover states */
     /* TODO: add variable */
-    background: #6271FF; 
+    background-color: #6271FF; 
     padding: 10px 20px;
     border: none;
     cursor: pointer;
     border-radius: 20px;
+    border: 1px solid #6271FF;
+}
+
+.secondary-btn.outline {
+    background-color: var(--background-color);
+    color: var(--text-light-color);
+    border: 1px solid var(--text-light-color);
+}
+
+.secondary-btn.outline:hover {
+    color: var(--background-color);
+    background-color: #6271FF;
+    border: 1px solid #6271FF;
 }
 
 /* help */

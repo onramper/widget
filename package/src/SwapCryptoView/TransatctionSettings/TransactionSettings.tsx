@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TransactionSettingsProps } from "./TransactionSettings.models";
 import commonClasses from "./../../styles.module.css";
 import classes from "./TransactionSettings.module.css";
@@ -39,6 +39,15 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
 
+  const computeSlippageAutoBtnClass = useCallback(() => {
+    const outlineClass = props.defaultSlippage === Number(slippage) ? "" : commonClasses["outline"];
+    return `${commonClasses["secondary-btn"]} ${outlineClass} ${classes["auto-btn"]}`
+  }, [props.defaultSlippage, slippage]);
+
+  const resetSlippage = useCallback(() => {
+    setSlippage(props.defaultSlippage.toFixed(2));
+  }, [props.defaultSlippage]);
+
   useEffect(() => {
     const onClickEvent = (event: MouseEvent) => {
       if (!event.target || wrapperRef.current?.contains(event.target as Node)) {
@@ -67,7 +76,8 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
             <div className={classes["setting-name"]}> Slippage tolerance: </div>
             <div className={classes["setting-content"]}>
               <button
-                className={`${commonClasses["secondary-btn"]} ${classes["auto-btn"]}`}
+                className={computeSlippageAutoBtnClass()}
+                onClick={resetSlippage}
               >
                 Auto
               </button>
