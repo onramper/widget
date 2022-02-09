@@ -2,6 +2,7 @@
   position: relative;
   z-index: 2;
   width: 20px;
+  box-sizing: border-box;
 }
 
 .icon {
@@ -50,6 +51,24 @@
   width: 100%;
   display: flex;
   align-items: center;
+}
+
+.deadline-input,
+.auto-btn {
+  margin-right: 6px;
+}
+
+.auto-btn {
+  min-width: 75px;
+}
+
+.deadline-input {
+  min-width: unset;
+  width: 75px;
+}
+
+.add-btn {
+  margin-top: 12px;
 }
 
 /* transition

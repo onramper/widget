@@ -30,6 +30,12 @@ const Transition = React.forwardRef<
 
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [slippage, setSlippage] = useState(
+    props.defaultSlippage.toFixed(2)
+  );
+  const [deadline, setDeadline] = useState(
+    String(Math.floor(props.defaultDeadline / 60 * 100) / 100)
+  );
   const wrapperRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
 
@@ -61,18 +67,20 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
             <div className={classes["setting-name"]}> Slippage tolerance: </div>
             <div className={classes["setting-content"]}>
               <button
-                className={`${commonClasses["secondary-btn"]} ${classes["reset-btn"]}`}
+                className={`${commonClasses["secondary-btn"]} ${classes["auto-btn"]}`}
               >
                 Auto
               </button>
               <InputDelegator
+                align="right"
                 label=""
                 variant="setting"
-                type="number"
                 symbol="%"
                 symbolPosition="end"
                 name="slippage"
-                value="0.10"
+                type="number"
+                value={slippage}
+                onChange={(name: string, value: string) => setSlippage(value)}
               />
             </div>
           </div>
@@ -80,11 +88,14 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
             <div className={classes["setting-name"]}>Transaction deadline:</div>
             <div className={classes["setting-content"]}>
               <InputDelegator
+                align="center"
                 label=""
                 variant="setting"
                 type="number"
                 name="transactionDeadline"
-                value="0.10"
+                value={deadline}
+                onChange={(name: string, value: string) => setDeadline(value)}
+                className={classes["deadline-input"]}
               />
               <div>Minutes</div>
             </div>
