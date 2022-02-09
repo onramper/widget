@@ -6,9 +6,9 @@
     "@onramper/widget": "file:../package",
     "@sentry/react": "^6.1.0",
     "@sentry/tracing": "^6.1.0",
-    "react": "^16.14.0",
+    "react": "^17.0.2",
     "react-app-polyfill": "^2.0.0",
-    "react-dom": "^16.14.0"
+    "react-dom": "^17.0.2"
   },
   "scripts": {
     "lint": "eslint src --ext ts,js,tsx --no-ignore --fix",
@@ -52,7 +52,7 @@
     "msw": "^0.22.1",
     "prettier": "^2.1.2",
     "react-scripts": "3.4.1",
-    "react-test-renderer": "^16.14.0",
+    "react-test-renderer": "^17.0.2",
     "ts-jest": "^24.3.0",
     "typescript": "^3.9.5"
   },
