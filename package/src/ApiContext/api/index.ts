@@ -157,7 +157,7 @@ const executeStep = async (
   logRequest(step.url);
   const nextStepType = step.url.split("/")[5];
   let nextStep: FetchResponse;
-  if (isMoonpay && nextStepType !== "iframe") {
+  if (isMoonpay && nextStepType !== "redirect") {
     nextStep = await processMoonpayStep(step.url, { method, headers, body });
   } else {
     nextStep = await fetch(`${step.url}?${urlParams}`, {
