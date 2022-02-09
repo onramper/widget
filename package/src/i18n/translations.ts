@@ -164,6 +164,12 @@ const resources = {
         hint: "Where do I find this code?",
         resendCode: "Resend code",
         gotIt: "Got it👌",
+        helpTitle: "2FA Credit Card",
+        helpText: `A small transaction was charged on your credit card
+        with a 6-digit verification code in the description.
+        Check your credit card transactions, copy the code
+        and fill it in here.`,
+        pendingTransactionScreenshotAlt: "Pending transaction screenshot",
       },
       errorCountriesNotSupported: {
         title: "Country not supported",
@@ -360,6 +366,9 @@ const resources = {
         hint: "이 코드는 어디에서 찾을 수 있습니까?",
         resendCode: "코드 재전송",
         gotIt: "알았어요",
+        helpTitle: "2FA 신용카드",
+        helpText: `설명에 6자리 인증 코드가 포함된 소액 거래가 신용 카드로 청구되었습니다. 신용 카드 거래를 확인하고 코드를 복사하여 여기에 입력하십시오.`,
+        pendingTransactionScreenshotAlt: "보류 중인 거래 스크린샷",
       },
       errorCountriesNotSupported: {
         title: "국가가 지원되지 않음",
@@ -566,6 +575,9 @@ const resources = {
         hint: "このコードはどこにありますか？",
         resendCode: "コードを再送する",
         gotIt: "とった",
+        helpTitle: "2FA クレジットカード",
+        helpText: `説明に6桁の確認コードが記載された小さな取引がクレジットカードに請求されました。 クレジットカードの取引を確認し、コードをコピーしてここに入力します。`,
+        pendingTransactionScreenshotAlt: "保留中のトランザクションのスクリーンショット",
       },
       errorCountriesNotSupported: {
         title: "国はサポートされていません",
