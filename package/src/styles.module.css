@@ -240,13 +240,13 @@ components
     font-size: 12px;
     line-height: 12px;
     color: var(--background-color);
-    /* TODO: add active, hover states */
     background-color: var(--secondary-color-2); 
-    padding: 10px 20px;
+    padding: 8px 20px;
     border: none;
     cursor: pointer;
     border-radius: 20px;
     border: 1px solid var(--secondary-color-2);
+    transition: background-color 100ms, border-color 100ms;
 }
 
 .secondary-btn.outline {
@@ -255,10 +255,23 @@ components
     border: 1px solid var(--text-light-color);
 }
 
-.secondary-btn.outline:hover {
+.secondary-btn:hover {
     color: var(--background-color);
-    background-color: var(--secondary-color-2);
-    border: 1px solid var(--secondary-color-2);
+    background-color: var(--secondary-color-2-hover);
+    border-color: var(--secondary-color-2-hover);
+}
+
+.secondary-btn:active {
+    color: var(--background-color);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.secondary-btn:disabled {
+    color: var(--background-color);
+    background-color: var(--input-stroke-color);
+    border-color: var(--input-stroke-color);
+    cursor: default;
 }
 
 /* secondary btn 2 */
@@ -267,27 +280,27 @@ components
     line-height: 12px;
     color: var(--secondary-color-2); 
     background-color: var(--background-color);
-    background: var(--background-color);
     box-shadow: 0px 3.88908px 40px rgba(26, 60, 85, 0.09);
     padding: 10px 20px;
     border-radius: 20px;
     border: none;
     cursor: pointer;
+    transition: background-color 100ms, border-color 100ms;
 }
 
 .secondary-btn-2:hover {
     color: var(--background-color);
-    background: var(--secondary-color-2-hover);
+    background-color: var(--secondary-color-2-hover);
 }
 
 .secondary-btn-2:active {
     color: var(--background-color);
-    background: var(--secondary-color-2);
+    background-color: var(--secondary-color-2);
 }
 
 .secondary-btn-2:disabled {
     color: var(--background-color);
-    background: var(--input-stroke-color);
+    background-color: var(--input-stroke-color);
     cursor: default;
 }
 
