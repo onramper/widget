@@ -15,7 +15,7 @@ jobs:
       with:
         node-version: '14.x'
     - run: (cd package && npm ci &&  npm run build:dev)
-    - run: (cd iframe && npm ci &&  npm run build)
+    - run: (cd iframe && npm ci --no-optional &&  npm run build)
   deploy:
     needs: [lint-and-build]
     if: >
