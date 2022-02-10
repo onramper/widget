@@ -181,7 +181,8 @@ const ExchangingAmountsSection: React.FC = () => {
           label: "You spend",
           iconClassname: style["fiat-icon"],
           className: style["wrapper-input-dropdown"],
-          disabled: !!collected.amountInCrypto && collected.isCalculatingAmount
+          disabled: !!collected.amountInCrypto && collected.isCalculatingAmount,
+          isOneOption: data.availableCurrencies.length === 1
         },
         {
           target: collected.selectedCrypto,
@@ -189,7 +190,8 @@ const ExchangingAmountsSection: React.FC = () => {
           label: "You receive",
           className: style["wrapper-input-dropdown"],
           iconClassname: style["crypto-icon"],
-          disabled: !collected.amountInCrypto && collected.isCalculatingAmount
+          disabled: !collected.amountInCrypto && collected.isCalculatingAmount,
+          isOneOption: getSortedCryptoListItem().length === 1
         },
       ].map((item, index) => (
         <InputDropdown
@@ -206,6 +208,7 @@ const ExchangingAmountsSection: React.FC = () => {
             value: item.target?.name || "",
             iconClassname: item.iconClassname,
             onClick: () => handleDropdown(item.target),
+            disabled: item.isOneOption
           }}
           isInitialLoading={!collected.selectedCurrency || !collected.selectedCrypto}
           error={errors[item.type]}

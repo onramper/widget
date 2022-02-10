@@ -9,9 +9,12 @@ theme styles
     --text-dark-color: #292D32;
     --text-light-color: #7C7D82;
     --grey-light-color: #ABADB8;
+    --text-negative-color: #fff;
+    --text-negative-secondary-color: #D5D7E7;
     --seperator-color: #eff0f4;
     --overlay-backdrop-color: rgba(17, 32, 62, 0.32);
     --icon-backdrop-color: #F0F3FE;
+    --light-grey-color: #fafafb;
     /* inputs */
     --input-bg-color: #F7FAFD;
     --input-form-bg-color: #fff;
@@ -29,6 +32,8 @@ theme styles
     --padding-top: 1.25rem;
     --padding-rl: 35px;
     --padding-bottom: 1.125rem;
+    --pt-heading: 12px;
+    --pb-heading: 35px;
     /* header */
     --header-height: 82px;
     --header-tabs-height: 63px;
@@ -36,6 +41,14 @@ theme styles
     --list-hover-color: #F7FAFD;
     --list-active-color: #6C77DC;
     --list-active-txt-color: #fff;
+    /* variants - screens with different color schemes */
+    --primary-var-bg-color: #0e21cc;
+    --primary-var-sec-color:#3044fa; 
+    --primary-var-gradient-color: rgb(24, 43, 212);
+    --primary-var-text-color: #fff;
+    --primary-var-text-secondary-color: #D5D7E7;
+    --primary-var-selection-color: #4656EC;
+    --primary-var-border-color: #6B78F1;
     font-family: var(--font-family);
     width: var(--width);
     min-width: 250px;
@@ -296,7 +309,8 @@ components
     opacity: 0.5;
 }
 
-h1.remove-default {
+h1.remove-default,
+h2.remove-default {
     margin: 0;
     padding: 0;
     font-size: 1em;
@@ -332,6 +346,14 @@ li {
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.shrink-0 {
+    flex-shrink: 0;
+}
+
+.semibold {
+    font-weight: 600;
 }
 
 /* general transition */

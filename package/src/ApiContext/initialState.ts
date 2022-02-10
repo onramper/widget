@@ -10,6 +10,7 @@ export interface ItemType {
     name: string
     info?: string
     icon?: string
+    iconSvg?: JSX.Element,
     symbol?: string
     precision?: number
     currencyType?: string

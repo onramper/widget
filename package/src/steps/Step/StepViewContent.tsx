@@ -3,7 +3,7 @@ import stylesCommon from "../../styles.module.css";
 
 import ErrorVisual from "../../common/ErrorVisual";
 
-import ConfirmPaymentView from "../ConfirmPaymentView";
+import PaymentReview from "../PaymentReviewView";
 import UploadView from "../UploadView";
 import PickOptionView from "../PickOptionView";
 import FormView from "../FormView";
@@ -17,6 +17,9 @@ import { NavContext } from "../../NavContext";
 import { APIContext, NextStep } from "../../ApiContext";
 import InformationView from "../InformationView";
 import Footer from "../../common/Footer";
+import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
+import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
+import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -53,13 +56,30 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
           );
       }
       replaceScreen(
-        <ConfirmPaymentView
+        <PaymentReviewDecorator
           nextStep={nextStep}
           includeCryptoAddr={includeAddr}
         />
       );
       return;
     }
+
+    const showPaymentReview = (nextStep: NextStep & { type: "paymentReview" }) => {
+      if (!collected.isAddressEditable) {
+        const newAddress =
+          collected.defaultAddrs[collected.selectedCrypto?.id ?? ""];
+          
+        inputInterface.handleInputChange("cryptocurrencyAddress", newAddress);
+      }
+
+      replaceScreen(
+        <PaymentReview
+          nextStep={nextStep}
+          includeCryptoAddr={true}
+        />
+      );
+    }
+
     switch (nextStep.type) {
       case "form":
         replaceScreen(<FormView nextStep={nextStep} />);
@@ -77,16 +97,25 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         replaceScreen(<WaitView nextStep={nextStep} />);
         break;
       case "completed":
-        replaceScreen(<SuccessView txType="instant" nextStep={nextStep} />); //onlyScreen(<SuccessView txType='instant' />)
+        replaceScreen(<SuccessView txType="instant" nextStep={nextStep} />);
         break;
       case "iframe":
         replaceScreen(<IframeView nextStep={nextStep} />);
         break;
       case "requestBankTransaction":
-        replaceScreen(<WireTranserView nextStep={nextStep} />); //onlyScreen(<WireTranserView nextStep={nextStep} />)
+        replaceScreen(<WireTranserView nextStep={nextStep} />);
         break;
       case "information":
         replaceScreen(<InformationView nextStep={nextStep} />);
+        break;
+      case "emailVerification":
+        replaceScreen(<EmailVerificationView nextStep={nextStep} />);
+        break;
+      case "orderComplete":
+        replaceScreen(<OrderCompleteView nextStep={nextStep} />);
+        break;
+      case "paymentReview":
+        showPaymentReview(nextStep);
         break;
       default:
         break;

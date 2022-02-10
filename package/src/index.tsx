@@ -19,11 +19,6 @@ type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   fontFamily?: string;
   className?: string;
   displayChatBubble?: boolean;
-  //? Config items for DApp provider, from iframe
-  layer2Config: {
-    chainID: number;
-    readOnlyNodeURL?: string;
-  };
 };
 
 const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
