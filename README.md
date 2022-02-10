@@ -7,9 +7,9 @@ This project is created using create-react-app with typescript, here you will fi
 ###### Developement
 ```shell
 $ cd iframe
-$ npm ci
+$ npm run setup
 $ cd ../package
-$ npm ci --omit peer
+$ npm run setup
 ```
 
 ###### Connecting to local server

@@ -33,6 +33,7 @@
     "start:demo": "webpack --env NODE_ENV=development --env STAGE=demo",
     "start:local": "webpack --env NODE_ENV=development --env STAGE=local",
     "start:l2": "webpack --env NODE_ENV=development --env STAGE=l2",
+    "setup": "npm ci --omit=peer",
     "prepublishOnly": "npm run build:prod"
   },
   "dependencies": {

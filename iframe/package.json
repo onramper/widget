@@ -20,6 +20,7 @@
     "start:l2": "set REACT_APP_STAGE=l2&&npm start",
     "start:local": "set PORT=3001&&npm start",
     "start:local-unix": "PORT=3001 react-scripts start",
+    "setup": "npm ci",
     "build": "react-scripts build",
     "build:dev": "react-scripts build",
     "build:prod": "export REACT_APP_STAGE=prod&&npm run build",
