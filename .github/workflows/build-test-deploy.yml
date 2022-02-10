@@ -13,7 +13,7 @@ jobs:
     - name: Get Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
+        node-version: '16.x'
     - run: (cd package && npm ci &&  npm run build:dev)
     - run: (cd iframe && npm ci --no-optional &&  npm run build)
   deploy:
