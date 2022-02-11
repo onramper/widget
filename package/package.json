@@ -42,7 +42,7 @@
     "@sentry/react": "^6.2.0",
     "abort-controller": "^3.0.0",
     "iso3166-alpha-converter": "^1.0.0",
-    "layer2": "github:onramper/layer2#main",
+    "layer2": "onramper/layer2#main",
     "react-calendar": "^3.2.0",
     "react-transition-group": "^4.4.1",
     "rendered-country-flags": "^1.2.0"
