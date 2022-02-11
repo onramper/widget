@@ -25,6 +25,8 @@ export type InputFacadeProps = {
     info?: string;
     iconTitle?: string;
     isRequired?: boolean;
+    variant?: "setting";
+    align?: "right" | "left" | "center"
 }
 
 export type BaseInputProps = Omit<InputFacadeProps, "onChange"> & {

@@ -1,0 +1,144 @@
+.wrapper {
+  --item-padd-rl: 12px;
+  --item-padd-tb: 6px;
+  --icon-size: 20px;
+  --check-idle-border-color: var(--text-light-color);
+  --check-idle-color: transparent;
+  --check-active-border-color: var(--success-color);
+  --check-active-color: var(--success-color);
+  width: 100%;
+  position: relative;
+  box-shadow: 0px 0px 10px rgba(26, 60, 85, 0.09);
+  border-radius: 18px;
+}
+
+.chevron {
+  width: 5px;
+  height: 11px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: var(--item-padd-tb) var(--item-padd-rl);
+}
+
+.item-check-wrapper {
+  position: relative;
+  margin-right: 5px;
+  overflow: hidden;
+  --check-border-color: var(--check-idle-border-color);
+  --check-color: var(--check-idle-color);
+}
+
+.item-check-wrapper.checked {
+  --check-border-color: var(--check-active-border-color);
+  --check-color: var(--check-active-border-color);
+}
+
+.item-check {
+  width: 14px;
+  height: 14px;
+}
+
+.item-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.item-content > * {
+  flex-shrink: 0;
+}
+
+.item-content > .info {
+  flex-shrink: 1;
+  font-size: 8px;
+  line-height: 8px;
+  letter-spacing: 0.005em;
+  color: var(--text-light-color);
+  padding-top: 3px;
+}
+
+.icon-wrapper {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  padding: 2px;
+}
+
+.default-item-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(
+    145.2deg,
+    var(--primary-color) 4.49%,
+    rgba(64, 49, 231, 0.29) 116.59%
+  );
+}
+
+.item-title {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--text-dark-color);
+  padding-left: 6px;
+  padding-right: 4px;
+}
+
+.add-btn {
+  box-shadow: 0px 0px 17px rgba(28, 72, 184, 0.16);
+}
+
+.add-btn,
+.supliment-btn {
+  width: 100%;
+}
+
+/* transition item-icon
+   ============================= */
+
+.h-collapse-enter {
+  max-width: 0;
+  opacity: 0;
+}
+
+.h-collapse-enter-active {
+  max-width: 1000px;
+  opacity: 1;
+  transition: max-width 200ms, opacity 300ms ease-out;
+}
+
+.h-collapse-exit {
+  max-width: 1000px;
+  opacity: 1;
+}
+
+.h-collapse-exit-active {
+  max-width: 0;
+  opacity: 0;
+  transition: max-width 200ms, opacity 300ms ease-in;
+}
+
+/* transition expandable content
+   ============================= */
+.collapse-enter {
+  max-height: 0;
+  opacity: 0;
+}
+
+.collapse-enter-active {
+  max-height: 1000px;
+  opacity: 1;
+  transition: opacity 200ms, max-height 200ms;
+}
+
+.collapse-exit {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.collapse-exit-active {
+  max-height: 0;
+  opacity: 0;
+  transition: opacity 200ms, max-height 200ms;
+}

@@ -3,6 +3,9 @@ theme styles
 *********/
 .theme {
     --primary-color: #0316C1;
+    --secondary-color: #7680D9;
+    --secondary-color-2: #6271FF;
+    --secondary-color-2-hover: #8490FF;
     --error-color: #D25656;
     --success-color: #3AD66F;
     --text-dark-color: #292D32;
@@ -233,6 +236,74 @@ components
     cursor: pointer;
 }
 
+.secondary-btn {
+    font-size: 12px;
+    line-height: 12px;
+    color: var(--background-color);
+    background-color: var(--secondary-color-2); 
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    border: 1px solid var(--secondary-color-2);
+    transition: background-color 100ms, border-color 100ms;
+}
+
+.secondary-btn.outline {
+    background-color: var(--background-color);
+    color: var(--text-light-color);
+    border: 1px solid var(--text-light-color);
+}
+
+.secondary-btn:hover {
+    color: var(--background-color);
+    background-color: var(--secondary-color-2-hover);
+    border-color: var(--secondary-color-2-hover);
+}
+
+.secondary-btn:active {
+    color: var(--background-color);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.secondary-btn:disabled {
+    color: var(--background-color);
+    background-color: var(--input-stroke-color);
+    border-color: var(--input-stroke-color);
+    cursor: default;
+}
+
+/* secondary btn 2 */
+.secondary-btn-2 {
+    font-size: 12px;
+    line-height: 12px;
+    color: var(--secondary-color-2); 
+    background-color: var(--background-color);
+    box-shadow: 0px 3.88908px 40px rgba(26, 60, 85, 0.09);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 100ms, border-color 100ms;
+}
+
+.secondary-btn-2:hover {
+    color: var(--background-color);
+    background-color: var(--secondary-color-2-hover);
+}
+
+.secondary-btn-2:active {
+    color: var(--background-color);
+    background-color: var(--secondary-color-2);
+}
+
+.secondary-btn-2:disabled {
+    color: var(--background-color);
+    background-color: var(--input-stroke-color);
+    cursor: default;
+}
+
 /* help */
 
 .help-title {
@@ -327,6 +398,21 @@ li {
 
 .semibold {
     font-weight: 600;
+}
+
+/* chevron activator for exapandable sections  */
+.chevron {
+    width: 12px;
+    transform: rotateZ(90deg);
+    transition: transform 250ms ease-in-out 0ms;
+}
+
+.chevron path {
+    fill: var(--text-light-color);
+}
+
+.chevron.up {
+    transform: rotateZ(-90deg);
 }
 
 /* general transition */
