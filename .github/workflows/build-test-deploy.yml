@@ -2,7 +2,7 @@ name: Build & deploy
 
 on:
   push:
-    branches: [master, dev, ice-master, ice-dev, demo, ice-demo]
+    branches: [master, dev, ice-master, ice-dev, demo, ice-demo, layer2-dev]
   pull_request:
 
 jobs:
