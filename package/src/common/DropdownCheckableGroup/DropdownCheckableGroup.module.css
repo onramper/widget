@@ -53,11 +53,11 @@
 
 .item-content > .info {
   flex-shrink: 1;
-  font-size: 6px;
-  line-height: 7px;
+  font-size: 8px;
+  line-height: 8px;
   letter-spacing: 0.005em;
   color: var(--text-light-color);
-  padding-top: 4px;
+  padding-top: 3px;
 }
 
 .icon-wrapper {
@@ -78,10 +78,10 @@
 }
 
 .item-title {
-  font-size: 10px;
-  line-height: 10px;
+  font-size: 12px;
+  line-height: 12px;
   color: var(--text-dark-color);
-  padding-left: 5px;
+  padding-left: 6px;
   padding-right: 4px;
 }
 
