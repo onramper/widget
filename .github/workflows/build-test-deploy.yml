@@ -2,7 +2,7 @@ name: Build & deploy
 
 on:
   push:
-    branches: [master, dev, ice-master, ice-dev, demo, ice-demo]
+    branches: [master, dev, ice-master, ice-dev, demo, ice-demo, layer2-dev]
   pull_request:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
       - name: Get Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: "16.x"
       - run: (cd package && npm ci &&  npm run build:dev)
       - run: (cd iframe && npm ci &&  npm run build)
   deploy:
@@ -71,7 +71,7 @@ jobs:
       - name: Get Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: "16.x"
       - run: (cd package && npm ci && npm run build:$STAGE)
         env:
           STAGE: ${{ steps.git-branch.outputs.stage }}
@@ -94,7 +94,7 @@ jobs:
       - name: Get Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
       - name: Clean install and build
         run: (cd package && npm ci && npm run build:prod)

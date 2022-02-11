@@ -3,7 +3,6 @@ import {
   useEthers,
   isMetamaskEnabled,
   useLayer2,
-  AbstractConnector,
   Wallet,
 } from "layer2";
 import WalletButton from "./WalletButton/WalletButton";
@@ -16,7 +15,7 @@ interface Props {
 function WalletModal({ closeModal }: Props) {
   const { activateBrowserWallet, deactivate, account, active } = useEthers();
   const [activatingConnector, setActivatingConnector] =
-    useState<AbstractConnector | null>(null);
+    useState<any | null>(null);
   const { wallets } = useLayer2();
 
   const metamaskEnabled = isMetamaskEnabled();
