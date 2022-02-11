@@ -17,7 +17,7 @@
   top: calc(100% + 8px);
   right: 0;
   background-color: var(--background-color);
-  box-shadow: 0px 0px 60px rgba(86, 94, 160, 0.2); /* TODO: maybe a variable here */
+  box-shadow: 0px 0px 60px rgba(86, 94, 160, 0.2);
   border-radius: 20px;
   overflow: hidden;
 }

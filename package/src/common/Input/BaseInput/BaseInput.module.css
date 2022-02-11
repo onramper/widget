@@ -3,8 +3,10 @@
     display: flex;
     flex-direction: column;
     min-width: 96px;
-    --color: var(--text-dark-color);
-    --bg-color: var(--input-form-bg-color);
+    --color-idle: var(--text-dark-color);
+    --color-hover: var(--text-dark-color);
+    --input-bg-color-idle: var(--input-form-bg-color);
+    --input-bg-color-hover: var(--input-form-bg-color);
     --border-color: var(--input-stroke-color);
     --border-color-hover: var(--grey-light-color);
     --border-color-focused: var(--primary-color);
@@ -16,10 +18,13 @@
 }
 
 .wrapper.setting {
-    --color: var(--text-light-color);
+    --color-idle: var(--text-light-color);
+    --color-hover: var(--text-dark-color);
+    --input-bg-color-idle: var(--background-color);
+    --input-bg-color-hover: var(--input-bg-color);
     --border-color: var(--grey-light-color);
-    --border-color-hover: var(--text-light-color);
-    --border-color-focused: var(--text-light-color);
+    --border-color-hover: var(--secondary-color-2);
+    --border-color-focused: var(--secondary-color-2);
     --font-size: 15px;
     --line-height: 15px;
     --height: 32px;
@@ -55,8 +60,8 @@
     align-items: center;
     border-radius: 12px;
     border: 1.5px solid var(--border-color);
-    background-color: var(--bg-color);
-    transition: border-color 0.2s;
+    background-color: var(--input-bg-color-idle);
+    transition: border-color 0.2s, background-color 0.2s;
 }
 
 .input-wrapper input::-webkit-input-placeholder,
@@ -72,10 +77,11 @@
     font-size: var(--font-size);
     line-height: var(--line-height);
     letter-spacing: 0.005em;
-    color: var(--color);
+    color: var(--color-idle);
     background-color: transparent;
     position: relative;
     height: var(--height);
+    transition: color 0.2s;
 }
 
 .wrapper.left input {
@@ -99,6 +105,7 @@
 
 .input-wrapper-hovered {
     border-color: var(--border-color-hover); 
+    background-color: var(--input-bg-color-hover);
 }
 
 .input-wrapper-hovered input::-webkit-input-placeholder,
@@ -109,6 +116,7 @@
 
 .input-wrapper-focused {
     border-color: var(--border-color-focused);
+    background-color: var(--input-bg-color-hover);
 }
 
 .input-wrapper-child + .input-wrapper-child {
@@ -138,7 +146,8 @@
     align-self: center;
     white-space: nowrap;
     font-size: var(--symbol-font-size);
-    color: var(--color);
+    color: var(--color-idle);
+    transition: color 0.2s;
 }
 
 .symbol.symbol-position-start::before {
@@ -152,12 +161,22 @@
     align-self: center;
     white-space: nowrap;
     font-size: var(--symbol-font-size);
-    color: var(--color);
+    color: var(--color-idle);
+    transition: color 0.2s;
 }
 
 .symbol {
     display: inline-flex;
     flex-grow: 1;
+}
+
+.input-wrapper-hovered input,
+.input-wrapper-hovered .symbol::before,
+.input-wrapper-hovered .symbol::after,
+.input-wrapper-focused input,
+.input-wrapper-focused .symbol::before,
+.input-wrapper-focused .symbol::after {
+    color: var(--color-hover);
 }
 
 .input-icon {
