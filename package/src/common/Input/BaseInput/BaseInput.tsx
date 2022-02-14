@@ -43,7 +43,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
   };
 
   return (
-    <div ref={ref} className={`${classes.wrapper} ${props.className}`}>
+    <div ref={ref} className={`${classes.wrapper} ${props.variant ? classes[props.variant] : ""} ${classes[props.align || "left"]} ${props.className}`}>
       {label && (
         <label>
           <span>{label}</span>

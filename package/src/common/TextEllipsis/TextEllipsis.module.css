@@ -1,0 +1,16 @@
+.wrapper {
+  max-width: 50px;
+  width: 100%;
+  display: flex;
+  white-space: nowrap;
+}
+
+.main-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suffix {
+  flex-shrink: 0;
+}
