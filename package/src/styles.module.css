@@ -161,7 +161,7 @@ components
 }
 
 .body .footer {
-    margin-top: var(--body-space-childs);
+    padding: 9px var(--padding-rl) 16px var(--padding-rl);
 }
 
 .row-fields {
