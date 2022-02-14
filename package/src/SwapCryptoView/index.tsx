@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import InputDropdown from "../common/InputDropdown/InputDropdown";
 import WalletModal from "../common/WalletModal/WalletModal";
 import styles from "../styles.module.css";
+import inputClasses from "./../common/InputDropdown/InputDropdown.module.css";
 
 const SwapCryptoView = () => {
   const { account } = useEthers();
@@ -136,11 +137,11 @@ const SwapCryptoView = () => {
       )}
 
       {state.status !== "None" && <p>{state.status}</p>}
-
       <InputDropdown
         label="You spend"
         value={amountCoin1}
         onChange={(e) => setAmountCoin1(e.target.value)}
+        className={inputClasses["swap-screen"]}
         hint="Balance: 0.061"
         onMaxClick={() => {}}
         suffix="($13.16)"
@@ -154,6 +155,7 @@ const SwapCryptoView = () => {
 
       <InputDropdown
         label="You receive"
+        className={inputClasses["swap-screen"]}
         value={amountCoin2}
         onChange={(e) => setAmountCoin2(e.target.value)}
         suffix="($2.32)"

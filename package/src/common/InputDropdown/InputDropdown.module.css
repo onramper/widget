@@ -18,7 +18,7 @@
 
 .input-section {
     flex-grow: 1;
-    padding: 20px 10px 17px 32px;
+    padding: 15px 10px 14px 32px;
     overflow: hidden;
 }
 
@@ -49,6 +49,7 @@
     font-size: 14px;
     line-height: 17px;
     color: var(--text-light-color);
+    padding-bottom: 2px;
 }
 
 .wrapper.has-error .content-wrapper {
@@ -62,9 +63,10 @@
 
 .input-right {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   padding-left: 4px;
   color: var(--text-light-color);
+  padding: 4px;
 }
 
 .input-right > .child + .child {
@@ -73,7 +75,7 @@
 
 .suffix {
   letter-spacing: 0.015em;
-  font-size: 11px;
+  font-size: 8px;
   line-height: 12px;
 }
 
@@ -85,6 +87,7 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+  padding-top: 3px;
 }
 
 .hint-section > .child + .child {
@@ -95,14 +98,14 @@
   background: rgba(3, 22, 193, 0.13);
   border-radius: 10px;
   padding: 3px 5px;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 7px;
+  line-height: 7px;
   color: var(--text-light-color);
 }
 
 .hint {
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 8px;
+  line-height: 8px;
   color: var(--text-light-color);
 }
 
@@ -113,6 +116,13 @@
 
 .dropdown-handle {
     margin-right: 22px;
+}
+
+/* swap screen 
+   ============================= */
+.swap-screen .input {
+  font-size: 20px;
+  line-height: 24px;
 }
 
 @media (max-width: 350px) { 
