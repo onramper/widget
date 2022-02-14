@@ -106,6 +106,7 @@ type OrderCompleteStep = {
 type NextStepBase = { 
     useHeading?: boolean;
     title?: string;
+    heading?: string;
     progress?: number;
     humanName?: string;
     description?: string;
@@ -120,6 +121,11 @@ export type PaymentReviewStep = {
     type: "paymentReview",
     url?: string;
     data: PayamentReviewDataItem[]
+}
+
+export type DestinationWalletStep = {
+    type: "destinationWallet"
+    url: string;
 }
 
 type NextStep =
@@ -163,6 +169,7 @@ type NextStep =
     } | EmailVerificationStep
       | OrderCompleteStep
       | PaymentReviewStep
+      | DestinationWalletStep
     );
 
 interface FieldError {

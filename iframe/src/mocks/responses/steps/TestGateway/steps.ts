@@ -48,12 +48,37 @@ const orderComplete = {
   description: `We have emailed confirmation link about your order to thijs@onramper.com. Your order is being processed and it may take up to 1-3 working days.`
 };
 
+const destinationWallet = {
+  type: "destinationWallet",
+  title: "Your wallet", 
+  heading: "Add destination wallet (Optional)", 
+  description: "Choose which wallet you would like your funds to be deposited in",
+  url: `${BASE_API}/GoTo/TestGateway/willsee/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`, 
+  data: [
+		{
+			walletAddress: "9b2475c48b4111eca8a30242ac12000",
+			accountName: "MetaMask Wallet",
+			id: "metamask",
+			balance: "0.21"
+		},
+		{
+			walletAddress: "9b247eb68b4111eca8a30242ac12000",
+			accountName: "Account 1",
+			id: "account1",
+			balance: "0.0061"
+		}
+	],
+  cryptoName: "ETH",
+  selectedWalletId: undefined
+}
+
 const nextStep: { [key: string]: any } = {
   firstStep: paymentReviewStep,
   personalInfoStep,
   emailVerificationStep,
   possibleFormFieldsStep,
-  orderComplete
+  orderComplete,
+  destinationWallet
 };
 
 const getNextStep = (currentStep: string) => {

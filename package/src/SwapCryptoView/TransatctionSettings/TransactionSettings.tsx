@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { TransactionSettingsProps } from "./TransactionSettings.models";
 import commonClasses from "./../../styles.module.css";
 import classes from "./TransactionSettings.module.css";
@@ -7,6 +7,9 @@ import InputDelegator from "../../common/Input/InputDelegator";
 import { CSSTransition } from "react-transition-group";
 import DropdownCheckableGroup from "../../common/DropdownCheckableGroup/DropdownCheckableGroup";
 import { ListItem } from "../../common/DropdownCheckableGroup/DropdownCheckableGroup.models";
+import { BASE_API } from "../../ApiContext/api/constants";
+import { NavContext } from "../../NavContext";
+import Step from "../../steps/Step";
 
 const wallets = [
   {
@@ -55,6 +58,7 @@ const Transition = React.forwardRef<
 });
 
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
+  const { nextScreen } = useContext(NavContext);
   const [isOpen, setIsOpen] = useState(false);
   const [slippage, setSlippage] = useState(props.defaultSlippage.toFixed(2));
   const [deadline, setDeadline] = useState(
@@ -76,6 +80,12 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const resetSlippage = useCallback(() => {
     setSlippage(props.defaultSlippage.toFixed(2));
   }, [props.defaultSlippage]);
+
+  const goToWalletDestination = useCallback(async () => {
+    const stepUrl = `${BASE_API}/GoTo/TestGateway/destinationWallet/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`;
+    const walletStep = await (await fetch(`${stepUrl}`, { method: 'POST' })).json();
+    nextScreen(<Step nextStep={walletStep} />);
+  }, [nextScreen]);
 
   useEffect(() => {
     const onClickEvent = (event: MouseEvent) => {
@@ -149,6 +159,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 items={wallets}
                 idSelected={walletId}
                 onSelect={(item: ListItem) => setWalletId(item.id)}
+                onAdd={goToWalletDestination}
               />
             </div>
           </div>

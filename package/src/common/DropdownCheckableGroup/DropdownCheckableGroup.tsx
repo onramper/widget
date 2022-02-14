@@ -25,6 +25,7 @@ const DropdownCheckableGroup: React.FC<DropdownCheckableGroupProps> = (
   if (!props.items.length) {
     return (
       <button
+        onClick={props.onAdd}
         className={`${commonClasses["secondary-btn"]} ${classes["add-btn"]}`}
       >
         {props.addNewBtnText}
@@ -60,6 +61,7 @@ const DropdownCheckableGroup: React.FC<DropdownCheckableGroupProps> = (
           ))}
 
           <button
+            onClick={props.onAdd}
             className={`${commonClasses["secondary-btn-2"]} ${classes["supliment-btn"]}`}
           >
             {props.suplimentBtnText}
