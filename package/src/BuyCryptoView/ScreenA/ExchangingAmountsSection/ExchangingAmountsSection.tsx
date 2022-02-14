@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 import style from "./ExchangingAmountsSection.module.css";
-import InputDropdown from "../InputDropdown/InputDropdown";
+import InputDropdown from "../../../common/InputDropdown/InputDropdown";
 import { ItemCategory, APIContext, ItemType } from "../../../ApiContext";
 import { onChangeTextNumber, toStringOrDefault, arrayUnique } from "../../../utils";
 import { popularCrypto } from "../../constants";

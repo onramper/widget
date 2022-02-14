@@ -1,5 +1,4 @@
 .handle-wrapper {
-    min-width: 105px;
     height: 42px;
     display: flex;
     align-items: center;
@@ -17,7 +16,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--primary-color);
 }
 
 .icon-handle { 

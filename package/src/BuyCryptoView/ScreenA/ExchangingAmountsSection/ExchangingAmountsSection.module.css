@@ -6,6 +6,11 @@ div.crypto-icon {
     background-color: unset;
 }
 
+div.fiat-icon {
+    padding: 3px;
+    background-color: var(--primary-color);
+}
+
 .fiat-icon img {
     filter: brightness(0) invert(1);
 }
