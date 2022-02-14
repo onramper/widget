@@ -23,8 +23,8 @@ const InputDropdown: React.FC<InputDropdownProps> = (
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const resizeInput = useCallback((target: HTMLInputElement) => {
-    target.style.maxWidth = `0px`;
-    target.style.maxWidth = `${target.scrollWidth}px`;
+    target.style.width = `0px`;
+    target.style.width = `${target.scrollWidth}px`;
   }, []);
 
   const activateInput = useCallback(() => {
