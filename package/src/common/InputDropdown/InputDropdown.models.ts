@@ -7,6 +7,7 @@ export type InputDropdownProps = {
     suffix?: string;
     error?: string;
     disabled?: boolean;
+    readonly?: boolean;
     useEditIcon?: boolean;
     handleProps: DropdownHandleProps;
     className?: string;

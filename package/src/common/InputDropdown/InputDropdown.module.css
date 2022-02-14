@@ -22,19 +22,26 @@
     overflow: hidden;
 }
 
-.input {
-    display: inline-block;
-    min-width: 50px;
-    max-width: 100%;
-    flex: 1;
-    outline: none;
-    border: 0;
-    margin: 2px 0px;
-    font-style: normal;
+.common-txt {
     font-weight: 600;
     font-size: 26px;
     line-height: 32px;
+    min-height: 32px;
     padding: 0;
+    border: 0;
+    min-width: 30px;
+}
+
+.value-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-right: 1px;
+}
+
+.input {
+    display: inline-block;
+    outline: none;
 }
 
 .input,
@@ -120,9 +127,10 @@
 
 /* swap screen 
    ============================= */
-.swap-screen .input {
+.swap-screen .common-txt {
   font-size: 20px;
   line-height: 24px;
+  min-height: 24px;
 }
 
 @media (max-width: 350px) { 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./InputDropdown.module.css";
 import commonStyles from "./../../styles.module.css";
 import { idGenerator } from "../../utils";
@@ -19,23 +19,26 @@ const InputDropdown: React.FC<InputDropdownProps> = (
   props: InputDropdownProps
 ) => {
   const [id] = React.useState(idGenerator());
-  const inputRef = useRef<HTMLInputElement>(null);
-  const firstRender = useRef<boolean>(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const resizeInput = useCallback((target: HTMLInputElement) => {
     target.style.maxWidth = `0px`;
     target.style.maxWidth = `${target.scrollWidth}px`;
   }, []);
 
-  useEffect(() => {
-    if(firstRender.current) {
-      firstRender.current = false;
-      setTimeout(() => {
-        inputRef.current && resizeInput(inputRef.current);
-      }, 200);
+  const activateInput = useCallback(() => {
+    if(props.readonly) {
+      return;
     }
-    inputRef.current && resizeInput(inputRef.current);
-  }, [props.value, props.suffix, props.useEditIcon, resizeInput]);
+    setIsEditing(true);
+  }, [props.readonly]);
+
+  useEffect(() => {
+    if(isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
 
   if (props.isInitialLoading) {
     return <Skeleton className={props.className} />;
@@ -53,16 +56,30 @@ const InputDropdown: React.FC<InputDropdownProps> = (
             {props.label}
           </label>
           <div className={styles["input-wrapper"]}>
-            <input
-              ref={inputRef}
-              disabled={props.disabled}
-              onFocus={props.onFocus || (() => {})}
-              onChange={props.onChange}
-              type="text"
-              id={id}
-              value={props.value}
-              className={styles["input"]}
-            />
+            {!isEditing && (
+              <div
+                onClick={activateInput}
+                className={`${styles["common-txt"]} ${styles["value-text"]}`}
+              >
+                {props.value}
+              </div>
+            )}
+            {isEditing && (
+              <input
+                ref={(node) => {
+                  node && resizeInput(node);
+                  inputRef.current = node;
+                }}
+                disabled={props.disabled}
+                onFocus={props.onFocus || (() => {})}
+                onBlur={() => setIsEditing(false)}
+                onChange={props.onChange}
+                type="text"
+                id={id}
+                value={props.value}
+                className={`${styles["common-txt"]} ${styles["input"]}`}
+              />
+            )}
             <div
               className={styles["input-right"]}
             >
@@ -73,7 +90,7 @@ const InputDropdown: React.FC<InputDropdownProps> = (
               )}
               {props.useEditIcon && (
                 <EditIcon
-                  onClick={() => inputRef.current?.focus()}
+                  onClick={activateInput}
                   className={`${styles["child"]} ${styles["edit-icon"]}`}
                 />
               )}
