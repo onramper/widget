@@ -113,6 +113,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
               onBlur={() => setIsFocused(false)}
               onMouseOver={() => setIsMouseOver(true)}
               onMouseOut={() => setIsMouseOver(false)}
+              autoFocus={props.autoFocus}
             />
           ) : (
             <> {props.inputSupportFallbackNode} </>

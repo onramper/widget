@@ -8,6 +8,7 @@ const WalletInput: React.FC<{
   errorMessage?: string;
   value: string;
   onChange: (value: string) => void;
+  autoFocus?: boolean;
 }> = (props) => {
   return (
     <InputDelegator
@@ -25,6 +26,7 @@ const WalletInput: React.FC<{
       onChange={(name: string, value: string) => {
         props.onChange(value);
       }}
+      autoFocus
     />
   );
 };

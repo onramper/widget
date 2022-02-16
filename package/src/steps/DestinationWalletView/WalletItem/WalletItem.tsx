@@ -92,6 +92,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
                 errorMessage={errorMessage}
                 value={address}
                 onChange={setAddress}
+                autoFocus
               />
             </div>
           </Transition>
