@@ -2,7 +2,7 @@
   --item-padd-rl: 12px;
   --item-padd-tb: 6px;
   --icon-size: 20px;
-  --check-idle-border-color: var(--text-light-color);
+  --check-idle-border-color: var(--input-stroke-color-sec);
   --check-idle-color: transparent;
   --check-active-border-color: var(--success-color);
   --check-active-color: var(--success-color);

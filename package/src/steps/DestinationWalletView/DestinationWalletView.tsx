@@ -9,10 +9,12 @@ import InfoBox from "../../common/InfoBox";
 import ButtonAction from "../../common/ButtonAction";
 import Footer from "../../common/Footer";
 import ErrorView from "../../common/ErrorView";
+import WalletItem from "./WalletItem/WalletItem";
 
 const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [walletId] = useState(nextStep.selectedWalletId);
 
   const { nextScreen, backScreen } = useContext(NavContext);
 
@@ -62,6 +64,25 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
         >
           <span> {errorMessage} </span>
         </InfoBox>
+
+        <div>
+          {nextStep.data.map((wallet, index) => {
+            return (
+              <WalletItem
+                key={index}
+                label={wallet.accountName}
+                title={wallet.walletAddress}
+                info={`Balance: ${wallet.balance} ${nextStep.cryptoName}`}
+                isChecked={wallet.id === walletId}
+                icon={wallet.icon}
+                // TODO: use a constant for metamask
+                isConnected={wallet.id === "metamask"}
+                onChangeAddress={wallet.id === "metamask" ? undefined : () => {}}
+                onDelete={wallet.id === "metamask" ? undefined : () => {}}
+              />
+            );
+          })}
+        </div>
 
         <div
           className={`${commonClasses["body-form-child"]} ${commonClasses["grow-col"]}`}

@@ -1,0 +1,9 @@
+.wrapper {
+  --item-height: 40px;
+  --item-font-size: 12px;
+  --item-line-height: 12px;
+  --item-mt: 16px;
+  /* left cell */
+  --item-check-size: 17px;
+  --item-empty-cell-width: 32px;
+}

@@ -101,6 +101,11 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
     };
   }, []);
 
+  // TODO: remove this
+  useEffect(() => {
+    goToWalletDestination();
+  }, [goToWalletDestination])
+
   return (
     <div className={classes["wrapper"]} ref={wrapperRef}>
       <SettingsIcon
