@@ -23,9 +23,9 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
     return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
         if (address === "error") {
-          reject(new Error("Incorect address."));
+          return reject(new Error("Incorect address."));
         }
-        
+
         setWallets(
           wallets.map((i) =>
             i.id === walletId ? { ...i, walletAddress: address } : i

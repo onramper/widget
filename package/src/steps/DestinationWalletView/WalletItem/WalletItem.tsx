@@ -1,14 +1,13 @@
 import React, { useRef, useState } from "react";
 import { WalletItemProps } from "./WalletItem.models";
-import InputDelegator from "../../../common/Input/InputDelegator";
 import TextEllipsis from "../../../common/TextEllipsis/TextEllipsis";
 import classes from "./WalletItem.module.css";
 import { ReactComponent as CheckMarkIcon } from "../../../icons/checkmark.svg";
 import { ReactComponent as EditIcon } from "../../../icons/pencil.svg";
 import { ReactComponent as CheckmarkRoundIcon } from "../../../icons/check-round.svg";
 import { ReactComponent as GarbageCanIcon } from "../../../icons/garbage-can.svg";
-import { ReactComponent as EnterIcon } from "../../../icons/enter.svg";
 import { CSSTransition } from "react-transition-group";
+import WalletInput from "../WalletInput/WalletInput";
 
 const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -54,10 +53,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
       </div>
 
       <div className={classes["state-container"]}>
-        <div
-          className={classes["wallet-content"]}
-          onClick={props.onCheck}
-        >
+        <div className={classes["wallet-content"]} onClick={props.onCheck}>
           <Checkmark isChecked={props.isChecked} />
 
           <div className={classes["details-area-wrapper"]}>
@@ -84,23 +80,13 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
           </div>
         </div>
 
-        <Transition ref={inputWrapperRef} in={isEditing} >
+        <Transition ref={inputWrapperRef} in={isEditing}>
           <div className={classes["input-wrapper"]} ref={inputWrapperRef}>
-            <InputDelegator
-              label=""
-              placeholder="e.g 0x3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"
-              icon={<EnterIcon />}
-              iconPosition="end"
-              onIconClick={onSubmit}
-              externalIconClassName={classes["input-icon"]}
-              error={errorMessage}
-              onEnter={onSubmit}
-              name="walletAddress"
+            <WalletInput
+              onSubmit={onSubmit}
+              errorMessage={errorMessage}
               value={address}
-              className={classes["address-input"]}
-              onChange={(name: string, value: string) => {
-                setAddress(value);
-              }}
+              onChange={setAddress}
             />
           </div>
         </Transition>

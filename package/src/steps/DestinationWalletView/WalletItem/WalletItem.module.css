@@ -121,6 +121,7 @@
   font-size: 8px;
   line-height: 8px;
   padding-right: 5px;
+  padding-top: 3px;
   word-break: break-all;
   color: var(--text-light-color);
 }
@@ -153,26 +154,6 @@
   width: 100%;
   background-color: var(--background-color);
   padding-left: var(--item-empty-cell-width);
-}
-
-.address-input {
-  flex: 1;
-  --height: 40px;
-  --padding: 5px 15px;
-  --font-size: 12px;
-  --line-height: 15px;
-  --color-idle: var(--grey-light-color);
-}
-
-.input-icon {
-  height: auto;
-  display: flex;
-  align-items: center;
-  color: var(--grey-light-color);
-}
-
-.input-icon:hover {
-  color: var(--text-light-color);
 }
 
 /* transition between states
