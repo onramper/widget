@@ -77,6 +77,20 @@ theme styles
     background-color: transparent;
 }
 
+/* secondary scrollbar */
+.theme .sec-scrollbar {
+    scrollbar-color: var(--list-active-color) transparent;
+}
+
+.theme .sec-scrollbar::-webkit-scrollbar {
+    width: 3px;
+}
+
+.theme .sec-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 1px;
+    background-color: var(--list-active-color);
+}
+
 .theme input[type=number] {
     -moz-appearance: textfield;
 }

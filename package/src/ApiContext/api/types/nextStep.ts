@@ -129,6 +129,7 @@ export type WalletItemData = {
     id: string;
     balance: number;
     icon?: string;
+    isConnected?: boolean;
 }
 export type DestinationWalletStep = {
     type: "destinationWallet"
