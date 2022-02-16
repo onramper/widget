@@ -32,8 +32,9 @@
   cursor: pointer;
 }
 
-.content {
+.wallet-content {
   display: flex;
+  flex: 1;
 }
 
 .check-wrapper {
@@ -55,6 +56,12 @@
   width: 17px;
   height: 17px;
   transition: all 200ms;
+}
+
+.state-container {
+  flex: 1;
+  display: flex;
+  position: relative;
 }
 
 /* default state
@@ -137,8 +144,19 @@
 
 /* edit state
    ============================= */
+
+.input-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--background-color);
+  padding-left: var(--item-empty-cell-width);
+}
+
 .address-input {
-  margin-left: var(--item-empty-cell-width);
+  flex: 1;
   --height: 40px;
   --padding: 5px 15px;
   --font-size: 12px;
@@ -155,4 +173,25 @@
 
 .input-icon:hover {
   color: var(--text-light-color);
+}
+
+/* transition between states
+   ============================= */
+
+.enter {
+  opacity: 0;
+}
+
+.enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+
+.exit {
+  opacity: 1;
+}
+
+.exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
 }

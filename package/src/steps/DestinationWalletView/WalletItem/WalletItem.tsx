@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { WalletItemProps } from "./WalletItem.models";
 import InputDelegator from "../../../common/Input/InputDelegator";
 import TextEllipsis from "../../../common/TextEllipsis/TextEllipsis";
@@ -8,11 +8,13 @@ import { ReactComponent as EditIcon } from "../../../icons/pencil.svg";
 import { ReactComponent as CheckmarkRoundIcon } from "../../../icons/check-round.svg";
 import { ReactComponent as GarbageCanIcon } from "../../../icons/garbage-can.svg";
 import { ReactComponent as EnterIcon } from "../../../icons/enter.svg";
+import { CSSTransition } from "react-transition-group";
 
 const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [address, setAddress] = useState(props.address || "");
   const [errorMessage, setErrorMessage] = useState<string>();
+  const inputWrapperRef = useRef<HTMLDivElement>(null);
 
   const onToggleEditing = () => {
     setAddress(props.address || "");
@@ -51,10 +53,10 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
         )}
       </div>
 
-      {!isEditing && (
+      <div className={classes["state-container"]}>
         <div
-          className={classes["content"]}
-          onClick={isEditing ? undefined : props.onCheck}
+          className={classes["wallet-content"]}
+          onClick={props.onCheck}
         >
           <Checkmark isChecked={props.isChecked} />
 
@@ -81,26 +83,28 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
             )}
           </div>
         </div>
-      )}
 
-      {isEditing && (
-        <InputDelegator
-          label=""
-          placeholder="e.g 0x3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"
-          icon={<EnterIcon />}
-          iconPosition="end"
-          onIconClick={onSubmit}
-          externalIconClassName={classes["input-icon"]}
-          error={errorMessage}
-          onEnter={onSubmit}
-          name="walletAddress"
-          value={address}
-          className={classes["address-input"]}
-          onChange={(name: string, value: string) => {
-            setAddress(value);
-          }}
-        />
-      )}
+        <Transition ref={inputWrapperRef} in={isEditing} >
+          <div className={classes["input-wrapper"]} ref={inputWrapperRef}>
+            <InputDelegator
+              label=""
+              placeholder="e.g 0x3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"
+              icon={<EnterIcon />}
+              iconPosition="end"
+              onIconClick={onSubmit}
+              externalIconClassName={classes["input-icon"]}
+              error={errorMessage}
+              onEnter={onSubmit}
+              name="walletAddress"
+              value={address}
+              className={classes["address-input"]}
+              onChange={(name: string, value: string) => {
+                setAddress(value);
+              }}
+            />
+          </div>
+        </Transition>
+      </div>
     </div>
   );
 };
@@ -121,5 +125,27 @@ const WalletItemIcon: React.FC<{ icon?: string }> = (props) => (
     {!props.icon && <div className={classes["default-item-icon"]}></div>}
   </div>
 );
+
+const Transition = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<{ in: boolean }>
+>((props, ref) => {
+  return (
+    <CSSTransition
+      nodeRef={ref}
+      in={props.in}
+      timeout={200}
+      classNames={{
+        enter: classes["enter"],
+        enterActive: classes["enter-active"],
+        exit: classes["exit"],
+        exitActive: classes["exit-active"],
+      }}
+      unmountOnExit={true}
+    >
+      {props.children}
+    </CSSTransition>
+  );
+});
 
 export default WalletItem;
