@@ -68,24 +68,6 @@ const destinationWallet = {
 			accountName: "Account 1",
 			id: "account1",
 			balance: 0.0061
-		},
-    {
-			walletAddress: "9b247eb68b4111eca8a30242ac12000",
-			accountName: "Account 2",
-			id: "account2",
-			balance: 0.123456789122
-		},
-    {
-			walletAddress: "9b247eb68b4111eca8a30242ac12000",
-			accountName: "Account 3",
-			id: "account3",
-			balance: 0.0061
-		},
-    {
-			walletAddress: "9b247eb68b4111eca8a30242ac12000",
-			accountName: "Account 4",
-			id: "account4",
-			balance: 0.0061
 		}
 	],
   cryptoName: "ETH",

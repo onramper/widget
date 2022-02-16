@@ -10,8 +10,12 @@ import ButtonAction from "../../common/ButtonAction";
 import Footer from "../../common/Footer";
 import ErrorView from "../../common/ErrorView";
 import WalletItem from "./WalletItem/WalletItem";
+import WalletInput from "./WalletInput/WalletInput";
+import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 
-const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
+const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
+  nextStep,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
   const [defaultWallets] = useState(
@@ -22,27 +26,72 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
   );
   const [walletId, setWalletId] = useState(nextStep.selectedWalletId);
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const [newWalletAddress, setNewWalletAddress] = useState("");
+  const [newWalletError, setNewWalletAddressError] = useState<
+    string | undefined
+  >();
 
   const walletsWrapperRef = React.useRef<HTMLDivElement>(null);
 
   const { nextScreen, backScreen } = useContext(NavContext);
 
-  const onSubmitAddress = useCallback((address: string, walletId: string) => {
-    return new Promise<void>((resolve, reject) => {
+  const onSubmitAddress = useCallback(
+    (address: string, walletId: string) => {
+      return new Promise<void>((resolve, reject) => {
+        if (!address) {
+          return reject(new Error("Value cannot be empty."));
+        }
+
+        setTimeout(() => {
+          
+          if (address === "error") {
+            return reject(new Error("Incorect address."));
+          }
+
+          setWallets(
+            wallets.map((i) =>
+              i.id === walletId ? { ...i, walletAddress: address } : i
+            )
+          );
+          resolve();
+        }, 200);
+      });
+    },
+    [wallets]
+  );
+
+  const onAddNewWallet = useCallback(async () => {
+    setNewWalletAddressError(undefined);
+
+    const promise = new Promise<WalletItemData>((resolve, reject) => {
       setTimeout(() => {
-        if (address === "error") {
+        if (!newWalletAddress) {
+          return reject(new Error("Value cannot be empty."));
+        }
+        
+        if (newWalletAddress === "error") {
           return reject(new Error("Incorect address."));
         }
 
-        setWallets(
-          wallets.map((i) =>
-            i.id === walletId ? { ...i, walletAddress: address } : i
-          )
-        );
-        resolve();
-      }, 1000);
+        const newWallet = {
+          walletAddress: newWalletAddress,
+          accountName: `Account ${wallets.length + 1}`,
+          id: `account${wallets.length + 1}`,
+          balance: (1000 * Math.random()) | 0,
+        };
+        resolve(newWallet);
+      }, 200);
     });
-  }, [wallets]);
+
+    try {
+      const wallet = await promise;
+      setNewWalletAddress("");
+      setWallets([wallet, ...wallets]);
+    } catch (_err) {
+      const error = _err as Error;
+      setNewWalletAddressError(error.message);
+    }
+  }, [newWalletAddress, wallets]);
 
   const onActionButton = useCallback(async () => {
     setIsLoading(true);
@@ -50,9 +99,6 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
 
     try {
       //   TODO: next step call
-      //   const newNextStep = await apiInterface.executeStep(nextStep, {});
-      //   nextScreen(<Step nextStep={newNextStep} />);
-
       backScreen();
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
@@ -65,15 +111,20 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
     setIsLoading(false);
   }, [backScreen, nextScreen]);
 
-  const onDeleteWallet = useCallback((id: string) => {
-    setWallets(wallets.filter(i => i.id !== id));
-  }, [wallets]);
+  const onDeleteWallet = useCallback(
+    (id: string) => {
+      setWallets(wallets.filter((i) => i.id !== id));
+    },
+    [wallets]
+  );
 
   useEffect(() => {
-    if(!walletsWrapperRef.current) {
+    if (!walletsWrapperRef.current) {
       return;
     }
-    const value = walletsWrapperRef.current?.scrollHeight > walletsWrapperRef.current?.clientHeight;
+    const value =
+      walletsWrapperRef.current?.scrollHeight >
+      walletsWrapperRef.current?.clientHeight;
     walletsWrapperRef.current.setAttribute("is-overflowing", String(value));
     setIsOverflowing(value);
   }, [defaultWallets.length, wallets.length]);
@@ -106,7 +157,7 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
 
         <div className={classes["main-content"]}>
           {defaultWallets.length > 0 && (
-            <div className={classes["default-wallets-wrapper"]} >
+            <div className={classes["default-wallets-wrapper"]}>
               {defaultWallets.map((wallet, index) => {
                 return (
                   <WalletItem
@@ -126,7 +177,23 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
             </div>
           )}
 
-          <div ref={walletsWrapperRef} is-overflowing={String(isOverflowing)} className={`${commonClasses["sec-scrollbar"]} ${classes["wallets-wrapper"]}`}>
+          <div
+            ref={walletsWrapperRef}
+            is-overflowing={String(isOverflowing)}
+            className={`${commonClasses["sec-scrollbar"]} ${classes["wallets-wrapper"]}`}
+          >
+            <div className={classes["input-wrapper"]}>
+              <div className={classes["input-label"]}>
+                Enter an additional wallet address
+              </div>
+              <WalletInput
+                onSubmit={() => onAddNewWallet()}
+                errorMessage={newWalletError}
+                value={newWalletAddress}
+                onChange={setNewWalletAddress}
+              />
+            </div>
+
             {wallets.map((wallet, index) => {
               return (
                 <WalletItem
@@ -147,7 +214,7 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
         </div>
 
         <div
-          className={`${commonClasses["body-form-child"]}`}
+          className={`${commonClasses["body-form-child"]} ${classes["bottom-container"]}`}
         >
           <ButtonAction
             onClick={onActionButton}
@@ -161,4 +228,4 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
   );
 };
 
-export default ComponentName;
+export default DestinationWalletView;

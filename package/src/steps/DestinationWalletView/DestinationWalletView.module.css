@@ -8,7 +8,7 @@
   --pb-heading: 23px;
 }
 
-.wrapper, 
+.wrapper,
 .wrapper {
   box-sizing: border-box;
 }
@@ -37,7 +37,7 @@
   flex-grow: 1;
   overflow: auto;
   min-height: 0px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .wallets-wrapper[is-overflowing="true"] {
@@ -46,4 +46,22 @@
 
 .wallets-wrapper > :first-child {
   margin-top: 16px;
+}
+
+.bottom-container {
+  padding-top: 10px;
+}
+
+.input-wrapper {
+  padding-bottom: 16px;
+  padding-left: var(--item-empty-cell-width);
+}
+
+.input-label {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.01em;
+  color: var(--gray-light-color);
+  padding-bottom: 8px;
 }
