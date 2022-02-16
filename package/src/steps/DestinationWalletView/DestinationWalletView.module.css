@@ -35,17 +35,20 @@
 
 .wallets-wrapper {
   flex-grow: 1;
-  overflow: auto;
   min-height: 0px;
-  padding-bottom: 10px;
 }
 
 .wallets-wrapper[is-overflowing="true"] {
   padding-right: 17px;
+  overflow: auto;
 }
 
 .wallets-wrapper > :first-child {
   margin-top: 16px;
+}
+
+.wallets-wrapper > :last-child {
+  padding-bottom: 20px;
 }
 
 .bottom-container {
