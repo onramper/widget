@@ -16,7 +16,6 @@ import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
   nextStep,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
   const [defaultWallets] = useState(
     nextStep.data.filter((i) => i.id === "metamask")
@@ -94,7 +93,6 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
   }, [newWalletAddress, wallets]);
 
   const onActionButton = useCallback(async () => {
-    setIsLoading(true);
     setErrorMessage(undefined);
 
     try {
@@ -108,7 +106,6 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
       }
       setErrorMessage(error.message);
     }
-    setIsLoading(false);
   }, [backScreen, nextScreen]);
 
   const onDeleteWallet = useCallback(
@@ -117,6 +114,10 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
     },
     [wallets]
   );
+
+  const isContinueDisabled = useCallback(() => {
+    return ![...defaultWallets, ...wallets].some(i => i.id === walletId);
+  }, [defaultWallets, walletId, wallets]);
 
   useEffect(() => {
     if (!walletsWrapperRef.current) {
@@ -128,8 +129,6 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
     walletsWrapperRef.current.setAttribute("is-overflowing", String(value));
     setIsOverflowing(value);
   }, [defaultWallets.length, wallets.length]);
-
-  const isFilled = false;
 
   return (
     <div className={commonClasses.view}>
@@ -218,8 +217,8 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
         >
           <ButtonAction
             onClick={onActionButton}
-            text={isLoading ? "Sending..." : "Continue"}
-            disabled={!isFilled || isLoading}
+            disabled={isContinueDisabled()}
+            text={"Continue"}
           />
           <Footer />
         </div>
