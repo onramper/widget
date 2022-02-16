@@ -26,7 +26,7 @@ const WalletInput: React.FC<{
       onChange={(name: string, value: string) => {
         props.onChange(value);
       }}
-      autoFocus
+      autoFocus={props.autoFocus}
     />
   );
 };
