@@ -14,9 +14,27 @@ import WalletItem from "./WalletItem/WalletItem";
 const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [wallets, setWallets] = useState(nextStep.data);
   const [walletId, setWalletId] = useState(nextStep.selectedWalletId);
 
   const { nextScreen, backScreen } = useContext(NavContext);
+
+  const onSubmitAddress = useCallback((address: string, walletId: string) => {
+    return new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        if (address === "error") {
+          reject(new Error("Incorect address."));
+        }
+        
+        setWallets(
+          wallets.map((i) =>
+            i.id === walletId ? { ...i, walletAddress: address } : i
+          )
+        );
+        resolve();
+      }, 1000);
+    });
+  }, [wallets]);
 
   const onActionButton = useCallback(async () => {
     setIsLoading(true);
@@ -66,19 +84,20 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
         </InfoBox>
 
         <div>
-          {nextStep.data.map((wallet, index) => {
+          {wallets.map((wallet, index) => {
             return (
               <WalletItem
                 key={index}
                 label={wallet.accountName}
                 title={wallet.walletAddress}
+                address={wallet.walletAddress}
                 info={`Balance: ${wallet.balance} ${nextStep.cryptoName}`}
                 isChecked={wallet.id === walletId}
                 icon={wallet.icon}
                 // TODO: use a constant for metamask
                 onCheck={() => setWalletId(wallet.id)}
+                onSubmitAddress={(value) => onSubmitAddress(value, wallet.id)}
                 isConnected={wallet.id === "metamask"}
-                onChangeAddress={wallet.id === "metamask" ? undefined : () => {}}
                 onDelete={wallet.id === "metamask" ? undefined : () => {}}
               />
             );

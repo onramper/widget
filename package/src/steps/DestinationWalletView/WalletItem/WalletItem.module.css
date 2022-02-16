@@ -42,7 +42,6 @@
   align-items: center;
   flex-shrink: 0;
   cursor: pointer;
-  transition: all 200ms;
   --check-border-color: var(--check-idle-border-color);
   --check-color: var(--check-idle-color);
 }
@@ -55,13 +54,17 @@
 .check-wrapper svg {
   width: 17px;
   height: 17px;
+  transition: all 200ms;
 }
+
+/* default state
+   ============================= */
 
 .details-area-wrapper {
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 8px 16px;
+  padding: 7px 16px;
   background: var(--background-color);
   border: 1px solid var(--input-stroke-color);
   border-radius: 10px;
@@ -130,4 +133,26 @@
 .delete-icon {
   cursor: pointer;
   color: var(--list-active-color);
+}
+
+/* edit state
+   ============================= */
+.address-input {
+  margin-left: var(--item-empty-cell-width);
+  --height: 40px;
+  --padding: 5px 15px;
+  --font-size: 12px;
+  --line-height: 15px;
+  --color-idle: var(--grey-light-color);
+}
+
+.input-icon {
+  height: auto;
+  display: flex;
+  align-items: center;
+  color: var(--grey-light-color);
+}
+
+.input-icon:hover {
+  color: var(--text-light-color);
 }

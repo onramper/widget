@@ -7,7 +7,6 @@ export type WalletItemProps = {
     isConnected?: boolean;
     onCheck: () => void;
     onDelete?: () => void;
-    onChangeAddress?: (value: string) => void;
     address?: string;
-    onSubmitAddress?: () => void;
+    onSubmitAddress?: (value: string) => Promise<void>;
 } 

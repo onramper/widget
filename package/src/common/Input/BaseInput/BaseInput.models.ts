@@ -1,4 +1,4 @@
-import { ReactChild } from "react";
+import React, { ReactChild } from "react";
 import type { DateType } from "../../Input/DatePicker";
 
 export type InputFacadeProps = {
@@ -8,10 +8,12 @@ export type InputFacadeProps = {
     placeholder?: string;
     label?: string;
     className?: string;
-    icon?: string;
+    icon?: string | React.ReactNode;
     iconPosition?: "start" | "end";
     symbolPosition?: "start" | "end";
+    externalIconClassName?: string;
     onChange?: (name: string, value: any, type?: string) => void;
+    onEnter?: () => void;
     value?: number | string | DateType;
     type?: string;
     name: string;
