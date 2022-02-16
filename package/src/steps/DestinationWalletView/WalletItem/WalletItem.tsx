@@ -14,6 +14,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [address, setAddress] = useState(props.address || "");
   const [errorMessage, setErrorMessage] = useState<string>();
   const inputWrapperRef = useRef<HTMLDivElement>(null);
+  const datailsWrapperRef = useRef<HTMLDivElement>(null);
 
   const onToggleEditing = () => {
     setAddress(props.address || "");
@@ -53,53 +54,58 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
       </div>
 
       <div className={classes["state-container"]}>
-        <div className={classes["wallet-content"]} onClick={props.onCheck}>
-          <Checkmark isChecked={props.isChecked} />
+        <Transition ref={datailsWrapperRef} in={!isEditing}>
+          <div ref={datailsWrapperRef} className={classes["wallet-content"]} >
+            <Checkmark isChecked={props.isChecked} onClick={props.onCheck} />
+              <div className={classes["details-area-wrapper"]} onClick={props.onCheck}>
+                <WalletItemIcon icon={props.icon} />
+                <TextEllipsis
+                  text={props.title}
+                  className={classes["item-title"]}
+                />
+                <div className={classes["item-info"]}>{props.info}</div>
 
-          <div className={classes["details-area-wrapper"]}>
-            <WalletItemIcon icon={props.icon} />
-            <TextEllipsis
-              text={props.title}
-              className={classes["item-title"]}
-            />
-            <div className={classes["item-info"]}>{props.info}</div>
-
-            {[props.isConnected, props.onDelete].some((i) => i) && (
-              <div className={classes["right-content"]}>
-                {props.isConnected && (
-                  <CheckmarkRoundIcon className={classes["check-round"]} />
-                )}
-                {props.onDelete && (
-                  <GarbageCanIcon
-                    className={classes["delete-icon"]}
-                    onClick={props.onDelete}
-                  />
+                {[props.isConnected, props.onDelete].some((i) => i) && (
+                  <div className={classes["right-content"]}>
+                    {props.isConnected && (
+                      <CheckmarkRoundIcon className={classes["check-round"]} />
+                    )}
+                    {props.onDelete && (
+                      <GarbageCanIcon
+                        className={classes["delete-icon"]}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          props.onDelete && props.onDelete();
+                        }}
+                      />
+                    )}
+                  </div>
                 )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
+          </Transition>
 
-        <Transition ref={inputWrapperRef} in={isEditing}>
-          <div className={classes["input-wrapper"]} ref={inputWrapperRef}>
-            <WalletInput
-              onSubmit={onSubmit}
-              errorMessage={errorMessage}
-              value={address}
-              onChange={setAddress}
-            />
-          </div>
-        </Transition>
+          <Transition ref={inputWrapperRef} in={isEditing}>
+            <div className={classes["input-wrapper"]} ref={inputWrapperRef}>
+              <WalletInput
+                onSubmit={onSubmit}
+                errorMessage={errorMessage}
+                value={address}
+                onChange={setAddress}
+              />
+            </div>
+          </Transition>
       </div>
     </div>
   );
 };
 
-const Checkmark: React.FC<{ isChecked: boolean }> = (props) => (
+const Checkmark: React.FC<{ isChecked: boolean; onClick:() => void }> = (props) => (
   <div
     className={`${classes["check-wrapper"]} ${
       props.isChecked ? classes["checked"] : ""
     }`}
+    onClick={props.onClick}
   >
     <CheckMarkIcon />
   </div>
