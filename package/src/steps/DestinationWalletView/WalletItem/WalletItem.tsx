@@ -12,7 +12,11 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className={classes["wrapper"]}>
+    <div 
+      className={`${classes["wrapper"]} ${
+        !isEditing && props.isChecked ? classes["selected"] : ""
+      }`}
+    >
       <div className={classes["label"]}>
         <span> {props.label} </span>
         {props.onChangeAddress && (
@@ -20,7 +24,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
         )}
       </div>
 
-      <div className={classes["content"]}>
+      <div className={classes["content"]} onClick={isEditing ? undefined : props.onCheck}>
         <Checkmark isChecked={props.isChecked} hidden={isEditing} />
 
         {!isEditing && (

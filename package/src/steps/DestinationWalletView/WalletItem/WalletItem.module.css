@@ -42,6 +42,7 @@
   align-items: center;
   flex-shrink: 0;
   cursor: pointer;
+  transition: all 200ms;
   --check-border-color: var(--check-idle-border-color);
   --check-color: var(--check-idle-color);
 }
@@ -64,6 +65,14 @@
   background: var(--background-color);
   border: 1px solid var(--input-stroke-color);
   border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0px 4px 31px rgba(60, 64, 181, 0);
+  transition: border-color 200ms, box-shadow 200ms;
+}
+
+.wrapper.selected .details-area-wrapper {
+  box-shadow: 0px 4px 31px rgba(60, 64, 181, 0.13);
+  border-color: transparent;
 }
 
 .icon-wrapper {
@@ -115,6 +124,7 @@
 .check-round {
   cursor: pointer;
   color: var(--success-color);
+  filter: drop-shadow(0px 4px 13px var(--sucess-color-shadow));
 }
 
 .delete-icon {

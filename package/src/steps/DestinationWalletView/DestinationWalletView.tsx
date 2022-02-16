@@ -14,7 +14,7 @@ import WalletItem from "./WalletItem/WalletItem";
 const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [walletId] = useState(nextStep.selectedWalletId);
+  const [walletId, setWalletId] = useState(nextStep.selectedWalletId);
 
   const { nextScreen, backScreen } = useContext(NavContext);
 
@@ -76,6 +76,7 @@ const ComponentName: React.FC<DestinationWalletViewProps> = ({ nextStep }) => {
                 isChecked={wallet.id === walletId}
                 icon={wallet.icon}
                 // TODO: use a constant for metamask
+                onCheck={() => setWalletId(wallet.id)}
                 isConnected={wallet.id === "metamask"}
                 onChangeAddress={wallet.id === "metamask" ? undefined : () => {}}
                 onDelete={wallet.id === "metamask" ? undefined : () => {}}
