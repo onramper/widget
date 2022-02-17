@@ -1,88 +1,91 @@
 import { OverviewStepItem } from "../../../common/StepsOverview/StepsOverview.models";
-
-type StepFormBaseField = { 
-    placeholder?: string;
-    icon?: string;
-    iconPosition?: "start" | "end";
-}; 
+import { TokenInfo } from "layer2";
+type StepFormBaseField = {
+  placeholder?: string;
+  icon?: string;
+  iconPosition?: "start" | "end";
+};
 
 type StepDataItems = Array<
-    StepFormBaseField & (| {
-        type: "select";
-        name: string;
-        humanName: string;
-        options: {
+  StepFormBaseField &
+    (
+      | {
+          type: "select";
+          name: string;
+          humanName: string;
+          options: {
             value: string;
             humanName: string;
             icon?: string;
-        }[];
-        hint?: string;
-        required?: boolean;
-    }
-    | {
-        type: 'choice',
-        options: string[],
-        humanName: string;
-        name: string;
-        hint?: string;
-        required?: boolean;
-    }
-    | {
-        type: 'string' | 'integer';
-        humanName: string;
-        name: string;
-        hint?: string;
-        required?: boolean;
-    }
-    | {
-        type: 'date';
-        name: string;
-        humanName: string;
-        hint?: string;
-        required?: boolean;
-        data: [
+          }[];
+          hint?: string;
+          required?: boolean;
+        }
+      | {
+          type: "choice";
+          options: string[];
+          humanName: string;
+          name: string;
+          hint?: string;
+          required?: boolean;
+        }
+      | {
+          type: "string" | "integer";
+          humanName: string;
+          name: string;
+          hint?: string;
+          required?: boolean;
+        }
+      | {
+          type: "date";
+          name: string;
+          humanName: string;
+          hint?: string;
+          required?: boolean;
+          data: [
             {
-                type: 'integer';
-                humanName: 'Day';
-                name: 'day';
+              type: "integer";
+              humanName: "Day";
+              name: "day";
             },
             {
-                type: 'integer';
-                humanName: 'Month';
-                name: 'month';
+              type: "integer";
+              humanName: "Month";
+              name: "month";
             },
             {
-                type: 'integer';
-                humanName: 'Year';
-                name: 'year';
+              type: "integer";
+              humanName: "Year";
+              name: "year";
             }
-        ];
-    }
-    | {
-        type: 'boolean';
-        name: 'termsOfUse';
-        terms: {
+          ];
+        }
+      | {
+          type: "boolean";
+          name: "termsOfUse";
+          terms: {
             url: string;
             humanName: string;
-        }[];
-    })
+          }[];
+        }
+    )
 >;
 
 interface FileStep {
-    type: 'file';
-    humanName: string;
-    hint?: string;
-    url: string;
-    acceptedContentTypes: string[];
+  type: "file";
+  humanName: string;
+  hint?: string;
+  url: string;
+  acceptedContentTypes: string[];
 }
 
 interface InfoDepositBankAccount {
-    iban: string;
-    bic: string;
-    bankName: string;
-    bankAddress: string;
-    accountName: string;
-    accountAddress: string;
+  iban: string;
+  bic: string;
+  bankName: string;
+  bankAddress: string;
+  accountName: string;
+  accountAddress: string;
 }
 
 type EmailVerificationStep = {
@@ -99,91 +102,117 @@ type EmailVerificationStep = {
 };
 
 type OrderCompleteStep = {
-    type: "orderComplete";
-    description?: string;
-}
+  type: "orderComplete";
+  description?: string;
+};
 
-type NextStepBase = { 
-    useHeading?: boolean;
-    title?: string;
-    heading?: string;
-    progress?: number;
-    humanName?: string;
-    description?: string;
-}
+type NextStepBase = {
+  useHeading?: boolean;
+  title?: string;
+  heading?: string;
+  progress?: number;
+  humanName?: string;
+  description?: string;
+};
 
 export type PayamentReviewDataItem = {
-    type: "StepsOverview",
-    items: OverviewStepItem[]
-}
+  type: "StepsOverview";
+  items: OverviewStepItem[];
+};
 
 export type PaymentReviewStep = {
-    type: "paymentReview",
-    url?: string;
-    data: PayamentReviewDataItem[]
-}
+  type: "paymentReview";
+  url?: string;
+  data: PayamentReviewDataItem[];
+};
 
 export type DestinationWalletStep = {
-    type: "destinationWallet"
-    url: string;
+  type: "destinationWallet";
+  url: string;
+};
+
+interface TokenInfoWithExtra extends TokenInfo {
+  amount: string;
+  fiatConversion: string;
 }
 
-type NextStep =
-    NextStepBase & (FileStep
+export type SwapOverviewVewStep = {
+  type: "transactionOverview";
+  data: {
+    transactionData: {
+      userAddress: string;
+    };
+    tokenIn: TokenInfoWithExtra;
+    tokenOut: TokenInfoWithExtra;
+  };
+};
+
+type NextStep = NextStepBase &
+  (
+    | FileStep
     | {
-        type: 'information';
+        type: "information";
         url?: string;
         message: string;
         extraData?: StepDataItems;
-    } | {
-        type: 'form';
+      }
+    | {
+        type: "form";
         url: string;
         data: StepDataItems;
         hint?: string;
-    } | {
-        type: 'iframe';
+      }
+    | {
+        type: "iframe";
         url: string;
         fullscreen: boolean;
         neededFeatures?: string;
-    } | {
-        type: 'redirect';
+      }
+    | {
+        type: "redirect";
         url: string;
         hint?: string;
-    } | {
-        type: 'wait';
+      }
+    | {
+        type: "wait";
         url: string;
         extraData?: StepDataItems;
-    } | {
-        type: 'pickOne';
+      }
+    | {
+        type: "pickOne";
         options: FileStep[];
-        humanName?: string
-        hint?: string
-    } | {
-        type: 'completed',
-        trackingUrl: string
-    } | {
-        type: 'requestBankTransaction';
+        humanName?: string;
+        hint?: string;
+      }
+    | {
+        type: "completed";
+        trackingUrl: string;
+      }
+    | {
+        type: "requestBankTransaction";
         depositBankAccount: InfoDepositBankAccount;
         reference: string;
         hint: string;
-    } | EmailVerificationStep
-      | OrderCompleteStep
-      | PaymentReviewStep
-      | DestinationWalletStep
-    );
+      }
+    | EmailVerificationStep
+    | OrderCompleteStep
+    | PaymentReviewStep
+    | DestinationWalletStep
+    | SwapOverviewVewStep
+  );
 
 interface FieldError {
-    field: string
-    message: string
+  field: string;
+  message: string;
 }
 
-type NextStepErr = FieldError[] | { message: string }
+type NextStepErr = FieldError[] | { message: string };
 
 export type {
-    NextStep,
-    StepDataItems,
-    InfoDepositBankAccount,
-    FileStep,
-    NextStepErr,
-    FieldError
-}
+  NextStep,
+  StepDataItems,
+  InfoDepositBankAccount,
+  FileStep,
+  NextStepErr,
+  FieldError,
+};

@@ -78,6 +78,7 @@ const destinationWallet = {
 
 const transactionOverview = {
   type: "transactionOverview",
+  progress: 0,
   url: `${BASE_API}/GoTo/TestGateway/willsee/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
   data: {
     transactionData: {

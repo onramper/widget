@@ -1,6 +1,8 @@
 import styles from "../styles.module.css";
 import React, { useState } from "react";
 import ProgressHeader from "../common/Header/ProgressHeader/ProgressHeader";
+import SwapOverviewView from "../steps/SwapOverviewView/SwapOverviewView";
+import transactionOverview from "../../../iframe/src/mocks/responses/steps/TestGateway/steps";
 
 const SwapCryptoView = () => {
   const steps = ["one", "two", "three", "four", "five"];
@@ -25,8 +27,7 @@ const SwapCryptoView = () => {
         useBackButton
         percentage={(100 / steps.length) * progress}
       />
-      <button onClick={handleBack}>back</button>
-      <button onClick={handleForward}>forward</button>
+      <SwapOverviewView nextStep={transactionOverview} />
     </div>
   );
 };
