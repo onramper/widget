@@ -10,6 +10,7 @@ import ButtonAction from "../../common/Buttons/ButtonAction";
 import { isMetamaskEnabled, useEthers } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
+import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -67,6 +68,7 @@ const SwapOverviewView: React.FC<{
           tokenIn={parsedTokenIn}
           tokenOut={tokenOut}
         />
+        <FeeBreakdown transactionDetails={transactionData} />
         <div className={classes.buttonContainer}>
           {isActive ? (
             <>
@@ -91,7 +93,6 @@ const SwapOverviewView: React.FC<{
           )}
         </div>
       </main>
-
       <Footer />
     </div>
   );

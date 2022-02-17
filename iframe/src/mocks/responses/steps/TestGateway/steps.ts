@@ -89,7 +89,7 @@ const transactionOverview = {
       amountOut: "0.17000",
       amountOutFiatConversion: "$12.29",
       gasFee: "0.0002",
-      swapFee: "0",
+      swapFee: "0.00612",
     },
     tokenIn: {
       name: "Wrapped Ether",
