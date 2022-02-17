@@ -96,7 +96,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
     setErrorMessage(undefined);
 
     try {
-      //   TODO: next step call
+      //   TODO: update backend part using nextStep.url and then if ok, go back
       backScreen();
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
