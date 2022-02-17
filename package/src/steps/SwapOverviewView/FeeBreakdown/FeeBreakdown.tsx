@@ -1,9 +1,9 @@
 import React from "react";
 import classes from "./FeeBreakdown.module.css";
-import { TransactionEstimate } from "../../../ApiContext/api/types/nextStep";
+import { QuoteDetails } from "layer2";
 
 interface Props {
-  transactionDetails: TransactionEstimate;
+  transactionDetails: QuoteDetails;
 }
 
 const FeeBreakdown = ({ transactionDetails }: Props) => {

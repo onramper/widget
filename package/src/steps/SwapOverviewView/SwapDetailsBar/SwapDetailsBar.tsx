@@ -2,12 +2,11 @@ import { ReactComponent as SwapArrows } from "../../../icons/arrow-swap-horizont
 import React, { HTMLProps } from "react";
 import classes from "./SwapDetailsBar.module.css";
 import uriToHttp from "../../../utils";
-import { TransactionEstimate } from "../../../ApiContext/api/types/nextStep";
-import { TokenInfo } from "layer2";
+import { QuoteDetails, TokenInfo } from "layer2";
 
 interface Props extends HTMLProps<HTMLDivElement> {
   className?: string;
-  estimate: TransactionEstimate;
+  estimate: QuoteDetails;
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
 }
