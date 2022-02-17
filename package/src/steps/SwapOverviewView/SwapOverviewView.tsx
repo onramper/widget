@@ -1,35 +1,33 @@
-import React, { useState } from "react";
-import { SwapOverviewViewProps } from "./SwapOverviewView.models";
+import React from "react";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { NextStep } from "../../ApiContext";
+import Footer from "../../common/Footer";
+import Heading from "../../common/Heading/Heading";
+import classes from "./SwapOverviewView.module.css";
+import { parseWrappedTokens } from "../../utils";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
 }> = ({ nextStep }) => {
-  const steps = ["one", "two", "three", "four", "five"];
-  const [progress, setProgress] = useState(0);
+  const {
+    data: { tokenIn, tokenOut },
+  } = nextStep;
 
-  const handleBack = () => {
-    if (progress > 0) {
-      setProgress(progress - 1);
-    }
-  };
-
-  const handleForward = () => {
-    if (progress < steps.length) {
-      setProgress(progress + 1);
-    }
-  };
+  const parsedTokenIn = parseWrappedTokens(tokenIn);
+  const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
   return (
     <div className={commonClasses.view}>
       <ProgressHeader
         noSeparator
         useBackButton
-        percentage={(100 / steps.length) * progress}
+        percentage={nextStep.progress}
       />
-      <main className={`${commonClasses.body}`}>SwapOverviewView</main>
+      <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
+        <Heading className={classes.heading} text={heading} />
+      </main>
+      <Footer />
     </div>
   );
 };

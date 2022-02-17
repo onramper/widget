@@ -26,7 +26,7 @@ const PlayGround = () => {
   const [loadingMessage, setLoadingMessage] = useState<string>("");
   const [quote, setQuote] = useState<QuoteDetails | null>(null);
   const { sendTransaction, state } = useSendTransaction();
-  const [tokenList, setTokenList] = useState<TokenList | null>(null);
+  const [, setTokenList] = useState<TokenList | null>(null);
 
   const handleGetTokens = async () => {
     try {
@@ -122,6 +122,7 @@ const PlayGround = () => {
 
   useEffect(() => {
     handleGetTokens();
+    //eslint-disable-next-line
   }, []);
 
   return (
