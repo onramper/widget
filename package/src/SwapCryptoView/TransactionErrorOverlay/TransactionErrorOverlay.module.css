@@ -130,8 +130,8 @@
 }
 
 .contents-exit {
-  backdrop-filter: blur(var(--blur-value));
   -webkit-backdrop-filter: blur(var(--blur-value));
+  backdrop-filter: blur(var(--blur-value));
 }
 
 .contents-exit-active {
