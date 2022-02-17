@@ -1,4 +1,10 @@
-import React, { useCallback, useContext } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { TransactionErrorOverlayProps } from "./TransactionErrorOverlay.models";
 import commonClasses from "../../styles.module.css";
 import classes from "./TransactionErrorOverlay.module.css";
@@ -6,29 +12,51 @@ import { ReactComponent as SettingsIcon } from "./../../icons/settings.svg";
 import { ReactComponent as CloseIcon } from "./../../icons/settings.svg";
 import { NavContext } from "../../NavContext";
 import ButtonAction from "../../common/ButtonAction";
+import { CSSTransition } from "react-transition-group";
+
+const contentsTimeout = 500;
+let timeout:ReturnType<typeof setTimeout>;
 
 const TransactionErrorOverlay: React.FC<TransactionErrorOverlayProps> = (
   props
 ) => {
+  const [style] = useState({
+    "--contents-timeout": `${contentsTimeout}ms`,
+  } as React.CSSProperties);
+  const [active, setActive] = useState(false);
   const { backScreen } = useContext(NavContext);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const onDismiss = useCallback(() => {
-    backScreen();
+    setActive(false);
+
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      backScreen();
+    }, 150);
   }, [backScreen]);
 
+  useEffect(() => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      setActive(true);
+    }, 100);
+  }, []);
+
   return (
-    <div className={`${commonClasses.view} ${classes["view"]}`}>
+  <Transition ref={wrapperRef} in={active}>
+    <div ref={wrapperRef} className={`${commonClasses.view} ${classes["view"]}`}>
       <nav>
         <div> Failed </div>
-        <CloseIcon className={classes["close-icon"]} />
+        <CloseIcon className={classes["close-icon"]} onClick={onDismiss} />
       </nav>
 
-      <main className={commonClasses.body}>
+      <main style={style} className={commonClasses.body}>
         <div className={classes["wrapper"]}>
           <div className={classes["settings-wrapper"]}>
             <SettingsIcon className={classes["setting-icon"]} />
           </div>
-          
+
           <div className={classes["title"]}>Transaction Failed</div>
           <div className={classes["text-alert"]}>{props.textAlert}</div>
           <div className={classes["description"]}>{props.description}</div>
@@ -41,7 +69,30 @@ const TransactionErrorOverlay: React.FC<TransactionErrorOverlayProps> = (
         </div>
       </main>
     </div>
+  </Transition>
   );
 };
+
+const Transition = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<{ in: boolean }>
+>((props, ref) => {
+  return (
+    <CSSTransition
+      nodeRef={ref}
+      in={props.in}
+      timeout={contentsTimeout}
+      classNames={{
+        enter: classes["contents-enter"],
+        enterActive: classes["contents-enter-active"],
+        exit: classes["contents-exit"],
+        exitActive: classes["contents-exit-active"],
+      }}
+      unmountOnExit={true}
+    >
+      {props.children}
+    </CSSTransition>
+  );
+});
 
 export default TransactionErrorOverlay;
