@@ -123,9 +123,20 @@ export type PaymentReviewStep = {
     data: PayamentReviewDataItem[]
 }
 
+export type WalletItemData = {
+    walletAddress: string;
+    accountName: string;
+    id: string;
+    balance: number;
+    icon?: string;
+    isConnected?: boolean;
+}
 export type DestinationWalletStep = {
     type: "destinationWallet"
     url: string;
+    data: WalletItemData[];
+    cryptoName: string;
+    selectedWalletId?: string;
 }
 
 type NextStep =

@@ -1,0 +1,201 @@
+.wrapper {
+  --icon-size: 24px;
+  --check-idle-border-color: var(--input-stroke-color-sec);
+  --check-idle-color: transparent;
+  --check-active-border-color: var(--success-color);
+  --check-active-color: var(--success-color);
+}
+
+.wrapper,
+.wrapper * {
+  box-sizing: border-box;
+}
+
+.wrapper + .wrapper {
+  margin-top: 16px;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.01em;
+  color: var(--text-light-color);
+  padding-bottom: 8px;
+  padding-left: var(--item-empty-cell-width);
+}
+
+.edit-icon {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.wallet-content {
+  display: flex;
+  flex: 1;
+  min-width: 0px;
+}
+
+.check-wrapper {
+  width: var(--item-empty-cell-width);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  --check-border-color: var(--check-idle-border-color);
+  --check-color: var(--check-idle-color);
+}
+
+.check-wrapper.checked {
+  --check-border-color: var(--check-active-border-color);
+  --check-color: var(--check-active-border-color);
+}
+
+.check-wrapper svg {
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  transition: all 200ms;
+}
+
+.state-container {
+  flex: 1;
+  min-width: 0px;
+  display: flex;
+  position: relative;
+  min-height: 40px;
+}
+
+/* default state
+   ============================= */
+
+.details-area-wrapper {
+  flex: 1;
+  min-width: 0px;
+  display: flex;
+  align-items: center;
+  padding: 7px 16px;
+  background: var(--background-color);
+  border: 1px solid var(--input-stroke-color);
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0px 4px 31px rgba(60, 64, 181, 0);
+  transition: border-color 200ms, box-shadow 200ms;
+}
+
+.wrapper.selected .details-area-wrapper {
+  box-shadow: 0px 4px 31px rgba(60, 64, 181, 0.13);
+  border-color: transparent;
+}
+
+.icon-wrapper {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex-shrink: 0;
+}
+
+.icon-wrapper > img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.default-item-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(
+    145.2deg,
+    var(--primary-color) 4.49%,
+    rgba(64, 49, 231, 0.29) 116.59%
+  );
+}
+
+.item-title {
+  max-width: 90px;
+  padding-left: 8px;
+  padding-right: 3px;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.005em;
+  color: var(--text-dark-color);
+}
+
+.item-info {
+  font-size: 8px;
+  line-height: 8px;
+  padding-right: 5px;
+  padding-top: 3px;
+  word-break: break-all;
+  color: var(--text-light-color);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0px;
+}
+
+.right-content {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.check-round {
+  cursor: default;
+  color: var(--success-color);
+  filter: drop-shadow(0px 4px 13px var(--sucess-color-shadow));
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: var(--list-active-color);
+}
+
+
+/* edit state
+   ============================= */
+
+.input-wrapper {
+  height: 100%;
+  width: 100%;
+  background-color: var(--background-color);
+  padding-left: var(--item-empty-cell-width);
+}
+
+/* transition between states
+   ============================= */
+
+.enter {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.enter-active {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  transition: opacity 200ms;
+}
+
+.exit {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 1;
+}
+
+.exit-active {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 200ms;
+}
