@@ -7,30 +7,40 @@ interface Props {
 }
 
 const FeeBreakdown = ({ transactionDetails }: Props) => {
-  const { gasFee, swapFee } = transactionDetails;
+  const {
+    amountDecimals,
+    gasUseEstimate,
+    gasUseEstimateUSD,
+    quoteGasAdjustedDecimals,
+  } = transactionDetails;
 
-  const total = Number(gasFee) + Number(swapFee);
   return (
     <menu className={classes.FeeBreakdown}>
-      {gasFee && (
+      {amountDecimals && (
         <div className={classes.row}>
-          <div className={classes.label}>Estimated gas fee:</div>
-          <div className={classes.amount}>{gasFee}</div>
+          <div className={classes.label}>Spend:</div>
+          <div className={classes.amount}>
+            {Number(amountDecimals).toFixed(5)}
+          </div>
         </div>
       )}
-      {swapFee && (
+      {gasUseEstimate && (
         <div className={classes.row}>
-          <div className={classes.label}>Swap fee:</div>
-          <div className={classes.amount}>{swapFee}</div>
+          <div className={classes.label}>Estimated gas fee:</div>
+          <div className={classes.amount}>{`${gasUseEstimate} gwei`}</div>
+        </div>
+      )}
+      {gasUseEstimateUSD && (
+        <div className={classes.row}>
+          <div className={classes.amount}>{`($13.5)`}</div>
         </div>
       )}
       <hr className={classes.divider} />
       <div className={classes.row}>
-        <div className={classes.label}>Total:</div>
-        <div className={classes.amount}>{total.toFixed(6)}</div>
-      </div>
-      <div className={classes.row}>
-        <div className={classes.amount}>{"($126)"}</div>
+        <div className={classes.label}>Total received:</div>
+        <div className={classes.amount}>
+          {Number(quoteGasAdjustedDecimals).toFixed(6)}
+        </div>
       </div>
     </menu>
   );

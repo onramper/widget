@@ -1,5 +1,5 @@
 import { OverviewStepItem } from "../../../common/StepsOverview/StepsOverview.models";
-import { TokenInfo } from "layer2";
+import { QuoteDetails, TokenInfo } from "layer2";
 type StepFormBaseField = {
   placeholder?: string;
   icon?: string;
@@ -131,17 +131,9 @@ export type DestinationWalletStep = {
   url: string;
 };
 
-// TODO add items here
-export type TransactionEstimate = {
+export interface TransactionEstimate extends QuoteDetails {
   userAddress: string;
-  amountIn: string;
-  gasAdjustedAmountIn?: string;
-  amountInFiatConversion?: string;
-  amountOut: string;
-  amountOutFiatConversion?: string;
-  gasFee?: string;
-  swapFee?: string;
-};
+}
 
 export type SwapOverviewVewStep = {
   type: "transactionOverview";
