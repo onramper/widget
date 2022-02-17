@@ -124,6 +124,12 @@ const SwapOverviewView: React.FC<{
       setLoading(false);
       setTimeout(() => setMessage(""), 2000);
     }
+
+    if (state.status === "Exception") {
+      setMessage("Woops, something went wrong");
+      setLoading(false);
+      setTimeout(() => setMessage(""), 2000);
+    }
   }, [state]);
 
   return (
