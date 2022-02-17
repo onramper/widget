@@ -9,7 +9,7 @@ import { TransactionErrorOverlayProps } from "./TransactionErrorOverlay.models";
 import commonClasses from "../../styles.module.css";
 import classes from "./TransactionErrorOverlay.module.css";
 import { ReactComponent as SettingsIcon } from "./../../icons/settings.svg";
-import { ReactComponent as CloseIcon } from "./../../icons/settings.svg";
+import { ReactComponent as CloseIcon } from "./../../icons/close.svg";
 import { NavContext } from "../../NavContext";
 import ButtonAction from "../../common/ButtonAction";
 import { CSSTransition } from "react-transition-group";
