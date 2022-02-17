@@ -20,8 +20,8 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
       props.iconPosition === "end"
         ? `${classes["icon-left"]} ${classes[props.iconClassName || "icon-chevron"]}`
         : ""
-    } ${clickableIcon ? classes["clickable-icon"] : ""}`;
-  }, [props.clickableIcon, props.iconClassName, props.iconPosition, props.onIconClick]);
+    } ${clickableIcon ? classes["clickable-icon"] : ""} ${props.externalIconClassName || ""}`;
+  }, [props.clickableIcon, props.externalIconClassName, props.iconClassName, props.iconPosition, props.onIconClick]);
 
   const getInputWrapperChildClass = useCallback(() => {
     return `${classes["input-wrapper-child"]} ${
@@ -40,6 +40,33 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
 
   const onIconClick = () => {
     props.onIconClick?.(props.name, formatValue(props.value), label);
+  };
+
+  const renderIcon = () => {
+    if (!props.icon) {
+      return;
+    }
+    if(typeof props.icon === "string") {
+      return (
+        <img
+          src={props.icon}
+          className={getIconClasName()}
+          onClick={onIconClick}
+          title={props.iconTitle}
+          data-value={props.value}
+          alt="Icon"
+        />
+      );
+    }
+
+    return (
+      <div
+        className={getIconClasName()}
+        onClick={onIconClick}
+      > 
+        {props.icon}
+      </div>
+    );
   };
 
   return (
@@ -62,16 +89,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
           props.error || props.error === "" ? classes["input-wrapper-error"] : ""
         } ${props.disabled ? classes["input-wrapper-disabled"] : ""}`}
       >
-        {props.icon && (
-          <img
-            src={props.icon}
-            className={getIconClasName()}
-            onClick={onIconClick}
-            title={props.iconTitle}
-            data-value={props.value}
-            alt="Icon"
-          />
-        )}
+        {renderIcon()}
 
         <span
           style={{ order: props.iconPosition === "end" ? -1 : "unset" }}
@@ -85,6 +103,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
               name={props.name}
               value={formatValue(props.value)}
               onChange={props.handleInputChange}
+              onKeyUp={(e) => e.key === "Enter" && props.onEnter && props.onEnter()}
               placeholder={props.disabled ? "" : props.placeholder}
               disabled={props.disabled}
               max={props.max}
@@ -94,6 +113,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
               onBlur={() => setIsFocused(false)}
               onMouseOver={() => setIsMouseOver(true)}
               onMouseOut={() => setIsMouseOver(false)}
+              autoFocus={props.autoFocus}
             />
           ) : (
             <> {props.inputSupportFallbackNode} </>

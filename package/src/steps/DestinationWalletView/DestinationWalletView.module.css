@@ -1,0 +1,70 @@
+.wrapper {
+  --item-height: 40px;
+  --item-font-size: 12px;
+  --item-line-height: 12px;
+  --item-mt: 16px;
+  --item-check-size: 17px;
+  --item-empty-cell-width: 32px;
+  --pb-heading: 23px;
+}
+
+.wrapper,
+.wrapper {
+  box-sizing: border-box;
+}
+
+.wrapper div.main-content {
+  flex: 1;
+  flex-shrink: initial;
+  display: flex;
+  flex-direction: column;
+  min-height: 0px;
+}
+
+.wallets-wrapper > *,
+.default-wallets-wrapper > * {
+  flex-shrink: 0;
+}
+
+.default-wallets-wrapper > .separator {
+  margin-top: 32px;
+  opacity: 0.5;
+  height: 1px;
+  background-color: var(--input-stroke-color);
+}
+
+.wallets-wrapper {
+  flex-grow: 1;
+  min-height: 0px;
+}
+
+.wallets-wrapper[is-overflowing="true"] {
+  padding-right: 17px;
+  overflow: auto;
+}
+
+.wallets-wrapper > :first-child {
+  margin-top: 16px;
+}
+
+.wallets-wrapper > :last-child {
+  padding-bottom: 20px;
+}
+
+.bottom-container {
+  padding-top: 10px;
+}
+
+.input-wrapper {
+  padding-bottom: 16px;
+  padding-left: var(--item-empty-cell-width);
+}
+
+.input-label {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.01em;
+  color: var(--gray-light-color);
+  padding-bottom: 8px;
+}

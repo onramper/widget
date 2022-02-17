@@ -1,6 +1,5 @@
 .wrapper {
   max-width: 50px;
-  width: 100%;
   display: flex;
   white-space: nowrap;
 }
