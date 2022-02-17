@@ -1,0 +1,85 @@
+.view {
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(20px);
+}
+
+.view,
+.view * {
+  box-sizing: border-box;
+}
+
+/* nav
+   ============================= */
+
+.view nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px var(--padding-rl);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 12px;
+}
+
+.close-icon {
+  cursor: pointer;
+}
+
+/* body
+   ============================= */
+
+.view main {
+  display: flex;
+  flex: 1;
+  min-width: 0px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+}
+
+.wrapper {
+  padding-bottom: 40px;
+}
+
+.settings-wrapper {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 28px;
+}
+
+.setting-icon {
+  width: 118px;
+  height: 118px;
+  color: var(--error-color);
+}
+
+.title,
+.text-alert,
+.description {
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.text-alert {
+  padding-top: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.description {
+  padding-top: 24px;
+}
+
+.dismiss-btn {
+  margin-top: 36px;
+}
