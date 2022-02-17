@@ -6,7 +6,7 @@ import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import Heading from "../../common/Heading/Heading";
 import { NavContext } from "../../NavContext";
 import InfoBox from "../../common/InfoBox";
-import ButtonAction from "../../common/ButtonAction";
+import ButtonAction from "../../common/Buttons/ButtonAction";
 import Footer from "../../common/Footer";
 import ErrorView from "../../common/ErrorView";
 

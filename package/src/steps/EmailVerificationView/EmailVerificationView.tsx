@@ -1,11 +1,17 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { APIContext, NextStep } from "../../ApiContext";
 import classes from "./EmailVerificationView.module.css";
 import commonClasses from "./../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import logo from "../../icons/onramper-logo.png";
 import Footer from "../../common/Footer";
-import ButtonAction from "../../common/ButtonAction";
+import ButtonAction from "../../common/Buttons/ButtonAction";
 import ErrorView from "../../common/ErrorView";
 import Step from "../Step";
 import { NavContext } from "../../NavContext";
@@ -48,10 +54,10 @@ const EmailVerificationView: React.FC<{
   );
 
   useEffect(() => {
-    if(!firstRender.current) {
+    if (!firstRender.current) {
       return;
     }
-    
+
     firstRender.current = false;
     if (field.initialValue) {
       onChange(field.name, field.initialValue);
