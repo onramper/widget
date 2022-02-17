@@ -8,6 +8,7 @@ import classes from "./SwapOverviewView.module.css";
 import { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import { isMetamaskEnabled, useEthers } from "layer2";
+import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -43,6 +44,14 @@ const SwapOverviewView: React.FC<{
     }
   }, []);
 
+  const handleEdit = () => {
+    console.log("go to edit step");
+  };
+
+  const handleTransaction = async () => {
+    // do transaction here
+  };
+
   return (
     <div className={commonClasses.view}>
       <ProgressHeader
@@ -56,13 +65,15 @@ const SwapOverviewView: React.FC<{
         <div className={classes.buttonContainer}>
           {isActive ? (
             <>
-              <ButtonAction
-                text={isActive ? "connected" : "Connect Wallet"}
-                onClick={activateBrowserWallet}
+              <ButtonSecondary
+                className={classes.buttonInGroup}
+                text="Edit"
+                onClick={handleEdit}
               />
               <ButtonAction
-                text={isActive ? "connected" : "Connect Wallet"}
-                onClick={activateBrowserWallet}
+                className={classes.buttonInGroup}
+                text="Confirm Swap"
+                onClick={handleTransaction}
               />
             </>
           ) : (
