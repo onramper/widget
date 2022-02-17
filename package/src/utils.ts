@@ -14,6 +14,40 @@ export const parseWrappedTokens = (token: TokenInfo): TokenInfo => {
   }
 };
 
+/**
+ * Given a URI that may be ipfs, ipns, http, https, ar, or data protocol, return the fetch-able http(s) URLs for the same content
+ * @param uri to convert to fetch-able http url
+ */
+export default function uriToHttp(uri: string): string[] {
+  const protocol = uri.split(":")[0].toLowerCase();
+  switch (protocol) {
+    case "data":
+      return [uri];
+    case "https":
+      return [uri];
+    case "http":
+      return ["https" + uri.substr(4), uri];
+    case "ipfs":
+      return [
+        `https://cloudflare-ipfs.com/ipfs/${
+          uri.match(/^ipfs:(\/\/)?(.*)$/i)?.[2]
+        }/`,
+        `https://ipfs.io/ipfs/${uri.match(/^ipfs:(\/\/)?(.*)$/i)?.[2]}/`,
+      ];
+    case "ipns":
+      return [
+        `https://cloudflare-ipfs.com/ipns/${
+          uri.match(/^ipns:(\/\/)?(.*)$/i)?.[2]
+        }/`,
+        `https://ipfs.io/ipns/${uri.match(/^ipns:(\/\/)?(.*)$/i)?.[2]}/`,
+      ];
+    case "ar":
+      return [`https://arweave.net/${uri.match(/^ar:(\/\/)?(.*)$/i)?.[2]}`];
+    default:
+      return [];
+  }
+}
+
 export const copyToClipBoard = async (
   text: string,
   copied: (status: boolean, text: string) => void

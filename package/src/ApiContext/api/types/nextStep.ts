@@ -131,19 +131,24 @@ export type DestinationWalletStep = {
   url: string;
 };
 
-interface TokenInfoWithExtra extends TokenInfo {
-  amount: string;
-  fiatConversion: string;
-}
+// TODO add items here
+export type TransactionEstimate = {
+  userAddress: string;
+  amountIn: string;
+  gasAdjustedAmountIn?: string;
+  amountInFiatConversion?: string;
+  amountOut: string;
+  amountOutFiatConversion?: string;
+  gasFee?: string;
+  swapFee?: string;
+};
 
 export type SwapOverviewVewStep = {
   type: "transactionOverview";
   data: {
-    transactionData: {
-      userAddress: string;
-    };
-    tokenIn: TokenInfoWithExtra;
-    tokenOut: TokenInfoWithExtra;
+    transactionData: TransactionEstimate;
+    tokenIn: TokenInfo;
+    tokenOut: TokenInfo;
   };
 };
 

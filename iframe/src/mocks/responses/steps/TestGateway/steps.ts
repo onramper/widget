@@ -83,6 +83,13 @@ const transactionOverview = {
   data: {
     transactionData: {
       userAddress: "0xC54070dA79E7E3e2c95D3a91fe98A42000e65a48",
+      amountIn: "0.00412",
+      gasAdjustedAmountIn: "",
+      amountInFiatConversion: "$13.16",
+      amountOut: "0.17000",
+      amountOutFiatConversion: "$12.29",
+      gasFee: "0.0002",
+      swapFee: "0",
     },
     tokenIn: {
       name: "Wrapped Ether",
@@ -91,9 +98,7 @@ const transactionOverview = {
       decimals: 18,
       chainId: 4,
       logoURI:
-        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc778417E063141139Fce010982780140Aa0cD5Ab/logo.png",
-      amount: "0.00412",
-      fiatConversion: "$13.16",
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
     },
     tokenOut: {
       name: "Uniswap",
@@ -102,8 +107,6 @@ const transactionOverview = {
       decimals: 18,
       chainId: 4,
       logoURI: "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
-      amount: "0.17",
-      fiatConversion: "$12.29",
     },
   },
 };

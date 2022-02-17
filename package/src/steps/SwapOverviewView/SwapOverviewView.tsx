@@ -9,6 +9,7 @@ import { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import { isMetamaskEnabled, useEthers } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
+import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -20,7 +21,7 @@ const SwapOverviewView: React.FC<{
   const isActive = account && active;
 
   const {
-    data: { tokenIn, tokenOut },
+    data: { tokenIn, tokenOut, transactionData },
   } = nextStep;
 
   // if tokenIn === "WETH" then we want to display ETH instead
@@ -61,7 +62,11 @@ const SwapOverviewView: React.FC<{
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <Heading className={classes.heading} text={heading} />
-        {account && <p>{account}</p>}
+        <SwapDetailsBar
+          estimate={transactionData}
+          tokenIn={parsedTokenIn}
+          tokenOut={tokenOut}
+        />
         <div className={classes.buttonContainer}>
           {isActive ? (
             <>
