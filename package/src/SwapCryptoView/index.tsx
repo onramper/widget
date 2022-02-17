@@ -12,6 +12,7 @@ import InputDropdown from "../common/InputDropdown/InputDropdown";
 import WalletModal from "../common/WalletModal/WalletModal";
 import styles from "../styles.module.css";
 import inputClasses from "./../common/InputDropdown/InputDropdown.module.css";
+import TemporarTransactionErrorTrigger from "./TransactionErrorOverlay/TemporarTransactionErrorTrigger";
 import TransactionSettings from "./TransatctionSettings/TransactionSettings";
 
 const SwapCryptoView = () => {
@@ -171,6 +172,8 @@ const SwapCryptoView = () => {
           disabled: true,
         }}
       />
+
+      <TemporarTransactionErrorTrigger />
     </div>
   );
 };
