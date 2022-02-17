@@ -131,14 +131,13 @@ export type DestinationWalletStep = {
   url: string;
 };
 
-export interface TransactionEstimate extends QuoteDetails {
-  userAddress: string;
-}
-
 export type SwapOverviewVewStep = {
   type: "transactionOverview";
   data: {
-    transactionData: TransactionEstimate;
+    userData: {
+      userAddress: string;
+    };
+    transactionData: QuoteDetails;
     tokenIn: TokenInfo;
     tokenOut: TokenInfo;
   };

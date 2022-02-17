@@ -81,8 +81,10 @@ const transactionOverview = {
   progress: 0,
   url: `${BASE_API}/GoTo/TestGateway/willsee/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
   data: {
-    transactionData: {
+    userData: {
       userAddress: "0xC54070dA79E7E3e2c95D3a91fe98A42000e65a48",
+    },
+    transactionData: {
       blockNumber: "10185753",
       amount: "20000000000000000",
       amountDecimals: "0.02",

@@ -29,9 +29,7 @@ const SwapOverviewView: React.FC<{
   const { account, active, activateBrowserWallet } = useEthers();
   const [connecting, setConnecting] = useState(false);
   const balance = useEtherBalance(account);
-  const [quote, setQuote] = useState<QuoteDetails>(
-    nextStep.data.transactionData
-  );
+  const [quote] = useState<QuoteDetails>(nextStep.data.transactionData);
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -43,7 +41,7 @@ const SwapOverviewView: React.FC<{
   } = nextStep;
 
   useEffect(() => {
-    // TODO: refresh to get new quote
+    // TODO: refresh to get new quote with setQuote()
   }, []);
 
   // if tokenIn === "WETH" then we want to display ETH instead
