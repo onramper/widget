@@ -9,7 +9,7 @@ type ButtonActionType = {
   className?: string;
 };
 
-const ButtonAction: React.FC<ButtonActionType> = (props) => {
+const ButtonSecondary: React.FC<ButtonActionType> = (props) => {
   const {
     onClick,
     text,
@@ -31,4 +31,4 @@ const ButtonAction: React.FC<ButtonActionType> = (props) => {
   );
 };
 
-export default ButtonAction;
+export default ButtonSecondary;

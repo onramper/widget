@@ -28,14 +28,14 @@ const InputDropdown: React.FC<InputDropdownProps> = (
   }, []);
 
   const activateInput = useCallback(() => {
-    if(props.readonly) {
+    if (props.readonly) {
       return;
     }
     setIsEditing(true);
   }, [props.readonly]);
 
   useEffect(() => {
-    if(isEditing && inputRef.current) {
+    if (isEditing && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isEditing]);
@@ -80,9 +80,7 @@ const InputDropdown: React.FC<InputDropdownProps> = (
                 className={`${styles["common-txt"]} ${styles["input"]}`}
               />
             )}
-            <div
-              className={styles["input-right"]}
-            >
+            <div className={styles["input-right"]}>
               {props.suffix && (
                 <div className={`${styles["child"]} ${styles["suffix"]}`}>
                   {props.suffix}
