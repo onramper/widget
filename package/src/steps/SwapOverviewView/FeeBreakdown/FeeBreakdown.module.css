@@ -21,7 +21,7 @@ hr {
 
 .label {
   color: var(--text-dark-color);
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: 12px;
@@ -30,10 +30,20 @@ hr {
 
 .amount {
   color: var(--text-light-color);
-  font-size: 12px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 400;
   line-height: 12px;
   text-align: right;
   margin: 0 0 0 auto;
+}
+
+@media (min-width: 320px) {
+  .label {
+    font-size: 14px;
+  }
+
+  .amount {
+    font-size: 12px;
+  }
 }

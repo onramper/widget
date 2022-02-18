@@ -13,8 +13,7 @@
 
 .column {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   gap: 6px;
 }
 
@@ -23,6 +22,7 @@
 }
 .right {
   justify-content: flex-end;
+  align-items: end;
 }
 
 .textContainer {
@@ -74,4 +74,17 @@
   stroke: var(--text-light-color);
   width: 24px;
   height: 24px;
+}
+
+/* desktop styles here */
+
+@media (min-width: 410px) {
+  .column {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .right {
+    flex-direction: row-reverse;
+  }
 }

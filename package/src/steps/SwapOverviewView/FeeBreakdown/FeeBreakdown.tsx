@@ -22,7 +22,7 @@ const FeeBreakdown = ({ transactionDetails }: FeeBreakdownProps) => {
       )}
       {gasUseEstimate && (
         <div className={classes.row}>
-          <div className={classes.label}>Estimated gas fee:</div>
+          <div className={classes.label}>Est. gas fee:</div>
           <div className={classes.amount}>{`${gasUseEstimate} gwei`}</div>
         </div>
       )}

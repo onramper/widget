@@ -72,7 +72,7 @@ const SwapOverviewView: React.FC<{
   const handleSwap = async () => {
     if (account && balance) {
       setLoading(true);
-      setMessage("Fetching new prices, please wait...");
+      setMessage("Fetching best price...");
       try {
         const res = await layer2.getSwapParams(
           Number(formatEther(balance)),
@@ -116,7 +116,7 @@ const SwapOverviewView: React.FC<{
     }
 
     if (state.status === "Mining") {
-      setMessage("Mining...");
+      setMessage("Processing transaction...");
     }
 
     if (state.status === "Fail") {

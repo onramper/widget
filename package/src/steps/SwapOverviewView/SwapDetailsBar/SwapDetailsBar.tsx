@@ -39,13 +39,6 @@ const SwapDetailsBar = ({
       </div>
       <SwapArrows className={classes.swapIcon} />
       <div className={`${classes.column} ${classes.right}`}>
-        <div className={classes.textContainer}>
-          <div className={classes.description}>You receive</div>
-          <div className={classes.amount}>
-            {Number(estimate.quoteGasAdjustedDecimals).toFixed(5)}
-          </div>
-          <div className={classes.conversion}>({getFiatConversion()})</div>
-        </div>
         {tokenOut.logoURI && (
           <img
             className={classes.tokenIcon}
@@ -53,6 +46,13 @@ const SwapDetailsBar = ({
             alt={tokenOut.name}
           />
         )}
+        <div className={classes.textContainer}>
+          <div className={classes.description}>You receive</div>
+          <div className={classes.amount}>
+            {Number(estimate.quoteGasAdjustedDecimals).toFixed(5)}
+          </div>
+          <div className={classes.conversion}>({getFiatConversion()})</div>
+        </div>
       </div>
     </div>
   );
