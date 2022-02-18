@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { TransactionSettingsProps } from "./TransactionSettings.models";
 import commonClasses from "./../../styles.module.css";
 import classes from "./TransactionSettings.module.css";
@@ -83,7 +89,9 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
 
   const goToWalletDestination = useCallback(async () => {
     const stepUrl = `${BASE_API}/GoTo/TestGateway/destinationWallet/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`;
-    const walletStep = await (await fetch(`${stepUrl}`, { method: 'POST' })).json();
+    const walletStep = await (
+      await fetch(`${stepUrl}`, { method: "POST" })
+    ).json();
     nextScreen(<Step nextStep={walletStep} />);
   }, [nextScreen]);
 

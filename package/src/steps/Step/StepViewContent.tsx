@@ -21,6 +21,7 @@ import EmailVerificationView from "../EmailVerificationView/EmailVerificationVie
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
+import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -120,6 +121,9 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         break;
       case "destinationWallet":
         replaceScreen(<DestinationWalletView nextStep={nextStep} />);
+        break;
+      case "transactionOverview":
+          replaceScreen(<SwapOverviewView nextStep={nextStep} />);
         break;
       default:
         break;
