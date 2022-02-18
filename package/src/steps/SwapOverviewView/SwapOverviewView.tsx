@@ -155,9 +155,10 @@ const SwapOverviewView: React.FC<{
                 className={classes.buttonInGroup}
                 text="Edit"
                 onClick={handleEdit}
+                disabled={loading}
               />
               <ButtonAction
-                disabled={!isActive}
+                disabled={!isActive || loading}
                 className={classes.buttonInGroup}
                 text={"Confirm Swap"}
                 onClick={handleSwap}
