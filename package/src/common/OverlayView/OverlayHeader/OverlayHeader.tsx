@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./OverlayHeader.module.css";
 import commonStyles from "./../../../styles.module.css";
-import closeIcon from "./../../../icons/close.svg";
+import { ReactComponent as CloseIcon} from "./../../../icons/close.svg";
 import { OverlayHeaderProps } from "./OverlayHeader.models";
 
 const OverlayHeader: React.FC<OverlayHeaderProps> = (props: OverlayHeaderProps) => {
@@ -12,7 +12,7 @@ const OverlayHeader: React.FC<OverlayHeaderProps> = (props: OverlayHeaderProps) 
         className={`${commonStyles["btn-default"]} ${commonStyles["flex-all"]} ${styles["close-icon-wrapper"]}`} 
         onClick={() => props.close()}
       >
-        <img src={closeIcon} alt="close-icon" />
+        <CloseIcon className={styles["close-icon"]} />
         <div className={styles["clickable-area"]}></div>
       </button>
     </div>

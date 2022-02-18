@@ -16,6 +16,7 @@ import WalletModal from "../../common/WalletModal/WalletModal";
 import styles from "../../styles.module.css";
 import inputClasses from "../../common/InputDropdown/InputDropdown.module.css";
 import TransactionSettings from "../TransactionSettings/TransactionSettings";
+import TemporarTransactionErrorTrigger from "../TransactionErrorOverlay/TemporarTransactionErrorTrigger";
 
 const PlayGround = () => {
   const { account } = useEthers();
@@ -227,6 +228,8 @@ const PlayGround = () => {
           disabled: true,
         }}
       />
+
+      <TemporarTransactionErrorTrigger />
     </div>
   );
 };

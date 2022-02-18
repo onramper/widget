@@ -1,0 +1,148 @@
+.view {
+  --blur-value: 20px;
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(var(--blur-value));
+  -webkit-backdrop-filter: blur(var(--blur-value));
+}
+
+.view,
+.view * {
+  box-sizing: border-box;
+}
+
+/* nav
+   ============================= */
+
+.view nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px var(--padding-rl);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 12px;
+  color: var(--text-dark-color);
+}
+
+.close-icon {
+  cursor: pointer;
+  color: var(--text-dark-color);
+}
+
+/* body
+   ============================= */
+
+.view main {
+  display: flex;
+  flex: 1;
+  min-width: 0px;
+  flex-shrink: 0;
+  align-items: center;
+  padding-top: 90px;
+}
+
+.wrapper {
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+.settings-wrapper {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 28px;
+}
+
+.setting-icon {
+  width: 118px;
+  height: 118px;
+  color: var(--error-color-light);
+}
+
+.title,
+.text-alert,
+.description {
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--text-dark-color);
+}
+
+.text-alert {
+  padding-top: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--error-color-light);
+}
+
+.description {
+  padding-top: 24px;
+  color: var(--text-light-color);
+}
+
+.dismiss-btn {
+  margin-top: 36px;
+}
+
+/* contents transition
+   ============================= */
+
+.contents-enter .wrapper {
+  opacity: 0;
+}
+
+.contents-enter-active .wrapper {
+  opacity: 1;
+  transition: opacity var(--contents-timeout);
+}
+
+.contents-exit .wrapper {
+  opacity: 1;
+}
+
+.contents-exit-active .wrapper {
+  opacity: 0;
+  transition: opacity var(--contents-timeout);
+}
+
+/* view transition
+   ============================= */
+
+.contents-enter {
+  -webkit-backdrop-filter: blur(0);
+  backdrop-filter: blur(0);
+}
+
+.contents-enter-active {
+  -webkit-backdrop-filter: blur(var(--blur-value));
+  transition: -webkit-backdrop-filter 200ms ease-in;
+  
+  backdrop-filter: blur(var(--blur-value));
+  transition: backdrop-filter 200ms ease-in;
+}
+
+.contents-exit {
+  -webkit-backdrop-filter: blur(var(--blur-value));
+  backdrop-filter: blur(var(--blur-value));
+}
+
+.contents-exit-active {
+  -webkit-backdrop-filter: blur(0);
+  transition: -webkit-backdrop-filter 200ms ease-in;
+  
+  backdrop-filter: blur(0);
+  transition: backdrop-filter 200ms ease-in;
+}
+
+@supports (not (backdrop-filter: none)) and (not (-webkit-backdrop-filter: none))  {
+  .view {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+}

@@ -31,3 +31,7 @@
     left: -6px;
     top: -6px;
 }
+
+.close-icon {
+    color: var(--text-light-color);
+}
