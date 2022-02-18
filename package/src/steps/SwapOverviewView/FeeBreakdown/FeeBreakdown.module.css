@@ -38,7 +38,10 @@ hr {
   margin: 0 0 0 auto;
 }
 
-@media (min-width: 320px) {
+@media (min-width: 410px) {
+  .FeeBreakdown {
+    padding: 30px 22px 12px 22px;
+  }
   .label {
     font-size: 14px;
   }
