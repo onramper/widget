@@ -1,12 +1,8 @@
 import React from "react";
+import { FeeBreakdownProps } from "./FeeBreakdown.models";
 import classes from "./FeeBreakdown.module.css";
-import { QuoteDetails } from "layer2";
 
-interface Props {
-  transactionDetails: QuoteDetails;
-}
-
-const FeeBreakdown = ({ transactionDetails }: Props) => {
+const FeeBreakdown = ({ transactionDetails }: FeeBreakdownProps) => {
   const {
     amountDecimals,
     gasUseEstimate,

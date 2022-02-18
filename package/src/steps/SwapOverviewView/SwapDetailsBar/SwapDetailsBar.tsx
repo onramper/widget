@@ -1,22 +1,15 @@
 import { ReactComponent as SwapArrows } from "../../../icons/arrow-swap-horizontal.svg";
-import React, { HTMLProps } from "react";
+import React from "react";
 import classes from "./SwapDetailsBar.module.css";
 import uriToHttp from "../../../utils";
-import { QuoteDetails, TokenInfo } from "layer2";
-
-interface Props extends HTMLProps<HTMLDivElement> {
-  className?: string;
-  estimate: QuoteDetails;
-  tokenIn: TokenInfo;
-  tokenOut: TokenInfo;
-}
+import { SwapDetailsBarProps } from "./SwapDetailsBar.models";
 
 const SwapDetailsBar = ({
   className = "",
   tokenIn,
   tokenOut,
   estimate,
-}: Props) => {
+}: SwapDetailsBarProps) => {
   // TODO: fallback logo icons
   const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
   const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
