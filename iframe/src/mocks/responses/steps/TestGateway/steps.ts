@@ -76,6 +76,13 @@ const destinationWallet = {
   selectedWalletId: "metamask",
 };
 
+const confirmSwap = {
+  type: "confirmSwap",
+  progress: 0,
+  url: `${BASE_API}/GoTo/TestGateway/transactionOverview`,
+  heading: "Swap Ethereum (ETH) with Bitcoin (BTC)"
+}
+
 const transactionOverview = {
   type: "transactionOverview",
   progress: 0,
@@ -187,6 +194,7 @@ const transactionOverview = {
   },
 };
 
+
 const nextStep: { [key: string]: any } = {
   firstStep: paymentReviewStep,
   personalInfoStep,
@@ -195,6 +203,7 @@ const nextStep: { [key: string]: any } = {
   orderComplete,
   transactionOverview,
   destinationWallet,
+  confirmSwap 
 };
 
 const getNextStep = (currentStep: string) => {

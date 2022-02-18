@@ -33,7 +33,9 @@ const getErrorIndex = () => {
 const TemporarTransactionErrorTrigger: React.FC<{}> = () => {
   const [value, setValue] = useState(Object.keys(errorProps)[getErrorIndex()]);
   const { nextScreen } = useContext(NavContext);
-  const [showImg, setShowImg] = useState(false);
+  const [showImg
+    // , setShowImg
+  ] = useState(false);
 
   const onEnter = useCallback(() => {
     if (errorProps[value]) {
@@ -49,7 +51,7 @@ const TemporarTransactionErrorTrigger: React.FC<{}> = () => {
 
   return (
     <div style={{ padding: `var(--padding-top) var(--padding-rl)` }}>
-      { showImg && <img onClick={() => onEnter()} src={img} style={{position: "absolute", top: "0", left: "0", "width": "100%", height: "100%"}} />}
+      { showImg && <img onClick={() => onEnter()} src={img} style={{position: "absolute", top: "0", left: "0", width: "100%", height: "100%"}} />}
       <div style={{paddingBottom: "10px"}}>
         Type one of the following{" "}
         {Object.entries(errorProps)

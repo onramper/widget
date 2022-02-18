@@ -154,6 +154,10 @@ export type SwapOverviewVewStep = {
   };
 };
 
+export type ConfirmSwapViewStep = {
+  type: "confirmSwap"
+}
+
 type NextStep = NextStepBase &
   (
     | FileStep
@@ -206,6 +210,7 @@ type NextStep = NextStepBase &
     | PaymentReviewStep
     | DestinationWalletStep
     | SwapOverviewVewStep
+    | ConfirmSwapViewStep
   );
 
 interface FieldError {
