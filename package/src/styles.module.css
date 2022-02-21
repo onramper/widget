@@ -42,7 +42,7 @@ theme styles
     --list-active-txt-color: #fff;
     /* variants - screens with different color schemes */
     --primary-var-bg-color: #0e21cc;
-    --primary-var-sec-color:#3044fa; 
+    --primary-var-sec-color:#3044fa;
     --primary-var-gradient-color: rgb(24, 43, 212);
     --primary-var-text-color: #fff;
     --primary-var-text-secondary-color: #D5D7E7;
@@ -89,6 +89,10 @@ theme styles
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
+}
+
+.theme.dark {
+    filter: invert(1) hue-rotate(180deg) opacity(.8) contrast(.95);
 }
 
 /*********
@@ -400,16 +404,16 @@ div.skeleton-box {
     cursor: default;
 }
 
-::-webkit-input-placeholder { 
+::-webkit-input-placeholder {
     color: var(--grey-light-color);
 }
-:-moz-placeholder { 
+:-moz-placeholder {
     color: var(--grey-light-color);
 }
-::-moz-placeholder { 
+::-moz-placeholder {
     color: var(--grey-light-color);
 }
-:-ms-input-placeholder { 
+:-ms-input-placeholder {
     color: var(--grey-light-color);
 }
 

@@ -69,7 +69,8 @@ interface APIProviderType {
   supportSell: boolean;
   supportBuy: boolean;
   isAmountEditable?: boolean;
-  recommendedCryptoCurrencies?: string[]
+  recommendedCryptoCurrencies?: string[];
+  darkMode?: boolean;
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {

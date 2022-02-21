@@ -38,7 +38,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
       key={flagRestart}
       id="main"
       style={style}
-      className={`isolate-inheritance ${styles.theme} ${className}`}
+      className={`isolate-inheritance ${styles.theme} ${className} ${props.darkMode ? styles.dark : ""}`}
     >
       <ErrorBoundary
         fallback={({ resetError }) => (

@@ -48,6 +48,7 @@ const isAmountEditable = getParam("isAmountEditable", "true") === "true";
 const recommendedCryptoCurrencies = getArrayParam(
   "recommendedCryptoCurrencies"
 );
+const darkMode = getParam("darkMode");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -110,6 +111,7 @@ function App() {
             supportBuy={supportBuy}
             isAmountEditable={isAmountEditable}
             recommendedCryptoCurrencies={recommendedCryptoCurrencies}
+            darkMode={darkMode === "true"}
           />
         </div>
       </div>
