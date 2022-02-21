@@ -154,20 +154,23 @@ export type SwapOverviewVewStep = {
   };
 };
 
+export type ConfirmSwapInput = {
+  name: string;
+  label: string;
+  value: string;
+  fiatConversion: number;
+  fiatSymbol: string;
+  currencyName: string;
+  icon: string; 
+  balance?: number;
+  hasMax?: boolean;
+  readonly?: boolean;
+}
+
 export type ConfirmSwapViewStep = {
   type: "confirmSwap";
-  inputs: {
-    name: string;
-    label: string;
-    value: string;
-    fiatConversion: number;
-    fiatSymbol: string;
-    currencyName: string;
-    icon: string; 
-    balance?: number;
-    hasMax?: boolean;
-    readonly?: boolean;
-  } [];
+  cryptoSpent: ConfirmSwapInput;
+  cryptoReceived: ConfirmSwapInput;
 }
 
 type NextStep = NextStepBase &

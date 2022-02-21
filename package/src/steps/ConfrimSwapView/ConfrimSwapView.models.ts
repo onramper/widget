@@ -1,7 +1,7 @@
-import { NextStep } from "../../ApiContext"
+import { NextStep } from "../../ApiContext";
 
 export type ConfrimSwapViewProps = {
-    nextStep: NextStep & { 
-        type: "confirmSwap"
-    }
-}
+  nextStep: NextStep & {
+    type: "confirmSwap";
+  };
+};

@@ -74,7 +74,7 @@ const InputDropdown: React.FC<InputDropdownProps> = (
                 onFocus={props.onFocus || (() => {})}
                 onBlur={() => setIsEditing(false)}
                 onChange={props.onChange}
-                type="text"
+                type={props.type || "text"}
                 id={id}
                 value={props.value}
                 className={`${styles["common-txt"]} ${styles["input"]}`}
