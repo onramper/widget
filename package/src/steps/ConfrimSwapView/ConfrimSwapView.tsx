@@ -139,7 +139,7 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${balance}`}
           // TODO: ADD max handler
-          onMaxClick={cryptoSpent.hasMax ? () => {} : undefined}
+          onMaxClick={() => {}}
           suffix={`(${cryptoSpent.fiatSymbol}${cryptoSpent.fiatConversion})`}
           handleProps={{
             icon: cryptoSpent.icon,
@@ -147,7 +147,6 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
             disabled: true,
           }}
           useEditIcon={true}
-          readonly={cryptoSpent.readonly}
         />
 
         <InputDropdown
@@ -160,8 +159,7 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
             value: cryptoReceived.currencyName,
             disabled: true,
           }}
-          useEditIcon={true}
-          readonly={cryptoReceived.readonly}
+          readonly
         />
 
         <div

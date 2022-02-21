@@ -155,7 +155,6 @@ export type SwapOverviewVewStep = {
 };
 
 export type ConfirmSwapInput = {
-  name: string;
   label: string;
   value: string;
   fiatConversion: number;
@@ -163,8 +162,6 @@ export type ConfirmSwapInput = {
   currencyName: string;
   icon: string; 
   balance?: number;
-  hasMax?: boolean;
-  readonly?: boolean;
 }
 
 export type ConfirmSwapViewStep = {
