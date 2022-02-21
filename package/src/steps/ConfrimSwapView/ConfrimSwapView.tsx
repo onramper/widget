@@ -1,8 +1,6 @@
 import React, {
-  ChangeEvent,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from "react";
 import { APIContext } from "../../ApiContext";
@@ -52,24 +50,22 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
     setIsLoading(false);
   }, [apiInterface, nextScreen, nextStep]);
 
-  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setSpentValue(e.target.value);
+  const getAndUpdateAbortController = useCallback(() => {
+    const newController = new AbortController();
+    const { signal } = newController;
+
+    setLastCall((currentController) => {
+      currentController?.abort();
+      return newController;
+    });
+
+    return signal;
   }, []);
 
-  useEffect(() => {
-    const getAndUpdateAbortController = () => {
-      const newController = new AbortController();
-      const { signal } = newController;
+  const onChangeReceived = useCallback((value: string) => {
+    setSpentValue(value);
 
-      setLastCall((currentController) => {
-        currentController?.abort();
-        return newController;
-      });
-
-      return signal;
-    };
-
-    const callApi = (value: number) => {
+    const spendCryptoApi = (value: number) => {
       const signal = getAndUpdateAbortController();
 
       return new Promise<{
@@ -108,14 +104,50 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
 
     const onUpdate = async () => {
       try {
-        const response = await callApi(Number(spentValue));
+        const response = await spendCryptoApi(Number(spentValue));
         setBalance(response.balance);
         setReceivedValue(response.receivedCrypto.toString());
       } catch (_err) {}
     };
-
     onUpdate();
-  }, [nextStep.cryptoSpent.balance, spentValue]);
+  }, [getAndUpdateAbortController, nextStep.cryptoSpent.balance, spentValue]);
+
+  const onMaxClick = useCallback(async () => {
+    const spendAllBalanceApi = () => {
+      const signal = getAndUpdateAbortController();
+
+      return new Promise<{
+        spentCrypto: number;
+        receivedCrypto: number;
+      }>((resolve, reject) => {
+        if (signal.aborted) {
+          return reject(new DOMException("Aborted", "AbortError"));
+        }
+
+        const timeout = setTimeout(() => {
+          // mock a conversion
+          const receivedCrypto = (nextStep.cryptoSpent.balance || 0) * 0.0000259158;
+          const spentCrypto = (nextStep.cryptoSpent.balance || 0) / 2711.36;
+          resolve({
+            spentCrypto: Number(spentCrypto.toFixed(12)),
+            receivedCrypto: Number(receivedCrypto.toFixed(12))
+          });
+        }, 300);
+
+        signal.addEventListener("abort", () => {
+          clearTimeout(timeout);
+          reject(new DOMException("Aborted", "AbortError"));
+        });
+      });
+    };
+
+    try {
+      const response = await spendAllBalanceApi();
+      setBalance(0);
+      setReceivedValue(response.receivedCrypto.toString());
+      setSpentValue(response.spentCrypto.toString());
+    } catch (_err) {}
+  }, [getAndUpdateAbortController, nextStep.cryptoSpent.balance]);
 
   const isFilled = true;
 
@@ -135,11 +167,10 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
           label={cryptoSpent.label}
           value={spentValue}
           type="number"
-          onChange={onChange}
+          onChange={(e) => onChangeReceived(e.target.value)}
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${balance}`}
-          // TODO: ADD max handler
-          onMaxClick={() => {}}
+          onMaxClick={onMaxClick}
           suffix={`(${cryptoSpent.fiatSymbol}${cryptoSpent.fiatConversion})`}
           handleProps={{
             icon: cryptoSpent.icon,

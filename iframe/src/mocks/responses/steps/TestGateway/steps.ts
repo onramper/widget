@@ -92,7 +92,7 @@ const confirmSwap = {
   },
   cryptoReceived: {
     label: "You receive",
-    value: "0.000054 ",
+    value: "0.00028809496",
     fiatConversion: 13.16,
     fiatSymbol: "$",
     currencyName: "BTC",
