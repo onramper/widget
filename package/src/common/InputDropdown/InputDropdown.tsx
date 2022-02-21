@@ -86,7 +86,7 @@ const InputDropdown: React.FC<InputDropdownProps> = (
                   {props.suffix}
                 </div>
               )}
-              {props.useEditIcon && (
+              {!props.disabled && !props.readonly && props.useEditIcon && (
                 <EditIcon
                   onClick={activateInput}
                   className={`${styles["child"]} ${styles["edit-icon"]}`}

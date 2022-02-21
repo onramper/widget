@@ -127,6 +127,14 @@
 
 /* swap screen 
    ============================= */
+.swap-screen {
+  margin-top: 0;
+}
+
+.swap-screen + .swap-screen {
+  margin-top: 12px;
+}
+
 .swap-screen .common-txt {
   font-size: 20px;
   line-height: 24px;

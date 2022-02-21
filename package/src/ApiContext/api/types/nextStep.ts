@@ -155,7 +155,19 @@ export type SwapOverviewVewStep = {
 };
 
 export type ConfirmSwapViewStep = {
-  type: "confirmSwap"
+  type: "confirmSwap";
+  inputs: {
+    name: string;
+    label: string;
+    value: string;
+    fiatConversion: number;
+    fiatSymbol: string;
+    currencyName: string;
+    icon: string; 
+    balance?: number;
+    hasMax?: boolean;
+    readonly?: boolean;
+  } [];
 }
 
 type NextStep = NextStepBase &
