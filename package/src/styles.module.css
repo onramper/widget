@@ -96,6 +96,10 @@ theme styles
   filter: invert(1) hue-rotate(180deg) opacity(0.8) contrast(0.95);
 }
 
+.theme.dark {
+    filter: invert(1) hue-rotate(180deg) opacity(.8) contrast(.95);
+}
+
 /*********
 general styles
 *********/
