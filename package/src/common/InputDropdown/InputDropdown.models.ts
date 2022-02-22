@@ -3,7 +3,6 @@ import { DropdownHandleProps } from "../DropdownHandle/DropdownHandle.models";
 export type InputDropdownProps = {
     label: string;
     value: string;
-    type?: "number" | "text";
     hint?: string;
     suffix?: string;
     error?: string;

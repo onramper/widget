@@ -229,6 +229,19 @@ export function getBestAvailableGateway(
   return bestGateway;
 }
 
+export const onChangeFloat = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  updateValue: (value: string) => void
+) => {
+  const inputFilter = (value: string) => /^-?\d*[.]?\d*$/.test(value);
+  const target = e.target;
+  if (inputFilter(target.value)) {
+    updateValue(e.target.value);
+    return;
+  }
+  return false;
+};
+
 //ADD TYPES
 /* export function usePromise(promiseOrFunction, defaultValue) {
     const [state, setState] = React.useState({ value: defaultValue, error: null, isPending: true })

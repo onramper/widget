@@ -21,10 +21,16 @@ const InputDropdown: React.FC<InputDropdownProps> = (
   const [id] = React.useState(idGenerator());
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const divWidthRef = useRef<number|undefined>();
 
   const resizeInput = useCallback((target: HTMLInputElement) => {
     target.style.width = `0px`;
-    target.style.width = `${target.scrollWidth}px`;
+    let width = target.scrollWidth;
+    if(divWidthRef.current) {
+      width = divWidthRef.current;
+      divWidthRef.current = undefined;
+    }
+    target.style.width = `${width}px`;
   }, []);
 
   const activateInput = useCallback(() => {
@@ -58,6 +64,11 @@ const InputDropdown: React.FC<InputDropdownProps> = (
           <div className={styles["input-wrapper"]}>
             {!isEditing && (
               <div
+                ref={(node) => {
+                  if(node) {
+                    divWidthRef.current = node.scrollWidth;
+                  }
+                }}
                 onClick={activateInput}
                 className={`${styles["common-txt"]} ${styles["value-text"]}`}
               >
@@ -74,7 +85,7 @@ const InputDropdown: React.FC<InputDropdownProps> = (
                 onFocus={props.onFocus || (() => {})}
                 onBlur={() => setIsEditing(false)}
                 onChange={props.onChange}
-                type={props.type || "text"}
+                type="text"
                 id={id}
                 value={props.value}
                 className={`${styles["common-txt"]} ${styles["input"]}`}

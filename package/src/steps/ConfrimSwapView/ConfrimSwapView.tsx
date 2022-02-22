@@ -1,8 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useState,
-} from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { APIContext } from "../../ApiContext";
 import ErrorView from "../../common/ErrorView";
 import { NavContext } from "../../NavContext";
@@ -16,6 +12,7 @@ import Footer from "../../common/Footer";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import Heading from "../../common/Heading/Heading";
 import InputDropdown from "../../common/InputDropdown/InputDropdown";
+import { onChangeFloat } from "../../utils";
 
 const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -62,55 +59,58 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
     return signal;
   }, []);
 
-  const onChangeReceived = useCallback((value: string) => {
-    setSpentValue(value);
+  const updateReceivedValue = useCallback(
+    (value: string) => {
+      setSpentValue(value);
 
-    const spendCryptoApi = (value: number) => {
-      const signal = getAndUpdateAbortController();
+      const spendCryptoApi = (value: number) => {
+        const signal = getAndUpdateAbortController();
 
-      return new Promise<{
-        balance: number;
-        receivedCrypto: number;
-      }>((resolve, reject) => {
-        if (signal.aborted) {
-          return reject(new DOMException("Aborted", "AbortError"));
-        }
-
-        const timeout = setTimeout(() => {
-          // mock a conversion
-          const fiatValue = value * 2711.36;
-          const balance = (nextStep.cryptoSpent.balance || 0) - fiatValue;
-          const receivedCrypto = fiatValue * 0.0000259158;
-
-          if (balance < 0) {
-            const error = new Error();
-            error.name = "INSUFICIENT_FUNDS";
-            error.message =
-              "You have insufficient funds to complete this transaction";
-            throw error;
+        return new Promise<{
+          balance: number;
+          receivedCrypto: number;
+        }>((resolve, reject) => {
+          if (signal.aborted) {
+            return reject(new DOMException("Aborted", "AbortError"));
           }
-          resolve({
-            balance: Number(balance.toFixed(4)),
-            receivedCrypto: Number(receivedCrypto.toFixed(12))
+
+          const timeout = setTimeout(() => {
+            // mock a conversion
+            const fiatValue = value * 2711.36;
+            const balance = (nextStep.cryptoSpent.balance || 0) - fiatValue;
+            const receivedCrypto = fiatValue * 0.0000259158;
+
+            if (balance < 0) {
+              const error = new Error();
+              error.name = "INSUFICIENT_FUNDS";
+              error.message =
+                "You have insufficient funds to complete this transaction";
+              throw error;
+            }
+            resolve({
+              balance: Number(balance.toFixed(4)),
+              receivedCrypto: Number(receivedCrypto.toFixed(12)),
+            });
+          }, 300);
+
+          signal.addEventListener("abort", () => {
+            clearTimeout(timeout);
+            reject(new DOMException("Aborted", "AbortError"));
           });
-        }, 300);
-
-        signal.addEventListener("abort", () => {
-          clearTimeout(timeout);
-          reject(new DOMException("Aborted", "AbortError"));
         });
-      });
-    };
+      };
 
-    const onUpdate = async () => {
-      try {
-        const response = await spendCryptoApi(Number(spentValue));
-        setBalance(response.balance);
-        setReceivedValue(response.receivedCrypto.toString());
-      } catch (_err) {}
-    };
-    onUpdate();
-  }, [getAndUpdateAbortController, nextStep.cryptoSpent.balance, spentValue]);
+      const onUpdate = async () => {
+        try {
+          const response = await spendCryptoApi(Number(spentValue));
+          setBalance(response.balance);
+          setReceivedValue(response.receivedCrypto.toString());
+        } catch (_err) {}
+      };
+      onUpdate();
+    },
+    [getAndUpdateAbortController, nextStep.cryptoSpent.balance, spentValue]
+  );
 
   const onMaxClick = useCallback(async () => {
     const spendAllBalanceApi = () => {
@@ -126,11 +126,12 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
 
         const timeout = setTimeout(() => {
           // mock a conversion
-          const receivedCrypto = (nextStep.cryptoSpent.balance || 0) * 0.0000259158;
+          const receivedCrypto =
+            (nextStep.cryptoSpent.balance || 0) * 0.0000259158;
           const spentCrypto = (nextStep.cryptoSpent.balance || 0) / 2711.36;
           resolve({
             spentCrypto: Number(spentCrypto.toFixed(12)),
-            receivedCrypto: Number(receivedCrypto.toFixed(12))
+            receivedCrypto: Number(receivedCrypto.toFixed(12)),
           });
         }, 300);
 
@@ -166,8 +167,7 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
         <InputDropdown
           label={cryptoSpent.label}
           value={spentValue}
-          type="number"
-          onChange={(e) => onChangeReceived(e.target.value)}
+          onChange={(e) => onChangeFloat(e, updateReceivedValue)}
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${balance}`}
           onMaxClick={onMaxClick}
