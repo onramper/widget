@@ -179,7 +179,8 @@ export type ConfirmSwapViewStep = {
   feeBreakdown: {
     label: string;
     groups: BrakdownItem[][]
-  }
+  },
+  warning: string;
 }
 
 type NextStep = NextStepBase &

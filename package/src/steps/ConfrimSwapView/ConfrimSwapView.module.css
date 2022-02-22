@@ -1,7 +1,34 @@
 .wrapper {
-    --pb-heading: 33px;
+  --pb-heading: 33px;
+  box-sizing: border-box;
 }
 
-.breakdown {
-    padding: 0 32px;
+.wrapper * {
+  box-sizing: border-box;
+}
+
+.bottom-fields {
+  padding: 0 32px;
+}
+
+.info-wrapper {
+  font-size: 13px;
+  line-height: 21px;
+  letter-spacing: 0.015em;
+  margin-top: 32px;
+  margin-bottom: 30px;
+  color: var(--list-active-color);
+  display: flex;
+  padding-left: 15px;
+}
+
+.exclamation-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.info-txt {
+  padding-left: 15px;
 }

@@ -128,6 +128,7 @@ const confirmSwap = {
       ],
     ],
   },
+  warning: "Above mentioned figures are valid for 1 minute based upon current market rates."
 };
 
 const transactionOverview = {

@@ -14,6 +14,7 @@ import Heading from "../../common/Heading/Heading";
 import InputDropdown from "../../common/InputDropdown/InputDropdown";
 import { onChangeFloat } from "../../utils";
 import Breakdown from "../../common/Breakdown/Breakdown";
+import { ReactComponent as HexExclamationIcon } from "./../../icons/hex-exclamation.svg";
 
 const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -194,11 +195,12 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
           readonly
         />
 
-        <div className={classes["breakdown"]}> 
+        <div className={classes["bottom-fields"]}>
           <Breakdown
             label={nextStep.feeBreakdown.label}
             groups={nextStep.feeBreakdown.groups}
           />
+          <WarningItem text={nextStep.warning} />
         </div>
 
         <div
@@ -212,6 +214,15 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
           <Footer />
         </div>
       </main>
+    </div>
+  );
+};
+
+const WarningItem: React.FC<{ text: string }> = (props) => {
+  return (
+    <div className={classes["info-wrapper"]}>
+      <HexExclamationIcon className={classes["exclamation-icon"]} />
+      <div className={classes["info-txt"]}>{props.text}</div>
     </div>
   );
 };
