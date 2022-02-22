@@ -19,6 +19,7 @@ theme styles
     --overlay-backdrop-color: rgba(17, 32, 62, 0.32);
     --icon-backdrop-color: #F0F3FE;
     --light-grey-color: #fafafb;
+    --clickable-item-color: #EFF2FA;
     /* inputs */
     --input-bg-color: #F7FAFD;
     --input-form-bg-color: #fff;

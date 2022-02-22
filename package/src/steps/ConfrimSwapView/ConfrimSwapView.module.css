@@ -1,3 +1,7 @@
 .wrapper {
     --pb-heading: 33px;
 }
+
+.breakdown {
+    padding: 0 32px;
+}

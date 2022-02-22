@@ -13,6 +13,7 @@ import ButtonAction from "../../common/Buttons/ButtonAction";
 import Heading from "../../common/Heading/Heading";
 import InputDropdown from "../../common/InputDropdown/InputDropdown";
 import { onChangeFloat } from "../../utils";
+import Breakdown from "../../common/Breakdown/Breakdown";
 
 const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -192,6 +193,13 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
           }}
           readonly
         />
+
+        <div className={classes["breakdown"]}> 
+          <Breakdown
+            label={nextStep.feeBreakdown.label}
+            groups={nextStep.feeBreakdown.groups}
+          />
+        </div>
 
         <div
           className={`${commonClasses["body-form-child"]} ${commonClasses["grow-col"]}`}

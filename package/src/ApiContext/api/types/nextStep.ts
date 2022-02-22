@@ -164,10 +164,21 @@ export type ConfirmSwapInput = {
   balance?: number;
 }
 
+export type BrakdownItem = {
+  label: string;
+  subLabel?: string;
+  value: string;
+  strong?: boolean;
+}
+
 export type ConfirmSwapViewStep = {
   type: "confirmSwap";
   cryptoSpent: ConfirmSwapInput;
   cryptoReceived: ConfirmSwapInput;
+  feeBreakdown: {
+    label: string;
+    groups: BrakdownItem[][]
+  }
 }
 
 type NextStep = NextStepBase &
