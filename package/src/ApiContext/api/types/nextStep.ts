@@ -169,6 +169,7 @@ export type BrakdownItem = {
   subLabel?: string;
   value: string;
   strong?: boolean;
+  hint?: string;
 }
 
 export type ConfirmSwapViewStep = {

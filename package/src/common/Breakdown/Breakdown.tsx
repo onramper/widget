@@ -3,6 +3,7 @@ import { CSSTransition } from "react-transition-group";
 import commonClasses from "../../styles.module.css";
 import { BreakdownProps } from "./Breakdown.models";
 import { ReactComponent as ChevronRightIcon } from "../../icons/chevron-right.svg";
+import { ReactComponent as IconHint } from "../../icons/hint.svg";
 import classes from "./Breakdown.module.css";
 
 const transitionTimeout = 300;
@@ -57,7 +58,17 @@ const Breakdown: React.FC<BreakdownProps> = (props) => {
                 {items.map((item, itemIndex) => (
                   <div key={itemIndex} className={classes["item"]}>
                     <div className={classes["item-label"]}>
-                      <div>{item.label}</div>
+                      <div className={classes["item-main-label"]}>
+                        <span> {item.label} </span>
+                        {item.hint && (
+                          <span
+                            data-tooltip={item.hint}
+                            className={`${commonClasses["tooltip"]} ${classes["hint"]}`}
+                          >
+                            <IconHint />
+                          </span>
+                        )}
+                      </div>
                       {item.subLabel && <div>{item.subLabel}</div>}
                     </div>
                     <div className={classes["item-value"]}>{item.value}</div>

@@ -111,6 +111,7 @@ const confirmSwap = {
           label: "Price Impact",
           value: "0.00%",
           strong: true,
+          hint: "Price impact gives you an idea what slippage to actually expect based on the size of the order you're placing and what's going on in the market."
         },
       ],
       [
