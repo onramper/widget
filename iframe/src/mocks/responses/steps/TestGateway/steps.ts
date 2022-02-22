@@ -122,7 +122,6 @@ const confirmSwap = {
         },
         {
           label: "Network Fee",
-          subLabel: "(25.00 %)",
           value: "~$45.67",
         },
       ],

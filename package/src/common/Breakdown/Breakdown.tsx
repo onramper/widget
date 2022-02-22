@@ -56,7 +56,12 @@ const Breakdown: React.FC<BreakdownProps> = (props) => {
             {props.groups.map((items, index) => (
               <div key={index} className={classes["items-group"]}>
                 {items.map((item, itemIndex) => (
-                  <div key={itemIndex} className={classes["item"]}>
+                  <div
+                    key={itemIndex}
+                    className={`${classes["item"]} ${
+                      item.strong ? classes["strong"] : ""
+                    }`}
+                  >
                     <div className={classes["item-label"]}>
                       <div className={classes["item-main-label"]}>
                         <span> {item.label} </span>
@@ -69,7 +74,7 @@ const Breakdown: React.FC<BreakdownProps> = (props) => {
                           </span>
                         )}
                       </div>
-                      {item.subLabel && <div>{item.subLabel}</div>}
+                      {item.subLabel && <div className={classes["item-sec-label"]}>{item.subLabel}</div>}
                     </div>
                     <div className={classes["item-value"]}>{item.value}</div>
                   </div>
