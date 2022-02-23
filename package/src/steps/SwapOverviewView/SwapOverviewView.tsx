@@ -22,8 +22,7 @@ import {
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
-import { useRedirect } from "../../hooks";
-import { useConnectWallet } from "../../hooks/useConnectWallet";
+import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -36,7 +35,7 @@ const SwapOverviewView: React.FC<{
   const [message, setMessage] = useState("");
   const { layer2 } = useLayer2();
   const isActive = account && active;
-  useRedirect(nextStep.progress);
+  useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending } = useConnectWallet();
 
   const {

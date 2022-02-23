@@ -1,1 +1,2 @@
-export * from "./useRedirect";
+export * from "./useWalletSupportRedirect";
+export * from "./useConnectWallet";

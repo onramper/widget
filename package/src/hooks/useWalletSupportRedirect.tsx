@@ -9,7 +9,9 @@ export enum SupportLevels {
   NoWallet,
 }
 
-export const useRedirect = (currentProgress: number | undefined) => {
+export const useWalletSupportRedirect = (
+  currentProgress: number | undefined
+) => {
   const { nextScreen } = useNav();
 
   const checkWalletSupport = useCallback(() => {
