@@ -173,6 +173,13 @@ export type BrakdownItem = {
   hint?: string;
 }
 
+export type WallletListItem = {
+  id: string;
+  icon?: string;
+  accountName: string;
+  walletAddress?: string;
+}
+
 export type ConfirmSwapViewStep = {
   type: "confirmSwap";
   cryptoSpent: ConfirmSwapInput;
@@ -182,6 +189,9 @@ export type ConfirmSwapViewStep = {
     groups: BrakdownItem[][]
   },
   warning: string;
+  defaultDeadline: number;
+  defaultSlippage: number;
+  wallets: WallletListItem[]
 }
 
 type NextStep = NextStepBase &

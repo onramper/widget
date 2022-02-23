@@ -1,10 +1,33 @@
 .wrapper {
   --pb-heading: 33px;
+  --pt-heading: 0px;
+  --pb-heading: 0px;
   box-sizing: border-box;
 }
 
 .wrapper * {
   box-sizing: border-box;
+}
+
+.top-section {
+  --assumed-settings-width: 20px;
+  display: flex;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 33px;
+} 
+
+.top-section .heading {
+  flex: 1;
+}
+
+.heading > h1 {
+  line-height: 29px;
+  padding-left: var(--assumed-settings-width);
+}
+
+.settings {
+  z-index: 5;
 }
 
 .bottom-fields {
@@ -31,8 +54,4 @@
 
 .info-txt {
   padding-left: 15px;
-}
-
-.heading > h1 {
-  line-height: 29px;
 }

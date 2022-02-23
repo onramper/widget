@@ -6,7 +6,6 @@ import Step from "../Step";
 import { ConfrimSwapViewProps } from "./ConfrimSwapView.models";
 import commonClasses from "../../styles.module.css";
 import inputClasses from "../../common/InputDropdown/InputDropdown.module.css";
-import classes from "./ConfrimSwapView.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import Footer from "../../common/Footer";
 import ButtonAction from "../../common/Buttons/ButtonAction";
@@ -16,6 +15,8 @@ import { onChangeFloat } from "../../utils";
 import Breakdown from "../../common/Breakdown/Breakdown";
 import { ReactComponent as HexExclamationIcon } from "./../../icons/hex-exclamation.svg";
 import { ConfirmSwapInput } from "../../ApiContext/api/types/nextStep";
+import TransactionSettings from "../../SwapCryptoView/TransactionSettings/TransactionSettings";
+import classes from "./ConfrimSwapView.module.css";
 
 const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -162,11 +163,19 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
     <div className={commonClasses.view}>
       <ProgressHeader percentage={nextStep.progress} useBackButton />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
-        <Heading
-          className={classes.heading}
-          text={heading}
-          textSubHeading={nextStep.description}
-        />
+        <div className={classes["top-section"]}>
+          <Heading
+            className={classes.heading}
+            text={heading}
+            textSubHeading={nextStep.description}
+          />
+          <TransactionSettings
+            wallets={nextStep.wallets}
+            className={classes["settings"]}
+            defaultDeadline={nextStep.defaultDeadline}
+            defaultSlippage={nextStep.defaultSlippage}
+          />
+        </div>
 
         {/* TODO: remove this and add actual error component */}
         {errorMessage && errorMessage}

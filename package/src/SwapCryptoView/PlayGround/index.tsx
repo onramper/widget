@@ -13,7 +13,6 @@ import {
 import React, { useEffect, useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
 import styles from "../../styles.module.css";
-import TransactionSettings from "../TransactionSettings/TransactionSettings";
 import TemporarTransactionErrorTrigger from "../TransactionErrorOverlay/TemporarTransactionErrorTrigger";
 
 const PlayGround = () => {
@@ -148,16 +147,6 @@ const PlayGround = () => {
             Balance: Ξ {formatEther(balance) ?? "-"}
           </p>
         )}
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          paddingRight: "var(--padding-rl)",
-        }}
-      >
-        <TransactionSettings defaultDeadline={600} defaultSlippage={0.1} />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
