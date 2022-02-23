@@ -22,12 +22,12 @@ import {
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
+import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
 }> = ({ nextStep }) => {
-  const { account, active, activateBrowserWallet } = useEthers();
-  const [connecting, setConnecting] = useState(false);
+  const { account, active } = useEthers();
   const balance = useEtherBalance(account);
   const [quote] = useState<QuoteDetails>(nextStep.data.transactionData);
   const { sendTransaction, state } = useSendTransaction();
@@ -35,6 +35,8 @@ const SwapOverviewView: React.FC<{
   const [message, setMessage] = useState("");
   const { layer2 } = useLayer2();
   const isActive = account && active;
+  useWalletSupportRedirect(nextStep.progress);
+  const { connect, connectionPending } = useConnectWallet();
 
   const {
     data: { tokenIn, tokenOut },
@@ -47,23 +49,6 @@ const SwapOverviewView: React.FC<{
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
-
-  const handleConnect = () => {
-    setConnecting(true);
-    activateBrowserWallet();
-  };
-
-  useEffect(() => {
-    if (isActive) {
-      setConnecting(false);
-    }
-  }, [isActive]);
-
-  useEffect(() => {
-    if (!isMetamaskEnabled()) {
-      // go to other screen
-    }
-  }, []);
 
   const handleEdit = () => {
     console.log("go to edit step");
@@ -168,9 +153,9 @@ const SwapOverviewView: React.FC<{
           ) : (
             <ButtonAction
               text="Connect Wallet"
-              pending={connecting}
-              onClick={handleConnect}
-              disabled={!isMetamaskEnabled()}
+              pending={connectionPending}
+              onClick={connect}
+              disabled={!isMetamaskEnabled() || connectionPending}
             />
           )}
         </div>

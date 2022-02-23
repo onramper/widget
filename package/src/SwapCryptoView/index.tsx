@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { BASE_API } from "../ApiContext/api/constants";
 import { NavContext } from "../NavContext";
 import Step from "../steps/Step";
-import { isMetamaskEnabled } from "layer2";
 
 const SwapCryptoView = () => {
   const { nextScreen } = useContext(NavContext);
@@ -17,11 +16,7 @@ const SwapCryptoView = () => {
   }, [nextScreen]);
 
   useEffect(() => {
-    if (!isMetamaskEnabled()) {
-      // show install MM screen
-    } else {
-      goToSwapScreen();
-    }
+    goToSwapScreen();
   }, [goToSwapScreen]);
 
   return <PlayGround />;

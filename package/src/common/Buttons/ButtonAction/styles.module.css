@@ -19,6 +19,9 @@
   transition: background-color 0.1s;
   position: relative;
   z-index: 2;
+  outline: inherit;
+  text-decoration: none;
+  text-align: center;
 }
 
 .pending {
