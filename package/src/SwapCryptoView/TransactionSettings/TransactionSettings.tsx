@@ -21,25 +21,21 @@ import { WallletListItem } from "../../ApiContext/api/types/nextStep";
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const { nextScreen } = useContext(NavContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [slippage, setSlippage] = useState(props.defaultSlippage.toFixed(2));
-  const [deadline, setDeadline] = useState(
-    String(Math.floor((props.defaultDeadline / 60) * 100) / 100)
-  );
   const wrapperRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
   const [wallets, setWallets] = useState(computeWallets(props.wallets));
 
   const computeSlippageAutoBtnClass = useCallback(() => {
     const outlineClass =
-      props.defaultSlippage === Number(slippage)
+      props.defaultSlippage === Number(props.slippage)
         ? ""
         : commonClasses["outline"];
     return `${commonClasses["secondary-btn"]} ${outlineClass} ${classes["auto-btn"]}`;
-  }, [props.defaultSlippage, slippage]);
+  }, [props.defaultSlippage, props.slippage]);
 
   const resetSlippage = useCallback(() => {
-    setSlippage(props.defaultSlippage.toFixed(2));
-  }, [props.defaultSlippage]);
+    props.onChangeSlippage(props.defaultSlippage.toFixed(2));
+  }, [props]);
 
   const goToWalletDestination = useCallback(async () => {
     const stepUrl = `${BASE_API}/GoTo/TestGateway/destinationWallet`;
@@ -98,8 +94,10 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 symbolPosition="end"
                 name="slippage"
                 type="number"
-                value={slippage}
-                onChange={(name: string, value: string) => setSlippage(value)}
+                value={props.slippage}
+                onChange={(name: string, value: string) =>
+                  props.onChangeSlippage(value)
+                }
               />
             </div>
           </div>
@@ -112,8 +110,10 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 variant="setting"
                 type="number"
                 name="transactionDeadline"
-                value={deadline}
-                onChange={(name: string, value: string) => setDeadline(value)}
+                value={props.deadline}
+                onChange={(name: string, value: string) =>
+                  props.onChangeDeadline(value)
+                }
                 className={classes["deadline-input"]}
               />
               <div className={classes["setting-label"]}>Minutes</div>
