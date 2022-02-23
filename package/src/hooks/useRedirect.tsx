@@ -9,16 +9,16 @@ export enum SupportLevels {
   NoWallet,
 }
 
-export const useRedirect = () => {
+export const useRedirect = (currentProgress: number | undefined) => {
   const { nextScreen } = useNav();
 
   const checkWalletSupport = useCallback(() => {
     if (!browserSupportsMetamask()) {
       // unsupported browser redirect
     } else if (browserSupportsMetamask() && !isMetamaskEnabled()) {
-      nextScreen(<NoWalletView />);
+      nextScreen(<NoWalletView currentProgress={currentProgress} />);
     }
-  }, [nextScreen]);
+  }, [currentProgress, nextScreen]);
 
   useEffect(() => {
     // initial check for browser/wallet support

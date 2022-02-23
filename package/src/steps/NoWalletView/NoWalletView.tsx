@@ -6,10 +6,14 @@ import ButtonLink from "../../common/Buttons/ButtonLink/ButtonLink";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 
-const NoMetamaskView = () => {
+interface Props {
+  currentProgress: number | undefined;
+}
+
+const NoMetamaskView = ({ currentProgress }: Props) => {
   return (
     <div className={commonClasses.view}>
-      <ProgressHeader useBackButton noSeparator percentage={0} />
+      <ProgressHeader noSeparator percentage={currentProgress} />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <Metamask className={classes.walletIcon} />
         <Heading

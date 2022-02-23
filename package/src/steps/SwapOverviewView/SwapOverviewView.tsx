@@ -36,7 +36,7 @@ const SwapOverviewView: React.FC<{
   const [message, setMessage] = useState("");
   const { layer2 } = useLayer2();
   const isActive = account && active;
-  useRedirect();
+  useRedirect(nextStep.progress);
 
   const {
     data: { tokenIn, tokenOut },
