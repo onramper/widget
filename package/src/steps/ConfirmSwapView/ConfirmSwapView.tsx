@@ -3,7 +3,7 @@ import { APIContext } from "../../ApiContext";
 import ErrorView from "../../common/ErrorView";
 import { NavContext } from "../../NavContext";
 import Step from "../Step";
-import { ConfrimSwapViewProps } from "./ConfrimSwapView.models";
+import { ConfirmSwapViewProps } from "./ConfirmSwapView.models";
 import commonClasses from "../../styles.module.css";
 import inputClasses from "../../common/InputDropdown/InputDropdown.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
@@ -16,9 +16,9 @@ import Breakdown from "../../common/Breakdown/Breakdown";
 import { ReactComponent as HexExclamationIcon } from "./../../icons/hex-exclamation.svg";
 import { ConfirmSwapInput } from "../../ApiContext/api/types/nextStep";
 import TransactionSettings from "../../SwapCryptoView/TransactionSettings/TransactionSettings";
-import classes from "./ConfrimSwapView.module.css";
+import classes from "./ConfirmSwapView.module.css";
 
-const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
+const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
   const [heading] = useState(
@@ -273,4 +273,4 @@ const computeHeading = (
   );
 };
 
-export default ConfrimSwapView;
+export default ConfirmSwapView;
