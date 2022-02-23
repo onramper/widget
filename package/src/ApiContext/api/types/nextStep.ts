@@ -159,7 +159,8 @@ export type ConfirmSwapInput = {
   value: string;
   fiatConversion: number;
   fiatSymbol: string;
-  currencyName: string;
+  currencyShortName: string;
+  currencyLongName: string;
   icon: string; 
   balance?: number;
 }

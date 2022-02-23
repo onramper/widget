@@ -15,6 +15,7 @@ import InputDropdown from "../../common/InputDropdown/InputDropdown";
 import { onChangeFloat } from "../../utils";
 import Breakdown from "../../common/Breakdown/Breakdown";
 import { ReactComponent as HexExclamationIcon } from "./../../icons/hex-exclamation.svg";
+import { ConfirmSwapInput } from "../../ApiContext/api/types/nextStep";
 
 const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +24,9 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
   const [balance, setBalance] = useState(nextStep.cryptoSpent.balance);
   const [receivedValue, setReceivedValue] = useState(
     nextStep.cryptoReceived.value
+  );
+  const [heading] = useState(
+    computeHeading(nextStep.cryptoSpent, nextStep.cryptoReceived)
   );
   const [, setLastCall] = useState<AbortController>();
 
@@ -159,7 +163,8 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
       <ProgressHeader percentage={nextStep.progress} useBackButton />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <Heading
-          text={nextStep.heading}
+          className={classes.heading}
+          text={heading}
           textSubHeading={nextStep.description}
         />
 
@@ -176,7 +181,7 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
           suffix={`(${cryptoSpent.fiatSymbol}${cryptoSpent.fiatConversion})`}
           handleProps={{
             icon: cryptoSpent.icon,
-            value: cryptoSpent.currencyName,
+            value: cryptoSpent.currencyShortName,
             disabled: true,
           }}
           useEditIcon={true}
@@ -189,7 +194,7 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
           suffix={`(${cryptoReceived.fiatSymbol}${cryptoReceived.fiatConversion})`}
           handleProps={{
             icon: cryptoReceived.icon,
-            value: cryptoReceived.currencyName,
+            value: cryptoReceived.currencyShortName,
             disabled: true,
           }}
           readonly
@@ -224,6 +229,20 @@ const WarningItem: React.FC<{ text: string }> = (props) => {
       <HexExclamationIcon className={classes["exclamation-icon"]} />
       <div className={classes["info-txt"]}>{props.text}</div>
     </div>
+  );
+};
+
+const computeHeading = (
+  cryptoSpent: ConfirmSwapInput,
+  cryptoReceived: ConfirmSwapInput
+) => {
+  return (
+    <>
+      Swap {cryptoSpent.currencyLongName} ({cryptoSpent.currencyShortName})
+      <br />
+      with {cryptoReceived.currencyLongName} ({cryptoReceived.currencyShortName}
+      )
+    </>
   );
 };
 
