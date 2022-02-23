@@ -1,0 +1,106 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  overflow: visible;
+}
+
+.walletIcon {
+  width: 48px;
+  height: 48px;
+}
+
+.heading {
+  padding-bottom: 16px;
+}
+
+.heading > h1 {
+  font-size: 16px;
+}
+
+.heading > h2 {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0em;
+  max-width: 316px;
+}
+
+.linkButton {
+  margin: 0 0 8px 0;
+  max-width: 327px;
+}
+
+.instruction {
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 11px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+
+.dividerContainer {
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  margin: 16px 0;
+}
+
+.dividerContainer > hr {
+  border-top: 0.5px solid var(--text-light-color);
+  opacity: 0.2;
+  margin: 12px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dividerContainer > p {
+  margin: 0;
+  position: absolute;
+  width: 40px;
+  height: 100%;
+  background: var(--background-color);
+  left: calc(50% - 15px);
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light-color);
+}
+
+.steps {
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0px 0px 40px 0px #484a731c;
+  padding: 24px;
+}
+
+.steps > p {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin: 0;
+  color: var(--text-light-color);
+}
+
+.steps :not(:last-child) {
+  margin-bottom: 8px;
+}
+
+@media (min-width: 400px) {
+  .steps {
+    padding: 24px 52px;
+  }
+}

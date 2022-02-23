@@ -1,4 +1,9 @@
-import React, { createContext, useReducer, useCallback } from "react";
+import React, {
+  createContext,
+  useReducer,
+  useCallback,
+  useContext,
+} from "react";
 import styles from "./styles.module.css";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import ChatBubble from "./ChatBubble";
@@ -107,6 +112,10 @@ const NavProvider: React.FC = (props) => {
   );
 };
 
+export const useNav = () => {
+  return useContext(NavContext);
+};
+
 class NavContainer extends React.Component<
   { home?: ScreenType },
   { intro: boolean }
@@ -146,46 +155,49 @@ class NavContainer extends React.Component<
     return (
       <APIContext.Consumer>
         {(apicontext) => {
-          return (<NavContext.Consumer>
-            {(value) => (
-              <div className={styles["nav-container"]}>
-                <TransitionGroup>
-                  {value._state.screens.map((screen, i) => (
-                    <CSSTransition
-                      key={i}
-                      nodeRef={this.transitionRef}
-                      timeout={200}
-                      classNames={{
-                        enter: styles["screen-enter"],
-                        enterActive: styles["screen-enter-active"],
-                        exit: styles["screen-exit"],
-                        exitActive: styles["screen-exit-active"],
-                      }}
-                    >
-                      <div
-                        key={`${value._state.currentSes}${i}`}
-                        style={{ zIndex: i + 1 }}
-                        className={styles.screen}
-                        ref={this.transitionRef}
+          return (
+            <NavContext.Consumer>
+              {(value) => (
+                <div className={styles["nav-container"]}>
+                  <TransitionGroup>
+                    {value._state.screens.map((screen, i) => (
+                      <CSSTransition
+                        key={i}
+                        nodeRef={this.transitionRef}
+                        timeout={200}
+                        classNames={{
+                          enter: styles["screen-enter"],
+                          enterActive: styles["screen-enter-active"],
+                          exit: styles["screen-exit"],
+                          exitActive: styles["screen-exit-active"],
+                        }}
                       >
-                        {screen}
-                      </div>
-                    </CSSTransition>
-                  ))}
-                </TransitionGroup>
-                {value._state.isChatOpen && <ChatBubble
-                  onActionChatClick={() => {
-                    value.triggerChat();
-                  }}
-                  isChatOpen={value._state.isChatOpen}
-                  intro={this.state.intro}
-                  isBubbleActive={apicontext.collected.displayChatBubble}
-                />}
-              </div>
-            )}
-          </NavContext.Consumer>)
-        }
-        }
+                        <div
+                          key={`${value._state.currentSes}${i}`}
+                          style={{ zIndex: i + 1 }}
+                          className={styles.screen}
+                          ref={this.transitionRef}
+                        >
+                          {screen}
+                        </div>
+                      </CSSTransition>
+                    ))}
+                  </TransitionGroup>
+                  {value._state.isChatOpen && (
+                    <ChatBubble
+                      onActionChatClick={() => {
+                        value.triggerChat();
+                      }}
+                      isChatOpen={value._state.isChatOpen}
+                      intro={this.state.intro}
+                      isBubbleActive={apicontext.collected.displayChatBubble}
+                    />
+                  )}
+                </div>
+              )}
+            </NavContext.Consumer>
+          );
+        }}
       </APIContext.Consumer>
     );
   }

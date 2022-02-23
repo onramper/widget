@@ -1,0 +1,15 @@
+.ButtonLink {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  box-sizing: border-box;
+  padding: 16px 32px;
+}
+
+@media (min-width: 320px) {
+  .ButtonLink {
+    font-size: 20px;
+  }
+}

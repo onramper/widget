@@ -1,7 +1,28 @@
 import { TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 
-// this is for display purposes, we don't want to confuse the user by showing "wrapped ether" instead of "ether"
+const isFirefox = (userAgent: string): boolean => {
+  return userAgent.includes("Firefox");
+};
+
+const isChromium = (userAgent: string): boolean => {
+  return userAgent.includes("Chrome");
+};
+
+export const browserSupportsMetamask = (): boolean => {
+  const userAgent = window.navigator.userAgent;
+  // Metamask only on Firefox & Chromium browsers (Brave, Chrome etc)
+  if (isFirefox(userAgent) || isChromium(userAgent)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * this functions takes a token object as an argument and modifies the display name and symbol IF the token's symbol is "WETH". this is for display purposes, we don't want to confuse the user by showing "wrapped ether" instead of "ether"
+ * @param token standard Token interface (check if weth)
+ */
 export const parseWrappedTokens = (token: TokenInfo): TokenInfo => {
   if (token.symbol === "WETH") {
     return {
@@ -16,7 +37,7 @@ export const parseWrappedTokens = (token: TokenInfo): TokenInfo => {
 
 /**
  * Given a URI that may be ipfs, ipns, http, https, ar, or data protocol, return the fetch-able http(s) URLs for the same content
- * @param uri to convert to fetch-able http url
+ * @param  {string} uri to convert to fetch-able http url
  */
 export default function uriToHttp(uri: string): string[] {
   const protocol = uri.split(":")[0].toLowerCase();
