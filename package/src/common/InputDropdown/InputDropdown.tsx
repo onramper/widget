@@ -21,14 +21,14 @@ const InputDropdown: React.FC<InputDropdownProps> = (
   const [id] = React.useState(idGenerator());
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const divWidthRef = useRef<number|undefined>();
+  const divStateRef = useRef<{width: number; value: string} | undefined>();
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const resizeInput = useCallback((target: HTMLInputElement) => {
     target.style.width = `0px`;
     let width = target.scrollWidth;
-    if(divWidthRef.current) {
-      width = divWidthRef.current;
-      divWidthRef.current = undefined;
+    if(divStateRef.current?.value === target.value) {
+      width = divStateRef.current.width || width;
     }
     target.style.width = `${width}px`;
   }, []);
@@ -46,6 +46,24 @@ const InputDropdown: React.FC<InputDropdownProps> = (
     }
   }, [isEditing]);
 
+  useEffect(() => {
+    if(!isEditing) {
+      const getNode = () => wrapperRef.current?.querySelector(`[itemProp="div-value"]`);
+      const node = getNode();
+      divStateRef.current = {
+        width: (getNode() || node)?.scrollWidth || 0,
+        value: props.value
+      };
+      
+      setTimeout(() => {
+        divStateRef.current = {
+          width: (getNode() || node)?.scrollWidth || 0,
+          value: props.value
+        };
+      }, 200);
+    }
+  }, [isEditing, props.value, resizeInput]);
+
   if (props.isInitialLoading) {
     return <Skeleton className={props.className} />;
   }
@@ -55,6 +73,7 @@ const InputDropdown: React.FC<InputDropdownProps> = (
       className={`${styles["wrapper"]} ${
         props.error ? styles["has-error"] : ""
       } ${props.className || ""}`}
+      ref={wrapperRef}
     >
       <div className={styles["content-wrapper"]}>
         <div className={styles["input-section"]}>
@@ -64,11 +83,7 @@ const InputDropdown: React.FC<InputDropdownProps> = (
           <div className={styles["input-wrapper"]}>
             {!isEditing && (
               <div
-                ref={(node) => {
-                  if(node) {
-                    divWidthRef.current = node.scrollWidth;
-                  }
-                }}
+                itemProp="div-value"
                 onClick={activateInput}
                 className={`${styles["common-txt"]} ${styles["value-text"]}`}
               >
