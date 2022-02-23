@@ -123,6 +123,12 @@
   margin-right: 22px;
 }
 
+.has-marked-error .input,
+.has-marked-error .value-text,
+.has-marked-error .hint {
+  color: var(--error-color-light);
+}
+
 /* swap screen 
    ============================= */
 .swap-screen {

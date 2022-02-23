@@ -6,6 +6,7 @@ export type InputDropdownProps = {
     hint?: string;
     suffix?: string;
     error?: string;
+    markedError?: boolean;
     disabled?: boolean;
     readonly?: boolean;
     useEditIcon?: boolean;

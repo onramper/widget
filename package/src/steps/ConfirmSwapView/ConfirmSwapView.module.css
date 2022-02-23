@@ -30,6 +30,12 @@
   z-index: 5;
 }
 
+.error-section {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.error-section,
 .bottom-fields {
   padding: 0 32px;
 }
@@ -38,11 +44,23 @@
   font-size: 13px;
   line-height: 21px;
   letter-spacing: 0.015em;
-  margin-top: 32px;
-  margin-bottom: 30px;
   color: var(--list-active-color);
   display: flex;
   padding-left: 15px;
+}
+
+.info-wrapper.indication-error {
+  color: var(--error-color-light);
+}
+
+.bottom-fields > .info-wrapper {
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+
+.bottom-fields > .info-wrapper.indication-error {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .exclamation-icon {

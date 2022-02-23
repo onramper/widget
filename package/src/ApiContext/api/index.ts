@@ -162,9 +162,12 @@ export const processResponse = async (response: FetchResponse): Promise<any> => 
 
 class ApiError extends Error {
     data?: any
-    constructor(message: string) {
+    constructor(message: string, name?: string) {
         super(message);
-        this.name = message
+        if(!name) {
+            name = message;
+        }
+        this.name = name;
     }
 }
 

@@ -1,8 +1,12 @@
-import React, { useCallback, useContext, useState } from "react";
-import { APIContext } from "../../ApiContext";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import ErrorView from "../../common/ErrorView";
 import { NavContext } from "../../NavContext";
-import Step from "../Step";
 import { ConfirmSwapViewProps } from "./ConfirmSwapView.models";
 import commonClasses from "../../styles.module.css";
 import inputClasses from "../../common/InputDropdown/InputDropdown.module.css";
@@ -17,10 +21,12 @@ import { ReactComponent as HexExclamationIcon } from "./../../icons/hex-exclamat
 import { ConfirmSwapInput } from "../../ApiContext/api/types/nextStep";
 import TransactionSettings from "../../SwapCryptoView/TransactionSettings/TransactionSettings";
 import classes from "./ConfirmSwapView.module.css";
+import { ApiError } from "../../ApiContext/api";
+import { CSSTransition } from "react-transition-group";
 
 const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [swapErrorMessage, setSwapErrorMessage] = useState<string>();
   const [heading] = useState(
     computeHeading(nextStep.cryptoSpent, nextStep.cryptoReceived)
   );
@@ -48,7 +54,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
 
   const onActionButton = useCallback(async () => {
     setIsLoading(true);
-    setErrorMessage(undefined);
+    setSwapErrorMessage(undefined);
 
     try {
       /*
@@ -70,7 +76,6 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
         nextScreen(<ErrorView />);
         return;
       }
-      setErrorMessage(error.message);
     }
     setIsLoading(false);
   }, [backScreen, nextScreen]);
@@ -103,22 +108,24 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
           }
 
           const timeout = setTimeout(() => {
-            // mock a conversion
-            const fiatValue = value * 2711.36;
-            const balance = (nextStep.cryptoSpent.balance || 0) - fiatValue;
-            const receivedCrypto = fiatValue * 0.0000259158;
-
-            if (balance < 0) {
-              const error = new Error();
-              error.name = "INSUFICIENT_FUNDS";
-              error.message =
-                "You have insufficient funds to complete this transaction";
-              throw error;
+            try {
+              // mock a conversion
+              const fiatValue = value * 2711.36;
+              const balance = (nextStep.cryptoSpent.balance || 0) - fiatValue;
+              const receivedCrypto = fiatValue * 0.0000259158;
+              if (balance < 0) {
+                throw new ApiError(
+                  "You have insufficient funds to complete this transaction",
+                  "INSUFICIENT_FUNDS"
+                );
+              }
+              resolve({
+                balance: Number(balance.toFixed(4)),
+                receivedCrypto: Number(receivedCrypto.toFixed(12)),
+              });
+            } catch (error) {
+              reject(error);
             }
-            resolve({
-              balance: Number(balance.toFixed(4)),
-              receivedCrypto: Number(receivedCrypto.toFixed(12)),
-            });
           }, 300);
 
           signal.addEventListener("abort", () => {
@@ -130,14 +137,20 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
 
       const onUpdate = async () => {
         try {
-          const response = await spendCryptoApi(Number(spentValue));
+          const response = await spendCryptoApi(Number(value));
+          setSwapErrorMessage(undefined);
           setBalance(response.balance);
           setReceivedValue(response.receivedCrypto.toString());
-        } catch (_err) {}
+        } catch (_error) {
+          const error = _error as Error;
+          if (error?.name === "INSUFICIENT_FUNDS") {
+            setSwapErrorMessage(error.message);
+          }
+        }
       };
       onUpdate();
     },
-    [getAndUpdateAbortController, nextStep.cryptoSpent.balance, spentValue]
+    [getAndUpdateAbortController, nextStep.cryptoSpent.balance]
   );
 
   const onMaxClick = useCallback(async () => {
@@ -178,13 +191,13 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
     } catch (_err) {}
   }, [getAndUpdateAbortController, nextStep.cryptoSpent.balance]);
 
-  const isFilled = true;
-
   return (
     <div className={commonClasses.view}>
       <ProgressHeader percentage={nextStep.progress} useBackButton />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
-        <div className={classes["top-section"]}>
+        <div
+          className={classes["top-section"]}
+        >
           <Heading
             className={classes.heading}
             text={heading}
@@ -203,8 +216,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
           />
         </div>
 
-        {/* TODO: remove this and add actual error component */}
-        {errorMessage && errorMessage}
+        <ErrorIndication message={swapErrorMessage} />
 
         <InputDropdown
           label={cryptoSpent.label}
@@ -219,6 +231,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
             value: cryptoSpent.currencyShortName,
             disabled: true,
           }}
+          markedError={!!swapErrorMessage}
           useEditIcon={true}
         />
 
@@ -240,7 +253,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
             label={nextStep.feeBreakdown.label}
             groups={nextStep.feeBreakdown.groups}
           />
-          <WarningItem text={nextStep.warning} />
+          <IndicationItem text={nextStep.warning} />
         </div>
 
         <div
@@ -249,7 +262,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
           <ButtonAction
             onClick={onActionButton}
             text={isLoading ? "Sending..." : "Continue"}
-            disabled={!isFilled || isLoading}
+            disabled={isLoading}
           />
           <Footer />
         </div>
@@ -258,9 +271,43 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
   );
 };
 
-const WarningItem: React.FC<{ text: string }> = (props) => {
+const ErrorIndication: React.FC<{ message?: string }> = (props) => {
+  const [message, setMessage] = useState(props.message || "");
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (props.message) {
+      setMessage(props.message);
+    }
+  }, [props.message]);
+
   return (
-    <div className={classes["info-wrapper"]}>
+    <CSSTransition
+      nodeRef={ref}
+      in={!!props.message}
+      timeout={200}
+      classNames={{
+        enter: commonClasses["collapse-enter"],
+        enterActive: commonClasses["collapse-enter-active"],
+        exit: commonClasses["collapse-exit"],
+        exitActive: commonClasses["collapse-exit-active"],
+      }}
+      mountOnEnter
+      unmountOnExit
+    >
+      <div className={classes["error-section"]} ref={ref}>
+        <IndicationItem error text={message} />
+      </div>
+    </CSSTransition>
+  );
+};
+const IndicationItem: React.FC<{ error?: boolean; text: string }> = (props) => {
+  return (
+    <div
+      className={`${classes["info-wrapper"]} ${
+        props.error ? classes["indication-error"] : ""
+      }`}
+    >
       <HexExclamationIcon className={classes["exclamation-icon"]} />
       <div className={classes["info-txt"]}>{props.text}</div>
     </div>
