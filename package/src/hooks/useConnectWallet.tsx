@@ -35,16 +35,13 @@ export const useConnectWallet = (): ConnectWallet => {
   }, [error]);
 
   const connect = () => {
-    try {
-      setConnectionPending(true);
-      activateBrowserWallet();
-    } catch (error) {
-      setConnectionPending(false);
-      console.log("caught error");
-    }
+    setConnectionError(null);
+    setConnectionPending(true);
+    activateBrowserWallet();
   };
 
   const disconnect = () => {
+    setConnectionError(null);
     setConnectionPending(false);
     deactivate();
   };
