@@ -29,6 +29,7 @@ export const useWalletSupportRedirect = (
     // keep polling
     const interval = setInterval(() => {
       checkWalletSupport();
+      console.log("checking wallet support...");
     }, 2000);
 
     return () => clearInterval(interval);

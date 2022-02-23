@@ -1,4 +1,4 @@
-import { useEthers } from "layer2";
+import { isMetamaskEnabled, useEthers } from "layer2";
 import { useEffect, useState } from "react";
 
 interface ConnectWallet {
@@ -15,9 +15,9 @@ export interface MetamaskError extends Error {
 export const useConnectWallet = (): ConnectWallet => {
   const { account, active, activateBrowserWallet, deactivate, error } =
     useEthers();
-  const [connectionError, setConnectionError] = useState<MetamaskError | null>(
-    null
-  );
+  const [connectionError, setConnectionError] = useState<
+    MetamaskError | Error | null
+  >(null);
 
   const [connectionPending, setConnectionPending] = useState(false);
 
@@ -29,15 +29,21 @@ export const useConnectWallet = (): ConnectWallet => {
 
   useEffect(() => {
     if (error) {
+      // here we can add custom wallet connection errors
       setConnectionError(error as MetamaskError);
       setConnectionPending(false);
     }
   }, [error]);
 
   const connect = () => {
-    setConnectionError(null);
-    setConnectionPending(true);
-    activateBrowserWallet();
+    if (isMetamaskEnabled()) {
+      setConnectionError(null);
+      setConnectionPending(true);
+      activateBrowserWallet();
+    } else {
+      setConnectionError(new Error("Metamask not enabled!"));
+      setConnectionPending(false);
+    }
   };
 
   const disconnect = () => {
