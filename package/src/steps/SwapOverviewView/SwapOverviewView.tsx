@@ -5,7 +5,7 @@ import { NextStep } from "../../ApiContext";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
-import { parseWrappedTokens, browserSupportsMetamask } from "../../utils";
+import { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
@@ -22,8 +22,7 @@ import {
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
-import NoMetamaskView from "../NoMetamaskView/NoMetamaskView";
-import { useWalletSupport, SupportLevels } from "../../hooks";
+import { useRedirect } from "../../hooks";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -37,7 +36,7 @@ const SwapOverviewView: React.FC<{
   const [message, setMessage] = useState("");
   const { layer2 } = useLayer2();
   const isActive = account && active;
-  const support = useWalletSupport();
+  useRedirect();
 
   const {
     data: { tokenIn, tokenOut },
@@ -137,55 +136,40 @@ const SwapOverviewView: React.FC<{
         percentage={nextStep.progress}
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
-        {support === SupportLevels.Okay && (
-          <>
-            <Heading className={classes.heading} text={heading} />
-            <SwapDetailsBar
-              estimate={quote}
-              tokenIn={parsedTokenIn}
-              tokenOut={tokenOut}
+        <Heading className={classes.heading} text={heading} />
+        <SwapDetailsBar
+          estimate={quote}
+          tokenIn={parsedTokenIn}
+          tokenOut={tokenOut}
+        />
+        <FeeBreakdown transactionDetails={quote} />
+        <div className={classes.message}>{message}</div>
+        <div className={classes.buttonContainer}>
+          {isActive ? (
+            <>
+              <ButtonSecondary
+                className={classes.buttonInGroup}
+                text="Edit"
+                onClick={handleEdit}
+                disabled={loading}
+              />
+              <ButtonAction
+                disabled={!isActive || loading}
+                className={classes.buttonInGroup}
+                text={"Confirm Swap"}
+                onClick={handleSwap}
+                pending={loading}
+              />
+            </>
+          ) : (
+            <ButtonAction
+              text="Connect Wallet"
+              pending={connecting}
+              onClick={handleConnect}
+              disabled={!isMetamaskEnabled()}
             />
-            <FeeBreakdown transactionDetails={quote} />
-            <div className={classes.message}>{message}</div>
-            <div className={classes.buttonContainer}>
-              {isActive ? (
-                <>
-                  <ButtonSecondary
-                    className={classes.buttonInGroup}
-                    text="Edit"
-                    onClick={handleEdit}
-                    disabled={loading}
-                  />
-                  <ButtonAction
-                    disabled={!isActive || loading}
-                    className={classes.buttonInGroup}
-                    text={"Confirm Swap"}
-                    onClick={handleSwap}
-                    pending={loading}
-                  />
-                </>
-              ) : (
-                <ButtonAction
-                  text="Connect Wallet"
-                  pending={connecting}
-                  onClick={handleConnect}
-                  disabled={!isMetamaskEnabled()}
-                />
-              )}
-            </div>
-          </>
-        )}
-
-        {support === SupportLevels.NoWallet && (
-          <>
-            <NoMetamaskView />
-          </>
-        )}
-        {support === SupportLevels.WrongBrowser && (
-          <>
-            <p>WRONG BROWSER</p>
-          </>
-        )}
+          )}
+        </div>
       </main>
       <Footer />
     </div>

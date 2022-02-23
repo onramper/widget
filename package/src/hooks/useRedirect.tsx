@@ -1,25 +1,24 @@
 import { isMetamaskEnabled } from "layer2";
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
+import { useNav } from "../NavContext";
 import { browserSupportsMetamask } from "../utils";
+import NoWalletView from "../steps/NoWalletView/NoWalletView";
 
 export enum SupportLevels {
   WrongBrowser,
   NoWallet,
-  Okay,
 }
 
-export const useWalletSupport = (): SupportLevels => {
-  const [support, setSupport] = useState<SupportLevels>(SupportLevels.Okay);
+export const useRedirect = () => {
+  const { nextScreen } = useNav();
 
-  const checkWalletSupport = () => {
+  const checkWalletSupport = useCallback(() => {
     if (!browserSupportsMetamask()) {
-      setSupport(SupportLevels.WrongBrowser);
+      // unsupported browser redirect
     } else if (browserSupportsMetamask() && !isMetamaskEnabled()) {
-      setSupport(SupportLevels.NoWallet);
-    } else {
-      setSupport(SupportLevels.Okay);
+      nextScreen(<NoWalletView />);
     }
-  };
+  }, [nextScreen]);
 
   useEffect(() => {
     // initial check for browser/wallet support
@@ -28,10 +27,8 @@ export const useWalletSupport = (): SupportLevels => {
     // keep polling
     const interval = setInterval(() => {
       checkWalletSupport();
-    }, 2000);
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
-
-  return support;
+  }, [checkWalletSupport]);
 };
