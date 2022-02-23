@@ -94,7 +94,7 @@ const Transition = React.forwardRef<
   );
 });
 
-const withSelectedFirst = (items: ListItem[], id: string) => {
+const withSelectedFirst = (items: ListItem[], id?: string) => {
   const selected = items.find((i) => i.id === id);
   if (!selected) return items;
 

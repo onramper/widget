@@ -191,7 +191,8 @@ export type ConfirmSwapViewStep = {
   warning: string;
   defaultDeadline: number;
   defaultSlippage: number;
-  wallets: WallletListItem[]
+  wallets: WallletListItem[];
+  selectedWalletId?: string;
 }
 
 type NextStep = NextStepBase &

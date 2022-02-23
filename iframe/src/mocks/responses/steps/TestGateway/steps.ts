@@ -153,7 +153,8 @@ const confirmSwap = {
       accountName: "Account 3",
       walletAddress: "0x3fg4-lkfdjsakl;fjdaslk;fjasdkl;jfasd;jf;ldsajl-cab",
     },
-  ]
+  ],
+  selectedWalletId: "account2"
 };
 
 const transactionOverview = {

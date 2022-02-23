@@ -30,6 +30,7 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
     computeHeading(nextStep.cryptoSpent, nextStep.cryptoReceived)
   );
   const [, setLastCall] = useState<AbortController>();
+  const [selectedWalletId, setSelectedWalletId] = useState(nextStep.selectedWalletId);
 
   const [cryptoSpent] = useState(nextStep.cryptoSpent);
   const [cryptoReceived] = useState(nextStep.cryptoReceived);
@@ -41,7 +42,9 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
     setErrorMessage(undefined);
 
     try {
-      const newNextStep = await apiInterface.executeStep(nextStep, {});
+      const newNextStep = await apiInterface.executeStep(nextStep, {
+        selectedWalletId
+      });
       nextScreen(<Step nextStep={newNextStep} />);
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
@@ -52,7 +55,7 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
       setErrorMessage(error.message);
     }
     setIsLoading(false);
-  }, [apiInterface, nextScreen, nextStep]);
+  }, [apiInterface, nextScreen, nextStep, selectedWalletId]);
 
   const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
@@ -171,6 +174,8 @@ const ConfrimSwapView: React.FC<ConfrimSwapViewProps> = ({ nextStep }) => {
           />
           <TransactionSettings
             wallets={nextStep.wallets}
+            selectedWalletId={selectedWalletId}
+            onChangeWalletId={setSelectedWalletId}
             className={classes["settings"]}
             defaultDeadline={nextStep.defaultDeadline}
             defaultSlippage={nextStep.defaultSlippage}

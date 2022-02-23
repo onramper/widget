@@ -18,28 +18,6 @@ import { NavContext } from "../../NavContext";
 import Step from "../../steps/Step";
 import { WallletListItem } from "../../ApiContext/api/types/nextStep";
 
-const Transition = React.forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<{ in: boolean }>
->((props, ref) => {
-  return (
-    <CSSTransition
-      nodeRef={ref}
-      in={props.in}
-      timeout={200}
-      classNames={{
-        enter: classes["collapse-enter"],
-        enterActive: classes["collapse-enter-active"],
-        exit: classes["collapse-exit"],
-        exitActive: classes["collapse-exit-active"],
-      }}
-      unmountOnExit={true}
-    >
-      {props.children}
-    </CSSTransition>
-  );
-});
-
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const { nextScreen } = useContext(NavContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -50,8 +28,6 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
   const [wallets, setWallets] = useState(computeWallets(props.wallets));
-
-  const [walletId, setWalletId] = useState("account1");
 
   const computeSlippageAutoBtnClass = useCallback(() => {
     const outlineClass =
@@ -68,10 +44,13 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const goToWalletDestination = useCallback(async () => {
     const stepUrl = `${BASE_API}/GoTo/TestGateway/destinationWallet`;
     const walletStep = await (
-      await fetch(`${stepUrl}`, { method: "POST" })
+      await fetch(`${stepUrl}`, {
+        method: "POST",
+        body: JSON.stringify({ selectedWalletId: props.selectedWalletId }),
+      })
     ).json();
     nextScreen(<Step nextStep={walletStep} />);
-  }, [nextScreen]);
+  }, [nextScreen, props.selectedWalletId]);
 
   useEffect(() => setWallets(computeWallets(props.wallets)), [props.wallets]);
 
@@ -148,8 +127,8 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 suplimentBtnText="+ Add new wallet"
                 addNewBtnText="+ Add a destination wallet"
                 items={wallets}
-                idSelected={walletId}
-                onSelect={(item: ListItem) => setWalletId(item.id)}
+                idSelected={props.selectedWalletId}
+                onSelect={(item: ListItem) => props.onChangeWalletId(item.id)}
                 onAdd={goToWalletDestination}
               />
             </div>
@@ -170,5 +149,27 @@ const computeWallets = (wallets: WallletListItem[]) =>
         info: item.walletAddress,
       } as ListItem)
   );
+
+const Transition = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<{ in: boolean }>
+>((props, ref) => {
+  return (
+    <CSSTransition
+      nodeRef={ref}
+      in={props.in}
+      timeout={200}
+      classNames={{
+        enter: classes["collapse-enter"],
+        enterActive: classes["collapse-enter-active"],
+        exit: classes["collapse-exit"],
+        exitActive: classes["collapse-exit-active"],
+      }}
+      unmountOnExit={true}
+    >
+      {props.children}
+    </CSSTransition>
+  );
+});
 
 export default TransactionSettings;
