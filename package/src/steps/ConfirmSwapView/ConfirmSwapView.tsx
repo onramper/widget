@@ -36,26 +36,34 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
   const [, setLastCallCryptoChange] = useState<AbortController>();
 
   // settings
-  const [selectedWalletId, setSelectedWalletId] = useState(nextStep.selectedWalletId);
+  const [selectedWalletId, setSelectedWalletId] = useState(
+    nextStep.selectedWalletId
+  );
   const [slippage, setSlippage] = useState(nextStep.defaultSlippage.toFixed(2));
   const [deadline, setDeadline] = useState(
     String(Math.floor((nextStep.defaultDeadline / 60) * 100) / 100)
   );
 
-  const { nextScreen } = useContext(NavContext);
-  const { apiInterface } = useContext(APIContext);
+  const { nextScreen, backScreen } = useContext(NavContext);
 
   const onActionButton = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(undefined);
 
     try {
-      const newNextStep = await apiInterface.executeStep(nextStep, {
-        selectedWalletId,
-        slippage,
-        deadline
-      });
-      nextScreen(<Step nextStep={newNextStep} />);
+      /*
+      // TODO:
+        may:
+        - want to save the data from the screen in this way before heading back to swap:
+          const payload = {
+            selectedWalletId,
+            slippage,
+            deadline,
+          };
+          await submitDataApi(payload)
+        - then update the previous page before redirecting to it  
+      */
+      backScreen();
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
       if (error.fatal) {
@@ -65,7 +73,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
       setErrorMessage(error.message);
     }
     setIsLoading(false);
-  }, [apiInterface, deadline, nextScreen, nextStep, selectedWalletId, slippage]);
+  }, [backScreen, nextScreen]);
 
   const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
