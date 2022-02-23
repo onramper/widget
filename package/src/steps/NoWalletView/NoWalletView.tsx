@@ -1,16 +1,38 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import Heading from "../../common/Heading/Heading";
 import classes from "./NoWalletView.module.css";
 import { ReactComponent as Metamask } from "../../icons/metamask.svg";
 import ButtonLink from "../../common/Buttons/ButtonLink/ButtonLink";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
+import { isMetamaskEnabled } from "layer2";
+import { useNav } from "../../NavContext";
 
 interface Props {
   currentProgress: number | undefined;
 }
 
 const NoMetamaskView = ({ currentProgress }: Props) => {
+  const { backScreen } = useNav();
+
+  const checkWalletSupport = useCallback(() => {
+    if (isMetamaskEnabled()) {
+      backScreen();
+    }
+  }, [backScreen]);
+
+  useEffect(() => {
+    // initial check for browser/wallet support
+    checkWalletSupport();
+
+    // keep polling
+    const interval = setInterval(() => {
+      checkWalletSupport();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [checkWalletSupport]);
+
   return (
     <div className={commonClasses.view}>
       <ProgressHeader noSeparator percentage={currentProgress} />

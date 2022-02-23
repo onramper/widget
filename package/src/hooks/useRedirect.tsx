@@ -27,7 +27,7 @@ export const useRedirect = (currentProgress: number | undefined) => {
     // keep polling
     const interval = setInterval(() => {
       checkWalletSupport();
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [checkWalletSupport]);
