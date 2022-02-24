@@ -9,7 +9,7 @@ export type DropdownCheckableGroupProps = {
     items: ListItem[];
     suplimentBtnText: string;
     addNewBtnText: string;
-    idSelected: string;
+    idSelected?: string;
     onSelect: (item: ListItem) => void;
     onAdd: () => void;
 }

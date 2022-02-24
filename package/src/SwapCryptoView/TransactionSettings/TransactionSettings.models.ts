@@ -1,4 +1,13 @@
+import { WallletListItem } from "../../ApiContext/api/types/nextStep";
+
 export type TransactionSettingsProps = {
     defaultSlippage: number;
-    defaultDeadline: number;
+    className?: string;
+    selectedWalletId?: string;
+    slippage: string;
+    deadline: string;
+    onChangeWalletId: (id: string) => void;
+    onChangeSlippage: (value: string) => void;
+    onChangeDeadline: (value: string) => void;
+    wallets: WallletListItem[]
 }
