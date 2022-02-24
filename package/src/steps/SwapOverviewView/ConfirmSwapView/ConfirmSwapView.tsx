@@ -5,23 +5,23 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ErrorView from "../../common/ErrorView";
-import { NavContext } from "../../NavContext";
+import ErrorView from "../../../common/ErrorView";
+import { NavContext } from "../../../NavContext";
 import { ConfirmSwapViewProps } from "./ConfirmSwapView.models";
-import commonClasses from "../../styles.module.css";
-import inputClasses from "../../common/InputDropdown/InputDropdown.module.css";
-import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-import Footer from "../../common/Footer";
-import ButtonAction from "../../common/Buttons/ButtonAction";
-import Heading from "../../common/Heading/Heading";
-import InputDropdown from "../../common/InputDropdown/InputDropdown";
-import { onChangeFloat } from "../../utils";
-import Breakdown from "../../common/Breakdown/Breakdown";
-import { ReactComponent as HexExclamationIcon } from "./../../icons/hex-exclamation.svg";
-import { ConfirmSwapInput } from "../../ApiContext/api/types/nextStep";
-import TransactionSettings from "../../SwapCryptoView/TransactionSettings/TransactionSettings";
+import commonClasses from "../../../styles.module.css";
+import inputClasses from "../../../common/InputDropdown/InputDropdown.module.css";
+import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader";
+import Footer from "../../../common/Footer";
+import ButtonAction from "../../../common/Buttons/ButtonAction";
+import Heading from "../../../common/Heading/Heading";
+import InputDropdown from "../../../common/InputDropdown/InputDropdown";
+import { onChangeFloat } from "../../../utils";
+import Breakdown from "../../../common/Breakdown/Breakdown";
+import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
+import { ConfirmSwapInput } from "../../../ApiContext/api/types/nextStep";
+import TransactionSettings from "../../../SwapCryptoView/TransactionSettings/TransactionSettings";
 import classes from "./ConfirmSwapView.module.css";
-import { ApiError } from "../../ApiContext/api";
+import { ApiError } from "../../../ApiContext/api";
 import { CSSTransition } from "react-transition-group";
 
 const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {

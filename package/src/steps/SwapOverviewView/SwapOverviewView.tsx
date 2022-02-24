@@ -24,8 +24,8 @@ import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
-import { BASE_API } from "../../ApiContext/api/constants";
-import Step from "../Step";
+import ConfirmSwapView from "./ConfirmSwapView/ConfirmSwapView";
+import { createConfirmSwapProps } from "./utils";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -55,12 +55,8 @@ const SwapOverviewView: React.FC<{
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
   const handleEdit = useCallback(async () => {
-    const stepUrl = `${BASE_API}/GoTo/TestGateway/confirmSwap`;
-    const swapStep = await (
-      await fetch(`${stepUrl}`, { method: "POST" })
-    ).json();
-    nextScreen(<Step nextStep={swapStep} />);
-  }, [nextScreen]);
+    nextScreen(<ConfirmSwapView nextStep={createConfirmSwapProps(nextStep)} />);
+  }, [nextScreen, nextStep]);
 
   const handleSwap = async () => {
     if (account && balance) {
