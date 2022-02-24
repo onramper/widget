@@ -59,18 +59,15 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
     setSwapErrorMessage(undefined);
 
     try {
-      /*
-      // TODO:
-        may:
-        - want to save the data from the screen in this way before heading back to swap:
-          const payload = {
-            selectedWalletId,
-            slippage,
-            deadline,
-          };
-          await submitDataApi(payload)
-        - then update the previous page before redirecting to it  
-      */
+      props.submitData({
+        spentValue,
+        receivedValue,
+        balance: balance || 0,
+        selectedWalletId,
+        wallets: [],
+        slippage: Number(slippage),
+        deadline: Number(deadline) * 60,
+      });
       backScreen();
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
@@ -80,7 +77,17 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
       }
     }
     setIsLoading(false);
-  }, [backScreen, nextScreen]);
+  }, [
+    backScreen,
+    balance,
+    deadline,
+    nextScreen,
+    props,
+    receivedValue,
+    selectedWalletId,
+    slippage,
+    spentValue,
+  ]);
 
   const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
@@ -113,7 +120,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
             try {
               // mock a conversion
               const fiatValue = value * 2711.36;
-              const balance = (props.cryptoSpent.balance || 0) - fiatValue;
+              const balance = 989.2692 - fiatValue;
               const receivedCrypto = fiatValue * 0.0000259158;
               if (balance < 0) {
                 throw new ApiError(
@@ -152,7 +159,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
       };
       onUpdate();
     },
-    [getAndUpdateAbortController, props.cryptoSpent.balance]
+    [getAndUpdateAbortController]
   );
 
   const onMaxClick = useCallback(async () => {
@@ -169,9 +176,9 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
 
         const timeout = setTimeout(() => {
           // mock a conversion
-          const receivedCrypto =
-            (props.cryptoSpent.balance || 0) * 0.0000259158;
-          const spentCrypto = (props.cryptoSpent.balance || 0) / 2711.36;
+          const balance = 989.2692;
+          const receivedCrypto = balance * 0.0000259158;
+          const spentCrypto = balance / 2711.36;
           resolve({
             spentCrypto: Number(spentCrypto.toFixed(12)),
             receivedCrypto: Number(receivedCrypto.toFixed(12)),
@@ -191,17 +198,14 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
       setReceivedValue(response.receivedCrypto.toString());
       setSpentValue(response.spentCrypto.toString());
     } catch (_err) {}
-  }, [getAndUpdateAbortController, props.cryptoSpent.balance]);
+  }, [getAndUpdateAbortController]);
 
   return (
     <div className={commonClasses.view}>
       <ProgressHeader percentage={props.progress} useBackButton />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <div className={classes["top-section"]}>
-          <Heading
-            className={classes.heading}
-            text={heading}
-          />
+          <Heading className={classes.heading} text={heading} />
           <TransactionSettings
             className={classes["settings"]}
             wallets={props.wallets}
@@ -261,7 +265,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
           <ButtonAction
             onClick={onActionButton}
             text={isLoading ? "Sending..." : "Continue"}
-            disabled={isLoading}
+            disabled={!!swapErrorMessage || isLoading}
           />
           <Footer />
         </div>

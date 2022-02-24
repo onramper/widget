@@ -159,8 +159,8 @@ export type SwapOverviewStepData = {
   tokenOut: TokenInfo;
   fiatSymbol: string;
   balance: number;
-  defaultDeadline: number;
-  defaultSlippage: number;
+  deadline: number;
+  slippage: number;
   feeBreakdown: BrakdownItem[][];
   walletsData: {
     wallets: WalletItemData[];

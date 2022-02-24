@@ -186,8 +186,8 @@ const transactionOverview = {
     },
     fiatSymbol: "$",
     balance: 989.2692,
-    defaultDeadline: 600,
-    defaultSlippage: 0.1,
+    deadline: 600,
+    slippage: 0.1,
     feeBreakdown: [
       [
         {

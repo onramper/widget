@@ -1,4 +1,5 @@
 import { BrakdownItem, WalletItemData } from "../../../ApiContext/api/types/nextStep";
+import { ConfirmSwapEditResults } from "../SwapOverviewView.models";
 
 export type ConfirmSwapInput = {
   label: string;
@@ -24,4 +25,5 @@ export type ConfirmSwapViewProps = {
   defaultSlippage: number;
   wallets: WalletItemData[];
   selectedWalletId?: string;
+  submitData: (results: ConfirmSwapEditResults) => void;
 };

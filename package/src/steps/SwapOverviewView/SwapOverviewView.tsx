@@ -25,14 +25,16 @@ import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
 import ConfirmSwapView from "./ConfirmSwapView/ConfirmSwapView";
-import { createConfirmSwapProps } from "./utils";
+import { createConfirmSwapProps, updatedStepFromEditSwap } from "./utils";
+import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
-}> = ({ nextStep }) => {
+}> = (props) => {
+  const [nextStep, setNextStep] = useState(props.nextStep);
   const { account, active } = useEthers();
   const balance = useEtherBalance(account);
-  const [quote] = useState<QuoteDetails>(nextStep.data.transactionData);
+  const [quote, setQuote] = useState<QuoteDetails>(nextStep.data.transactionData);
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -63,9 +65,33 @@ const SwapOverviewView: React.FC<{
     const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
     const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
     const fiatConversion = getFiatConversion();
-    
-    nextScreen(<ConfirmSwapView {...createConfirmSwapProps({data: nextStep.data, parsedTokenIn, fiatConversion, tokenInURL, tokenOutURL })} />);
-  }, [getFiatConversion, nextScreen, nextStep.data, parsedTokenIn, tokenIn.logoURI, tokenOut.logoURI]);
+
+    const submitData = (results: ConfirmSwapEditResults) => {
+      const updateStep = updatedStepFromEditSwap(nextStep, results);
+      setNextStep({ ...updateStep });
+      setQuote(updateStep.data.transactionData);
+    };
+
+    nextScreen(
+      <ConfirmSwapView
+        {...createConfirmSwapProps({
+          data: nextStep.data,
+          parsedTokenIn,
+          fiatConversion,
+          tokenInURL,
+          tokenOutURL,
+        })}
+        submitData={submitData}
+      />
+    );
+  }, [
+    getFiatConversion,
+    nextScreen,
+    nextStep,
+    parsedTokenIn,
+    tokenIn.logoURI,
+    tokenOut.logoURI,
+  ]);
 
   const handleSwap = async () => {
     if (account && balance) {

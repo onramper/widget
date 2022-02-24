@@ -1,18 +1,13 @@
-import { TokenInfo } from "layer2";
-import { SwapOverviewStepData } from "../../ApiContext/api/types/nextStep";
+import { NextStep } from "../../ApiContext";
 import { ConfirmSwapViewProps } from "./ConfirmSwapView/ConfirmSwapView.models";
-
-type ConfirmSwapParam = {
-  data: SwapOverviewStepData;
-  parsedTokenIn: TokenInfo;
-  fiatConversion: number;
-  tokenInURL: string;
-  tokenOutURL: string;
-};
+import {
+  ConfirmSwapEditResults,
+  ConfirmSwapParam,
+} from "./SwapOverviewView.models";
 
 export const createConfirmSwapProps: (
   param: ConfirmSwapParam
-) => ConfirmSwapViewProps = ({
+) => Omit<ConfirmSwapViewProps, "submitData"> = ({
   data,
   parsedTokenIn,
   fiatConversion,
@@ -41,13 +36,31 @@ export const createConfirmSwapProps: (
     },
     feeBreakdown: {
       label: "Fee breakdown:",
-      groups: data.feeBreakdown
+      groups: data.feeBreakdown,
     },
     warning:
       "Above mentioned figures are valid for 1 minute based upon current market rates.",
-    defaultDeadline: data.defaultSlippage,
-    defaultSlippage: data.defaultSlippage,
+    defaultDeadline: data.deadline,
+    defaultSlippage: data.slippage,
     wallets: data.walletsData.wallets,
-    selectedWalletId: data.walletsData.selectedWalletId
+    selectedWalletId: data.walletsData.selectedWalletId,
   };
+};
+
+export const updatedStepFromEditSwap = (
+  nextStep: NextStep & { type: "transactionOverview" },
+  results: ConfirmSwapEditResults
+) => {
+  const { spentValue, receivedValue, balance, selectedWalletId, wallets, deadline, slippage } =
+    results;
+    
+  nextStep.data.transactionData.amountDecimals = spentValue;
+  nextStep.data.transactionData.quoteGasAdjustedDecimals = receivedValue;
+  nextStep.data.balance = balance;
+  nextStep.data.walletsData.selectedWalletId = selectedWalletId;
+  nextStep.data.walletsData.wallets = wallets;
+  nextStep.data.slippage = slippage;
+  nextStep.data.deadline = deadline;
+
+  return nextStep;
 };
