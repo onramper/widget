@@ -44,6 +44,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
   const [, setLastCallCryptoChange] = useState<AbortController>();
 
   // settings
+  const [wallets, setWallets] = useState(props.wallets);
   const [selectedWalletId, setSelectedWalletId] = useState(
     props.selectedWalletId
   );
@@ -64,7 +65,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
         receivedValue,
         balance: balance || 0,
         selectedWalletId,
-        wallets: [],
+        wallets,
         slippage: Number(slippage),
         deadline: Number(deadline) * 60,
       });
@@ -87,6 +88,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
     selectedWalletId,
     slippage,
     spentValue,
+    wallets,
   ]);
 
   const getAndUpdateAbortController = useCallback(() => {

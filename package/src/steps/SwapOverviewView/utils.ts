@@ -51,9 +51,16 @@ export const updatedStepFromEditSwap = (
   nextStep: NextStep & { type: "transactionOverview" },
   results: ConfirmSwapEditResults
 ) => {
-  const { spentValue, receivedValue, balance, selectedWalletId, wallets, deadline, slippage } =
-    results;
-    
+  const {
+    spentValue,
+    receivedValue,
+    balance,
+    selectedWalletId,
+    wallets,
+    deadline,
+    slippage,
+  } = results;
+
   nextStep.data.transactionData.amountDecimals = spentValue;
   nextStep.data.transactionData.quoteGasAdjustedDecimals = receivedValue;
   nextStep.data.balance = balance;
