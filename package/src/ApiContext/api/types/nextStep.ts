@@ -134,13 +134,6 @@ export type WalletItemData = {
   icon?: string;
   isConnected?: boolean;
 };
-export type DestinationWalletStep = {
-  type: "destinationWallet";
-  url: string;
-  data: WalletItemData[];
-  cryptoName: string;
-  selectedWalletId?: string;
-};
 
 export type BrakdownItem = {
   label: string;
@@ -223,7 +216,6 @@ type NextStep = NextStepBase &
     | EmailVerificationStep
     | OrderCompleteStep
     | PaymentReviewStep
-    | DestinationWalletStep
     | SwapOverviewVewStep
   );
 

@@ -4,6 +4,7 @@ export type TransactionSettingsProps = {
     defaultSlippage: number;
     className?: string;
     selectedWalletId?: string;
+    cryptoName: string;
     slippage: string;
     deadline: string;
     onChangeWalletId: (id: string) => void;

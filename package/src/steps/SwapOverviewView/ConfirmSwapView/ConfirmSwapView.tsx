@@ -210,7 +210,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
           <Heading className={classes.heading} text={heading} />
           <TransactionSettings
             className={classes["settings"]}
-            wallets={props.wallets}
+            wallets={wallets}
             updateWallets={setWallets}
             selectedWalletId={selectedWalletId}
             slippage={slippage}
@@ -219,6 +219,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
             onChangeWalletId={setSelectedWalletId}
             onChangeDeadline={setDeadline}
             onChangeSlippage={setSlippage}
+            cryptoName={props.cryptoSpent.currencyShortName}
           />
         </div>
 

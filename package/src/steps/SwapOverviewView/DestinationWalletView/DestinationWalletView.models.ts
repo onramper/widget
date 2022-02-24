@@ -1,5 +1,12 @@
-import { NextStep } from "../../../ApiContext";
+import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 
 export type DestinationWalletViewProps = {
-  nextStep: NextStep & { type: "destinationWallet" };
+  progress?: number;
+  title: string;
+  heading: string;
+  description: string;
+  wallets: WalletItemData[];
+  cryptoName: string;
+  selectedWalletId?: string;
+  submitData: (wallets: WalletItemData[], walletId: string) => void;
 };
