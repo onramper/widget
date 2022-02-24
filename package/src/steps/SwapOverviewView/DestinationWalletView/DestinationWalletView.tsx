@@ -1,17 +1,17 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { DestinationWalletViewProps } from "./DestinationWalletView.models";
-import commonClasses from "../../styles.module.css";
+import commonClasses from "../../../styles.module.css";
 import classes from "./DestinationWalletView.module.css";
-import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-import Heading from "../../common/Heading/Heading";
-import { NavContext } from "../../NavContext";
-import InfoBox from "../../common/InfoBox";
-import ButtonAction from "../../common/Buttons/ButtonAction";
-import Footer from "../../common/Footer";
-import ErrorView from "../../common/ErrorView";
+import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader";
+import Heading from "../../../common/Heading/Heading";
+import { NavContext } from "../../../NavContext";
+import InfoBox from "../../../common/InfoBox";
+import ButtonAction from "../../../common/Buttons/ButtonAction";
+import Footer from "../../../common/Footer";
+import ErrorView from "../../../common/ErrorView";
 import WalletItem from "./WalletItem/WalletItem";
 import WalletInput from "./WalletInput/WalletInput";
-import { WalletItemData } from "../../ApiContext/api/types/nextStep";
+import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 
 const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
   nextStep,
@@ -134,7 +134,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
     <div className={commonClasses.view}>
       <ProgressHeader
         percentage={nextStep.progress}
-        title={nextStep.title}
+        title={"Your wallet"}
         useBackButton
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
