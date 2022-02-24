@@ -11,7 +11,9 @@ import { cryptoAmountsWarning } from "./constants";
 const ChooseGatewayView = () => {
   const { data } = useContext(APIContext);
   const [availableRates, setAvailableRates] = useState<GatewayRateOption[]>([]);
-  const [unavailableRates, setUnavailableRates] = useState<GatewayRateOption[]>([]);
+  const [unavailableRates, setUnavailableRates] = useState<GatewayRateOption[]>(
+    []
+  );
 
   useEffect(() => {
     const availableRates = data.allRates.filter((g) => g.available);
@@ -27,7 +29,11 @@ const ChooseGatewayView = () => {
 
       {data.allRates.length > 0 && (
         <main className={`${stylesCommon.body} ${styles.body}`}>
-          <InfoBox in={true} type="notification" className={`${stylesCommon.body__child}`}>
+          <InfoBox
+            in={true}
+            type="notification"
+            className={`${stylesCommon.body__child}`}
+          >
             {cryptoAmountsWarning}
           </InfoBox>
           <div className={`${stylesCommon.body__child}`}>

@@ -3,7 +3,7 @@ import classes from "./styles.module.css";
 import commonClasses from "../../styles.module.css";
 
 import IconMenu from "../../icons/menu.svg";
-import {ReactComponent as IconLeftArrow} from "../../icons/arrow-left.svg";
+import { ReactComponent as IconLeftArrow } from "../../icons/arrow-left.svg";
 import IconClose from "../../icons/close-menu.svg";
 
 import { NavContext } from "../../NavContext";
@@ -35,8 +35,8 @@ const Header: React.FC<HeaderType> = (props) => {
       } ${props.secondaryTitle ? classes["header--secondary"] : ""}`}
     >
       {backButton && (
-        <IconLeftArrow 
-          className={`${classes.header__child} ${commonClasses["cursor-pointer"]}`} 
+        <IconLeftArrow
+          className={`${classes.header__child} ${commonClasses["cursor-pointer"]}`}
           onClick={() => backScreen()}
         />
       )}

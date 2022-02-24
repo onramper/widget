@@ -274,7 +274,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         });
       }
 
-      availableCryptos = API.sortCryptoByRecommended(availableCryptos, props.recommendedCryptoCurrencies);
+      availableCryptos = API.sortCryptoByRecommended(
+        availableCryptos,
+        props.recommendedCryptoCurrencies
+      );
 
       // MAP AVAILABLE CRYPTOS LIST (CURRENCY LIST) TO AN ITEMTYPE LIST
       const mappedAvailableCryptos: ItemType[] = availableCryptos.map(
@@ -327,7 +330,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       clearErrors,
       props.country,
       props.displayChatBubble,
-      props.recommendedCryptoCurrencies
+      props.recommendedCryptoCurrencies,
     ]
   );
 
@@ -395,8 +398,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.collected
       handleInputChange("selectedCrypto", actualCrypto);
       const addrs = state.collected.defaultAddrs[actualCrypto.id];
-      const addrs2 = Object.entries(state.collected.defaultAddrs).find(
-        ([k]) => k.includes(state.collected.selectedCrypto?.name ?? "-1")
+      const addrs2 = Object.entries(state.collected.defaultAddrs).find(([k]) =>
+        k.includes(state.collected.selectedCrypto?.name ?? "-1")
       );
       handleInputChange("cryptocurrencyAddress", {
         address: addrs?.address ?? addrs2?.[1]?.address,
@@ -972,7 +975,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           handleCryptoChange,
           handleCurrencyChange,
           handlePaymentMethodChange,
-          restartWidget
+          restartWidget,
         },
         apiInterface: { init, executeStep, getRates, clearErrors },
       }}

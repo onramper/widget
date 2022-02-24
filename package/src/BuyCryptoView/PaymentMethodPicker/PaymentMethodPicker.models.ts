@@ -5,5 +5,5 @@ export interface PaymentMethodPickerProps {
   selectedId: string;
   onChange: (item: ItemType) => void;
   openMoreOptions: (() => void) | undefined;
-  isLoading?: boolean
+  isLoading?: boolean;
 }

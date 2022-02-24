@@ -1,4 +1,4 @@
 export type OverlayHeaderProps = {
-    text: string;
-    close: () => void;
-  };
+  text: string;
+  close: () => void;
+};

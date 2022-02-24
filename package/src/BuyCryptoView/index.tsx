@@ -28,7 +28,7 @@ const BuyCryptoView: React.FC = () => {
     init().finally(() => {
       setInitLoadingFinished(true);
     });
-  }, [init/* , flagEffectInit */]);
+  }, [init /* , flagEffectInit */]);
 
   //listening to errors sent by APIContext
   useEffect(() => {
@@ -73,7 +73,11 @@ const BuyCryptoView: React.FC = () => {
   return (
     <div className={styles.view}>
       <TabsHeader
-        tabs={buyStep && collected.supportSell ? tabNames : tabNames.filter((s, i) => i !== 1)}
+        tabs={
+          buyStep && collected.supportSell
+            ? tabNames
+            : tabNames.filter((s, i) => i !== 1)
+        }
         tabSelected={0}
         onClickItem={(i: number) => {
           if (i === 0) return;

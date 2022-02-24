@@ -6,8 +6,17 @@ import arrowDownIcon from "../../../icons/arrow-down.svg";
 import hintIcon from "../../../icons/hint.svg";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
-const InputButton = React.forwardRef<HTMLDivElement, InputButtonProps>((props, ref) => {
-    const { selectedOption, label, icon, className, iconPosition, error, network } = props;
+const InputButton = React.forwardRef<HTMLDivElement, InputButtonProps>(
+  (props, ref) => {
+    const {
+      selectedOption,
+      label,
+      icon,
+      className,
+      iconPosition,
+      error,
+      network,
+    } = props;
 
     const generateIconClassName = useCallback(
       () =>
@@ -34,29 +43,32 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonProps>((props, r
 
         <div
           onClick={props.onClick}
-          className={`${classes["input-wrapper"]} ${classes["input-wrapper-selector"]} ${
+          className={`${classes["input-wrapper"]} ${
+            classes["input-wrapper-selector"]
+          } ${
             error || error === "" ? classes["input-wrapper-selector-error"] : ""
           } ${props.onClick ? "" : classes["input-wrapper-selector-disabled"]}`}
         >
-          {icon && (
-            <img
-              alt="Icon"
-              src={icon}
-              className={iconClassName}
-            />
-          )}
-          {props.renderIconSvg && (props.renderIconSvg({className: iconClassName}))}
+          {icon && <img alt="Icon" src={icon} className={iconClassName} />}
+          {props.renderIconSvg &&
+            props.renderIconSvg({ className: iconClassName })}
 
           <span
             style={{ order: iconPosition === "end" ? -1 : "unset" }}
-            className={`${classes["input-wrapper-child"]} ${classes["option-text"]} ${
-              iconPosition === "end" ? classes["input-wrapper-child-new-first"] : ""
+            className={`${classes["input-wrapper-child"]} ${
+              classes["option-text"]
+            } ${
+              iconPosition === "end"
+                ? classes["input-wrapper-child-new-first"]
+                : ""
             }`}
           >
             {selectedOption}
           </span>
-          
-          {network && <div className={`${classes["network-bubble"]}`}>{network}</div>}
+
+          {network && (
+            <div className={`${classes["network-bubble"]}`}>{network}</div>
+          )}
 
           {props.onClick && (
             <img
@@ -67,17 +79,21 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonProps>((props, r
           )}
         </div>
 
-        <ErrorMessage text={props.error} className={`${classes["text-error-wrapper"]}`}/>
+        <ErrorMessage
+          text={props.error}
+          className={`${classes["text-error-wrapper"]}`}
+        />
 
         {props.hint && (
-        <div className={`${classes["text-under"]}`}>
+          <div className={`${classes["text-under"]}`}>
             <img src={hintIcon} />
             <span> {props.hint}</span>
-        </div>)}
-
+          </div>
+        )}
       </div>
     );
-});
+  }
+);
 
 InputButton.defaultProps = {
   className: "",

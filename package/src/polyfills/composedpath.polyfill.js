@@ -1,14 +1,14 @@
 // POLYFILLS
 // Event.composedPath
 // Possibly normalize to add window to Safari's chain, as it does not?
-(function(E, d, w) {
-    if(!E.composedPath) {
-      E.composedPath = function() {
-        if (this.path) {
-          return this.path;
-        } 
+(function (E, d, w) {
+  if (!E.composedPath) {
+    E.composedPath = function () {
+      if (this.path) {
+        return this.path;
+      }
       var target = this.target;
-      
+
       this.path = [];
       while (target.parentNode !== null) {
         this.path.push(target);
@@ -16,6 +16,6 @@
       }
       this.path.push(d, w);
       return this.path;
-      }
-    }
-  })(Event.prototype, document, window);
+    };
+  }
+})(Event.prototype, document, window);

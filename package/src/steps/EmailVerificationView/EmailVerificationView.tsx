@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { APIContext, NextStep } from "../../ApiContext";
 import classes from "./EmailVerificationView.module.css";
 import commonClasses from "./../../styles.module.css";
@@ -48,10 +54,10 @@ const EmailVerificationView: React.FC<{
   );
 
   useEffect(() => {
-    if(!firstRender.current) {
+    if (!firstRender.current) {
       return;
     }
-    
+
     firstRender.current = false;
     if (field.initialValue) {
       onChange(field.name, field.initialValue);

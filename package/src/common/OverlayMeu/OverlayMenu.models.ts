@@ -1,5 +1,5 @@
-import { HeaderMenuProps } from "./HeaderMenu/HeaderMenu.models"
+import { HeaderMenuProps } from "./HeaderMenu/HeaderMenu.models";
 
 export type OverlayMenuProps = {
-    headerProps?: Omit<HeaderMenuProps, "handleDismiss">
-}
+  headerProps?: Omit<HeaderMenuProps, "handleDismiss">;
+};

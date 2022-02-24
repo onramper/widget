@@ -7,7 +7,7 @@
 }
 
 .line + .line {
-    margin-left: 0.375rem;
+  margin-left: 0.375rem;
 }
 
 .load .line:nth-last-child(1) {
