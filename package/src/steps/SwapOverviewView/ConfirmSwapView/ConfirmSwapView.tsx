@@ -7,7 +7,10 @@ import React, {
 } from "react";
 import ErrorView from "../../../common/ErrorView";
 import { NavContext } from "../../../NavContext";
-import { ConfirmSwapViewProps } from "./ConfirmSwapView.models";
+import {
+  ConfirmSwapViewProps,
+  ConfirmSwapInput,
+} from "./ConfirmSwapView.models";
 import commonClasses from "../../../styles.module.css";
 import inputClasses from "../../../common/InputDropdown/InputDropdown.module.css";
 import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader";
@@ -18,36 +21,35 @@ import InputDropdown from "../../../common/InputDropdown/InputDropdown";
 import { onChangeFloat } from "../../../utils";
 import Breakdown from "../../../common/Breakdown/Breakdown";
 import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
-import { ConfirmSwapInput } from "../../../ApiContext/api/types/nextStep";
 import TransactionSettings from "../../../SwapCryptoView/TransactionSettings/TransactionSettings";
 import classes from "./ConfirmSwapView.module.css";
 import { ApiError } from "../../../ApiContext/api";
 import { CSSTransition } from "react-transition-group";
 
-const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
+const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [swapErrorMessage, setSwapErrorMessage] = useState<string>();
   const [heading] = useState(
-    computeHeading(nextStep.cryptoSpent, nextStep.cryptoReceived)
+    computeHeading(props.cryptoSpent, props.cryptoReceived)
   );
 
   // swap inputs
-  const [spentValue, setSpentValue] = useState(nextStep.cryptoSpent.value);
-  const [balance, setBalance] = useState(nextStep.cryptoSpent.balance);
+  const [spentValue, setSpentValue] = useState(props.cryptoSpent.value);
+  const [balance, setBalance] = useState(props.cryptoSpent.balance);
   const [receivedValue, setReceivedValue] = useState(
-    nextStep.cryptoReceived.value
+    props.cryptoReceived.value
   );
-  const [cryptoSpent] = useState(nextStep.cryptoSpent);
-  const [cryptoReceived] = useState(nextStep.cryptoReceived);
+  const [cryptoSpent] = useState(props.cryptoSpent);
+  const [cryptoReceived] = useState(props.cryptoReceived);
   const [, setLastCallCryptoChange] = useState<AbortController>();
 
   // settings
   const [selectedWalletId, setSelectedWalletId] = useState(
-    nextStep.selectedWalletId
+    props.selectedWalletId
   );
-  const [slippage, setSlippage] = useState(nextStep.defaultSlippage.toFixed(2));
+  const [slippage, setSlippage] = useState(props.defaultSlippage.toFixed(2));
   const [deadline, setDeadline] = useState(
-    String(Math.floor((nextStep.defaultDeadline / 60) * 100) / 100)
+    String(Math.floor((props.defaultDeadline / 60) * 100) / 100)
   );
 
   const { nextScreen, backScreen } = useContext(NavContext);
@@ -111,7 +113,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
             try {
               // mock a conversion
               const fiatValue = value * 2711.36;
-              const balance = (nextStep.cryptoSpent.balance || 0) - fiatValue;
+              const balance = (props.cryptoSpent.balance || 0) - fiatValue;
               const receivedCrypto = fiatValue * 0.0000259158;
               if (balance < 0) {
                 throw new ApiError(
@@ -150,7 +152,7 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
       };
       onUpdate();
     },
-    [getAndUpdateAbortController, nextStep.cryptoSpent.balance]
+    [getAndUpdateAbortController, props.cryptoSpent.balance]
   );
 
   const onMaxClick = useCallback(async () => {
@@ -168,8 +170,8 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
         const timeout = setTimeout(() => {
           // mock a conversion
           const receivedCrypto =
-            (nextStep.cryptoSpent.balance || 0) * 0.0000259158;
-          const spentCrypto = (nextStep.cryptoSpent.balance || 0) / 2711.36;
+            (props.cryptoSpent.balance || 0) * 0.0000259158;
+          const spentCrypto = (props.cryptoSpent.balance || 0) / 2711.36;
           resolve({
             spentCrypto: Number(spentCrypto.toFixed(12)),
             receivedCrypto: Number(receivedCrypto.toFixed(12)),
@@ -189,27 +191,24 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
       setReceivedValue(response.receivedCrypto.toString());
       setSpentValue(response.spentCrypto.toString());
     } catch (_err) {}
-  }, [getAndUpdateAbortController, nextStep.cryptoSpent.balance]);
+  }, [getAndUpdateAbortController, props.cryptoSpent.balance]);
 
   return (
     <div className={commonClasses.view}>
-      <ProgressHeader percentage={nextStep.progress} useBackButton />
+      <ProgressHeader percentage={props.progress} useBackButton />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
-        <div
-          className={classes["top-section"]}
-        >
+        <div className={classes["top-section"]}>
           <Heading
             className={classes.heading}
             text={heading}
-            textSubHeading={nextStep.description}
           />
           <TransactionSettings
             className={classes["settings"]}
-            wallets={nextStep.wallets}
+            wallets={props.wallets}
             selectedWalletId={selectedWalletId}
             slippage={slippage}
             deadline={deadline}
-            defaultSlippage={nextStep.defaultSlippage}
+            defaultSlippage={props.defaultSlippage}
             onChangeWalletId={setSelectedWalletId}
             onChangeDeadline={setDeadline}
             onChangeSlippage={setSlippage}
@@ -250,10 +249,10 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = ({ nextStep }) => {
 
         <div className={classes["bottom-fields"]}>
           <Breakdown
-            label={nextStep.feeBreakdown.label}
-            groups={nextStep.feeBreakdown.groups}
+            label={props.feeBreakdown.label}
+            groups={props.feeBreakdown.groups}
           />
-          <IndicationItem text={nextStep.warning} />
+          <IndicationItem text={props.warning} />
         </div>
 
         <div

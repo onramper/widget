@@ -1,10 +1,10 @@
 import { NextStep } from "../../ApiContext";
+import { ConfirmSwapViewProps } from "./ConfirmSwapView/ConfirmSwapView.models";
 
-export const createConfirmSwapProps = (
-  nextStep: NextStep & { type: "transactionOverview" }
-) => {
+export const createConfirmSwapProps: (
+  swapOverviewStep: NextStep & { type: "transactionOverview" }
+) => ConfirmSwapViewProps = (swapOverviewStep) => {
   return {
-    type: "confirmSwap",
     progress: 0,
     cryptoSpent: {
       label: "You spend",
@@ -82,5 +82,5 @@ export const createConfirmSwapProps = (
       },
     ],
     selectedWalletId: "account2",
-  } as NextStep & { type: "confirmSwap" };
+  };
 };

@@ -55,7 +55,7 @@ const SwapOverviewView: React.FC<{
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
   const handleEdit = useCallback(async () => {
-    nextScreen(<ConfirmSwapView nextStep={createConfirmSwapProps(nextStep)} />);
+    nextScreen(<ConfirmSwapView {...createConfirmSwapProps(nextStep)} />);
   }, [nextScreen, nextStep]);
 
   const handleSwap = async () => {
