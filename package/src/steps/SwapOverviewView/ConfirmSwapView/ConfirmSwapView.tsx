@@ -21,7 +21,7 @@ import InputDropdown from "../../../common/InputDropdown/InputDropdown";
 import { onChangeFloat } from "../../../utils";
 import Breakdown from "../../../common/Breakdown/Breakdown";
 import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
-import TransactionSettings from "../../../SwapCryptoView/TransactionSettings/TransactionSettings";
+import TransactionSettings from "../TransactionSettings/TransactionSettings";
 import classes from "./ConfirmSwapView.module.css";
 import { ApiError } from "../../../ApiContext/api";
 import { CSSTransition } from "react-transition-group";

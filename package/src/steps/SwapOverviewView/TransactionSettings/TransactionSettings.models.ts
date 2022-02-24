@@ -1,4 +1,4 @@
-import { WalletItemData } from "../../ApiContext/api/types/nextStep";
+import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 
 export type TransactionSettingsProps = {
     defaultSlippage: number;
