@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { useTranslation } from "react-i18next";
 import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
 import styles from "./styles.module.css";
@@ -9,6 +10,9 @@ import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
+
+import "./i18n/config";
+
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 
@@ -32,6 +36,9 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     "--primary-color": color,
     "--font-family": fontFamily,
   } as React.CSSProperties;
+
+  // const { i18n } = useTranslation();
+  // i18n.changeLanguage("ja");
 
   return (
     <div

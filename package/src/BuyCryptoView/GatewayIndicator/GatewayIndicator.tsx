@@ -4,13 +4,16 @@ import arrowDownIcon from "./../../icons/arrow-down.svg";
 import styles from "./GatewayIndicator.module.css";
 import commonStyles from "./../../styles.module.css";
 import Loader from '../../common/Loader/Loader';
+import { useTranslation } from 'react-i18next';
 
 const Skeleton = React.forwardRef<HTMLDivElement, { optionLeftStyle: React.CSSProperties }>((props, ref) => {
+    const {t} = useTranslation();
+
     return (<div className={`${styles.wrapper} ${commonStyles["skeleton-wrapper"]}`}>
         <div className={`${styles["option-wrapper"]}`} ref={ref}>
             <span className={`${commonStyles["skeleton-box"]} ${styles["sk-image"]}`}></span>
             <div className={`${styles["option-body"]} ${styles["sk-option-body"]}`} >
-                <span className={`${styles["option-label"]}`}>Best rate via</span>
+                <span className={`${styles["option-label"]}`}>{t("buyCryptoView.bestRate")}</span>
                 <span className={`${styles["option-handle"]} ${commonStyles["skeleton-box"]}`}>Lorem</span>
             </div>
         </div>
@@ -33,6 +36,7 @@ const determineRate = (amountInCrypto:boolean, oneDirectionRate: number|undefine
 }
 
 const GatewayIndicator: React.FC<GatewayIndicatorProps> = (props: GatewayIndicatorProps) => {
+    const {t} = useTranslation();
     const [rate, setRate] = useState(determineRate(props.amountInCrypto, props.selectedGateway?.rate));
     const [optionLeftStyle, setOptionLeftStyle] = useState<React.CSSProperties>({});
     const optionWrapperRef = useRef<HTMLDivElement>(null);
@@ -75,7 +79,7 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (props: GatewayIndicat
         <div className={styles["option-wrapper"]} ref={optionWrapperRef}>
             <img className={styles["option-icon"]} src={props.selectedGateway.icon} alt="selected-icon" />
             <div className={styles["option-body"]} >
-                <div className={`${styles["option-label"]}`}>Best rate via</div>
+                <div className={`${styles["option-label"]}`}>{t("buyCryptoView.bestRate")}</div>
                 <div className={styles["option-handle"]}>
                     <span>{props.selectedGateway.name}</span> <img src={arrowDownIcon} />
                 </div>
@@ -83,7 +87,7 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (props: GatewayIndicat
         </div>
         <div className={styles["option-info"]} style={optionLeftStyle}>
             1 {props.unitCrypto} ≈ {rate} <span className={commonStyles["txt-no-wrap"]}>{props.unitFiat}</span>
-            <br />Includes all fees
+            <br />{t("buyCryptoView.includeAllFees")}
         </div>
     </div>);
 }

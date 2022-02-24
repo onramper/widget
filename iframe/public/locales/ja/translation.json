@@ -1,0 +1,19 @@
+{
+  "tabs": {
+    "buy": "買う",
+    "sell": "売る"
+  },
+  "buyCryptoView": {
+    "heading": "いくら買いたいですか?",
+    "fetchingPrice": "最高の価格を取得...",
+    "amountYouPay": "お支払い金額: ",
+    "youGet": "あなたが得る ",
+    "paymentMethod": "支払方法",
+    "bestRate": "経由のベストレート",
+    "includeAllFees": "すべての料金が含まれています",
+    "buy": "買う"
+  },
+  "footer": {
+    "onramperPrefix": "提供元"
+  }
+}

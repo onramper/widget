@@ -8,8 +8,10 @@ import { NavContext } from "../../../NavContext";
 import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
 import { ViewListItemType } from "../../../common/ViewList/ViewList.models";
 import OverlayPicker from "../../../common/OverlayPicker/OverlayPicker";
+import { useTranslation } from "react-i18next";
 
 const ExchangingAmountsSection: React.FC = () => {
+  const {t} = useTranslation()
   const {
     collected,
     inputInterface: { handleInputChange },
@@ -78,7 +80,7 @@ const ExchangingAmountsSection: React.FC = () => {
         <OverlayPicker
           name="crypto"
           indexSelected={items.findIndex(m => m.id === collected.selectedCrypto?.id)}
-          title="Select cryptocurrency"
+          title={t("header.selectCrypto")}
           items={items}
           onItemClick={handleItemClick}
           searchable
@@ -91,7 +93,7 @@ const ExchangingAmountsSection: React.FC = () => {
         nextScreen(
           <OverlayPicker
             name="currency"
-            title="Select fiat currency"
+            title={t("header.selectFiat")}
             indexSelected={data.availableCurrencies.findIndex(m => m.id === collected.selectedCurrency?.id)}
             items={data.availableCurrencies}
             onItemClick={handleItemClick}

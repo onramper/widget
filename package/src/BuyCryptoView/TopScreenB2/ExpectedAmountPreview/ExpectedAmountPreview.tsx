@@ -4,8 +4,10 @@ import commonClasses from "../../../styles.module.css";
 import { APIContext } from "../../../ApiContext";
 import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
 import { ReactComponent as ArrowSwapIcon } from "../../../icons/swap-arrows.svg";
+import { useTranslation } from "react-i18next";
 
 const ExpectedAmountPreview: React.FC = () => {
+  const { t } = useTranslation(); 
   const { data, inputInterface, collected } = useContext(APIContext);
   const { handleInputChange } = inputInterface;
 
@@ -73,11 +75,11 @@ const ExpectedAmountPreview: React.FC = () => {
     <div className={classes["text-status"]}>
       {(() => {
         if (collected.isCalculatingAmount) {
-          return "Fetching best price...";
+          return t("buyCryptoView.fetchingPrice");
         }
 
         const qtyText = `${expectedCrypto.toFixed(collected.amountInCrypto ? 2 : 8)} ${unitName}`;
-        const qtyDescription = collected.amountInCrypto ? `Amount you pay: ` : `You get `;
+        const qtyDescription = collected.amountInCrypto ? t("buyCryptoView.amountYouPay") : t("buyCryptoView.youGet");
         return (
           <div
             className={`${classes["crypto-switcher"]} ${commonClasses["clickable-txt"]}`}

@@ -17,6 +17,7 @@ import { getBestAvailableGateway } from '../utils'
 import { LoadingItem } from './constants'
 import { IBodyBuyCryptoProps } from './BuyCryptoView.models'
 import Footer from '../common/Footer'
+import { useTranslation } from 'react-i18next'
 
 function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGatewaySelected | undefined) {
   if(!selectedGateway) {
@@ -30,6 +31,7 @@ function mapGatewaySelectedToPicker(selectedGateway?: GatewayRateOption): (IGate
 }
 
 const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
+  const {t} = useTranslation();
     const {
       onBuyCrypto,
       handleInputChange,
@@ -134,7 +136,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         <div className={`${stylesCommon["body__child-grow"]}`}>
           <ButtonAction
             onClick={onNextStep}
-            text={`Buy ${selectedCrypto.name}`}
+            text={`${t("buyCryptoView.buy")} ${selectedCrypto.name}`}
             disabled={
               !isFilled ||
               collected.isCalculatingAmount ||

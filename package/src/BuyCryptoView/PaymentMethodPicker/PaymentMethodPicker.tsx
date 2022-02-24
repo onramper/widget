@@ -3,15 +3,17 @@ import { ItemType } from "../../ApiContext";
 import { PaymentMethodPickerProps } from "./PaymentMethodPicker.models";
 import styles from "./PaymentMethodPicker.module.css";
 import commonStyles from "../../styles.module.css";
+import { useTranslation } from "react-i18next";
 
 const Skeleton = React.forwardRef<
   HTMLUListElement,
   { maxLength: number, style: React.CSSProperties }
 >(({ maxLength, style }, ref) => {
+  const {t} = useTranslation();
   return (
     <>
       <div className={`${styles.title}`}>
-        <span>Payment method</span>
+        <span>{t("buyCryptoView.paymentMethod")}</span>
       </div>
 
       <ul className={styles.wrapper} style={{ maxWidth: "100%", ...style }} ref={ref} >
@@ -44,6 +46,7 @@ const getOptionNodeSpacing = (optionNode: Element) => {
 const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   props: PaymentMethodPickerProps
 ) => {
+  const { t } = useTranslation();
   const [maxLength, _setMaxLength] = useState(2);
   const [maxLengthUpdated, setMaxLengthUpdated] = useState<number>(0);
   const [items, setItems] = useState(props.items);
@@ -170,7 +173,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
 
   return (
     <>
-      <div className={styles.title}>Payment method</div>
+      <div className={styles.title}>{t("buyCryptoView.paymentMethod")}</div>
 
       <ul ref={containerRef} className={styles.wrapper} style={style} num-children={numChildren}>
         {items.slice(0, maxLength).map((item: ItemType, i: number) => (
