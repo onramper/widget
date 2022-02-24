@@ -1,3 +1,5 @@
+import { BrakdownItem, WalletItemData } from "../../../ApiContext/api/types/nextStep";
+
 export type ConfirmSwapInput = {
   label: string;
   value: string;
@@ -7,21 +9,6 @@ export type ConfirmSwapInput = {
   currencyLongName: string;
   icon?: string;
   balance?: number;
-};
-
-export type BrakdownItem = {
-  label: string;
-  subLabel?: string;
-  value: string;
-  strong?: boolean;
-  hint?: string;
-};
-
-export type WallletListItem = {
-  id: string;
-  icon?: string;
-  accountName: string;
-  walletAddress?: string;
 };
 
 export type ConfirmSwapViewProps = {
@@ -35,6 +22,6 @@ export type ConfirmSwapViewProps = {
   warning: string;
   defaultDeadline: number;
   defaultSlippage: number;
-  wallets: WallletListItem[];
+  wallets: WalletItemData[];
   selectedWalletId?: string;
 };

@@ -45,6 +45,7 @@
   flex: 1;
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .item-content > * {
@@ -83,6 +84,10 @@
   color: var(--text-dark-color);
   padding-left: 6px;
   padding-right: 4px;
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .add-btn {

@@ -142,6 +142,14 @@ export type DestinationWalletStep = {
   selectedWalletId?: string;
 };
 
+export type BrakdownItem = {
+  label: string;
+  subLabel?: string;
+  value: string;
+  strong?: boolean;
+  hint?: string;
+};
+
 export type SwapOverviewStepData = {
   userData: {
     userAddress: string;
@@ -153,6 +161,11 @@ export type SwapOverviewStepData = {
   balance: number;
   defaultDeadline: number;
   defaultSlippage: number;
+  feeBreakdown: BrakdownItem[][];
+  walletsData: {
+    wallets: WalletItemData[];
+    selectedWalletId?: string;
+  }
 };
 
 export type SwapOverviewVewStep = {
