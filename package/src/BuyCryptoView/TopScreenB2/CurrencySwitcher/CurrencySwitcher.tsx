@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./CurrencySwitcher.module.css";
 import commonStyles from "./../../../styles.module.css";
 import DropdownHandle from "../../../common/DropdownHandle/DropdownHandle";
@@ -36,6 +37,7 @@ const Skeleton: React.FC = () => {
 };
 
 const CurrencySwitcher: React.FC = () => {
+  const {t} = useTranslation();
   const { collected, data } = useContext(APIContext);
   const { nextScreen, backScreen } = useContext(NavContext);
 
@@ -78,7 +80,7 @@ const CurrencySwitcher: React.FC = () => {
         <OverlayPicker
           name="crypto"
           indexSelected={items.findIndex(m => m.id === collected.selectedCrypto?.id)}
-          title="Select cryptocurrency"
+          title={t("header.selectCrypto")}
           items={items}
           onItemClick={handleItemClick}
           searchable
@@ -91,7 +93,7 @@ const CurrencySwitcher: React.FC = () => {
       nextScreen(
         <OverlayPicker
           name="currency"
-          title="Select fiat currency"
+          title={t("header.selectFiat")}
           indexSelected={data.availableCurrencies.findIndex(m => m.id === collected.selectedCurrency?.id)}
           items={data.availableCurrencies.map(i => ({...i, iconSvg: <CurrencyIcon name={i.id} /> }))}
           onItemClick={handleItemClick}
