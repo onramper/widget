@@ -142,16 +142,22 @@ export type DestinationWalletStep = {
   selectedWalletId?: string;
 };
 
+export type SwapOverviewStepData = {
+  userData: {
+    userAddress: string;
+  };
+  transactionData: QuoteDetails;
+  tokenIn: TokenInfo;
+  tokenOut: TokenInfo;
+  fiatSymbol: string;
+  balance: number;
+  defaultDeadline: number;
+  defaultSlippage: number;
+};
+
 export type SwapOverviewVewStep = {
   type: "transactionOverview";
-  data: {
-    userData: {
-      userAddress: string;
-    };
-    transactionData: QuoteDetails;
-    tokenIn: TokenInfo;
-    tokenOut: TokenInfo;
-  };
+  data: SwapOverviewStepData;
 };
 
 type NextStep = NextStepBase &

@@ -165,7 +165,7 @@ const transactionOverview = {
       ],
       routeString:
         "[V3] 100.00% = WETH -- 1% --> DAI -- 0.3% --> WETH -- 0.05% --> UNI",
-      quoteId: "1b1e8",
+      quoteId: "1b1e8"
     },
     tokenIn: {
       name: "Wrapped Ether",
@@ -184,6 +184,10 @@ const transactionOverview = {
       chainId: 4,
       logoURI: "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
     },
+    fiatSymbol: "$",
+    balance: 989.2692,
+    defaultDeadline: 600,
+    defaultSlippage: 0.1
   },
 };
 

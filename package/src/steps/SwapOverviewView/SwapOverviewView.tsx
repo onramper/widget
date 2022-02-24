@@ -5,7 +5,7 @@ import { NextStep } from "../../ApiContext";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
-import { parseWrappedTokens } from "../../utils";
+import uriToHttp, { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
@@ -43,7 +43,7 @@ const SwapOverviewView: React.FC<{
   const { nextScreen } = useNav();
 
   const {
-    data: { tokenIn, tokenOut },
+    data: { tokenIn, tokenOut, fiatSymbol },
   } = nextStep;
 
   useEffect(() => {
@@ -54,9 +54,18 @@ const SwapOverviewView: React.FC<{
   const parsedTokenIn = parseWrappedTokens(tokenIn);
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
+  // TODO: price oracle ??
+  const getFiatConversion = useCallback(() => {
+    return 200;
+  }, []);
+
   const handleEdit = useCallback(async () => {
-    nextScreen(<ConfirmSwapView {...createConfirmSwapProps(nextStep)} />);
-  }, [nextScreen, nextStep]);
+    const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
+    const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
+    const fiatConversion = getFiatConversion();
+    
+    nextScreen(<ConfirmSwapView {...createConfirmSwapProps({data: nextStep.data, parsedTokenIn, fiatConversion, tokenInURL, tokenOutURL })} />);
+  }, [getFiatConversion, nextScreen, nextStep.data, parsedTokenIn, tokenIn.logoURI, tokenOut.logoURI]);
 
   const handleSwap = async () => {
     if (account && balance) {
@@ -134,6 +143,7 @@ const SwapOverviewView: React.FC<{
           estimate={quote}
           tokenIn={parsedTokenIn}
           tokenOut={tokenOut}
+          conversion={`${fiatSymbol}${getFiatConversion()}`}
         />
         <FeeBreakdown transactionDetails={quote} />
         <div className={classes.message}>{message}</div>

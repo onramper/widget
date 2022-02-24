@@ -5,7 +5,7 @@ export type ConfirmSwapInput = {
   fiatSymbol: string;
   currencyShortName: string;
   currencyLongName: string;
-  icon: string;
+  icon?: string;
   balance?: number;
 };
 
