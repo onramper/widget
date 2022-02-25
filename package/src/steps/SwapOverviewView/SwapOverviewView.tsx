@@ -41,7 +41,7 @@ const SwapOverviewView: React.FC<{
   const { layer2 } = useLayer2();
   const isActive = account && active;
   useWalletSupportRedirect(nextStep.progress);
-  const { connect, connectionPending } = useConnectWallet();
+  const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
 
   const {
