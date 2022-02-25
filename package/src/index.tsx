@@ -37,9 +37,6 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     "--font-family": fontFamily,
   } as React.CSSProperties;
 
-  // const { i18n } = useTranslation();
-  // i18n.changeLanguage("ja");
-
   return (
     <div
       key={flagRestart}
@@ -69,6 +66,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             defaultPaymentMethod={props.defaultPaymentMethod}
             filters={props.filters}
             country={props.country}
+            language={props.language}
             isAddressEditable={props.isAddressEditable}
             themeColor={color.slice(1)}
             displayChatBubble={props.displayChatBubble}

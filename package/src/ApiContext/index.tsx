@@ -35,6 +35,8 @@ import type {
 import { NextStepError } from "./api";
 import type { Filters } from "./api";
 import phoneCodes from "./utils/phoneCodes";
+import i18n from "../i18n/config";
+import { isLanguageSupported, supportedLanguages } from "./utils/languages";
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
@@ -59,6 +61,7 @@ interface APIProviderType {
   defaultPaymentMethod?: string;
   filters?: Filters;
   country?: string;
+  language?: string;
   isAddressEditable?: boolean;
   themeColor: string;
   displayChatBubble?: boolean;
@@ -71,6 +74,18 @@ interface APIProviderType {
   isAmountEditable?: boolean;
   recommendedCryptoCurrencies?: string[];
   darkMode?: boolean;
+}
+
+/**
+ * Provided a language will update the i18n and headers if required.
+ *
+ * @param language The ISO 639-1 language code. E.g. 'ja'. See: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ */
+ function updateLanguageIfRequired(language: string) {
+  if (i18n.language !== language)
+    i18n.changeLanguage(language);
+  if (API.getAcceptLanguageParameter() !== language)
+    API.updateAcceptLanguageParameter();
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -204,6 +219,22 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       const actualCountry = props.country || country;
+
+      // The language provided explicitly via the '?language=' query parameter.
+      let explicitLanguage;
+      if (props.language) {
+        if (isLanguageSupported(props.language))
+          explicitLanguage = props.language;
+        else
+          console.error(
+            `The language set by the query parameter '?language=${props.language}' is not supported. ` +
+              `The following languages are currently supported by Onramper: [${supportedLanguages}]. ` +
+              `For more information, see: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes.`
+          );
+      }
+
+      if (explicitLanguage) updateLanguageIfRequired(explicitLanguage);
+
       // REQUEST AVAILABLE GATEWAYS
       let rawResponseGateways: GatewaysResponse;
       let responseGateways: GatewaysResponse;
