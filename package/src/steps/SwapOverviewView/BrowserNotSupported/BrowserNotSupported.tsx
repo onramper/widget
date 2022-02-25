@@ -5,10 +5,26 @@ import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader
 import Footer from "../../../common/Footer";
 import Heading from "../../../common/Heading/Heading";
 import { useNav } from "../../../NavContext";
+import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
+
+const browsers = [
+  {
+    name: "Chrome",
+    link: "https://www.google.com/chrome",
+  },
+  {
+    name: "Firefox",
+    link: "https://www.mozilla.org/firefox/windows",
+  },
+  {
+    name: "Brave",
+    link: "https://brave.com/download",
+  },
+];
 
 const BrowserNotSupported: React.FC<{ currentProgress?: number }> = (props) => {
   const { canGoBack } = useNav();
-  
+
   return (
     <div className={commonClasses.view}>
       <ProgressHeader
@@ -16,10 +32,31 @@ const BrowserNotSupported: React.FC<{ currentProgress?: number }> = (props) => {
         useBackButton={canGoBack()}
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
+        <HexExclamationIcon className={classes["exclamation-icon"]} />
         <Heading
           text="Browser does not support MetaMask"
           textSubHeading="Please switch to a different browser that supports the MetaMask browser extention."
         />
+
+        <div className={classes["browsers"]}>
+          Open in{" "}
+          {browsers.map((item, index) => {
+            return (
+              <React.Fragment key={index}>
+                <a href={item.link} target="_blank" rel="noreferrer">
+                  {item.name}
+                </a>
+                {index === browsers.length - 2
+                  ? " or "
+                  : index < browsers.length - 1
+                  ? ", "
+                  : ""}
+              </React.Fragment>
+            );
+          })}
+          {" "}with the link received in the email.
+        </div>
+
         <div
           className={`${commonClasses["body-form-child"]} ${commonClasses["grow-col"]}`}
         >
