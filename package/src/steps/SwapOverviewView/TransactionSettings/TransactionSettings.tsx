@@ -37,7 +37,6 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   }, [props]);
 
   const goToWalletDestination = useCallback(async () => {
-    console.log(props.wallets);
     nextScreen(
       <DestinationWalletView
         wallets={props.wallets}
