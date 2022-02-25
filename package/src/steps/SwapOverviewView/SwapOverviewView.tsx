@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { NextStep } from "../../ApiContext";
@@ -23,6 +23,9 @@ import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
+import { useNav } from "../../NavContext";
+import { BASE_API } from "../../ApiContext/api/constants";
+import Step from "../Step";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -38,7 +41,8 @@ const SwapOverviewView: React.FC<{
   const { layer2 } = useLayer2();
   const isActive = account && active;
   useWalletSupportRedirect(nextStep.progress);
-  const { connect, connectionPending, error } = useConnectWallet();
+  const { connect, connectionPending } = useConnectWallet();
+  const { nextScreen } = useNav();
 
   const {
     data: { tokenIn, tokenOut },
@@ -82,9 +86,13 @@ const SwapOverviewView: React.FC<{
   const parsedTokenIn = parseWrappedTokens(tokenIn);
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
-  const handleEdit = () => {
-    console.log("go to edit step");
-  };
+  const handleEdit = useCallback(async () => {
+    const stepUrl = `${BASE_API}/GoTo/TestGateway/confirmSwap`;
+    const swapStep = await (
+      await fetch(`${stepUrl}`, { method: "POST" })
+    ).json();
+    nextScreen(<Step nextStep={swapStep} />);
+  }, [nextScreen]);
 
   useEffect(() => {
     if (error) {

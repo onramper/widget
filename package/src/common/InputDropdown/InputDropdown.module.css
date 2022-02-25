@@ -36,7 +36,6 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  padding-right: 1px;
 }
 
 .input {
@@ -71,7 +70,6 @@
 .input-right {
   display: flex;
   align-items: flex-end;
-  padding-left: 4px;
   color: var(--text-light-color);
   padding: 4px;
 }
@@ -125,8 +123,22 @@
   margin-right: 22px;
 }
 
+.has-marked-error .input,
+.has-marked-error .value-text,
+.has-marked-error .hint {
+  color: var(--error-color-light);
+}
+
 /* swap screen 
    ============================= */
+.swap-screen {
+  margin-top: 0;
+}
+
+.swap-screen + .swap-screen {
+  margin-top: 12px;
+}
+
 .swap-screen .common-txt {
   font-size: 20px;
   line-height: 24px;

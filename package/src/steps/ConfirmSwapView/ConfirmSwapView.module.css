@@ -1,0 +1,75 @@
+.wrapper {
+  --pb-heading: 33px;
+  --pt-heading: 0px;
+  --pb-heading: 0px;
+  box-sizing: border-box;
+}
+
+.wrapper * {
+  box-sizing: border-box;
+}
+
+.top-section {
+  --assumed-settings-width: 20px;
+  display: flex;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 33px;
+} 
+
+.top-section .heading {
+  flex: 1;
+}
+
+.heading > h1 {
+  line-height: 29px;
+  padding-left: var(--assumed-settings-width);
+}
+
+.settings {
+  z-index: 5;
+}
+
+.error-section {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.error-section,
+.bottom-fields {
+  padding: 0 32px;
+}
+
+.info-wrapper {
+  font-size: 13px;
+  line-height: 21px;
+  letter-spacing: 0.015em;
+  color: var(--list-active-color);
+  display: flex;
+  padding-left: 15px;
+}
+
+.info-wrapper.indication-error {
+  color: var(--error-color-light);
+}
+
+.bottom-fields > .info-wrapper {
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+
+.bottom-fields > .info-wrapper.indication-error {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.exclamation-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.info-txt {
+  padding-left: 15px;
+}

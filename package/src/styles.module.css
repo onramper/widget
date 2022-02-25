@@ -13,12 +13,17 @@ theme styles
     --text-dark-color: #292D32;
     --text-light-color: #7C7D82;
     --grey-light-color: #ABADB8;
+    --grey-lighter-color: #C4C4C4;
+    --grey-color-level1: #54595D;
+    --grey-color-level2: #757575;
+    --grey-color-level3: #7E7E7E;
     --text-negative-color: #fff;
     --text-negative-secondary-color: #D5D7E7;
     --seperator-color: #eff0f4;
     --overlay-backdrop-color: rgba(17, 32, 62, 0.32);
     --icon-backdrop-color: #F0F3FE;
     --light-grey-color: #fafafb;
+    --clickable-item-color: #EFF2FA;
     /* inputs */
     --input-bg-color: #F7FAFD;
     --input-form-bg-color: #fff;
@@ -513,6 +518,51 @@ div.skeleton-box {
     cursor: default;
 }
 
+/* tooltip */
+.tooltip {
+    position: relative;
+}
+
+.tooltip::before, 
+.tooltip::after {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transition: all ease 0.3s;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 16px;
+    color: var(--background-color);
+}
+
+.tooltip::before {
+    content: "";
+    border-width: 10px 8px 0 8px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.7) transparent transparent transparent;
+    top: -15px;
+    left: -30%;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    background: rgba(0, 0, 0, 0.7);
+    top: -15px;
+    left: 180%;
+    margin-left: -150px;
+    transform: translateY(-100%);
+    border-radius: 8px;
+    padding: 15px;
+    width: 200px;
+}
+
+.tooltip:hover::before, 
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* placeholder */
 ::-webkit-input-placeholder { 
     color: var(--grey-light-color);
 }
