@@ -36,7 +36,7 @@ const SwapOverviewView: React.FC<{
   const { layer2 } = useLayer2();
   const isActive = account && active;
   useWalletSupportRedirect(nextStep.progress);
-  const { connect, connectionPending } = useConnectWallet();
+  const { connect, connectionPending, error } = useConnectWallet();
 
   const {
     data: { tokenIn, tokenOut },
@@ -53,6 +53,13 @@ const SwapOverviewView: React.FC<{
   const handleEdit = () => {
     console.log("go to edit step");
   };
+
+  useEffect(() => {
+    if (error) {
+      setMessage(error.message);
+      setTimeout(() => setMessage(""), 3000);
+    }
+  }, [error]);
 
   const handleSwap = async () => {
     if (account && balance) {
