@@ -86,7 +86,7 @@ const CurrencySwitcher: React.FC = () => {
           searchable
         />);
     } 
-  }, [collected.selectedCrypto?.id, data.availableCryptos.length, getSortedCryptoListItem, handleItemClick, nextScreen]);
+  }, [collected.selectedCrypto?.id, data.availableCryptos.length, getSortedCryptoListItem, handleItemClick, nextScreen, t]);
 
   const openPickCurrency = useCallback(() => {
     if(data.availableCurrencies.length > 1) {
@@ -100,7 +100,7 @@ const CurrencySwitcher: React.FC = () => {
           searchable
         />);
     };
-  }, [collected.selectedCurrency?.id, data.availableCurrencies, handleItemClick, nextScreen]);
+  }, [collected.selectedCurrency?.id, data.availableCurrencies, handleItemClick, nextScreen, t]);
 
   const handleDropdown = useCallback((item?:ItemType) => {
     if(item?.currencyType === ItemCategory.Crypto) {
