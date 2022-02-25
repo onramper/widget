@@ -361,7 +361,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       clearErrors,
       props.country,
       props.displayChatBubble,
-      props.recommendedCryptoCurrencies
+      props.recommendedCryptoCurrencies,
+      props.language
     ]
   );
 
