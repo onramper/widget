@@ -53,7 +53,7 @@ const SwapOverviewView: React.FC<{
     setTimeout(() => setMessage(""), 3000);
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = useCallback(async () => {
     setMessage("Updating quote...");
     setLoading(true);
     try {
@@ -76,11 +76,11 @@ const SwapOverviewView: React.FC<{
     } finally {
       setLoading(false);
     }
-  };
+  }, [layer2, quote.amountDecimals, tokenIn.chainId, tokenOut.address]);
 
   useEffect(() => {
     handleUpdate();
-  }, []);
+  }, [handleUpdate]);
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
