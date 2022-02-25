@@ -29,7 +29,9 @@ const SwapOverviewView: React.FC<{
 }> = ({ nextStep }) => {
   const { account, active } = useEthers();
   const balance = useEtherBalance(account);
-  const [quote] = useState<QuoteDetails>(nextStep.data.transactionData);
+  const [quote, setQuote] = useState<QuoteDetails>(
+    nextStep.data.transactionData
+  );
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -42,8 +44,38 @@ const SwapOverviewView: React.FC<{
     data: { tokenIn, tokenOut },
   } = nextStep;
 
+  const updateMessageAndClear = (mes: string) => {
+    setMessage(mes);
+    setTimeout(() => setMessage(""), 3000);
+  };
+
+  const handleUpdate = async () => {
+    setMessage("Updating quote...");
+    setLoading(true);
+    try {
+      const newQuote = await layer2.getQuote(
+        tokenIn.chainId,
+        Number(quote.amountDecimals),
+        tokenOut.address
+      );
+      if (newQuote) {
+        setQuote(newQuote);
+        updateMessageAndClear("Quote successfully updated");
+      }
+    } catch (error) {
+      if (error instanceof InvalidParamsError) {
+        updateMessageAndClear("Invalid Transaction Parameters");
+      }
+      if (error instanceof OperationalError) {
+        updateMessageAndClear("Oops something went wrong");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // TODO: refresh to get new quote with setQuote()
+    handleUpdate();
   }, []);
 
   // if tokenIn === "WETH" then we want to display ETH instead
