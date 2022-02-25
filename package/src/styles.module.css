@@ -212,6 +212,7 @@ components
 .grow-col {
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     flex-grow: 1;
 }
 
@@ -430,6 +431,10 @@ button {
     font: inherit;
     cursor: pointer;
     outline: inherit;
+}
+
+a { 
+    color: var(--primary-color);   
 }
 
 /* chevron activator for exapandable sections  */

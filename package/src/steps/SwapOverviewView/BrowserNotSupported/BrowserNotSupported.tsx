@@ -5,7 +5,7 @@ import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader
 import Footer from "../../../common/Footer";
 import Heading from "../../../common/Heading/Heading";
 import { useNav } from "../../../NavContext";
-import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
+import { ReactComponent as TriangleExclamationIcon } from "./../../../icons/exclamation-triangle-outline.svg";
 
 const browsers = [
   {
@@ -32,7 +32,10 @@ const BrowserNotSupported: React.FC<{ currentProgress?: number }> = (props) => {
         useBackButton={canGoBack()}
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
-        <HexExclamationIcon className={classes["exclamation-icon"]} />
+        <div className={classes["top-content"]}>
+          <TriangleExclamationIcon className={classes["exclamation-icon"]} />  
+        </div>
+
         <Heading
           text="Browser does not support MetaMask"
           textSubHeading="Please switch to a different browser that supports the MetaMask browser extention."

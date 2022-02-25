@@ -1,0 +1,28 @@
+.wrapper {
+  --pt-heading: 27px;
+  --pb-heading: 29px;
+}
+
+.top-content {
+  padding-top: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper h1 + h2 {
+  padding-top: 24px;
+}
+
+.exclamation-icon {
+  width: 82px;
+  height: 76px;
+  color: var(--primary-color);
+}
+
+.browsers {
+  font-size: 13px;
+  line-height: 164%;
+  text-align: center;
+  color: var(--text-light-color);
+  padding: 0 55px 20px 55px;
+}
