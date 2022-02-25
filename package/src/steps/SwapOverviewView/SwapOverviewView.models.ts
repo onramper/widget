@@ -1,4 +1,4 @@
-import { TokenInfo } from "layer2";
+import { QuoteDetails, TokenInfo } from "layer2";
 import {
   SwapOverviewStepData,
   SwapOverviewVewStep,
@@ -25,4 +25,5 @@ export type ConfirmSwapParam = {
   fiatConversion: number;
   tokenInURL: string;
   tokenOutURL: string;
+  quote: QuoteDetails
 };

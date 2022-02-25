@@ -34,7 +34,9 @@ const SwapOverviewView: React.FC<{
   const [nextStep, setNextStep] = useState(props.nextStep);
   const { account, active } = useEthers();
   const balance = useEtherBalance(account);
-  const [quote, setQuote] = useState<QuoteDetails>(nextStep.data.transactionData);
+  const [quote, setQuote] = useState<QuoteDetails>(
+    nextStep.data.transactionData
+  );
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -67,9 +69,9 @@ const SwapOverviewView: React.FC<{
     const fiatConversion = getFiatConversion();
 
     const submitData = (results: ConfirmSwapEditResults) => {
-      const updateStep = updatedStepFromEditSwap(nextStep, results);
-      setNextStep({ ...updateStep });
-      setQuote(updateStep.data.transactionData);
+      updatedStepFromEditSwap(nextStep, quote, results);
+      setNextStep({ ...nextStep });
+      setQuote({ ...quote });
     };
 
     nextScreen(
@@ -80,6 +82,7 @@ const SwapOverviewView: React.FC<{
           fiatConversion,
           tokenInURL,
           tokenOutURL,
+          quote
         })}
         submitData={submitData}
       />
@@ -89,6 +92,7 @@ const SwapOverviewView: React.FC<{
     nextScreen,
     nextStep,
     parsedTokenIn,
+    quote,
     tokenIn.logoURI,
     tokenOut.logoURI,
   ]);
