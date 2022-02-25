@@ -26,12 +26,5 @@ export const useWalletSupportRedirect = (
   useEffect(() => {
     // initial check for browser/wallet support
     checkWalletSupport();
-
-    // keep polling
-    const interval = setInterval(() => {
-      checkWalletSupport();
-    }, 2000);
-
-    return () => clearInterval(interval);
   }, [checkWalletSupport]);
 };
