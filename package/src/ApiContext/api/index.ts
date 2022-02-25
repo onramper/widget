@@ -8,9 +8,27 @@ import { BrowserClient, Hub } from "@sentry/browser";
 import type { CryptoAddrType } from '../initialState'
 
 import { BASE_API } from './constants'
+import i18next from "i18next"
+import i18n from "../../i18n/config"
 
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers()
+// The language that will be appended to every request as a query parameter. This will indicate the language we want the
+// content of the backend to be in.
+let currentAcceptLanguage = i18next.language;
+
+const getAcceptLanguageParameter = () => {
+    return currentAcceptLanguage;
+}
+
+// Language parameter is set here for i18n. The backend will use this to set the language of the responses.
+const updateAcceptLanguageParameter = () => {
+    const currentI18nLanguage = i18n.language;
+    if (currentAcceptLanguage !== currentI18nLanguage)
+        currentAcceptLanguage = currentI18nLanguage;
+}
+updateAcceptLanguageParameter();
+
 // See https://github.com/getsentry/sentry-javascript/issues/1656#issuecomment-430295616
 const sentryClient = new BrowserClient({
     dsn: "https://283a138678d94cc295852f634d4cdd1c@o506512.ingest.sentry.io/5638949",
@@ -319,6 +337,8 @@ export {
     filterGatewaysResponse,
     sortCryptoByRecommended,
     filterRatesResponse,
+    getAcceptLanguageParameter,
+    updateAcceptLanguageParameter,
     sell,
     NextStepError,
     sentryHub,

@@ -1,3 +1,4 @@
+import { defaultLanguage } from './../ApiContext/utils/languages';
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -8,8 +9,8 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    debug: true,
-    fallbackLng: "en",
+    debug: false,
+    fallbackLng: defaultLanguage,
     interpolation: {
       escapeValue: false,
     },

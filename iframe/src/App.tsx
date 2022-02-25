@@ -31,6 +31,7 @@ const excludeFiat = getArrayParam("excludeFiat");
 const onlyGateways = getArrayParam("onlyGateways");
 const onlyFiat = getArrayParam("onlyFiat");
 const country = getParam("country");
+const language = getParam("language");
 const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble", "false");
@@ -89,6 +90,7 @@ function App() {
               onlyFiat: onlyFiat,
             }}
             country={country}
+            language={language}
             isAddressEditable={
               isAddressEditable === undefined
                 ? undefined
