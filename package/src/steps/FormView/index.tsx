@@ -30,7 +30,10 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
     if (nextStepData.length === 0) return
 
     // set title
-    if (nextStepData.some(field => field.name === 'email') && nextStepData.length <= 2) {
+    if (nextStepData.some(field => field.name === 'email') && nextStepData.some(field => field.name === 'password') && nextStepData.length <= 2) {
+      setTitle(t('formView.loginRegisterTitle'))
+    }
+    else if (nextStepData.some(field => field.name === 'email') && nextStepData.length <= 2) {
       setTitle(t('formView.emailTitle'))
     }
     else if (nextStepData.some(field => field.name === 'phoneNumber') && nextStepData.length <= 2) {
@@ -98,8 +101,9 @@ const FormView: React.FC<{ nextStep: NextStep & { type: 'form' } }> = ({ nextSte
 
   useEffect(() => {
     const keysList = nextStepData.filter((data) => {
+      if (data.type === 'boolean' && data.name === 'areFundsFromLegalSources' && data.required === true) return true;
       if (data.type === 'boolean' && data.name !== 'termsOfUse') return false
-      if (data.type!=='boolean' && data.required===false) return false
+      if (data.type !=='boolean' && data.required===false) return false
       return  true
     }).map(nsd => nsd.name)
     const filled = areAllKeysFilled(collected, keysList)
