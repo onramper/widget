@@ -28,7 +28,7 @@ const BuyCryptoView: React.FC = () => {
     init().finally(() => {
       setInitLoadingFinished(true);
     });
-  }, [init /* , flagEffectInit */]);
+  }, [init]);
 
   //listening to errors sent by APIContext
   useEffect(() => {
