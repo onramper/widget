@@ -43,12 +43,6 @@ const emailVerificationStep = {
   },
 };
 
-const orderComplete = {
-  type: "orderComplete",
-  title: "We've successfully received your order",
-  description: `We have emailed confirmation link about your order to thijs@onramper.com. Your order is being processed and it may take up to 1-3 working days.`,
-};
-
 const destinationWallet = {
   type: "destinationWallet",
   title: "Your wallet",
@@ -112,7 +106,7 @@ const confirmSwap = {
           label: "Price Impact",
           value: "0.00%",
           strong: true,
-          hint: "Price impact gives you an idea what slippage to actually expect based on the size of the order you're placing and what's going on in the market."
+          hint: "Price impact gives you an idea what slippage to actually expect based on the size of the order you're placing and what's going on in the market.",
         },
       ],
       [
@@ -128,7 +122,8 @@ const confirmSwap = {
       ],
     ],
   },
-  warning: "Above mentioned figures are valid for 1 minute based upon current market rates.",
+  warning:
+    "Above mentioned figures are valid for 1 minute based upon current market rates.",
   defaultDeadline: 600,
   defaultSlippage: 0.1,
   wallets: [
@@ -154,7 +149,7 @@ const confirmSwap = {
       walletAddress: "0x3fg4-lkfdjsakl;fjdaslk;fjasdkl;jfasd;jf;ldsajl-cab",
     },
   ],
-  selectedWalletId: "account2"
+  selectedWalletId: "account2",
 };
 
 const transactionOverview = {
@@ -273,10 +268,13 @@ const nextStep: { [key: string]: any } = {
   personalInfoStep,
   emailVerificationStep,
   possibleFormFieldsStep,
-  orderComplete,
   transactionOverview,
   destinationWallet,
   confirmSwap,
+  completed: {
+    type: "completed",
+    trackingUrl: "https://onramper.com",
+  },
 };
 
 const getNextStep = (currentStep: string) => {

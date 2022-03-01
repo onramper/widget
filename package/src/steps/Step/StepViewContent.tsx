@@ -114,9 +114,6 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       case "emailVerification":
         replaceScreen(<EmailVerificationView nextStep={nextStep} />);
         break;
-      case "orderComplete":
-        replaceScreen(<OrderCompleteView nextStep={nextStep} />);
-        break;
       case "paymentReview":
         showPaymentReview(nextStep);
         break;
