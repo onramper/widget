@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
 import styles from "../../styles.module.css";
+import { browserSupportsMetamask } from "../../utils";
 import TemporarTransactionErrorTrigger from "../TransactionErrorOverlay/TemporarTransactionErrorTrigger";
 
 const PlayGround = () => {
@@ -27,6 +28,9 @@ const PlayGround = () => {
   const [, setTokenList] = useState<TokenList | null>(null);
 
   const handleGetTokens = async () => {
+    if(!browserSupportsMetamask()) {
+      return;      
+    }
     try {
       const list = await layer2.getTokens();
       if (list) {

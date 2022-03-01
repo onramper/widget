@@ -59,6 +59,7 @@ const NavContext = createContext<{
   nextScreen: (screen: ScreenType) => void;
   replaceScreen: (screen: ScreenType) => void;
   triggerChat: () => void;
+  canGoBack: () => boolean;
 }>({
   _state: initialState,
   onlyScreen: () => null,
@@ -66,6 +67,7 @@ const NavContext = createContext<{
   nextScreen: () => null,
   replaceScreen: () => null,
   triggerChat: () => null,
+  canGoBack: () => false,
 });
 
 //Creating context
@@ -95,6 +97,10 @@ const NavProvider: React.FC = (props) => {
     () => dispatch({ type: NavigationActionsType.Chat }),
     []
   );
+  const canGoBack = useCallback(
+    () => _state.screens.length > 1,
+    [_state.screens.length]
+  );
 
   return (
     <NavContext.Provider
@@ -105,6 +111,7 @@ const NavProvider: React.FC = (props) => {
         nextScreen,
         replaceScreen,
         triggerChat,
+        canGoBack
       }}
     >
       {props.children}
