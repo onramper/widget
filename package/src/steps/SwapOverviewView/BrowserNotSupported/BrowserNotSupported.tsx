@@ -14,7 +14,7 @@ const browsers = [
   },
   {
     name: "Firefox",
-    link: "https://www.mozilla.org/firefox/windows",
+    link: "https://www.mozilla.org/firefox",
   },
   {
     name: "Brave",
