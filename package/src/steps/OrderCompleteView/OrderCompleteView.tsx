@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext } from "react";
 import classes from "./OrderCompleteView.module.css";
 import commonClasses from "./../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-// import { ReactComponent as CheckmarkSuccessIcon } from "../../icons/checkmark-success.svg";
 import Lottie from "lottie-react";
 import successAnimation from "../../icons/animations/success.json";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
@@ -16,7 +15,7 @@ const OrderCompleteView: React.FC<{
 }> = (props) => {
   const { collected } = useContext(APIContext);
   const { onlyScreen } = useNav();
-  
+
   return (
     <div className={`${commonClasses.view} ${classes["view"]}`}>
       <ProgressHeader primary noSeparator />
