@@ -1,7 +1,7 @@
 import React from "react";
-import InputDelegator from "../../../common/Input/InputDelegator";
+import InputDelegator from "../../../../common/Input/InputDelegator";
 import classes from "./WalletInput.module.css";
-import { ReactComponent as EnterIcon } from "../../../icons/enter.svg";
+import { ReactComponent as EnterIcon } from "../../../../icons/enter.svg";
 
 const WalletInput: React.FC<{
   onSubmit: () => void;

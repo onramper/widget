@@ -6,4 +6,5 @@ export interface SwapDetailsBarProps extends HTMLProps<HTMLDivElement> {
   estimate: QuoteDetails;
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
+  conversion: string;
 }

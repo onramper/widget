@@ -129,36 +129,6 @@ export type WalletItemData = {
   icon?: string;
   isConnected?: boolean;
 };
-export type DestinationWalletStep = {
-  type: "destinationWallet";
-  url: string;
-  data: WalletItemData[];
-  cryptoName: string;
-  selectedWalletId?: string;
-};
-
-export type SwapOverviewVewStep = {
-  type: "transactionOverview";
-  data: {
-    userData: {
-      userAddress: string;
-    };
-    transactionData: QuoteDetails;
-    tokenIn: TokenInfo;
-    tokenOut: TokenInfo;
-  };
-};
-
-export type ConfirmSwapInput = {
-  label: string;
-  value: string;
-  fiatConversion: number;
-  fiatSymbol: string;
-  currencyShortName: string;
-  currencyLongName: string;
-  icon: string; 
-  balance?: number;
-}
 
 export type BrakdownItem = {
   label: string;
@@ -166,29 +136,30 @@ export type BrakdownItem = {
   value: string;
   strong?: boolean;
   hint?: string;
-}
+};
 
-export type WallletListItem = {
-  id: string;
-  icon?: string;
-  accountName: string;
-  walletAddress?: string;
-}
+export type SwapOverviewStepData = {
+  userData: {
+    userAddress: string;
+  };
+  transactionData: QuoteDetails;
+  tokenIn: TokenInfo;
+  tokenOut: TokenInfo;
+  fiatSymbol: string;
+  balance: number;
+  deadline: number;
+  slippage: number;
+  feeBreakdown: BrakdownItem[][];
+  walletsData: {
+    wallets: WalletItemData[];
+    selectedWalletId?: string;
+  }
+};
 
-export type ConfirmSwapViewStep = {
-  type: "confirmSwap";
-  cryptoSpent: ConfirmSwapInput;
-  cryptoReceived: ConfirmSwapInput;
-  feeBreakdown: {
-    label: string;
-    groups: BrakdownItem[][]
-  },
-  warning: string;
-  defaultDeadline: number;
-  defaultSlippage: number;
-  wallets: WallletListItem[];
-  selectedWalletId?: string;
-}
+export type SwapOverviewVewStep = {
+  type: "transactionOverview";
+  data: SwapOverviewStepData;
+};
 
 type NextStep = NextStepBase &
   (
@@ -239,9 +210,7 @@ type NextStep = NextStepBase &
       }
     | EmailVerificationStep
     | PaymentReviewStep
-    | DestinationWalletStep
     | SwapOverviewVewStep
-    | ConfirmSwapViewStep
   );
 
 interface FieldError {
