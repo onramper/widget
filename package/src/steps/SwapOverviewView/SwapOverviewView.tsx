@@ -136,12 +136,6 @@ const SwapOverviewView: React.FC<{
   }, [error]);
 
   const handleSwap = async () => {
-    nextScreen(
-      <OrderCompleteView
-        title="Success! Your Swap is being executed."
-        description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-      />
-    );
     if (account && balance) {
       setLoading(true);
       setMessage("Fetching best price...");
