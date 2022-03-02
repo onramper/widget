@@ -43,12 +43,6 @@ const emailVerificationStep = {
   },
 };
 
-const orderComplete = {
-  type: "orderComplete",
-  title: "We've successfully received your order",
-  description: `We have emailed confirmation link about your order to thijs@onramper.com. Your order is being processed and it may take up to 1-3 working days.`,
-};
-
 const transactionOverview = {
   type: "transactionOverview",
   progress: 0,
@@ -214,7 +208,10 @@ const nextStep: { [key: string]: any } = {
   personalInfoStep,
   emailVerificationStep,
   possibleFormFieldsStep,
-  orderComplete,
+  completed: {
+    type: "completed",
+    trackingUrl: "https://onramper.com",
+  },
   transactionOverview
 };
 

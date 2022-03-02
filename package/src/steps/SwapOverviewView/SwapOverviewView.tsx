@@ -24,6 +24,7 @@ import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
+import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import ConfirmSwapView from "./ConfirmSwapView/ConfirmSwapView";
 import { createConfirmSwapProps, updatedStepFromEditSwap } from "./utils";
 import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
@@ -148,12 +149,19 @@ const SwapOverviewView: React.FC<{
         );
         setMessage("Please sign transaction");
         if (res) {
-          sendTransaction({
+          await sendTransaction({
             data: res.data,
             to: res.to,
             value: res.value,
             from: account,
           });
+
+          nextScreen(
+            <OrderCompleteView
+              title="Success! Your Swap is being executed."
+              description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
+            />
+          );
         }
       } catch (error) {
         setLoading(false);

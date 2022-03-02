@@ -101,11 +101,6 @@ type EmailVerificationStep = {
   };
 };
 
-type OrderCompleteStep = {
-  type: "orderComplete";
-  description?: string;
-};
-
 type NextStepBase = {
   useHeading?: boolean;
   title?: string;
@@ -214,7 +209,6 @@ type NextStep = NextStepBase &
         hint: string;
       }
     | EmailVerificationStep
-    | OrderCompleteStep
     | PaymentReviewStep
     | SwapOverviewVewStep
   );

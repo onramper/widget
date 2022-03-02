@@ -7,6 +7,7 @@ type ButtonActionType = {
   disabled?: boolean;
   size?: "small" | "large";
   className?: string;
+  primary?: boolean;
 };
 
 const ButtonSecondary: React.FC<ButtonActionType> = (props) => {
@@ -16,6 +17,7 @@ const ButtonSecondary: React.FC<ButtonActionType> = (props) => {
     disabled = false,
     size = "large",
     className = "",
+    primary
   } = props;
 
   return (
@@ -23,7 +25,7 @@ const ButtonSecondary: React.FC<ButtonActionType> = (props) => {
       onClick={onClick}
       className={`${styles["button-action"]} ${
         size === "small" ? styles["button-action--small"] : ""
-      } ${className}`}
+      } ${primary ? styles["primary"] : ""} ${className}`}
       disabled={disabled}
     >
       {text}

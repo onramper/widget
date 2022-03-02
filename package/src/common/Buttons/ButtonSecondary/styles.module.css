@@ -52,3 +52,10 @@
   cursor: unset;
   filter: brightness(0.5);
 }
+
+.button-action.primary,
+.button-action.primary:active,
+.button-action.primary:hover {
+  border-color: var(--primary-var-text-color);
+  color: var(--primary-var-text-color);
+}
