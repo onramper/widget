@@ -18,7 +18,6 @@ import { APIContext, NextStep } from "../../ApiContext";
 import InformationView from "../InformationView";
 import Footer from "../../common/Footer";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
-import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
