@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import classes from "./OrderCompleteView.module.css";
 import commonClasses from "./../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
@@ -15,6 +15,14 @@ const OrderCompleteView: React.FC<{
 }> = (props) => {
   const { collected } = useContext(APIContext);
   const { onlyScreen } = useNav();
+  const [autoPlay, setAutoPlay] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setAutoPlay(true);
+    }, 200);
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <div className={`${commonClasses.view} ${classes["view"]}`}>
@@ -23,6 +31,7 @@ const OrderCompleteView: React.FC<{
         <div className={classes["checkmark-wrapper"]}>
           <Lottie
             loop={false}
+            autoplay={autoPlay}
             animationData={successAnimation}
           />
         </div>
