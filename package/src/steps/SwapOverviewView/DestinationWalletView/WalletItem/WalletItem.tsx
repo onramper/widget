@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
 import { WalletItemProps } from "./WalletItem.models";
-import TextEllipsis from "../../../common/TextEllipsis/TextEllipsis";
+import TextEllipsis from "../../../../common/TextEllipsis/TextEllipsis";
 import classes from "./WalletItem.module.css";
-import { ReactComponent as CheckMarkIcon } from "../../../icons/checkmark.svg";
-import { ReactComponent as EditIcon } from "../../../icons/pencil.svg";
-import { ReactComponent as CheckmarkRoundIcon } from "../../../icons/check-round.svg";
-import { ReactComponent as GarbageCanIcon } from "../../../icons/garbage-can.svg";
+import { ReactComponent as CheckMarkIcon } from "../../../../icons/checkmark.svg";
+import { ReactComponent as EditIcon } from "../../../../icons/pencil.svg";
+import { ReactComponent as CheckmarkRoundIcon } from "../../../../icons/check-round.svg";
+import { ReactComponent as GarbageCanIcon } from "../../../../icons/garbage-can.svg";
 import { CSSTransition } from "react-transition-group";
 import WalletInput from "../WalletInput/WalletInput";
 

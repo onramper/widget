@@ -9,15 +9,11 @@ const SwapDetailsBar = ({
   tokenIn,
   tokenOut,
   estimate,
+  conversion
 }: SwapDetailsBarProps) => {
   // TODO: fallback logo icons
   const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
   const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
-
-  // TODO: price oracle ??
-  const getFiatConversion = () => {
-    return "$200";
-  };
 
   return (
     <div className={`${className} ${classes.SwapDetailsBar}`}>
@@ -34,7 +30,7 @@ const SwapDetailsBar = ({
           <div className={classes.amount}>
             {Number(estimate.amountDecimals).toFixed(5)}
           </div>
-          <div className={classes.conversion}>({getFiatConversion()})</div>
+          <div className={classes.conversion}>({conversion})</div>
         </div>
       </div>
       <SwapArrows className={classes.swapIcon} />
@@ -51,7 +47,7 @@ const SwapDetailsBar = ({
           <div className={classes.amount}>
             {Number(estimate.quoteGasAdjustedDecimals).toFixed(5)}
           </div>
-          <div className={classes.conversion}>({getFiatConversion()})</div>
+          <div className={classes.conversion}>({conversion})</div>
         </div>
       </div>
     </div>

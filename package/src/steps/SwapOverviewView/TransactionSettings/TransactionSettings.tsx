@@ -6,17 +6,16 @@ import React, {
   useState,
 } from "react";
 import { TransactionSettingsProps } from "./TransactionSettings.models";
-import commonClasses from "./../../styles.module.css";
+import commonClasses from "./../../../styles.module.css";
 import classes from "./TransactionSettings.module.css";
-import { ReactComponent as SettingsIcon } from "./../../icons/settings.svg";
-import InputDelegator from "../../common/Input/InputDelegator";
+import { ReactComponent as SettingsIcon } from "./../../../icons/settings.svg";
+import InputDelegator from "../../../common/Input/InputDelegator";
 import { CSSTransition } from "react-transition-group";
-import DropdownCheckableGroup from "../../common/DropdownCheckableGroup/DropdownCheckableGroup";
-import { ListItem } from "../../common/DropdownCheckableGroup/DropdownCheckableGroup.models";
-import { BASE_API } from "../../ApiContext/api/constants";
-import { NavContext } from "../../NavContext";
-import Step from "../../steps/Step";
-import { WallletListItem } from "../../ApiContext/api/types/nextStep";
+import DropdownCheckableGroup from "../../../common/DropdownCheckableGroup/DropdownCheckableGroup";
+import { ListItem } from "../../../common/DropdownCheckableGroup/DropdownCheckableGroup.models";
+import { NavContext } from "../../../NavContext";
+import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
+import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
 
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const { nextScreen } = useContext(NavContext);
@@ -38,15 +37,21 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   }, [props]);
 
   const goToWalletDestination = useCallback(async () => {
-    const stepUrl = `${BASE_API}/GoTo/TestGateway/destinationWallet`;
-    const walletStep = await (
-      await fetch(`${stepUrl}`, {
-        method: "POST",
-        body: JSON.stringify({ selectedWalletId: props.selectedWalletId }),
-      })
-    ).json();
-    nextScreen(<Step nextStep={walletStep} />);
-  }, [nextScreen, props.selectedWalletId]);
+    nextScreen(
+      <DestinationWalletView
+        wallets={props.wallets}
+        title="Your wallet"
+        heading="Add destination wallet (Optional)"
+        description="Choose which wallet you would like your funds to be deposited in"
+        cryptoName={props.cryptoName}
+        selectedWalletId={props.selectedWalletId}
+        submitData={(wallets, walletId) => {
+          props.updateWallets(wallets);
+          props.onChangeWalletId(walletId);
+        }}
+      />
+    );
+  }, [nextScreen, props]);
 
   useEffect(() => setWallets(computeWallets(props.wallets)), [props.wallets]);
 
@@ -139,7 +144,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   );
 };
 
-const computeWallets = (wallets: WallletListItem[]) =>
+const computeWallets = (wallets: WalletItemData[]) =>
   wallets.map(
     (item) =>
       ({

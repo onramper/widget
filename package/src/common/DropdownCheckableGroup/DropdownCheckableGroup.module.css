@@ -45,6 +45,7 @@
   flex: 1;
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .item-content > * {
@@ -57,7 +58,8 @@
   line-height: 8px;
   letter-spacing: 0.005em;
   color: var(--text-light-color);
-  padding-top: 3px;
+  max-width: 45px;
+  padding-top: 2px;
 }
 
 .icon-wrapper {
@@ -78,11 +80,15 @@
 }
 
 .item-title {
-  font-size: 12px;
+  font-size: 11px;
   line-height: 12px;
   color: var(--text-dark-color);
   padding-left: 6px;
   padding-right: 4px;
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .add-btn {

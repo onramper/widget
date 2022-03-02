@@ -5,7 +5,7 @@ import { NextStep } from "../../ApiContext";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
-import { parseWrappedTokens } from "../../utils";
+import uriToHttp, { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
@@ -24,12 +24,14 @@ import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
-import { BASE_API } from "../../ApiContext/api/constants";
-import Step from "../Step";
+import ConfirmSwapView from "./ConfirmSwapView/ConfirmSwapView";
+import { createConfirmSwapProps, updatedStepFromEditSwap } from "./utils";
+import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
-}> = ({ nextStep }) => {
+}> = (props) => {
+  const [nextStep, setNextStep] = useState(props.nextStep);
   const { account, active } = useEthers();
   const balance = useEtherBalance(account);
   const [quote, setQuote] = useState<QuoteDetails>(
@@ -45,7 +47,7 @@ const SwapOverviewView: React.FC<{
   const { nextScreen } = useNav();
 
   const {
-    data: { tokenIn, tokenOut },
+    data: { tokenIn, tokenOut, fiatSymbol },
   } = nextStep;
 
   const updateMessageAndClear = (mes: string) => {
@@ -86,13 +88,44 @@ const SwapOverviewView: React.FC<{
   const parsedTokenIn = parseWrappedTokens(tokenIn);
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
+  // TODO: price oracle ??
+  const getFiatConversion = useCallback(() => {
+    return 200;
+  }, []);
+
   const handleEdit = useCallback(async () => {
-    const stepUrl = `${BASE_API}/GoTo/TestGateway/confirmSwap`;
-    const swapStep = await (
-      await fetch(`${stepUrl}`, { method: "POST" })
-    ).json();
-    nextScreen(<Step nextStep={swapStep} />);
-  }, [nextScreen]);
+    const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
+    const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
+    const fiatConversion = getFiatConversion();
+
+    const submitData = (results: ConfirmSwapEditResults) => {
+      updatedStepFromEditSwap(nextStep, quote, results);
+      setNextStep({ ...nextStep });
+      setQuote({ ...quote });
+    };
+
+    nextScreen(
+      <ConfirmSwapView
+        {...createConfirmSwapProps({
+          data: nextStep.data,
+          parsedTokenIn,
+          fiatConversion,
+          tokenInURL,
+          tokenOutURL,
+          quote
+        })}
+        submitData={submitData}
+      />
+    );
+  }, [
+    getFiatConversion,
+    nextScreen,
+    nextStep,
+    parsedTokenIn,
+    quote,
+    tokenIn.logoURI,
+    tokenOut.logoURI,
+  ]);
 
   useEffect(() => {
     if (error) {
@@ -177,6 +210,7 @@ const SwapOverviewView: React.FC<{
           estimate={quote}
           tokenIn={parsedTokenIn}
           tokenOut={tokenOut}
+          conversion={`${fiatSymbol}${getFiatConversion()}`}
         />
         <FeeBreakdown transactionDetails={quote} />
         <div className={classes.message}>{message}</div>

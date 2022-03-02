@@ -1,29 +1,27 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { DestinationWalletViewProps } from "./DestinationWalletView.models";
-import commonClasses from "../../styles.module.css";
+import commonClasses from "../../../styles.module.css";
 import classes from "./DestinationWalletView.module.css";
-import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-import Heading from "../../common/Heading/Heading";
-import { NavContext } from "../../NavContext";
-import InfoBox from "../../common/InfoBox";
-import ButtonAction from "../../common/Buttons/ButtonAction";
-import Footer from "../../common/Footer";
-import ErrorView from "../../common/ErrorView";
+import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader";
+import Heading from "../../../common/Heading/Heading";
+import { NavContext } from "../../../NavContext";
+import InfoBox from "../../../common/InfoBox";
+import ButtonAction from "../../../common/Buttons/ButtonAction";
+import Footer from "../../../common/Footer";
+import ErrorView from "../../../common/ErrorView";
 import WalletItem from "./WalletItem/WalletItem";
 import WalletInput from "./WalletInput/WalletInput";
-import { WalletItemData } from "../../ApiContext/api/types/nextStep";
+import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 
-const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
-  nextStep,
-}) => {
+const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [defaultWallets] = useState(
-    nextStep.data.filter((i) => i.id === "metamask")
+    props.wallets.filter((i) => i.id === "metamask")
   );
   const [wallets, setWallets] = useState(
-    nextStep.data.filter((i) => i.id !== "metamask")
+    props.wallets.filter((i) => i.id !== "metamask")
   );
-  const [walletId, setWalletId] = useState(nextStep.selectedWalletId);
+  const [walletId, setWalletId] = useState(props.selectedWalletId);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [newWalletAddress, setNewWalletAddress] = useState("");
   const [newWalletError, setNewWalletAddressError] = useState<
@@ -42,7 +40,6 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
         }
 
         setTimeout(() => {
-          
           if (address === "error") {
             return reject(new Error("Incorect address."));
           }
@@ -67,7 +64,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
         if (!newWalletAddress) {
           return reject(new Error("Value cannot be empty."));
         }
-        
+
         if (newWalletAddress === "error") {
           return reject(new Error("Incorect address."));
         }
@@ -96,7 +93,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
     setErrorMessage(undefined);
 
     try {
-      //   TODO: update backend part using nextStep.url and then if ok, go back
+      props.submitData([...defaultWallets, ...wallets], walletId || "");
       backScreen();
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
@@ -106,7 +103,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
       }
       setErrorMessage(error.message);
     }
-  }, [backScreen, nextScreen]);
+  }, [backScreen, defaultWallets, nextScreen, props, walletId, wallets]);
 
   const onDeleteWallet = useCallback(
     (id: string) => {
@@ -116,7 +113,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
   );
 
   const isContinueDisabled = useCallback(() => {
-    return ![...defaultWallets, ...wallets].some(i => i.id === walletId);
+    return ![...defaultWallets, ...wallets].some((i) => i.id === walletId);
   }, [defaultWallets, walletId, wallets]);
 
   useEffect(() => {
@@ -133,15 +130,12 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
   return (
     <div className={commonClasses.view}>
       <ProgressHeader
-        percentage={nextStep.progress}
-        title={nextStep.title}
+        percentage={props.progress}
+        title={"Your wallet"}
         useBackButton
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
-        <Heading
-          text={nextStep.heading}
-          textSubHeading={nextStep.description}
-        />
+        <Heading text={props.heading} textSubHeading={props.description} />
         <InfoBox
           in={!!errorMessage}
           type="error"
@@ -164,7 +158,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
                     label={wallet.accountName}
                     title={wallet.walletAddress}
                     address={wallet.walletAddress}
-                    info={`Balance: ${wallet.balance} ${nextStep.cryptoName}`}
+                    info={`Balance: ${wallet.balance} ${props.cryptoName}`}
                     isChecked={wallet.id === walletId}
                     icon={wallet.icon}
                     onCheck={() => setWalletId(wallet.id)}
@@ -200,7 +194,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = ({
                   label={wallet.accountName}
                   title={wallet.walletAddress}
                   address={wallet.walletAddress}
-                  info={`Balance: ${wallet.balance} ${nextStep.cryptoName}`}
+                  info={`Balance: ${wallet.balance} ${props.cryptoName}`}
                   isChecked={wallet.id === walletId}
                   icon={wallet.icon}
                   onCheck={() => setWalletId(wallet.id)}
