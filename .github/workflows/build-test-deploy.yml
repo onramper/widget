@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "16.4.1"
-      - run: (cd package && npm ci &&  npm run build:dev)
+      - run: (cd package && npm ci --omit peer &&  npm run build:dev)
       - run: (cd iframe && npm ci &&  npm run build)
   deploy:
     needs: [lint-and-build]
@@ -77,7 +77,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "16.4.1"
-      - run: (cd package && npm ci && npm run build:$STAGE)
+      - run: (cd package && npm ci --omit peer && npm run build:$STAGE)
         env:
           STAGE: ${{ steps.git-branch.outputs.stage }}
       - run: (cd iframe && npm ci && npm run build:$STAGE)
@@ -102,7 +102,7 @@ jobs:
           node-version: "16.4.1"
           registry-url: "https://registry.npmjs.org"
       - name: Clean install and build
-        run: (cd package && npm ci && npm run build:prod)
+        run: (cd package && npm ci --omit peer && npm run build:prod)
       - name: Publish to npm
         run: (cd package && npm publish)
         env:
