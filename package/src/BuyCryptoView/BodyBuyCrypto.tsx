@@ -26,9 +26,9 @@ import Footer from "../common/Footer";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
-): IGatewaySelected | undefined {
+): IGatewaySelected | null {
   if (!selectedGateway) {
-    return;
+    return null;
   }
   return {
     name: selectedGateway.name,
