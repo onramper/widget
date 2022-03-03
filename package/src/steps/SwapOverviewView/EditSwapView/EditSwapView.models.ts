@@ -1,7 +1,11 @@
-import { BrakdownItem, WalletItemData } from "../../../ApiContext/api/types/nextStep";
+import { TokenInfo } from "layer2";
+import {
+  BrakdownItem,
+  WalletItemData,
+} from "../../../ApiContext/api/types/nextStep";
 import { ConfirmSwapEditResults } from "../SwapOverviewView.models";
 
-export type ConfirmSwapInput = {
+export interface EditSwapViewInput extends TokenInfo {
   label: string;
   value: string;
   fiatConversion: number;
@@ -10,12 +14,12 @@ export type ConfirmSwapInput = {
   currencyLongName: string;
   icon?: string;
   balance?: number;
-};
+}
 
-export type ConfirmSwapViewProps = {
+export type EditSwapViewProps = {
   progress?: number;
-  cryptoSpent: ConfirmSwapInput;
-  cryptoReceived: ConfirmSwapInput;
+  cryptoSpent: EditSwapViewInput;
+  cryptoReceived: EditSwapViewInput;
   feeBreakdown: {
     label: string;
     groups: BrakdownItem[][];

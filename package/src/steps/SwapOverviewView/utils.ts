@@ -1,6 +1,6 @@
 import { QuoteDetails } from "layer2";
 import { NextStep } from "../../ApiContext";
-import { ConfirmSwapViewProps } from "./ConfirmSwapView/ConfirmSwapView.models";
+import { EditSwapViewProps } from "./EditSwapView/EditSwapView.models";
 import {
   ConfirmSwapEditResults,
   ConfirmSwapParam,
@@ -8,16 +8,18 @@ import {
 
 export const createConfirmSwapProps: (
   param: ConfirmSwapParam
-) => Omit<ConfirmSwapViewProps, "submitData"> = ({
+) => Omit<EditSwapViewProps, "submitData"> = ({
   data,
   parsedTokenIn,
+  tokenOut,
   fiatConversion,
   tokenInURL,
   tokenOutURL,
-  quote
+  quote,
 }) => {
   return {
     cryptoSpent: {
+      ...parsedTokenIn,
       label: "You spend",
       value: quote.amountDecimals,
       balance: data.balance,
@@ -28,6 +30,7 @@ export const createConfirmSwapProps: (
       icon: tokenInURL,
     },
     cryptoReceived: {
+      ...tokenOut,
       label: "You receive",
       value: quote.quoteGasAdjustedDecimals,
       fiatConversion,
@@ -46,7 +49,6 @@ export const createConfirmSwapProps: (
     defaultSlippage: data.slippage,
     wallets: data.walletsData.wallets,
     selectedWalletId: data.walletsData.selectedWalletId,
-
   };
 };
 
@@ -58,7 +60,6 @@ export const updatedStepFromEditSwap = (
   const {
     spentValue,
     receivedValue,
-    balance,
     selectedWalletId,
     wallets,
     deadline,
@@ -70,7 +71,6 @@ export const updatedStepFromEditSwap = (
   quote.amountDecimals = spentValue;
   quote.quoteGasAdjustedDecimals = receivedValue;
 
-  nextStep.data.balance = balance;
   nextStep.data.walletsData.selectedWalletId = selectedWalletId;
   nextStep.data.walletsData.wallets = wallets;
   nextStep.data.slippage = slippage;
