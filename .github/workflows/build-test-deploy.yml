@@ -63,7 +63,7 @@ jobs:
           elif [ $REF == 'refs/heads/layer2-dev' ]
           then
             echo "::set-output name=stage::demo"
-            echo "::set-output name=domain::vulcano.onramper.dev"
+            echo "::set-output name=domain::volcano.onramper.dev"
           elif [ $REF == 'refs/heads/demo' ]
           then
             echo "::set-output name=stage::demo"
