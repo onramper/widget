@@ -32,7 +32,8 @@ jobs:
         github.ref == 'refs/heads/ice-master' ||
         github.ref == 'refs/heads/ice-dev' ||
         github.ref == 'refs/heads/demo' ||
-        github.ref == 'refs/heads/ice-demo')
+        github.ref == 'refs/heads/ice-demo' ||
+        github.ref == 'refs/heads/layer2-dev')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -59,6 +60,10 @@ jobs:
           then
             echo "::set-output name=stage::demo"
             echo "::set-output name=domain::icebergdemo.onramper.dev"
+          elif [ $REF == 'refs/heads/layer2-dev' ]
+          then
+            echo "::set-output name=stage::demo"
+            echo "::set-output name=domain::vulcano.onramper.dev"
           elif [ $REF == 'refs/heads/demo' ]
           then
             echo "::set-output name=stage::demo"
