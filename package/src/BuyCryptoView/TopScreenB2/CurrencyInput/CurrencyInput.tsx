@@ -1,4 +1,10 @@
-import React, { useEffect, useContext, useState, useRef, useCallback } from "react";
+import React, {
+  useEffect,
+  useContext,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import styles from "./CurrencyInput.module.css";
 import { APIContext } from "../../../ApiContext";
 import { onChangeTextNumber } from "../../../utils";
@@ -25,12 +31,15 @@ const CurrencyInput: React.FC = () => {
     target.style.width = `${target.scrollWidth}px`;
   };
 
-  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): undefined | boolean => {
-    const value = onChangeTextNumber(e.target.value, precision);
-    if (value === false) return false;
+  const onChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): undefined | boolean => {
+      const value = onChangeTextNumber(e.target.value, precision);
+      if (value === false) return false;
 
-    handleInputChange("amount", value);
-  }, [handleInputChange, precision]);
+      handleInputChange("amount", value);
+    },
+    [handleInputChange, precision]
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -48,38 +57,47 @@ const CurrencyInput: React.FC = () => {
     };
 
     setPrecision(getCurrentPrecision());
-    
+
     setSymbol(!collected.amountInCrypto ? currentUnitOfCurrency?.symbol : "");
-  }, [collected.amountInCrypto, collected.selectedCurrency, collected.selectedCrypto]);
+  }, [
+    collected.amountInCrypto,
+    collected.selectedCurrency,
+    collected.selectedCrypto,
+  ]);
 
   useEffect(() => {
-    setHasError(
-      ["MIN", "MAX"].some((i) => i === collected.errors?.RATE?.type)
-    );
+    setHasError(["MIN", "MAX"].some((i) => i === collected.errors?.RATE?.type));
   }, [collected.errors]);
 
   return (
-      <div
-        className={`${styles["input-box"]} ${isFocused ? styles["is-focused"] : ""} ${hasError ? styles["with-error"] : ""}`}
-        onClick={() => inputRef.current?.focus()}
-      >
-        {symbol && <span className={`${styles["text"]} ${styles["symbol"]}`} > {symbol} </span>}
-        <input
-          ref={inputRef}
-          id="editable-amount"
-          className={`${styles["text"]} ${styles["input"]}`}
-          placeholder="100"
-          type="text"
-          name="amount"
-          value={`${collected.amount}`}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          disabled={!collected.isAmountEditable}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            if (onChange(e) === false) return false;
-          }}
-        />
-      </div>
+    <div
+      className={`${styles["input-box"]} ${
+        isFocused ? styles["is-focused"] : ""
+      } ${hasError ? styles["with-error"] : ""}`}
+      onClick={() => inputRef.current?.focus()}
+    >
+      {symbol && (
+        <span className={`${styles["text"]} ${styles["symbol"]}`}>
+          {" "}
+          {symbol}{" "}
+        </span>
+      )}
+      <input
+        ref={inputRef}
+        id="editable-amount"
+        className={`${styles["text"]} ${styles["input"]}`}
+        placeholder="100"
+        type="text"
+        name="amount"
+        value={`${collected.amount}`}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        disabled={!collected.isAmountEditable}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          if (onChange(e) === false) return false;
+        }}
+      />
+    </div>
   );
 };
 

@@ -8,17 +8,16 @@ const ListItem: React.FC<ViewListItemProps> = (props: ViewListItemProps) => {
       className={`${props.isSelected ? styles["selected"] : ""}`}
       onClick={() => props.onClick(props.index)}
     >
-      {!props.iconSvg && props.icon && (<img
-          alt="Icon"
-          className={styles["list-item-icon"]}
-          src={props.icon}
-        />
+      {!props.iconSvg && props.icon && (
+        <img alt="Icon" className={styles["list-item-icon"]} src={props.icon} />
       )}
       {props.iconSvg && <> {props.iconSvg} </>}
-      
+
       <div className={styles["list-item-child"]}>
         <div className={styles["list-item-name"]}> {props.name} </div>
-        {props.info && (<div className={`${styles["list-item-info"]}`}> {props.info} </div>)}
+        {props.info && (
+          <div className={`${styles["list-item-info"]}`}> {props.info} </div>
+        )}
       </div>
 
       {props.rightSection && <> {props.rightSection} </>}

@@ -29,7 +29,11 @@ const Skeleton: React.FC = () => {
     <div className={styles["switcher-wrapper"]}>
       {handleJsx}
       <button className={commonStyles["btn-default"]} disabled={true}>
-        <img className={styles["arrow-right"]} src={arrowRightIcon} alt="arrow-right" />
+        <img
+          className={styles["arrow-right"]}
+          src={arrowRightIcon}
+          alt="arrow-right"
+        />
       </button>
       {handleJsx}
     </div>
@@ -37,82 +41,117 @@ const Skeleton: React.FC = () => {
 };
 
 const CurrencySwitcher: React.FC = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const { collected, data } = useContext(APIContext);
   const { nextScreen, backScreen } = useContext(NavContext);
 
-  const [pair, setPair] = useState<({item?: ItemType, hasOptions: boolean } | undefined)[]>([]);
+  const [pair, setPair] = useState<
+    ({ item?: ItemType; hasOptions: boolean } | undefined)[]
+  >([]);
 
-  const handleItemClick = useCallback((name: string, index: number, item: ItemType) => {
-    if (name === "crypto") data.handleCryptoChange(item);
-    else if (name === "currency") data.handleCurrencyChange(item);
+  const handleItemClick = useCallback(
+    (name: string, index: number, item: ItemType) => {
+      if (name === "crypto") data.handleCryptoChange(item);
+      else if (name === "currency") data.handleCurrencyChange(item);
 
-    backScreen();
-  }, [backScreen, data]);
-
-  const getSortedCryptoListItem = useCallback(
-    () => {
-
-      const prioritizedCrypto = !collected.recommendedCryptoCurrencies
-        ? popularCrypto
-        : arrayUnique([...collected.recommendedCryptoCurrencies, ...popularCrypto]);
-  
-      return prioritizedCrypto
-        .map((c) => data.availableCryptos.filter((crypto) => crypto.id === c)[0])
-        .filter((c) => c !== undefined)
-        .concat(
-          data.availableCryptos
-            .filter((crypto) => !prioritizedCrypto.includes(crypto.id))
-            .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
-        ).map(item => ({
-          ...item,
-          rightSection: <CryptoListItemRight network={item.network} />
-        } as ViewListItemType));
+      backScreen();
     },
-    [collected.recommendedCryptoCurrencies, data.availableCryptos]
+    [backScreen, data]
   );
 
+  const getSortedCryptoListItem = useCallback(() => {
+    const prioritizedCrypto = !collected.recommendedCryptoCurrencies
+      ? popularCrypto
+      : arrayUnique([
+          ...collected.recommendedCryptoCurrencies,
+          ...popularCrypto,
+        ]);
+
+    return prioritizedCrypto
+      .map((c) => data.availableCryptos.filter((crypto) => crypto.id === c)[0])
+      .filter((c) => c !== undefined)
+      .concat(
+        data.availableCryptos
+          .filter((crypto) => !prioritizedCrypto.includes(crypto.id))
+          .sort((a, b) => (a.id === b.id ? 0 : a.id > b.id ? 1 : -1))
+      )
+      .map(
+        (item) =>
+          ({
+            ...item,
+            rightSection: <CryptoListItemRight network={item.network} />,
+          } as ViewListItemType)
+      );
+  }, [collected.recommendedCryptoCurrencies, data.availableCryptos]);
+
   const openPickCrypto = useCallback(() => {
-    if(data.availableCryptos.length > 1) {
+    if (data.availableCryptos.length > 1) {
       const items = getSortedCryptoListItem();
-      
+
       nextScreen(
         <OverlayPicker
           name="crypto"
-          indexSelected={items.findIndex(m => m.id === collected.selectedCrypto?.id)}
+          indexSelected={items.findIndex(
+            (m) => m.id === collected.selectedCrypto?.id
+          )}
           title={t("header.selectCrypto")}
           items={items}
           onItemClick={handleItemClick}
           searchable
-        />);
-    } 
-  }, [collected.selectedCrypto?.id, data.availableCryptos.length, getSortedCryptoListItem, handleItemClick, nextScreen, t]);
+        />
+      );
+    }
+  }, [
+    collected.selectedCrypto?.id,
+    data.availableCryptos.length,
+    getSortedCryptoListItem,
+    handleItemClick,
+    nextScreen,
+    t,
+  ]);
 
   const openPickCurrency = useCallback(() => {
-    if(data.availableCurrencies.length > 1) {
+    if (data.availableCurrencies.length > 1) {
       nextScreen(
         <OverlayPicker
           name="currency"
           title={t("header.selectFiat")}
-          indexSelected={data.availableCurrencies.findIndex(m => m.id === collected.selectedCurrency?.id)}
-          items={data.availableCurrencies.map(i => ({...i, iconSvg: <CurrencyIcon name={i.id} /> }))}
+          indexSelected={data.availableCurrencies.findIndex(
+            (m) => m.id === collected.selectedCurrency?.id
+          )}
+          items={data.availableCurrencies.map((i) => ({
+            ...i,
+            iconSvg: <CurrencyIcon name={i.id} />,
+          }))}
           onItemClick={handleItemClick}
           searchable
-        />);
-    };
-  }, [collected.selectedCurrency?.id, data.availableCurrencies, handleItemClick, nextScreen, t]);
-
-  const handleDropdown = useCallback((item?:ItemType) => {
-    if(item?.currencyType === ItemCategory.Crypto) {
-      return openPickCrypto();
+        />
+      );
     }
+  }, [
+    collected.selectedCurrency?.id,
+    data.availableCurrencies,
+    handleItemClick,
+    nextScreen,
+    t,
+  ]);
 
-    openPickCurrency();
-  }, [openPickCrypto, openPickCurrency]);
+  const handleDropdown = useCallback(
+    (item?: ItemType) => {
+      if (item?.currencyType === ItemCategory.Crypto) {
+        return openPickCrypto();
+      }
+
+      openPickCurrency();
+    },
+    [openPickCrypto, openPickCurrency]
+  );
 
   const getIconClassName = useCallback(
     (item?: ItemType) =>
-      item?.currencyType === ItemCategory.Crypto ? styles["crypto-icon"] : styles["fiat-icon"],
+      item?.currencyType === ItemCategory.Crypto
+        ? styles["crypto-icon"]
+        : styles["fiat-icon"],
     []
   );
 
@@ -133,7 +172,7 @@ const CurrencySwitcher: React.FC = () => {
     collected.selectedCrypto,
     data.availableCurrencies.length,
     data.availableCryptos.length,
-    getSortedCryptoListItem
+    getSortedCryptoListItem,
   ]);
 
   if (pair.length === 0 || pair.some((i) => !i)) {
@@ -150,8 +189,12 @@ const CurrencySwitcher: React.FC = () => {
         disabled={!pair[0]?.hasOptions}
       />
 
-      <div className={commonStyles["flex-all"]} >
-        <img className={styles["arrow-right"]} src={arrowRightIcon} alt="arrow-right" />
+      <div className={commonStyles["flex-all"]}>
+        <img
+          className={styles["arrow-right"]}
+          src={arrowRightIcon}
+          alt="arrow-right"
+        />
       </div>
 
       <DropdownHandle

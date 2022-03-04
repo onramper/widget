@@ -1,40 +1,45 @@
-import React, { useContext, useState, useEffect } from 'react';
-import Header from '../../common/Header'
-import BodyPickOption from './BodyPickOptionView'
-import styles from '../../styles.module.css'
-import Step from '../Step'
+import React, { useContext, useState, useEffect } from "react";
+import Header from "../../common/Header";
+import BodyPickOption from "./BodyPickOptionView";
+import styles from "../../styles.module.css";
+import Step from "../Step";
 
-import { NextStep } from '../../ApiContext'
+import { NextStep } from "../../ApiContext";
 
-import { NavContext } from '../../NavContext'
+import { NavContext } from "../../NavContext";
 
-const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = ({ nextStep }) => {
+const PickOptionView: React.FC<{
+  nextStep: NextStep & { type: "pickOne" };
+}> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
-  const [isFilled, setIsFilled] = useState(false)
+  const [isFilled, setIsFilled] = useState(false);
 
-  const nextStepOptions = nextStep.options || []
+  const nextStepOptions = nextStep.options || [];
 
-  const [selectedOption, setSelectedOption] = useState(nextStepOptions[0])
-  let infoMsg: any = useState(nextStep.hint)
+  const [selectedOption, setSelectedOption] = useState(nextStepOptions[0]);
+  let infoMsg: any = useState(nextStep.hint);
   if (!nextStep.hint) {
-    infoMsg = 'Choose one option'
+    infoMsg = "Choose one option";
   }
 
   const handleButtonAction = async () => {
-    nextScreen(<Step nextStep={selectedOption} />)
-  }
+    nextScreen(<Step nextStep={selectedOption} />);
+  };
 
   const handleOptionChange = (i: number) => {
-    setSelectedOption(nextStepOptions[i])
-  }
+    setSelectedOption(nextStepOptions[i]);
+  };
 
   useEffect(() => {
-    setIsFilled(selectedOption !== undefined)
-  }, [selectedOption])
+    setIsFilled(selectedOption !== undefined);
+  }, [selectedOption]);
 
   return (
     <div className={styles.view}>
-      <Header title={nextStep.humanName ?? "Choose identity document"} backButton />
+      <Header
+        title={nextStep.humanName ?? "Choose identity document"}
+        backButton
+      />
       <BodyPickOption
         steps={nextStepOptions}
         onActionButton={handleButtonAction}

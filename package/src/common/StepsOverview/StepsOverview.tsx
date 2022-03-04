@@ -11,7 +11,7 @@ const StepsOverview: React.FC<StepsOverviewProps> = (props) => {
 
   React.useEffect(() => {
     setStyle(styleVariables?.[props.variant || "default"]);
-  }, [props.variant])
+  }, [props.variant]);
 
   return (
     <ul

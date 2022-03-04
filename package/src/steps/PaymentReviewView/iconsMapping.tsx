@@ -7,6 +7,6 @@ export default {
   WalletAddress: <WalletAddressIcon />,
   AddressTag: <TagIcon />,
   ExpectedTransationTime: <ExpectedTimeIcon />,
-} as { 
-  [key: string]: React.ReactNode
+} as {
+  [key: string]: React.ReactNode;
 };

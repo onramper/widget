@@ -12,18 +12,18 @@ import { PayamentReviewDataItem } from "../../ApiContext/api/types/nextStep";
 import iconsMapping from "./iconsMapping";
 
 const decorateOverviewItems = (data: PayamentReviewDataItem[]) => {
-  return data.map(dataItem => {
-    dataItem.items = dataItem.items.map(item => {
-      if(!item.name) {
+  return data.map((dataItem) => {
+    dataItem.items = dataItem.items.map((item) => {
+      if (!item.name) {
         return item;
       }
-      
-      if(item.name === "fiatCurrency") {
+
+      if (item.name === "fiatCurrency") {
         item.className = classes["fiat-currency"];
         return item;
       }
-      
-      if(iconsMapping[item.name]) {
+
+      if (iconsMapping[item.name]) {
         item.icon = iconsMapping[item.name];
         return item;
       }
@@ -32,18 +32,18 @@ const decorateOverviewItems = (data: PayamentReviewDataItem[]) => {
     });
     return dataItem;
   });
-}
+};
 
 const ConfirmPaymentView: React.FC<PaymentReviewProps> = (props) => {
   const { nextScreen } = useContext(NavContext);
-  
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string>()
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
   const { apiInterface } = useContext(APIContext);
   const [overviewItems] = useState(decorateOverviewItems(props.nextStep.data));
 
   const onButtonAction = useCallback(async () => {
-    if(props.onButtonAction) {
+    if (props.onButtonAction) {
       props.onButtonAction();
       return;
     }
@@ -54,7 +54,7 @@ const ConfirmPaymentView: React.FC<PaymentReviewProps> = (props) => {
       const newNextStep = await apiInterface.executeStep(props.nextStep, {});
       nextScreen(<Step nextStep={newNextStep} />);
     } catch (_error) {
-      const error = _error as { fatal: any, message: string };
+      const error = _error as { fatal: any; message: string };
       if (error.fatal) {
         nextScreen(<ErrorView />);
         return;
@@ -62,7 +62,7 @@ const ConfirmPaymentView: React.FC<PaymentReviewProps> = (props) => {
       setErrorMessage(error.message);
     }
     setIsLoading(false);
-  }, [apiInterface, nextScreen, props])
+  }, [apiInterface, nextScreen, props]);
 
   return (
     <div className={commonClasses.view}>
