@@ -107,6 +107,7 @@ const CurrencySwitcher: React.FC = () => {
     getSortedCryptoListItem,
     handleItemClick,
     nextScreen,
+    t,
   ]);
 
   const openPickCurrency = useCallback(() => {
@@ -132,6 +133,7 @@ const CurrencySwitcher: React.FC = () => {
     data.availableCurrencies,
     handleItemClick,
     nextScreen,
+    t,
   ]);
 
   const handleDropdown = useCallback(

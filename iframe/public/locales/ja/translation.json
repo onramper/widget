@@ -15,5 +15,22 @@
   },
   "footer": {
     "onramperPrefix": "提供元"
+  },
+  "menu": {
+    "title": "メニュー",
+    "menuItems": {
+      "faq": "FAQ",
+      "privacyPolicy": "プライバシーポリシー",
+      "terms": "利用規約",
+      "help": "ヘルプサポート",
+      "support": {
+        "moonpay": "MoonPay サポート",
+        "uniswap": "Uniswap サポート"
+      }
+    }
+  },
+  "header": {
+    "selectFiat": "法定通貨を選択",
+    "selectCrypto": "暗号通貨を選択する"
   }
 }

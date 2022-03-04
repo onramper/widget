@@ -5,6 +5,7 @@ import styles from "./GatewayIndicator.module.css";
 import commonStyles from "./../../styles.module.css";
 import Loader from "../../common/Loader/Loader";
 import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 const Skeleton = React.forwardRef<
   HTMLDivElement,

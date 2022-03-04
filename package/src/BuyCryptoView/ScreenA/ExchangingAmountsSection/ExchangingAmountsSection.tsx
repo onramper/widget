@@ -110,6 +110,7 @@ const ExchangingAmountsSection: React.FC = () => {
     getSortedCryptoListItem,
     handleItemClick,
     nextScreen,
+    t,
   ]);
 
   const openPickCurrency = useCallback(() => {
@@ -132,6 +133,7 @@ const ExchangingAmountsSection: React.FC = () => {
     data.availableCurrencies,
     handleItemClick,
     nextScreen,
+    t,
   ]);
 
   const handleDropdown = useCallback(
