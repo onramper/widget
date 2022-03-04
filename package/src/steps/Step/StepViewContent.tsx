@@ -20,19 +20,59 @@ import Footer from "../../common/Footer";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
+import { triggerGTMEvent } from "../../helpers/useGTM";
 
 export interface NewStepProps {
   nextStep?: NextStep;
   isConfirmed?: boolean;
 }
 const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
-  const { replaceScreen, backScreen /* , onlyScreen */ } = useContext(
+  const { replaceScreen, backScreen, currentStep /* , onlyScreen */ } = useContext(
     NavContext
   );
   const { inputInterface, collected } = useContext(APIContext);
   const [isProcessingStep, setIsProcessingStep] = useState(true);
 
   useEffect(() => {
+    const {
+      amount,
+      amountInCrypto,
+      country,
+      state,
+      selectedCountry,
+      selectedCrypto,
+      selectedCurrency,
+      selectedGateway,
+      selectedPaymentMethod,
+      defaultAddrs,
+      isAddressEditable
+    } = collected;
+
+    triggerGTMEvent({
+      event: "fiat-to-crypto",
+      category: selectedGateway?.id || '',
+      label: nextStep?.type,
+      action: "step",
+      value: {
+        step: currentStep(),
+        payment: {
+          amount,
+          amountInCrypto,
+          selectedCurrency: selectedCurrency?.id,
+          selectedPaymentMethod: selectedPaymentMethod?.id,
+        },
+        location: {
+          country,
+          selectedCountry,
+          state,
+        },
+        crypto: {
+          selectedCrypto: selectedCrypto?.id,
+          selectedGateway: selectedGateway?.id,
+        },
+      },
+    });
+
     if (!nextStep) {
       setIsProcessingStep(false);
       return;
@@ -49,10 +89,10 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         nextStep.type !== "requestBankTransaction"
       ) {
         includeAddr = false;
-        if (!collected.isAddressEditable)
+        if (!isAddressEditable)
           inputInterface.handleInputChange(
             "cryptocurrencyAddress",
-            collected.defaultAddrs[collected.selectedCrypto?.id ?? ""]
+            defaultAddrs[selectedCrypto?.id ?? ""]
           );
       }
       replaceScreen(
@@ -65,9 +105,9 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
     }
 
     const showPaymentReview = (nextStep: NextStep & { type: "paymentReview" }) => {
-      if (!collected.isAddressEditable) {
+      if (!isAddressEditable) {
         const newAddress =
-          collected.defaultAddrs[collected.selectedCrypto?.id ?? ""];
+          defaultAddrs[selectedCrypto?.id ?? ""];
           
         inputInterface.handleInputChange("cryptocurrencyAddress", newAddress);
       }
@@ -125,11 +165,10 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
     nextStep,
     replaceScreen,
     backScreen,
+    currentStep,
     isConfirmed,
     inputInterface,
-    collected.defaultAddrs,
-    collected.selectedCrypto?.id,
-    collected.isAddressEditable,
+    collected,
   ]);
 
   return (
