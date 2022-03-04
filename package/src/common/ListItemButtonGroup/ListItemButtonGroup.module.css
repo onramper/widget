@@ -1,3 +1,4 @@
-.wrapper, .wrapper * {
-    box-sizing: border-box;
+.wrapper,
+.wrapper * {
+  box-sizing: border-box;
 }

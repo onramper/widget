@@ -1,7 +1,7 @@
-.wrapper > h1, 
+.wrapper > h1,
 .wrapper > h2 {
-    display: block;
-    text-align: center;
+  display: block;
+  text-align: center;
 }
 
 .wrapper > h1 {
@@ -23,5 +23,5 @@
 }
 
 .wrapper > h1 + h2 {
-    padding-top: 10px;
+  padding-top: 10px;
 }

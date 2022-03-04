@@ -1,9 +1,7 @@
 import React from "react";
 
 export type OverviewStepSubItem = {
-  content?:
-    | string
-    | React.ReactNode;
+  content?: string | React.ReactNode;
   contentValues: {
     value: string;
     label: string;

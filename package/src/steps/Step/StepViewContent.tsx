@@ -27,9 +27,8 @@ export interface NewStepProps {
   isConfirmed?: boolean;
 }
 const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
-  const { replaceScreen, backScreen, currentStep /* , onlyScreen */ } = useContext(
-    NavContext
-  );
+  const { replaceScreen, backScreen, currentStep /* , onlyScreen */ } =
+    useContext(NavContext);
   const { inputInterface, collected } = useContext(APIContext);
   const [isProcessingStep, setIsProcessingStep] = useState(true);
 
@@ -81,7 +80,9 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       isConfirmed === false ||
       (!isConfirmed &&
         (nextStep.type === "iframe" ||
-          nextStep.type === "requestBankTransaction") && nextStep.type==='iframe' && !nextStep.fullscreen)
+          nextStep.type === "requestBankTransaction") &&
+        nextStep.type === "iframe" &&
+        !nextStep.fullscreen)
     ) {
       let includeAddr = true;
       if (
@@ -104,21 +105,20 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       return;
     }
 
-    const showPaymentReview = (nextStep: NextStep & { type: "paymentReview" }) => {
+    const showPaymentReview = (
+      nextStep: NextStep & { type: "paymentReview" }
+    ) => {
       if (!isAddressEditable) {
         const newAddress =
           defaultAddrs[selectedCrypto?.id ?? ""];
-          
+
         inputInterface.handleInputChange("cryptocurrencyAddress", newAddress);
       }
 
       replaceScreen(
-        <PaymentReview
-          nextStep={nextStep}
-          includeCryptoAddr={true}
-        />
+        <PaymentReview nextStep={nextStep} includeCryptoAddr={true} />
       );
-    }
+    };
 
     switch (nextStep.type) {
       case "form":

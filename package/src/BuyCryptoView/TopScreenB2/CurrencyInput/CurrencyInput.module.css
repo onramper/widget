@@ -8,7 +8,7 @@
 }
 
 .input-box.is-focused {
-    border-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .input {
@@ -37,7 +37,7 @@
   margin-right: 1px;
 }
 
-@media (max-width: 340px) { 
+@media (max-width: 340px) {
   .input-box {
     min-width: 100%;
   }

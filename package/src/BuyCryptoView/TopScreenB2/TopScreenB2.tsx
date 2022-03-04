@@ -7,17 +7,17 @@ import { useTranslation } from "react-i18next";
 
 const TopScreenB: React.FC<{}> = () => {
   const { t } = useTranslation();
-    return <>
-        <div className={styles["heading"]}>
-            {t("buyCryptoView.heading")}
-        </div>
+  return (
+    <>
+      <div className={styles["heading"]}>{t("buyCryptoView.heading")}</div>
 
-        <div className={styles["exchange-ui-wrapper"]}>
-            <CurrencyInput />
-            <ExpectedAmountPreview />
-            <CurrencySwitcher/>
-        </div>
+      <div className={styles["exchange-ui-wrapper"]}>
+        <CurrencyInput />
+        <ExpectedAmountPreview />
+        <CurrencySwitcher />
+      </div>
     </>
-}
+  );
+};
 
 export default TopScreenB;
