@@ -14,6 +14,7 @@ import {
   isMetamaskEnabled,
   OperationalError,
   QuoteDetails,
+  TokenInfo,
   useEtherBalance,
   useEthers,
   useLayer2,
@@ -25,7 +26,7 @@ import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
-import ConfirmSwapView from "./ConfirmSwapView/ConfirmSwapView";
+import ConfirmSwapView from "./EditSwapView/EditSwapView";
 import { createConfirmSwapProps, updatedStepFromEditSwap } from "./utils";
 import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
 
@@ -56,34 +57,42 @@ const SwapOverviewView: React.FC<{
     setTimeout(() => setMessage(""), 3000);
   };
 
-  const handleUpdate = useCallback(async () => {
-    setMessage("Updating quote...");
-    setLoading(true);
-    try {
-      const newQuote = await layer2.getQuote(
-        tokenIn.chainId,
-        Number(quote.amountDecimals),
-        tokenOut.address
-      );
-      if (newQuote) {
-        setQuote(newQuote);
-        updateMessageAndClear("Quote successfully updated");
+  const handleUpdateQuote = useCallback(
+    async (tokenIn: TokenInfo, tokenOut: TokenInfo, amount: number) => {
+      setMessage("Updating quote...");
+      setLoading(true);
+      try {
+        const newQuote = await layer2.getQuote(
+          tokenIn.chainId,
+          amount,
+          tokenOut.address
+        );
+        if (newQuote) {
+          setQuote(newQuote);
+          updateMessageAndClear("Quote successfully updated");
+        }
+      } catch (error) {
+        if (error instanceof InvalidParamsError) {
+          updateMessageAndClear("Invalid Transaction Parameters");
+        }
+        if (error instanceof OperationalError) {
+          updateMessageAndClear("Oops something went wrong");
+        }
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      if (error instanceof InvalidParamsError) {
-        updateMessageAndClear("Invalid Transaction Parameters");
-      }
-      if (error instanceof OperationalError) {
-        updateMessageAndClear("Oops something went wrong");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [layer2, quote.amountDecimals, tokenIn.chainId, tokenOut.address]);
+    },
+    [layer2]
+  );
+
+  // update the initial quote with the same parameters, on page load
+  const handleUpdateCurrent = useCallback(() => {
+    handleUpdateQuote(tokenIn, tokenOut, Number(quote.amountDecimals));
+  }, [handleUpdateQuote, quote.amountDecimals, tokenIn, tokenOut]);
 
   useEffect(() => {
-    handleUpdate();
-  }, [handleUpdate]);
+    handleUpdateCurrent();
+  }, [handleUpdateCurrent]);
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
@@ -110,10 +119,11 @@ const SwapOverviewView: React.FC<{
         {...createConfirmSwapProps({
           data: nextStep.data,
           parsedTokenIn,
+          tokenOut,
           fiatConversion,
           tokenInURL,
           tokenOutURL,
-          quote
+          quote,
         })}
         submitData={submitData}
       />
@@ -125,13 +135,12 @@ const SwapOverviewView: React.FC<{
     parsedTokenIn,
     quote,
     tokenIn.logoURI,
-    tokenOut.logoURI,
+    tokenOut,
   ]);
 
   useEffect(() => {
     if (error) {
-      setMessage(error.message);
-      setTimeout(() => setMessage(""), 3000);
+      updateMessageAndClear(error.message);
     }
   }, [error]);
 
@@ -168,7 +177,6 @@ const SwapOverviewView: React.FC<{
         if (error instanceof InsufficientFundsError) {
           alert("insufficient funds!");
         }
-
         if (error instanceof InvalidParamsError) {
           alert("invalid params!");
         }
@@ -181,6 +189,7 @@ const SwapOverviewView: React.FC<{
     }
   };
 
+  // replace this with better user feedback
   useEffect(() => {
     if (state.status === "Success") {
       setMessage("Success! 🥳");
