@@ -41,7 +41,7 @@ const SwapOverviewView: React.FC<{
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const { layer2 } = useLayer2();
+  const { getQuote, getSwapParams } = useLayer2();
   const isActive = account && active;
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
@@ -60,7 +60,7 @@ const SwapOverviewView: React.FC<{
     setMessage("Updating quote...");
     setLoading(true);
     try {
-      const newQuote = await layer2.getQuote(
+      const newQuote = await getQuote(
         tokenIn.chainId,
         Number(quote.amountDecimals),
         tokenOut.address
@@ -79,7 +79,7 @@ const SwapOverviewView: React.FC<{
     } finally {
       setLoading(false);
     }
-  }, [layer2, quote.amountDecimals, tokenIn.chainId, tokenOut.address]);
+  }, [getQuote, quote.amountDecimals, tokenIn.chainId, tokenOut.address]);
 
   useEffect(() => {
     handleUpdate();
@@ -113,7 +113,7 @@ const SwapOverviewView: React.FC<{
           fiatConversion,
           tokenInURL,
           tokenOutURL,
-          quote
+          quote,
         })}
         submitData={submitData}
       />
@@ -140,7 +140,7 @@ const SwapOverviewView: React.FC<{
       setLoading(true);
       setMessage("Fetching best price...");
       try {
-        const res = await layer2.getSwapParams(
+        const res = await getSwapParams(
           Number(formatEther(balance)),
           tokenIn.chainId,
           Number(quote.amountDecimals),

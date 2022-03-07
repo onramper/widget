@@ -18,7 +18,7 @@ import TemporarTransactionErrorTrigger from "../TransactionErrorOverlay/Temporar
 
 const PlayGround = () => {
   const { account } = useEthers();
-  const { layer2 } = useLayer2();
+  const { getSwapParams, getTokens, getQuote } = useLayer2();
   const balance = useEtherBalance(account);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [inputAmount, setInputAmount] = useState<string>("");
@@ -28,11 +28,11 @@ const PlayGround = () => {
   const [, setTokenList] = useState<TokenList | null>(null);
 
   const handleGetTokens = async () => {
-    if(!browserSupportsMetamask()) {
-      return;      
+    if (!browserSupportsMetamask()) {
+      return;
     }
     try {
-      const list = await layer2.getTokens();
+      const list = await getTokens();
       if (list) {
         setTokenList(list);
       }
@@ -54,7 +54,7 @@ const PlayGround = () => {
       });
       try {
         setLoadingMessage("fetching swap data...");
-        const res = await layer2.getSwapParams(
+        const res = await getSwapParams(
           Number(formatEther(balance)),
           CHAIN_ID,
           Number(inputAmount),
@@ -97,7 +97,7 @@ const PlayGround = () => {
   const handleQuote = async () => {
     if (inputAmount) {
       setLoadingMessage("fetching quote...");
-      const quote = await layer2.getQuote(
+      const quote = await getQuote(
         CHAIN_ID,
         Number(inputAmount),
         "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984" // uni
