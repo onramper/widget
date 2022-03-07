@@ -15,7 +15,6 @@ import {
   isMetamaskEnabled,
   OperationalError,
   QuoteDetails,
-  TokenInfo,
   useEtherBalance,
   useEthers,
   useLayer2,
@@ -93,14 +92,9 @@ const SwapOverviewView: React.FC<{
     }
   }, [getQuote, amountDecimals, tokenIn, tokenOut]);
 
-  // update the initial quote with the same parameters, on page load
-  const handleUpdateCurrent = useCallback(() => {
-    handleUpdateQuote(tokenIn, tokenOut, Number(quote.amountDecimals));
-  }, [handleUpdateQuote, quote.amountDecimals, tokenIn, tokenOut]);
-
   useEffect(() => {
-    handleUpdateCurrent();
-  }, [handleUpdateCurrent]);
+    handleUpdate();
+  }, [handleUpdate]);
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
