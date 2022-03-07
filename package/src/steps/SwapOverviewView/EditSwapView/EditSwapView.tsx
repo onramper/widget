@@ -7,10 +7,7 @@ import React, {
 } from "react";
 import ErrorView from "../../../common/ErrorView";
 import { NavContext } from "../../../NavContext";
-import {
-  ConfirmSwapViewProps,
-  ConfirmSwapInput,
-} from "./ConfirmSwapView.models";
+import { EditSwapViewInput, EditSwapViewProps } from "./EditSwapView.models";
 import commonClasses from "../../../styles.module.css";
 import inputClasses from "../../../common/InputDropdown/InputDropdown.module.css";
 import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader";
@@ -22,11 +19,18 @@ import { onChangeFloat } from "../../../utils";
 import Breakdown from "../../../common/Breakdown/Breakdown";
 import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
 import TransactionSettings from "../TransactionSettings/TransactionSettings";
-import classes from "./ConfirmSwapView.module.css";
+import classes from "./EditSwapView.module.css";
 import { ApiError } from "../../../ApiContext/api";
 import { CSSTransition } from "react-transition-group";
+import {
+  formatEther,
+  useEtherBalance,
+  useEthers,
+  useLayer2,
+  useTokenBalance,
+} from "layer2";
 
-const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
+const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [swapErrorMessage, setSwapErrorMessage] = useState<string>();
   const [heading] = useState(
@@ -35,7 +39,6 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
 
   // swap inputs
   const [spentValue, setSpentValue] = useState(props.cryptoSpent.value);
-  const [balance, setBalance] = useState(props.cryptoSpent.balance);
   const [receivedValue, setReceivedValue] = useState(
     props.cryptoReceived.value
   );
@@ -54,6 +57,13 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
   );
 
   const { nextScreen, backScreen } = useContext(NavContext);
+  const { account } = useEthers();
+  const ethBalance = useEtherBalance(account);
+  const targetTokenBalance = useTokenBalance(
+    props.cryptoReceived.address,
+    account
+  );
+  const { layer2 } = useLayer2();
 
   const onActionButton = useCallback(async () => {
     setIsLoading(true);
@@ -63,7 +73,6 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
       props.submitData({
         spentValue,
         receivedValue,
-        balance: balance || 0,
         selectedWalletId,
         wallets,
         slippage: Number(slippage),
@@ -80,7 +89,6 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
     setIsLoading(false);
   }, [
     backScreen,
-    balance,
     deadline,
     nextScreen,
     props,
@@ -103,55 +111,66 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
     return signal;
   }, []);
 
+  const spendCryptoApi = useCallback(
+    (value: number) => {
+      const signal = getAndUpdateAbortController();
+
+      return new Promise<{
+        receivedCrypto: string;
+      }>((resolve, reject) => {
+        if (signal.aborted) {
+          return reject(new DOMException("Aborted", "AbortError"));
+        }
+
+        const timeout = setTimeout(async () => {
+          try {
+            // mock a conversion
+
+            const receivedCrypto = await layer2.getQuote(
+              props.cryptoSpent.chainId,
+              Number(value),
+              props.cryptoReceived.address
+            );
+            if (ethBalance && Number(formatEther(ethBalance)) < Number(value)) {
+              throw new ApiError(
+                "You have insufficient funds to complete this transaction",
+                "INSUFICIENT_FUNDS"
+              );
+            }
+            resolve({
+              receivedCrypto: receivedCrypto.quoteGasAdjustedDecimals,
+            });
+          } catch (error) {
+            reject(error);
+          }
+        }, 300);
+
+        signal.addEventListener("abort", () => {
+          clearTimeout(timeout);
+          reject(new DOMException("Aborted", "AbortError"));
+        });
+      });
+    },
+    [
+      ethBalance,
+      getAndUpdateAbortController,
+      layer2,
+      props.cryptoReceived.address,
+      props.cryptoSpent.chainId,
+    ]
+  );
+
   const updateReceivedValue = useCallback(
     (value: string) => {
       setSpentValue(value);
-
-      const spendCryptoApi = (value: number) => {
-        const signal = getAndUpdateAbortController();
-
-        return new Promise<{
-          balance: number;
-          receivedCrypto: number;
-        }>((resolve, reject) => {
-          if (signal.aborted) {
-            return reject(new DOMException("Aborted", "AbortError"));
-          }
-
-          const timeout = setTimeout(() => {
-            try {
-              // mock a conversion
-              const fiatValue = value * 2711.36;
-              const balance = 989.2692 - fiatValue;
-              const receivedCrypto = fiatValue * 0.0000259158;
-              if (balance < 0) {
-                throw new ApiError(
-                  "You have insufficient funds to complete this transaction",
-                  "INSUFICIENT_FUNDS"
-                );
-              }
-              resolve({
-                balance: Number(balance.toFixed(4)),
-                receivedCrypto: Number(receivedCrypto.toFixed(12)),
-              });
-            } catch (error) {
-              reject(error);
-            }
-          }, 300);
-
-          signal.addEventListener("abort", () => {
-            clearTimeout(timeout);
-            reject(new DOMException("Aborted", "AbortError"));
-          });
-        });
-      };
 
       const onUpdate = async () => {
         try {
           const response = await spendCryptoApi(Number(value));
           setSwapErrorMessage(undefined);
-          setBalance(response.balance);
-          setReceivedValue(response.receivedCrypto.toString());
+          if (response) {
+            setReceivedValue(response.receivedCrypto);
+          }
         } catch (_error) {
           const error = _error as Error;
           if (error?.name === "INSUFICIENT_FUNDS") {
@@ -161,46 +180,14 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
       };
       onUpdate();
     },
-    [getAndUpdateAbortController]
+    [spendCryptoApi]
   );
 
   const onMaxClick = useCallback(async () => {
-    const spendAllBalanceApi = () => {
-      const signal = getAndUpdateAbortController();
-
-      return new Promise<{
-        spentCrypto: number;
-        receivedCrypto: number;
-      }>((resolve, reject) => {
-        if (signal.aborted) {
-          return reject(new DOMException("Aborted", "AbortError"));
-        }
-
-        const timeout = setTimeout(() => {
-          // mock a conversion
-          const balance = 989.2692;
-          const receivedCrypto = balance * 0.0000259158;
-          const spentCrypto = balance / 2711.36;
-          resolve({
-            spentCrypto: Number(spentCrypto.toFixed(12)),
-            receivedCrypto: Number(receivedCrypto.toFixed(12)),
-          });
-        }, 300);
-
-        signal.addEventListener("abort", () => {
-          clearTimeout(timeout);
-          reject(new DOMException("Aborted", "AbortError"));
-        });
-      });
-    };
-
-    try {
-      const response = await spendAllBalanceApi();
-      setBalance(0);
-      setReceivedValue(response.receivedCrypto.toString());
-      setSpentValue(response.spentCrypto.toString());
-    } catch (_err) {}
-  }, [getAndUpdateAbortController]);
+    if (ethBalance) {
+      updateReceivedValue(formatEther(ethBalance));
+    }
+  }, [ethBalance, updateReceivedValue]);
 
   return (
     <div className={commonClasses.view}>
@@ -230,7 +217,9 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
           value={spentValue}
           onChange={(e) => onChangeFloat(e, updateReceivedValue)}
           className={inputClasses["swap-screen"]}
-          hint={`Balance: ${balance}`}
+          hint={`Balance: ${
+            ethBalance ? formatEther(ethBalance).slice(0, 5) : "0.00"
+          }`}
           onMaxClick={onMaxClick}
           suffix={`(${cryptoSpent.fiatSymbol}${cryptoSpent.fiatConversion})`}
           handleProps={{
@@ -246,6 +235,11 @@ const ConfirmSwapView: React.FC<ConfirmSwapViewProps> = (props) => {
           label={cryptoReceived.label}
           value={receivedValue}
           className={inputClasses["swap-screen"]}
+          hint={`Balance: ${
+            targetTokenBalance
+              ? formatEther(targetTokenBalance).slice(0, 5)
+              : "0.00"
+          }`}
           suffix={`(${cryptoReceived.fiatSymbol}${cryptoReceived.fiatConversion})`}
           handleProps={{
             icon: cryptoReceived.icon,
@@ -322,8 +316,8 @@ const IndicationItem: React.FC<{ error?: boolean; text: string }> = (props) => {
 };
 
 const computeHeading = (
-  cryptoSpent: ConfirmSwapInput,
-  cryptoReceived: ConfirmSwapInput
+  cryptoSpent: EditSwapViewInput,
+  cryptoReceived: EditSwapViewInput
 ) => {
   return (
     <>
@@ -335,4 +329,4 @@ const computeHeading = (
   );
 };
 
-export default ConfirmSwapView;
+export default EditSwapView;

@@ -15,6 +15,7 @@ import {
   isMetamaskEnabled,
   OperationalError,
   QuoteDetails,
+  TokenInfo,
   useEtherBalance,
   useEthers,
   useLayer2,
@@ -26,7 +27,7 @@ import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
-import ConfirmSwapView from "./ConfirmSwapView/ConfirmSwapView";
+import ConfirmSwapView from "./EditSwapView/EditSwapView";
 import { createConfirmSwapProps, updatedStepFromEditSwap } from "./utils";
 import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
 
@@ -92,9 +93,14 @@ const SwapOverviewView: React.FC<{
     }
   }, [getQuote, amountDecimals, tokenIn, tokenOut]);
 
+  // update the initial quote with the same parameters, on page load
+  const handleUpdateCurrent = useCallback(() => {
+    handleUpdateQuote(tokenIn, tokenOut, Number(quote.amountDecimals));
+  }, [handleUpdateQuote, quote.amountDecimals, tokenIn, tokenOut]);
+
   useEffect(() => {
-    handleUpdate();
-  }, [handleUpdate]);
+    handleUpdateCurrent();
+  }, [handleUpdateCurrent]);
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
@@ -121,6 +127,7 @@ const SwapOverviewView: React.FC<{
         {...createConfirmSwapProps({
           data: nextStep.data,
           parsedTokenIn,
+          tokenOut,
           fiatConversion,
           tokenInURL,
           tokenOutURL,
@@ -136,13 +143,12 @@ const SwapOverviewView: React.FC<{
     parsedTokenIn,
     quote,
     tokenIn.logoURI,
-    tokenOut.logoURI,
+    tokenOut,
   ]);
 
   useEffect(() => {
     if (error) {
-      setMessage(error.message);
-      setTimeout(() => setMessage(""), 3000);
+      updateMessageAndClear(error.message);
     }
   }, [error]);
 
@@ -173,7 +179,6 @@ const SwapOverviewView: React.FC<{
         if (error instanceof InsufficientFundsError) {
           alert("insufficient funds!");
         }
-
         if (error instanceof InvalidParamsError) {
           alert("invalid params!");
         }
@@ -186,6 +191,7 @@ const SwapOverviewView: React.FC<{
     }
   };
 
+  // replace this with better user feedback
   useEffect(() => {
     if (state.status === "Success") {
       setMessage("Success! 🥳");
