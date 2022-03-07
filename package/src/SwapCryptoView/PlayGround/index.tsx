@@ -9,6 +9,7 @@ import {
   OperationalError,
   InvalidParamsError,
   TokenList,
+  TokenInfo,
 } from "layer2";
 import React, { useEffect, useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
@@ -27,6 +28,26 @@ const PlayGround = () => {
   const { sendTransaction, state } = useSendTransaction();
   const [, setTokenList] = useState<TokenList | null>(null);
 
+  const tokenIn: TokenInfo = {
+    name: "Wrapped Ether",
+    address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+    symbol: "WETH",
+    decimals: 18,
+    chainId: 4,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc778417E063141139Fce010982780140Aa0cD5Ab/logo.png",
+  };
+
+  const tokenOut: TokenInfo = {
+    name: "Dai Stablecoin",
+    address: "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
+    symbol: "DAI",
+    decimals: 18,
+    chainId: 4,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735/logo.png",
+  };
+
   const handleGetTokens = async () => {
     if (!browserSupportsMetamask()) {
       return;
@@ -44,7 +65,6 @@ const PlayGround = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputAmount(e.currentTarget.value);
   };
-  const CHAIN_ID = 4;
 
   const handleSwap = async () => {
     if (account && balance) {
@@ -56,9 +76,9 @@ const PlayGround = () => {
         setLoadingMessage("fetching swap data...");
         const res = await getSwapParams(
           Number(formatEther(balance)),
-          CHAIN_ID,
+          tokenIn,
+          tokenOut,
           Number(inputAmount),
-          "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984", // uni address
           account
         );
         if (res) {
@@ -97,11 +117,7 @@ const PlayGround = () => {
   const handleQuote = async () => {
     if (inputAmount) {
       setLoadingMessage("fetching quote...");
-      const quote = await getQuote(
-        CHAIN_ID,
-        Number(inputAmount),
-        "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984" // uni
-      );
+      const quote = await getQuote(tokenIn, tokenOut, Number(inputAmount));
 
       if (quote) {
         setQuote(quote);

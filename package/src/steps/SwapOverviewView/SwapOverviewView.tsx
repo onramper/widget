@@ -9,6 +9,7 @@ import uriToHttp, { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
+  IncompatibleChainIdError,
   InsufficientFundsError,
   InvalidParamsError,
   isMetamaskEnabled,
@@ -46,9 +47,13 @@ const SwapOverviewView: React.FC<{
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
-
   const {
-    data: { tokenIn, tokenOut, fiatSymbol },
+    data: {
+      tokenIn,
+      tokenOut,
+      fiatSymbol,
+      transactionData: { amountDecimals },
+    },
   } = nextStep;
 
   const updateMessageAndClear = (mes: string) => {
@@ -61,9 +66,9 @@ const SwapOverviewView: React.FC<{
     setLoading(true);
     try {
       const newQuote = await getQuote(
-        tokenIn.chainId,
-        Number(quote.amountDecimals),
-        tokenOut.address
+        tokenIn,
+        tokenOut,
+        Number(amountDecimals)
       );
       if (newQuote) {
         setQuote(newQuote);
@@ -76,10 +81,16 @@ const SwapOverviewView: React.FC<{
       if (error instanceof OperationalError) {
         updateMessageAndClear("Oops something went wrong");
       }
+      if (error instanceof IncompatibleChainIdError) {
+        updateMessageAndClear(
+          "You can not swap across networks (tokens MUST have the same chain ID)"
+        );
+      }
+      alert(error);
     } finally {
       setLoading(false);
     }
-  }, [getQuote, quote.amountDecimals, tokenIn.chainId, tokenOut.address]);
+  }, [getQuote, amountDecimals, tokenIn, tokenOut]);
 
   useEffect(() => {
     handleUpdate();
@@ -142,26 +153,20 @@ const SwapOverviewView: React.FC<{
       try {
         const res = await getSwapParams(
           Number(formatEther(balance)),
-          tokenIn.chainId,
-          Number(quote.amountDecimals),
-          tokenOut.address,
+          tokenIn,
+          tokenOut,
+          Number(amountDecimals),
           account
         );
+
         setMessage("Please sign transaction");
-        if (res) {
+        if (res?.data) {
           await sendTransaction({
             data: res.data,
             to: res.to,
             value: res.value,
             from: account,
           });
-
-          nextScreen(
-            <OrderCompleteView
-              title="Success! Your Swap is being executed."
-              description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-            />
-          );
         }
       } catch (error) {
         setLoading(false);
@@ -185,7 +190,12 @@ const SwapOverviewView: React.FC<{
     if (state.status === "Success") {
       setMessage("Success! 🥳");
       setLoading(false);
-      setTimeout(() => setMessage(""), 2000);
+      nextScreen(
+        <OrderCompleteView
+          title="Success! Your Swap has been executed."
+          description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
+        />
+      );
     }
 
     if (state.status === "Mining") {
@@ -203,7 +213,7 @@ const SwapOverviewView: React.FC<{
       setLoading(false);
       setTimeout(() => setMessage(""), 2000);
     }
-  }, [state]);
+  }, [nextScreen, state]);
 
   return (
     <div className={commonClasses.view}>
