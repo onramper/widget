@@ -69,7 +69,7 @@ function App() {
   // Google Tag Manager
   useEffect(() => {
     const tagManagerArgs = {
-      gtmId: "GTM-MKWPFXR",
+      gtmId: process.env.REACT_APP_GTM_ID ?? '',
       dataLayer: {
         apiKey: apiKey,
       },
