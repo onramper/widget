@@ -14,11 +14,13 @@ export type InputFacadeProps = {
     externalIconClassName?: string;
     onChange?: (name: string, value: any, type?: string) => void;
     onEnter?: () => void;
+    onBlur?: () => void;
     value?: number | string | DateType;
     type?: string;
     name: string;
     onIconClick?: (name: string, value: string, label: string) => void;
     error?: string;
+    noErrorMessage?: boolean;
     hint?: string;
     hintButton?: boolean;
     onHintClick?: () => void;

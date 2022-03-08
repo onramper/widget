@@ -16,6 +16,8 @@ import { ListItem } from "../../../common/DropdownCheckableGroup/DropdownCheckab
 import { NavContext } from "../../../NavContext";
 import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
+import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
+import BaseInput from "../../../common/Input/BaseInput/BaseInput";
 
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const { nextScreen } = useContext(NavContext);
@@ -26,7 +28,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
 
   const computeSlippageAutoBtnClass = useCallback(() => {
     const outlineClass =
-      props.defaultSlippage === Number(props.slippage)
+      props.defaultSlippage === Number(props.slippage) || props.slippage === ""
         ? ""
         : commonClasses["outline"];
     return `${commonClasses["secondary-btn"]} ${outlineClass} ${classes["auto-btn"]}`;
@@ -35,6 +37,36 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const resetSlippage = useCallback(() => {
     props.onChangeSlippage(props.defaultSlippage.toFixed(2));
   }, [props]);
+
+  const getErrorText = useCallback(() => {
+    if(props.slippage === "") {
+      return;
+    }
+
+    const slippage = Number(props.slippage);
+    if (slippage < 0 || slippage > 51) {
+      return "Please enter a valid slippage";
+    }
+  }, [props.slippage]);
+
+  const getWarningText = useCallback(() => {
+    if(props.slippage === "") {
+      return;
+    }
+
+    if (getErrorText()) {
+      return;
+    }
+
+    const slippage = Number(props.slippage);
+    if (slippage < 0.05) {
+      return "Your transaction may fail.";
+    }
+
+    if (slippage > 1) {
+      return "Your transaction may be frontrun.";
+    }
+  }, [getErrorText, props.slippage]);
 
   const goToWalletDestination = useCallback(async () => {
     nextScreen(
@@ -53,6 +85,14 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
     );
   }, [nextScreen, props]);
 
+  const onBlurSlippage = useCallback(() => {
+    if (getErrorText() || props.slippage === "") {
+      resetSlippage();
+      return;
+    }
+    props.onChangeSlippage(Number(props.slippage).toFixed(2));
+  }, [getErrorText, props, resetSlippage]);
+
   useEffect(() => setWallets(computeWallets(props.wallets)), [props.wallets]);
 
   useEffect(() => {
@@ -68,6 +108,8 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
       window.removeEventListener("click", onClickEvent);
     };
   }, []);
+
+  const slippageError = getErrorText();
 
   return (
     <div
@@ -91,7 +133,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
               >
                 Auto
               </button>
-              <InputDelegator
+              <BaseInput
                 align="right"
                 label=""
                 variant="setting"
@@ -99,12 +141,22 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 symbolPosition="end"
                 name="slippage"
                 type="number"
+                placeholder={props.defaultSlippage.toFixed(2)}
+                error={slippageError}
+                noErrorMessage
                 value={props.slippage}
-                onChange={(name: string, value: string) =>
-                  props.onChangeSlippage(value)
-                }
+                handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  props.onChangeSlippage(e.target.value);
+                }}
+                onBlur={onBlurSlippage}
               />
             </div>
+            <ErrorMessage className={classes["error"]} text={slippageError} />
+            <ErrorMessage
+              warning
+              className={classes["error"]}
+              text={getWarningText()}
+            />
           </div>
           <div className={classes["setting-item"]}>
             <div className={classes["setting-name"]}>Transaction deadline:</div>
