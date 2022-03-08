@@ -132,7 +132,7 @@ const SwapOverviewView: React.FC<{
 
       setNextStep({ ...nextStep });
       setQuote({ ...quote });
-      setSlippageTolerance(slippage * 100);
+      setSlippageTolerance(slippage);
       setDeadline(deadline);
     };
 
@@ -146,7 +146,7 @@ const SwapOverviewView: React.FC<{
           tokenInURL,
           tokenOutURL,
           quote,
-          slippageTolerance: slippageTolerance / 100,
+          slippageTolerance,
           deadline: deadline,
         })}
         submitData={submitData}

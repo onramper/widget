@@ -124,8 +124,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
         const timeout = setTimeout(async () => {
           try {
-            // mock a conversion
-
             const receivedCrypto = await layer2.getQuote(
               props.cryptoSpent.chainId,
               Number(value),
