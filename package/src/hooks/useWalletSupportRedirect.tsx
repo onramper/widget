@@ -36,13 +36,7 @@ export const useWalletSupportRedirect = (
         );
       }
     } catch (error) {
-      const myError = error as Error;
-      replaceScreen(
-        <BrowserNotSupported
-          label={myError.message}
-          currentProgress={currentProgress}
-        />
-      );
+      replaceScreen(<BrowserNotSupported currentProgress={currentProgress} />);
     }
   }, [currentProgress, nextScreen, replaceScreen]);
 
