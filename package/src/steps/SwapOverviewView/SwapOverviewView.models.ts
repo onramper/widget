@@ -26,4 +26,6 @@ export type ConfirmSwapParam = {
   tokenInURL: string;
   tokenOutURL: string;
   quote: QuoteDetails;
+  slippageTolerance: number;
+  deadline: number;
 };

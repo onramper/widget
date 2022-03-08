@@ -51,9 +51,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [selectedWalletId, setSelectedWalletId] = useState(
     props.selectedWalletId
   );
-  const [slippage, setSlippage] = useState(props.defaultSlippage.toFixed(2));
+  const [slippage, setSlippage] = useState(props.slippageTolerance.toFixed(2));
   const [deadline, setDeadline] = useState(
-    String(Math.floor((props.defaultDeadline / 60) * 100) / 100)
+    String(Math.floor((props.deadline / 60) * 100) / 100)
   );
 
   const { nextScreen, backScreen } = useContext(NavContext);
@@ -202,7 +202,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             selectedWalletId={selectedWalletId}
             slippage={slippage}
             deadline={deadline}
-            defaultSlippage={props.defaultSlippage}
+            defaultSlippage={props.slippageTolerance}
             onChangeWalletId={setSelectedWalletId}
             onChangeDeadline={setDeadline}
             onChangeSlippage={setSlippage}

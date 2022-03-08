@@ -25,8 +25,8 @@ export type EditSwapViewProps = {
     groups: BrakdownItem[][];
   };
   warning: string;
-  defaultDeadline: number;
-  defaultSlippage: number;
+  deadline: number;
+  slippageTolerance: number;
   wallets: WalletItemData[];
   selectedWalletId?: string;
   submitData: (results: ConfirmSwapEditResults) => void;

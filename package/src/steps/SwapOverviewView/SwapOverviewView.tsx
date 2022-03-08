@@ -19,6 +19,7 @@ import {
   useEthers,
   useLayer2,
   useSendTransaction,
+  DEFAULTS as defaultSettings,
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
@@ -27,7 +28,7 @@ import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import ConfirmSwapView from "./EditSwapView/EditSwapView";
-import { createConfirmSwapProps, updatedStepFromEditSwap } from "./utils";
+import { createConfirmSwapProps } from "./utils";
 import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
 
 const SwapOverviewView: React.FC<{
@@ -47,6 +48,10 @@ const SwapOverviewView: React.FC<{
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
+  const [slippageTolerance, setSlippageTolerance] = useState(
+    defaultSettings.slippageTolerance
+  );
+  const [deadline, setDeadline] = useState(defaultSettings.deadline);
 
   const {
     data: { tokenIn, tokenOut, fiatSymbol },
@@ -109,9 +114,26 @@ const SwapOverviewView: React.FC<{
     const fiatConversion = getFiatConversion();
 
     const submitData = (results: ConfirmSwapEditResults) => {
-      updatedStepFromEditSwap(nextStep, quote, results);
+      const {
+        spentValue,
+        receivedValue,
+        selectedWalletId,
+        wallets,
+        slippage,
+        deadline,
+      } = results;
+
+      nextStep.data.transactionData.amountDecimals = spentValue;
+      nextStep.data.transactionData.quoteGasAdjustedDecimals = receivedValue;
+      quote.amountDecimals = spentValue;
+      quote.quoteGasAdjustedDecimals = receivedValue;
+      nextStep.data.walletsData.selectedWalletId = selectedWalletId;
+      nextStep.data.walletsData.wallets = wallets;
+
       setNextStep({ ...nextStep });
       setQuote({ ...quote });
+      setSlippageTolerance(slippage * 100);
+      setDeadline(deadline);
     };
 
     nextScreen(
@@ -124,16 +146,20 @@ const SwapOverviewView: React.FC<{
           tokenInURL,
           tokenOutURL,
           quote,
+          slippageTolerance: slippageTolerance / 100,
+          deadline: deadline,
         })}
         submitData={submitData}
       />
     );
   }, [
+    deadline,
     getFiatConversion,
     nextScreen,
     nextStep,
     parsedTokenIn,
     quote,
+    slippageTolerance,
     tokenIn.logoURI,
     tokenOut,
   ]);
@@ -154,7 +180,12 @@ const SwapOverviewView: React.FC<{
           tokenIn.chainId,
           Number(quote.amountDecimals),
           tokenOut.address,
-          account
+          account,
+          undefined,
+          {
+            slippageTolerance,
+            deadline,
+          }
         );
         setMessage("Please sign transaction");
         if (res) {
