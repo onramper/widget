@@ -124,7 +124,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
         </span>
       </div>
 
-      <ErrorMessage text={!props.noErrorMessage ? props.error : undefined} className={`${classes["text-error-wrapper"]}`}/>
+      <ErrorMessage text={typeof props.error === "string" ? props.error : undefined} className={`${classes["text-error-wrapper"]}`}/>
 
       {props.hint && (
         <div className={`${classes["text-under"]} ${props.onHintClick ? classes["with-link"] : ""}`} onClick={props.onHintClick}>
