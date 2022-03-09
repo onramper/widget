@@ -54,6 +54,7 @@ const NavContext = createContext<{
   nextScreen: (screen: ScreenType) => void;
   replaceScreen: (screen: ScreenType) => void;
   triggerChat: () => void;
+  currentStep: () => number;
 }>({
   _state: initialState,
   onlyScreen: () => null,
@@ -61,6 +62,7 @@ const NavContext = createContext<{
   nextScreen: () => null,
   replaceScreen: () => null,
   triggerChat: () => null,
+  currentStep: () => 0,
 });
 
 //Creating context
@@ -91,6 +93,11 @@ const NavProvider: React.FC = (props) => {
     []
   );
 
+  const currentStep = useCallback(
+    () => _state.screens.length - 1,
+    [_state.screens]
+  );
+
   return (
     <NavContext.Provider
       value={{
@@ -100,6 +107,7 @@ const NavProvider: React.FC = (props) => {
         nextScreen,
         replaceScreen,
         triggerChat,
+        currentStep,
       }}
     >
       {props.children}

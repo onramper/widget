@@ -37,4 +37,6 @@ interface Window {
         isImToken: boolean;
       }
     | undefined;
+
+  dataLayer?: any;
 }
