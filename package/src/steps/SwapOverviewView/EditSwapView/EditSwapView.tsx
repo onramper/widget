@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ErrorView from "../../../common/ErrorView";
 import { NavContext } from "../../../NavContext";
 import { EditSwapViewInput, EditSwapViewProps } from "./EditSwapView.models";
 import commonClasses from "../../../styles.module.css";
