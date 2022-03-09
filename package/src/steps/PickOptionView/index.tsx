@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Header from "../../common/Header";
 import Step from "../Step";
 import { NextStep } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
