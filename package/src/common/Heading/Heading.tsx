@@ -8,7 +8,11 @@ const Heading: React.FC<{
   className?: string;
 }> = (props) => {
   return (
-    <div className={`${classes["wrapper"]} ${props.className || ""}`}>
+    <div
+      className={`${classes["wrapper"]} ${
+        props.className || classes["wrapper-padding"]
+      }`}
+    >
       {!!props.text && (
         <h1 className={`${commonClasses["remove-default"]}`}>{props.text}</h1>
       )}

@@ -32,5 +32,8 @@
   "header": {
     "selectFiat": "法定通貨を選択",
     "selectCrypto": "暗号通貨を選択する"
+  },
+  "button": {
+    "continue": "継続する"
   }
 }

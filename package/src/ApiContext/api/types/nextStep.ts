@@ -73,12 +73,12 @@ type StepDataItems = Array<
 
 interface FileStep {
   type: "file";
-  humanName: string;
-  hint?: string;
+  title: string;
   url: string;
   acceptedContentTypes: string[];
+  description?: string;
+  image?: string;
 }
-
 interface InfoDepositBankAccount {
   iban: string;
   bic: string;
@@ -159,8 +159,6 @@ type NextStep = NextStepBase &
     | {
         type: "pickOne";
         options: FileStep[];
-        humanName?: string;
-        hint?: string;
       }
     | {
         type: "completed";
