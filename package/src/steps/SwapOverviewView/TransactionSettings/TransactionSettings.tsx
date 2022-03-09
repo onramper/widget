@@ -9,7 +9,6 @@ import { TransactionSettingsProps } from "./TransactionSettings.models";
 import commonClasses from "./../../../styles.module.css";
 import classes from "./TransactionSettings.module.css";
 import { ReactComponent as SettingsIcon } from "./../../../icons/settings.svg";
-import InputDelegator from "../../../common/Input/InputDelegator";
 import { CSSTransition } from "react-transition-group";
 import DropdownCheckableGroup from "../../../common/DropdownCheckableGroup/DropdownCheckableGroup";
 import { ListItem } from "../../../common/DropdownCheckableGroup/DropdownCheckableGroup.models";
