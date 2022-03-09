@@ -29,6 +29,7 @@ import {
   useLayer2,
   useTokenBalance,
 } from "layer2";
+import { useDebouncedCallback } from "use-debounce";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +40,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   // swap inputs
   const [spentValue, setSpentValue] = useState(props.cryptoSpent.value);
+  const [actualSpentValue, setActualSpentValue] = useState(props.cryptoSpent.value);
   const [receivedValue, setReceivedValue] = useState(
     props.cryptoReceived.value
   );
@@ -114,7 +116,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const spendCryptoApi = useCallback(
     (value: number) => {
       const signal = getAndUpdateAbortController();
-
+      
       return new Promise<{
         receivedCrypto: string;
       }>((resolve, reject) => {
@@ -124,26 +126,30 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
         const timeout = setTimeout(async () => {
           try {
-            // mock a conversion
-
             const receivedCrypto = await layer2.getQuote(
               props.cryptoSpent.chainId,
               Number(value),
               props.cryptoReceived.address
             );
+            
+            if(signal.aborted) {
+              return reject(new DOMException("Aborted", "AbortError"));
+            }
+
             if (ethBalance && Number(formatEther(ethBalance)) < Number(value)) {
               throw new ApiError(
                 "You have insufficient funds to complete this transaction",
                 "INSUFICIENT_FUNDS"
               );
             }
+
             resolve({
               receivedCrypto: receivedCrypto.quoteGasAdjustedDecimals,
             });
           } catch (error) {
             reject(error);
           }
-        }, 300);
+        }, 0);
 
         signal.addEventListener("abort", () => {
           clearTimeout(timeout);
@@ -183,6 +189,11 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     [spendCryptoApi]
   );
 
+  const updateSpentDebounced = useDebouncedCallback(
+    updateReceivedValue,
+    500
+  );
+
   const onMaxClick = useCallback(async () => {
     if (ethBalance) {
       updateReceivedValue(formatEther(ethBalance));
@@ -214,8 +225,11 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
         <InputDropdown
           label={cryptoSpent.label}
-          value={spentValue}
-          onChange={(e) => onChangeFloat(e, updateReceivedValue)}
+          value={actualSpentValue}
+          onChange={(e) => onChangeFloat(e, (value) => {
+            setActualSpentValue(value);
+            updateSpentDebounced(value);
+          })}
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${
             ethBalance ? formatEther(ethBalance).slice(0, 5) : "0.00"
