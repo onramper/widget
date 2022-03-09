@@ -19,17 +19,17 @@ export const useWalletSupportRedirect = (
     try {
       if (isMetamaskEnabled()) {
         return;
-      } else if (!isMetamaskEnabled() && isMobile()) {
+      }
+      if (isMobile()) {
         // TODO: Screen with prompt to download Metamask app for mobile
         replaceScreen(
           <BrowserNotSupported currentProgress={currentProgress} />
         );
-      } else if (
-        browserSupportsMetamask() &&
-        !isMetamaskEnabled() &&
-        !isMobile()
-      ) {
+        return;
+      }
+      if (browserSupportsMetamask() && !isMetamaskEnabled() && !isMobile()) {
         nextScreen(<NoWalletView currentProgress={currentProgress} />);
+        return;
       } else {
         replaceScreen(
           <BrowserNotSupported currentProgress={currentProgress} />
