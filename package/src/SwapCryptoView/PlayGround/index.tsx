@@ -5,13 +5,13 @@ import {
   useLayer2,
   QuoteDetails,
   useSendTransaction,
-  InsufficientFundsError,
-  OperationalError,
-  InvalidParamsError,
   TokenList,
   TokenInfo,
+  useEnsName,
+  useEnsAvatar,
+  useEnsAddress,
 } from "layer2";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
 import styles from "../../styles.module.css";
 import { browserSupportsMetamask } from "../../utils";
@@ -22,6 +22,7 @@ const PlayGround = () => {
   const { getSwapParams, getTokens, getQuote } = useLayer2();
   const balance = useEtherBalance(account);
   const [showWalletModal, setShowWalletModal] = useState(false);
+  const [address, setAddress] = useState<string>("");
   const [inputAmount, setInputAmount] = useState<string>("");
   const [loadingMessage, setLoadingMessage] = useState<string>("");
   const [quote, setQuote] = useState<QuoteDetails | null>(null);
@@ -63,6 +64,10 @@ const PlayGround = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.currentTarget.value);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputAmount(e.currentTarget.value);
   };
 
@@ -93,21 +98,7 @@ const PlayGround = () => {
         }
         console.log(res);
       } catch (error) {
-        console.error(error);
-        if (error instanceof InsufficientFundsError) {
-          setLoadingMessage("");
-          alert("insufficient funds!");
-        }
-
-        if (error instanceof InvalidParamsError) {
-          setLoadingMessage("");
-          alert("invalid params!");
-          console.table(error);
-        }
-        if (error instanceof OperationalError) {
-          setLoadingMessage("");
-          alert("operational error!");
-        }
+        alert(error);
       }
     } else {
       alert("please connect wallet");
@@ -135,11 +126,15 @@ const PlayGround = () => {
     cursor: "pointer",
   };
 
-  useEffect(() => {
-    handleGetTokens();
-    //eslint-disable-next-line
-  }, []);
+  //  for testing
+  //  vitalikAddress = "0x8289432ACD5EB0214B1C2526A5EDB480Aa06A9ab";
+  //  vitalikEnsName = 'wslyvh.eth'
+  const ensName = useEnsName(address);
+  const ensAddress = useEnsAddress("wslyvh.eth");
+  const avatar = useEnsAvatar("wslyvh.eth");
 
+  console.log(avatar);
+  console.log(ensAddress);
   return (
     <div className={styles.view}>
       <button
@@ -170,20 +165,32 @@ const PlayGround = () => {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
+        <h2>ENS:</h2>
+        <p>{ensName ?? "no name found"}</p>
+        {avatar && (
+          <img
+            style={{ width: "200px", height: "200px" }}
+            src={avatar}
+            alt="ens avatar"
+          />
+        )}
+        <input
+          value={address}
+          onChange={handleChange}
+          type="text"
+          placeholder="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+        />
+        <br />
         <h2>Swap:</h2>
         <input
           value={inputAmount}
-          onChange={handleChange}
+          onChange={handleInputChange}
           type="text"
-          placeholder="0.00"
+          placeholder="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
         />
-        <button style={buttonStyles} onClick={handleQuote}>
-          get quote
-        </button>
-        <button style={buttonStyles} onClick={handleSwap}>
-          SWAP
-        </button>
       </div>
+      <button onClick={handleQuote}>geyQuote</button>
+      <button onClick={handleSwap}>swap</button>
 
       {showWalletModal && (
         <WalletModal closeModal={() => setShowWalletModal(false)} />

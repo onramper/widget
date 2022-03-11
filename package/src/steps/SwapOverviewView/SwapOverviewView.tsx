@@ -9,11 +9,7 @@ import uriToHttp, { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
-  IncompatibleChainIdError,
-  InsufficientFundsError,
-  InvalidParamsError,
   isMetamaskEnabled,
-  OperationalError,
   QuoteDetails,
   useEtherBalance,
   useEthers,
@@ -75,17 +71,6 @@ const SwapOverviewView: React.FC<{
         updateMessageAndClear("Quote successfully updated");
       }
     } catch (error) {
-      if (error instanceof InvalidParamsError) {
-        updateMessageAndClear("Invalid Transaction Parameters");
-      }
-      if (error instanceof OperationalError) {
-        updateMessageAndClear("Oops something went wrong");
-      }
-      if (error instanceof IncompatibleChainIdError) {
-        updateMessageAndClear(
-          "You can not swap across networks (tokens MUST have the same chain ID)"
-        );
-      }
       alert(error);
     } finally {
       setLoading(false);
@@ -169,16 +154,7 @@ const SwapOverviewView: React.FC<{
           });
         }
       } catch (error) {
-        setLoading(false);
-        if (error instanceof InsufficientFundsError) {
-          alert("insufficient funds!");
-        }
-        if (error instanceof InvalidParamsError) {
-          alert("invalid params!");
-        }
-        if (error instanceof OperationalError) {
-          alert("operational error!");
-        }
+        alert(error);
       }
     } else {
       alert("please connect wallet");
