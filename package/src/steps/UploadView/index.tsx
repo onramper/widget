@@ -45,7 +45,7 @@ const UploadView: React.FC<{ nextStep: NextStep & { type: "file" } }> = (
       <Header title={`Upload ${props.nextStep.humanName ?? ""}`} backButton />
       <BodyUpload
         onActionButton={handleButtonAction}
-        textInfo={props.nextStep.description}
+        textInfo={props.nextStep.hint}
         isLoading={isLoading}
         errorMsg={errorMsg}
         acceptedContentTypes={props.nextStep.acceptedContentTypes}

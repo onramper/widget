@@ -29,6 +29,7 @@ import type {
   NextStep,
   StepDataItems,
   FileStep,
+  PickOneOption,
   InfoDepositBankAccount,
 } from "./api/types/nextStep";
 
@@ -1032,4 +1033,5 @@ export type {
   APIProviderType,
   CollectedStateType,
   GatewayRateOptionSimple,
+  PickOneOption
 };

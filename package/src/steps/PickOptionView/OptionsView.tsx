@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FileStep } from "../../ApiContext";
+import { PickOneOption } from "../../ApiContext";
 import Option from "./Option";
 
 import styles from "./styles.module.css";
 
 type OptionsType = {
-  options: FileStep[];
+  options: PickOneOption[];
   handleOptionChange: (index: number) => void;
 };
 
@@ -24,7 +24,7 @@ const OptionsView: React.FC<OptionsType> = ({
           selected={selectecIndex === index}
           title={option.title}
           description={option.description}
-          image={option.image}
+          icon={option.icon}
           onSelected={handleOptionChange}
           setSelectedIndex={setSelectedIndex}
         />

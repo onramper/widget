@@ -73,12 +73,20 @@ type StepDataItems = Array<
 
 interface FileStep {
   type: "file";
-  title: string;
+  humanName: string;
+  hint?: string;
   url: string;
   acceptedContentTypes: string[];
-  description?: string;
-  image?: string;
 }
+
+interface PickOneOption {
+  type: "option";
+  title: string;
+  url: string;
+  description?: string;
+  icon?: string;
+}
+
 interface InfoDepositBankAccount {
   iban: string;
   bic: string;
@@ -158,7 +166,7 @@ type NextStep = NextStepBase &
       }
     | {
         type: "pickOne";
-        options: FileStep[];
+        options: PickOneOption[];
       }
     | {
         type: "completed";
@@ -173,6 +181,7 @@ type NextStep = NextStepBase &
     | EmailVerificationStep
     | OrderCompleteStep
     | PaymentReviewStep
+    | PickOneOption
   );
 
 interface FieldError {
@@ -189,4 +198,5 @@ export type {
   FileStep,
   NextStepErr,
   FieldError,
+  PickOneOption,
 };

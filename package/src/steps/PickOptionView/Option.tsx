@@ -8,7 +8,7 @@ type OptionType = {
   title: string;
   selected?: boolean;
   description?: string;
-  image?: string;
+  icon?: string;
   onSelected: (index: number) => void;
   setSelectedIndex: (index: number) => void;
 };
@@ -16,7 +16,7 @@ type OptionType = {
 const Option: React.FC<OptionType> = ({
   title,
   description,
-  image,
+  icon,
   selected = false,
   onSelected,
   setSelectedIndex,
@@ -30,9 +30,9 @@ const Option: React.FC<OptionType> = ({
         setSelectedIndex(index);
       }}
     >
-      {image && (
+      {icon && (
         <div className={styles["img-wrapper"]}>
-          <img className={styles.img} src={image} />
+          <img className={styles.img} src={icon} />
         </div>
       )}
 

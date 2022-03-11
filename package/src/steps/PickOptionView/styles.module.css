@@ -5,6 +5,8 @@
 }
 
 .heading {
+  --pt-heading: 0px;
+  --pb-heading: 0px;
   padding-bottom: 0;
 }
 
