@@ -12,9 +12,11 @@ import {
   isMetamaskEnabled,
   QuoteDetails,
   useEtherBalance,
-  useEthers,
+  getQuote,
+  getSwapParams,
   useLayer2,
-  useSendTransaction
+  useSendTransaction,
+  DEFAULTS as defaultSettings
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
@@ -30,7 +32,7 @@ const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
 }> = (props) => {
   const [nextStep, setNextStep] = useState(props.nextStep);
-  const { account, active } = useEthers();
+  const { account, active } = useLayer2();
   const balance = useEtherBalance(account);
   const [quote, setQuote] = useState<QuoteDetails>(
     nextStep.data.transactionData
@@ -38,15 +40,14 @@ const SwapOverviewView: React.FC<{
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const { getQuote, getSwapParams, defaults } = useLayer2();
   const isActive = account && active;
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
   const [slippageTolerance, setSlippageTolerance] = useState(
-    defaults.slippageTolerance
+    defaultSettings.slippageTolerance
   );
-  const [deadline, setDeadline] = useState(defaults.deadline);
+  const [deadline, setDeadline] = useState(defaultSettings.deadline);
 
   const {
     data: {
@@ -80,7 +81,7 @@ const SwapOverviewView: React.FC<{
     } finally {
       setLoading(false);
     }
-  }, [getQuote, amountDecimals, tokenIn, tokenOut]);
+  }, [amountDecimals, tokenIn, tokenOut]);
 
   useEffect(() => {
     handleUpdate();

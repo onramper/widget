@@ -25,7 +25,7 @@ import { CSSTransition } from "react-transition-group";
 import {
   formatEther,
   useEtherBalance,
-  useEthers,
+  getQuote,
   useLayer2,
   useTokenBalance,
 } from "layer2";
@@ -57,13 +57,12 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
 
   const { nextScreen, backScreen } = useContext(NavContext);
-  const { account } = useEthers();
+  const { account } = useLayer2();
   const ethBalance = useEtherBalance(account);
   const targetTokenBalance = useTokenBalance(
     props.cryptoReceived.address,
     account
   );
-  const { getQuote } = useLayer2();
 
   const onActionButton = useCallback(async () => {
     setIsLoading(true);
@@ -153,7 +152,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     [
       ethBalance,
       getAndUpdateAbortController,
-      getQuote,
       props.cryptoReceived,
       props.cryptoSpent,
     ]
