@@ -9,17 +9,12 @@ import uriToHttp, { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
-  InsufficientFundsError,
-  InvalidParamsError,
   isMetamaskEnabled,
-  OperationalError,
   QuoteDetails,
-  TokenInfo,
   useEtherBalance,
   useEthers,
   useLayer2,
-  useSendTransaction,
-  DEFAULTS as defaultSettings,
+  useSendTransaction
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
@@ -43,18 +38,23 @@ const SwapOverviewView: React.FC<{
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const { layer2 } = useLayer2();
+  const { getQuote, getSwapParams, defaults } = useLayer2();
   const isActive = account && active;
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
   const [slippageTolerance, setSlippageTolerance] = useState(
-    defaultSettings.slippageTolerance
+    defaults.slippageTolerance
   );
-  const [deadline, setDeadline] = useState(defaultSettings.deadline);
+  const [deadline, setDeadline] = useState(defaults.deadline);
 
   const {
-    data: { tokenIn, tokenOut, fiatSymbol },
+    data: {
+      tokenIn,
+      tokenOut,
+      fiatSymbol,
+      transactionData: { amountDecimals },
+    },
   } = nextStep;
 
   const updateMessageAndClear = (mes: string) => {
@@ -62,42 +62,29 @@ const SwapOverviewView: React.FC<{
     setTimeout(() => setMessage(""), 3000);
   };
 
-  const handleUpdateQuote = useCallback(
-    async (tokenIn: TokenInfo, tokenOut: TokenInfo, amount: number) => {
-      setMessage("Updating quote...");
-      setLoading(true);
-      try {
-        const newQuote = await layer2.getQuote(
-          tokenIn.chainId,
-          amount,
-          tokenOut.address
-        );
-        if (newQuote) {
-          setQuote(newQuote);
-          updateMessageAndClear("Quote successfully updated");
-        }
-      } catch (error) {
-        if (error instanceof InvalidParamsError) {
-          updateMessageAndClear("Invalid Transaction Parameters");
-        }
-        if (error instanceof OperationalError) {
-          updateMessageAndClear("Oops something went wrong");
-        }
-      } finally {
-        setLoading(false);
+  const handleUpdate = useCallback(async () => {
+    setMessage("Updating quote...");
+    setLoading(true);
+    try {
+      const newQuote = await getQuote(
+        tokenIn,
+        tokenOut,
+        Number(amountDecimals)
+      );
+      if (newQuote) {
+        setQuote(newQuote);
+        updateMessageAndClear("Quote successfully updated");
       }
-    },
-    [layer2]
-  );
-
-  // update the initial quote with the same parameters, on page load
-  const handleUpdateCurrent = useCallback(() => {
-    handleUpdateQuote(tokenIn, tokenOut, Number(quote.amountDecimals));
-  }, [handleUpdateQuote, quote.amountDecimals, tokenIn, tokenOut]);
+    } catch (error) {
+      alert(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [getQuote, amountDecimals, tokenIn, tokenOut]);
 
   useEffect(() => {
-    handleUpdateCurrent();
-  }, [handleUpdateCurrent]);
+    handleUpdate();
+  }, [handleUpdate]);
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
@@ -175,45 +162,30 @@ const SwapOverviewView: React.FC<{
       setLoading(true);
       setMessage("Fetching best price...");
       try {
-        const res = await layer2.getSwapParams(
+        const res = await getSwapParams(
           Number(formatEther(balance)),
-          tokenIn.chainId,
-          Number(quote.amountDecimals),
-          tokenOut.address,
+          tokenIn,
+          tokenOut,
+          Number(amountDecimals),
           account,
-          undefined,
+          false,
           {
             slippageTolerance,
             deadline,
           }
         );
+
         setMessage("Please sign transaction");
-        if (res) {
+        if (res?.data) {
           await sendTransaction({
             data: res.data,
             to: res.to,
             value: res.value,
             from: account,
           });
-
-          nextScreen(
-            <OrderCompleteView
-              title="Success! Your Swap is being executed."
-              description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-            />
-          );
         }
       } catch (error) {
-        setLoading(false);
-        if (error instanceof InsufficientFundsError) {
-          alert("insufficient funds!");
-        }
-        if (error instanceof InvalidParamsError) {
-          alert("invalid params!");
-        }
-        if (error instanceof OperationalError) {
-          alert("operational error!");
-        }
+        alert(error);
       }
     } else {
       alert("please connect wallet");
@@ -225,7 +197,12 @@ const SwapOverviewView: React.FC<{
     if (state.status === "Success") {
       setMessage("Success! 🥳");
       setLoading(false);
-      setTimeout(() => setMessage(""), 2000);
+      nextScreen(
+        <OrderCompleteView
+          title="Success! Your Swap has been executed."
+          description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
+        />
+      );
     }
 
     if (state.status === "Mining") {
@@ -243,7 +220,7 @@ const SwapOverviewView: React.FC<{
       setLoading(false);
       setTimeout(() => setMessage(""), 2000);
     }
-  }, [state]);
+  }, [nextScreen, state]);
 
   return (
     <div className={commonClasses.view}>

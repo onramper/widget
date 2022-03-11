@@ -63,7 +63,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     props.cryptoReceived.address,
     account
   );
-  const { layer2 } = useLayer2();
+  const { getQuote } = useLayer2();
 
   const onActionButton = useCallback(async () => {
     setIsLoading(true);
@@ -124,10 +124,11 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
         const timeout = setTimeout(async () => {
           try {
-            const receivedCrypto = await layer2.getQuote(
-              props.cryptoSpent.chainId,
-              Number(value),
-              props.cryptoReceived.address
+            // mock a conversion
+            const receivedCrypto = await getQuote(
+              props.cryptoSpent,
+              props.cryptoReceived,
+              Number(value)
             );
             if (ethBalance && Number(formatEther(ethBalance)) < Number(value)) {
               throw new ApiError(
@@ -152,9 +153,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     [
       ethBalance,
       getAndUpdateAbortController,
-      layer2,
-      props.cryptoReceived.address,
-      props.cryptoSpent.chainId,
+      getQuote,
+      props.cryptoReceived,
+      props.cryptoSpent,
     ]
   );
 

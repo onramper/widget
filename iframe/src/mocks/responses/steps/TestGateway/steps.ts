@@ -131,7 +131,7 @@ const transactionOverview = {
         ],
       ],
       routeString:
-        "[V3] 100.00% = WETH -- 1% --> DAI -- 0.3% --> WETH -- 0.05% --> UNI",
+        "[V3] 100.00% = WETH -- 1% --> DAI -- 0.3% --> WETH -- 0.05% --> CUR",
       quoteId: "1b1e8",
     },
     tokenIn: {
@@ -210,7 +210,7 @@ const nextStep: { [key: string]: any } = {
     type: "completed",
     trackingUrl: "https://onramper.com",
   },
-  transactionOverview
+  transactionOverview,
 };
 
 const getNextStep = (currentStep: string) => {
