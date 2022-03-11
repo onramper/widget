@@ -12,7 +12,8 @@ import {
   isMetamaskEnabled,
   QuoteDetails,
   useEtherBalance,
-  useEthers,
+  getQuote,
+  getSwapParams,
   useLayer2,
   useSendTransaction,
 } from "layer2";
@@ -30,7 +31,7 @@ const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
 }> = (props) => {
   const [nextStep, setNextStep] = useState(props.nextStep);
-  const { account, active } = useEthers();
+  const { account, active } = useLayer2();
   const balance = useEtherBalance(account);
   const [quote, setQuote] = useState<QuoteDetails>(
     nextStep.data.transactionData
@@ -38,7 +39,6 @@ const SwapOverviewView: React.FC<{
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const { getQuote, getSwapParams } = useLayer2();
   const isActive = account && active;
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
@@ -75,7 +75,7 @@ const SwapOverviewView: React.FC<{
     } finally {
       setLoading(false);
     }
-  }, [getQuote, amountDecimals, tokenIn, tokenOut]);
+  }, [amountDecimals, tokenIn, tokenOut]);
 
   useEffect(() => {
     handleUpdate();

@@ -1,6 +1,5 @@
 import {
   useEtherBalance,
-  useEthers,
   formatEther,
   useLayer2,
   QuoteDetails,
@@ -10,6 +9,9 @@ import {
   useEnsName,
   useEnsAvatar,
   useEnsAddress,
+  getSwapParams,
+  getTokens,
+  getQuote,
 } from "layer2";
 import React, { useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
@@ -18,8 +20,7 @@ import { browserSupportsMetamask } from "../../utils";
 import TemporarTransactionErrorTrigger from "../TransactionErrorOverlay/TemporarTransactionErrorTrigger";
 
 const PlayGround = () => {
-  const { account } = useEthers();
-  const { getSwapParams, getTokens, getQuote } = useLayer2();
+  const { account } = useLayer2();
   const balance = useEtherBalance(account);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [address, setAddress] = useState<string>("");
@@ -133,7 +134,6 @@ const PlayGround = () => {
   const ensAddress = useEnsAddress("wslyvh.eth");
   const avatar = useEnsAvatar("wslyvh.eth");
 
-  console.log(avatar);
   console.log(ensAddress);
   return (
     <div className={styles.view}>
