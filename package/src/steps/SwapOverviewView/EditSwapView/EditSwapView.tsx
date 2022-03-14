@@ -27,6 +27,7 @@ import {
   getQuote,
   useLayer2,
   useTokenBalance,
+  DEFAULTS as defaultSettings
 } from "layer2";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -204,7 +205,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             selectedWalletId={selectedWalletId}
             slippage={slippage}
             deadline={deadline}
-            defaultSlippage={props.slippageTolerance}
+            defaultSlippage={defaultSettings.slippageTolerance}
             onChangeWalletId={setSelectedWalletId}
             onChangeDeadline={setDeadline}
             onChangeSlippage={setSlippage}
