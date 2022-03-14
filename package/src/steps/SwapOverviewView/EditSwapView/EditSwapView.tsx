@@ -171,11 +171,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           setIsLoading(false);
         } catch (_error) {
           const error = _error as Error;
-          if (error?.name === "INSUFICIENT_FUNDS") {
-            setSwapErrorMessage(error.message);
-          }
-         
-          if(error.name !== "AbortError") {
+          if(error?.name !== "AbortError") {
+            setSwapErrorMessage(error?.message || "Oops! Something went wrong.");
             setIsLoading(false);
           }
         }
