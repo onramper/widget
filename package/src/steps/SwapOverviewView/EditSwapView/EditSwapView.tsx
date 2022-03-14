@@ -232,6 +232,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           value={actualSpentValue}
           onChange={(e) =>
             onChangeFloat(e, (value) => {
+              setIsLoading(true);
               setActualSpentValue(value);
               updateSpentDebounced(value);
             })
