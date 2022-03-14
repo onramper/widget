@@ -27,6 +27,7 @@ import {
   getQuote,
   useLayer2,
   useTokenBalance,
+  DEFAULTS as defaultSettings,
 } from "layer2";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -54,9 +55,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [selectedWalletId, setSelectedWalletId] = useState(
     props.selectedWalletId
   );
-  const [slippage, setSlippage] = useState(props.defaultSlippage.toFixed(2));
+  const [slippage, setSlippage] = useState(props.slippageTolerance.toFixed(2));
   const [deadline, setDeadline] = useState(
-    String(Math.floor((props.defaultDeadline / 60) * 100) / 100)
+    String(Math.floor((props.deadline / 60) * 100) / 100)
   );
 
   const { backScreen } = useContext(NavContext);
@@ -113,7 +114,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
         const timeout = setTimeout(async () => {
           try {
-            // mock a conversion
+            setIsLoading(true);
             const receivedCrypto = await getQuote(
               props.cryptoSpent,
               props.cryptoReceived,
@@ -142,6 +143,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             }
 
             reject(error);
+          } finally {
+            setIsLoading(false);
           }
         }, 0);
 
@@ -163,6 +166,14 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     (value: string) => {
       setSpentValue(value);
 
+      if (Number(value) === 0) {
+        getAndUpdateAbortController();
+        setReceivedValue("0");
+        setIsLoading(false);
+        setSwapErrorMessage("");
+        return;
+      }
+
       const onUpdate = async () => {
         try {
           const response = await spendCryptoApi(Number(value));
@@ -170,24 +181,25 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           if (response) {
             setReceivedValue(response.receivedCrypto);
           }
-          setIsLoading(false);
         } catch (_error) {
           const error = _error as Error;
-          if(error?.name !== "AbortError") {
-            setSwapErrorMessage(error?.message || "Oops! Something went wrong.");
-            setIsLoading(false);
+          if (error?.name !== "AbortError") {
+            setSwapErrorMessage(
+              error?.message || "Oops! Something went wrong."
+            );
           }
         }
       };
       onUpdate();
     },
-    [spendCryptoApi]
+    [getAndUpdateAbortController, spendCryptoApi]
   );
 
   const updateSpentDebounced = useDebouncedCallback(updateReceivedValue, 500);
 
   const onMaxClick = useCallback(async () => {
     if (ethBalance) {
+      setActualSpentValue(formatEther(ethBalance));
       updateReceivedValue(formatEther(ethBalance));
     }
   }, [ethBalance, updateReceivedValue]);
@@ -205,7 +217,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             selectedWalletId={selectedWalletId}
             slippage={slippage}
             deadline={deadline}
-            defaultSlippage={props.defaultSlippage}
+            defaultSlippage={defaultSettings.slippageTolerance}
             onChangeWalletId={setSelectedWalletId}
             onChangeDeadline={setDeadline}
             onChangeSlippage={setSlippage}
@@ -272,7 +284,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           <ButtonAction
             onClick={onActionButton}
             text={isLoading ? "Updating quote..." : "Continue"}
-            disabled={!!swapErrorMessage || isLoading}
+            disabled={!Number(spentValue) || !!swapErrorMessage || isLoading}
           />
           <Footer />
         </div>

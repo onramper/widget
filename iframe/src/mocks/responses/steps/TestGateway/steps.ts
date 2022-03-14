@@ -153,8 +153,6 @@ const transactionOverview = {
     },
     fiatSymbol: "$",
     balance: 989.2692,
-    deadline: 600,
-    slippage: 0.1,
     feeBreakdown: [
       [
         {
