@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ErrorView from "../../../common/ErrorView";
 import { NavContext } from "../../../NavContext";
 import { EditSwapViewInput, EditSwapViewProps } from "./EditSwapView.models";
 import commonClasses from "../../../styles.module.css";
@@ -29,6 +28,7 @@ import {
   useLayer2,
   useTokenBalance,
 } from "layer2";
+import { useDebouncedCallback } from "use-debounce";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +39,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   // swap inputs
   const [spentValue, setSpentValue] = useState(props.cryptoSpent.value);
+  const [actualSpentValue, setActualSpentValue] = useState(
+    props.cryptoSpent.value
+  );
   const [receivedValue, setReceivedValue] = useState(
     props.cryptoReceived.value
   );
@@ -56,7 +59,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     String(Math.floor((props.defaultDeadline / 60) * 100) / 100)
   );
 
-  const { nextScreen, backScreen } = useContext(NavContext);
+  const { backScreen } = useContext(NavContext);
   const { account } = useLayer2();
   const ethBalance = useEtherBalance(account);
   const targetTokenBalance = useTokenBalance(
@@ -65,31 +68,18 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
 
   const onActionButton = useCallback(async () => {
-    setIsLoading(true);
-    setSwapErrorMessage(undefined);
-
-    try {
-      props.submitData({
-        spentValue,
-        receivedValue,
-        selectedWalletId,
-        wallets,
-        slippage: Number(slippage),
-        deadline: Number(deadline) * 60,
-      });
-      backScreen();
-    } catch (_error) {
-      const error = _error as { fatal: any; message: string };
-      if (error.fatal) {
-        nextScreen(<ErrorView />);
-        return;
-      }
-    }
-    setIsLoading(false);
+    props.submitData({
+      spentValue,
+      receivedValue,
+      selectedWalletId,
+      wallets,
+      slippage: Number(slippage),
+      deadline: Number(deadline) * 60,
+    });
+    backScreen();
   }, [
     backScreen,
     deadline,
-    nextScreen,
     props,
     receivedValue,
     selectedWalletId,
@@ -129,19 +119,29 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
               props.cryptoReceived,
               Number(value)
             );
+
+            if (signal.aborted) {
+              return reject(new DOMException("Aborted", "AbortError"));
+            }
+
             if (ethBalance && Number(formatEther(ethBalance)) < Number(value)) {
               throw new ApiError(
                 "You have insufficient funds to complete this transaction",
                 "INSUFICIENT_FUNDS"
               );
             }
+
             resolve({
               receivedCrypto: receivedCrypto.quoteGasAdjustedDecimals,
             });
           } catch (error) {
+            if (signal.aborted) {
+              return reject(new DOMException("Aborted", "AbortError"));
+            }
+
             reject(error);
           }
-        }, 300);
+        }, 0);
 
         signal.addEventListener("abort", () => {
           clearTimeout(timeout);
@@ -168,10 +168,12 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           if (response) {
             setReceivedValue(response.receivedCrypto);
           }
+          setIsLoading(false);
         } catch (_error) {
           const error = _error as Error;
-          if (error?.name === "INSUFICIENT_FUNDS") {
-            setSwapErrorMessage(error.message);
+          if(error?.name !== "AbortError") {
+            setSwapErrorMessage(error?.message || "Oops! Something went wrong.");
+            setIsLoading(false);
           }
         }
       };
@@ -179,6 +181,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     },
     [spendCryptoApi]
   );
+
+  const updateSpentDebounced = useDebouncedCallback(updateReceivedValue, 500);
 
   const onMaxClick = useCallback(async () => {
     if (ethBalance) {
@@ -211,8 +215,14 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
         <InputDropdown
           label={cryptoSpent.label}
-          value={spentValue}
-          onChange={(e) => onChangeFloat(e, updateReceivedValue)}
+          value={actualSpentValue}
+          onChange={(e) =>
+            onChangeFloat(e, (value) => {
+              setIsLoading(true);
+              setActualSpentValue(value);
+              updateSpentDebounced(value);
+            })
+          }
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${
             ethBalance ? formatEther(ethBalance).slice(0, 5) : "0.00"
@@ -259,7 +269,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         >
           <ButtonAction
             onClick={onActionButton}
-            text={isLoading ? "Sending..." : "Continue"}
+            text={isLoading ? "Updating quote..." : "Continue"}
             disabled={!!swapErrorMessage || isLoading}
           />
           <Footer />
