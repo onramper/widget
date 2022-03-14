@@ -24,7 +24,7 @@ import { CSSTransition } from "react-transition-group";
 import {
   formatEther,
   useEtherBalance,
-  useEthers,
+  getQuote,
   useLayer2,
   useTokenBalance,
 } from "layer2";
@@ -60,13 +60,12 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
 
   const { backScreen } = useContext(NavContext);
-  const { account } = useEthers();
+  const { account } = useLayer2();
   const ethBalance = useEtherBalance(account);
   const targetTokenBalance = useTokenBalance(
     props.cryptoReceived.address,
     account
   );
-  const { layer2 } = useLayer2();
 
   const onActionButton = useCallback(async () => {
     props.submitData({
@@ -114,10 +113,11 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
         const timeout = setTimeout(async () => {
           try {
-            const receivedCrypto = await layer2.getQuote(
-              props.cryptoSpent.chainId,
-              Number(value),
-              props.cryptoReceived.address
+            // mock a conversion
+            const receivedCrypto = await getQuote(
+              props.cryptoSpent,
+              props.cryptoReceived,
+              Number(value)
             );
 
             if (signal.aborted) {
@@ -152,9 +152,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     [
       ethBalance,
       getAndUpdateAbortController,
-      layer2,
-      props.cryptoReceived.address,
-      props.cryptoSpent.chainId,
+      props.cryptoReceived,
+      props.cryptoSpent,
     ]
   );
 

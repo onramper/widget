@@ -110,7 +110,10 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
               min="0"
               maxLength={props.maxLength}
               onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              onBlur={() => { 
+                props.onBlur && props.onBlur();
+                setIsFocused(false);
+              }}
               onMouseOver={() => setIsMouseOver(true)}
               onMouseOut={() => setIsMouseOver(false)}
               autoFocus={props.autoFocus}
@@ -121,7 +124,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
         </span>
       </div>
 
-      <ErrorMessage text={props.error} className={`${classes["text-error-wrapper"]}`}/>
+      <ErrorMessage text={typeof props.error === "string" ? props.error : undefined} className={`${classes["text-error-wrapper"]}`}/>
 
       {props.hint && (
         <div className={`${classes["text-under"]} ${props.onHintClick ? classes["with-link"] : ""}`} onClick={props.onHintClick}>

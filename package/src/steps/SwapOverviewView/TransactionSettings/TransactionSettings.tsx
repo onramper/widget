@@ -9,13 +9,14 @@ import { TransactionSettingsProps } from "./TransactionSettings.models";
 import commonClasses from "./../../../styles.module.css";
 import classes from "./TransactionSettings.module.css";
 import { ReactComponent as SettingsIcon } from "./../../../icons/settings.svg";
-import InputDelegator from "../../../common/Input/InputDelegator";
 import { CSSTransition } from "react-transition-group";
 import DropdownCheckableGroup from "../../../common/DropdownCheckableGroup/DropdownCheckableGroup";
 import { ListItem } from "../../../common/DropdownCheckableGroup/DropdownCheckableGroup.models";
 import { NavContext } from "../../../NavContext";
 import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
+import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
+import BaseInput from "../../../common/Input/BaseInput/BaseInput";
 
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const { nextScreen } = useContext(NavContext);
@@ -23,10 +24,11 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
   const [wallets, setWallets] = useState(computeWallets(props.wallets));
+  const [defaultDeadline] = useState(props.deadline);
 
   const computeSlippageAutoBtnClass = useCallback(() => {
     const outlineClass =
-      props.defaultSlippage === Number(props.slippage)
+      props.defaultSlippage === Number(props.slippage) || props.slippage === ""
         ? ""
         : commonClasses["outline"];
     return `${commonClasses["secondary-btn"]} ${outlineClass} ${classes["auto-btn"]}`;
@@ -35,6 +37,56 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const resetSlippage = useCallback(() => {
     props.onChangeSlippage(props.defaultSlippage.toFixed(2));
   }, [props]);
+
+  const getErrorText = useCallback(() => {
+    if(props.slippage === "") {
+      return;
+    }
+
+    const slippage = Number(props.slippage);
+    if (slippage < 0 || slippage > 51) {
+      return "Please enter a valid slippage";
+    }
+  }, [props.slippage]);
+
+  const getSlippageWarningText = useCallback(() => {
+    if(props.slippage === "") {
+      return;
+    }
+
+    if (getErrorText()) {
+      return;
+    }
+
+    const slippage = Number(props.slippage);
+    if (slippage < 0.05) {
+      return "Your transaction may fail.";
+    }
+
+    if (slippage > 1) {
+      return "Your transaction may be frontrun.";
+    }
+  }, [getErrorText, props.slippage]);
+
+  const onBlurSlippage = useCallback(() => {
+    if (getErrorText() || props.slippage === "") {
+      resetSlippage();
+      return;
+    }
+    props.onChangeSlippage(Number(props.slippage).toFixed(2));
+  }, [getErrorText, props, resetSlippage]);
+
+  const deadlineHasError = useCallback(() => {
+    return !Number(props.deadline) || Number(props.deadline) < 0;
+  }, [props.deadline]);
+
+  const onBlurDeadline = useCallback(() => {
+    if (deadlineHasError()) {
+      props.onChangeDeadline(defaultDeadline);
+      return;
+    }
+    props.onChangeDeadline(Number(props.deadline).toFixed(2));
+  }, [deadlineHasError, defaultDeadline, props]);
 
   const goToWalletDestination = useCallback(async () => {
     nextScreen(
@@ -69,6 +121,8 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
     };
   }, []);
 
+  const slippageError = getErrorText();
+
   return (
     <div
       className={`${classes["wrapper"]} ${props.className || ""}`}
@@ -91,7 +145,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
               >
                 Auto
               </button>
-              <InputDelegator
+              <BaseInput
                 align="right"
                 label=""
                 variant="setting"
@@ -99,26 +153,37 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 symbolPosition="end"
                 name="slippage"
                 type="number"
+                placeholder={props.defaultSlippage.toFixed(2)}
+                error={!!slippageError}
                 value={props.slippage}
-                onChange={(name: string, value: string) =>
-                  props.onChangeSlippage(value)
-                }
+                handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  props.onChangeSlippage(e.target.value);
+                }}
+                onBlur={onBlurSlippage}
               />
             </div>
+            <ErrorMessage className={classes["error"]} text={slippageError} />
+            <ErrorMessage
+              warning
+              className={classes["error"]}
+              text={getSlippageWarningText()}
+            />
           </div>
           <div className={classes["setting-item"]}>
             <div className={classes["setting-name"]}>Transaction deadline:</div>
             <div className={classes["setting-content"]}>
-              <InputDelegator
+              <BaseInput
                 align="center"
                 label=""
                 variant="setting"
                 type="number"
                 name="transactionDeadline"
                 value={props.deadline}
-                onChange={(name: string, value: string) =>
-                  props.onChangeDeadline(value)
-                }
+                handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  props.onChangeDeadline(e.target.value);
+                }}
+                error={deadlineHasError()}
+                onBlur={onBlurDeadline}
                 className={classes["deadline-input"]}
               />
               <div className={classes["setting-label"]}>Minutes</div>
