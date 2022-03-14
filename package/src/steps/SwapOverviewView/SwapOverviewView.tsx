@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { NextStep } from "../../ApiContext";
@@ -52,6 +52,8 @@ const SwapOverviewView: React.FC<{
     },
   } = nextStep;
 
+  const beforeUnLoadRef = useRef(false);
+
   const updateMessageAndClear = (mes: string) => {
     setMessage(mes);
     setTimeout(() => setMessage(""), 3000);
@@ -71,7 +73,7 @@ const SwapOverviewView: React.FC<{
         updateMessageAndClear("Quote successfully updated");
       }
     } catch (error) {
-      alert(error);
+      !beforeUnLoadRef.current && alert(error);
     } finally {
       setLoading(false);
     }
@@ -154,7 +156,7 @@ const SwapOverviewView: React.FC<{
           });
         }
       } catch (error) {
-        alert(error);
+        !beforeUnLoadRef.current && alert(error);
       }
     } else {
       alert("please connect wallet");
@@ -190,6 +192,14 @@ const SwapOverviewView: React.FC<{
       setTimeout(() => setMessage(""), 2000);
     }
   }, [nextScreen, state]);
+
+  useEffect(() => {
+    const onBeforeUnload = () => {
+      beforeUnLoadRef.current = true;
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, []);
 
   return (
     <div className={commonClasses.view}>
