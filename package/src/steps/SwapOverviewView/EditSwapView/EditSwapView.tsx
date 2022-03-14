@@ -27,7 +27,7 @@ import {
   getQuote,
   useLayer2,
   useTokenBalance,
-  DEFAULTS as defaultSettings
+  DEFAULTS as defaultSettings,
 } from "layer2";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -163,6 +163,14 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     (value: string) => {
       setSpentValue(value);
 
+      if (value === "0" || value === "") {
+        getAndUpdateAbortController();
+        setReceivedValue("0");
+        setIsLoading(false);
+        setSwapErrorMessage("");
+        return;
+      }
+
       const onUpdate = async () => {
         try {
           const response = await spendCryptoApi(Number(value));
@@ -173,21 +181,24 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           setIsLoading(false);
         } catch (_error) {
           const error = _error as Error;
-          if(error?.name !== "AbortError") {
-            setSwapErrorMessage(error?.message || "Oops! Something went wrong.");
+          if (error?.name !== "AbortError") {
+            setSwapErrorMessage(
+              error?.message || "Oops! Something went wrong."
+            );
             setIsLoading(false);
           }
         }
       };
       onUpdate();
     },
-    [spendCryptoApi]
+    [getAndUpdateAbortController, spendCryptoApi]
   );
 
   const updateSpentDebounced = useDebouncedCallback(updateReceivedValue, 500);
 
   const onMaxClick = useCallback(async () => {
     if (ethBalance) {
+      setIsLoading(true);
       updateReceivedValue(formatEther(ethBalance));
     }
   }, [ethBalance, updateReceivedValue]);
@@ -272,7 +283,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           <ButtonAction
             onClick={onActionButton}
             text={isLoading ? "Updating quote..." : "Continue"}
-            disabled={!!swapErrorMessage || isLoading}
+            disabled={!Number(spentValue) || !!swapErrorMessage || isLoading}
           />
           <Footer />
         </div>
