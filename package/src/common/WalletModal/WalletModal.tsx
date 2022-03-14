@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  useEthers,
-  isMetamaskEnabled,
-  useLayer2,
-  Wallet,
-} from "layer2";
+import { isMetamaskEnabled, useLayer2, Wallet, wallets } from "layer2";
 import WalletButton from "./WalletButton/WalletButton";
 import styles from "./WalletModal.module.css";
 
@@ -13,10 +8,10 @@ interface Props {
 }
 
 function WalletModal({ closeModal }: Props) {
-  const { activateBrowserWallet, deactivate, account, active } = useEthers();
-  const [activatingConnector, setActivatingConnector] =
-    useState<any | null>(null);
-  const { wallets } = useLayer2();
+  const { activateBrowserWallet, deactivate, account, active } = useLayer2();
+  const [activatingConnector, setActivatingConnector] = useState<any | null>(
+    null
+  );
 
   const metamaskEnabled = isMetamaskEnabled();
   const enabledWallets = !metamaskEnabled

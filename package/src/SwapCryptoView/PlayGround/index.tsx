@@ -1,38 +1,61 @@
 import {
   useEtherBalance,
-  useEthers,
   formatEther,
   useLayer2,
   QuoteDetails,
   useSendTransaction,
-  InsufficientFundsError,
-  OperationalError,
-  InvalidParamsError,
   TokenList,
+  TokenInfo,
+  useEnsName,
+  useEnsAvatar,
+  useEnsAddress,
+  getSwapParams,
+  getTokens,
+  getQuote,
 } from "layer2";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
 import styles from "../../styles.module.css";
 import { browserSupportsMetamask } from "../../utils";
 import TemporarTransactionErrorTrigger from "../TransactionErrorOverlay/TemporarTransactionErrorTrigger";
 
 const PlayGround = () => {
-  const { account } = useEthers();
-  const { layer2 } = useLayer2();
+  const { account } = useLayer2();
   const balance = useEtherBalance(account);
   const [showWalletModal, setShowWalletModal] = useState(false);
+  const [address, setAddress] = useState<string>("");
   const [inputAmount, setInputAmount] = useState<string>("");
   const [loadingMessage, setLoadingMessage] = useState<string>("");
   const [quote, setQuote] = useState<QuoteDetails | null>(null);
   const { sendTransaction, state } = useSendTransaction();
   const [, setTokenList] = useState<TokenList | null>(null);
 
+  const tokenIn: TokenInfo = {
+    name: "Wrapped Ether",
+    address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+    symbol: "WETH",
+    decimals: 18,
+    chainId: 4,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc778417E063141139Fce010982780140Aa0cD5Ab/logo.png",
+  };
+
+  const tokenOut: TokenInfo = {
+    name: "Dai Stablecoin",
+    address: "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735",
+    symbol: "DAI",
+    decimals: 18,
+    chainId: 4,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735/logo.png",
+  };
+
   const handleGetTokens = async () => {
-    if(!browserSupportsMetamask()) {
-      return;      
+    if (!browserSupportsMetamask()) {
+      return;
     }
     try {
-      const list = await layer2.getTokens();
+      const list = await getTokens();
       if (list) {
         setTokenList(list);
       }
@@ -42,9 +65,12 @@ const PlayGround = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.currentTarget.value);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputAmount(e.currentTarget.value);
   };
-  const CHAIN_ID = 4;
 
   const handleSwap = async () => {
     if (account && balance) {
@@ -54,11 +80,11 @@ const PlayGround = () => {
       });
       try {
         setLoadingMessage("fetching swap data...");
-        const res = await layer2.getSwapParams(
+        const res = await getSwapParams(
           Number(formatEther(balance)),
-          CHAIN_ID,
+          tokenIn,
+          tokenOut,
           Number(inputAmount),
-          "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984", // uni address
           account
         );
         if (res) {
@@ -73,21 +99,7 @@ const PlayGround = () => {
         }
         console.log(res);
       } catch (error) {
-        console.error(error);
-        if (error instanceof InsufficientFundsError) {
-          setLoadingMessage("");
-          alert("insufficient funds!");
-        }
-
-        if (error instanceof InvalidParamsError) {
-          setLoadingMessage("");
-          alert("invalid params!");
-          console.table(error);
-        }
-        if (error instanceof OperationalError) {
-          setLoadingMessage("");
-          alert("operational error!");
-        }
+        alert(error);
       }
     } else {
       alert("please connect wallet");
@@ -97,11 +109,7 @@ const PlayGround = () => {
   const handleQuote = async () => {
     if (inputAmount) {
       setLoadingMessage("fetching quote...");
-      const quote = await layer2.getQuote(
-        CHAIN_ID,
-        Number(inputAmount),
-        "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984" // uni
-      );
+      const quote = await getQuote(tokenIn, tokenOut, Number(inputAmount));
 
       if (quote) {
         setQuote(quote);
@@ -119,11 +127,14 @@ const PlayGround = () => {
     cursor: "pointer",
   };
 
-  useEffect(() => {
-    handleGetTokens();
-    //eslint-disable-next-line
-  }, []);
+  //  for testing
+  //  vitalikAddress = "0x8289432ACD5EB0214B1C2526A5EDB480Aa06A9ab";
+  //  vitalikEnsName = 'wslyvh.eth'
+  const ensName = useEnsName(address);
+  const ensAddress = useEnsAddress("wslyvh.eth");
+  const avatar = useEnsAvatar("wslyvh.eth");
 
+  console.log(ensAddress);
   return (
     <div className={styles.view}>
       <button
@@ -154,20 +165,32 @@ const PlayGround = () => {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
+        <h2>ENS:</h2>
+        <p>{ensName ?? "no name found"}</p>
+        {avatar && (
+          <img
+            style={{ width: "200px", height: "200px" }}
+            src={avatar}
+            alt="ens avatar"
+          />
+        )}
+        <input
+          value={address}
+          onChange={handleChange}
+          type="text"
+          placeholder="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+        />
+        <br />
         <h2>Swap:</h2>
         <input
           value={inputAmount}
-          onChange={handleChange}
+          onChange={handleInputChange}
           type="text"
-          placeholder="0.00"
+          placeholder="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
         />
-        <button style={buttonStyles} onClick={handleQuote}>
-          get quote
-        </button>
-        <button style={buttonStyles} onClick={handleSwap}>
-          SWAP
-        </button>
       </div>
+      <button onClick={handleQuote}>geyQuote</button>
+      <button onClick={handleSwap}>swap</button>
 
       {showWalletModal && (
         <WalletModal closeModal={() => setShowWalletModal(false)} />
