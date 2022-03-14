@@ -81,6 +81,9 @@ const SwapOverviewView: React.FC<{
         updateMessageAndClear("Quote successfully updated");
       }
     } catch (error) {
+      if((error as Error)?.name === "AbortError") {
+        return;
+      }
       alert(error);
     } finally {
       setLoading(false);
@@ -190,6 +193,9 @@ const SwapOverviewView: React.FC<{
           });
         }
       } catch (error) {
+        if((error as Error)?.name === "AbortError") {
+          return;
+        }
         alert(error);
       }
     } else {
