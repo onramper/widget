@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { NextStep } from "../../ApiContext";
@@ -58,6 +58,8 @@ const SwapOverviewView: React.FC<{
     },
   } = nextStep;
 
+  const beforeUnLoadRef = useRef<AbortController>(new AbortController());
+
   const updateMessageAndClear = (mes: string) => {
     setMessage(mes);
     setTimeout(() => setMessage(""), 3000);
@@ -70,7 +72,9 @@ const SwapOverviewView: React.FC<{
       const newQuote = await getQuote(
         tokenIn,
         tokenOut,
-        Number(amountDecimals)
+        Number(amountDecimals),
+        false,
+        beforeUnLoadRef.current.signal
       );
       if (newQuote) {
         setQuote(newQuote);
@@ -169,7 +173,7 @@ const SwapOverviewView: React.FC<{
           tokenOut,
           Number(amountDecimals),
           account,
-          false,
+          undefined,
           {
             slippageTolerance,
             deadline,
@@ -222,6 +226,14 @@ const SwapOverviewView: React.FC<{
       setTimeout(() => setMessage(""), 2000);
     }
   }, [nextScreen, state]);
+
+  useEffect(() => {
+    const onBeforeUnload = () => {
+      beforeUnLoadRef.current.abort();
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, []);
 
   return (
     <div className={commonClasses.view}>

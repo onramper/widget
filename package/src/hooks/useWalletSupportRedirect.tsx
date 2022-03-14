@@ -1,7 +1,7 @@
 import { isMetamaskEnabled } from "layer2";
 import React, { useCallback, useEffect } from "react";
 import { useNav } from "../NavContext";
-import { browserSupportsMetamask } from "../utils";
+import { browserSupportsMetamask, isMobile } from "../utils";
 import NoWalletView from "../steps/NoWalletView/NoWalletView";
 import BrowserNotSupported from "../steps/SwapOverviewView/BrowserNotSupported/BrowserNotSupported";
 
@@ -16,10 +16,27 @@ export const useWalletSupportRedirect = (
   const { nextScreen, replaceScreen } = useNav();
 
   const checkWalletSupport = useCallback(() => {
-    if (!browserSupportsMetamask()) {
+    try {
+      if (isMetamaskEnabled()) {
+        return;
+      }
+      if (isMobile()) {
+        // TODO: Screen with prompt to download Metamask app for mobile
+        replaceScreen(
+          <BrowserNotSupported currentProgress={currentProgress} />
+        );
+        return;
+      }
+      if (browserSupportsMetamask() && !isMetamaskEnabled() && !isMobile()) {
+        nextScreen(<NoWalletView currentProgress={currentProgress} />);
+        return;
+      } else {
+        replaceScreen(
+          <BrowserNotSupported currentProgress={currentProgress} />
+        );
+      }
+    } catch (error) {
       replaceScreen(<BrowserNotSupported currentProgress={currentProgress} />);
-    } else if (browserSupportsMetamask() && !isMetamaskEnabled()) {
-      nextScreen(<NoWalletView currentProgress={currentProgress} />);
     }
   }, [currentProgress, nextScreen, replaceScreen]);
 

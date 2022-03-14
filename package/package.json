@@ -46,7 +46,8 @@
     "lottie-react": "^2.1.0",
     "react-calendar": "^3.2.0",
     "react-transition-group": "^4.4.1",
-    "rendered-country-flags": "^1.2.0"
+    "rendered-country-flags": "^1.2.0",
+    "use-debounce": "^7.0.1"
   },
   "peerDependencies": {
     "react": "^17.0.2",

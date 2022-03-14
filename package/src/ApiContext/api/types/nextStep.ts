@@ -151,11 +151,13 @@ export type SwapOverviewStepData = {
   walletsData: {
     wallets: WalletItemData[];
     selectedWalletId?: string;
-  }
+  };
 };
 
 export type SwapOverviewVewStep = {
   type: "transactionOverview";
+  progress: number;
+  url: string;
   data: SwapOverviewStepData;
 };
 
