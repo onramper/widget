@@ -114,6 +114,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
         const timeout = setTimeout(async () => {
           try {
+            setIsLoading(true);
             const receivedCrypto = await getQuote(
               props.cryptoSpent,
               props.cryptoReceived,
@@ -142,6 +143,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             }
 
             reject(error);
+          } finally {
+            setIsLoading(false);
           }
         }, 0);
 
@@ -163,7 +166,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     (value: string) => {
       setSpentValue(value);
 
-      if (value === "0" || value === "") {
+      if (Number(value) === 0) {
         getAndUpdateAbortController();
         setReceivedValue("0");
         setIsLoading(false);
@@ -178,14 +181,12 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           if (response) {
             setReceivedValue(response.receivedCrypto);
           }
-          setIsLoading(false);
         } catch (_error) {
           const error = _error as Error;
           if (error?.name !== "AbortError") {
             setSwapErrorMessage(
               error?.message || "Oops! Something went wrong."
             );
-            setIsLoading(false);
           }
         }
       };
@@ -198,7 +199,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   const onMaxClick = useCallback(async () => {
     if (ethBalance) {
-      setIsLoading(true);
+      setActualSpentValue(formatEther(ethBalance));
       updateReceivedValue(formatEther(ethBalance));
     }
   }, [ethBalance, updateReceivedValue]);
@@ -231,7 +232,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           value={actualSpentValue}
           onChange={(e) =>
             onChangeFloat(e, (value) => {
-              setIsLoading(true);
               setActualSpentValue(value);
               updateSpentDebounced(value);
             })
