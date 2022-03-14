@@ -117,7 +117,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             const receivedCrypto = await getQuote(
               props.cryptoSpent,
               props.cryptoReceived,
-              Number(value)
+              Number(value),
+              undefined,
+              signal
             );
 
             if (signal.aborted) {
