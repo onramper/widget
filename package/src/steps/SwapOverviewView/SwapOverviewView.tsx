@@ -52,7 +52,7 @@ const SwapOverviewView: React.FC<{
     },
   } = nextStep;
 
-  const beforeUnLoadRef = useRef(false);
+  const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
   const updateMessageAndClear = (mes: string) => {
     setMessage(mes);
@@ -66,14 +66,16 @@ const SwapOverviewView: React.FC<{
       const newQuote = await getQuote(
         tokenIn,
         tokenOut,
-        Number(amountDecimals)
+        Number(amountDecimals),
+        false,
+        beforeUnLoadRef.current.signal
       );
       if (newQuote) {
         setQuote(newQuote);
         updateMessageAndClear("Quote successfully updated");
       }
     } catch (error) {
-      !beforeUnLoadRef.current && alert(error);
+      alert(error);
     } finally {
       setLoading(false);
     }
@@ -143,7 +145,10 @@ const SwapOverviewView: React.FC<{
           tokenIn,
           tokenOut,
           Number(amountDecimals),
-          account
+          account,
+          undefined,
+          undefined,
+          beforeUnLoadRef.current.signal
         );
 
         setMessage("Please sign transaction");
@@ -156,7 +161,7 @@ const SwapOverviewView: React.FC<{
           });
         }
       } catch (error) {
-        !beforeUnLoadRef.current && alert(error);
+        alert(error);
       }
     } else {
       alert("please connect wallet");
@@ -195,7 +200,7 @@ const SwapOverviewView: React.FC<{
 
   useEffect(() => {
     const onBeforeUnload = () => {
-      beforeUnLoadRef.current = true;
+      beforeUnLoadRef.current.abort();
     };
     window.addEventListener("beforeunload", onBeforeUnload);
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
