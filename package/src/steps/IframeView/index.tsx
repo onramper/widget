@@ -16,7 +16,8 @@ import {
 import { NavContext } from "../../NavContext";
 import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
 
-const btcdirectFinishedOrigin = "https://btcdirect.sandbox.staging.onramper.tech";
+const btcdirectFinishedOrigin =
+  "https://btcdirect.sandbox.staging.onramper.tech";
 
 const IframeView: React.FC<{
   nextStep: NextStep & { type: "iframe" | "redirect" };
@@ -43,7 +44,12 @@ const IframeView: React.FC<{
 
   useEffect(() => {
     const receiveMessage = async (event: MessageEvent) => {
-      if (![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(event.origin)) return;
+      if (
+        ![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(
+          event.origin
+        )
+      )
+        return;
       if (event.data.type === "INIT") {
         setError(undefined);
         setFatalError(undefined);

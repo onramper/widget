@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./SearchInput.module.css";
-import commonStyles from "./../../styles.module.css"; 
+import commonStyles from "./../../styles.module.css";
 import searchIcon from "./../../icons/search.svg";
 import { SearchInputProps } from "./SearchInput.models";
 
@@ -9,7 +9,9 @@ const SearchInput: React.FC<SearchInputProps> = (props: SearchInputProps) => {
 
   return (
     <div
-      className={`${styles["wrapper"]} ${isFocused ? styles["wrapper-focused"] : ""}`}
+      className={`${styles["wrapper"]} ${
+        isFocused ? styles["wrapper-focused"] : ""
+      }`}
     >
       <div
         className={`${styles["search-icon-wrapper"]} ${commonStyles["flex-all"]}`}

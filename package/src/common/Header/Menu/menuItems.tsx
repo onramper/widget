@@ -6,41 +6,41 @@ import moonPayIcon from "./../../../icons/menu/moonpay.svg";
 import uniswapIcon from "./../../../icons/menu/uniswap.svg";
 import { ListItemType } from "../../ListItemButtonGroup/ListItemButtonGroup.models";
 
-const menuItems:ListItemType[] = [
+const menuItems: ListItemType[] = [
   {
     id: "faq",
-    text: "FAQ",
+    text: "menu.menuItems.faq",
     icon: faqIcon,
     link: "https://onramper.com/FAQ",
   },
   {
     id: "privacy-policy",
-    text: "Privacy Policy",
+    text: "menu.menuItems.privacyPolicy",
     icon: privacyIcon,
-    link: "https://onramper.com/privacy-policy"
+    link: "https://onramper.com/privacy-policy",
   },
   {
     id: "terms",
-    text: "Terms of Usage",
+    text: "menu.menuItems.terms",
     icon: termsIcon,
-    link: "https://onramper.com/terms-of-use/"
+    link: "https://onramper.com/terms-of-use/",
   },
   {
     id: "help",
-    text: "Help & Support",
+    text: "menu.menuItems.help",
     icon: helpIcon,
     items: [
       {
         id: "support-moonpay",
-        text: "MoonPay Support",
+        text: "menu.menuItems.support.moonpay",
         icon: moonPayIcon,
-        link: "https://support.moonpay.com/hc/en-gb"
+        link: "https://support.moonpay.com/hc/en-gb",
       },
       {
         id: "support-uniswap",
-        text: "Uniswap Support",
+        text: "menu.menuItems.support.uniswap",
         icon: uniswapIcon,
-        link: "https://help.uniswap.org/en/"
+        link: "https://help.uniswap.org/en/",
       },
     ],
   },

@@ -1,10 +1,13 @@
 // @flow
-import * as React from 'react';
+import * as React from "react";
 import { CSSTransition } from "react-transition-group";
-import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
+import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import styles from "./BaseInput.module.css";
 
-const BaseInputTransition = React.forwardRef<HTMLDivElement, CSSTransitionProps>((props, ref) => {
+const BaseInputTransition = React.forwardRef<
+  HTMLDivElement,
+  CSSTransitionProps
+>((props, ref) => {
   return (
     <CSSTransition
       nodeRef={ref}

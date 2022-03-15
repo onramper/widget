@@ -1,4 +1,3 @@
 export type CryptoListItemRightProps = {
-    network?: string;
-}
-    
+  network?: string;
+};

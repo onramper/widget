@@ -13,8 +13,8 @@ jobs:
     - name: Get Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
-    - run: (cd package && npm ci &&  npm run build:dev)
+        node-version: '16.x'
+    - run: (cd package && npm ci --omit peer &&  npm run build:dev)
     - run: (cd iframe && npm ci &&  npm run build)
   deploy:
     needs: [lint-and-build]
@@ -64,8 +64,8 @@ jobs:
     - name: Get Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
-    - run: (cd package && npm ci && npm run build:$STAGE)
+        node-version: '16.x'
+    - run: (cd package && npm ci --omit peer && npm run build:$STAGE)
       env:
         STAGE: ${{ steps.git-branch.outputs.stage }}
     - run: (cd iframe && npm ci && npm run build:$STAGE)
@@ -87,10 +87,10 @@ jobs:
     - name: Get Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
+        node-version: '16.x'
         registry-url: 'https://registry.npmjs.org'
     - name: Clean install and build
-      run: (cd package && npm ci && npm run build:prod)
+      run: (cd package && npm ci --omit peer && npm run build:prod)
     - name: Publish to npm
       run: (cd package && npm publish)
       env:

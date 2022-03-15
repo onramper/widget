@@ -3,28 +3,36 @@ import { ItemType } from "../../ApiContext";
 import { PaymentMethodPickerProps } from "./PaymentMethodPicker.models";
 import styles from "./PaymentMethodPicker.module.css";
 import commonStyles from "../../styles.module.css";
+import { useTranslation } from "react-i18next";
 
 const Skeleton = React.forwardRef<
   HTMLUListElement,
-  { maxLength: number, style: React.CSSProperties }
+  { maxLength: number; style: React.CSSProperties }
 >(({ maxLength, style }, ref) => {
+  const { t } = useTranslation();
   return (
     <>
       <div className={`${styles.title}`}>
-        <span>Payment method</span>
+        <span>{t("buyCryptoView.paymentMethod")}</span>
       </div>
 
-      <ul className={styles.wrapper} style={{ maxWidth: "100%", ...style }} ref={ref} >
-        {[...[1, 2, 3, 4, 5].slice(0, maxLength), 1].map((n: any, i: number) => (
-          <li
-            itemProp="option"
-            key={i}
-            className={`${styles["option-wrapper"]} ${commonStyles["skeleton-box"]} ${styles["skeloton-option"]}`}
-          >
-            <div className={styles["option-logo-wrapper"]}></div>
-            <div className={styles["option-label"]}></div>
-          </li>
-        ))}
+      <ul
+        className={styles.wrapper}
+        style={{ maxWidth: "100%", ...style }}
+        ref={ref}
+      >
+        {[...[1, 2, 3, 4, 5].slice(0, maxLength), 1].map(
+          (n: any, i: number) => (
+            <li
+              itemProp="option"
+              key={i}
+              className={`${styles["option-wrapper"]} ${commonStyles["skeleton-box"]} ${styles["skeloton-option"]}`}
+            >
+              <div className={styles["option-logo-wrapper"]}></div>
+              <div className={styles["option-label"]}></div>
+            </li>
+          )
+        )}
       </ul>
     </>
   );
@@ -33,17 +41,21 @@ const Skeleton = React.forwardRef<
 const getOptionNodeSpacing = (optionNode: Element) => {
   const itemCss = getComputedStyle(optionNode);
   const marginRight = Number(itemCss.marginRight.replace("px", ""));
-  const width = window.innerWidth < 320 ? optionNode.getBoundingClientRect().width : Number(itemCss.minWidth.replace("px", ""));
+  const width =
+    window.innerWidth < 320
+      ? optionNode.getBoundingClientRect().width
+      : Number(itemCss.minWidth.replace("px", ""));
 
   return {
     marginRight,
-    width
+    width,
   };
-}
+};
 
 const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   props: PaymentMethodPickerProps
 ) => {
+  const { t } = useTranslation();
   const [maxLength, _setMaxLength] = useState(2);
   const [maxLengthUpdated, setMaxLengthUpdated] = useState<number>(0);
   const [items, setItems] = useState(props.items);
@@ -55,7 +67,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   const setMaxLength = (value: number) => {
     _setMaxLength(value);
     setMaxLengthUpdated(Date.now());
-  }
+  };
 
   const calculateDistribution = useCallback(() => {
     if (itemsLengthRef.current === 1) {
@@ -65,13 +77,11 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
 
     if (!containerRef.current) return;
 
-    const optionNode = containerRef.current.querySelector(`[itemProp="option"]`);
+    const optionNode =
+      containerRef.current.querySelector(`[itemProp="option"]`);
     if (!optionNode) return;
 
-    const {
-      width,
-      marginRight
-    } = getOptionNodeSpacing(optionNode);
+    const { width, marginRight } = getOptionNodeSpacing(optionNode);
 
     const availableWidth = containerRef.current.clientWidth - width;
     const cellWidth = width + marginRight;
@@ -83,25 +93,25 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   const getRemainingWidth = () => {
     if (!containerRef.current) return -1;
 
-    const optionNodes = containerRef.current.querySelectorAll(`[itemProp="option"]`);
-    if(optionNodes.length === 0) return -1;
+    const optionNodes =
+      containerRef.current.querySelectorAll(`[itemProp="option"]`);
+    if (optionNodes.length === 0) return -1;
 
-    const {
-      width: itemMinWidth,
-      marginRight
-    } = getOptionNodeSpacing(optionNodes[0]);
+    const { width: itemMinWidth, marginRight } = getOptionNodeSpacing(
+      optionNodes[0]
+    );
 
     let width = containerRef.current.clientWidth;
-    for(let i = 0; i < optionNodes.length; i++) {
+    for (let i = 0; i < optionNodes.length; i++) {
       width -= itemMinWidth;
 
-      if(i < optionNodes.length -1) {
+      if (i < optionNodes.length - 1) {
         width -= marginRight;
       }
     }
 
     return width;
-  }
+  };
 
   const setItemsAux = (list: ItemType[]) => {
     itemsLengthRef.current = list.length;
@@ -111,8 +121,8 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   useEffect(() => {
     setTimeout(() => {
       const remainingWidth = getRemainingWidth();
-      if(remainingWidth >= 0 && remainingWidth < 36) {
-        setStyle({justifyContent: "space-between"});
+      if (remainingWidth >= 0 && remainingWidth < 36) {
+        setStyle({ justifyContent: "space-between" });
         return;
       }
       setStyle({});
@@ -136,19 +146,30 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     const getListWithSelected = (): ItemType[] => {
       const sourceList =
         props.items.length === items.length &&
-        props.items.every((sItem: ItemType) => items.some((item) => item.id === sItem.id))
+        props.items.every((sItem: ItemType) =>
+          items.some((item) => item.id === sItem.id)
+        )
           ? items
           : props.items;
 
       if (!props.selectedId) return sourceList;
 
-      if (sourceList.slice(0, maxLength).some((i: ItemType) => i.id === props.selectedId))
+      if (
+        sourceList
+          .slice(0, maxLength)
+          .some((i: ItemType) => i.id === props.selectedId)
+      )
         return sourceList;
 
-      const selected = sourceList.find((i: ItemType) => i.id === props.selectedId);
+      const selected = sourceList.find(
+        (i: ItemType) => i.id === props.selectedId
+      );
       if (!selected) return sourceList;
 
-      return [selected, ...sourceList.filter((i: ItemType) => i.id !== props.selectedId)];
+      return [
+        selected,
+        ...sourceList.filter((i: ItemType) => i.id !== props.selectedId),
+      ];
     };
 
     const newList = getListWithSelected();
@@ -164,15 +185,21 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     }
   }, [calculateDistribution, items, maxLength, props.items, props.selectedId]);
 
-  if (props.isLoading) return <Skeleton style={style} maxLength={maxLength} ref={containerRef} />;
+  if (props.isLoading)
+    return <Skeleton style={style} maxLength={maxLength} ref={containerRef} />;
 
   const numChildren = maxLength + (maxLength < props.items.length ? 1 : 0);
 
   return (
     <>
-      <div className={styles.title}>Payment method</div>
+      <div className={styles.title}>{t("buyCryptoView.paymentMethod")}</div>
 
-      <ul ref={containerRef} className={styles.wrapper} style={style} num-children={numChildren}>
+      <ul
+        ref={containerRef}
+        className={styles.wrapper}
+        style={style}
+        num-children={numChildren}
+      >
         {items.slice(0, maxLength).map((item: ItemType, i: number) => (
           <li
             itemProp="option"

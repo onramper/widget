@@ -1,64 +1,64 @@
 .upload-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 /*******************/
 
 .drag-box {
-    padding: 1.5rem 0;
-    display: flex;
-    flex-direction: column;
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='5' ry='5' stroke='black' stroke-width='1' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-    border-radius: 5px;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    flex-grow: 1;
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='5' ry='5' stroke='black' stroke-width='1' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  flex-grow: 1;
 }
 
 .drag-box-dragging {
-    background-color: whitesmoke;
+  background-color: whitesmoke;
 }
 
-.drag-box > input[type='file'] {
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    font-size: 1rem;
+.drag-box > input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .drag-info + .drag-info {
-    margin-top: 1.5625rem;
+  margin-top: 1.5625rem;
 }
 
 /*******************/
 
 .file {
-    display: flex;
-    flex-direction: row;
-    padding: 0 1rem 1rem 1rem;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  padding: 0 1rem 1rem 1rem;
+  align-items: center;
 }
 
 .file-name {
-    flex-grow: 1;
-    margin: 0 1rem;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  flex-grow: 1;
+  margin: 0 1rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .file > :first-child {
-    height: 1rem;
+  height: 1rem;
 }
 
 .file > :last-child {
-    cursor: pointer;
-    word-break: break-all;
+  cursor: pointer;
+  word-break: break-all;
 }

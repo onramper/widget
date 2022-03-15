@@ -29,12 +29,15 @@ import type {
   NextStep,
   StepDataItems,
   FileStep,
+  PickOneOption,
   InfoDepositBankAccount,
 } from "./api/types/nextStep";
 
 import { NextStepError } from "./api";
 import type { Filters } from "./api";
 import phoneCodes from "./utils/phoneCodes";
+import i18n from "../i18n/config";
+import { isLanguageSupported, supportedLanguages } from "./utils/languages";
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
@@ -59,6 +62,7 @@ interface APIProviderType {
   defaultPaymentMethod?: string;
   filters?: Filters;
   country?: string;
+  language?: string;
   isAddressEditable?: boolean;
   themeColor: string;
   displayChatBubble?: boolean;
@@ -69,7 +73,20 @@ interface APIProviderType {
   supportSell: boolean;
   supportBuy: boolean;
   isAmountEditable?: boolean;
-  recommendedCryptoCurrencies?: string[]
+  recommendedCryptoCurrencies?: string[];
+  darkMode?: boolean;
+}
+
+/**
+ * Provided a language will update the i18n and headers if required.
+ *
+ * @param language The ISO 639-1 language code. E.g. 'ja'. See: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ */
+ function updateLanguageIfRequired(language: string) {
+  if (i18n.language !== language)
+    i18n.changeLanguage(language);
+  if (API.getAcceptLanguageParameter() !== language)
+    API.updateAcceptLanguageParameter();
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -203,6 +220,22 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       const actualCountry = props.country || country;
+
+      // The language provided explicitly via the '?language=' query parameter.
+      let explicitLanguage;
+      if (props.language) {
+        if (isLanguageSupported(props.language))
+          explicitLanguage = props.language;
+        else
+          console.error(
+            `The language set by the query parameter '?language=${props.language}' is not supported. ` +
+              `The following languages are currently supported by Onramper: [${supportedLanguages}]. ` +
+              `For more information, see: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes.`
+          );
+      }
+
+      if (explicitLanguage) updateLanguageIfRequired(explicitLanguage);
+
       // REQUEST AVAILABLE GATEWAYS
       let rawResponseGateways: GatewaysResponse;
       let responseGateways: GatewaysResponse;
@@ -273,7 +306,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         });
       }
 
-      availableCryptos = API.sortCryptoByRecommended(availableCryptos, props.recommendedCryptoCurrencies);
+      availableCryptos = API.sortCryptoByRecommended(
+        availableCryptos,
+        props.recommendedCryptoCurrencies
+      );
 
       // MAP AVAILABLE CRYPTOS LIST (CURRENCY LIST) TO AN ITEMTYPE LIST
       const mappedAvailableCryptos: ItemType[] = availableCryptos.map(
@@ -326,7 +362,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       clearErrors,
       props.country,
       props.displayChatBubble,
-      props.recommendedCryptoCurrencies
+      props.recommendedCryptoCurrencies,
+      props.language,
     ]
   );
 
@@ -394,8 +431,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       // save to state.collected
       handleInputChange("selectedCrypto", actualCrypto);
       const addrs = state.collected.defaultAddrs[actualCrypto.id];
-      const addrs2 = Object.entries(state.collected.defaultAddrs).find(
-        ([k]) => k.includes(state.collected.selectedCrypto?.name ?? "-1")
+      const addrs2 = Object.entries(state.collected.defaultAddrs).find(([k]) =>
+        k.includes(state.collected.selectedCrypto?.name ?? "-1")
       );
       handleInputChange("cryptocurrencyAddress", {
         address: addrs?.address ?? addrs2?.[1]?.address,
@@ -971,7 +1008,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           handleCryptoChange,
           handleCurrencyChange,
           handlePaymentMethodChange,
-          restartWidget
+          restartWidget,
         },
         apiInterface: { init, executeStep, getRates, clearErrors },
       }}
@@ -996,4 +1033,5 @@ export type {
   APIProviderType,
   CollectedStateType,
   GatewayRateOptionSimple,
+  PickOneOption
 };
