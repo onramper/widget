@@ -1,3 +1,3 @@
 export type NotificationSectionProps = {
-    onBuyCrypto: () => void
-}
+  onBuyCrypto: () => void;
+};

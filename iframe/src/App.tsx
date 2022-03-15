@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import TagManager from "react-gtm-module";
 import OnramperWidget, { Onramper } from "@onramper/widget";
 
 const com_key = "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00";
@@ -31,6 +32,7 @@ const excludeFiat = getArrayParam("excludeFiat");
 const onlyGateways = getArrayParam("onlyGateways");
 const onlyFiat = getArrayParam("onlyFiat");
 const country = getParam("country");
+const language = getParam("language");
 const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble", "false");
@@ -48,6 +50,7 @@ const isAmountEditable = getParam("isAmountEditable", "true") === "true";
 const recommendedCryptoCurrencies = getArrayParam(
   "recommendedCryptoCurrencies"
 );
+const darkMode = getParam("darkMode");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -62,6 +65,17 @@ function App() {
     height: "100%",
     backgroundColor: inIframe() ? "transparent" : "whitesmoke",
   } as React.CSSProperties;
+
+  // Google Tag Manager
+  useEffect(() => {
+    const tagManagerArgs = {
+      gtmId: process.env.REACT_APP_GTM_ID ?? '',
+      dataLayer: {
+        apiKey: apiKey,
+      },
+    };
+    TagManager.initialize(tagManagerArgs);
+  }, []);
 
   return (
     <>
@@ -88,6 +102,7 @@ function App() {
               onlyFiat: onlyFiat,
             }}
             country={country}
+            language={language}
             isAddressEditable={
               isAddressEditable === undefined
                 ? undefined
@@ -110,6 +125,7 @@ function App() {
             supportBuy={supportBuy}
             isAmountEditable={isAmountEditable}
             recommendedCryptoCurrencies={recommendedCryptoCurrencies}
+            darkMode={darkMode === "true"}
           />
         </div>
       </div>

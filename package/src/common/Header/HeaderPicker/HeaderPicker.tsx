@@ -33,7 +33,6 @@ const HeaderPicker: React.FC<HeaderPickerProps> = (
     default:
       return <Header {...(props as HeaderType)} />;
   }
-
 };
 
 export default HeaderPicker;

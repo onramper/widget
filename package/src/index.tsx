@@ -9,6 +9,9 @@ import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
+
+import "./i18n/config";
+
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 
@@ -38,7 +41,9 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
       key={flagRestart}
       id="main"
       style={style}
-      className={`isolate-inheritance ${styles.theme} ${className}`}
+      className={`isolate-inheritance ${styles.theme} ${className} ${
+        props.darkMode ? styles.dark : ""
+      }`}
     >
       <ErrorBoundary
         fallback={({ resetError }) => (
@@ -60,6 +65,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             defaultPaymentMethod={props.defaultPaymentMethod}
             filters={props.filters}
             country={props.country}
+            language={props.language}
             isAddressEditable={props.isAddressEditable}
             themeColor={color.slice(1)}
             displayChatBubble={props.displayChatBubble}
