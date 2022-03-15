@@ -72,7 +72,7 @@ const PickOptionView: React.FC<{
         >
           <ButtonAction
             onClick={handleButtonAction}
-            text={t("button.continue")}
+            text={nextStep.buttonActionTitle || t("button.continue")}
             disabled={!isFilled && isLoading}
           />
           <Footer />
