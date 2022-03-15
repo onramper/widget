@@ -8,14 +8,17 @@ import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import { APIContext } from "../../ApiContext";
 import { useNav } from "../../NavContext";
 import BuyCryptoView from "../../BuyCryptoView";
+import { TokenInfo, useAddTokenToMetamask } from "layer2";
 
 const OrderCompleteView: React.FC<{
   description: string;
   title: string;
+  tokenOut: TokenInfo;
 }> = (props) => {
   const { collected } = useContext(APIContext);
   const { onlyScreen } = useNav();
   const [autoPlay, setAutoPlay] = useState(false);
+  const { addToken } = useAddTokenToMetamask(props.tokenOut);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -26,7 +29,16 @@ const OrderCompleteView: React.FC<{
 
   return (
     <div className={`${commonClasses.view} ${classes["view"]}`}>
-      <ProgressHeader primary noSeparator />
+      <ProgressHeader
+        onExitClick={
+          collected.redirectURL
+            ? () => window.open(collected.redirectURL, "_parent")
+            : () => onlyScreen(<BuyCryptoView />)
+        }
+        useExitButton
+        primary
+        noSeparator
+      />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <div className={classes["checkmark-wrapper"]}>
           <Lottie
@@ -40,13 +52,9 @@ const OrderCompleteView: React.FC<{
 
         <div className={classes["bottom-section"]}>
           <ButtonSecondary
-            onClick={
-              collected.redirectURL
-                ? () => window.open(collected.redirectURL, "_parent")
-                : () => onlyScreen(<BuyCryptoView />)
-            }
+            onClick={addToken}
             primary
-            text="Dismiss"
+            text={`Add ${props.tokenOut.symbol} to MetaMask`}
           />
         </div>
       </main>

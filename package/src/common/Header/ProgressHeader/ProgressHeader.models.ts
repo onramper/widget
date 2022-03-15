@@ -1,8 +1,10 @@
 export type ProgressHeaderProps = {
-    percentage?: number;
-    primary?: boolean;
-    title?: string;
-    useBackButton?: boolean;
-    noSeparator?: boolean;
-    onMenuClick?: () => {}
-}
+  percentage?: number;
+  primary?: boolean;
+  title?: string;
+  useBackButton?: boolean;
+  useExitButton?: boolean;
+  onExitClick?: () => void;
+  noSeparator?: boolean;
+  onMenuClick?: () => {};
+};
