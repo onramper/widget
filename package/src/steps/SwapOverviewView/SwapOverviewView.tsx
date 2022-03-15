@@ -16,7 +16,7 @@ import {
   getSwapParams,
   useLayer2,
   useSendTransaction,
-  DEFAULTS as defaultSettings
+  DEFAULTS as defaultSettings,
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
@@ -81,7 +81,7 @@ const SwapOverviewView: React.FC<{
         updateMessageAndClear("Quote successfully updated");
       }
     } catch (error) {
-      if((error as Error)?.name === "AbortError") {
+      if ((error as Error)?.name === "AbortError") {
         return;
       }
       alert(error);
@@ -193,7 +193,7 @@ const SwapOverviewView: React.FC<{
           });
         }
       } catch (error) {
-        if((error as Error)?.name === "AbortError") {
+        if ((error as Error)?.name === "AbortError") {
           return;
         }
         alert(error);
@@ -205,15 +205,16 @@ const SwapOverviewView: React.FC<{
 
   // replace this with better user feedback
   useEffect(() => {
+    nextScreen(
+      <OrderCompleteView
+        title="Success! Your Swap has been executed."
+        description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
+        tokenOut={props.nextStep.data.tokenOut}
+      />
+    );
     if (state.status === "Success") {
       setMessage("Success! 🥳");
       setLoading(false);
-      nextScreen(
-        <OrderCompleteView
-          title="Success! Your Swap has been executed."
-          description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-        />
-      );
     }
 
     if (state.status === "Mining") {
@@ -231,7 +232,7 @@ const SwapOverviewView: React.FC<{
       setLoading(false);
       setTimeout(() => setMessage(""), 2000);
     }
-  }, [nextScreen, state]);
+  }, [nextScreen, props.nextStep.data.tokenOut, state]);
 
   useEffect(() => {
     const onBeforeUnload = () => {

@@ -71,6 +71,10 @@
   fill: var(--stroke-light-color);
 }
 
+.header-burger-icon path {
+  fill: var(--stroke-light-color);
+}
+
 .progress-bar {
   width: 50%;
   height: var(--h-border-width);

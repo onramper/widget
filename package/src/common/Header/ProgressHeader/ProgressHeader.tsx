@@ -6,6 +6,7 @@ import classes from "./ProgressHeader.module.css";
 import headerClasses from "../Header.module.css";
 import { ReactComponent as IconMenu } from "../../../icons/menu-var-2.svg";
 import { ReactComponent as ArrowLeftIcon } from "../../../icons/arrow-left.svg";
+import { ReactComponent as CloseMenu } from "../../../icons/menu-close.svg";
 
 const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
   const { nextScreen, backScreen } = useContext(NavContext);
@@ -20,6 +21,11 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
         props.primary ? classes.primary : ""
       } ${classes["header"]}`}
     >
+      {props.useExitButton && props.onExitClick && (
+        <button onClick={props.onExitClick}>
+          <CloseMenu className={classes["header-burger-icon"]} />
+        </button>
+      )}
       {props.useBackButton && (
         <ArrowLeftIcon
           className={classes["arrow-back"]}
