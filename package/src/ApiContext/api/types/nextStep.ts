@@ -166,6 +166,7 @@ type NextStep = NextStepBase &
       }
     | {
         type: "pickOne";
+        buttonActionTitle?: string;
         options: PickOneOption[];
       }
     | {

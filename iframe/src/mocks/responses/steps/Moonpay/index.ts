@@ -159,6 +159,7 @@ const pickOneStep = {
   title: "Verify your identity",
   description:
     "To keep it secure, please verify your identity using any of the options below.",
+  buttonActionTitle: "Begin Verification",
   type: "pickOne",
   options: [
     {
