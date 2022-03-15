@@ -79,6 +79,14 @@ interface FileStep {
   acceptedContentTypes: string[];
 }
 
+interface PickOneOption {
+  type: "option";
+  title: string;
+  url: string;
+  description?: string;
+  icon?: string;
+}
+
 interface InfoDepositBankAccount {
   iban: string;
   bic: string;
@@ -158,9 +166,7 @@ type NextStep = NextStepBase &
       }
     | {
         type: "pickOne";
-        options: FileStep[];
-        humanName?: string;
-        hint?: string;
+        options: PickOneOption[];
       }
     | {
         type: "completed";
@@ -175,6 +181,7 @@ type NextStep = NextStepBase &
     | EmailVerificationStep
     | OrderCompleteStep
     | PaymentReviewStep
+    | PickOneOption
   );
 
 interface FieldError {
@@ -191,4 +198,5 @@ export type {
   FileStep,
   NextStepErr,
   FieldError,
+  PickOneOption,
 };

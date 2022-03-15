@@ -32,5 +32,8 @@
   "header": {
     "selectFiat": "Select fiat currency",
     "selectCrypto": "Select cryptocurrency"
+  },
+  "button": {
+    "continue": "Continue"
   }
 }
