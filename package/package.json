@@ -36,6 +36,7 @@
     "prepublishOnly": "npm run build:prod"
   },
   "dependencies": {
+    "@metamask/jazzicon": "^2.0.0",
     "@onramper/flag-icons": "^1.0.0",
     "@onramper/moonpay-adapter": "^1.6.15",
     "@sentry/browser": "^6.1.0",
