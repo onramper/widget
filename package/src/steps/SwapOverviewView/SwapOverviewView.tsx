@@ -29,6 +29,10 @@ import { createConfirmSwapProps } from "./utils";
 import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
 import { BASE_API } from "../../ApiContext/api/constants";
 import { WalletItemData } from "../../ApiContext/api/types/nextStep";
+import {
+  useTransactionContext,
+  useTransactionCtxWallets,
+} from "../../TransactionContext/hooks";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -96,6 +100,10 @@ const SwapOverviewView: React.FC<{
     }
   }, [amountDecimals, tokenIn, tokenOut]);
 
+  const { updateWallets } = useTransactionCtxWallets();
+  const { wallets } = useTransactionContext();
+  console.log({ wallets });
+
   useEffect(() => {
     handleUpdate();
   }, [handleUpdate]);
@@ -143,7 +151,8 @@ const SwapOverviewView: React.FC<{
           quote,
           slippageTolerance,
           deadline,
-          selectedWalletAddress: selectedWalletAddress || metaAddress || undefined,
+          selectedWalletAddress:
+            selectedWalletAddress || metaAddress || undefined,
           wallets: customWallets,
         })}
         submitData={submitData}
@@ -255,14 +264,14 @@ const SwapOverviewView: React.FC<{
           wallets: WalletItemData[];
         };
 
-        setCustomWallets(data.wallets.map((w) => ({ ...w, id: w.name })));
+        updateWallets(data.wallets);
       } catch (err) {
         alert(err);
       }
     };
 
     getAndSetWallets();
-  }, [nextStep.data.userId]);
+  }, [nextStep.data.userId, updateWallets]);
 
   return (
     <div className={commonClasses.view}>
