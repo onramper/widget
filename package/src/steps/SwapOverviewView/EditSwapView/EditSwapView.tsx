@@ -25,7 +25,6 @@ import {
   formatEther,
   useEtherBalance,
   getQuote,
-  useLayer2,
   useTokenBalance,
   DEFAULTS as defaultSettings,
 } from "layer2";
@@ -52,8 +51,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   // settings
   const [wallets, setWallets] = useState(props.wallets);
-  const [selectedWalletId, setSelectedWalletId] = useState(
-    props.selectedWalletId
+  const [selectedWalletAddress, setSelectedWalletAddress] = useState(
+    props.selectedWalletAddress
   );
   const [slippage, setSlippage] = useState(props.slippageTolerance.toFixed(2));
   const [deadline, setDeadline] = useState(
@@ -61,18 +60,17 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
 
   const { backScreen } = useContext(NavContext);
-  const { account } = useLayer2();
-  const ethBalance = useEtherBalance(account);
+  const ethBalance = useEtherBalance(selectedWalletAddress);
   const targetTokenBalance = useTokenBalance(
     props.cryptoReceived.address,
-    account
+    selectedWalletAddress
   );
 
   const onActionButton = useCallback(async () => {
     props.submitData({
       spentValue,
       receivedValue,
-      selectedWalletId,
+      selectedWalletAddress,
       wallets,
       slippage: Number(slippage),
       deadline: Number(deadline) * 60,
@@ -83,7 +81,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     deadline,
     props,
     receivedValue,
-    selectedWalletId,
+    selectedWalletAddress,
     slippage,
     spentValue,
     wallets,
@@ -214,11 +212,11 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             className={classes["settings"]}
             wallets={wallets}
             updateWallets={setWallets}
-            selectedWalletId={selectedWalletId}
+            selectedWalletAddress={selectedWalletAddress}
             slippage={slippage}
             deadline={deadline}
             defaultSlippage={defaultSettings.slippageTolerance}
-            onChangeWalletId={setSelectedWalletId}
+            onChangeWalletAddress={setSelectedWalletAddress}
             onChangeDeadline={setDeadline}
             onChangeSlippage={setSlippage}
             cryptoName={props.cryptoSpent.currencyShortName}

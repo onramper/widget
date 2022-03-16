@@ -7,6 +7,6 @@ export type DestinationWalletViewProps = {
   description: string;
   wallets: WalletItemData[];
   cryptoName: string;
-  selectedWalletId?: string;
-  submitData: (wallets: WalletItemData[], walletId: string) => void;
+  selectedWalletAddress?: string;
+  submitData: (wallets: WalletItemData[], address: string) => void;
 };

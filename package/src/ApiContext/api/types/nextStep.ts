@@ -122,9 +122,8 @@ export type PaymentReviewStep = {
 };
 
 export type WalletItemData = {
-  walletAddress: string;
-  accountName: string;
-  id: string;
+  address: string;
+  name: string;
   balance: number;
   icon?: string;
   isConnected?: boolean;
@@ -148,10 +147,7 @@ export type SwapOverviewStepData = {
   fiatSymbol: string;
   balance: number;
   feeBreakdown: BrakdownItem[][];
-  walletsData: {
-    wallets: WalletItemData[];
-    selectedWalletId?: string;
-  };
+  userId: string;
 };
 
 export type SwapOverviewVewStep = {

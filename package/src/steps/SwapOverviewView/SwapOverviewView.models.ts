@@ -12,7 +12,7 @@ export type SwapOverviewViewProps = {
 export type ConfirmSwapEditResults = {
   spentValue: string;
   receivedValue: string;
-  selectedWalletId?: string;
+  selectedWalletAddress?: string;
   wallets: WalletItemData[];
   deadline: number;
   slippage: number;
@@ -28,4 +28,6 @@ export type ConfirmSwapParam = {
   quote: QuoteDetails;
   slippageTolerance: number;
   deadline: number;
+  wallets: WalletItemData[];
+  selectedWalletAddress?: string;
 };

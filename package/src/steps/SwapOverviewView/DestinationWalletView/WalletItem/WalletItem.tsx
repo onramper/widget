@@ -8,6 +8,11 @@ import { ReactComponent as CheckmarkRoundIcon } from "../../../../icons/check-ro
 import { ReactComponent as GarbageCanIcon } from "../../../../icons/garbage-can.svg";
 import { CSSTransition } from "react-transition-group";
 import WalletInput from "../WalletInput/WalletInput";
+import { formatEther, useEtherBalance } from "layer2";
+import { BigNumberish } from "@ethersproject/bignumber";
+
+const computeBalance = (bigNum?:BigNumberish) =>
+  bigNum ? Number(formatEther(bigNum)).toFixed(4) : "0";
 
 const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -15,6 +20,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const datailsWrapperRef = useRef<HTMLDivElement>(null);
+  const ethBalance = useEtherBalance(props.address);
 
   const onToggleEditing = () => {
     setAddress(props.address || "");
@@ -55,53 +61,60 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
 
       <div className={classes["state-container"]}>
         <Transition ref={datailsWrapperRef} in={!isEditing}>
-          <div ref={datailsWrapperRef} className={classes["wallet-content"]} >
+          <div ref={datailsWrapperRef} className={classes["wallet-content"]}>
             <Checkmark isChecked={props.isChecked} onClick={props.onCheck} />
-              <div className={classes["details-area-wrapper"]} onClick={props.onCheck}>
-                <WalletItemIcon icon={props.icon} />
-                <TextEllipsis
-                  text={props.title}
-                  className={classes["item-title"]}
-                />
-                <div className={classes["item-info"]}>{props.info}</div>
-
-                {[props.isConnected, props.onDelete].some((i) => i) && (
-                  <div className={classes["right-content"]}>
-                    {props.isConnected && (
-                      <CheckmarkRoundIcon className={classes["check-round"]} />
-                    )}
-                    {props.onDelete && (
-                      <GarbageCanIcon
-                        className={classes["delete-icon"]}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          props.onDelete && props.onDelete();
-                        }}
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </Transition>
-
-          <Transition ref={inputWrapperRef} in={isEditing}>
-            <div className={classes["input-wrapper"]} ref={inputWrapperRef}>
-              <WalletInput
-                onSubmit={onSubmit}
-                errorMessage={errorMessage}
-                value={address}
-                onChange={setAddress}
-                autoFocus
+            <div
+              className={classes["details-area-wrapper"]}
+              onClick={props.onCheck}
+            >
+              <WalletItemIcon icon={props.icon} />
+              <TextEllipsis
+                text={props.address || ""}
+                className={classes["item-title"]}
               />
+              <div
+                className={classes["item-info"]}
+              >{`Balance: ${computeBalance(ethBalance)} ETH`}</div>
+
+              {[props.isConnected, props.onDelete].some((i) => i) && (
+                <div className={classes["right-content"]}>
+                  {props.isConnected && (
+                    <CheckmarkRoundIcon className={classes["check-round"]} />
+                  )}
+                  {props.onDelete && (
+                    <GarbageCanIcon
+                      className={classes["delete-icon"]}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        props.onDelete && props.onDelete();
+                      }}
+                    />
+                  )}
+                </div>
+              )}
             </div>
-          </Transition>
+          </div>
+        </Transition>
+
+        <Transition ref={inputWrapperRef} in={isEditing}>
+          <div className={classes["input-wrapper"]} ref={inputWrapperRef}>
+            <WalletInput
+              onSubmit={onSubmit}
+              errorMessage={errorMessage}
+              value={address}
+              onChange={setAddress}
+              autoFocus
+            />
+          </div>
+        </Transition>
       </div>
     </div>
   );
 };
 
-const Checkmark: React.FC<{ isChecked: boolean; onClick:() => void }> = (props) => (
+const Checkmark: React.FC<{ isChecked: boolean; onClick: () => void }> = (
+  props
+) => (
   <div
     className={`${classes["check-wrapper"]} ${
       props.isChecked ? classes["checked"] : ""
