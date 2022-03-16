@@ -17,13 +17,18 @@ import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
 import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
 import BaseInput from "../../../common/Input/BaseInput/BaseInput";
+import { useLayer2 } from "layer2";
+import { metamaskWallet } from "../constants";
 
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   const { nextScreen } = useContext(NavContext);
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
-  const [wallets, setWallets] = useState(computeWallets(props.wallets));
+  const { account: mmAddress } = useLayer2();
+  const [wallets, setWallets] = useState(
+    computeWallets(props.wallets, mmAddress)
+  );
   const [defaultDeadline] = useState(props.deadline);
 
   const computeSlippageAutoBtnClass = useCallback(() => {
@@ -88,7 +93,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
     props.onChangeDeadline(Number(props.deadline).toFixed(2));
   }, [deadlineHasError, defaultDeadline, props]);
 
-  const goToWalletDestination = useCallback(async () => {
+  const goToWalletDestination = useCallback(() => {
     nextScreen(
       <DestinationWalletView
         wallets={props.wallets}
@@ -96,16 +101,19 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
         heading="Add destination wallet (Optional)"
         description="Choose which wallet you would like your funds to be deposited in"
         cryptoName={props.cryptoName}
-        selectedWalletId={props.selectedWalletId}
-        submitData={(wallets, walletId) => {
+        selectedWalletAddress={props.selectedWalletAddress}
+        submitData={(wallets, address) => {
           props.updateWallets(wallets);
-          props.onChangeWalletId(walletId);
+          props.onChangeWalletAddress(address);
         }}
       />
     );
   }, [nextScreen, props]);
 
-  useEffect(() => setWallets(computeWallets(props.wallets)), [props.wallets]);
+  useEffect(
+    () => setWallets(computeWallets(props.wallets, mmAddress)),
+    [mmAddress, props.wallets]
+  );
 
   useEffect(() => {
     const onClickEvent = (event: MouseEvent) => {
@@ -197,8 +205,10 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 suplimentBtnText="+ Add new wallet"
                 addNewBtnText="+ Add a destination wallet"
                 items={wallets}
-                idSelected={props.selectedWalletId}
-                onSelect={(item: ListItem) => props.onChangeWalletId(item.id)}
+                idSelected={props.selectedWalletAddress}
+                onSelect={(item: ListItem) =>
+                  props.onChangeWalletAddress(item.id)
+                }
                 onAdd={goToWalletDestination}
               />
             </div>
@@ -209,14 +219,17 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   );
 };
 
-const computeWallets = (wallets: WalletItemData[]) =>
-  wallets.map(
+const computeWallets = (
+  wallets: WalletItemData[],
+  metamaskAddress: string | null | undefined
+) =>
+  [{ ...metamaskWallet, address: metamaskAddress || "" }, ...wallets].map(
     (item) =>
       ({
-        id: item.id,
-        title: item.accountName,
+        id: item.address,
+        title: item.name,
         icon: item.icon,
-        info: item.walletAddress,
+        info: item.address,
       } as ListItem)
   );
 

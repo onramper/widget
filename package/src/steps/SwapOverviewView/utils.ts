@@ -14,7 +14,9 @@ export const createConfirmSwapProps: (
   tokenOutURL,
   quote,
   slippageTolerance,
-  deadline
+  deadline,
+  wallets,
+  selectedWalletAddress,
 }) => {
   return {
     cryptoSpent: {
@@ -44,8 +46,8 @@ export const createConfirmSwapProps: (
     },
     warning:
       "Above mentioned figures are valid for 1 minute based upon current market rates.",
-    wallets: data.walletsData.wallets,
-    selectedWalletId: data.walletsData.selectedWalletId,
+    wallets,
+    selectedWalletAddress,
     slippageTolerance,
     deadline
   };

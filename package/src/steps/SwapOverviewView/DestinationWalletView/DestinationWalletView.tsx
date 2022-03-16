@@ -12,16 +12,19 @@ import ErrorView from "../../../common/ErrorView";
 import WalletItem from "./WalletItem/WalletItem";
 import WalletInput from "./WalletInput/WalletInput";
 import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
+import { metamaskWallet } from "../constants";
+import { useLayer2 } from "layer2";
 
 const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [defaultWallets] = useState(
-    props.wallets.filter((i) => i.id === "metamask")
+  const { account: metaAddress } = useLayer2();
+  const [defaultWallets, setDefaultWallets] = useState([
+    { ...metamaskWallet, address: metaAddress },
+  ]);
+  const [wallets, setWallets] = useState(props.wallets);
+  const [selectedWalletAddress, setSelectedWalletAddress] = useState(
+    props.selectedWalletAddress
   );
-  const [wallets, setWallets] = useState(
-    props.wallets.filter((i) => i.id !== "metamask")
-  );
-  const [walletId, setWalletId] = useState(props.selectedWalletId);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [newWalletAddress, setNewWalletAddress] = useState("");
   const [newWalletError, setNewWalletAddressError] = useState<
@@ -33,7 +36,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
   const { nextScreen, backScreen } = useContext(NavContext);
 
   const onSubmitAddress = useCallback(
-    (address: string, walletId: string) => {
+    (address: string) => {
       return new Promise<void>((resolve, reject) => {
         if (!address) {
           return reject(new Error("Value cannot be empty."));
@@ -45,9 +48,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
           }
 
           setWallets(
-            wallets.map((i) =>
-              i.id === walletId ? { ...i, walletAddress: address } : i
-            )
+            wallets.map((i) => (i.address === address ? { ...i, address } : i))
           );
           resolve();
         }, 200);
@@ -70,8 +71,8 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
         }
 
         const newWallet = {
-          walletAddress: newWalletAddress,
-          accountName: `Account ${wallets.length + 1}`,
+          address: newWalletAddress,
+          name: `Account ${wallets.length + 1}`,
           id: `account${wallets.length + 1}`,
           balance: (1000 * Math.random()) | 0,
         };
@@ -93,7 +94,7 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
     setErrorMessage(undefined);
 
     try {
-      props.submitData([...defaultWallets, ...wallets], walletId || "");
+      props.submitData(wallets, selectedWalletAddress || "");
       backScreen();
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
@@ -103,18 +104,20 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
       }
       setErrorMessage(error.message);
     }
-  }, [backScreen, defaultWallets, nextScreen, props, walletId, wallets]);
+  }, [backScreen, nextScreen, props, selectedWalletAddress, wallets]);
 
   const onDeleteWallet = useCallback(
-    (id: string) => {
-      setWallets(wallets.filter((i) => i.id !== id));
+    (address: string) => {
+      setWallets(wallets.filter((i) => i.address !== address));
     },
     [wallets]
   );
 
   const isContinueDisabled = useCallback(() => {
-    return ![...defaultWallets, ...wallets].some((i) => i.id === walletId);
-  }, [defaultWallets, walletId, wallets]);
+    return ![...defaultWallets, ...wallets].some(
+      (i) => i.address === selectedWalletAddress
+    );
+  }, [defaultWallets, selectedWalletAddress, wallets]);
 
   useEffect(() => {
     if (!walletsWrapperRef.current) {
@@ -126,6 +129,11 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
     walletsWrapperRef.current.setAttribute("is-overflowing", String(value));
     setIsOverflowing(value);
   }, [defaultWallets.length, wallets.length]);
+
+  useEffect(
+    () => setDefaultWallets([{ ...metamaskWallet, address: metaAddress }]),
+    [metaAddress]
+  );
 
   return (
     <div className={commonClasses.view}>
@@ -155,14 +163,14 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
                 return (
                   <WalletItem
                     key={index}
-                    label={wallet.accountName}
-                    title={wallet.walletAddress}
-                    address={wallet.walletAddress}
-                    info={`Balance: ${wallet.balance} ${props.cryptoName}`}
-                    isChecked={wallet.id === walletId}
+                    label={wallet.name}
+                    address={wallet.address || undefined}
+                    isChecked={wallet.address === selectedWalletAddress}
                     icon={wallet.icon}
-                    onCheck={() => setWalletId(wallet.id)}
-                    isConnected={wallet.isConnected}
+                    onCheck={() =>
+                      setSelectedWalletAddress(wallet.address || undefined)
+                    }
+                    isConnected={true}
                   />
                 );
               })}
@@ -191,15 +199,13 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
               return (
                 <WalletItem
                   key={index}
-                  label={wallet.accountName}
-                  title={wallet.walletAddress}
-                  address={wallet.walletAddress}
-                  info={`Balance: ${wallet.balance} ${props.cryptoName}`}
-                  isChecked={wallet.id === walletId}
+                  label={wallet.name}
+                  address={wallet.address}
+                  isChecked={wallet.address === selectedWalletAddress}
                   icon={wallet.icon}
-                  onCheck={() => setWalletId(wallet.id)}
-                  onSubmitAddress={(value) => onSubmitAddress(value, wallet.id)}
-                  onDelete={() => onDeleteWallet(wallet.id)}
+                  onCheck={() => setSelectedWalletAddress(wallet.address)}
+                  onSubmitAddress={onSubmitAddress}
+                  onDelete={() => onDeleteWallet(wallet.address)}
                 />
               );
             })}

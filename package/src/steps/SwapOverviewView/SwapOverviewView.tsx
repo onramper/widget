@@ -27,20 +27,22 @@ import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import ConfirmSwapView from "./EditSwapView/EditSwapView";
 import { createConfirmSwapProps } from "./utils";
 import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
+import { BASE_API } from "../../ApiContext/api/constants";
+import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
 }> = (props) => {
   const [nextStep, setNextStep] = useState(props.nextStep);
-  const { account, active } = useLayer2();
-  const balance = useEtherBalance(account);
+  const { account: metaAddress, active } = useLayer2();
+  const balance = useEtherBalance(metaAddress);
   const [quote, setQuote] = useState<QuoteDetails>(
     nextStep.data.transactionData
   );
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const isActive = account && active;
+  const isActive = metaAddress && active;
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
@@ -48,6 +50,10 @@ const SwapOverviewView: React.FC<{
     defaultSettings.slippageTolerance
   );
   const [deadline, setDeadline] = useState(defaultSettings.deadline);
+  const [customWallets, setCustomWallets] = useState<WalletItemData[]>([]);
+  const [selectedWalletAddress, setSelectedWalletAddress] = useState<
+    string | undefined
+  >();
 
   const {
     data: {
@@ -109,26 +115,20 @@ const SwapOverviewView: React.FC<{
     const fiatConversion = getFiatConversion();
 
     const submitData = (results: ConfirmSwapEditResults) => {
-      const {
-        spentValue,
-        receivedValue,
-        selectedWalletId,
-        wallets,
-        slippage,
-        deadline,
-      } = results;
+      const { spentValue, receivedValue, slippage, deadline } = results;
 
       nextStep.data.transactionData.amountDecimals = spentValue;
       nextStep.data.transactionData.quoteGasAdjustedDecimals = receivedValue;
       quote.amountDecimals = spentValue;
       quote.quoteGasAdjustedDecimals = receivedValue;
-      nextStep.data.walletsData.selectedWalletId = selectedWalletId;
-      nextStep.data.walletsData.wallets = wallets;
 
       setNextStep({ ...nextStep });
       setQuote({ ...quote });
       setSlippageTolerance(slippage);
       setDeadline(deadline);
+
+      setSelectedWalletAddress(results.selectedWalletAddress);
+      setCustomWallets(results.wallets);
     };
 
     nextScreen(
@@ -142,18 +142,23 @@ const SwapOverviewView: React.FC<{
           tokenOutURL,
           quote,
           slippageTolerance,
-          deadline: deadline,
+          deadline,
+          selectedWalletAddress: selectedWalletAddress || metaAddress || undefined,
+          wallets: customWallets,
         })}
         submitData={submitData}
       />
     );
   }, [
+    metaAddress,
+    customWallets,
     deadline,
     getFiatConversion,
     nextScreen,
     nextStep,
     parsedTokenIn,
     quote,
+    selectedWalletAddress,
     slippageTolerance,
     tokenIn.logoURI,
     tokenOut,
@@ -166,7 +171,7 @@ const SwapOverviewView: React.FC<{
   }, [error]);
 
   const handleSwap = async () => {
-    if (account && balance) {
+    if (metaAddress && balance) {
       setLoading(true);
       setMessage("Fetching best price...");
       try {
@@ -175,7 +180,7 @@ const SwapOverviewView: React.FC<{
           tokenIn,
           tokenOut,
           Number(amountDecimals),
-          account,
+          metaAddress,
           undefined,
           {
             slippageTolerance,
@@ -189,7 +194,7 @@ const SwapOverviewView: React.FC<{
             data: res.data,
             to: res.to,
             value: res.value,
-            from: account,
+            from: metaAddress,
           });
         }
       } catch (error) {
@@ -240,6 +245,24 @@ const SwapOverviewView: React.FC<{
     window.addEventListener("beforeunload", onBeforeUnload);
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, []);
+
+  useEffect(() => {
+    const getAndSetWallets = async () => {
+      try {
+        const data = (await (
+          await fetch(`${BASE_API}/getUserWallets/${nextStep.data.userId}`)
+        ).json()) as {
+          wallets: WalletItemData[];
+        };
+
+        setCustomWallets(data.wallets.map((w) => ({ ...w, id: w.name })));
+      } catch (err) {
+        alert(err);
+      }
+    };
+
+    getAndSetWallets();
+  }, [nextStep.data.userId]);
 
   return (
     <div className={commonClasses.view}>

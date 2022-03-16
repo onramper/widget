@@ -28,6 +28,6 @@ export type EditSwapViewProps = {
   deadline: number;
   slippageTolerance: number;
   wallets: WalletItemData[];
-  selectedWalletId?: string;
+  selectedWalletAddress?: string;
   submitData: (results: ConfirmSwapEditResults) => void;
 };
