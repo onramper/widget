@@ -36,7 +36,6 @@
     "prepublishOnly": "npm run build:prod"
   },
   "dependencies": {
-    "@metamask/jazzicon": "^2.0.0",
     "@onramper/flag-icons": "^1.0.0",
     "@onramper/moonpay-adapter": "^1.6.15",
     "@sentry/browser": "^6.1.0",
@@ -46,6 +45,7 @@
     "layer2": "github:onramper/layer2#main",
     "lottie-react": "^2.1.0",
     "react-calendar": "^3.2.0",
+    "react-jazzicon": "^1.0.3",
     "react-transition-group": "^4.4.1",
     "rendered-country-flags": "^1.2.0",
     "use-debounce": "^7.0.1"
