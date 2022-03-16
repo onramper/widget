@@ -14,6 +14,7 @@ import WalletInput from "./WalletInput/WalletInput";
 import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 import { metamaskWallet } from "../constants";
 import { useLayer2 } from "layer2";
+import { useTransactionContext } from "../../../TransactionContext/hooks";
 
 const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -34,6 +35,9 @@ const DestinationWalletView: React.FC<DestinationWalletViewProps> = (props) => {
   const walletsWrapperRef = React.useRef<HTMLDivElement>(null);
 
   const { nextScreen, backScreen } = useContext(NavContext);
+
+  const st = useTransactionContext();
+  console.log({st});
 
   const onSubmitAddress = useCallback(
     (address: string) => {
