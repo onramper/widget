@@ -45,6 +45,8 @@ const SwapOverviewView: React.FC<{
     currentQuote: quote,
     fiatConversion,
     fiatSymbol,
+    tokenIn,
+    tokenOut,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
 
@@ -64,15 +66,9 @@ const SwapOverviewView: React.FC<{
     string | undefined
   >();
 
-  const {
-    data: {
-      tokenIn,
-      tokenOut,
-      transactionData: { amountDecimals },
-    },
-  } = nextStep;
-
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
+
+  const { amountDecimals } = quote;
 
   const updateMessageAndClear = (mes: string) => {
     setMessage(mes);
@@ -203,7 +199,7 @@ const SwapOverviewView: React.FC<{
         <OrderCompleteView
           title="Success! Your Swap has been executed."
           description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-          tokenOut={props.nextStep.data.tokenOut}
+          tokenOut={tokenOut}
         />
       );
     }
@@ -219,7 +215,7 @@ const SwapOverviewView: React.FC<{
       setLoading(false);
       setTimeout(() => setMessage(""), 2000);
     }
-  }, [nextScreen, props.nextStep.data.tokenOut, state]);
+  }, [nextScreen, state, tokenOut]);
 
   useEffect(() => {
     const onBeforeUnload = () => {
