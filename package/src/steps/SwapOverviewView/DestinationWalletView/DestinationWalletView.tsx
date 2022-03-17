@@ -10,7 +10,6 @@ import Footer from "../../../common/Footer";
 import ErrorView from "../../../common/ErrorView";
 import WalletItem from "./WalletItem/WalletItem";
 import WalletInput from "./WalletInput/WalletInput";
-import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 import { metamaskWallet } from "../constants";
 import { useLayer2 } from "layer2";
 import {
@@ -20,8 +19,9 @@ import {
 
 const DestinationWalletView: React.FC = () => {
   const { wallets, selectedWalletAddress } = useTransactionContext();
-  const { selectWalletAddress, editWallet, updateWallets } =
+  const { selectWalletAddress, editWallet, updateWallets, addNewWallet } =
     useTransactionCtxWallets();
+  const [isLoadingAdding, setIsLoadingAdding] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState<string>();
   const { account: metaAddress } = useLayer2();
@@ -36,41 +36,23 @@ const DestinationWalletView: React.FC = () => {
   >();
 
   const walletsWrapperRef = React.useRef<HTMLDivElement>(null);
-
   const { nextScreen, backScreen } = useContext(NavContext);
 
   const onAddNewWallet = useCallback(async () => {
     setNewWalletAddressError(undefined);
-
-    const promise = new Promise<WalletItemData>((resolve, reject) => {
-      setTimeout(() => {
-        if (!newWalletAddress) {
-          return reject(new Error("Value cannot be empty."));
-        }
-
-        if (newWalletAddress === "error") {
-          return reject(new Error("Incorect address."));
-        }
-
-        const newWallet = {
-          address: newWalletAddress,
-          name: `Account ${wallets.length + 1}`,
-          id: `account${wallets.length + 1}`,
-          balance: (1000 * Math.random()) | 0,
-        };
-        resolve(newWallet);
-      }, 200);
-    });
+    setIsLoadingAdding(true);
 
     try {
-      const wallet = await promise;
+      await addNewWallet(newWalletAddress);
       setNewWalletAddress("");
-      updateWallets([wallet, ...wallets]);
-    } catch (_err) {
-      const error = _err as Error;
-      setNewWalletAddressError(error.message);
+    } catch (error) {
+      setNewWalletAddressError(
+        (error as Error).message || "Something went wrong!"
+      );
+    } finally {
+      setIsLoadingAdding(false);
     }
-  }, [newWalletAddress, updateWallets, wallets]);
+  }, [addNewWallet, newWalletAddress]);
 
   const onActionButton = useCallback(async () => {
     setErrorMessage(undefined);
@@ -170,13 +152,14 @@ const DestinationWalletView: React.FC = () => {
                 errorMessage={newWalletError}
                 value={newWalletAddress}
                 onChange={setNewWalletAddress}
+                loading={isLoadingAdding}
               />
             </div>
 
-            {wallets.map((wallet, index) => {
+            {wallets.map((wallet) => {
               return (
                 <WalletItem
-                  key={index}
+                  key={wallet.address}
                   label={wallet.name}
                   address={wallet.address}
                   isChecked={wallet.address === selectedWalletAddress}

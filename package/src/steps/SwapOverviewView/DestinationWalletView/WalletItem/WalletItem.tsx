@@ -24,6 +24,10 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
   const ethBalance = useEtherBalance(props.address);
 
   const onToggleEditing = () => {
+    if(isLoading) {
+      return;
+    }
+    
     setAddress(props.address || "");
     setErrorMessage(undefined);
     setIsEditing((value) => !value);
