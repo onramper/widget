@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { WalletItemProps } from "./WalletItem.models";
 import TextEllipsis from "../../../../common/TextEllipsis/TextEllipsis";
 import classes from "./WalletItem.module.css";
@@ -11,7 +11,7 @@ import WalletInput from "../WalletInput/WalletInput";
 import { formatEther, useEtherBalance } from "layer2";
 import { BigNumberish } from "@ethersproject/bignumber";
 
-const computeBalance = (bigNum?:BigNumberish) =>
+const computeBalance = (bigNum?: BigNumberish) =>
   bigNum ? Number(formatEther(bigNum)).toFixed(4) : "0";
 
 const WalletItem: React.FC<WalletItemProps> = (props) => {
@@ -24,10 +24,10 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
   const ethBalance = useEtherBalance(props.address);
 
   const onToggleEditing = () => {
-    if(isLoading) {
+    if (isLoading) {
       return;
     }
-    
+
     setAddress(props.address || "");
     setErrorMessage(undefined);
     setIsEditing((value) => !value);
@@ -43,13 +43,25 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
     try {
       await props.onEditAddress(address);
       setIsEditing(false);
-    } catch (_error) {
-      const error = _error as Error;
-      setErrorMessage(error.message);
+    } catch (error) {
+      setErrorMessage((error as Error).message);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const onDelete = useCallback(async () => {
+    if (props.onDelete && !isLoading) {
+      setIsLoading(true);
+      try {
+        await props.onDelete();
+      } catch (error) {
+        alert((error as Error).message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }, [isLoading, props]);
 
   return (
     <div
@@ -80,9 +92,9 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
                 text={props.address || ""}
                 className={classes["item-title"]}
               />
-              <div
-                className={classes["item-info"]}
-              >{`Balance: ${computeBalance(ethBalance)} ETH`}</div>
+              <div className={classes["item-info"]}>{`Balance: ${computeBalance(
+                ethBalance
+              )} ETH`}</div>
 
               {[props.isConnected, props.onDelete].some((i) => i) && (
                 <div className={classes["right-content"]}>
@@ -94,7 +106,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
                       className={classes["delete-icon"]}
                       onClick={(e) => {
                         e.stopPropagation();
-                        props.onDelete && props.onDelete();
+                        onDelete();
                       }}
                     />
                   )}

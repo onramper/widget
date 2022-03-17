@@ -19,8 +19,12 @@ import {
 
 const DestinationWalletView: React.FC = () => {
   const { wallets, selectedWalletAddress } = useTransactionContext();
-  const { selectWalletAddress, editWallet, updateWallets, addNewWallet } =
-    useTransactionCtxWallets();
+  const {
+    selectWalletAddress,
+    editWallet,
+    addNewWallet,
+    deleteWallet,
+  } = useTransactionCtxWallets();
   const [isLoadingAdding, setIsLoadingAdding] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -68,13 +72,6 @@ const DestinationWalletView: React.FC = () => {
       setErrorMessage(error.message);
     }
   }, [backScreen, nextScreen]);
-
-  const onDeleteWallet = useCallback(
-    (address: string) => {
-      updateWallets(wallets.filter((i) => i.address !== address));
-    },
-    [updateWallets, wallets]
-  );
 
   const isContinueDisabled = useCallback(() => {
     return ![...defaultWallets, ...wallets].some(
@@ -166,7 +163,7 @@ const DestinationWalletView: React.FC = () => {
                   icon={wallet.icon}
                   onCheck={() => selectWalletAddress(wallet.address)}
                   onEditAddress={(address) => editWallet(wallet, address)}
-                  onDelete={() => onDeleteWallet(wallet.address)}
+                  onDelete={() => deleteWallet(wallet.name)}
                 />
               );
             })}

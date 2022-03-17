@@ -8,7 +8,7 @@ import { getEnsNameFromAddress, isAddress, useEthers } from "layer2";
 
 export const useTransactionCtxWallets = () => {
   const { dispatch } = useContext(TransactionContext);
-  const { userId, wallets } = useTransactionContext();
+  const { userId, wallets, selectedWalletAddress } = useTransactionContext();
   const { library } = useEthers();
 
   const updateWallets = useCallback(
@@ -136,11 +136,45 @@ export const useTransactionCtxWallets = () => {
     [updateWallets, userId, wallets]
   );
 
+  const deleteWallet = useCallback(
+    async (walletName: string) => {
+      const wallet = wallets.find((item) => item.name === walletName);
+      if (!wallet) {
+        return;
+      }
+
+      if (wallet.address === selectedWalletAddress) {
+        //selects MM wallet
+        selectWalletAddress(undefined);
+      }
+      updateWallets(wallets.filter((item) => item.name !== walletName));
+
+      const resp = await fetch(`${BASE_API}/removeUserWallet`, {
+        method: "DELETE",
+        body: JSON.stringify({
+          walletName,
+          userId,
+        }),
+      });
+
+      if (!resp.ok) {
+        updateWallets([
+          wallet,
+          ...wallets.filter((item) => item.name !== walletName),
+        ]);
+
+        throw await resp.json();
+      }
+    },
+    [selectWalletAddress, selectedWalletAddress, updateWallets, userId, wallets]
+  );
+
   return {
     updateWallets,
     selectWalletAddress,
     fetchAndUpdateUserWallets,
     editWallet,
     addNewWallet,
+    deleteWallet,
   };
 };
