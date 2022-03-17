@@ -34,8 +34,8 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   useTransactionContext,
   useTransactionCtxWallets,
+  useTransactionCtxActions
 } from "../../../TransactionContext/hooks";
-import { useTransactionCtxActions } from "../../../TransactionContext/hooks/useTransactionCtxActions";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
