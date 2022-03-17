@@ -16,7 +16,7 @@ export const useTransactionCtxWallets = () => {
     [dispatch]
   );
 
-  const selectWalletAddress = useCallback((address: string) => {
+  const selectWalletAddress = useCallback((address?: string) => {
     dispatch({
         type: ActionTypes.SetSelectedWalletAddress,
         payload: address,

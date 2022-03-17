@@ -31,15 +31,25 @@ import {
   QuoteDetails,
 } from "layer2";
 import { useDebouncedCallback } from "use-debounce";
-import { useTransactionContext } from "../../../TransactionContext/hooks";
+import {
+  useTransactionContext,
+  useTransactionCtxWallets,
+} from "../../../TransactionContext/hooks";
 import { useTransactionCtxActions } from "../../../TransactionContext/hooks/useTransactionCtxActions";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [swapErrorMessage, setSwapErrorMessage] = useState<string>();
 
-  const { tokenIn, tokenOut, currentQuote, fiatSymbol, fiatConversion } =
-    useTransactionContext();
+  const {
+    tokenIn,
+    tokenOut,
+    currentQuote,
+    fiatSymbol,
+    fiatConversion,
+    wallets: contextWallets,
+    selectedWalletAddress: ctxWalletAddress,
+  } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
 
   const [cryptoSpent] = useState(
@@ -57,10 +67,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [, setLastCallCryptoChange] = useState<AbortController>();
 
   // settings
-  const [wallets, setWallets] = useState(props.wallets);
-  const [selectedWalletAddress, setSelectedWalletAddress] = useState(
-    props.selectedWalletAddress
-  );
+  const { updateWallets, selectWalletAddress } = useTransactionCtxWallets();
+  const [wallets, setWallets] = useState(contextWallets);
+  const [selectedWalletAddress, setSelectedWalletAddress] =
+    useState(ctxWalletAddress);
   const [slippage, setSlippage] = useState(props.slippageTolerance.toFixed(2));
   const [deadline, setDeadline] = useState(
     String(Math.floor((props.deadline / 60) * 100) / 100)
@@ -76,14 +86,24 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
 
   const onActionButton = useCallback(async () => {
+    updateWallets(wallets);
+    selectWalletAddress(selectedWalletAddress);
+    
     props.submitData({
-      selectedWalletAddress,
-      wallets,
       slippage: Number(slippage),
       deadline: Number(deadline) * 60,
     });
     backScreen();
-  }, [backScreen, deadline, props, selectedWalletAddress, slippage, wallets]);
+  }, [
+    backScreen,
+    deadline,
+    props,
+    selectWalletAddress,
+    selectedWalletAddress,
+    slippage,
+    updateWallets,
+    wallets,
+  ]);
 
   const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
@@ -273,7 +293,11 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             label={props.feeBreakdown.label}
             groups={props.feeBreakdown.groups}
           />
-          <IndicationItem text={props.warning} />
+          <IndicationItem
+            text={
+              "Above mentioned figures are valid for 1 minute based upon current market rates."
+            }
+          />
         </div>
 
         <div
