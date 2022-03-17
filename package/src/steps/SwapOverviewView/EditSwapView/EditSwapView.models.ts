@@ -13,13 +13,10 @@ export interface EditSwapViewInput extends TokenInfo {
   currencyShortName: string;
   currencyLongName: string;
   icon?: string;
-  balance?: number;
 }
 
 export type EditSwapViewProps = {
   progress?: number;
-  cryptoSpent: EditSwapViewInput;
-  cryptoReceived: EditSwapViewInput;
   feeBreakdown: {
     label: string;
     groups: BrakdownItem[][];

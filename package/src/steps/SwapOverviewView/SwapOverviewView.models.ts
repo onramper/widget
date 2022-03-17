@@ -10,8 +10,6 @@ export type SwapOverviewViewProps = {
 };
 
 export type ConfirmSwapEditResults = {
-  spentValue: string;
-  receivedValue: string;
   selectedWalletAddress?: string;
   wallets: WalletItemData[];
   deadline: number;
@@ -20,12 +18,6 @@ export type ConfirmSwapEditResults = {
 
 export type ConfirmSwapParam = {
   data: SwapOverviewStepData;
-  parsedTokenIn: TokenInfo;
-  tokenOut: TokenInfo;
-  fiatConversion: number;
-  tokenInURL: string;
-  tokenOutURL: string;
-  quote: QuoteDetails;
   slippageTolerance: number;
   deadline: number;
   wallets: WalletItemData[];

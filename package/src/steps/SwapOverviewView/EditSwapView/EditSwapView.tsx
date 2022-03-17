@@ -14,7 +14,7 @@ import Footer from "../../../common/Footer";
 import ButtonAction from "../../../common/Buttons/ButtonAction";
 import Heading from "../../../common/Heading/Heading";
 import InputDropdown from "../../../common/InputDropdown/InputDropdown";
-import { onChangeFloat } from "../../../utils";
+import uriToHttp, { onChangeFloat, parseWrappedTokens } from "../../../utils";
 import Breakdown from "../../../common/Breakdown/Breakdown";
 import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
 import TransactionSettings from "../TransactionSettings/TransactionSettings";
@@ -27,26 +27,33 @@ import {
   getQuote,
   useTokenBalance,
   DEFAULTS as defaultSettings,
+  TokenInfo,
+  QuoteDetails,
 } from "layer2";
 import { useDebouncedCallback } from "use-debounce";
+import { useTransactionContext } from "../../../TransactionContext/hooks";
+import { useTransactionCtxActions } from "../../../TransactionContext/hooks/useTransactionCtxActions";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [swapErrorMessage, setSwapErrorMessage] = useState<string>();
-  const [heading] = useState(
-    computeHeading(props.cryptoSpent, props.cryptoReceived)
+
+  const { tokenIn, tokenOut, currentQuote, fiatSymbol, fiatConversion } =
+    useTransactionContext();
+  const { setQuote } = useTransactionCtxActions();
+
+  const [cryptoSpent] = useState(
+    computeTokenIn(tokenIn, currentQuote, fiatSymbol, fiatConversion)
+  );
+  const [cryptoReceived] = useState(
+    computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversion)
   );
 
   // swap inputs
-  const [spentValue, setSpentValue] = useState(props.cryptoSpent.value);
-  const [actualSpentValue, setActualSpentValue] = useState(
-    props.cryptoSpent.value
-  );
-  const [receivedValue, setReceivedValue] = useState(
-    props.cryptoReceived.value
-  );
-  const [cryptoSpent] = useState(props.cryptoSpent);
-  const [cryptoReceived] = useState(props.cryptoReceived);
+  const [spentValue, setSpentValue] = useState(cryptoSpent.value);
+  const [actualSpentValue, setActualSpentValue] = useState(cryptoSpent.value);
+  const [receivedValue, setReceivedValue] = useState(cryptoReceived.value);
+
   const [, setLastCallCryptoChange] = useState<AbortController>();
 
   // settings
@@ -59,33 +66,24 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     String(Math.floor((props.deadline / 60) * 100) / 100)
   );
 
+  const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
+
   const { backScreen } = useContext(NavContext);
   const ethBalance = useEtherBalance(selectedWalletAddress);
   const targetTokenBalance = useTokenBalance(
-    props.cryptoReceived.address,
+    cryptoReceived.address,
     selectedWalletAddress
   );
 
   const onActionButton = useCallback(async () => {
     props.submitData({
-      spentValue,
-      receivedValue,
       selectedWalletAddress,
       wallets,
       slippage: Number(slippage),
       deadline: Number(deadline) * 60,
     });
     backScreen();
-  }, [
-    backScreen,
-    deadline,
-    props,
-    receivedValue,
-    selectedWalletAddress,
-    slippage,
-    spentValue,
-    wallets,
-  ]);
+  }, [backScreen, deadline, props, selectedWalletAddress, slippage, wallets]);
 
   const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
@@ -113,9 +111,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         const timeout = setTimeout(async () => {
           try {
             setIsLoading(true);
-            const receivedCrypto = await getQuote(
-              props.cryptoSpent,
-              props.cryptoReceived,
+            const newQuote = await getQuote(
+              cryptoSpent,
+              cryptoReceived,
               Number(value),
               undefined,
               signal
@@ -132,8 +130,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
               );
             }
 
+            setQuote(newQuote);
             resolve({
-              receivedCrypto: receivedCrypto.quoteGasAdjustedDecimals,
+              receivedCrypto: newQuote.quoteGasAdjustedDecimals,
             });
           } catch (error) {
             if (signal.aborted) {
@@ -155,8 +154,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     [
       ethBalance,
       getAndUpdateAbortController,
-      props.cryptoReceived,
-      props.cryptoSpent,
+      cryptoReceived,
+      cryptoSpent,
+      setQuote,
     ]
   );
 
@@ -219,7 +219,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             onChangeWalletAddress={setSelectedWalletAddress}
             onChangeDeadline={setDeadline}
             onChangeSlippage={setSlippage}
-            cryptoName={props.cryptoSpent.currencyShortName}
+            cryptoName={cryptoSpent.currencyShortName}
           />
         </div>
 
@@ -346,6 +346,47 @@ const computeHeading = (
       )
     </>
   );
+};
+
+const computeTokenIn = (
+  tokenIn: TokenInfo,
+  quote: QuoteDetails,
+  fiatSymbol: string,
+  fiatConversion: number
+) => {
+  const parsedTokenIn = parseWrappedTokens(tokenIn);
+  const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
+
+  return {
+    ...parsedTokenIn,
+    label: "You spend",
+    value: quote.amountDecimals,
+    fiatConversion,
+    fiatSymbol,
+    currencyShortName: parsedTokenIn.symbol,
+    currencyLongName: parsedTokenIn.name,
+    icon: tokenInURL,
+  };
+};
+
+const computeTokenOut = (
+  tokenOut: TokenInfo,
+  quote: QuoteDetails,
+  fiatSymbol: string,
+  fiatConversion: number
+) => {
+  const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
+
+  return {
+    ...tokenOut,
+    label: "You receive",
+    value: quote.quoteGasAdjustedDecimals,
+    fiatConversion,
+    fiatSymbol,
+    currencyShortName: tokenOut.symbol,
+    currencyLongName: tokenOut.name,
+    icon: tokenOutURL,
+  };
 };
 
 export default EditSwapView;

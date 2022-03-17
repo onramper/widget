@@ -2,7 +2,6 @@ import { StateType } from "./models";
 
 export default {
   key: 0,
-  wallets: [],
   userId: "",
   currentQuote: {
     blockNumber: "0",
@@ -37,4 +36,7 @@ export default {
     chainId: 4,
     logoURI: "",
   },
+  wallets: [],
+  fiatSymbol: "$",
+  fiatConversion: 200,
 } as StateType;
