@@ -38,7 +38,8 @@ const SwapOverviewView: React.FC<{
   const balance = useEtherBalance(metaAddress);
   const {
     currentQuote: quote,
-    fiatConversion,
+    fiatConversionOut,
+    fiatConversionIn,
     fiatSymbol,
     tokenIn,
     tokenOut,
@@ -205,7 +206,8 @@ const SwapOverviewView: React.FC<{
           estimate={quote}
           tokenIn={parsedTokenIn}
           tokenOut={tokenOut}
-          conversion={`${fiatSymbol}${fiatConversion}`}
+          conversionIn={`${fiatSymbol}${fiatConversionIn}`}
+          conversionOut={`${fiatSymbol}${fiatConversionOut}`}
         />
         <FeeBreakdown transactionDetails={quote} />
         <div className={classes.message}>{message}</div>

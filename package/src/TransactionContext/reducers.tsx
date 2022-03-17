@@ -29,7 +29,8 @@ export type DataActions =
         tokenOut: TokenInfo;
         currentQuote: QuoteDetails;
         fiatSymbol: string;
-        fiatConversion: number;
+        fiatConversionIn: number;
+        fiatConversionOut: number;
         feeBreakdown: BrakdownItem[][];
       };
     }

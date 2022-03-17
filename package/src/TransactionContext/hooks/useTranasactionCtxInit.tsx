@@ -22,8 +22,9 @@ export const useTranasactionCtxInit = (
         tokenIn: data.tokenIn,
         tokenOut: data.tokenOut,
         fiatSymbol: data.fiatSymbol,
-        // TODO: price oracle ??
-        fiatConversion: 200,
+        // TODO: use appropriate methods to initialize these values
+        fiatConversionIn: 201,
+        fiatConversionOut: 202,
         feeBreakdown: data.feeBreakdown
       },
     });

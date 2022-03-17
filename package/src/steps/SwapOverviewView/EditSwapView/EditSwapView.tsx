@@ -46,7 +46,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     tokenOut,
     currentQuote,
     fiatSymbol,
-    fiatConversion,
+    fiatConversionIn,
+    fiatConversionOut,
     wallets: contextWallets,
     selectedWalletAddress: ctxWalletAddress,
     slippageTolerance: ctxSlippage,
@@ -56,10 +57,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const { setQuote, updateSwapSettings } = useTransactionCtxActions();
 
   const [cryptoSpent] = useState(
-    computeTokenIn(tokenIn, currentQuote, fiatSymbol, fiatConversion)
+    computeTokenIn(tokenIn, currentQuote, fiatSymbol, fiatConversionIn)
   );
   const [cryptoReceived] = useState(
-    computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversion)
+    computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversionOut)
   );
 
   // swap inputs
