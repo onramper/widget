@@ -23,8 +23,6 @@ import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import EditSwapView from "./EditSwapView/EditSwapView";
-import { BASE_API } from "../../ApiContext/api/constants";
-import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 import {
   useTransactionContext,
   useTransactionCtxWallets,
@@ -45,9 +43,10 @@ const SwapOverviewView: React.FC<{
     tokenIn,
     tokenOut,
     slippageTolerance,
-    deadline
+    deadline,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
+  const { fetchAndUpdateUserWallets } = useTransactionCtxWallets();
 
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
@@ -102,9 +101,7 @@ const SwapOverviewView: React.FC<{
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
   const handleEdit = useCallback(async () => {
-    nextScreen(
-      <EditSwapView progress={nextStep.progress}/>
-    );
+    nextScreen(<EditSwapView progress={nextStep.progress} />);
   }, [nextScreen, nextStep.progress]);
 
   useEffect(() => {
@@ -190,22 +187,12 @@ const SwapOverviewView: React.FC<{
   }, []);
 
   useEffect(() => {
-    const getAndSetWallets = async () => {
-      try {
-        const data = (await (
-          await fetch(`${BASE_API}/getUserWallets/${nextStep.data.userId}`)
-        ).json()) as {
-          wallets: WalletItemData[];
-        };
-
-        updateWallets(data.wallets);
-      } catch (err) {
-        alert(err);
-      }
-    };
-
-    getAndSetWallets();
-  }, [nextStep.data.userId, updateWallets]);
+    try {
+      fetchAndUpdateUserWallets();
+    } catch (err) {
+      alert(err);
+    }
+  }, [fetchAndUpdateUserWallets, nextStep.data.userId, updateWallets]);
 
   return (
     <div className={commonClasses.view}>
