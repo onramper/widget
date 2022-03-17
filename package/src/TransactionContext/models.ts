@@ -1,11 +1,12 @@
-import { WalletItemData } from "../ApiContext/api/types/nextStep"
+import { QuoteDetails, TokenInfo } from "layer2";
+import { WalletItemData } from "../ApiContext/api/types/nextStep";
 
 export type StateType = {
-    wallets: WalletItemData[],
-    selectedWalletAddress?: string;
-    userId: string;
-}
-
-export type InitParams = {
-    userId: string;
-}
+  key: number;
+  wallets: WalletItemData[];
+  selectedWalletAddress?: string;
+  userId: string;
+  tokenIn: TokenInfo;
+  tokenOut: TokenInfo;
+  currentQuote: QuoteDetails;
+};

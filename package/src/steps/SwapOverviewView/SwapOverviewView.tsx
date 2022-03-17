@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { NextStep } from "../../ApiContext";
@@ -33,6 +38,9 @@ import {
   useTransactionContext,
   useTransactionCtxWallets,
 } from "../../TransactionContext/hooks";
+import {
+  useTranasactionCtxInit,
+} from "../../TransactionContext/hooks/useTranasactionCtxInit";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -322,4 +330,19 @@ const SwapOverviewView: React.FC<{
   );
 };
 
-export default SwapOverviewView;
+const WithContextInit: React.FC<{
+  nextStep: NextStep & { type: "transactionOverview" };
+}> = (props) => {
+  const isInit = useTranasactionCtxInit(props.nextStep.data, Date.now());
+  const { replaceScreen } = useNav();
+
+  useEffect(() => {
+    if (isInit) {
+      replaceScreen(<SwapOverviewView nextStep={props.nextStep} />);
+    }
+  }, [isInit, props.nextStep, replaceScreen]);
+
+  return <></>;
+};
+
+export default WithContextInit;
