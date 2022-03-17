@@ -24,6 +24,7 @@ export const useTranasactionCtxInit = (
         fiatSymbol: data.fiatSymbol,
         // TODO: price oracle ??
         fiatConversion: 200,
+        feeBreakdown: data.feeBreakdown
       },
     });
   }, [dispatch, data, key]);

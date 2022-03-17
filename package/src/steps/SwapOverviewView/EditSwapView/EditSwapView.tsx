@@ -51,6 +51,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     selectedWalletAddress: ctxWalletAddress,
     slippageTolerance: ctxSlippage,
     deadline: ctxDeadline,
+    feeBreakdown,
   } = useTransactionContext();
   const { setQuote, updateSwapSettings } = useTransactionCtxActions();
 
@@ -94,7 +95,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
       slippageTolerance: Number(slippage),
       deadline: Number(deadline) * 60,
     });
-    
+
     backScreen();
   }, [
     backScreen,
@@ -291,10 +292,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         />
 
         <div className={classes["bottom-fields"]}>
-          <Breakdown
-            label={props.feeBreakdown.label}
-            groups={props.feeBreakdown.groups}
-          />
+          <Breakdown label={"Fee breakdown:"} groups={feeBreakdown} />
           <IndicationItem
             text={
               "Above mentioned figures are valid for 1 minute based upon current market rates."

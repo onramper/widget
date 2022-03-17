@@ -1,7 +1,4 @@
 import { TokenInfo } from "layer2";
-import {
-  BrakdownItem,
-} from "../../../ApiContext/api/types/nextStep";
 
 export interface EditSwapViewInput extends TokenInfo {
   label: string;
@@ -15,8 +12,4 @@ export interface EditSwapViewInput extends TokenInfo {
 
 export type EditSwapViewProps = {
   progress?: number;
-  feeBreakdown: {
-    label: string;
-    groups: BrakdownItem[][];
-  };
 };

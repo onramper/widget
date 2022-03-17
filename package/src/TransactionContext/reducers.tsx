@@ -1,5 +1,5 @@
 import { QuoteDetails, TokenInfo } from "layer2";
-import { WalletItemData } from "../ApiContext/api/types/nextStep";
+import { BrakdownItem, WalletItemData } from "../ApiContext/api/types/nextStep";
 import initialState from "./initialState";
 import { StateType } from "./models";
 
@@ -30,6 +30,7 @@ export type DataActions =
         currentQuote: QuoteDetails;
         fiatSymbol: string;
         fiatConversion: number;
+        feeBreakdown: BrakdownItem[][];
       };
     }
   | {

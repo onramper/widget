@@ -41,5 +41,6 @@ export default {
   fiatSymbol: "$",
   fiatConversion: 200,
   slippageTolerance: defaultSettings.slippageTolerance,
-  deadline: defaultSettings.deadline
+  deadline: defaultSettings.deadline,
+  feeBreakdown: [],
 } as StateType;
