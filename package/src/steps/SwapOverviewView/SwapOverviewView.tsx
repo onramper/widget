@@ -23,7 +23,6 @@ import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import EditSwapView from "./EditSwapView/EditSwapView";
-import { createConfirmSwapProps } from "./utils";
 import { BASE_API } from "../../ApiContext/api/constants";
 import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 import {
@@ -104,13 +103,9 @@ const SwapOverviewView: React.FC<{
 
   const handleEdit = useCallback(async () => {
     nextScreen(
-      <EditSwapView
-        {...createConfirmSwapProps({
-          data: nextStep.data,
-        })}
-      />
+      <EditSwapView progress={nextStep.progress}/>
     );
-  }, [nextScreen, nextStep.data]);
+  }, [nextScreen, nextStep.progress]);
 
   useEffect(() => {
     if (error) {
