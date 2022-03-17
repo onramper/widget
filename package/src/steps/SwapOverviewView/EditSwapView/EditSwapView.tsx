@@ -49,8 +49,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     fiatConversionOut,
     wallets: contextWallets,
     selectedWalletAddress: ctxWalletAddress,
-    slippageTolerance: ctxSlippage,
-    deadline: ctxDeadline,
     feeBreakdown,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
