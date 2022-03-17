@@ -5,7 +5,7 @@ import {
   useLayer2,
 } from "layer2";
 import React from "react";
-import buttonClasses from "../ListItemButtonGroup/ListItemButton/ListItemButton.module.css";
+import buttonClasses from "../../../common/ListItemButtonGroup/ListItemButton/ListItemButton.module.css";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import { AccountDetailsProps } from "./AccountDetails.models";
 import classes from "./AccountDetails.module.css";

@@ -205,19 +205,19 @@ const SwapOverviewView: React.FC<{
 
   // replace this with better user feedback
   useEffect(() => {
+    nextScreen(
+      <OrderCompleteView
+        title="Success! Your Swap has been executed."
+        description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
+        tokenOut={props.nextStep.data.tokenOut}
+      />
+    );
     if (state.status === "Success") {
       setMessage("Success! 🥳");
       setLoading(false);
     }
     if (state.status === "Mining") {
       setMessage("Processing transaction...");
-      nextScreen(
-        <OrderCompleteView
-          title="Success! Your Swap has been executed."
-          description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-          tokenOut={props.nextStep.data.tokenOut}
-        />
-      );
     }
 
     if (state.status === "Fail") {
