@@ -32,7 +32,6 @@ import {
 import { useDebouncedCallback } from "use-debounce";
 import {
   useTransactionContext,
-  useTransactionCtxWallets,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
 
@@ -47,12 +46,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     fiatSymbol,
     fiatConversionIn,
     fiatConversionOut,
-    wallets: contextWallets,
-    selectedWalletAddress: ctxWalletAddress,
+    selectedWalletAddress,
     feeBreakdown,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
-
   const [cryptoSpent] = useState(
     computeTokenIn(tokenIn, currentQuote, fiatSymbol, fiatConversionIn)
   );
@@ -61,45 +58,24 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
   const [localQuote, setLocalQuote] = useState(currentQuote);
 
-  // swap inputs
   const [spentValue, setSpentValue] = useState(cryptoSpent.value);
   const [actualSpentValue, setActualSpentValue] = useState(cryptoSpent.value);
   const [receivedValue, setReceivedValue] = useState(cryptoReceived.value);
-
   const [, setLastCallCryptoChange] = useState<AbortController>();
 
-  // settings
-  const { updateWallets, selectWalletAddress } = useTransactionCtxWallets();
-  const [wallets, setWallets] = useState(contextWallets);
-  const [selectedWalletAddress, setSelectedWalletAddress] =
-    useState(ctxWalletAddress);
-
-  const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
-
-  const { backScreen } = useContext(NavContext);
   const ethBalance = useEtherBalance(selectedWalletAddress);
   const targetTokenBalance = useTokenBalance(
     cryptoReceived.address,
     selectedWalletAddress
   );
 
+  const { backScreen } = useContext(NavContext);
+  const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
+
   const onActionButton = useCallback(async () => {
     setQuote(localQuote);
-
-    // TODO: live-update the context instead
-    updateWallets(wallets);
-    selectWalletAddress(selectedWalletAddress);
-
     backScreen();
-  }, [
-    backScreen,
-    localQuote,
-    selectWalletAddress,
-    selectedWalletAddress,
-    setQuote,
-    updateWallets,
-    wallets,
-  ]);
+  }, [backScreen, localQuote, setQuote]);
 
   const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
@@ -218,14 +194,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <div className={classes["top-section"]}>
           <Heading className={classes.heading} text={heading} />
-          <TransactionSettings
-            className={classes["settings"]}
-            wallets={wallets}
-            updateWallets={setWallets}
-            selectedWalletAddress={selectedWalletAddress}
-            onChangeWalletAddress={setSelectedWalletAddress}
-            cryptoName={cryptoSpent.currencyShortName}
-          />
+          <TransactionSettings className={classes["settings"]} />
         </div>
 
         <ErrorIndication message={swapErrorMessage} />
