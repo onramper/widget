@@ -2,7 +2,6 @@ import { TokenInfo } from "layer2";
 import {
   BrakdownItem,
 } from "../../../ApiContext/api/types/nextStep";
-import { ConfirmSwapEditResults } from "../SwapOverviewView.models";
 
 export interface EditSwapViewInput extends TokenInfo {
   label: string;
@@ -20,7 +19,4 @@ export type EditSwapViewProps = {
     label: string;
     groups: BrakdownItem[][];
   };
-  deadline: number;
-  slippageTolerance: number;
-  submitData: (results: ConfirmSwapEditResults) => void;
 };

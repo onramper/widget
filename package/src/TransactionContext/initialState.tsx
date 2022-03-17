@@ -1,4 +1,5 @@
 import { StateType } from "./models";
+import { DEFAULTS as defaultSettings } from "layer2";
 
 export default {
   key: 0,
@@ -39,4 +40,6 @@ export default {
   wallets: [],
   fiatSymbol: "$",
   fiatConversion: 200,
+  slippageTolerance: defaultSettings.slippageTolerance,
+  deadline: defaultSettings.deadline
 } as StateType;

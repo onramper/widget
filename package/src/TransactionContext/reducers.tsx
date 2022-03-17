@@ -8,6 +8,7 @@ export enum ActionTypes {
   SetSelectedWalletAddress = "SET_SELECTED_WALLET_ADDRESS",
   Init = "INIT",
   SetQuote = "SET_QUOTE",
+  UpdateSwapSettings = "UPDATE_SWAP_SETTINGS",
 }
 
 export type DataActions =
@@ -34,6 +35,10 @@ export type DataActions =
   | {
       type: ActionTypes.SetQuote;
       payload: QuoteDetails;
+    }
+  | {
+      type: ActionTypes.UpdateSwapSettings;
+      payload: { slippageTolerance: number; deadline: number };
     };
 
 export default (state: StateType, action: DataActions): StateType => {
@@ -62,6 +67,13 @@ export default (state: StateType, action: DataActions): StateType => {
         currentQuote: action.payload,
       };
 
+    case ActionTypes.UpdateSwapSettings:
+      return {
+        ...state,
+        slippageTolerance: action.payload.slippageTolerance,
+        deadline: action.payload.deadline,
+      };
+      
     default:
       return state;
   }

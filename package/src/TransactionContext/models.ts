@@ -11,4 +11,6 @@ export type StateType = {
   fiatConversion: number;
   wallets: WalletItemData[];
   selectedWalletAddress?: string;
+  slippageTolerance: number;
+  deadline: number;
 };

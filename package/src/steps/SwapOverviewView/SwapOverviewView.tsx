@@ -15,7 +15,6 @@ import {
   getSwapParams,
   useLayer2,
   useSendTransaction,
-  DEFAULTS as defaultSettings,
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
@@ -25,7 +24,6 @@ import { useNav } from "../../NavContext";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import EditSwapView from "./EditSwapView/EditSwapView";
 import { createConfirmSwapProps } from "./utils";
-import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
 import { BASE_API } from "../../ApiContext/api/constants";
 import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 import {
@@ -47,6 +45,8 @@ const SwapOverviewView: React.FC<{
     fiatSymbol,
     tokenIn,
     tokenOut,
+    slippageTolerance,
+    deadline
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
 
@@ -57,10 +57,6 @@ const SwapOverviewView: React.FC<{
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
-  const [slippageTolerance, setSlippageTolerance] = useState(
-    defaultSettings.slippageTolerance
-  );
-  const [deadline, setDeadline] = useState(defaultSettings.deadline);
 
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
@@ -107,23 +103,14 @@ const SwapOverviewView: React.FC<{
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
   const handleEdit = useCallback(async () => {
-    const submitData = (results: ConfirmSwapEditResults) => {
-      const { slippage, deadline } = results;
-      setSlippageTolerance(slippage);
-      setDeadline(deadline);
-    };
-
     nextScreen(
       <EditSwapView
         {...createConfirmSwapProps({
           data: nextStep.data,
-          slippageTolerance,
-          deadline,
         })}
-        submitData={submitData}
       />
     );
-  }, [deadline, nextScreen, nextStep.data, slippageTolerance]);
+  }, [nextScreen, nextStep.data]);
 
   useEffect(() => {
     if (error) {

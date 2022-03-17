@@ -16,5 +16,15 @@ export const useTransactionCtxActions = () => {
     [dispatch]
   );
 
-  return { setQuote };
+  const updateSwapSettings = useCallback(
+    (payload: { slippageTolerance: number; deadline: number }) => {
+      dispatch({
+        type: ActionTypes.UpdateSwapSettings,
+        payload,
+      });
+    },
+    [dispatch]
+  );
+
+  return { setQuote, updateSwapSettings };
 };
