@@ -17,7 +17,7 @@ export type DataActions =
     }
   | {
       type: ActionTypes.SetSelectedWalletAddress;
-      payload: string;
+      payload?: string;
     }
   | {
       type: ActionTypes.Init;

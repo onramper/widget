@@ -9,18 +9,12 @@ export const createConfirmSwapProps: (
   data,
   slippageTolerance,
   deadline,
-  wallets,
-  selectedWalletAddress,
 }) => {
   return {
     feeBreakdown: {
       label: "Fee breakdown:",
       groups: data.feeBreakdown,
     },
-    warning:
-      "Above mentioned figures are valid for 1 minute based upon current market rates.",
-    wallets,
-    selectedWalletAddress,
     slippageTolerance,
     deadline
   };

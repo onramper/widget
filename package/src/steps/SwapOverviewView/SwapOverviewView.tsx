@@ -23,7 +23,7 @@ import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
-import ConfirmSwapView from "./EditSwapView/EditSwapView";
+import EditSwapView from "./EditSwapView/EditSwapView";
 import { createConfirmSwapProps } from "./utils";
 import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
 import { BASE_API } from "../../ApiContext/api/constants";
@@ -61,10 +61,6 @@ const SwapOverviewView: React.FC<{
     defaultSettings.slippageTolerance
   );
   const [deadline, setDeadline] = useState(defaultSettings.deadline);
-  const [customWallets, setCustomWallets] = useState<WalletItemData[]>([]);
-  const [selectedWalletAddress, setSelectedWalletAddress] = useState<
-    string | undefined
-  >();
 
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
@@ -115,33 +111,19 @@ const SwapOverviewView: React.FC<{
       const { slippage, deadline } = results;
       setSlippageTolerance(slippage);
       setDeadline(deadline);
-
-      setSelectedWalletAddress(results.selectedWalletAddress);
-      setCustomWallets(results.wallets);
     };
 
     nextScreen(
-      <ConfirmSwapView
+      <EditSwapView
         {...createConfirmSwapProps({
           data: nextStep.data,
           slippageTolerance,
           deadline,
-          selectedWalletAddress:
-            selectedWalletAddress || metaAddress || undefined,
-          wallets: customWallets,
         })}
         submitData={submitData}
       />
     );
-  }, [
-    customWallets,
-    deadline,
-    metaAddress,
-    nextScreen,
-    nextStep.data,
-    selectedWalletAddress,
-    slippageTolerance,
-  ]);
+  }, [deadline, nextScreen, nextStep.data, slippageTolerance]);
 
   useEffect(() => {
     if (error) {
