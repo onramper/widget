@@ -17,3 +17,13 @@
 .input-icon:hover {
   color: var(--text-light-color);
 }
+
+.input-spinner {
+  cursor: default;
+  width: 17px;
+  height: 17px;
+}
+
+.input-spinner circle {
+  stroke: var(--list-active-color);
+}
