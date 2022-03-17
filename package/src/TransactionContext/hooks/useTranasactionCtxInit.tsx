@@ -21,6 +21,9 @@ export const useTranasactionCtxInit = (
         currentQuote: data.transactionData,
         tokenIn: data.tokenIn,
         tokenOut: data.tokenOut,
+        fiatSymbol: data.fiatSymbol,
+        // TODO: price oracle ??
+        fiatConversion: 200,
       },
     });
   }, [dispatch, data, key]);

@@ -1,21 +1,15 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { NextStep } from "../../ApiContext";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
-import uriToHttp, { parseWrappedTokens } from "../../utils";
+import { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
   isMetamaskEnabled,
-  QuoteDetails,
   useEtherBalance,
   getQuote,
   getSwapParams,
@@ -38,19 +32,22 @@ import {
   useTransactionContext,
   useTransactionCtxWallets,
 } from "../../TransactionContext/hooks";
-import {
-  useTranasactionCtxInit,
-} from "../../TransactionContext/hooks/useTranasactionCtxInit";
+import { useTranasactionCtxInit } from "../../TransactionContext/hooks/useTranasactionCtxInit";
+import { useTransactionCtxActions } from "../../TransactionContext/hooks/useTransactionCtxActions";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
 }> = (props) => {
-  const [nextStep, setNextStep] = useState(props.nextStep);
+  const [nextStep] = useState(props.nextStep);
   const { account: metaAddress, active } = useLayer2();
   const balance = useEtherBalance(metaAddress);
-  const [quote, setQuote] = useState<QuoteDetails>(
-    nextStep.data.transactionData
-  );
+  const {
+    currentQuote: quote,
+    fiatConversion,
+    fiatSymbol,
+  } = useTransactionContext();
+  const { setQuote } = useTransactionCtxActions();
+
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -71,7 +68,6 @@ const SwapOverviewView: React.FC<{
     data: {
       tokenIn,
       tokenOut,
-      fiatSymbol,
       transactionData: { amountDecimals },
     },
   } = nextStep;
@@ -106,11 +102,9 @@ const SwapOverviewView: React.FC<{
     } finally {
       setLoading(false);
     }
-  }, [amountDecimals, tokenIn, tokenOut]);
+  }, [amountDecimals, setQuote, tokenIn, tokenOut]);
 
   const { updateWallets } = useTransactionCtxWallets();
-  const { wallets } = useTransactionContext();
-  console.log({ wallets });
 
   useEffect(() => {
     handleUpdate();
@@ -120,26 +114,9 @@ const SwapOverviewView: React.FC<{
   const parsedTokenIn = parseWrappedTokens(tokenIn);
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
-  // TODO: price oracle ??
-  const getFiatConversion = useCallback(() => {
-    return 200;
-  }, []);
-
   const handleEdit = useCallback(async () => {
-    const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
-    const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
-    const fiatConversion = getFiatConversion();
-
     const submitData = (results: ConfirmSwapEditResults) => {
-      const { spentValue, receivedValue, slippage, deadline } = results;
-
-      nextStep.data.transactionData.amountDecimals = spentValue;
-      nextStep.data.transactionData.quoteGasAdjustedDecimals = receivedValue;
-      quote.amountDecimals = spentValue;
-      quote.quoteGasAdjustedDecimals = receivedValue;
-
-      setNextStep({ ...nextStep });
-      setQuote({ ...quote });
+      const { slippage, deadline } = results;
       setSlippageTolerance(slippage);
       setDeadline(deadline);
 
@@ -151,12 +128,6 @@ const SwapOverviewView: React.FC<{
       <ConfirmSwapView
         {...createConfirmSwapProps({
           data: nextStep.data,
-          parsedTokenIn,
-          tokenOut,
-          fiatConversion,
-          tokenInURL,
-          tokenOutURL,
-          quote,
           slippageTolerance,
           deadline,
           selectedWalletAddress:
@@ -167,18 +138,13 @@ const SwapOverviewView: React.FC<{
       />
     );
   }, [
-    metaAddress,
     customWallets,
     deadline,
-    getFiatConversion,
+    metaAddress,
     nextScreen,
-    nextStep,
-    parsedTokenIn,
-    quote,
+    nextStep.data,
     selectedWalletAddress,
     slippageTolerance,
-    tokenIn.logoURI,
-    tokenOut,
   ]);
 
   useEffect(() => {
@@ -294,7 +260,7 @@ const SwapOverviewView: React.FC<{
           estimate={quote}
           tokenIn={parsedTokenIn}
           tokenOut={tokenOut}
-          conversion={`${fiatSymbol}${getFiatConversion()}`}
+          conversion={`${fiatSymbol}${fiatConversion}`}
         />
         <FeeBreakdown transactionDetails={quote} />
         <div className={classes.message}>{message}</div>

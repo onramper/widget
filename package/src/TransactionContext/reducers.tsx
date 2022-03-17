@@ -6,7 +6,8 @@ import { StateType } from "./models";
 export enum ActionTypes {
   UpdateWallets = "UPDATE_WALLETS",
   SetSelectedWalletAddress = "SET_SELECTED_WALLET_ADDRESS",
-  Init = "Init",
+  Init = "INIT",
+  SetQuote = "SET_QUOTE",
 }
 
 export type DataActions =
@@ -26,28 +27,40 @@ export type DataActions =
         tokenIn: TokenInfo;
         tokenOut: TokenInfo;
         currentQuote: QuoteDetails;
+        fiatSymbol: string;
+        fiatConversion: number;
       };
+    }
+  | {
+      type: ActionTypes.SetQuote;
+      payload: QuoteDetails;
     };
 
-export default (state: StateType, action: DataActions) => {
+export default (state: StateType, action: DataActions): StateType => {
   switch (action.type) {
+    case ActionTypes.Init:
+      return {
+        ...initialState,
+        ...action.payload,
+      };
+
     case ActionTypes.UpdateWallets:
       return {
         ...state,
         wallets: action.payload,
-      } as StateType;
+      };
 
     case ActionTypes.SetSelectedWalletAddress:
       return {
         ...state,
         selectedWalletAddress: action.payload,
-      } as StateType;
+      };
 
-    case ActionTypes.Init:
+    case ActionTypes.SetQuote:
       return {
-        ...initialState,
-        ...action.payload,
-      } as StateType;
+        ...state,
+        currentQuote: action.payload,
+      };
 
     default:
       return state;

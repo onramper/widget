@@ -1,22 +1,20 @@
+import { QuoteDetails } from "layer2";
 import { useCallback, useContext } from "react";
 import { TransactionContext } from "..";
-import { InitParams } from "../models";
 import { ActionTypes } from "../reducers";
 
 export const useTransactionCtxActions = () => {
   const { dispatch } = useContext(TransactionContext);
 
-  const init = useCallback(
-    ({ userId }: InitParams) => {
+  const setQuote = useCallback(
+    (quote: QuoteDetails) => {
       dispatch({
-        type: ActionTypes.Init,
-        payload: {
-          userId,
-        },
+        type: ActionTypes.SetQuote,
+        payload: quote,
       });
     },
     [dispatch]
   );
 
-  return { init };
+  return { setQuote };
 };
