@@ -18,6 +18,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [address, setAddress] = useState(props.address || "");
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [isLoading, setIsLoading] = useState(false);
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const datailsWrapperRef = useRef<HTMLDivElement>(null);
   const ethBalance = useEtherBalance(props.address);
@@ -29,17 +30,20 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
   };
 
   const onSubmit = async () => {
-    if (!props.onSubmitAddress) {
+    if (!props.onEditAddress) {
       return;
     }
 
+    setIsLoading(true);
     setErrorMessage(undefined);
     try {
-      await props.onSubmitAddress(address);
+      await props.onEditAddress(address);
       setIsEditing(false);
     } catch (_error) {
       const error = _error as Error;
       setErrorMessage(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -51,7 +55,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
     >
       <div className={classes["label"]}>
         <span> {props.label} </span>
-        {props.onSubmitAddress && (
+        {props.onEditAddress && (
           <EditIcon
             className={classes["edit-icon"]}
             onClick={onToggleEditing}
@@ -104,6 +108,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
               value={address}
               onChange={setAddress}
               autoFocus
+              loading={isLoading}
             />
           </div>
         </Transition>

@@ -20,7 +20,8 @@ import {
 
 const DestinationWalletView: React.FC = () => {
   const { wallets, selectedWalletAddress } = useTransactionContext();
-  const { selectWalletAddress, updateWallets } = useTransactionCtxWallets();
+  const { selectWalletAddress, editWallet, updateWallets } =
+    useTransactionCtxWallets();
 
   const [errorMessage, setErrorMessage] = useState<string>();
   const { account: metaAddress } = useLayer2();
@@ -37,28 +38,6 @@ const DestinationWalletView: React.FC = () => {
   const walletsWrapperRef = React.useRef<HTMLDivElement>(null);
 
   const { nextScreen, backScreen } = useContext(NavContext);
-
-  const onSubmitAddress = useCallback(
-    (address: string) => {
-      return new Promise<void>((resolve, reject) => {
-        if (!address) {
-          return reject(new Error("Value cannot be empty."));
-        }
-
-        setTimeout(() => {
-          if (address === "error") {
-            return reject(new Error("Incorect address."));
-          }
-
-          updateWallets(
-            wallets.map((i) => (i.address === address ? { ...i, address } : i))
-          );
-          resolve();
-        }, 200);
-      });
-    },
-    [updateWallets, wallets]
-  );
 
   const onAddNewWallet = useCallback(async () => {
     setNewWalletAddressError(undefined);
@@ -139,11 +118,7 @@ const DestinationWalletView: React.FC = () => {
 
   return (
     <div className={commonClasses.view}>
-      <ProgressHeader
-        percentage={0}
-        title={"Your wallet"}
-        useBackButton
-      />
+      <ProgressHeader percentage={0} title={"Your wallet"} useBackButton />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <Heading
           text="Add destination wallet (Optional)"
@@ -172,9 +147,7 @@ const DestinationWalletView: React.FC = () => {
                     address={wallet.address || undefined}
                     isChecked={wallet.address === selectedWalletAddress}
                     icon={wallet.icon}
-                    onCheck={() =>
-                      selectWalletAddress(undefined)
-                    }
+                    onCheck={() => selectWalletAddress(undefined)}
                     isConnected={true}
                   />
                 );
@@ -209,7 +182,7 @@ const DestinationWalletView: React.FC = () => {
                   isChecked={wallet.address === selectedWalletAddress}
                   icon={wallet.icon}
                   onCheck={() => selectWalletAddress(wallet.address)}
-                  onSubmitAddress={onSubmitAddress}
+                  onEditAddress={(address) => editWallet(wallet, address)}
                   onDelete={() => onDeleteWallet(wallet.address)}
                 />
               );
