@@ -1,4 +1,6 @@
+import { QuoteDetails, TokenInfo } from "layer2";
 import { WalletItemData } from "../ApiContext/api/types/nextStep";
+import initialState from "./initialState";
 import { StateType } from "./models";
 
 export enum ActionTypes {
@@ -19,7 +21,11 @@ export type DataActions =
   | {
       type: ActionTypes.Init;
       payload: {
+        key: number;
         userId: string;
+        tokenIn: TokenInfo;
+        tokenOut: TokenInfo;
+        currentQuote: QuoteDetails;
       };
     };
 
@@ -39,10 +45,10 @@ export default (state: StateType, action: DataActions) => {
 
     case ActionTypes.Init:
       return {
-        ...state,
+        ...initialState,
         ...action.payload,
       } as StateType;
-      
+
     default:
       return state;
   }
