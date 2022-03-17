@@ -17,53 +17,71 @@ import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
 import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
 import BaseInput from "../../../common/Input/BaseInput/BaseInput";
-import { useLayer2 } from "layer2";
+import { useLayer2, DEFAULTS as defaultSettings } from "layer2";
 import { metamaskWallet } from "../constants";
+import {
+  useTransactionContext,
+  useTransactionCtxActions,
+} from "../../../TransactionContext/hooks";
+
+const { slippageTolerance: defaultSlippage } = defaultSettings;
 
 const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
+  const {
+    slippageTolerance: ctxSlippage,
+    deadline: ctxDeadline,
+    wallets: ctxWallets,
+  } = useTransactionContext();
+  const { updateDeadline, updateSlippage } = useTransactionCtxActions();
   const { nextScreen } = useContext(NavContext);
+  const { account: mmAddress } = useLayer2();
+
+  const [wallets, setWallets] = useState(computeWallets(ctxWallets, mmAddress));
+
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
-  const { account: mmAddress } = useLayer2();
-  const [wallets, setWallets] = useState(
-    computeWallets(props.wallets, mmAddress)
+
+  const [slippageValue, setSlippageValue] = useState(ctxSlippage.toFixed(2));
+
+  const [deadlineValue, setDeadlineValue] = useState(
+    String(Math.floor((ctxDeadline / 60) * 100) / 100)
   );
-  const [defaultDeadline] = useState(props.deadline);
+  const [initialDeadlineValue] = useState(deadlineValue);
 
   const computeSlippageAutoBtnClass = useCallback(() => {
     const outlineClass =
-      props.defaultSlippage === Number(props.slippage) || props.slippage === ""
+      defaultSlippage === Number(slippageValue) || slippageValue === ""
         ? ""
         : commonClasses["outline"];
     return `${commonClasses["secondary-btn"]} ${outlineClass} ${classes["auto-btn"]}`;
-  }, [props.defaultSlippage, props.slippage]);
+  }, [slippageValue]);
 
   const resetSlippage = useCallback(() => {
-    props.onChangeSlippage(props.defaultSlippage.toFixed(2));
-  }, [props]);
+    setSlippageValue(defaultSlippage.toFixed(2));
+  }, []);
 
-  const getErrorText = useCallback(() => {
-    if(props.slippage === "") {
+  const getErrorTextSlippage = useCallback(() => {
+    if (slippageValue === "") {
       return;
     }
 
-    const slippage = Number(props.slippage);
+    const slippage = Number(slippageValue);
     if (slippage < 0 || slippage > 51) {
       return "Please enter a valid slippage";
     }
-  }, [props.slippage]);
+  }, [slippageValue]);
 
   const getSlippageWarningText = useCallback(() => {
-    if(props.slippage === "") {
+    if (slippageValue === "") {
       return;
     }
 
-    if (getErrorText()) {
+    if (getErrorTextSlippage()) {
       return;
     }
 
-    const slippage = Number(props.slippage);
+    const slippage = Number(slippageValue);
     if (slippage < 0.05) {
       return "Your transaction may fail.";
     }
@@ -71,27 +89,27 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
     if (slippage > 1) {
       return "Your transaction may be frontrun.";
     }
-  }, [getErrorText, props.slippage]);
+  }, [getErrorTextSlippage, slippageValue]);
 
   const onBlurSlippage = useCallback(() => {
-    if (getErrorText() || props.slippage === "") {
+    if (getErrorTextSlippage() || slippageValue === "") {
       resetSlippage();
       return;
     }
-    props.onChangeSlippage(Number(props.slippage).toFixed(2));
-  }, [getErrorText, props, resetSlippage]);
+    setSlippageValue(Number(slippageValue).toFixed(2));
+  }, [getErrorTextSlippage, resetSlippage, slippageValue]);
 
   const deadlineHasError = useCallback(() => {
-    return !Number(props.deadline) || Number(props.deadline) < 0;
-  }, [props.deadline]);
+    return !Number(deadlineValue) || Number(deadlineValue) < 0;
+  }, [deadlineValue]);
 
   const onBlurDeadline = useCallback(() => {
     if (deadlineHasError()) {
-      props.onChangeDeadline(defaultDeadline);
+      setDeadlineValue(initialDeadlineValue);
       return;
     }
-    props.onChangeDeadline(Number(props.deadline).toFixed(2));
-  }, [deadlineHasError, defaultDeadline, props]);
+    setDeadlineValue(Number(deadlineValue).toFixed(2));
+  }, [deadlineHasError, deadlineValue, initialDeadlineValue]);
 
   const goToWalletDestination = useCallback(() => {
     nextScreen(
@@ -111,8 +129,8 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   }, [nextScreen, props]);
 
   useEffect(
-    () => setWallets(computeWallets(props.wallets, mmAddress)),
-    [mmAddress, props.wallets]
+    () => setWallets(computeWallets(ctxWallets, mmAddress)),
+    [mmAddress, ctxWallets]
   );
 
   useEffect(() => {
@@ -129,7 +147,18 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
     };
   }, []);
 
-  const slippageError = getErrorText();
+  //update context
+  useEffect(
+    () => updateDeadline((Number(deadlineValue) || 0) * 60),
+    [deadlineValue, updateDeadline]
+  );
+
+  useEffect(
+    () => updateSlippage(Number(slippageValue)),
+    [slippageValue, updateSlippage]
+  );
+
+  const slippageError = getErrorTextSlippage();
 
   return (
     <div
@@ -161,11 +190,11 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 symbolPosition="end"
                 name="slippage"
                 type="number"
-                placeholder={props.defaultSlippage.toFixed(2)}
+                placeholder={defaultSlippage.toFixed(2)}
                 error={!!slippageError}
-                value={props.slippage}
+                value={slippageValue}
                 handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  props.onChangeSlippage(e.target.value);
+                  setSlippageValue(e.target.value);
                 }}
                 onBlur={onBlurSlippage}
               />
@@ -186,9 +215,9 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 variant="setting"
                 type="number"
                 name="transactionDeadline"
-                value={props.deadline}
+                value={deadlineValue}
                 handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  props.onChangeDeadline(e.target.value);
+                  setDeadlineValue(e.target.value);
                 }}
                 error={deadlineHasError()}
                 onBlur={onBlurDeadline}

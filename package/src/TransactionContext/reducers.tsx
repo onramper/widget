@@ -4,11 +4,12 @@ import initialState from "./initialState";
 import { StateType } from "./models";
 
 export enum ActionTypes {
-  UpdateWallets = "UPDATE_WALLETS",
-  SetSelectedWalletAddress = "SET_SELECTED_WALLET_ADDRESS",
-  Init = "INIT",
-  SetQuote = "SET_QUOTE",
-  UpdateSwapSettings = "UPDATE_SWAP_SETTINGS",
+  UpdateWallets = "UpdateWallets",
+  SetSelectedWalletAddress = "SetSelectedWalletAddress",
+  Init = "Init",
+  SetQuote = "SetQuote",
+  UpdateDeadline = "UpdateDeadline",
+  UpdateSlippageTolerance = "UpdateSlippageTolerance",
 }
 
 export type DataActions =
@@ -39,8 +40,8 @@ export type DataActions =
       payload: QuoteDetails;
     }
   | {
-      type: ActionTypes.UpdateSwapSettings;
-      payload: { slippageTolerance: number; deadline: number };
+      type: ActionTypes.UpdateDeadline | ActionTypes.UpdateSlippageTolerance;
+      payload: number;
     };
 
 export default (state: StateType, action: DataActions): StateType => {
@@ -69,13 +70,18 @@ export default (state: StateType, action: DataActions): StateType => {
         currentQuote: action.payload,
       };
 
-    case ActionTypes.UpdateSwapSettings:
+    case ActionTypes.UpdateDeadline:
       return {
         ...state,
-        slippageTolerance: action.payload.slippageTolerance,
-        deadline: action.payload.deadline,
+        deadline: action.payload,
       };
-      
+
+    case ActionTypes.UpdateSlippageTolerance:
+      return {
+        ...state,
+        slippageTolerance: action.payload,
+      };
+
     default:
       return state;
   }
