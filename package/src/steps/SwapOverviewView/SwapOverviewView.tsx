@@ -26,9 +26,9 @@ import EditSwapView from "./EditSwapView/EditSwapView";
 import {
   useTransactionContext,
   useTransactionCtxWallets,
+  useTranasactionCtxInit,
+  useTransactionCtxActions
 } from "../../TransactionContext/hooks";
-import { useTranasactionCtxInit } from "../../TransactionContext/hooks/useTranasactionCtxInit";
-import { useTransactionCtxActions } from "../../TransactionContext/hooks/useTransactionCtxActions";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -89,8 +89,6 @@ const SwapOverviewView: React.FC<{
       setLoading(false);
     }
   }, [amountDecimals, setQuote, tokenIn, tokenOut]);
-
-  const { updateWallets } = useTransactionCtxWallets();
 
   useEffect(() => {
     handleUpdate();
@@ -192,7 +190,7 @@ const SwapOverviewView: React.FC<{
     } catch (err) {
       alert(err);
     }
-  }, [fetchAndUpdateUserWallets, nextStep.data.userId, updateWallets]);
+  }, [fetchAndUpdateUserWallets]);
 
   return (
     <div className={commonClasses.view}>
