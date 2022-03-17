@@ -26,7 +26,6 @@ import {
   useEtherBalance,
   getQuote,
   useTokenBalance,
-  DEFAULTS as defaultSettings,
   TokenInfo,
   QuoteDetails,
 } from "layer2";
@@ -34,7 +33,7 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   useTransactionContext,
   useTransactionCtxWallets,
-  useTransactionCtxActions
+  useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
@@ -54,7 +53,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     deadline: ctxDeadline,
     feeBreakdown,
   } = useTransactionContext();
-  const { setQuote, updateSwapSettings } = useTransactionCtxActions();
+  const { setQuote } = useTransactionCtxActions();
 
   const [cryptoSpent] = useState(
     computeTokenIn(tokenIn, currentQuote, fiatSymbol, fiatConversionIn)
@@ -62,6 +61,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [cryptoReceived] = useState(
     computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversionOut)
   );
+  const [localQuote, setLocalQuote] = useState(currentQuote);
 
   // swap inputs
   const [spentValue, setSpentValue] = useState(cryptoSpent.value);
@@ -75,10 +75,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [wallets, setWallets] = useState(contextWallets);
   const [selectedWalletAddress, setSelectedWalletAddress] =
     useState(ctxWalletAddress);
-  const [slippage, setSlippage] = useState(ctxSlippage.toFixed(2));
-  const [deadline, setDeadline] = useState(
-    String(Math.floor((ctxDeadline / 60) * 100) / 100)
-  );
 
   const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
 
@@ -90,21 +86,19 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
 
   const onActionButton = useCallback(async () => {
+    setQuote(localQuote);
+
+    // TODO: live-update the context instead
     updateWallets(wallets);
     selectWalletAddress(selectedWalletAddress);
-    updateSwapSettings({
-      slippageTolerance: Number(slippage),
-      deadline: Number(deadline) * 60,
-    });
 
     backScreen();
   }, [
     backScreen,
-    deadline,
+    localQuote,
     selectWalletAddress,
     selectedWalletAddress,
-    slippage,
-    updateSwapSettings,
+    setQuote,
     updateWallets,
     wallets,
   ]);
@@ -154,7 +148,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
               );
             }
 
-            setQuote(newQuote);
+            setLocalQuote(newQuote);
             resolve({
               receivedCrypto: newQuote.quoteGasAdjustedDecimals,
             });
@@ -175,13 +169,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         });
       });
     },
-    [
-      ethBalance,
-      getAndUpdateAbortController,
-      cryptoReceived,
-      cryptoSpent,
-      setQuote,
-    ]
+    [cryptoReceived, cryptoSpent, ethBalance, getAndUpdateAbortController]
   );
 
   const updateReceivedValue = useCallback(
@@ -237,12 +225,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             wallets={wallets}
             updateWallets={setWallets}
             selectedWalletAddress={selectedWalletAddress}
-            slippage={slippage}
-            deadline={deadline}
-            defaultSlippage={defaultSettings.slippageTolerance}
             onChangeWalletAddress={setSelectedWalletAddress}
-            onChangeDeadline={setDeadline}
-            onChangeSlippage={setSlippage}
             cryptoName={cryptoSpent.currencyShortName}
           />
         </div>

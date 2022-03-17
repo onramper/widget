@@ -16,15 +16,25 @@ export const useTransactionCtxActions = () => {
     [dispatch]
   );
 
-  const updateSwapSettings = useCallback(
-    (payload: { slippageTolerance: number; deadline: number }) => {
+  const updateSlippage = useCallback(
+    (slippageTolerance: number) => {
       dispatch({
-        type: ActionTypes.UpdateSwapSettings,
-        payload,
+        type: ActionTypes.UpdateSlippageTolerance,
+        payload: slippageTolerance,
       });
     },
     [dispatch]
   );
 
-  return { setQuote, updateSwapSettings };
+  const updateDeadline = useCallback(
+    (deadline: number) => {
+      dispatch({
+        type: ActionTypes.UpdateDeadline,
+        payload: deadline,
+      });
+    },
+    [dispatch]
+  );
+
+  return { setQuote, updateSlippage, updateDeadline };
 };
