@@ -124,7 +124,7 @@ export type PaymentReviewStep = {
 export type WalletItemData = {
   address: string;
   name: string;
-  balance: number;
+  network: string;
   icon?: string;
   isConnected?: boolean;
 };
