@@ -116,6 +116,9 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
 
   const goToWalletDestination = useCallback(() => {
     nextScreen(<DestinationWalletView />);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 200);
   }, [nextScreen]);
 
   useEffect(
