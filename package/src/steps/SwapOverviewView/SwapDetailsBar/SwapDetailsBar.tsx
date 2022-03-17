@@ -9,7 +9,8 @@ const SwapDetailsBar = ({
   tokenIn,
   tokenOut,
   estimate,
-  conversion
+  conversionIn,
+  conversionOut,
 }: SwapDetailsBarProps) => {
   // TODO: fallback logo icons
   const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
@@ -30,7 +31,7 @@ const SwapDetailsBar = ({
           <div className={classes.amount}>
             {Number(estimate.amountDecimals).toFixed(5)}
           </div>
-          <div className={classes.conversion}>({conversion})</div>
+          <div className={classes.conversion}>({conversionIn})</div>
         </div>
       </div>
       <SwapArrows className={classes.swapIcon} />
@@ -47,7 +48,7 @@ const SwapDetailsBar = ({
           <div className={classes.amount}>
             {Number(estimate.quoteGasAdjustedDecimals).toFixed(5)}
           </div>
-          <div className={classes.conversion}>({conversion})</div>
+          <div className={classes.conversion}>({conversionOut})</div>
         </div>
       </div>
     </div>

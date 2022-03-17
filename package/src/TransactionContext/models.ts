@@ -8,7 +8,8 @@ export type StateType = {
   tokenOut: TokenInfo;
   currentQuote: QuoteDetails;
   fiatSymbol: string;
-  fiatConversion: number;
+  fiatConversionIn: number;
+  fiatConversionOut: number;
   wallets: WalletItemData[];
   selectedWalletAddress?: string;
   slippageTolerance: number;
