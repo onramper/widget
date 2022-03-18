@@ -4,12 +4,13 @@ import { BASE_API } from "../../ApiContext/api/constants";
 import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 import { ActionTypes } from "../reducers";
 import { useTransactionContext } from "./useTransactionContext";
-import { getEnsNameFromAddress, isAddress, useEthers } from "layer2";
+import { getEnsNameFromAddress, isAddress, useEthers, useLayer2 } from "layer2";
 
 export const useTransactionCtxWallets = () => {
   const { dispatch } = useContext(TransactionContext);
   const { userId, wallets, selectedWalletAddress } = useTransactionContext();
   const { library } = useEthers();
+  const { account: metaAddress } = useLayer2();
 
   const updateWallets = useCallback(
     (wallets: WalletItemData[]) => {
@@ -53,6 +54,14 @@ export const useTransactionCtxWallets = () => {
         return Promise.reject(new Error("Address cannot be empty."));
       }
 
+      if (newAddress === metaAddress) {
+        return Promise.reject(
+          new Error(
+            `There is already one wallet with address (MetaMask Wallet).`
+          )
+        );
+      }
+
       const duplicate = wallets.find((item) => item.address === newAddress);
       if (duplicate) {
         return Promise.reject(
@@ -93,13 +102,21 @@ export const useTransactionCtxWallets = () => {
 
       updateWallets([wallet, ...wallets]);
     },
-    [library, updateWallets, userId, wallets]
+    [library, metaAddress, updateWallets, userId, wallets]
   );
 
   const editWallet = useCallback(
     async (wallet: WalletItemData, address: string) => {
       if (!address) {
         return Promise.reject(new Error("Address cannot be empty."));
+      }
+
+      if (address === metaAddress) {
+        return Promise.reject(
+          new Error(
+            `There is already one wallet with address (MetaMask Wallet).`
+          )
+        );
       }
 
       const duplicate = wallets.find(
@@ -133,7 +150,7 @@ export const useTransactionCtxWallets = () => {
         wallets.map((item) => (item === wallet ? { ...item, address } : item))
       );
     },
-    [updateWallets, userId, wallets]
+    [metaAddress, updateWallets, userId, wallets]
   );
 
   const deleteWallet = useCallback(
