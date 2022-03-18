@@ -137,8 +137,8 @@ export const useTransactionCtxWallets = () => {
   );
 
   const deleteWallet = useCallback(
-    async (walletName: string) => {
-      const wallet = wallets.find((item) => item.name === walletName);
+    async (address: string) => {
+      const wallet = wallets.find((item) => item.address === address);
       if (!wallet) {
         return;
       }
@@ -147,12 +147,12 @@ export const useTransactionCtxWallets = () => {
         //selects MM wallet
         selectWalletAddress(undefined);
       }
-      updateWallets(wallets.filter((item) => item.name !== walletName));
+      updateWallets(wallets.filter((item) => item.address !== address));
 
       const resp = await fetch(`${BASE_API}/removeUserWallet`, {
         method: "DELETE",
         body: JSON.stringify({
-          walletName,
+          address,
           userId,
         }),
       });
@@ -160,7 +160,7 @@ export const useTransactionCtxWallets = () => {
       if (!resp.ok) {
         updateWallets([
           wallet,
-          ...wallets.filter((item) => item.name !== walletName),
+          ...wallets.filter((item) => item.address !== address),
         ]);
 
         throw await resp.json();
