@@ -163,7 +163,7 @@ const DestinationWalletView: React.FC = () => {
                   icon={wallet.icon}
                   onCheck={() => selectWalletAddress(wallet.address)}
                   onEditAddress={(address) => editWallet(wallet, address)}
-                  onDelete={() => deleteWallet(wallet.name)}
+                  onDelete={() => deleteWallet(wallet.address)}
                 />
               );
             })}
