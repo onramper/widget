@@ -35,6 +35,9 @@ import {
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
 
+const insufficientFoundsError =
+  "You have insufficient funds to complete this transaction";
+
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [swapErrorMessage, setSwapErrorMessage] = useState<string>();
@@ -116,10 +119,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             }
 
             if (ethBalance && Number(formatEther(ethBalance)) < Number(value)) {
-              throw new ApiError(
-                "You have insufficient funds to complete this transaction",
-                "INSUFICIENT_FUNDS"
-              );
+              throw new ApiError(insufficientFoundsError, "INSUFICIENT_FUNDS");
             }
 
             setLocalQuote(newQuote);
@@ -187,6 +187,17 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
       updateReceivedValue(formatEther(ethBalance));
     }
   }, [ethBalance, updateReceivedValue]);
+
+  useEffect(() => {
+    if (swapErrorMessage && swapErrorMessage !== insufficientFoundsError) {
+      return;
+    }
+    if (ethBalance && Number(formatEther(ethBalance)) < Number(spentValue)) {
+      setSwapErrorMessage(insufficientFoundsError);
+      return;
+    }
+    setSwapErrorMessage("");
+  }, [ethBalance, spentValue, swapErrorMessage]);
 
   return (
     <div className={commonClasses.view}>
