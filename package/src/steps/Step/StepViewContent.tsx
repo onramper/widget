@@ -20,6 +20,7 @@ import Footer from "../../common/Footer";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
+import InstructionView from "../InstructionView";
 import { triggerGTMEvent } from "../../helpers/useGTM";
 
 export interface NewStepProps {
@@ -44,12 +45,12 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       selectedGateway,
       selectedPaymentMethod,
       defaultAddrs,
-      isAddressEditable
+      isAddressEditable,
     } = collected;
 
     triggerGTMEvent({
       event: "fiat-to-crypto",
-      category: selectedGateway?.id || '',
+      category: selectedGateway?.id || "",
       label: nextStep?.type,
       action: "step",
       value: {
@@ -109,8 +110,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       nextStep: NextStep & { type: "paymentReview" }
     ) => {
       if (!isAddressEditable) {
-        const newAddress =
-          defaultAddrs[selectedCrypto?.id ?? ""];
+        const newAddress = defaultAddrs[selectedCrypto?.id ?? ""];
 
         inputInterface.handleInputChange("cryptocurrencyAddress", newAddress);
       }
@@ -150,6 +150,9 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         break;
       case "emailVerification":
         replaceScreen(<EmailVerificationView nextStep={nextStep} />);
+        break;
+      case "instruction":
+        replaceScreen(<InstructionView nextStep={nextStep} />);
         break;
       case "orderComplete":
         replaceScreen(<OrderCompleteView nextStep={nextStep} />);

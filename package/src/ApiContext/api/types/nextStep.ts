@@ -86,7 +86,16 @@ interface PickOneOption {
   description?: string;
   icon?: string;
 }
+export interface TextType {
+  type: string;
+  text: string;
+  align?: "left" | "right" | "center" | "justify";
+}
 
+export interface ImageType {
+  type: string;
+  items: { image: string; text?: string }[];
+}
 interface InfoDepositBankAccount {
   iban: string;
   bic: string;
@@ -177,6 +186,12 @@ type NextStep = NextStepBase &
         depositBankAccount: InfoDepositBankAccount;
         reference: string;
         hint: string;
+      }
+    | {
+        type: "instruction";
+        sections: Array<TextType | ImageType>;
+        buttonActionTitle: string;
+        url?: string;
       }
     | EmailVerificationStep
     | OrderCompleteStep
