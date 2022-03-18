@@ -24,6 +24,7 @@
     "build:dev": "react-scripts build",
     "build:prod": "export REACT_APP_STAGE=prod&&npm run build",
     "build:demo": "export REACT_APP_STAGE=demo&&npm run build",
+    "build:l2": "export REACT_APP_STAGE=l2&&npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
