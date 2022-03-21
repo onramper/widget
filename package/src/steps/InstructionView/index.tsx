@@ -6,9 +6,10 @@ import ButtonAction from "../../common/ButtonAction";
 import Footer from "../../common/Footer";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import ErrorView from "../../common/ErrorView";
+import InstructionBody from "./InstructionBody";
 
 import commonStyles from "../../styles.module.css";
-import InstructionBody from "./InstructionBody";
+import styles from "./styles.module.css";
 
 const PickOptionView: React.FC<{
   nextStep: NextStep & { type: "instruction" };
@@ -36,7 +37,7 @@ const PickOptionView: React.FC<{
   return (
     <div className={commonStyles.view}>
       <ProgressHeader percentage={nextStep.progress} useBackButton />
-      <div className={commonStyles.body}>
+      <div className={`${commonStyles.body} ${styles["body-wrapper"]}`}>
         <InstructionBody sections={nextStep.sections} />
         <div
           className={`${commonStyles.body__child} ${commonStyles["grow-col"]}`}
