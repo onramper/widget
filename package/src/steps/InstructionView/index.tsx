@@ -30,6 +30,8 @@ const PickOptionView: React.FC<{
         if (error.fatal) {
           nextScreen(<ErrorView />);
         }
+      } finally {
+        setIsLoading(false);
       }
     }
   };
