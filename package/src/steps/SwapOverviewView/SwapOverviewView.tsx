@@ -5,18 +5,16 @@ import { NextStep } from "../../ApiContext";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
-import uriToHttp, { parseWrappedTokens } from "../../utils";
+import { parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
   isMetamaskEnabled,
-  QuoteDetails,
   useEtherBalance,
   getQuote,
   getSwapParams,
   useLayer2,
   useSendTransaction,
-  DEFAULTS as defaultSettings,
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
@@ -24,41 +22,44 @@ import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
-import ConfirmSwapView from "./EditSwapView/EditSwapView";
-import { createConfirmSwapProps } from "./utils";
-import { ConfirmSwapEditResults } from "./SwapOverviewView.models";
+import EditSwapView from "./EditSwapView/EditSwapView";
+import {
+  useTransactionContext,
+  useTransactionCtxWallets,
+  useTranasactionCtxInit,
+  useTransactionCtxActions
+} from "../../TransactionContext/hooks";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
 }> = (props) => {
-  const [nextStep, setNextStep] = useState(props.nextStep);
-  const { account, active } = useLayer2();
-  const balance = useEtherBalance(account);
-  const [quote, setQuote] = useState<QuoteDetails>(
-    nextStep.data.transactionData
-  );
+  const [nextStep] = useState(props.nextStep);
+  const { account: metaAddress, active } = useLayer2();
+  const balance = useEtherBalance(metaAddress);
+  const {
+    currentQuote: quote,
+    fiatConversionOut,
+    fiatConversionIn,
+    fiatSymbol,
+    tokenIn,
+    tokenOut,
+    slippageTolerance,
+    deadline,
+  } = useTransactionContext();
+  const { setQuote } = useTransactionCtxActions();
+  const { fetchAndUpdateUserWallets } = useTransactionCtxWallets();
+
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const isActive = account && active;
+  const isActive = metaAddress && active;
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
-  const [slippageTolerance, setSlippageTolerance] = useState(
-    defaultSettings.slippageTolerance
-  );
-  const [deadline, setDeadline] = useState(defaultSettings.deadline);
-
-  const {
-    data: {
-      tokenIn,
-      tokenOut,
-      fiatSymbol,
-      transactionData: { amountDecimals },
-    },
-  } = nextStep;
 
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
+
+  const { amountDecimals } = quote;
 
   const updateMessageAndClear = (mes: string) => {
     setMessage(mes);
@@ -88,7 +89,7 @@ const SwapOverviewView: React.FC<{
     } finally {
       setLoading(false);
     }
-  }, [amountDecimals, tokenIn, tokenOut]);
+  }, [amountDecimals, setQuote, tokenIn, tokenOut]);
 
   useEffect(() => {
     handleUpdate();
@@ -98,66 +99,9 @@ const SwapOverviewView: React.FC<{
   const parsedTokenIn = parseWrappedTokens(tokenIn);
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
-  // TODO: price oracle ??
-  const getFiatConversion = useCallback(() => {
-    return 200;
-  }, []);
-
   const handleEdit = useCallback(async () => {
-    const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
-    const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
-    const fiatConversion = getFiatConversion();
-
-    const submitData = (results: ConfirmSwapEditResults) => {
-      const {
-        spentValue,
-        receivedValue,
-        selectedWalletId,
-        wallets,
-        slippage,
-        deadline,
-      } = results;
-
-      nextStep.data.transactionData.amountDecimals = spentValue;
-      nextStep.data.transactionData.quoteGasAdjustedDecimals = receivedValue;
-      quote.amountDecimals = spentValue;
-      quote.quoteGasAdjustedDecimals = receivedValue;
-      nextStep.data.walletsData.selectedWalletId = selectedWalletId;
-      nextStep.data.walletsData.wallets = wallets;
-
-      setNextStep({ ...nextStep });
-      setQuote({ ...quote });
-      setSlippageTolerance(slippage);
-      setDeadline(deadline);
-    };
-
-    nextScreen(
-      <ConfirmSwapView
-        {...createConfirmSwapProps({
-          data: nextStep.data,
-          parsedTokenIn,
-          tokenOut,
-          fiatConversion,
-          tokenInURL,
-          tokenOutURL,
-          quote,
-          slippageTolerance,
-          deadline: deadline,
-        })}
-        submitData={submitData}
-      />
-    );
-  }, [
-    deadline,
-    getFiatConversion,
-    nextScreen,
-    nextStep,
-    parsedTokenIn,
-    quote,
-    slippageTolerance,
-    tokenIn.logoURI,
-    tokenOut,
-  ]);
+    nextScreen(<EditSwapView progress={nextStep.progress} />);
+  }, [nextScreen, nextStep.progress]);
 
   useEffect(() => {
     if (error) {
@@ -166,7 +110,7 @@ const SwapOverviewView: React.FC<{
   }, [error]);
 
   const handleSwap = async () => {
-    if (account && balance) {
+    if (metaAddress && balance) {
       setLoading(true);
       setMessage("Fetching best price...");
       try {
@@ -175,7 +119,7 @@ const SwapOverviewView: React.FC<{
           tokenIn,
           tokenOut,
           Number(amountDecimals),
-          account,
+          metaAddress,
           undefined,
           {
             slippageTolerance,
@@ -189,7 +133,7 @@ const SwapOverviewView: React.FC<{
             data: res.data,
             to: res.to,
             value: res.value,
-            from: account,
+            from: metaAddress,
           });
         }
       } catch (error) {
@@ -215,7 +159,7 @@ const SwapOverviewView: React.FC<{
         <OrderCompleteView
           title="Success! Your Swap has been executed."
           description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-          tokenOut={props.nextStep.data.tokenOut}
+          tokenOut={tokenOut}
         />
       );
     }
@@ -231,7 +175,7 @@ const SwapOverviewView: React.FC<{
       setLoading(false);
       setTimeout(() => setMessage(""), 2000);
     }
-  }, [nextScreen, props.nextStep.data.tokenOut, state]);
+  }, [nextScreen, state, tokenOut]);
 
   useEffect(() => {
     const onBeforeUnload = () => {
@@ -240,6 +184,14 @@ const SwapOverviewView: React.FC<{
     window.addEventListener("beforeunload", onBeforeUnload);
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, []);
+
+  useEffect(() => {
+    try {
+      fetchAndUpdateUserWallets();
+    } catch (err) {
+      alert(err);
+    }
+  }, [fetchAndUpdateUserWallets]);
 
   return (
     <div className={commonClasses.view}>
@@ -254,7 +206,8 @@ const SwapOverviewView: React.FC<{
           estimate={quote}
           tokenIn={parsedTokenIn}
           tokenOut={tokenOut}
-          conversion={`${fiatSymbol}${getFiatConversion()}`}
+          conversionIn={`${fiatSymbol}${fiatConversionIn}`}
+          conversionOut={`${fiatSymbol}${fiatConversionOut}`}
         />
         <FeeBreakdown transactionDetails={quote} />
         <div className={classes.message}>{message}</div>
@@ -290,4 +243,19 @@ const SwapOverviewView: React.FC<{
   );
 };
 
-export default SwapOverviewView;
+const WithContextInit: React.FC<{
+  nextStep: NextStep & { type: "transactionOverview" };
+}> = (props) => {
+  const isInit = useTranasactionCtxInit(props.nextStep.data, Date.now());
+  const { replaceScreen } = useNav();
+
+  useEffect(() => {
+    if (isInit) {
+      replaceScreen(<SwapOverviewView nextStep={props.nextStep} />);
+    }
+  }, [isInit, props.nextStep, replaceScreen]);
+
+  return <></>;
+};
+
+export default WithContextInit;

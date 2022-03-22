@@ -28,6 +28,7 @@
     "build:prod": "webpack --env NODE_ENV=production --env STAGE=prod",
     "build:dev": "webpack --env NODE_ENV=production --env STAGE=dev",
     "build:demo": "webpack --env NODE_ENV=production --env STAGE=demo",
+    "build:l2": "webpack --env NODE_ENV=production --env STAGE=l2",
     "test": "jest --passWithNoTests",
     "start": "webpack --env NODE_ENV=development --env STAGE=dev",
     "start:demo": "webpack --env NODE_ENV=development --env STAGE=demo",
