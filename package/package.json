@@ -45,6 +45,7 @@
     "iso3166-alpha-converter": "^1.0.0",
     "layer2": "github:onramper/layer2#main",
     "lottie-react": "^2.1.0",
+    "nanoid": "^3.3.1",
     "react-calendar": "^3.2.0",
     "react-jazzicon": "^1.0.3",
     "react-transition-group": "^4.4.1",
