@@ -1,10 +1,9 @@
 import {
   formatEther,
   shortenIfAddress,
-  useConnectEnsName,
-  useEnsAvatar,
   useEtherBalance,
   useLayer2,
+  useEns,
 } from "layer2";
 import React from "react";
 import buttonClasses from "../../../common/ListItemButtonGroup/ListItemButton/ListItemButton.module.css";
@@ -14,8 +13,7 @@ import classes from "./AccountDetails.module.css";
 
 const AccountDetails = ({ className }: AccountDetailsProps) => {
   const { account, active } = useLayer2();
-  const ensName = useConnectEnsName();
-  const ensAvatar = useEnsAvatar([ensName, account]);
+  const { ensName, ensAvatar } = useEns();
   const balance = useEtherBalance(account);
 
   return account && active ? (
