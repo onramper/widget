@@ -130,11 +130,11 @@ const PlayGround = () => {
   //  for testing
   //  vitalikAddress = "0x8289432ACD5EB0214B1C2526A5EDB480Aa06A9ab";
   //  vitalikEnsName = 'wslyvh.eth'
-  const ensName = useEnsName(address);
-  const ensAddress = useEnsAddress("wslyvh.eth");
-  const avatar = useEnsAvatar(["wslyvh.eth"]);
+  // const ensName = useEnsName(address);
+  // const ensAddress = useEnsAddress("wslyvh.eth");
+  // const avatar = useEnsAvatar(["wslyvh.eth"]);
 
-  console.log(ensAddress);
+  // console.log(ensAddress);
   return (
     <div className={styles.view}>
       <button
@@ -166,14 +166,14 @@ const PlayGround = () => {
 
       <div style={{ display: "flex", flexDirection: "column" }}>
         <h2>ENS:</h2>
-        <p>{ensName ?? "no name found"}</p>
+        {/* <p>{ensName ?? "no name found"}</p>
         {avatar && (
           <img
             style={{ width: "200px", height: "200px" }}
             src={avatar}
             alt="ens avatar"
           />
-        )}
+        )} */}
         <input
           value={address}
           onChange={handleChange}
