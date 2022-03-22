@@ -132,7 +132,7 @@ const PlayGround = () => {
   //  vitalikEnsName = 'wslyvh.eth'
   const ensName = useEnsName(address);
   const ensAddress = useEnsAddress("wslyvh.eth");
-  const avatar = useEnsAvatar("wslyvh.eth");
+  const avatar = useEnsAvatar(["wslyvh.eth"]);
 
   console.log(ensAddress);
   return (
