@@ -1,5 +1,9 @@
 import { isMetamaskEnabled, useEthers } from "layer2";
 import { useEffect, useState } from "react";
+import {
+  NotificationType,
+  useWidgetNotifications,
+} from "../NotificationContext";
 
 interface ConnectWallet {
   disconnect: () => void;
@@ -20,6 +24,7 @@ export const useConnectWallet = (): ConnectWallet => {
   >(null);
 
   const [connectionPending, setConnectionPending] = useState(false);
+  const { addNotification } = useWidgetNotifications();
 
   useEffect(() => {
     if (active && account) {
@@ -37,6 +42,10 @@ export const useConnectWallet = (): ConnectWallet => {
 
   const connect = () => {
     if (isMetamaskEnabled()) {
+      addNotification({
+        type: NotificationType.Info,
+        message: "Please open Metamask and Connect",
+      });
       setConnectionError(null);
       setConnectionPending(true);
       activateBrowserWallet();
@@ -50,6 +59,10 @@ export const useConnectWallet = (): ConnectWallet => {
     setConnectionError(null);
     setConnectionPending(false);
     deactivate();
+    addNotification({
+      type: NotificationType.Info,
+      message: "Wallet disconnected",
+    });
   };
 
   return {

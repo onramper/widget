@@ -6,6 +6,7 @@ export enum NotificationType {
 }
 
 export interface Notification {
+  submittedAt: number;
   id: string;
   message: string;
   type: NotificationType;
@@ -13,4 +14,4 @@ export interface Notification {
 
 export type Notifications = Notification[];
 
-export type AddNotificationPayload = Omit<Notification, "id">;
+export type AddNotificationPayload = Omit<Notification, "id" | "submittedAt">;

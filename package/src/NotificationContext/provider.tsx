@@ -2,18 +2,33 @@ import { chainIdToNetwork, useLayer2 } from "layer2";
 import React, { ReactNode, useCallback, useEffect, useReducer } from "react";
 import {
   AddNotificationPayload,
+  Notifications,
   NotificationType,
 } from "./notifications.models";
 import { notificationReducer } from "./reducer";
 import { NotificationContext } from "./context";
 import { nanoid } from "nanoid";
 import { useTransactionContext } from "../TransactionContext/hooks";
+import { useInterval, usePrevious } from "../hooks";
 
 interface Props {
   children: ReactNode;
 }
 
-const DEFAULT_TIMEOUT = 5000; //ms
+const checkInterval = 5000; //ms
+const expirationPeriod = 10000; //ms
+
+function getExpiredNotifications(
+  notifications: Notifications,
+  expirationPeriod: number
+) {
+  const timeFromCreation = (creationTime: number) => Date.now() - creationTime;
+
+  return notifications.filter(
+    (notification) =>
+      timeFromCreation(notification.submittedAt) >= expirationPeriod
+  );
+}
 
 export function NotificationProvider({ children }: Props) {
   const [notifications, dispatch] = useReducer(notificationReducer, []);
@@ -26,6 +41,7 @@ export function NotificationProvider({ children }: Props) {
         dispatch({
           type: "ADD_NOTIFICATION",
           notification: {
+            submittedAt: Date.now(),
             type: NotificationType.Warning,
             id: nanoid(),
             message: "Tokens are on incompatible networks",
@@ -36,6 +52,7 @@ export function NotificationProvider({ children }: Props) {
           dispatch({
             type: "ADD_NOTIFICATION",
             notification: {
+              submittedAt: Date.now(),
               type: NotificationType.Warning,
               id: nanoid(),
               message: `You are on an incorrect Network, please switch to ${
@@ -50,35 +67,26 @@ export function NotificationProvider({ children }: Props) {
 
   useEffect(() => {
     if (chainId) {
-      dispatch({
-        type: "ADD_NOTIFICATION",
-        notification: {
-          type: NotificationType.Info,
-          id: nanoid(),
-          message: "Network Changed.",
-        },
-      });
+      if (previousChainId !== undefined && chainId !== previousChainId) {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          notification: {
+            submittedAt: Date.now(),
+            type: NotificationType.Info,
+            id: nanoid(),
+            message: "Network Changed.",
+          },
+        });
+      }
     }
-  }, [chainId]);
-
-  useEffect(() => {
-    if (chainId) {
-      dispatch({
-        type: "ADD_NOTIFICATION",
-        notification: {
-          type: NotificationType.Info,
-          id: nanoid(),
-          message: "Network Changed.",
-        },
-      });
-    }
+    //eslint-disable-next-line
   }, [chainId]);
 
   const addNotification = useCallback(
     ({ message, type }: AddNotificationPayload) => {
       dispatch({
         type: "ADD_NOTIFICATION",
-        notification: { message, type, id: nanoid() },
+        notification: { submittedAt: Date.now(), message, type, id: nanoid() },
       });
     },
     [dispatch]
@@ -93,6 +101,18 @@ export function NotificationProvider({ children }: Props) {
     },
     [dispatch]
   );
+
+  useInterval(() => {
+    const expiredNotification = getExpiredNotifications(
+      notifications,
+      expirationPeriod
+    );
+    for (const notification of expiredNotification) {
+      removeNotification(notification.id);
+    }
+  }, checkInterval);
+
+  const previousChainId = usePrevious<number | undefined>(chainId);
 
   return (
     <NotificationContext.Provider
