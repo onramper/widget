@@ -159,7 +159,7 @@ const SwapCryptoView = () => {
             },
           ],
         ],
-        userId: "13"
+        userId: "13",
       },
     } as SwapOverviewVewStep;
     nextScreen(<Step nextStep={fakeResponse} />);

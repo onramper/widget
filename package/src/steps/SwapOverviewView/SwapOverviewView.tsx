@@ -27,8 +27,9 @@ import {
   useTransactionContext,
   useTransactionCtxWallets,
   useTranasactionCtxInit,
-  useTransactionCtxActions
+  useTransactionCtxActions,
 } from "../../TransactionContext/hooks";
+import { WidgetNotification } from "../WidgetNotification/WidgetNotification";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -210,7 +211,7 @@ const SwapOverviewView: React.FC<{
           conversionOut={`${fiatSymbol}${fiatConversionOut}`}
         />
         <FeeBreakdown transactionDetails={quote} />
-        <div className={classes.message}>{message}</div>
+        <WidgetNotification />
         <div className={classes.buttonContainer}>
           {isActive ? (
             <>

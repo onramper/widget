@@ -1,4 +1,4 @@
-import { chainIdToNetwork, chainIDToNetworkInfo, useLayer2 } from "layer2";
+import { chainIDToNetworkInfo, useLayer2 } from "layer2";
 import React, { ReactNode, useCallback, useEffect, useReducer } from "react";
 import {
   AddNotificationPayload,
@@ -15,8 +15,8 @@ interface Props {
   children: ReactNode;
 }
 
-const checkInterval = 2000; //ms
-const expirationPeriod = 10000; //ms
+const checkInterval = 1000; //ms
+const expirationPeriod = 5000; //ms
 
 function getExpiredNotifications(
   notifications: Notifications,
@@ -35,6 +35,9 @@ export function NotificationProvider({ children }: Props) {
   const [notifications, dispatch] = useReducer(notificationReducer, []);
   const { chainId, account, active } = useLayer2();
   const { tokenIn, tokenOut } = useTransactionContext();
+
+  const tokenChain =
+    chainIDToNetworkInfo.find((c) => c.chainId === tokenIn.chainId) ?? null;
 
   useEffect(() => {
     if (active && account && chainId) {
@@ -96,7 +99,7 @@ export function NotificationProvider({ children }: Props) {
               type: NotificationType.Warning,
               id: nanoid(),
               message: `You are on an incorrect Network, please switch to ${
-                chainIdToNetwork[tokenIn.chainId]
+                tokenChain?.name ?? "unknown"
               }`,
               shouldExpire: false,
             },
