@@ -12,10 +12,6 @@ import {
 } from "layer2";
 import React, { useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
-import {
-  NotificationType,
-  useWidgetNotifications,
-} from "../../NotificationContext";
 import styles from "../../styles.module.css";
 import { browserSupportsMetamask } from "../../utils";
 
@@ -26,11 +22,9 @@ const PlayGround = () => {
   const [address, setAddress] = useState<string>("");
   const [inputAmount, setInputAmount] = useState<string>("");
   const [loadingMessage, setLoadingMessage] = useState<string>("");
-  const [quote, setQuote] = useState<QuoteDetails | null>(null);
-  const { sendTransaction, state } = useSendTransaction();
+  const [_, setQuote] = useState<QuoteDetails | null>(null);
+  const { sendTransaction } = useSendTransaction();
   const [, setTokenList] = useState<TokenList | null>(null);
-  const { notifications, addNotification, removeNotification } =
-    useWidgetNotifications();
 
   const tokenIn: TokenInfo = {
     name: "Wrapped Ether",
@@ -138,13 +132,6 @@ const PlayGround = () => {
 
   // console.log(ensAddress);
 
-  const add = () => {
-    addNotification({
-      message: `current timestamp is ${Date.now()}`,
-      type: NotificationType.Info,
-    });
-  };
-
   return (
     <div className={styles.view}>
       <button
@@ -197,16 +184,6 @@ const PlayGround = () => {
         <WalletModal closeModal={() => setShowWalletModal(false)} />
       )}
       {loadingMessage && <p>{loadingMessage}</p>}
-
-      <button onClick={add}>Add Notification</button>
-      {notifications.map((notification) => (
-        <p
-          key={notification.id}
-          onClick={() => removeNotification(notification.id)}
-        >
-          {notification.message}
-        </p>
-      ))}
     </div>
   );
 };

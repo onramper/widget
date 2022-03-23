@@ -45,6 +45,7 @@ export const useConnectWallet = (): ConnectWallet => {
       addNotification({
         type: NotificationType.Info,
         message: "Please open Metamask and Connect",
+        shouldExpire: false,
       });
       setConnectionError(null);
       setConnectionPending(true);
@@ -62,6 +63,7 @@ export const useConnectWallet = (): ConnectWallet => {
     addNotification({
       type: NotificationType.Info,
       message: "Wallet disconnected",
+      shouldExpire: true,
     });
   };
 
