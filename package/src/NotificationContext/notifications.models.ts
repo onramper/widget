@@ -10,6 +10,7 @@ export interface Notification {
   id: string;
   message: string;
   type: NotificationType;
+  shouldExpire: boolean;
 }
 
 export type Notifications = Notification[];
