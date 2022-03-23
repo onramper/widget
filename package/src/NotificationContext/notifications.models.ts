@@ -12,3 +12,5 @@ export interface Notification {
 }
 
 export type Notifications = Notification[];
+
+export type AddNotificationPayload = Omit<Notification, "id">;

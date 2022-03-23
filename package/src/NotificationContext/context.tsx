@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
-import { Notification, Notifications } from "./notifications.models";
+import { AddNotificationPayload, Notifications } from "./notifications.models";
 
 export const NotificationContext = createContext<{
   notifications: Notifications;
-  addNotification: (payload: Omit<Notification, "id">) => void;
+  addNotification: (payload: AddNotificationPayload) => void;
   removeNotification: (id: string) => void;
 }>({
   notifications: [],

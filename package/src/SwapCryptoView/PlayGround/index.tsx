@@ -12,9 +12,12 @@ import {
 } from "layer2";
 import React, { useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
+import {
+  NotificationType,
+  useWidgetNotifications,
+} from "../../NotificationContext";
 import styles from "../../styles.module.css";
 import { browserSupportsMetamask } from "../../utils";
-import TemporarTransactionErrorTrigger from "../TransactionErrorOverlay/TemporarTransactionErrorTrigger";
 
 const PlayGround = () => {
   const { account } = useLayer2();
@@ -26,6 +29,8 @@ const PlayGround = () => {
   const [quote, setQuote] = useState<QuoteDetails | null>(null);
   const { sendTransaction, state } = useSendTransaction();
   const [, setTokenList] = useState<TokenList | null>(null);
+  const { notifications, addNotification, removeNotification } =
+    useWidgetNotifications();
 
   const tokenIn: TokenInfo = {
     name: "Wrapped Ether",
@@ -133,6 +138,13 @@ const PlayGround = () => {
 
   // console.log(ensAddress);
 
+  const add = () => {
+    addNotification({
+      message: `current timestamp is ${Date.now()}`,
+      type: NotificationType.Info,
+    });
+  };
+
   return (
     <div className={styles.view}>
       <button
@@ -185,22 +197,16 @@ const PlayGround = () => {
         <WalletModal closeModal={() => setShowWalletModal(false)} />
       )}
       {loadingMessage && <p>{loadingMessage}</p>}
-      {quote && (
-        <div>
-          <button style={buttonStyles} onClick={() => setQuote(null)}>
-            X
-          </button>
-          <p>fee breakdown:</p>
-          <p>{`Quote: ${quote.quoteDecimals}`}</p>
-          <p>{`(estimated gas: ${quote.gasUseEstimate})`}</p>
-          <hr />
-          <p>{`Final: ${quote.quoteGasAdjustedDecimals}`}</p>
-        </div>
-      )}
 
-      {state.status !== "None" && <p>{state.status}</p>}
-
-      <TemporarTransactionErrorTrigger />
+      <button onClick={add}>Add Notification</button>
+      {notifications.map((notification) => (
+        <p
+          key={notification.id}
+          onClick={() => removeNotification(notification.id)}
+        >
+          {notification.message}
+        </p>
+      ))}
     </div>
   );
 };
