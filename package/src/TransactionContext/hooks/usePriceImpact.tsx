@@ -1,12 +1,13 @@
+import { useUsdPriceImpact } from "../../../../../layer2/dist";
+import { useTransactionContext } from "./useTransactionContext";
 import { QuoteDetails } from "layer2";
-import { useEffect, useState } from "react";
 
 export const usePriceImpact = (quote: QuoteDetails) => {
-  const [priceImpact, setPriceImpact] = useState(0);
-  
-  useEffect(() => {
-      setPriceImpact(priceImpact => priceImpact+1)
-  }, [quote])
-
-  return priceImpact;
+  const { tokenIn, tokenOut } = useTransactionContext();
+  return useUsdPriceImpact(
+    tokenIn,
+    tokenOut,
+    Number(quote.amountDecimals),
+    Number(quote.quoteGasAdjustedDecimals)
+  );
 };
