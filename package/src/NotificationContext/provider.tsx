@@ -41,15 +41,6 @@ export function NotificationProvider({ children }: Props) {
 
   useEffect(() => {
     if (active && account && chainId) {
-      const pleaseConnectId =
-        notifications.find((n) => n.message.includes("Please open Metamask"))
-          ?.id ?? undefined;
-      if (pleaseConnectId) {
-        dispatch({
-          type: "REMOVE_NOTIFICATION",
-          id: pleaseConnectId,
-        });
-      }
       dispatch({
         type: "ADD_NOTIFICATION",
         notification: {
@@ -104,17 +95,6 @@ export function NotificationProvider({ children }: Props) {
               shouldExpire: false,
             },
           });
-        }
-        if (tokenIn.chainId === chainId) {
-          const chainErrorNotificationId =
-            notifications.find((n) => n.message.includes("incorrect network"))
-              ?.id ?? undefined;
-          if (chainErrorNotificationId) {
-            dispatch({
-              type: "REMOVE_NOTIFICATION",
-              id: chainErrorNotificationId,
-            });
-          }
         }
       }
     }
