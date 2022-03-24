@@ -35,7 +35,7 @@ import {
   useTransactionCtxWallets,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
-import { usePriceImpact } from "../../../TransactionContext/hooks/usePriceImpact";
+import { useUSDPriceImpact } from "../../../TransactionContext/hooks/useUSDPriceImpact";
 import { generateBreakdown } from "./utils";
 import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
 
@@ -86,7 +86,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     selectedWalletAddress
   );
 
-  const priceImpact = usePriceImpact(localQuote);
+  const priceImpact = useUSDPriceImpact(localQuote);
   const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
 
   const onActionButton = useCallback(async () => {

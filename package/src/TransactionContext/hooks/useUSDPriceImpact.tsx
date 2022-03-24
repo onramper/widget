@@ -1,8 +1,7 @@
-import { useUsdPriceImpact } from "../../../../../layer2/dist";
 import { useTransactionContext } from "./useTransactionContext";
-import { QuoteDetails } from "layer2";
+import { QuoteDetails, useUsdPriceImpact } from "layer2";
 
-export const usePriceImpact = (quote: QuoteDetails) => {
+export const useUSDPriceImpact = (quote: QuoteDetails) => {
   const { tokenIn, tokenOut } = useTransactionContext();
   return useUsdPriceImpact(
     tokenIn,
