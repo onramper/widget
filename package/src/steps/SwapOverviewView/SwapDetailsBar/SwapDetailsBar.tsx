@@ -3,6 +3,8 @@ import React from "react";
 import classes from "./SwapDetailsBar.module.css";
 import uriToHttp from "../../../utils";
 import { SwapDetailsBarProps } from "./SwapDetailsBar.models";
+import { ImageWithFallback } from "../../../common/ImageWithFallback/ImageWithFallback";
+const fallbackIcon = "../../../icons/fallback-token-icon.svg";
 
 const SwapDetailsBar = ({
   className = "",
@@ -20,10 +22,10 @@ const SwapDetailsBar = ({
     <div className={`${className} ${classes.SwapDetailsBar}`}>
       <div className={`${classes.column} ${classes.left}`}>
         {tokenIn.logoURI && (
-          <img
+          <ImageWithFallback
             className={classes.tokenIcon}
             src={tokenInURL}
-            alt={tokenIn.name}
+            alt={tokenIn?.name ?? "token to sell"}
           />
         )}
         <div className={classes.textContainer}>
@@ -37,10 +39,10 @@ const SwapDetailsBar = ({
       <SwapArrows className={classes.swapIcon} />
       <div className={`${classes.column} ${classes.right}`}>
         {tokenOut.logoURI && (
-          <img
+          <ImageWithFallback
             className={classes.tokenIcon}
             src={tokenOutURL}
-            alt={tokenOut.name}
+            alt={tokenOut.name ?? "token to purchase"}
           />
         )}
         <div className={classes.textContainer}>
