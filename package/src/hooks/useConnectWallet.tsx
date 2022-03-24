@@ -35,10 +35,16 @@ export const useConnectWallet = (): ConnectWallet => {
   useEffect(() => {
     if (error) {
       // here we can add custom wallet connection errors
-      setConnectionError(error as MetamaskError);
+      const metamaskError = error as MetamaskError;
+      setConnectionError(metamaskError);
       setConnectionPending(false);
+      addNotification({
+        type: NotificationType.Error,
+        message: metamaskError.message,
+        shouldExpire: true,
+      });
     }
-  }, [error]);
+  }, [addNotification, error]);
 
   const connect = () => {
     if (isMetamaskEnabled()) {

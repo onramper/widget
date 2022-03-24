@@ -30,6 +30,10 @@ import {
   useTransactionCtxActions,
 } from "../../TransactionContext/hooks";
 import { WidgetNotification } from "../WidgetNotification/WidgetNotification";
+import {
+  NotificationType,
+  useWidgetNotifications,
+} from "../../NotificationContext";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -57,6 +61,7 @@ const SwapOverviewView: React.FC<{
   useWalletSupportRedirect(nextStep.progress);
   const { connect, connectionPending, error } = useConnectWallet();
   const { nextScreen } = useNav();
+  const { addNotification } = useWidgetNotifications();
 
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
@@ -86,7 +91,6 @@ const SwapOverviewView: React.FC<{
       if ((error as Error)?.name === "AbortError") {
         return;
       }
-      alert(error);
     } finally {
       setLoading(false);
     }
@@ -127,7 +131,6 @@ const SwapOverviewView: React.FC<{
             deadline,
           }
         );
-
         setMessage("Please sign transaction");
         if (res?.data) {
           await sendTransaction({
@@ -138,13 +141,18 @@ const SwapOverviewView: React.FC<{
           });
         }
       } catch (error) {
-        if ((error as Error)?.name === "AbortError") {
-          return;
-        }
-        alert(error);
+        addNotification({
+          type: NotificationType.Info,
+          message: (error as Error)?.message ?? "something went wrong",
+          shouldExpire: true,
+        });
       }
     } else {
-      alert("please connect wallet");
+      addNotification({
+        type: NotificationType.Info,
+        message: "Please connect wallet",
+        shouldExpire: true,
+      });
     }
   };
 
@@ -190,7 +198,7 @@ const SwapOverviewView: React.FC<{
     try {
       fetchAndUpdateUserWallets();
     } catch (err) {
-      alert(err);
+      console.log(err);
     }
   }, [fetchAndUpdateUserWallets]);
 
@@ -203,6 +211,7 @@ const SwapOverviewView: React.FC<{
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <Heading className={classes.heading} text={heading} />
+        <WidgetNotification />
         <SwapDetailsBar
           estimate={quote}
           tokenIn={parsedTokenIn}
@@ -211,7 +220,6 @@ const SwapOverviewView: React.FC<{
           conversionOut={`${fiatSymbol}${fiatConversionOut}`}
         />
         <FeeBreakdown transactionDetails={quote} />
-        <WidgetNotification />
         <div className={classes.buttonContainer}>
           {isActive ? (
             <>

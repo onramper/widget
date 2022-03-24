@@ -21,9 +21,12 @@ export const WidgetNotification = ({ className }: WidgetNotificationProps) => {
     notifications.length > 0 ? notifications[notifications.length - 1] : null;
 
   const Icon = notificationToRender && typeToIcon[notificationToRender?.type];
+  const colorClass = notificationToRender?.type
+    ? classes[notificationToRender?.type.toLowerCase()]
+    : undefined;
 
   return (
-    <div className={`${classes.WidgetNotification} ${className}`}>
+    <div className={`${classes.WidgetNotification} ${colorClass} ${className}`}>
       {Icon && <Icon />}
       <div className={classes.message}>{notificationToRender?.message}</div>
     </div>
