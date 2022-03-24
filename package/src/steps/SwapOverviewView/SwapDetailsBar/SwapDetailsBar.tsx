@@ -4,7 +4,7 @@ import classes from "./SwapDetailsBar.module.css";
 import uriToHttp from "../../../utils";
 import { SwapDetailsBarProps } from "./SwapDetailsBar.models";
 import { ImageWithFallback } from "../../../common/ImageWithFallback/ImageWithFallback";
-const fallbackIcon = "../../../icons/fallback-token-icon.svg";
+import { ReactComponent as Fallback } from "../../../icons/fallback_token_icon.svg";
 
 const SwapDetailsBar = ({
   className = "",
@@ -26,6 +26,7 @@ const SwapDetailsBar = ({
             className={classes.tokenIcon}
             src={tokenInURL}
             alt={tokenIn?.name ?? "token to sell"}
+            FallbackComponent={Fallback}
           />
         )}
         <div className={classes.textContainer}>
@@ -43,6 +44,7 @@ const SwapDetailsBar = ({
             className={classes.tokenIcon}
             src={tokenOutURL}
             alt={tokenOut.name ?? "token to purchase"}
+            FallbackComponent={Fallback}
           />
         )}
         <div className={classes.textContainer}>

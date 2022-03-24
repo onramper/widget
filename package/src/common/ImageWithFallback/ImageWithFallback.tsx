@@ -1,25 +1,36 @@
 import React, { useState } from "react";
-import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg";
 import classes from "./styles.module.css";
 
 interface Props extends React.ComponentProps<"img"> {
   className?: string;
+  fallbackSrc?: string;
+  FallbackComponent?: React.FunctionComponent | SvgrComponent;
   src: string;
 }
 
-export const ImageWithFallback = ({ className, src, ...rest }: Props) => {
+export const ImageWithFallback = ({
+  className,
+  src,
+  fallbackSrc,
+  FallbackComponent,
+  ...rest
+}: Props) => {
   const [error, setError] = useState(false);
 
-  return error ? (
-    <Fallback className={`${classes.fallbackIcon} ${className}`} />
+  return error && FallbackComponent ? (
+    <FallbackComponent className={`${classes.fallbackIcon} ${className}`} />
   ) : (
     <img
       className={className}
       src={src}
       {...rest}
       onError={(e) => {
+        if (fallbackSrc) {
+          e.currentTarget.src = fallbackSrc;
+        } else {
+          setError(true);
+        }
         e.currentTarget.onerror = null;
-        setError(true);
       }}
     />
   );

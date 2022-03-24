@@ -119,7 +119,7 @@ const SwapCryptoView = () => {
           decimals: 18,
           chainId: 4,
           logoURI:
-            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+            "https://raw.githubusercontent.comiewvowr/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
         },
         tokenOut: {
           name: "Uniswap",
@@ -159,7 +159,7 @@ const SwapCryptoView = () => {
             },
           ],
         ],
-        userId: "13"
+        userId: "13",
       },
     } as SwapOverviewVewStep;
     nextScreen(<Step nextStep={fakeResponse} />);
