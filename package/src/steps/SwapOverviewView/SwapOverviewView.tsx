@@ -56,10 +56,9 @@ const SwapOverviewView: React.FC<{
 
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const isActive = metaAddress && active;
   useWalletSupportRedirect(nextStep.progress);
-  const { connect, connectionPending, error } = useConnectWallet();
+  const { connect, connectionPending } = useConnectWallet();
   const { nextScreen } = useNav();
   const { addNotification } = useWidgetNotifications();
 
@@ -67,13 +66,7 @@ const SwapOverviewView: React.FC<{
 
   const { amountDecimals } = quote;
 
-  const updateMessageAndClear = (mes: string) => {
-    setMessage(mes);
-    setTimeout(() => setMessage(""), 3000);
-  };
-
   const handleUpdate = useCallback(async () => {
-    setMessage("Updating quote...");
     setLoading(true);
     try {
       const newQuote = await getQuote(
@@ -85,7 +78,6 @@ const SwapOverviewView: React.FC<{
       );
       if (newQuote) {
         setQuote(newQuote);
-        updateMessageAndClear("Quote successfully updated");
       }
     } catch (error) {
       if ((error as Error)?.name === "AbortError") {
@@ -108,16 +100,14 @@ const SwapOverviewView: React.FC<{
     nextScreen(<EditSwapView progress={nextStep.progress} />);
   }, [nextScreen, nextStep.progress]);
 
-  useEffect(() => {
-    if (error) {
-      updateMessageAndClear(error.message);
-    }
-  }, [error]);
-
   const handleSwap = async () => {
     if (metaAddress && balance) {
       setLoading(true);
-      setMessage("Fetching best price...");
+      addNotification({
+        type: NotificationType.Info,
+        message: "Fetching best price...",
+        shouldExpire: true,
+      });
       try {
         const res = await getSwapParams(
           Number(formatEther(balance)),
@@ -131,7 +121,11 @@ const SwapOverviewView: React.FC<{
             deadline,
           }
         );
-        setMessage("Please sign transaction");
+        addNotification({
+          type: NotificationType.Info,
+          message: "Please sign transaction",
+          shouldExpire: true,
+        });
         if (res?.data) {
           await sendTransaction({
             data: res.data,
@@ -141,11 +135,14 @@ const SwapOverviewView: React.FC<{
           });
         }
       } catch (error) {
+        console.log(error);
         addNotification({
-          type: NotificationType.Info,
+          type: NotificationType.Error,
           message: (error as Error)?.message ?? "something went wrong",
           shouldExpire: true,
         });
+      } finally {
+        setLoading(false);
       }
     } else {
       addNotification({
@@ -158,12 +155,7 @@ const SwapOverviewView: React.FC<{
 
   // replace this with better user feedback
   useEffect(() => {
-    if (state.status === "Success") {
-      setMessage("Success! 🥳");
-      setLoading(false);
-    }
     if (state.status === "Mining") {
-      setMessage("Processing transaction...");
       nextScreen(
         <OrderCompleteView
           title="Success! Your Swap has been executed."
@@ -172,19 +164,14 @@ const SwapOverviewView: React.FC<{
         />
       );
     }
-
-    if (state.status === "Fail") {
-      setMessage("Transaction failed");
-      setLoading(false);
-      setTimeout(() => setMessage(""), 2000);
-    }
-
     if (state.status === "Exception") {
-      setMessage("Woops, something went wrong");
-      setLoading(false);
-      setTimeout(() => setMessage(""), 2000);
+      addNotification({
+        type: NotificationType.Error,
+        message: "User denied transaction",
+        shouldExpire: true,
+      });
     }
-  }, [nextScreen, state, tokenOut]);
+  }, [addNotification, nextScreen, state, tokenOut]);
 
   useEffect(() => {
     const onBeforeUnload = () => {

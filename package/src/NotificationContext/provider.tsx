@@ -56,7 +56,7 @@ export function NotificationProvider({ children }: Props) {
           submittedAt: Date.now(),
           type: NotificationType.Success,
           id: nanoid(),
-          message: "You have successfully connected your wallet.",
+          message: "Wallet Connected",
           shouldExpire: true,
         },
       });

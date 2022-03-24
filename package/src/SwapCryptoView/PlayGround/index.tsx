@@ -22,7 +22,7 @@ const PlayGround = () => {
   const [address, setAddress] = useState<string>("");
   const [inputAmount, setInputAmount] = useState<string>("");
   const [loadingMessage, setLoadingMessage] = useState<string>("");
-  const [_, setQuote] = useState<QuoteDetails | null>(null);
+  const [, setQuote] = useState<QuoteDetails | null>(null);
   const { sendTransaction } = useSendTransaction();
   const [, setTokenList] = useState<TokenList | null>(null);
 
