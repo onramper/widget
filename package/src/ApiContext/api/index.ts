@@ -43,7 +43,7 @@ interface GatewaysParams {
 
 const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
     const urlParams = createUrlParamsFromObject(params)
-    const gatewaysUrl = `${BASE_API}/gateways?${urlParams}`
+    const gatewaysUrl = `${BASE_API}/v2/gateways?${urlParams}`
     logRequest(gatewaysUrl)
     const gatewaysRes = await fetch(gatewaysUrl, {
         headers,
