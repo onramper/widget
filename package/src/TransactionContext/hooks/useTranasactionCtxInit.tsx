@@ -24,8 +24,7 @@ export const useTranasactionCtxInit = (
         fiatSymbol: data.fiatSymbol,
         // TODO: use appropriate methods to initialize these values
         fiatConversionIn: 201,
-        fiatConversionOut: 202,
-        feeBreakdown: data.feeBreakdown
+        fiatConversionOut: 202
       },
     });
   }, [dispatch, data, key]);
