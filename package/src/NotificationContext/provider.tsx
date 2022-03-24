@@ -78,7 +78,7 @@ export function NotificationProvider({ children }: Props) {
             type: NotificationType.Error,
             id: nanoid(),
             message: "Tokens are on incompatible networks",
-            shouldExpire: false,
+            shouldExpire: true,
           },
         });
       } else {
@@ -92,7 +92,7 @@ export function NotificationProvider({ children }: Props) {
               message: `You are on an incorrect Network, please switch to ${
                 tokenChain?.name ?? "unknown"
               }`,
-              shouldExpire: false,
+              shouldExpire: true,
             },
           });
         }

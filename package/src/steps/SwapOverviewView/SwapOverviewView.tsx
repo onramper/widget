@@ -15,6 +15,7 @@ import {
   getSwapParams,
   useLayer2,
   useSendTransaction,
+  TransactionStatus,
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
@@ -34,6 +35,7 @@ import {
   NotificationType,
   useWidgetNotifications,
 } from "../../NotificationContext";
+import TransactionErrorOverlay from "../../SwapCryptoView/TransactionErrorOverlay/TransactionErrorOverlay";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -153,7 +155,44 @@ const SwapOverviewView: React.FC<{
     }
   };
 
-  // replace this with better user feedback
+  const handleException = useCallback(
+    ({ status, errorMessage }: TransactionStatus) => {
+      if (status === "Exception") {
+        if (errorMessage?.includes("INSUFFICIENT_OUTPUT_AMOUNT")) {
+          nextScreen(
+            <TransactionErrorOverlay
+              {...{
+                textAlert: "Slippage set too low",
+                description:
+                  " Insufficient output amount. To avoid a failed transaction try setting the slippage higher.",
+              }}
+            />
+          );
+        } else if (errorMessage?.includes("EXPIRED")) {
+          nextScreen(
+            <TransactionErrorOverlay
+              {...{
+                textAlert: "Deadline set too low",
+                description:
+                  "Transaction timed out. To avoid a failed transaction try increasing the deadline time.",
+              }}
+            />
+          );
+        } else {
+          nextScreen(
+            <TransactionErrorOverlay
+              {...{
+                textAlert: "Rejected transaction",
+                description: "You rejected this transaction.",
+              }}
+            />
+          );
+        }
+      }
+    },
+    [nextScreen]
+  );
+
   useEffect(() => {
     if (state.status === "Mining") {
       nextScreen(
@@ -165,13 +204,9 @@ const SwapOverviewView: React.FC<{
       );
     }
     if (state.status === "Exception") {
-      addNotification({
-        type: NotificationType.Error,
-        message: "User denied transaction",
-        shouldExpire: true,
-      });
+      handleException(state);
     }
-  }, [addNotification, nextScreen, state, tokenOut]);
+  }, [handleException, nextScreen, state, tokenOut]);
 
   useEffect(() => {
     const onBeforeUnload = () => {
