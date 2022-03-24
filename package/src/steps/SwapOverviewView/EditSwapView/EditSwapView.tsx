@@ -35,6 +35,7 @@ import {
   useTransactionCtxWallets,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
+import { usePriceImpact } from "../../../TransactionContext/hooks/usePriceImpact";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +83,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     cryptoReceived.address,
     selectedWalletAddress
   );
+
+  const priceImpact = usePriceImpact(localQuote);
 
   const onActionButton = useCallback(async () => {
     setQuote(localQuote);
