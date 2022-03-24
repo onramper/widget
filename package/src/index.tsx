@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styles from "./styles.module.css";
-import BuyCryptoView from "./BuyCryptoView";
+// import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
 import { NavProvider, NavContainer } from "./NavContext";
 import { APIProvider } from "./ApiContext";
@@ -12,7 +12,7 @@ import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 import { L2Provider } from "layer2";
-// import SwapCryptoView from "./SwapCryptoView";
+import SwapCryptoView from "./SwapCryptoView";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
 
