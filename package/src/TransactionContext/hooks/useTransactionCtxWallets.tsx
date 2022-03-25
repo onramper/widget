@@ -48,6 +48,11 @@ export const useTransactionCtxWallets = () => {
     });
   }, [dispatch, userId]);
 
+  const getGenericWalletName = useCallback(
+    () => `Account ${wallets.length + 1}`,
+    [wallets.length]
+  );
+
   const addNewWallet = useCallback(
     async (newAddress: string) => {
       if (!newAddress) {
@@ -80,7 +85,7 @@ export const useTransactionCtxWallets = () => {
         name = await getEnsNameFromAddress(newAddress, library);
       }
       if (!name) {
-        name = `Account ${wallets.length + 1}`;
+        name = getGenericWalletName();
       }
 
       const wallet = {
@@ -93,6 +98,7 @@ export const useTransactionCtxWallets = () => {
         body: JSON.stringify({
           wallet,
           userId,
+          address: wallet.address,
         }),
       });
 
@@ -102,16 +108,41 @@ export const useTransactionCtxWallets = () => {
 
       updateWallets([wallet, ...wallets]);
     },
-    [library, metaAddress, updateWallets, userId, wallets]
+    [getGenericWalletName, library, metaAddress, updateWallets, userId, wallets]
+  );
+
+  /**
+   * when a wallet item is edited, the name should be changed with the new corresponding ens name if any exists,
+   * if not, the old name should be preserved only if the old address didn't use any ens name, otherwise another generic name is returned
+   */
+  const determineWalletNameOnEdit = useCallback(
+    async (wallet: WalletItemData, newAddress: string) => {
+      const ensNameByNewAddress = library
+        ? await getEnsNameFromAddress(newAddress, library)
+        : undefined;
+      if (ensNameByNewAddress) {
+        return ensNameByNewAddress;
+      }
+
+      const ensNameOfOldAddress = library
+        ? await getEnsNameFromAddress(wallet.address, library)
+        : undefined;
+      if (ensNameOfOldAddress) {
+        return getGenericWalletName();
+      }
+
+      return wallet.name;
+    },
+    [getGenericWalletName, library]
   );
 
   const editWallet = useCallback(
-    async (wallet: WalletItemData, address: string) => {
-      if (!address) {
+    async (wallet: WalletItemData, newAddress: string) => {
+      if (!newAddress) {
         return Promise.reject(new Error("Address cannot be empty."));
       }
 
-      if (address === metaAddress) {
+      if (newAddress === metaAddress) {
         return Promise.reject(
           new Error(
             `There is already one wallet with address (MetaMask Wallet).`
@@ -119,8 +150,12 @@ export const useTransactionCtxWallets = () => {
         );
       }
 
+      if(newAddress === wallet.address) {
+        return Promise.resolve();
+      }
+
       const duplicate = wallets.find(
-        (item) => item !== wallet && item.address === address
+        (item) => item !== wallet && item.address === newAddress
       );
       if (duplicate) {
         return Promise.reject(
@@ -130,15 +165,20 @@ export const useTransactionCtxWallets = () => {
         );
       }
 
-      if (!isAddress(address)) {
+      if (!isAddress(newAddress)) {
         return Promise.reject(new Error(`Not a valid wallet address.`));
       }
+
+      const newOrOldName = await determineWalletNameOnEdit(wallet, newAddress);
+      const oldAddress = wallet.address;
+      const newWallet = { ...wallet, address: newAddress, name: newOrOldName };
 
       const resp = await fetch(`${BASE_API}/updateUserWallet`, {
         method: "POST",
         body: JSON.stringify({
-          wallet: { ...wallet, address },
+          wallet: newWallet,
           userId,
+          address: oldAddress,
         }),
       });
 
@@ -147,10 +187,22 @@ export const useTransactionCtxWallets = () => {
       }
 
       updateWallets(
-        wallets.map((item) => (item === wallet ? { ...item, address } : item))
+        wallets.map((item) => (item === wallet ? newWallet : item))
       );
+
+      if (oldAddress === selectedWalletAddress) {
+        selectWalletAddress(newAddress);
+      }
     },
-    [metaAddress, updateWallets, userId, wallets]
+    [
+      determineWalletNameOnEdit,
+      metaAddress,
+      selectWalletAddress,
+      selectedWalletAddress,
+      updateWallets,
+      userId,
+      wallets,
+    ]
   );
 
   const deleteWallet = useCallback(
