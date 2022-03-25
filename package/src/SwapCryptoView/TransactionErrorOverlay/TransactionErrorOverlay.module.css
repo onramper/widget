@@ -57,7 +57,7 @@
 .setting-icon {
   width: 118px;
   height: 118px;
-  color: var(--error-color-light);
+  color: var(--error-color-2);
 }
 
 .title,
@@ -79,7 +79,7 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  color: var(--error-color-light);
+  color: var(--error-color-2);
 }
 
 .description {
@@ -123,7 +123,7 @@
 .contents-enter-active {
   -webkit-backdrop-filter: blur(var(--blur-value));
   transition: -webkit-backdrop-filter 200ms ease-in;
-  
+
   backdrop-filter: blur(var(--blur-value));
   transition: backdrop-filter 200ms ease-in;
 }
@@ -136,12 +136,13 @@
 .contents-exit-active {
   -webkit-backdrop-filter: blur(0);
   transition: -webkit-backdrop-filter 200ms ease-in;
-  
+
   backdrop-filter: blur(0);
   transition: backdrop-filter 200ms ease-in;
 }
 
-@supports (not (backdrop-filter: none)) and (not (-webkit-backdrop-filter: none))  {
+@supports (not (backdrop-filter: none)) and
+  (not (-webkit-backdrop-filter: none)) {
   .view {
     background-color: rgba(255, 255, 255, 0.95);
   }

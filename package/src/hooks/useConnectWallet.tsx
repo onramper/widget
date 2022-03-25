@@ -1,5 +1,9 @@
 import { isMetamaskEnabled, useEthers } from "layer2";
 import { useEffect, useState } from "react";
+import {
+  NotificationType,
+  useWidgetNotifications,
+} from "../NotificationContext";
 
 interface ConnectWallet {
   disconnect: () => void;
@@ -20,6 +24,7 @@ export const useConnectWallet = (): ConnectWallet => {
   >(null);
 
   const [connectionPending, setConnectionPending] = useState(false);
+  const { addNotification } = useWidgetNotifications();
 
   useEffect(() => {
     if (active && account) {
@@ -30,13 +35,33 @@ export const useConnectWallet = (): ConnectWallet => {
   useEffect(() => {
     if (error) {
       // here we can add custom wallet connection errors
-      setConnectionError(error as MetamaskError);
-      setConnectionPending(false);
+      const metamaskError = error as MetamaskError;
+      setConnectionError(metamaskError);
+      if (metamaskError.message.includes("wallet_requestPermissions")) {
+        setConnectionPending(true);
+        addNotification({
+          type: NotificationType.Info,
+          message: "Please open Metamask and Connect",
+          shouldExpire: true,
+        });
+      } else {
+        setConnectionPending(false);
+        addNotification({
+          type: NotificationType.Error,
+          message: metamaskError.message,
+          shouldExpire: true,
+        });
+      }
     }
-  }, [error]);
+  }, [addNotification, error]);
 
   const connect = () => {
     if (isMetamaskEnabled()) {
+      addNotification({
+        type: NotificationType.Info,
+        message: "Please open Metamask and Connect",
+        shouldExpire: true,
+      });
       setConnectionError(null);
       setConnectionPending(true);
       activateBrowserWallet();
@@ -50,6 +75,11 @@ export const useConnectWallet = (): ConnectWallet => {
     setConnectionError(null);
     setConnectionPending(false);
     deactivate();
+    addNotification({
+      type: NotificationType.Info,
+      message: "Wallet disconnected",
+      shouldExpire: true,
+    });
   };
 
   return {
