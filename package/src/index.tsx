@@ -79,7 +79,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             >
               <TransactionContextProvider>
                 <NotificationProvider>
-                  <div style={{ flexGrow: 1, display: "flex", background: "flex" }}>
+                  <div style={{ flexGrow: 1, display: "flex" }}>
                     <NavContainer home={<SwapCryptoView />} />
                   </div>
                 </NotificationProvider>
