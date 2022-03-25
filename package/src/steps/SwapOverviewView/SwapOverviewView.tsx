@@ -15,6 +15,7 @@ import {
   getSwapParams,
   useLayer2,
   useSendTransaction,
+  TransactionStatus,
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
@@ -27,8 +28,14 @@ import {
   useTransactionContext,
   useTransactionCtxWallets,
   useTranasactionCtxInit,
-  useTransactionCtxActions
+  useTransactionCtxActions,
 } from "../../TransactionContext/hooks";
+import { WidgetNotification } from "../WidgetNotification/WidgetNotification";
+import {
+  NotificationType,
+  useWidgetNotifications,
+} from "../../NotificationContext";
+import TransactionErrorOverlay from "../../SwapCryptoView/TransactionErrorOverlay/TransactionErrorOverlay";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -51,23 +58,17 @@ const SwapOverviewView: React.FC<{
 
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const isActive = metaAddress && active;
   useWalletSupportRedirect(nextStep.progress);
-  const { connect, connectionPending, error } = useConnectWallet();
+  const { connect, connectionPending } = useConnectWallet();
   const { nextScreen } = useNav();
+  const { addNotification } = useWidgetNotifications();
 
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
   const { amountDecimals } = quote;
 
-  const updateMessageAndClear = (mes: string) => {
-    setMessage(mes);
-    setTimeout(() => setMessage(""), 3000);
-  };
-
   const handleUpdate = useCallback(async () => {
-    setMessage("Updating quote...");
     setLoading(true);
     try {
       const newQuote = await getQuote(
@@ -79,13 +80,11 @@ const SwapOverviewView: React.FC<{
       );
       if (newQuote) {
         setQuote(newQuote);
-        updateMessageAndClear("Quote successfully updated");
       }
     } catch (error) {
       if ((error as Error)?.name === "AbortError") {
         return;
       }
-      alert(error);
     } finally {
       setLoading(false);
     }
@@ -103,16 +102,14 @@ const SwapOverviewView: React.FC<{
     nextScreen(<EditSwapView progress={nextStep.progress} />);
   }, [nextScreen, nextStep.progress]);
 
-  useEffect(() => {
-    if (error) {
-      updateMessageAndClear(error.message);
-    }
-  }, [error]);
-
   const handleSwap = async () => {
     if (metaAddress && balance) {
       setLoading(true);
-      setMessage("Fetching best price...");
+      addNotification({
+        type: NotificationType.Info,
+        message: "Fetching best price...",
+        shouldExpire: true,
+      });
       try {
         const res = await getSwapParams(
           Number(formatEther(balance)),
@@ -126,8 +123,11 @@ const SwapOverviewView: React.FC<{
             deadline,
           }
         );
-
-        setMessage("Please sign transaction");
+        addNotification({
+          type: NotificationType.Info,
+          message: "Please sign transaction",
+          shouldExpire: true,
+        });
         if (res?.data) {
           await sendTransaction({
             data: res.data,
@@ -137,24 +137,64 @@ const SwapOverviewView: React.FC<{
           });
         }
       } catch (error) {
-        if ((error as Error)?.name === "AbortError") {
-          return;
-        }
-        alert(error);
+        console.log(error);
+        addNotification({
+          type: NotificationType.Error,
+          message: (error as Error)?.message ?? "something went wrong",
+          shouldExpire: true,
+        });
+      } finally {
+        setLoading(false);
       }
     } else {
-      alert("please connect wallet");
+      addNotification({
+        type: NotificationType.Info,
+        message: "Please connect wallet",
+        shouldExpire: true,
+      });
     }
   };
 
-  // replace this with better user feedback
+  const handleException = useCallback(
+    ({ status, errorMessage }: TransactionStatus) => {
+      if (status === "Exception") {
+        if (errorMessage?.includes("INSUFFICIENT_OUTPUT_AMOUNT")) {
+          nextScreen(
+            <TransactionErrorOverlay
+              {...{
+                textAlert: "Slippage set too low",
+                description:
+                  " Insufficient output amount. To avoid a failed transaction try setting the slippage higher.",
+              }}
+            />
+          );
+        } else if (errorMessage?.includes("EXPIRED")) {
+          nextScreen(
+            <TransactionErrorOverlay
+              {...{
+                textAlert: "Deadline set too low",
+                description:
+                  "Transaction timed out. To avoid a failed transaction try increasing the deadline time.",
+              }}
+            />
+          );
+        } else {
+          nextScreen(
+            <TransactionErrorOverlay
+              {...{
+                textAlert: "Rejected transaction",
+                description: "You rejected this transaction.",
+              }}
+            />
+          );
+        }
+      }
+    },
+    [nextScreen]
+  );
+
   useEffect(() => {
-    if (state.status === "Success") {
-      setMessage("Success! 🥳");
-      setLoading(false);
-    }
     if (state.status === "Mining") {
-      setMessage("Processing transaction...");
       nextScreen(
         <OrderCompleteView
           title="Success! Your Swap has been executed."
@@ -163,19 +203,10 @@ const SwapOverviewView: React.FC<{
         />
       );
     }
-
-    if (state.status === "Fail") {
-      setMessage("Transaction failed");
-      setLoading(false);
-      setTimeout(() => setMessage(""), 2000);
-    }
-
     if (state.status === "Exception") {
-      setMessage("Woops, something went wrong");
-      setLoading(false);
-      setTimeout(() => setMessage(""), 2000);
+      handleException(state);
     }
-  }, [nextScreen, state, tokenOut]);
+  }, [handleException, nextScreen, state, tokenOut]);
 
   useEffect(() => {
     const onBeforeUnload = () => {
@@ -189,7 +220,7 @@ const SwapOverviewView: React.FC<{
     try {
       fetchAndUpdateUserWallets();
     } catch (err) {
-      alert(err);
+      console.log(err);
     }
   }, [fetchAndUpdateUserWallets]);
 
@@ -202,6 +233,7 @@ const SwapOverviewView: React.FC<{
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <Heading className={classes.heading} text={heading} />
+        <WidgetNotification />
         <SwapDetailsBar
           estimate={quote}
           tokenIn={parsedTokenIn}
@@ -210,7 +242,6 @@ const SwapOverviewView: React.FC<{
           conversionOut={`${fiatSymbol}${fiatConversionOut}`}
         />
         <FeeBreakdown transactionDetails={quote} />
-        <div className={classes.message}>{message}</div>
         <div className={classes.buttonContainer}>
           {isActive ? (
             <>

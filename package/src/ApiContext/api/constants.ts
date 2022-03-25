@@ -5,14 +5,18 @@ export const documents = [
   "driverLicense",
 ];
 
-export const BASE_API =
-  process.env.STAGE === 'local' ?
-    "http://localhost:3000/dev" :
-    process.env.STAGE === 'l2' ?
-      "https://l2.onramper.tech" :
-      process.env.STAGE === "prod"
-        ? "https://onramper.tech"
-        : "https://staging.onramper.tech";
+export const BASE_API = (() => {
+  switch (process.env.STAGE) {
+    case "local":
+      return "http://localhost:3000/dev";
+    case "l2":
+      return "https://l2.onramper.tech";
+    case "prod":
+      return "https://onramper.tech";
+    default:
+      return "http://localhost:3000/dev";
+  }
+})();
 
 export const SANDBOX_HOSTNAME =
   process.env.STAGE === "prod"

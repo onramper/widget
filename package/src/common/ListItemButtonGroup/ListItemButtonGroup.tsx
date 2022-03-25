@@ -5,6 +5,7 @@ import {
   ListItemType,
 } from "./ListItemButtonGroup.models";
 import classes from "./ListItemButtonGroup.module.css";
+import AccountDetails from "../../steps/SwapOverviewView/AccountDetails/AccountDetails";
 
 const ListItemButtonGroup: React.FC<ListItemButtonGroupProps> = (props) => {
   const onClick = (item: ListItemType) => {
@@ -17,6 +18,7 @@ const ListItemButtonGroup: React.FC<ListItemButtonGroupProps> = (props) => {
 
   return (
     <div className={`${classes["wrapper"]} ${props.className || ""}`}>
+      <AccountDetails />
       {props.items.map((item) => (
         <ListItemButton key={item.id} parent={item} onClick={onClick} />
       ))}

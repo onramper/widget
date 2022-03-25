@@ -1,5 +1,4 @@
 import React, { createContext, useReducer } from "react";
-
 import initialState from "./initialState";
 import mainReducer, { DataActions } from "./reducers";
 import { StateType } from "./models";

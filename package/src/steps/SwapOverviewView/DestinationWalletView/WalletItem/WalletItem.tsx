@@ -8,8 +8,7 @@ import { ReactComponent as CheckmarkRoundIcon } from "../../../../icons/check-ro
 import { ReactComponent as GarbageCanIcon } from "../../../../icons/garbage-can.svg";
 import { CSSTransition } from "react-transition-group";
 import WalletInput from "../WalletInput/WalletInput";
-import { formatEther, useEtherBalance } from "layer2";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { formatEther, useEtherBalance, BigNumberish } from "layer2";
 
 const computeBalance = (bigNum?: BigNumberish) =>
   bigNum ? Number(formatEther(bigNum)).toFixed(4) : "0";

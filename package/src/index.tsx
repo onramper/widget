@@ -14,6 +14,7 @@ import "./normalize.min.css";
 import { L2Provider } from "layer2";
 import SwapCryptoView from "./SwapCryptoView";
 import { TransactionContextProvider } from "./TransactionContext";
+import { NotificationProvider } from "./NotificationContext";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -77,9 +78,11 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
             >
               <TransactionContextProvider>
-                <div style={{ flexGrow: 1, display: "flex" }}>
-                  <NavContainer home={<SwapCryptoView />} />
-                </div>
+                <NotificationProvider>
+                  <div style={{ flexGrow: 1, display: "flex" }}>
+                    <NavContainer home={<SwapCryptoView />} />
+                  </div>
+                </NotificationProvider>
               </TransactionContextProvider>
             </APIProvider>
           </NavProvider>
