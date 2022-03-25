@@ -44,7 +44,7 @@ const OrderCompleteView: React.FC<{
           <Lottie
             loop={false}
             autoplay={autoPlay}
-            animationData={successAnimation}
+            animationData={autoPlay ? successAnimation : undefined}
           />
         </div>
         <h1 className={commonClasses["remove-default"]}> {props.title} </h1>
