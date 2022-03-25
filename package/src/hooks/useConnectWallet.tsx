@@ -37,12 +37,21 @@ export const useConnectWallet = (): ConnectWallet => {
       // here we can add custom wallet connection errors
       const metamaskError = error as MetamaskError;
       setConnectionError(metamaskError);
-      setConnectionPending(false);
-      addNotification({
-        type: NotificationType.Error,
-        message: metamaskError.message,
-        shouldExpire: true,
-      });
+      if (metamaskError.message.includes("wallet_requestPermissions")) {
+        setConnectionPending(true);
+        addNotification({
+          type: NotificationType.Info,
+          message: "Please open Metamask and Connect",
+          shouldExpire: true,
+        });
+      } else {
+        setConnectionPending(false);
+        addNotification({
+          type: NotificationType.Error,
+          message: metamaskError.message,
+          shouldExpire: true,
+        });
+      }
     }
   }, [addNotification, error]);
 
