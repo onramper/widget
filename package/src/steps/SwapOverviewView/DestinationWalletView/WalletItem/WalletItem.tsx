@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { WalletItemProps } from "./WalletItem.models";
 import TextEllipsis from "../../../../common/TextEllipsis/TextEllipsis";
 import classes from "./WalletItem.module.css";
@@ -16,11 +16,15 @@ const computeBalance = (bigNum?: BigNumberish) =>
 const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [address, setAddress] = useState(props.address || "");
-  const [errorMessage, setErrorMessage] = useState<string>();
+
   const [isLoading, setIsLoading] = useState(false);
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const datailsWrapperRef = useRef<HTMLDivElement>(null);
   const ethBalance = useEtherBalance(props.address);
+
+  const setErrorMessage = (message?: string) => {
+    props.setError && props.setError(message);
+  };
 
   const onToggleEditing = () => {
     if (isLoading) {
@@ -119,7 +123,7 @@ const WalletItem: React.FC<WalletItemProps> = (props) => {
           <div className={classes["input-wrapper"]} ref={inputWrapperRef}>
             <WalletInput
               onSubmit={onSubmit}
-              errorMessage={errorMessage}
+              errorMessage={props.error}
               value={address}
               onChange={setAddress}
               autoFocus

@@ -19,12 +19,8 @@ import {
 
 const DestinationWalletView: React.FC = () => {
   const { wallets, selectedWalletAddress } = useTransactionContext();
-  const {
-    selectWalletAddress,
-    editWallet,
-    addNewWallet,
-    deleteWallet,
-  } = useTransactionCtxWallets();
+  const { selectWalletAddress, editWallet, addNewWallet, deleteWallet } =
+    useTransactionCtxWallets();
   const [isLoadingAdding, setIsLoadingAdding] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -41,6 +37,8 @@ const DestinationWalletView: React.FC = () => {
 
   const walletsWrapperRef = React.useRef<HTMLDivElement>(null);
   const { nextScreen, backScreen } = useContext(NavContext);
+
+  const [editErrors, setEditErrors] = useState<{ [key: string]: string }>({});
 
   const onAddNewWallet = useCallback(async () => {
     setNewWalletAddressError(undefined);
@@ -74,10 +72,13 @@ const DestinationWalletView: React.FC = () => {
   }, [backScreen, nextScreen]);
 
   const isContinueDisabled = useCallback(() => {
-    return ![...defaultWallets, ...wallets].some(
-      (i) => i.address === selectedWalletAddress
+    return (
+      !!Object.keys(editErrors).length ||
+      ![...defaultWallets, ...wallets].some(
+        (i) => i.address === selectedWalletAddress
+      )
     );
-  }, [defaultWallets, selectedWalletAddress, wallets]);
+  }, [defaultWallets, editErrors, selectedWalletAddress, wallets]);
 
   useEffect(() => {
     if (!walletsWrapperRef.current) {
@@ -163,6 +164,15 @@ const DestinationWalletView: React.FC = () => {
                   icon={wallet.icon}
                   onCheck={() => selectWalletAddress(wallet.address)}
                   onEditAddress={(address) => editWallet(wallet, address)}
+                  setError={(value) => {
+                    if (value) {
+                      editErrors[wallet.address] = value;
+                    } else {
+                      delete editErrors[wallet.address];
+                    }
+                    setEditErrors({ ...editErrors });
+                  }}
+                  error={editErrors[wallet.address]}
                   onDelete={() => deleteWallet(wallet.address)}
                 />
               );
