@@ -1,0 +1,45 @@
+.WidgetNotification {
+  height: 24px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.message {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.015em;
+}
+
+.warning {
+  color: var(--warning-color);
+}
+
+/* .warning svg path {
+  stroke: var(--warning-color);
+  fill: var(--warning-color);
+} */
+
+.info {
+  color: var(--secondary-color-2);
+}
+/* .info svg path {
+  stroke: var(--secondary-color-2);
+} */
+.error {
+  color: var(--error-color-2);
+}
+/* .error svg path {
+  stroke: var(--error-color-2);
+  fill: var(--error-color-2);
+} */
+.success {
+  color: var(--success-color);
+}
+/* .success svg path {
+  stroke: var(--success-color);
+} */

@@ -16,6 +16,21 @@ export const isMobile = (): boolean => {
   }
 };
 
+/**
+ * The default factory enabled fee amounts, denominated in hundredths of bips.
+ */
+export enum FeeAmount {
+  LOWEST = 100,
+  LOW = 500,
+  MEDIUM = 3000,
+  HIGH = 10000,
+}
+
+// 500 => "0.05%"
+export const getFeePercentString = (fee: number): string => {
+  return fee > 0 ? `${(fee / 10000).toFixed(2)}%` : "0%";
+};
+
 const isFirefox = (userAgent: string): boolean => {
   return userAgent.includes("Firefox");
 };
