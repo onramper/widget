@@ -35,9 +35,6 @@ import {
   useTransactionCtxWallets,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
-import { useUSDPriceImpact } from "../../../TransactionContext/hooks/useUSDPriceImpact";
-import { generateBreakdown } from "./utils";
-import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +49,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     fiatConversionOut,
     wallets: contextWallets,
     selectedWalletAddress: ctxWalletAddress,
-    slippageTolerance,
+    feeBreakdown,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
 
@@ -86,9 +83,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     selectedWalletAddress
   );
 
-  const priceImpact = useUSDPriceImpact(localQuote);
-  const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
-
   const onActionButton = useCallback(async () => {
     setQuote(localQuote);
 
@@ -107,8 +101,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     wallets,
   ]);
 
-  const getAndUpdateAbortController = useCallback(() => { 
-    
+  const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
     const { signal } = newController;
 
@@ -219,17 +212,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     }
   }, [ethBalance, updateReceivedValue]);
 
-  useEffect(() => {
-    setBreakdown(
-      generateBreakdown(
-        localQuote,
-        cryptoReceived.symbol,
-        Number(slippageTolerance),
-        priceImpact
-      )
-    );
-  }, [cryptoReceived.symbol, localQuote, priceImpact, slippageTolerance]);
-
   return (
     <div className={commonClasses.view}>
       <ProgressHeader percentage={props.progress} useBackButton />
@@ -292,7 +274,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         />
 
         <div className={classes["bottom-fields"]}>
-          <Breakdown label={"Fee breakdown:"} groups={breakdown} />
+          <Breakdown label={"Fee breakdown:"} groups={feeBreakdown} />
           <IndicationItem
             text={
               "Above mentioned figures are valid for 1 minute based upon current market rates."

@@ -146,6 +146,7 @@ export type SwapOverviewStepData = {
   tokenOut: TokenInfo;
   fiatSymbol: string;
   balance: number;
+  feeBreakdown: BrakdownItem[][];
   userId: string;
 };
 

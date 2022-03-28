@@ -1,5 +1,5 @@
 import { QuoteDetails, TokenInfo } from "layer2";
-import { WalletItemData } from "../ApiContext/api/types/nextStep";
+import { BrakdownItem, WalletItemData } from "../ApiContext/api/types/nextStep";
 
 export type StateType = {
   key: number;
@@ -14,4 +14,5 @@ export type StateType = {
   selectedWalletAddress?: string;
   slippageTolerance: number;
   deadline: number;
+  feeBreakdown: BrakdownItem[][];
 };
