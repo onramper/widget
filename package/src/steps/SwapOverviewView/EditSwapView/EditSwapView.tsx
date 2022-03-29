@@ -34,7 +34,7 @@ import {
   useTransactionContext,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
-import { useUSDPriceImpact } from "../../../TransactionContext/hooks/useUSDPriceImpact";
+import { useUsdPriceImpact } from "../../../TransactionContext/hooks/useUsdPriceImpact";
 import { generateBreakdown } from "./utils";
 import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
 
@@ -63,6 +63,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversionOut)
   );
   const [localQuote, setLocalQuote] = useState(currentQuote);
+  const priceImpact = useUsdPriceImpact(tokenIn, tokenOut, Number(localQuote.amountDecimals), Number(localQuote.quoteGasAdjustedDecimals));
+  console.log({priceImpact});
 
   const [spentValue, setSpentValue] = useState(cryptoSpent.value);
   const [actualSpentValue, setActualSpentValue] = useState(cryptoSpent.value);
