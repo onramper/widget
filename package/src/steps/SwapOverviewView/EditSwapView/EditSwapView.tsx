@@ -64,7 +64,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
   const [localQuote, setLocalQuote] = useState(currentQuote);
   const priceImpact = useUsdPriceImpact(tokenIn, tokenOut, Number(localQuote.amountDecimals), Number(localQuote.quoteGasAdjustedDecimals));
-  console.log({priceImpact});
 
   const [spentValue, setSpentValue] = useState(cryptoSpent.value);
   const [actualSpentValue, setActualSpentValue] = useState(cryptoSpent.value);
@@ -76,8 +75,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     cryptoReceived.address,
     selectedWalletAddress
   );
-
-  const priceImpact = useUSDPriceImpact(localQuote);
+  
   const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
   const { backScreen } = useContext(NavContext);
   const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));

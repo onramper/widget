@@ -11,8 +11,9 @@ const getFiatConversion = async (
       setTimeout(() => {
         // TODO: call endpoint
         if(!signal?.aborted) {
-          console.log("Fake converting token: ", token.address)
-          resolve(amount * Math.random())
+          const num = amount * Math.random();
+          console.log("Fake usdc conversion token: ", token.name, num)
+          resolve(num)
         } else {
           const error = new Error();
           error.name = "AbortError";
