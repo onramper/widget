@@ -43,4 +43,5 @@ export default {
   fiatConversionOut: 0,
   slippageTolerance: defaultSettings.slippageTolerance,
   deadline: defaultSettings.deadline,
+  feeBreakdown: [],
 } as StateType;

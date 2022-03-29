@@ -34,9 +34,6 @@ import {
   useTransactionContext,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
-import { useUSDPriceImpact } from "../../../TransactionContext/hooks/useUSDPriceImpact";
-import { generateBreakdown } from "./utils";
-import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
 
 const insufficientFoundsError =
   "You have insufficient funds to complete this transaction";
@@ -53,7 +50,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     fiatConversionIn,
     fiatConversionOut,
     selectedWalletAddress,
-    slippageTolerance,
+    feeBreakdown,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
   const [cryptoSpent] = useState(
@@ -77,16 +74,13 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   const { backScreen } = useContext(NavContext);
   const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
-  const priceImpact = useUSDPriceImpact(localQuote);
-  const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
 
   const onActionButton = useCallback(async () => {
     setQuote(localQuote);
     backScreen();
   }, [backScreen, localQuote, setQuote]);
 
-  const getAndUpdateAbortController = useCallback(() => { 
-    
+  const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
     const { signal } = newController;
 
@@ -205,17 +199,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     setSwapErrorMessage("");
   }, [ethBalance, spentValue, swapErrorMessage]);
 
-  useEffect(() => {
-    setBreakdown(
-      generateBreakdown(
-        localQuote,
-        cryptoReceived.symbol,
-        Number(slippageTolerance),
-        priceImpact
-      )
-    );
-  }, [cryptoReceived.symbol, localQuote, priceImpact, slippageTolerance]);
-
   return (
     <div className={commonClasses.view}>
       <ProgressHeader percentage={props.progress} useBackButton />
@@ -271,7 +254,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         />
 
         <div className={classes["bottom-fields"]}>
-          <Breakdown label={"Fee breakdown:"} groups={breakdown} />
+          <Breakdown label={"Fee breakdown:"} groups={feeBreakdown} />
           <IndicationItem
             text={
               "Above mentioned figures are valid for 1 minute based upon current market rates."
