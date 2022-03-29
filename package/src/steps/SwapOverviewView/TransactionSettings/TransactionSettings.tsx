@@ -22,6 +22,7 @@ import { metamaskWallet } from "../constants";
 import {
   useTransactionContext,
   useTransactionCtxActions,
+  useTransactionCtxWallets,
 } from "../../../TransactionContext/hooks";
 
 const { slippageTolerance: defaultSlippage } = defaultSettings;
@@ -31,7 +32,9 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
     slippageTolerance: ctxSlippage,
     deadline: ctxDeadline,
     wallets: ctxWallets,
+    selectedWalletAddress,
   } = useTransactionContext();
+  const { selectWalletAddress } = useTransactionCtxWallets();
   const { updateDeadline, updateSlippage } = useTransactionCtxActions();
   const { nextScreen } = useContext(NavContext);
   const { account: mmAddress } = useLayer2();
@@ -112,21 +115,11 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
   }, [deadlineHasError, deadlineValue, initialDeadlineValue]);
 
   const goToWalletDestination = useCallback(() => {
-    nextScreen(
-      <DestinationWalletView
-        wallets={props.wallets}
-        title="Your wallet"
-        heading="Add destination wallet (Optional)"
-        description="Choose which wallet you would like your funds to be deposited in"
-        cryptoName={props.cryptoName}
-        selectedWalletAddress={props.selectedWalletAddress}
-        submitData={(wallets, address) => {
-          props.updateWallets(wallets);
-          props.onChangeWalletAddress(address);
-        }}
-      />
-    );
-  }, [nextScreen, props]);
+    nextScreen(<DestinationWalletView />);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 200);
+  }, [nextScreen]);
 
   useEffect(
     () => setWallets(computeWallets(ctxWallets, mmAddress)),
@@ -234,10 +227,8 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
                 suplimentBtnText="+ Add new wallet"
                 addNewBtnText="+ Add a destination wallet"
                 items={wallets}
-                idSelected={props.selectedWalletAddress}
-                onSelect={(item: ListItem) =>
-                  props.onChangeWalletAddress(item.id)
-                }
+                idSelected={selectedWalletAddress || ""}
+                onSelect={(item: ListItem) => selectWalletAddress(item.id)}
                 onAdd={goToWalletDestination}
               />
             </div>

@@ -70,6 +70,7 @@ theme styles
   direction: ltr;
   -webkit-tap-highlight-color: transparent;
   scrollbar-color: #dbdbdb transparent;
+  --grey-color-level4: #edf0f4;
 }
 
 .theme ::-webkit-scrollbar {

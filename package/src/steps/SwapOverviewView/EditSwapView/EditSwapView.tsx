@@ -32,12 +32,14 @@ import {
 import { useDebouncedCallback } from "use-debounce";
 import {
   useTransactionContext,
-  useTransactionCtxWallets,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
 import { useUSDPriceImpact } from "../../../TransactionContext/hooks/useUSDPriceImpact";
 import { generateBreakdown } from "./utils";
 import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
+
+const insufficientFoundsError =
+  "You have insufficient funds to complete this transaction";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,12 +52,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     fiatSymbol,
     fiatConversionIn,
     fiatConversionOut,
-    wallets: contextWallets,
-    selectedWalletAddress: ctxWalletAddress,
     slippageTolerance,
+    selectedWalletAddress,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
-
   const [cryptoSpent] = useState(
     computeTokenIn(tokenIn, currentQuote, fiatSymbol, fiatConversionIn)
   );
@@ -64,22 +64,11 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
   const [localQuote, setLocalQuote] = useState(currentQuote);
 
-  // swap inputs
   const [spentValue, setSpentValue] = useState(cryptoSpent.value);
   const [actualSpentValue, setActualSpentValue] = useState(cryptoSpent.value);
   const [receivedValue, setReceivedValue] = useState(cryptoReceived.value);
-
   const [, setLastCallCryptoChange] = useState<AbortController>();
 
-  // settings
-  const { updateWallets, selectWalletAddress } = useTransactionCtxWallets();
-  const [wallets, setWallets] = useState(contextWallets);
-  const [selectedWalletAddress, setSelectedWalletAddress] =
-    useState(ctxWalletAddress);
-
-  const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
-
-  const { backScreen } = useContext(NavContext);
   const ethBalance = useEtherBalance(selectedWalletAddress);
   const targetTokenBalance = useTokenBalance(
     cryptoReceived.address,
@@ -88,24 +77,13 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   const priceImpact = useUSDPriceImpact(localQuote);
   const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
+  const { backScreen } = useContext(NavContext);
+  const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
 
   const onActionButton = useCallback(async () => {
     setQuote(localQuote);
-
-    // TODO: live-update the context instead
-    updateWallets(wallets);
-    selectWalletAddress(selectedWalletAddress);
-
     backScreen();
-  }, [
-    backScreen,
-    localQuote,
-    selectWalletAddress,
-    selectedWalletAddress,
-    setQuote,
-    updateWallets,
-    wallets,
-  ]);
+  }, [backScreen, localQuote, setQuote]);
 
   const getAndUpdateAbortController = useCallback(() => { 
     
@@ -147,10 +125,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             }
 
             if (ethBalance && Number(formatEther(ethBalance)) < Number(value)) {
-              throw new ApiError(
-                "You have insufficient funds to complete this transaction",
-                "INSUFICIENT_FUNDS"
-              );
+              throw new ApiError(insufficientFoundsError, "INSUFICIENT_FUNDS");
             }
 
             setLocalQuote(newQuote);
@@ -230,20 +205,24 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     );
   }, [cryptoReceived.symbol, localQuote, priceImpact, slippageTolerance]);
 
+  useEffect(() => {
+    if (swapErrorMessage && swapErrorMessage !== insufficientFoundsError) {
+      return;
+    }
+    if (ethBalance && Number(formatEther(ethBalance)) < Number(spentValue)) {
+      setSwapErrorMessage(insufficientFoundsError);
+      return;
+    }
+    setSwapErrorMessage("");
+  }, [ethBalance, spentValue, swapErrorMessage]);
+
   return (
     <div className={commonClasses.view}>
       <ProgressHeader percentage={props.progress} useBackButton />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <div className={classes["top-section"]}>
           <Heading className={classes.heading} text={heading} />
-          <TransactionSettings
-            className={classes["settings"]}
-            wallets={wallets}
-            updateWallets={setWallets}
-            selectedWalletAddress={selectedWalletAddress}
-            onChangeWalletAddress={setSelectedWalletAddress}
-            cryptoName={cryptoSpent.currencyShortName}
-          />
+          <TransactionSettings className={classes["settings"]} />
         </div>
 
         <ErrorIndication message={swapErrorMessage} />
