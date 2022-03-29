@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { WalletItemProps } from "./WalletItem.models";
 import TextEllipsis from "../../../../common/TextEllipsis/TextEllipsis";
 import classes from "./WalletItem.module.css";
