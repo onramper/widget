@@ -6,5 +6,7 @@ export type WalletItemProps = {
     onCheck: () => void;
     onDelete?: () => void;
     address?: string;
-    onSubmitAddress?: (value: string) => Promise<void>;
+    onEditAddress?: (value: string) => Promise<void>;
+    setError?: (value?: string) => void;
+    error?: string;
 } 
