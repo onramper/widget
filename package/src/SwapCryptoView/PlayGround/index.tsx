@@ -6,9 +6,6 @@ import {
   useSendTransaction,
   TokenList,
   TokenInfo,
-  useEnsName,
-  useEnsAvatar,
-  useEnsAddress,
   getSwapParams,
   getTokens,
   getQuote,
@@ -17,7 +14,6 @@ import React, { useState } from "react";
 import WalletModal from "../../common/WalletModal/WalletModal";
 import styles from "../../styles.module.css";
 import { browserSupportsMetamask } from "../../utils";
-import TemporarTransactionErrorTrigger from "../TransactionErrorOverlay/TemporarTransactionErrorTrigger";
 
 const PlayGround = () => {
   const { account } = useLayer2();
@@ -26,8 +22,8 @@ const PlayGround = () => {
   const [address, setAddress] = useState<string>("");
   const [inputAmount, setInputAmount] = useState<string>("");
   const [loadingMessage, setLoadingMessage] = useState<string>("");
-  const [quote, setQuote] = useState<QuoteDetails | null>(null);
-  const { sendTransaction, state } = useSendTransaction();
+  const [, setQuote] = useState<QuoteDetails | null>(null);
+  const { sendTransaction } = useSendTransaction();
   const [, setTokenList] = useState<TokenList | null>(null);
 
   const tokenIn: TokenInfo = {
@@ -130,11 +126,12 @@ const PlayGround = () => {
   //  for testing
   //  vitalikAddress = "0x8289432ACD5EB0214B1C2526A5EDB480Aa06A9ab";
   //  vitalikEnsName = 'wslyvh.eth'
-  // const ensName = useEnsName(address);
+  // const ensName = useEnsName("0x8289432ACD5EB0214B1C2526A5EDB480Aa06A9ab");
   // const ensAddress = useEnsAddress("wslyvh.eth");
-  // const avatar = useEnsAvatar(["wslyvh.eth"]);
+  // const avatar = useEnsAvatar(["0x8289432ACD5EB0214B1C2526A5EDB480Aa06A9ab"]);
 
   // console.log(ensAddress);
+
   return (
     <div className={styles.view}>
       <button
@@ -165,15 +162,6 @@ const PlayGround = () => {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <h2>ENS:</h2>
-        {/* <p>{ensName ?? "no name found"}</p>
-        {avatar && (
-          <img
-            style={{ width: "200px", height: "200px" }}
-            src={avatar}
-            alt="ens avatar"
-          />
-        )} */}
         <input
           value={address}
           onChange={handleChange}
@@ -196,22 +184,6 @@ const PlayGround = () => {
         <WalletModal closeModal={() => setShowWalletModal(false)} />
       )}
       {loadingMessage && <p>{loadingMessage}</p>}
-      {quote && (
-        <div>
-          <button style={buttonStyles} onClick={() => setQuote(null)}>
-            X
-          </button>
-          <p>fee breakdown:</p>
-          <p>{`Quote: ${quote.quoteDecimals}`}</p>
-          <p>{`(estimated gas: ${quote.gasUseEstimate})`}</p>
-          <hr />
-          <p>{`Final: ${quote.quoteGasAdjustedDecimals}`}</p>
-        </div>
-      )}
-
-      {state.status !== "None" && <p>{state.status}</p>}
-
-      <TemporarTransactionErrorTrigger />
     </div>
   );
 };
