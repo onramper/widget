@@ -39,10 +39,15 @@ const isChromium = (userAgent: string): boolean => {
   return userAgent.includes("Chrome");
 };
 
+const isOpera = (userAgent: string): boolean => {
+  return /Opera|OPR\//.test(userAgent);
+};
+
+
 export const browserSupportsMetamask = (): boolean => {
   const userAgent = window.navigator.userAgent;
   // Metamask only on Firefox & Chromium browsers (Brave, Chrome etc)
-  if (isFirefox(userAgent) || isChromium(userAgent)) {
+  if (isFirefox(userAgent) || (isChromium(userAgent) && !isOpera(userAgent))) {
     return true;
   } else {
     return false;
