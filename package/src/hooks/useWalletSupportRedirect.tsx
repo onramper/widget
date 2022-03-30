@@ -17,6 +17,12 @@ export const useWalletSupportRedirect = (
 
   const checkWalletSupport = useCallback(() => {
     try {
+      if(!browserSupportsMetamask()) {
+        replaceScreen(
+          <BrowserNotSupported currentProgress={currentProgress} />
+        );
+        return;
+      }
       if (isMetamaskEnabled()) {
         return;
       }
@@ -27,14 +33,14 @@ export const useWalletSupportRedirect = (
         );
         return;
       }
-      if (browserSupportsMetamask() && !isMetamaskEnabled() && !isMobile()) {
+      if (!isMetamaskEnabled() && !isMobile()) {
         nextScreen(<NoWalletView currentProgress={currentProgress} />);
         return;
-      } else {
-        replaceScreen(
-          <BrowserNotSupported currentProgress={currentProgress} />
-        );
       }
+
+      replaceScreen(
+        <BrowserNotSupported currentProgress={currentProgress} />
+      );
     } catch (error) {
       replaceScreen(<BrowserNotSupported currentProgress={currentProgress} />);
     }
