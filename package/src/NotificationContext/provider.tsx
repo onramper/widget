@@ -10,7 +10,6 @@ import { NotificationContext } from "./context";
 import { nanoid } from "nanoid";
 import { useTransactionContext } from "../TransactionContext/hooks";
 import { useInterval, usePrevious } from "../hooks";
-
 interface Props {
   children: ReactNode;
 }

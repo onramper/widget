@@ -36,12 +36,13 @@ import {
   useWidgetNotifications,
 } from "../../NotificationContext";
 import TransactionErrorOverlay from "../../SwapCryptoView/TransactionErrorOverlay/TransactionErrorOverlay";
+import { useTransactionResults } from "../../NotificationContext/useTransactionResults";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
 }> = (props) => {
   const [nextStep] = useState(props.nextStep);
-  const { account: metaAddress, active } = useLayer2();
+  const { account: metaAddress, active, chainId } = useLayer2();
   const balance = useEtherBalance(metaAddress);
   const {
     currentQuote: quote,
@@ -65,6 +66,7 @@ const SwapOverviewView: React.FC<{
   const { addNotification } = useWidgetNotifications();
 
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
+  useTransactionResults(tokenOut);
 
   const { amountDecimals } = quote;
 
@@ -224,6 +226,8 @@ const SwapOverviewView: React.FC<{
     }
   }, [fetchAndUpdateUserWallets]);
 
+  const isOnCorrectNetwork = tokenIn.chainId === chainId;
+
   return (
     <div className={commonClasses.view}>
       <ProgressHeader
@@ -252,7 +256,7 @@ const SwapOverviewView: React.FC<{
                 disabled={loading}
               />
               <ButtonAction
-                disabled={!isActive || loading}
+                disabled={!isActive || loading || !isOnCorrectNetwork}
                 className={classes.buttonInGroup}
                 text={"Confirm Swap"}
                 onClick={handleSwap}

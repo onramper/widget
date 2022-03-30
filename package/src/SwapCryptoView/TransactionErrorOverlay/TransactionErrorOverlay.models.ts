@@ -1,4 +1,5 @@
 export type TransactionErrorOverlayProps = {
-    textAlert: string;
-    description: string;
-}
+  onClose?: () => void;
+  textAlert: string;
+  description: string;
+};
