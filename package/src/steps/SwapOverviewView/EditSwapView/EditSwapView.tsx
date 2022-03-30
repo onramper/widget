@@ -34,6 +34,9 @@ import {
   useTransactionContext,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
+import { useUsdPriceImpact } from "../../../TransactionContext/hooks/useUsdPriceImpact";
+import { generateBreakdown } from "./utils";
+import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
 
 const insufficientFoundsError =
   "You have insufficient funds to complete this transaction";
@@ -49,8 +52,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     fiatSymbol,
     fiatConversionIn,
     fiatConversionOut,
+    slippageTolerance,
     selectedWalletAddress,
-    feeBreakdown,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
   const [cryptoSpent] = useState(
@@ -60,6 +63,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversionOut)
   );
   const [localQuote, setLocalQuote] = useState(currentQuote);
+  const priceImpact = useUsdPriceImpact(tokenIn, tokenOut, Number(localQuote.amountDecimals), Number(localQuote.quoteGasAdjustedDecimals));
 
   const [spentValue, setSpentValue] = useState(cryptoSpent.value);
   const [actualSpentValue, setActualSpentValue] = useState(cryptoSpent.value);
@@ -71,7 +75,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     cryptoReceived.address,
     selectedWalletAddress
   );
-
+  
+  const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
   const { backScreen } = useContext(NavContext);
   const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
 
@@ -80,7 +85,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     backScreen();
   }, [backScreen, localQuote, setQuote]);
 
-  const getAndUpdateAbortController = useCallback(() => {
+  const getAndUpdateAbortController = useCallback(() => { 
+    
     const newController = new AbortController();
     const { signal } = newController;
 
@@ -189,6 +195,17 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   }, [ethBalance, updateReceivedValue]);
 
   useEffect(() => {
+    setBreakdown(
+      generateBreakdown(
+        localQuote,
+        cryptoReceived.symbol,
+        Number(slippageTolerance),
+        priceImpact
+      )
+    );
+  }, [cryptoReceived.symbol, localQuote, priceImpact, slippageTolerance]);
+
+  useEffect(() => {
     if (swapErrorMessage && swapErrorMessage !== insufficientFoundsError) {
       return;
     }
@@ -254,7 +271,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         />
 
         <div className={classes["bottom-fields"]}>
-          <Breakdown label={"Fee breakdown:"} groups={feeBreakdown} />
+          <Breakdown label={"Fee breakdown:"} groups={breakdown} />
           <IndicationItem
             text={
               "Above mentioned figures are valid for 1 minute based upon current market rates."

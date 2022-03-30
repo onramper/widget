@@ -153,32 +153,6 @@ const transactionOverview = {
     },
     fiatSymbol: "$",
     balance: 989.2692,
-    feeBreakdown: [
-      [
-        {
-          label: "Expected Output",
-          value: "0.000054 BTC",
-          strong: true,
-        },
-        {
-          label: "Price Impact",
-          value: "0.00%",
-          strong: true,
-          hint: "Price impact gives you an idea what slippage to actually expect based on the size of the order you're placing and what's going on in the market.",
-        },
-      ],
-      [
-        {
-          label: "Minimum recieved after slippage ",
-          subLabel: "(25.00 %)",
-          value: "2.602 DAI",
-        },
-        {
-          label: "Network Fee",
-          value: "~$45.67",
-        },
-      ],
-    ],
     userId: "13",
   },
 };
