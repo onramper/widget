@@ -178,6 +178,13 @@ const SwapOverviewView: React.FC<{
               }}
             />
           );
+        } else if(errorMessage?.includes("insufficient funds")) {
+          nextScreen(
+            <TransactionErrorOverlay
+              textAlert="Insufficient funds"
+              description="You have insufficient funds to complete this transaction"
+            />
+          );
         } else {
           nextScreen(
             <TransactionErrorOverlay
