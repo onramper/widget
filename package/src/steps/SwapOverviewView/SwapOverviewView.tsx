@@ -16,13 +16,13 @@ import {
   useLayer2,
   useSendTransaction,
   TransactionStatus,
+  MinimumSlippageDeadlineError,
 } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
-import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import EditSwapView from "./EditSwapView/EditSwapView";
 import {
   useTransactionContext,
@@ -140,11 +140,19 @@ const SwapOverviewView: React.FC<{
         }
       } catch (error) {
         console.log(error);
-        addNotification({
-          type: NotificationType.Error,
-          message: (error as Error)?.message ?? "something went wrong",
-          shouldExpire: true,
-        });
+        if (error instanceof MinimumSlippageDeadlineError) {
+          addNotification({
+            type: NotificationType.Error,
+            message: "Either slippage or deadline set too low.",
+            shouldExpire: true,
+          });
+        } else {
+          addNotification({
+            type: NotificationType.Error,
+            message: (error as Error)?.message ?? "something went wrong",
+            shouldExpire: true,
+          });
+        }
       } finally {
         setLoading(false);
       }
@@ -197,18 +205,17 @@ const SwapOverviewView: React.FC<{
 
   useEffect(() => {
     if (state.status === "Mining") {
-      nextScreen(
-        <OrderCompleteView
-          title="Success! Your Swap has been executed."
-          description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-          tokenOut={tokenOut}
-        />
-      );
+      addNotification({
+        type: NotificationType.Info,
+        message: "Your transaction is being processed, please wait",
+        shouldExpire: true,
+      });
     }
     if (state.status === "Exception") {
+      console.log(state);
       handleException(state);
     }
-  }, [handleException, nextScreen, state, tokenOut]);
+  }, [addNotification, handleException, nextScreen, state, tokenOut]);
 
   useEffect(() => {
     const onBeforeUnload = () => {

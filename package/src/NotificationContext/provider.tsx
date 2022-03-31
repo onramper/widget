@@ -68,6 +68,27 @@ export function NotificationProvider({ children }: Props) {
   }, [account, active, chainId]);
 
   useEffect(() => {
+    if (chainId) {
+      if (previousChainId !== undefined && chainId !== previousChainId) {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          notification: {
+            submittedAt: Date.now(),
+            type: NotificationType.Info,
+            id: nanoid(),
+            message: `Network Changed. You are on ${
+              chainIDToNetworkInfo.find((chain) => chain.chainId === chainId)
+                ?.name ?? "an unknown network"
+            }`,
+            shouldExpire: true,
+          },
+        });
+      }
+    }
+    //eslint-disable-next-line
+  }, [chainId]);
+
+  useEffect(() => {
     if (chainId && account) {
       if (tokenIn.chainId !== tokenOut.chainId) {
         dispatch({
@@ -99,27 +120,6 @@ export function NotificationProvider({ children }: Props) {
     }
     //eslint-disable-next-line
   }, [tokenIn, tokenOut, chainId, account]);
-
-  useEffect(() => {
-    if (chainId) {
-      if (previousChainId !== undefined && chainId !== previousChainId) {
-        dispatch({
-          type: "ADD_NOTIFICATION",
-          notification: {
-            submittedAt: Date.now(),
-            type: NotificationType.Info,
-            id: nanoid(),
-            message: `Network Changed. You are on ${
-              chainIDToNetworkInfo.find((chain) => chain.chainId === chainId)
-                ?.name ?? "an unknown network"
-            }`,
-            shouldExpire: true,
-          },
-        });
-      }
-    }
-    //eslint-disable-next-line
-  }, [chainId]);
 
   const addNotification = useCallback(
     ({ message, type, shouldExpire }: AddNotificationPayload) => {
