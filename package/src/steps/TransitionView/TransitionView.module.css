@@ -1,0 +1,11 @@
+.wrapper {
+  --pb-heading: 33px;
+  --pt-heading: 0px;
+  --pb-heading: 0px;
+  box-sizing: border-box;
+}
+
+.icon {
+  width: 80px;
+  color: var(--primary-color);
+}
