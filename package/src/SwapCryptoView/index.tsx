@@ -1,4 +1,3 @@
-import PlayGround from "./PlayGround";
 import React, { useCallback, useContext, useEffect } from "react";
 import { BASE_API, isDemoEnv } from "../ApiContext/api/constants";
 import { NavContext } from "../NavContext";
@@ -21,7 +20,7 @@ const SwapCryptoView = () => {
   );
 
   useEffect(() => {
-    if(isDemoEnv) {
+    if (isDemoEnv) {
       goToSwapScreen();
       return;
     }
@@ -139,13 +138,13 @@ const SwapCryptoView = () => {
         balance: 989.2692,
         deadline: 600,
         slippage: 0.1,
-        userId: "13"
+        userId: "13",
       },
     } as SwapOverviewVewStep;
     nextScreen(<Step nextStep={fakeResponse} />);
   }, [goToSwapScreen, nextScreen]);
 
-  return <PlayGround />;
+  return <></>;
 };
 
 export default SwapCryptoView;

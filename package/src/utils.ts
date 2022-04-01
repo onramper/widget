@@ -1,6 +1,8 @@
 import { TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 
+export const apiKey = "oIMeQOqDsg9vFAs6WU1ks2hFxZ32DONF4MkhyDyI";
+
 export const isMobile = (): boolean => {
   if (
     /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(
@@ -42,7 +44,6 @@ const isChromium = (userAgent: string): boolean => {
 const isOpera = (userAgent: string): boolean => {
   return /Opera|OPR\//.test(userAgent);
 };
-
 
 export const browserSupportsMetamask = (): boolean => {
   const userAgent = window.navigator.userAgent;
