@@ -53,7 +53,7 @@ const PickOptionView: React.FC<{
 
   return (
     <div className={commonStyles.view}>
-      <ProgressHeader percentage={nextStep.progress} useBackButton={!nextStep.initialStep} />
+      <ProgressHeader percentage={nextStep.progress} useBackButton={nextStep.initialStep} />
       <div className={commonStyles.body}>
         <div className={styles["header-wrapper"]}>
           {nextStep.title && (

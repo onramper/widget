@@ -75,7 +75,7 @@ const EmailVerificationView: React.FC<{
     <div className={commonClasses.view}>
       <ProgressHeader
         percentage={nextStep.progress}
-        useBackButton={!nextStep.initialStep}
+        useBackButton={nextStep.initialStep}
       />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <div className={classes["logo-wrapper"]}>

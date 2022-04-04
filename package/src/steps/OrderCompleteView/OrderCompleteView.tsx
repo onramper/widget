@@ -11,7 +11,7 @@ const OrderCompleteView: React.FC<{
   return (
     <div className={`${commonClasses.view} ${classes["view"]}`}>
       <ProgressHeader
-        useBackButton={!nextStep.initialStep}
+        useBackButton={nextStep.initialStep}
         primary
         noSeparator
       />

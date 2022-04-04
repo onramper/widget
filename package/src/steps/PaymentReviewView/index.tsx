@@ -70,7 +70,7 @@ const ConfirmPaymentView: React.FC<PaymentReviewProps> = (props) => {
       <ProgressHeader
         percentage={props.nextStep.progress}
         title={!props.nextStep.useHeading ? props.nextStep.title : undefined}
-        useBackButton={!props.nextStep.initialStep}
+        useBackButton={props.nextStep.initialStep}
       />
       <BodyConfirmPayment
         onActionButton={onButtonAction}
