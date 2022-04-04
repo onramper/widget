@@ -23,7 +23,11 @@ const PickOptionView: React.FC<{
     if (nextStep.url) {
       setIsLoading(true);
       try {
-        const newNextStep = await apiInterface.executeStep(nextStep, {});
+        const newNextStep = await apiInterface.executeStep(
+          nextStep.url,
+          nextStep.type,
+          {}
+        );
         nextScreen(<Step nextStep={newNextStep} />);
       } catch (_error) {
         const error = _error as { fatal: any; message: string };
@@ -38,7 +42,10 @@ const PickOptionView: React.FC<{
 
   return (
     <div className={commonStyles.view}>
-      <ProgressHeader percentage={nextStep.progress} useBackButton />
+      <ProgressHeader
+        percentage={nextStep.progress}
+        useBackButton={!nextStep.initialStep}
+      />
       <div className={`${commonStyles.body} ${styles["body-wrapper"]}`}>
         <InstructionBody sections={nextStep.sections} />
         <div

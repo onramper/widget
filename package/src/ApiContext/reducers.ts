@@ -7,6 +7,7 @@ export enum CollectedActionsType {
   DeleteFile = "DELETE_FILE",
   AddError = "ADD_ERROR",
   ResetCollected = "RESET_COLLECTED",
+  AddData = "ADD_DATA",
 }
 
 export enum DataActionsType {
@@ -53,6 +54,14 @@ export type DataActions =
       type: CollectedActionsType.ResetCollected;
       payload: {
         value: CollectedStateType;
+      };
+    }
+  | {
+      type: CollectedActionsType.AddData;
+      payload: {
+        value: {
+          [key: string]: any;
+        };
       };
     };
 
@@ -112,6 +121,12 @@ export const collectedReducer = (state: StateType, action: DataActions) => {
     }
     case CollectedActionsType.ResetCollected: {
       return action.payload.value;
+    }
+    case CollectedActionsType.AddData: {
+      return {
+        ...state.collected,
+        ...action.payload.value,
+      };
     }
     default:
       return state.collected;

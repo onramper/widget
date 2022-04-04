@@ -51,7 +51,11 @@ const InformationView: React.FC<{
           };
         });
       }
-      newNextStep = await apiInterface.executeStep(newNextStep, payload);
+      newNextStep = await apiInterface.executeStep(
+        newNextStep.type === "information" ? newNextStep.url : undefined,
+        newNextStep.type,
+        payload
+      );
       setButtonText("Got it!");
       replaceScreen(<Step nextStep={newNextStep} />);
       return true;

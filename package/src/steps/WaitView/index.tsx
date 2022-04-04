@@ -44,7 +44,11 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
               };
             });
           }
-          newNextStep = await executeStep(newNextStep, payload);
+          newNextStep = await executeStep(
+            newNextStep.url,
+            newNextStep.type,
+            payload
+          );
           handleInputChange("isPartnerContextSent", true);
         } catch (error) {
           failed = true;

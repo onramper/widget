@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
 import styles from "./styles.module.css";
@@ -9,7 +10,7 @@ import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
-
+import AppRoutes from "./routes";
 import "./i18n/config";
 
 import "./isolateinheritance.css";
@@ -79,7 +80,9 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
           >
             <div style={{ flexGrow: 1, display: "flex" }}>
-              <NavContainer home={<BuyCryptoView />} />
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
             </div>
           </APIProvider>
         </NavProvider>

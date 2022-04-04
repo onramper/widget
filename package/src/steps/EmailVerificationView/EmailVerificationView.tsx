@@ -33,7 +33,11 @@ const EmailVerificationView: React.FC<{
     setErrorMessage(undefined);
 
     try {
-      const newNextStep = await apiInterface.executeStep(nextStep, {});
+      const newNextStep = await apiInterface.executeStep(
+        nextStep.url,
+        nextStep.type,
+        {}
+      );
       nextScreen(<Step nextStep={newNextStep} />);
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
@@ -69,7 +73,10 @@ const EmailVerificationView: React.FC<{
 
   return (
     <div className={commonClasses.view}>
-      <ProgressHeader percentage={nextStep.progress} useBackButton />
+      <ProgressHeader
+        percentage={nextStep.progress}
+        useBackButton={!nextStep.initialStep}
+      />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <div className={classes["logo-wrapper"]}>
           <img src={logo} />

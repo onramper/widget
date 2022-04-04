@@ -10,6 +10,7 @@ import type { CryptoAddrType } from "../initialState";
 import { BASE_API } from "./constants";
 import i18next from "i18next";
 import i18n from "../../i18n/config";
+import { SessionData } from "./types/sessionData";
 
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers();
@@ -135,16 +136,16 @@ const tob64 = async (file: File): Promise<string | ArrayBuffer | null> => {
 };
 
 const executeStep = async (
-  step: NextStep,
+  url: string | undefined,
+  type: string | undefined,
   data: { [key: string]: any } | File,
   params?: ExecuteStepParams
 ): Promise<NextStep> => {
-  if (!("url" in step)) throw new Error("Invalid step.");
-  if (step.url === undefined)
-    throw new Error("Unexpected error: Invalid step end.");
+  if (!url) throw new Error("Invalid step.");
+  if (url === undefined) throw new Error("Unexpected error: Invalid step end.");
 
-  const isMoonpay = isMoonpayStep(step.url);
-  const isFile = step.type === "file";
+  const isMoonpay = isMoonpayStep(url);
+  const isFile = type === "file";
   const isMoonpayFile = isFile && isMoonpay;
   const method = isMoonpayFile ? "PUT" : "POST";
   let body;
@@ -154,13 +155,13 @@ const executeStep = async (
 
   const urlParams = createUrlParamsFromObject(params ?? {});
 
-  logRequest(step.url);
-  const nextStepType = step.url.split("/")[5];
+  logRequest(url);
+  const nextStepType = url.split("/")[5];
   let nextStep: FetchResponse;
   if (isMoonpay && nextStepType !== "iframe") {
-    nextStep = await processMoonpayStep(step.url, { method, headers, body });
+    nextStep = await processMoonpayStep(url, { method, headers, body });
   } else {
-    nextStep = await fetch(`${step.url}?${urlParams}`, {
+    nextStep = await fetch(`${url}?${urlParams}`, {
       method,
       headers,
       body,
@@ -394,6 +395,16 @@ const sell = async (
   return rates;
 };
 
+const getSessionData = async (sessionId: string) => {
+  const sessionUrl = `${BASE_API}/session?sessionId=${sessionId}`;
+  logRequest(sessionUrl);
+  const sessionRes = await fetch(sessionUrl, {
+    headers,
+  });
+  const sessionData: SessionData = await processResponse(sessionRes);
+  return sessionData;
+};
+
 export {
   authenticate,
   gateways,
@@ -405,6 +416,7 @@ export {
   getAcceptLanguageParameter,
   updateAcceptLanguageParameter,
   sell,
+  getSessionData,
   NextStepError,
   sentryHub,
   ApiError,

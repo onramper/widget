@@ -100,7 +100,11 @@ const FormView: React.FC<{ nextStep: NextStep & { type: "form" } }> = ({
     }, {});
     try {
       const payload = { ...params, partnerContext: collected.partnerContext };
-      const newNextStep = await apiInterface.executeStep(nextStep, payload);
+      const newNextStep = await apiInterface.executeStep(
+        nextStep.url,
+        nextStep.type,
+        payload
+      );
       inputInterface.handleInputChange("isPartnerContextSent", true);
       nextScreen(<Step nextStep={newNextStep} />);
     } catch (_error) {
@@ -140,7 +144,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: "form" } }> = ({
       <ProgressHeader
         percentage={nextStep.progress}
         title={!useHeading ? title : undefined}
-        useBackButton
+        useBackButton={!nextStep.initialStep}
       />
       <BodyForm
         fields={nextStepData}

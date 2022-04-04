@@ -21,6 +21,7 @@
     "jsx": "react",
     "allowJs": true,
     "declaration": true,
+    "useUnknownInCatchVariables" : false,
     "outDir": "./dist"
   },
   "include": [

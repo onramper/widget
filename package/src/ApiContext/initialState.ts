@@ -1,6 +1,7 @@
 import { GatewaysResponse } from "./api/types/gateways";
 import { RateResponse, GatewayRate } from "./api/types/rate";
 import { NextStep } from "./api/types/nextStep";
+import { SessionData } from "./api/types/sessionData";
 
 export type GatewayRateOption = { id: string; name: string } & GatewayRate;
 export type GatewayRateOptionSimple = Pick<
@@ -100,6 +101,7 @@ export type DataStateType = {
   handleCurrencyChange: (currency?: ItemType) => undefined | {};
   handlePaymentMethodChange: (paymentMehtod?: ItemType) => undefined | {};
   restartWidget: () => void;
+  addData: (data: any) => void;
   //remote responses
   responseGateways?: GatewaysResponse;
   filtredGatewaysByCrypto: GatewaysResponse["gateways"];
@@ -113,15 +115,18 @@ export type DataStateType = {
 
 export type InputInterfaceType = {
   handleInputChange: (name: string, value: any) => void;
+  handleBulkInputChange: (data: { [key: string]: any }) => void;
 };
 
 export type ApiInterfaceType = {
   init: (country?: string) => Promise<ErrorObjectType | undefined | {}>;
   executeStep: (
-    step: NextStep,
+    url: string | undefined,
+    type: string | undefined,
     params: { [key: string]: any }
   ) => Promise<NextStep>;
   getRates: () => Promise<ErrorObjectType | undefined | {}>;
+  getSessionData: (sessionId: string) => Promise<SessionData | undefined>;
   clearErrors: () => void;
 };
 
@@ -158,6 +163,7 @@ export const initialState: StateType = {
     handleCurrencyChange: () => undefined,
     handlePaymentMethodChange: () => undefined,
     restartWidget: () => undefined,
+    addData: () => undefined,
     responseGateways: undefined,
     filtredGatewaysByCrypto: [],
     filtredGatewaysByCurrency: [],
@@ -166,11 +172,13 @@ export const initialState: StateType = {
   },
   inputInterface: {
     handleInputChange: () => null,
+    handleBulkInputChange: () => null,
   },
   apiInterface: {
     init: async () => undefined,
-    executeStep: async (nextStep: NextStep) => nextStep,
+    executeStep: async () => ({} as NextStep),
     getRates: async () => undefined,
     clearErrors: () => undefined,
+    getSessionData: async () => undefined,
   },
 };

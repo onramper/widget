@@ -82,9 +82,8 @@ interface APIProviderType {
  *
  * @param language The ISO 639-1 language code. E.g. 'ja'. See: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
  */
- function updateLanguageIfRequired(language: string) {
-  if (i18n.language !== language)
-    i18n.changeLanguage(language);
+function updateLanguageIfRequired(language: string) {
+  if (i18n.language !== language) i18n.changeLanguage(language);
   if (API.getAcceptLanguageParameter() !== language)
     API.updateAcceptLanguageParameter();
 }
@@ -172,6 +171,13 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       }),
     []
   );
+
+  const handleBulkInputChange = useCallback((data: { [key: string]: any }) => {
+    dispatch({
+      type: CollectedActionsType.AddData,
+      payload: { value: data },
+    });
+  }, []);
 
   useEffect(() => {
     handleInputChange("isAddressEditable", isAddressEditable);
@@ -985,15 +991,23 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   }, [getRates]);
 
   const executeStep = useCallback(
-    async (step: NextStep, data: { [key: string]: any }): Promise<NextStep> => {
-      if (step.type !== "file" && props.partnerContext !== data.partnerContext)
+    async (
+      url: string | undefined,
+      type: string | undefined,
+      data: { [key: string]: any }
+    ): Promise<NextStep> => {
+      if (type !== "file" && props.partnerContext !== data.partnerContext)
         throw new Error("Partner context not set properly");
-      return await API.executeStep(step, data, {
+      return await API.executeStep(url, type, data, {
         country: state.collected.selectedCountry,
       });
     },
     [state.collected.selectedCountry, props.partnerContext]
   );
+
+  const getSessionData = useCallback(async (sessionId: string) => {
+    return await API.getSessionData(sessionId);
+  }, []);
 
   return (
     <APIContext.Provider
@@ -1002,6 +1016,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         inputInterface: {
           ...state.inputInterface,
           handleInputChange,
+          handleBulkInputChange,
         },
         data: {
           ...state.data,
@@ -1009,8 +1024,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           handleCurrencyChange,
           handlePaymentMethodChange,
           restartWidget,
+          addData,
         },
-        apiInterface: { init, executeStep, getRates, clearErrors },
+        apiInterface: { init, executeStep, getRates, getSessionData, clearErrors },
       }}
     >
       {props.children}
@@ -1033,5 +1049,5 @@ export type {
   APIProviderType,
   CollectedStateType,
   GatewayRateOptionSimple,
-  PickOneOption
+  PickOneOption,
 };

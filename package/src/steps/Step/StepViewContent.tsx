@@ -26,6 +26,7 @@ import { triggerGTMEvent } from "../../helpers/useGTM";
 export interface NewStepProps {
   nextStep?: NextStep;
   isConfirmed?: boolean;
+  initialStep
 }
 const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
   const { replaceScreen, backScreen, currentStep /* , onlyScreen */ } =

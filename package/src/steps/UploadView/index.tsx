@@ -25,7 +25,8 @@ const UploadView: React.FC<{ nextStep: NextStep & { type: "file" } }> = (
     setErrorMsg(undefined);
 
     try {
-      const newNextStep = await apiInterface.executeStep(props.nextStep, file);
+      const { url, type } = props.nextStep;
+      const newNextStep = await apiInterface.executeStep(url, type, file);
       nextScreen(<Step nextStep={newNextStep} />);
     } catch (_error) {
       const error = _error as { fatal: any; message: string };

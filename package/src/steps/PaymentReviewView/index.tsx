@@ -51,7 +51,8 @@ const ConfirmPaymentView: React.FC<PaymentReviewProps> = (props) => {
     setIsLoading(true);
     setErrorMessage(undefined);
     try {
-      const newNextStep = await apiInterface.executeStep(props.nextStep, {});
+      const { url, type } = props.nextStep;
+      const newNextStep = await apiInterface.executeStep(url, type, {});
       nextScreen(<Step nextStep={newNextStep} />);
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
@@ -69,7 +70,7 @@ const ConfirmPaymentView: React.FC<PaymentReviewProps> = (props) => {
       <ProgressHeader
         percentage={props.nextStep.progress}
         title={!props.nextStep.useHeading ? props.nextStep.title : undefined}
-        useBackButton
+        useBackButton={!props.nextStep.initialStep}
       />
       <BodyConfirmPayment
         onActionButton={onButtonAction}

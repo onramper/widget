@@ -10,7 +10,11 @@ const OrderCompleteView: React.FC<{
 }> = ({ nextStep }) => {
   return (
     <div className={`${commonClasses.view} ${classes["view"]}`}>
-      <ProgressHeader useBackButton primary noSeparator />
+      <ProgressHeader
+        useBackButton={!nextStep.initialStep}
+        primary
+        noSeparator
+      />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <div className={classes["checkmark-wrapper"]}>
           <CheckmarkSuccessIcon />
