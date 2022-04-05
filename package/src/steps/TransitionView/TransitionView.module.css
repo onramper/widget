@@ -3,6 +3,16 @@
   --pt-heading: 0px;
   --pb-heading: 0px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  overflow: visible;
+}
+
+.heading {
+  padding: 12px 0 22px;
 }
 
 .icon {
