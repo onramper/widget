@@ -35,6 +35,7 @@
   position: absolute;
   left: calc(50% - 14px);
   top: calc(50% - 14px);
+  color: rgba(255, 255, 255, 0.817);
 }
 
 .button-action--small {
