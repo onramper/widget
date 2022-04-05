@@ -14,7 +14,11 @@ import Footer from "../../../common/Footer";
 import ButtonAction from "../../../common/Buttons/ButtonAction";
 import Heading from "../../../common/Heading/Heading";
 import InputDropdown from "../../../common/InputDropdown/InputDropdown";
-import uriToHttp, { onChangeFloat, parseWrappedTokens } from "../../../utils";
+import uriToHttp, {
+  apiKey,
+  onChangeFloat,
+  parseWrappedTokens,
+} from "../../../utils";
 import Breakdown from "../../../common/Breakdown/Breakdown";
 import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
 import TransactionSettings from "../TransactionSettings/TransactionSettings";
@@ -63,7 +67,12 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversionOut)
   );
   const [localQuote, setLocalQuote] = useState(currentQuote);
-  const priceImpact = useUsdPriceImpact(tokenIn, tokenOut, Number(localQuote.amountDecimals), Number(localQuote.quoteGasAdjustedDecimals));
+  const priceImpact = useUsdPriceImpact(
+    tokenIn,
+    tokenOut,
+    Number(localQuote.amountDecimals),
+    Number(localQuote.quoteGasAdjustedDecimals)
+  );
 
   const [spentValue, setSpentValue] = useState(cryptoSpent.value);
   const [actualSpentValue, setActualSpentValue] = useState(cryptoSpent.value);
@@ -75,7 +84,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     cryptoReceived.address,
     selectedWalletAddress
   );
-  
+
   const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
   const { backScreen } = useContext(NavContext);
   const [heading] = useState(computeHeading(cryptoSpent, cryptoReceived));
@@ -85,8 +94,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     backScreen();
   }, [backScreen, localQuote, setQuote]);
 
-  const getAndUpdateAbortController = useCallback(() => { 
-    
+  const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
     const { signal } = newController;
 
@@ -116,7 +124,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
               cryptoSpent,
               cryptoReceived,
               Number(value),
-              undefined,
+              false,
+              apiKey,
               signal
             );
 
