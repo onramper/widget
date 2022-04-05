@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
 import styles from "./styles.module.css";
-import { NavProvider, NavContainer } from "./NavContext";
+import { NavProvider } from "./NavContext";
 import { APIProvider } from "./ApiContext";
 import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
