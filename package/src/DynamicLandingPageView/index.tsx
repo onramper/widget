@@ -28,7 +28,7 @@ const DynamicLandingPageView: React.FC = () => {
       try {
         const sessionData = await apiInterface.getSessionData(session);
         if (sessionData) {
-          handleBulkInputChange(sessionData);
+          handleBulkInputChange(JSON.parse(sessionData.sessionData));
           const newNextStep = await apiInterface.executeStep(
             getNextStepUrl(gateway, step, token),
             undefined,

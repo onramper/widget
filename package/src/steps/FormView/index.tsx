@@ -144,7 +144,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: "form" } }> = ({
       <ProgressHeader
         percentage={nextStep.progress}
         title={!useHeading ? title : undefined}
-        useBackButton={nextStep.initialStep}
+        useBackButton={!nextStep.initialStep}
       />
       <BodyForm
         fields={nextStepData}

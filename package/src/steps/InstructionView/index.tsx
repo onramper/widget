@@ -44,7 +44,7 @@ const PickOptionView: React.FC<{
     <div className={commonStyles.view}>
       <ProgressHeader
         percentage={nextStep.progress}
-        useBackButton={nextStep.initialStep}
+        useBackButton={!nextStep.initialStep}
       />
       <div className={`${commonStyles.body} ${styles["body-wrapper"]}`}>
         <InstructionBody sections={nextStep.sections} />
