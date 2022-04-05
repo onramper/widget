@@ -65,7 +65,7 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
       case "DISABLED_GATEWAYS":
         return DISABLED_GATEWAYS;
       case "API":
-        return API_ERROR(props.message ?? "", restartWidget);
+        return API_ERROR(props.message ?? "", props.callback || restartWidget);
       case "CRASH":
         return CRASH_ERROR(() => {
           props.callback?.();

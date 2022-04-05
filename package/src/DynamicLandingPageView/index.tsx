@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { APIContext } from "../ApiContext";
 import { BASE_API } from "../ApiContext/api/constants";
@@ -10,6 +10,7 @@ import LogoOnramper from "../icons/onramper_logo_icon.svg";
 import styles from "./styles.module.css";
 
 const DynamicLandingPageView: React.FC = () => {
+  const [errorOccurred, setErrorOccurred] = useState(false);
   const { gateway, step, token, session } = useParams();
   const {
     apiInterface,
@@ -21,37 +22,48 @@ const DynamicLandingPageView: React.FC = () => {
     return `${BASE_API}/transaction/${gateway}/${step}/${token}`;
   };
 
-  useEffect(() => {
+  const routeToStep = useCallback(async () => {
+    setErrorOccurred(false);
     if (gateway && step && token && session) {
-      (async () => {
-        try {
-          const sessionData = await apiInterface.getSessionData(session);
-          if (sessionData) {
-            handleBulkInputChange(sessionData);
-            const newNextStep = await apiInterface.executeStep(
-              getNextStepUrl(gateway, step, token),
-              undefined,
-              {}
-            );
+      try {
+        const sessionData = await apiInterface.getSessionData(session);
+        if (sessionData) {
+          handleBulkInputChange(sessionData);
+          const newNextStep = await apiInterface.executeStep(
+            getNextStepUrl(gateway, step, token),
+            undefined,
+            {}
+          );
 
-            newNextStep.initialStep = true;
-            nextScreen(<Step nextStep={newNextStep} />);
-          } else {
-            throw new Error("Cannot find any user inputs");
-          }
-        } catch (_error) {
-          nextScreen(<ErrorView />);
+          newNextStep.initialStep = true;
+          nextScreen(<Step nextStep={newNextStep} />);
+        } else {
+          throw new Error("Cannot find any user inputs");
         }
-      })();
+      } catch (_error) {
+        setErrorOccurred(true);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    routeToStep();
+  }, [routeToStep]);
+
   return (
-    <div className={styles.wrapper}>
-      <img src={LogoOnramper} />
-      <div className={styles.message}>Loading...</div>
-    </div>
+    <>
+      {errorOccurred ? (
+        <div className={styles.errorWrapper}>
+          <ErrorView type="API" callback={routeToStep} />
+        </div>
+      ) : (
+        <div className={styles.loadingWrapper}>
+          <img src={LogoOnramper} />
+          <div className={styles.message}>Loading...</div>
+        </div>
+      )}
+    </>
   );
 };
 
