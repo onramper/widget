@@ -14,8 +14,6 @@ import { ReactComponent as Check } from "../../icons/check.svg";
 import { ImageWithFallback } from "../../common/ImageWithFallback/ImageWithFallback";
 import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg";
 import { ReactComponent as Chevron } from "../../icons/chevron2.svg";
-import { useNav } from "../../NavContext";
-import SwapOverviewVew from "../SwapOverviewView/SwapOverviewView";
 
 // TODO: discuss interface for data from backend and refactor
 interface Props {
@@ -35,7 +33,6 @@ export const TransitionView = ({
   tokenIn,
   tokenOut,
 }: Props) => {
-  const { nextScreen } = useNav();
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
