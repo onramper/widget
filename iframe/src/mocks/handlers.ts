@@ -6,12 +6,26 @@ import Moonpay from './responses/steps/Moonpay'
 import Wyre from './responses/steps/Wyre'
 import TestGateway from './responses/steps/TestGateway/steps';
 import { BASE_API } from './constants'
+import * as l2 from "./responses/l2";
 
 const gatewayMap:{[key:string]: object } = { CCPro, Wyre, TestGateway };
 
 let moonpayKYCStepsCount = 0
 
 export const handlers = [
+    rest.get(`${BASE_API}/getUserWallets/*`, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(l2.userWalletsResponse));
+    }),
+    rest.post(`${BASE_API}/updateUserWallet`, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(l2.updateUserWalletResponse));
+    }),
+    rest.post(`${BASE_API}/removeUserWallet`, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(l2.deleteUserWalletResponse));
+    }),
+    rest.get(`${BASE_API}/v2/gateways`, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(gatewaysAllParams));
+    }),
+    
     rest.get(`${BASE_API}/gateways`, (req, res, ctx) => {
         /* let response = noGatewaysAllParams
         if (req.url.searchParams.get('includeIcons') !== 'true')

@@ -1,6 +1,5 @@
-import PlayGround from "./PlayGround";
-import React, { useContext, useEffect } from "react";
-// import { BASE_API } from "../ApiContext/api/constants";
+import React, { useCallback, useContext, useEffect } from "react";
+import { BASE_API, isDemoEnv } from "../ApiContext/api/constants";
 import { NavContext } from "../NavContext";
 import Step from "../steps/Step";
 import { SwapOverviewVewStep } from "../ApiContext/api/types/nextStep";
@@ -8,19 +7,25 @@ import { SwapOverviewVewStep } from "../ApiContext/api/types/nextStep";
 const SwapCryptoView = () => {
   const { nextScreen } = useContext(NavContext);
 
-  // const goToSwapScreen = useCallback(
-  //   async (name = "transactionOverview") => {
-  //     const stepUrl = `${BASE_API}/GoTo/TestGateway/${name}`;
-  //     const swapStep = await (
-  //       await fetch(`${stepUrl}`, { method: "POST" })
-  //     ).json();
-  //     console.log(swapStep);
-  //     nextScreen(<Step nextStep={swapStep} />);
-  //   },
-  //   [fakeResponse, nextScreen]
-  // );
+  const goToSwapScreen = useCallback(
+    async (name = "transactionOverview") => {
+      const stepUrl = `${BASE_API}/GoTo/TestGateway/${name}`;
+      const swapStep = await (
+        await fetch(`${stepUrl}`, { method: "POST" })
+      ).json();
+      console.log(swapStep);
+      nextScreen(<Step nextStep={swapStep} />);
+    },
+    [nextScreen]
+  );
 
   useEffect(() => {
+    if (isDemoEnv) {
+      goToSwapScreen();
+      return;
+    }
+
+    //TODO: always to to goToSwapScreen(); once BE is ready
     const fakeResponse = {
       type: "transactionOverview",
       progress: 0,
@@ -133,13 +138,13 @@ const SwapCryptoView = () => {
         balance: 989.2692,
         deadline: 600,
         slippage: 0.1,
-        userId: "13"
+        userId: "13",
       },
     } as SwapOverviewVewStep;
     nextScreen(<Step nextStep={fakeResponse} />);
-  }, [nextScreen]);
+  }, [goToSwapScreen, nextScreen]);
 
-  return <PlayGround />;
+  return <></>;
 };
 
 export default SwapCryptoView;

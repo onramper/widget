@@ -13,10 +13,14 @@ export const BASE_API = (() => {
       return "https://l2.onramper.tech";
     case "prod":
       return "https://onramper.tech";
+    case "demo":
+        return "https://staging.onramper.tech";
     default:
       return "http://localhost:3000/dev";
   }
 })();
+
+export const isDemoEnv = process.env.STAGE === "demo";
 
 export const SANDBOX_HOSTNAME =
   process.env.STAGE === "prod"
