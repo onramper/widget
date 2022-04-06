@@ -12,10 +12,10 @@ import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 import { L2Provider } from "layer2";
-// import SwapCryptoView from "./SwapCryptoView";
+import SwapCryptoView from "./SwapCryptoView";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
-import { PaymentProgressView } from "./steps/PaymentProgressView";
+// import { PaymentProgressView } from "./steps/PaymentProgressView";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -83,29 +83,30 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                   <div style={{ flexGrow: 1, display: "flex" }}>
                     <NavContainer
                       home={
-                        <PaymentProgressView
-                          gateway="moonpay"
-                          tokenIn={{
-                            name: "Wrapped Ether",
-                            address:
-                              "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-                            symbol: "WETH",
-                            decimals: 18,
-                            chainId: 4,
-                            logoURI:
-                              "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-                          }}
-                          tokenOut={{
-                            name: "Uniswap",
-                            address:
-                              "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-                            symbol: "UNI",
-                            decimals: 18,
-                            chainId: 4,
-                            logoURI:
-                              "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
-                          }}
-                        />
+                        <SwapCryptoView />
+                        // <PaymentProgressView
+                        //   gateway="moonpay"
+                        //   tokenIn={{
+                        //     name: "Wrapped Ether",
+                        //     address:
+                        //       "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+                        //     symbol: "WETH",
+                        //     decimals: 18,
+                        //     chainId: 4,
+                        //     logoURI:
+                        //       "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+                        //   }}
+                        //   tokenOut={{
+                        //     name: "Uniswap",
+                        //     address:
+                        //       "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+                        //     symbol: "UNI",
+                        //     decimals: 18,
+                        //     chainId: 4,
+                        //     logoURI:
+                        //       "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
+                        //   }}
+                        // />
                       }
                     />
                   </div>
