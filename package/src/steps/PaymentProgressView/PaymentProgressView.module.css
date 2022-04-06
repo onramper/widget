@@ -23,7 +23,9 @@
   padding: 12px 0 22px;
   margin-bottom: 14px;
 }
-
+.notification {
+  margin-top: 20px;
+}
 .icon {
   width: 80px;
   height: 80px;

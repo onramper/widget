@@ -38,9 +38,9 @@ export const PaymentProgressView = ({
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
 
-  useEffect(() => {
-    setTimeout(() => setLayer1Status(Status.Success), 3000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => setLayer1Status(Status.Success), 3000);
+  // }, []);
 
   const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0] ?? "";
 
@@ -133,16 +133,17 @@ export const PaymentProgressView = ({
           </div>
           <Chevron className={classes.chevron} />
         </button>
+        {layer1Status === Status.Pending && (
+          <SingleNotification
+            className={classes.notification}
+            notification={{
+              type: NotificationType.Info,
+              message: "Attention! You do not need to keep your browser open.",
+            }}
+          />
+        )}
       </main>
 
-      {layer1Status === Status.Pending && (
-        <SingleNotification
-          notification={{
-            type: NotificationType.Info,
-            message: "Attention! You do not need to keep your browser open.",
-          }}
-        />
-      )}
       <Footer />
     </div>
   );

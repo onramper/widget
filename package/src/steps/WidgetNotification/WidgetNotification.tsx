@@ -43,11 +43,13 @@ export const WidgetNotification = ({ className }: WidgetNotificationProps) => {
     notifications.length > 0 ? notifications[notifications.length - 1] : null;
 
   return (
-    notificationToRender && (
-      <SingleNotification
-        className={className}
-        notification={notificationToRender}
-      />
-    )
+    <div className={classes.notificationContainer}>
+      {notificationToRender && (
+        <SingleNotification
+          className={className}
+          notification={notificationToRender}
+        />
+      )}
+    </div>
   );
 };
