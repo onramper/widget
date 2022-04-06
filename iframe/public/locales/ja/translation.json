@@ -35,5 +35,11 @@
   },
   "button": {
     "continue": "継続する"
+  },
+  "common": {
+    "loading": "読み込み中..."
+  },
+  "arbitraryStepView": {
+    "emptyInputs": "セッションに関連付けられているユーザー入力が見つかりません"
   }
 }

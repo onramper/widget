@@ -6,10 +6,12 @@ import ErrorView from "../common/ErrorView";
 import { NavContext } from "../NavContext";
 import Step from "../steps/Step";
 import LogoOnramper from "../icons/onramper_logo_icon.svg";
+import { useTranslation } from "react-i18next";
 
 import styles from "./styles.module.css";
 
 const DynamicLandingPageView: React.FC = () => {
+  const { t } = useTranslation();
   const [errorOccurred, setErrorOccurred] = useState(false);
   const { gateway, step, token, session } = useParams();
   const {
@@ -38,7 +40,7 @@ const DynamicLandingPageView: React.FC = () => {
           newNextStep.initialStep = true;
           nextScreen(<Step nextStep={newNextStep} />);
         } else {
-          throw new Error("Cannot find any user inputs");
+          throw new Error(t("arbitraryStepView.emptyInputs"));
         }
       } catch (_error) {
         setErrorOccurred(true);
@@ -60,7 +62,7 @@ const DynamicLandingPageView: React.FC = () => {
       ) : (
         <div className={styles.loadingWrapper}>
           <img src={LogoOnramper} />
-          <div className={styles.message}>Loading...</div>
+          <div className={styles.message}>{t("common.loading")}</div>
         </div>
       )}
     </>

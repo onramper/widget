@@ -35,5 +35,11 @@
   },
   "button": {
     "continue": "Continue"
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "arbitraryStepView": {
+    "emptyInputs": "No user inputs associated with the session are found"
   }
 }

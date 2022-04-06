@@ -1,3 +1,4 @@
+import { ApiMethods } from "./../utils/apiUtils";
 import "abort-controller/polyfill";
 import { GatewayRate, RateResponse } from "./types/rate";
 import { Currency, GatewaysResponse } from "./types/gateways";
@@ -147,7 +148,7 @@ const executeStep = async (
   const isMoonpay = isMoonpayStep(url);
   const isFile = type === "file";
   const isMoonpayFile = isFile && isMoonpay;
-  const method = isMoonpayFile ? "PUT" : "POST";
+  const method = isMoonpayFile ? ApiMethods.PUT : ApiMethods.POST;
   let body;
   if (isMoonpayFile) body = data as File;
   else if (isFile) body = (await tob64(data as File)) as unknown as string;
@@ -396,7 +397,11 @@ const sell = async (
 };
 
 const getSessionData = async (sessionId: string) => {
-  const sessionUrl = `${BASE_API}/session?sessionId=${sessionId}`;
+  headers.set(
+    "Authorization",
+    `Basic ${"pk_test_x5M_5fdXzn1fxK04seu0JgFjGsu7CH8lOvS9xZWzuSM0"}`
+  );
+  const sessionUrl = `${"http://localhost:3000/dev"}/session?sessionId=${sessionId}`;
   logRequest(sessionUrl);
   const sessionRes = await fetch(sessionUrl, {
     headers,
