@@ -14,6 +14,7 @@ import { ReactComponent as Check } from "../../icons/check.svg";
 import { ImageWithFallback } from "../../common/ImageWithFallback/ImageWithFallback";
 import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg";
 import { ReactComponent as Chevron } from "../../icons/chevron2.svg";
+import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
 
 // TODO: discuss interface for data from backend and refactor
 interface Props {
@@ -73,7 +74,9 @@ export const TransitionView = ({
       <ProgressHeader />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         {layer1Status === Status.Pending && <Mail className={classes.icon} />}
-        {layer1Status === Status.Success && <Check className={classes.icon} />}
+        {layer1Status === Status.Success && (
+          <CheckCircle className={classes.icon} />
+        )}
         <Heading
           className={classes.heading}
           text={heading()}
