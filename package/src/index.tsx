@@ -15,7 +15,7 @@ import { L2Provider } from "layer2";
 // import SwapCryptoView from "./SwapCryptoView";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
-import { TransitionView } from "./steps/TransitionView";
+import { PaymentProgressView } from "./steps/PaymentProgressView";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -83,7 +83,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                   <div style={{ flexGrow: 1, display: "flex" }}>
                     <NavContainer
                       home={
-                        <TransitionView
+                        <PaymentProgressView
                           gateway="moonpay"
                           tokenIn={{
                             name: "Wrapped Ether",

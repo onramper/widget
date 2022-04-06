@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../common/Footer";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import commonClasses from "../../styles.module.css";
-import classes from "./TransitionView.module.css";
+import classes from "./PaymentProgressView.module.css";
 import { ReactComponent as Mail } from "../../icons/mail.svg";
 import Heading from "../../common/Heading/Heading";
 import { SingleNotification } from "../WidgetNotification/WidgetNotification";
@@ -29,7 +29,7 @@ enum Status {
   Fail = "Fail",
 }
 
-export const TransitionView = ({
+export const PaymentProgressView = ({
   gateway = "moonpay",
   tokenIn,
   tokenOut,
