@@ -221,7 +221,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         return processErrors({
           GATEWAYS: {
             type: "API",
-            message: error.message,
+            message: (error as Error).message,
           },
         });
       }
@@ -630,12 +630,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         state.collected.selectedCrypto?.id
       );
     } catch (error) {
-      if (error.name === "AbortError") return {};
+      if ((error as Error).name === "AbortError") return {};
       setLastCall(undefined);
       return processErrors({
         RATE: {
           type: "API",
-          message: error.message,
+          message: (error as Error).message,
         },
       });
     }

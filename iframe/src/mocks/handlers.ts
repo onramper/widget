@@ -61,7 +61,7 @@ export const handlers = [
             ctx.json({ message: "'Authorization' header was no provided." })
         ) */
     }),
-    rest.get(`${BASE_API}/rate/*`, (req, res, ctx) => {
+    rest.get(`${BASE_API}/v2/rate/*`, (req, res, ctx) => {
         //Successful response
         if (req.url.searchParams.get('gateway')==="Mercuryo")
             return res(

@@ -65,15 +65,16 @@ interface RateParams {
 
 const rate = async (currency: string, crypto: string, amount: number, paymentMethod: string, params?: RateParams, signal?: AbortSignal): Promise<RateResponse> => {
     const urlParams = createUrlParamsFromObject(params ?? {})
-    const ratesUrl = `${BASE_API}/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`
-    logRequest(ratesUrl)
+    const ratesUrl = `${BASE_API}/v2/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`;
+
+    // logRequest(ratesUrl);
     const ratesRes = await fetch(ratesUrl, {
         headers,
         signal,
         credentials: process.env.STAGE === 'local' ? 'omit' : 'include'
     })
-    const rates: RateResponse = await processResponse(ratesRes)
-    return rates
+    const rates: RateResponse = await processResponse(ratesRes);
+    return rates;
 }
 
 /**
@@ -141,9 +142,11 @@ const isMoonpayStep = (stepUrl: string) => {
  * Utils
  */
 export const processResponse = async (response: FetchResponse): Promise<any> => {
-    if (response.ok)
-        return await response.json()
-    else {
+    if (response.ok) {
+        const data = await response.json();
+        console.log('--response data--', data);
+        return data;
+    } else {
         let errorResponse
         try {
             errorResponse = await response.json()
@@ -280,6 +283,7 @@ type DefaultAddrs = {
 }
 
 const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[], defaultAddrs?: DefaultAddrs, selectedCrypto?: string): RateResponse => {
+    console.log('--filterRatesResponse--\n', { ratesResponse, onlyGateways, defaultAddrs, selectedCrypto });
     return ratesResponse.filter(gateway => {
         if (onlyGateways !== undefined && !onlyGateways.includes(gateway.identifier)) {
             return false;
@@ -294,7 +298,7 @@ const filterRatesResponse = (ratesResponse: RateResponse, onlyGateways?: string[
             }
         }
         return true;
-    })
+    });
 }
 
 interface SellParams {
