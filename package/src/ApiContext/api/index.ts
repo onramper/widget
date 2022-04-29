@@ -56,6 +56,7 @@ const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
     credentials: process.env.STAGE === "local" ? "omit" : "include",
   });
   const gateways: GatewaysResponse = await processResponse(gatewaysRes);
+  console.log(gateways);
   return gateways;
 };
 
@@ -378,8 +379,6 @@ const sell = async (
   paymentMethod: string,
   params?: SellParams
 ): Promise<GatewayRate> => {
-  //eslint-disable-next-line
-  debugger;
   const urlParams = createUrlParamsFromObject(params ?? {});
   const ratesUrl = `${BASE_API}/sell/${crypto}/${paymentMethod}/${amount}?${urlParams}`;
   logRequest(ratesUrl);
