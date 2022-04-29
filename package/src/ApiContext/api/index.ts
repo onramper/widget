@@ -56,7 +56,6 @@ const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
     credentials: process.env.STAGE === "local" ? "omit" : "include",
   });
   const gateways: GatewaysResponse = await processResponse(gatewaysRes);
-  console.log(gateways);
   return gateways;
 };
 
