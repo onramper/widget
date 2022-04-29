@@ -15,6 +15,7 @@ import { L2Provider } from "layer2";
 // import SwapCryptoView from "./SwapCryptoView";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
+// import { PaymentProgressView } from "./steps/PaymentProgressView";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;

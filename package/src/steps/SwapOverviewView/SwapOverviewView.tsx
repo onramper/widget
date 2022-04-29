@@ -5,7 +5,7 @@ import { NextStep } from "../../ApiContext";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
-import { parseWrappedTokens } from "../../utils";
+import { apiKey, parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
   formatEther,
@@ -76,6 +76,7 @@ const SwapOverviewView: React.FC<{
         tokenOut,
         Number(amountDecimals),
         false,
+        apiKey,
         beforeUnLoadRef.current.signal
       );
       if (newQuote) {
@@ -121,7 +122,8 @@ const SwapOverviewView: React.FC<{
           {
             slippageTolerance,
             deadline,
-          }
+          },
+          apiKey
         );
         addNotification({
           type: NotificationType.Info,
@@ -178,7 +180,7 @@ const SwapOverviewView: React.FC<{
               }}
             />
           );
-        } else if(errorMessage?.includes("insufficient funds")) {
+        } else if (errorMessage?.includes("insufficient funds")) {
           nextScreen(
             <TransactionErrorOverlay
               textAlert="Insufficient funds"
