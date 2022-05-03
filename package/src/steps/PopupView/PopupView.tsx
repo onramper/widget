@@ -10,7 +10,6 @@ import { NavContext } from '../../NavContext'
 
 import BuyCryptoView from '../../BuyCryptoView'
 import ButtonAction from '../../common/ButtonAction'
-import ChooseGatewayView from '../../ChooseGatewayView'
 import Step from '../Step'
 
 interface PopupLauncherViewType {
@@ -53,8 +52,6 @@ const PopupLauncherView: React.FC<PopupLauncherViewType> = (props) => {
     useEffect(() => {
         if (isRestartCalled && !collected.errors) {
             onlyScreen(<BuyCryptoView />)
-            if (props.fatalError)
-                nextScreen(<ChooseGatewayView />)
             setIsRestartCalled(false)
         }
     }, [collected.errors, isRestartCalled, onlyScreen, nextScreen, props.fatalError])
