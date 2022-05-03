@@ -44,10 +44,14 @@ const IframeView: React.FC<{
 
   useEffect(() => {
     const receiveMessage = async (event: MessageEvent) => {
+      console.log("Received new event", event);
+      console.log(event.origin);
       if (
-        ![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(
-          event.origin
-        )
+        ![
+          baseCreditCardSandboxUrl,
+          btcdirectFinishedOrigin,
+          event.origin,
+        ].includes(event.origin)
       )
         return;
       if (event.data.type === "INIT") {
@@ -59,6 +63,7 @@ const IframeView: React.FC<{
         message: `Received a postMessage from ${event.origin}`,
         data: event.data,
       });
+
       if (event.data.gateway === "Moonpay") {
         let returnedNextStep: any; //: NextStep;
         try {
@@ -87,7 +92,13 @@ const IframeView: React.FC<{
           reportError(e.message, false, event.data);
         }
       } else if (event.data.type) {
-        replaceScreen(<Step nextStep={event.data as NextStep} />);
+        if (event.data.type === "error")
+          reportError(
+            "Payment failed, please try again later.",
+            false,
+            event.data
+          );
+        else replaceScreen(<Step nextStep={event.data as NextStep} />);
       } else if (typeof event.data === "string") {
         reportError(event.data, false, event.data);
       } else {

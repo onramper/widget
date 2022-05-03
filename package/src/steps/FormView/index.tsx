@@ -48,6 +48,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: "form" } }> = ({
     // set title
     if (
       nextStepData.some((field) => field.name === "email") &&
+      nextStepData.some((field) => field.name === "password") &&
       nextStepData.length <= 2
     ) {
       setTitle("Input your email");
@@ -126,6 +127,12 @@ const FormView: React.FC<{ nextStep: NextStep & { type: "form" } }> = ({
   useEffect(() => {
     const keysList = nextStepData
       .filter((data) => {
+        if (
+          data.type === "boolean" &&
+          data.name === "areFundsFromLegalSources" &&
+          data.required === true
+        )
+          return true;
         if (data.type === "boolean" && data.name !== "termsOfUse") return false;
         if (data.type !== "boolean" && data.required === false) return false;
         return true;

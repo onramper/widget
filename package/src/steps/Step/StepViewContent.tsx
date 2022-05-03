@@ -22,6 +22,8 @@ import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 import InstructionView from "../InstructionView";
 import { triggerGTMEvent } from "../../helpers/useGTM";
+import PopupView from "../PopupView";
+import ActionableErrorView from "../ActionableErrorView";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -132,6 +134,12 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         break;
       case "redirect":
         replaceScreen(<IframeView nextStep={nextStep} />);
+        break;
+      case "popup":
+        replaceScreen(<PopupView nextStep={nextStep} />);
+        break;
+      case "actionable-error":
+        replaceScreen(<ActionableErrorView nextStep={nextStep}/>);
         break;
       case "wait":
         replaceScreen(<WaitView nextStep={nextStep} />);
