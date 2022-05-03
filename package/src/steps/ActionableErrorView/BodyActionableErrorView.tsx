@@ -6,8 +6,8 @@ import { NavContext } from "../../NavContext";
 import { NextStep } from "../../ApiContext";
 
 import { ReactComponent as ERROR } from "../../icons/error.svg";
-import ChooseGatewayView from "../../ChooseGatewayView";
 import Step from "../Step";
+import BuyCryptoView from "../../BuyCryptoView";
 
 type ActionableErrorViewType = {
   title?: string;
@@ -58,7 +58,7 @@ const BodyActionableErrorView: React.FC<ActionableErrorViewType> = (props) => {
                 replaceScreen(<Step nextStep={props.step as NextStep} />);
               }
             : () => {
-                nextScreen(<ChooseGatewayView />);
+                nextScreen(<BuyCryptoView />);
               } }
             className={`${styles["button--basic"]} ${
               styles["button--instant"]
