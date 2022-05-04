@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Step from "../Step";
-import { APIContext, NextStep } from "../../ApiContext";
+import { APIContext, NextStep, PickOneOption } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
 import Heading from "../../common/Heading/Heading";
 import OptionsView from "./OptionsView";
@@ -12,6 +12,7 @@ import ErrorView from "../../common/ErrorView";
 
 import commonStyles from "../../styles.module.css";
 import styles from "./styles.module.css";
+import InfoBox from "../../common/InfoBox";
 
 const PickOptionView: React.FC<{
   nextStep: NextStep & { type: "pickOne" };
@@ -22,20 +23,30 @@ const PickOptionView: React.FC<{
 
   const nextStepOptions = nextStep.options || [];
 
-  const [selectedOption, setSelectedOption] = useState(nextStepOptions[0]);
+  const [selectedOption, setSelectedOption] = useState<PickOneOption | null>(
+    null
+  );
   const [isFilled, setIsFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string>();
 
   const handleButtonAction = async () => {
+    setErrorMsg(undefined);
     setIsLoading(true);
     try {
-      const newNextStep = await apiInterface.executeStep(selectedOption, {});
-      nextScreen(<Step nextStep={newNextStep} />);
+      if (selectedOption) {
+        const newNextStep = await apiInterface.executeStep(selectedOption, {});
+        nextScreen(<Step nextStep={newNextStep} />);
+      }
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
       if (error.fatal) {
         nextScreen(<ErrorView />);
+      } else {
+        setErrorMsg(error.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -44,13 +55,25 @@ const PickOptionView: React.FC<{
   };
 
   useEffect(() => {
-    setIsFilled(selectedOption !== undefined);
+    setIsFilled(selectedOption !== null);
   }, [selectedOption]);
 
   return (
     <div className={commonStyles.view}>
       <ProgressHeader percentage={nextStep.progress} useBackButton />
       <div className={commonStyles.body}>
+        {errorMsg && (
+          <InfoBox
+            type="error"
+            in={!!errorMsg}
+            className={`${commonStyles.body__child}`}
+            canBeDismissed
+            onDismissClick={() => setErrorMsg(undefined)}
+            focus
+          >
+            {errorMsg}
+          </InfoBox>
+        )}
         <div className={styles["header-wrapper"]}>
           {nextStep.title && (
             <Heading text={nextStep.title} className={styles.heading} />
@@ -72,8 +95,12 @@ const PickOptionView: React.FC<{
         >
           <ButtonAction
             onClick={handleButtonAction}
-            text={nextStep.buttonActionTitle || t("button.continue")}
-            disabled={!isFilled && isLoading}
+            text={
+              isLoading
+                ? t("button.sending")
+                : nextStep.buttonActionTitle || t("button.continue")
+            }
+            disabled={!isFilled || isLoading}
           />
           <Footer />
         </div>

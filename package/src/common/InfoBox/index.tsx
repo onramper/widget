@@ -14,6 +14,7 @@ type InfoBoxType = {
   onActionClick?: () => void;
   actionText?: string;
   message?: string;
+  focus?: boolean;
 };
 
 const InfoBox = React.forwardRef<
@@ -70,6 +71,17 @@ const InfoBox = React.forwardRef<
   }, [disableButton]);
 
   const message = URLize(props.message);
+
+  useEffect(() => {
+    if (
+      defaultRef &&
+      "current" in defaultRef &&
+      defaultRef.current &&
+      props.focus
+    ) {
+      defaultRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [defaultRef, props.focus]);
 
   return (
     <CSSTransition
