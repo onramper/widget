@@ -42,11 +42,9 @@ const Option: React.FC<OptionType> = ({
           <div className={styles["description"]}>{description}</div>
         )}
       </div>
-      {selected && (
-        <div className={styles.checked}>
-          <img src={checked} />
-        </div>
-      )}
+      <div className={`${styles.checkmark} ${selected ? styles.checked : ""}`}>
+        <img src={checked} />
+      </div>
     </div>
   );
 };
