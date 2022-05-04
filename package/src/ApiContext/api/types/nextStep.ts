@@ -86,11 +86,10 @@ interface FileStep {
 }
 
 interface PickOneOption {
-  type: "option";
   title: string;
-  url: string;
   description?: string;
   icon?: string;
+  nextStep: NextStep;
 }
 export interface TextType {
   type: string;
@@ -225,7 +224,6 @@ type NextStep = NextStepBase &
     | EmailVerificationStep
     | OrderCompleteStep
     | PaymentReviewStep
-    | PickOneOption
   );
 
 interface FieldError {

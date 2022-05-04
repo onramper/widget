@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Step from "../Step";
-import { APIContext, NextStep, PickOneOption } from "../../ApiContext";
+import { NextStep, PickOneOption } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
 import Heading from "../../common/Heading/Heading";
 import OptionsView from "./OptionsView";
@@ -19,7 +19,6 @@ const PickOptionView: React.FC<{
 }> = ({ nextStep }) => {
   const { t } = useTranslation();
   const { nextScreen } = useContext(NavContext);
-  const { apiInterface } = useContext(APIContext);
 
   const nextStepOptions = nextStep.options || [];
 
@@ -35,8 +34,7 @@ const PickOptionView: React.FC<{
     setIsLoading(true);
     try {
       if (selectedOption) {
-        const newNextStep = await apiInterface.executeStep(selectedOption, {});
-        nextScreen(<Step nextStep={newNextStep} />);
+        nextScreen(<Step nextStep={selectedOption.nextStep} />);
       }
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
