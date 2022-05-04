@@ -34,13 +34,18 @@
   box-shadow: 0px 3.88908px 43.7522px rgba(26, 60, 85, 0.1);
 }
 
-.option .checked {
+.option .checkmark {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0px;
   order: 2;
+  visibility: hidden;
+}
+
+.option .checked {
+  visibility: visible;
 }
 
 .option .img {
@@ -52,6 +57,7 @@
   order: 1;
   flex-grow: 1;
   margin: 0px 16px;
+  word-break: break-word;
 }
 
 .option .title-wrapper .title {
