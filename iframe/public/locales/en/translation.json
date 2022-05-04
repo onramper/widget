@@ -34,6 +34,7 @@
     "selectCrypto": "Select cryptocurrency"
   },
   "button": {
-    "continue": "Continue"
+    "continue": "Continue",
+    "sending": "Sending..."
   }
 }

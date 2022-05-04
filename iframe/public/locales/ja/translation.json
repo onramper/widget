@@ -34,6 +34,7 @@
     "selectCrypto": "暗号通貨を選択する"
   },
   "button": {
-    "continue": "継続する"
+    "continue": "継続する",
+    "sending": "送信..."
   }
 }
