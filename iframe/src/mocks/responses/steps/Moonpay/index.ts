@@ -18,7 +18,7 @@ const getNextStep = (currentStep: string) => {
     case "residence_permit":
     case "driving_licence":
     case "selfie":
-      return uploadStep(getDocumetnHumanName(currentStep));
+      return uploadStep(getDocumetnHumanName(currentStep), false);
     case "registerBank":
       return bankStep;
     case "iframe":
@@ -155,7 +155,7 @@ const personalInfoStep = {
   ],
 };
 
-const uploadStep = (fileName: string) => {
+const uploadStep = (fileName: string, isFront:boolean = true) => {
   const fileHumanName = (() => {
     return (
       ({
@@ -167,7 +167,7 @@ const uploadStep = (fileName: string) => {
   })();
   return {
     type: "file",
-    humanName: fileHumanName + (fileName === "Selfie" ? "" : " - Front"),
+    humanName: fileHumanName + (fileName === "Selfie" ? "" : ` - ${isFront ? "Front" : "Back"}`),
     url: `${BASE_API}/transaction/Moonpay/${
       fileName === "Selfie" ? "registerBank" : "selfie"
     }/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
@@ -197,7 +197,7 @@ const pickOneStep = {
       nextStep: uploadStep("driving_licence"),
     },
     {
-      title: "Nation ID Card",
+      title: "National ID Card",
       description: "Front image",
       icon:
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAUhSURBVHgBxVhdaFxFFD5zc2OFZv+o6EPcsLEgGNomKUjAQnsN9iVaf/BJRWzfBH+S+JBSWnEDiQ996VoE+9ZKaXyyUrX1oYFuMIKxQrYmpKDibpPug9p2/1Jom907Pefs3s3u9u69d++GzQeTuZk5s/PNOWfOnBkBLpFKSU1RoVeC1EBCHwjwY7O/1J3GkqAidXkNdCUaCIgouIBoRBhJ+ZHUMJIaqSDjdKaEABHV12AcySacD3NKrA0+k4KJNQ0hxBmnRG0JZnKSNBaGRjVmP3NCARH2doivrcUskMnKExultboEhIj4OsRo3X6zRjKpUOV3+KlBaxCTefEimjxd26GYSYt2eQVaR47QV1LII3iEIJmVw0broWVWce4aVJk4lc0fFEI5DZsIjJujAV9bxPi/TBD9LsSmlRCy+5HZX9Pw0/QdWL55DzWet5T1eVXoevpxeGHACy/vfwIcII3+2G344zrBbOEM7qj3wIbYR4f/YmI0sZcm79xiNYQXsHj9Ln8T0cljz8DQ/m2WYyp3NhNk7akybjXo0uXb8O77S7CzZytOsh32DPigEdD4oxP/8OK+n9plOx61GCAtFgk60F7/vqtcR3/oZ+25AWnz1bf/gGyuAPMzz1vKoi+Ooy+GeRcLReyzEqbV08onj3W7JkegsZ9/up1/65e5jKUschqmWqWsBKQMWQmT7xGG6jg5aebU6ST7Gn2/9eZTbELyuVpQu8+jwsXLt+zM7E/l1jQVFF2zO5JXkg/Y98xA2njtnQWudzy3lbX04difTO7CuZ2mJL0+FVZu3gdb6EqfiqrstZPLZNfA6zE3LZEjVDo+kdVemWei1F4L2vl24YkhhEY+GAKXWFi6y2TGPu6qMhdpbWy4i/1sYWkV3EIo0NsUwZXkPa7JtLXYM1DMzowY6AoS/ETQdZ4X7Cz6l0G0EovXi5oz88EG4FegCdDGIQJHJ+JsagP0ffzkMvc1GtBrQZ5PMcS1Fs9+1cPBlzYL72LcTJemb3PfhXO7oEmkFbRzGprADtRi9Md+1tQC+tvsbxkYemkbnzj1QpNziISKITAGTWwUApnyy+PPwkZDSnlDxTNvBmPh61aCPm972elrQfHsm2//hUUKOaXNQsGaMhYqZkdjJlvARVlnQSWGMQVPkpidXLDzMdPASscbJRGUpZBpDVBooSCtHZhn8rWgxQadEFT0KNfpnJ7CIuuVi9Mp2fbkDNdG25HJOLftPRCrajfK7FyO+0jmyES83D51/n9umzr/n7SaM53V19O/VKYQthTG0r17TvZqv8sbyQfy57ksT/LB4b+l3TiSMRZHY+l3qNiNS69KvnoYCStdM1NW2qZji8IJbYggnqUryfu2OR2BXKN/71UIBrfwZHQ8nj3VY5tVl9L+xHrKnytE8O1k2GpQZVZMoBDj81jnh8u4kCySJKLGbrcN3vg04u8Qh/izTLCoRbK7bdAmoqTRRi5NpDFHp4qEuCyIQePdpvramSmMYMg5AZsIvHoc9FW811SdxXQfxYeiL2CTgHNHfDWPSaapNO6iVj99EOb9HmV3baNpNoM76A2sbAP4BuIKzjlo1mFKkO6juJr+FphbkllxrkGzly2oR9BAwNM2IqV+CJ0jARtODVL49vgJzjFqJeb0CTgEbXrY7nLvlBpbJq+M19MaNErQQJko4EVfOE7RZOlvGjV2EolFnBBzRbASdKnGe6tWuraG+FVMlII8mg8oU8dcExczo0P+WsDTHgUXeAgIvghCFzTzgQAAAABJRU5ErkJggg==",
