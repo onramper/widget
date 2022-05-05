@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@onramper/flag-icons": "^1.0.0",
-    "@onramper/moonpay-adapter": "^1.6.16",
+    "@onramper/moonpay-adapter": "^1.6.17",
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
     "abort-controller": "^3.0.0",
