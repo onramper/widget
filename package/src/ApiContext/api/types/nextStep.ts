@@ -1,3 +1,10 @@
+export interface PickOneOption {
+    title: string;
+    description?: string;
+    icon?: string;
+    nextStep: NextStep;
+  }
+
 type StepDataItems = Array<
     | {
         type: "select";
@@ -106,9 +113,9 @@ type NextStep =
         extraData?: StepDataItems;
     } | {
         type: 'pickOne';
-        options: FileStep[];
-        humanName?: string
-        hint?: string
+        options: PickOneOption[];
+        title?: string;
+        description?: string;
     } | {
         type: 'completed',
         trackingUrl: string
