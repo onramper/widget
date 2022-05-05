@@ -15,13 +15,13 @@ const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = (
   const nextStepOptions = nextStep.options || []
 
   const [selectedOption, setSelectedOption] = useState(nextStepOptions[0])
-  let infoMsg: any = useState(nextStep.hint)
-  if (!nextStep.hint) {
+  let infoMsg: any = useState(nextStep.description)
+  if (!nextStep.description) {
     infoMsg = 'Choose one option'
   }
 
   const handleButtonAction = async () => {
-    nextScreen(<Step nextStep={selectedOption} />)
+    nextScreen(<Step nextStep={selectedOption.nextStep} />)
   }
 
   const handleOptionChange = (i: number) => {
@@ -34,7 +34,7 @@ const PickOptionView: React.FC<{ nextStep: NextStep & { type: 'pickOne' } }> = (
 
   return (
     <div className={styles.view}>
-      <Header title={nextStep.humanName ?? "Choose identity document"} backButton />
+      <Header title={nextStep.title ?? "Choose identity document"} backButton />
       <BodyPickOption
         steps={nextStepOptions}
         onActionButton={handleButtonAction}

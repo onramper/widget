@@ -18,7 +18,7 @@ const getNextStep = (currentStep: string) => {
         case 'residence_permit':
         case 'driving_licence':
         case 'selfie':
-            return uploadStep(getDocumetnHumanName(currentStep))
+            return uploadStep(getDocumetnHumanName(currentStep), false)
         case 'registerBank':
             return bankStep
         case 'iframe':
@@ -155,62 +155,48 @@ const personalInfoStep = {
     ]
 }
 
-const pickOneStep = {
-    "type": "pickOne",
-    "options": [
-        {
-            "type": "file",
-            "humanName": "Passport - Front",
-            "url": `${BASE_API}/transaction/Moonpay/passport/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
-            "acceptedContentTypes": [
-                "image/jpeg",
-                "image/png",
-                "application/pdf"
-            ]
-        },
-        {
-            "type": "file",
-            "humanName": "Driver's License - Front",
-            "url": `${BASE_API}/transaction/Moonpay/national_identity_card/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
-            "acceptedContentTypes": [
-                "image/jpeg",
-                "image/png",
-                "application/pdf"
-            ]
-        },
-        {
-            "type": "file",
-            "humanName": "National Identity Card - Front",
-            "url": `${BASE_API}/transaction/Moonpay/residence_permit/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
-            "acceptedContentTypes": [
-                "image/jpeg",
-                "image/png",
-                "application/pdf"
-            ]
-        },
-        {
-            "type": "file",
-            "humanName": "Residence Card - Front",
-            "url": `${BASE_API}/transaction/Moonpay/driving_licence/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
-            "acceptedContentTypes": [
-                "image/jpeg",
-                "image/png",
-                "application/pdf"
-            ]
-        }
-    ]
-}
+const uploadStep = (fileName: string, isFront:boolean = true) => {
+    const fileHumanName = (() => {
+      return (
+        ({
+          driving_licence: "driving licence",
+          national_identity_card: "national ID card",
+          residence_permit: "residentce permit",
+        } as { [key: string]: string })[fileName] || fileName
+      );
+    })();
+  
+    return {
+      type: "file",
+      humanName: fileHumanName + (fileName === "Selfie" ? "" : ` - ${isFront ? "Front" : "Back"}`),
+      url: `${BASE_API}/transaction/Moonpay/${
+        fileName === "Selfie" ? "registerBank" : "selfie"
+      }/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
+      acceptedContentTypes: ["image/jpeg", "image/png", "application/pdf"],
+    };
+  };
 
-const uploadStep = (fileName: string) => ({
-    "type": "file",
-    "humanName": fileName + (fileName === 'Selfie' ? '' : " - Back"),
-    "url": `${BASE_API}/transaction/Moonpay/${fileName === 'Selfie' ? 'registerBank' : 'selfie'}/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
-    "acceptedContentTypes": [
-        "image/jpeg",
-        "image/png",
-        "application/pdf"
-    ]
-})
+const pickOneStep = {
+  type: "pickOne",
+  options: [
+    {
+      title: "Passport - Front",
+      nextStep: uploadStep("passport"),
+    },
+    {
+      title: "Driving License - Front",
+      nextStep: uploadStep("driving_licence"),
+    },
+    {
+      title: "National ID Card - Front",
+      nextStep: uploadStep("national_identity_card"),
+    },
+    {
+      title: "Residence Card - Front",
+      nextStep: uploadStep("residence_permit"),
+    },
+  ],
+};
 
 const bankStep = {
     "type": "requestBankTransaction",

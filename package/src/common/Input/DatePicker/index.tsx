@@ -23,7 +23,7 @@ const DatePicker: React.FC<DatePickerType> = (props) => {
         <HelpView maxHeight={'315px'} fixedHeight>
             <Calendar
                 maxDate={new Date()}
-                onChange={date => {
+                onChange={(date:any) => {
                     if (props.onChange && date instanceof Date) {
                         const formattedDate = date.toLocaleDateString('en-CA', {})
                         props.onChange(props.name, {

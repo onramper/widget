@@ -5,13 +5,13 @@ import styles from './styles.module.css'
 import ButtonAction from '../../common/ButtonAction'
 import InfoBox from '../../common/InfoBox'
 
-import { FileStep } from '../../ApiContext'
 import { useTranslation } from 'react-i18next'
+import { PickOneOption } from '../../ApiContext/api/types/nextStep';
 
 type BodyPickOptionType = {
     onActionButton: () => void
     handleOptionChange: (i: number) => void
-    steps?: FileStep[]
+    steps?: PickOneOption[]
     isFilled?: boolean
     isLoading?: boolean
     infoMsg?: string
@@ -30,7 +30,7 @@ const BodyPickOption: React.FC<BodyPickOptionType> = (props) => {
                 {infoMsg}
             </InfoBox>
             <div className={`${stylesCommon.body__child}`}>
-                <InputRadio options={steps.map((item) => ({ name: item.humanName, value: item.humanName }))} onItemClick={props.handleOptionChange} />
+                <InputRadio options={steps.map((item) => ({ name: item.title, value: item.title }))} onItemClick={props.handleOptionChange} />
             </div>
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow}`}>
                 <ButtonAction onClick={onActionButton} text={isLoading ? t('kycScreens.sendingProgressMessage') : t('kycScreens.continueButtonText')} disabled={!isFilled} />
