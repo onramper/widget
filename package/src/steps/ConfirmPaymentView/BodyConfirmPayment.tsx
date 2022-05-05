@@ -11,6 +11,7 @@ import { ReactComponent as IconExpectedtime } from '../../icons/expected_time.sv
 import { CSSTransition } from 'react-transition-group';
 
 import ButtonAction from '../../common/ButtonAction'
+import { t } from 'i18next'
 
 
 type BodyConfirmPaymentViewType = {
@@ -39,7 +40,7 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
         <main className={stylesCommon.body}>
             <div className={`${stylesCommon.body__child} ${stylesCommon.grow} ${styles.container}`}>
                 <ul className={`${styles.wrapper}`}>
-                    <Item type='main' icon={<IconPay className={styles.icon} />} title='Pay' content={`${props.payAmount} ${props.currency}`} onClick={props.conversionRate || props.fees ? () => setIsExpanded(actual => !actual) : undefined} isExpanded={isExpanded} />
+                    <Item type='main' icon={<IconPay className={styles.icon} />} title={t('paymentReviewScreen.pay')} content={`${props.payAmount} ${props.currency}`} onClick={props.conversionRate || props.fees ? () => setIsExpanded(actual => !actual) : undefined} isExpanded={isExpanded} />
                     <CSSTransition
                         nodeRef={transitionRef}
                         in={isExpanded}
@@ -55,34 +56,34 @@ const BodyConfirmPaymentView: React.FC<BodyConfirmPaymentViewType> = (props) => 
                         onExited={() => setIsExpanded(false)}
                     >
                         <div ref={transitionRef} className={styles['details-container']}>
-                            {props.conversionRate !== undefined && <Item type='detail' title='Conversion rate' content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />}
-                            {props.fees !== undefined && <Item type='detail' title='Transaction fee' content={`${props.fees} ${props.currency}`} />}
+                            {props.conversionRate !== undefined && <Item type='detail' title={t('paymentReviewScreen.convRate')} content={`1 ${props.cryptoDenom} = ${props.conversionRate} ${props.currency}`} />}
+                            {props.fees !== undefined && <Item type='detail' title={t('paymentReviewScreen.transFee')} content={`${props.fees} ${props.currency}`} />}
                         </div>
                     </CSSTransition>
-                    <Item type='main' icon={props.cryptoIcon} title='In exchange of' content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
+                    <Item type='main' icon={props.cryptoIcon} title={t('paymentReviewScreen.inExchangeOf')} content={`${props.cryptoAmount} ${props.cryptoDenom}`} />
                 </ul>
                 {
                     props.cryptoAddr &&
                     <ul className={`${styles.wrapper}`}>
-                        <Item type='main' icon={<IconWallet className={styles.icon} />} title={`${props.cryptoDenom} wallet address`} content={props.cryptoAddr} single />
+                        <Item type='main' icon={<IconWallet className={styles.icon} />} title={`${props.cryptoDenom} ${t('paymentReviewScreen.walletAddress')}`} content={props.cryptoAddr} single />
                     </ul>
                 }
                 {
                     props.cryptoAddrTag &&
                     <ul className={`${styles.wrapper}`}>
-                        <Item type='main' icon={<IconTag className={styles.icon} />} title={`Address tag`} content={props.cryptoAddrTag} single />
+                        <Item type='main' icon={<IconTag className={styles.icon} />} title={t('paymentReviewScreen.addressTag')} content={props.cryptoAddrTag} single />
                     </ul>
                 }
                 {/*                 <ul className={`${styles['wrapper']}`}>
                     <Item type='main' icon={<IconPaymentMethod className={styles['icon']} />} title='Payment method' content={props.paymentMethod} />
                 </ul> */}
                 <ul className={`${styles.wrapper}`}>
-                    {props.txTime && <Item type='main' icon={<IconExpectedtime className={styles.icon} />} title='Expected transaction time' content={props.txTime.message} single />}
+                    {props.txTime && <Item type='main' icon={<IconExpectedtime className={styles.icon} />} title={t('paymentReviewScreen.expectedTransTime')} content={props.txTime.message} single />}
                 </ul>
                 {/* <label className={styles['terms']}><input type="checkbox" name='agreementCheckbox' onChange={(e) => inputInterface.handleInputChange(e.currentTarget.name, e.currentTarget.checked)} /> I accept the gateway's privacy policy, transaction policy and terms of use and Onramper's privacy policy and terms of use.</label> */}
             </div>
             <div className={`${stylesCommon.body__child}`}>
-                <ButtonAction onClick={onActionButton} text='Continue' disabled={!props.isFilled} />
+                <ButtonAction onClick={onActionButton} text={t('misc.continue')} disabled={!props.isFilled} />
             </div>
         </main >
     )

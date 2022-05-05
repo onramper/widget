@@ -11,6 +11,7 @@ import type { ItemType } from '../ApiContext'
 import { NavContext } from '../NavContext'
 
 import InfoBox from '../common/InfoBox'
+import { useTranslation } from 'react-i18next'
 
 interface BodyBuyCryptoProps {
     onBuyCrypto: () => void
@@ -24,11 +25,16 @@ interface BodyBuyCryptoProps {
     isFilled?: boolean
 }
 
-
-
 const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
+    const { t, i18n } = useTranslation();
+    //NOTE: be aware of this if in the future changing the language without page load is wanted
+    const [loadingItem, setLoadingItem] = useState<ItemType>({
+        id: '',
+        name: t('mainScreen.loadingText')
+    });
+
     const { openPickCrypto, onBuyCrypto, openPickCurrency, openPickPayment } = props
-    const { selectedCrypto = LoadingItem, selectedCurrency = LoadingItem, selectedPaymentMethod = LoadingItem, isFilled = true } = props
+    const { selectedCrypto = loadingItem, selectedCurrency = loadingItem, selectedPaymentMethod = loadingItem, isFilled = true } = props
     const { handleInputChange } = props
     const { collected } = useContext(APIContext);
     const { triggerChat } = useContext(NavContext)
@@ -74,6 +80,13 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
         setSymbolRecentlyChanged(true)
     }, [collected.amountInCrypto])
 
+    useEffect(() => {
+        setLoadingItem({
+            id: '',
+            name: t('mainScreen.loadingText')
+        });
+    }, [i18n.language, t]);
+
     return (
         <main className={stylesCommon.body}>
             <InfoBox
@@ -90,9 +103,9 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
                 }
                 actionText={
                     collected.errors?.RATE?.type === 'ALL_UNAVAILABLE'
-                        ? "See all gateways"
+                        ? t('mainScreen.infoBox.seeAllGateways')
                         : collected.errors?.RATE?.type === 'NO_RATES'
-                            ? "Contact us"
+                            ? t('mainScreen.infoBox.contact')
                             : undefined
                 }
                 in={
@@ -104,12 +117,12 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             >
                 {collected.errors?.RATE?.message}
             </InfoBox>
-            <InputButton onClick={openPickCrypto} className={stylesCommon.body__child} label="I want to buy" selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} network={selectedCrypto.network} />
+            <InputButton onClick={openPickCrypto} className={stylesCommon.body__child} label={t('mainScreen.userIntention')} selectedOption={selectedCrypto.name} icon={selectedCrypto.icon} network={selectedCrypto.network} />
             <div className={`${stylesCommon.body__child} ${stylesCommon['row-fields']}`}>
-                <InputTextAmount error={minMaxErrorsMsg} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon.grow}`} label="Amount" symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} disabled={!collected.isAmountEditable} />
-                <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label="Currency" selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
+                <InputTextAmount error={minMaxErrorsMsg} name='amount' type='number' value={collected.amount} onChange={handleInputChange} className={`${stylesCommon['row-fields__child']} ${stylesCommon.grow}`} label={t('mainScreen.amount')} symbol={selectedCurrency.symbol} placeholder="100" symbols={pairs} onSymbolChange={handleSymbolChange} disabled={!collected.isAmountEditable} />
+                <InputButton onClick={openPickCurrency} className={stylesCommon['row-fields__child']} label={t('mainScreen.currency')} selectedOption={selectedCurrency.name} icon={selectedCurrency.icon} />
             </div>
-            <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon.body__child} label="Payment method" selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
+            <InputButton onClick={openPickPayment} iconPosition="end" className={stylesCommon.body__child} label={t('mainScreen.paymentMethod')} selectedOption={selectedPaymentMethod.name} icon={selectedPaymentMethod.icon} />
             <ExpectedCrypto
                 className={`${stylesCommon.body__child} ${stylesCommon.grow}`}
                 amountInCrypto={amountInCrypto}
@@ -119,18 +132,12 @@ const BodyBuyCrypto: React.FC<BodyBuyCryptoProps> = (props) => {
             <div className={`${stylesCommon.body__child}`}>
                 <ButtonAction
                     onClick={onBuyCrypto}
-                    text={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE' ? 'See gateways' : `Buy ${selectedCrypto.name}`}
+                    text={collected.errors?.RATE?.type === 'ALL_UNAVAILABLE' ? t('mainScreen.button.viewGateways') : `${t('mainScreen.button.purchasePrefix')} ${selectedCrypto.name}`}
                     disabled={!isFilled || collected.isCalculatingAmount || !!minMaxErrorsMsg || collected.errors?.RATE?.type === 'NO_RATES'}
                 />
             </div>
         </main >
     )
-}
-
-const LOAGIND_TEXT = 'Loading...'
-const LoadingItem: ItemType = {
-    id: '',
-    name: LOAGIND_TEXT
 }
 
 export default BodyBuyCrypto

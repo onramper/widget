@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import styles from './styles.module.css'
 import { ItemType } from '../../ApiContext'
+import { t } from 'i18next'
 
 type ListProps = {
     items: ItemType[]
@@ -34,7 +35,7 @@ const List: React.FC<ListProps> = (props) => {
     return (
         <>
             {searchable &&
-                <input className={styles['search-box']} type='text' value={query} onChange={(e) => setQuery(e.currentTarget.value.toLowerCase())} placeholder="Search..." autoFocus={!smallHeightScreen} />
+                <input className={styles['search-box']} type='text' value={query} onChange={(e) => setQuery(e.currentTarget.value.toLowerCase())} placeholder={t('misc.searchbarPlaceholderText')} autoFocus={!smallHeightScreen} />
             }
             <div className={`${styles.list}`}>
                 {

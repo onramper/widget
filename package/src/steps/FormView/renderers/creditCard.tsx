@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import stylesCommon from '../../../styles.module.css'
 import InputText from '../../../common/Input/InputText'
+import { t } from 'i18next'
 
 type CreditCardInputType = {
     handleInputChange: (name: string, value: any) => void
@@ -71,7 +72,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
             <InputText
                 ref={ref}
                 className={stylesCommon.body__child}
-                label="Card number"
+                label={props.fieldsGroup?.['ccNumber']?.humanName}
                 name="ccNumber"
                 error={props.errorObj?.ccNumber}
                 onChange={onChange}
@@ -84,7 +85,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
             >
                 <InputText
                     className={stylesCommon["row-fields__child"]}
-                    label="Expiry date"
+                    label={t('formView.inputExpiryDate')}
                     name="ccExpiration"
                     error={props.errorObj?.ccMonth || props.errorObj?.ccYear}
                     onChange={onChange}
@@ -95,7 +96,7 @@ const CreditCardInput = React.forwardRef<HTMLDivElement, CreditCardInputType>((p
                 />
                 <InputText
                     className={stylesCommon["row-fields__child"]}
-                    label="CCV"
+                    label={props.fieldsGroup?.['ccCVV']?.humanName}
                     name="ccCVV"
                     error={props.errorObj?.ccCVV}
                     onChange={onChange}

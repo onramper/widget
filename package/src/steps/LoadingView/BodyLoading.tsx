@@ -2,6 +2,7 @@ import React from "react";
 import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
 import { ReactComponent as IdCardIcon } from "../../icons/id-card.svg";
+import { useTranslation } from "react-i18next";
 
 type BodyLoadingType = {};
 
@@ -10,18 +11,11 @@ const IconSVGStyles = {
   height: "10rem",
 };
 
-const cryptoFacts = shuffle([
-  "The majority of bitcoin mining takes place in China, Georgia, Sweden and Canada",
-  "No one knows the real identity of the creator of Bitcoin",
-  "Over 16 million of Bitcoins are in circulation",
-  "In 2010, someone bought a pizza with 10000 BTC",
-  "The FBI is owning one of the largest Bitcoin wallets",
-  "A unit of Bitcoin is called a 'Satoshi byte'",
-  "You can't ban Bitcoin",
-  "Bitcoin is created through mining",
-]);
 
 const BodyLoading: React.FC<BodyLoadingType> = () => {
+  const { t } = useTranslation();
+
+  const cryptoFacts = shuffle(t('loadingScreen.cryptoFacts', { returnObjects: true }));
   const [factIndex, setFactIndex] = React.useState(0);
 
   React.useEffect(() => {
@@ -36,11 +30,10 @@ const BodyLoading: React.FC<BodyLoadingType> = () => {
     <main className={`${stylesCommon.body} ${styles.body}`}>
       <CardAnimation />
       <p style={{ fontSize: "1.4375rem", marginBottom: "0rem" }}>
-        Verifying your identity
+        {t('loadingScreen.verifyingIdentity')}
       </p>
       <p style={{ color: "#252525", fontSize: "0.9rem" }}>
-        Your documents are being verified, this process takes about 5 minutes,
-        please, wait.
+        {t('loadingScreen.verificationOfDocuments')}
       </p>
       <span
         style={{
@@ -50,7 +43,7 @@ const BodyLoading: React.FC<BodyLoadingType> = () => {
           marginTop: "1.5rem",
         }}
       >
-        While, did you know...
+        {t('loadingScreen.whileDidYouKnow')}
       </span>
       <p
         style={{

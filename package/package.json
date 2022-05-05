@@ -1,6 +1,6 @@
 {
   "name": "@onramper/widget",
-  "version": "2.2.6",
+  "version": "2.2.12",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -32,15 +32,20 @@
     "start": "webpack --env NODE_ENV=development --env STAGE=dev",
     "start:demo": "webpack --env NODE_ENV=development --env STAGE=demo",
     "start:local": "webpack --env NODE_ENV=development --env STAGE=local",
-    "prepublishOnly": "npm run build:prod"
+    "prepublishOnly": "npm run build:prod",
+    "lint": "eslint src --ext ts,js,tsx --no-ignore --fix --cache",
+    "checklint": "eslint src --ext ts,js,tsx --no-ignore --cache"
   },
   "dependencies": {
-    "@onramper/moonpay-adapter": "^1.6.15",
+    "@onramper/moonpay-adapter": "^1.6.16",
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
     "abort-controller": "^3.0.0",
+    "i18next": "^21.5.5",
+    "i18next-browser-languagedetector": "^6.1.2",
     "iso3166-alpha-converter": "^1.0.0",
     "react-calendar": "^3.2.0",
+    "react-i18next": "^11.14.3",
     "react-transition-group": "^4.4.1",
     "rendered-country-flags": "^1.2.0"
   },

@@ -15,8 +15,10 @@ import {
 } from "@onramper/moonpay-adapter";
 
 import { NavContext } from "../../NavContext";
+import { t } from "i18next";
 
-const btcdirectFinishedOrigin = "https://btcdirect.sandbox.staging.onramper.tech";
+const btcdirectFinishedOrigin =
+  "https://btcdirect.sandbox.staging.onramper.tech";
 
 const IframeView: React.FC<{
   nextStep: NextStep & { type: "iframe" | "redirect" };
@@ -43,7 +45,16 @@ const IframeView: React.FC<{
 
   useEffect(() => {
     const receiveMessage = async (event: MessageEvent) => {
-      if (![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(event.origin)) return;
+      console.log("Received new event", event);
+      console.log(event.origin);
+      if (
+        ![
+          baseCreditCardSandboxUrl,
+          btcdirectFinishedOrigin,
+          event.origin,
+        ].includes(event.origin)
+      )
+        return;
       if (event.data.type === "INIT") {
         setError(undefined);
         setFatalError(undefined);
@@ -53,6 +64,7 @@ const IframeView: React.FC<{
         message: `Received a postMessage from ${event.origin}`,
         data: event.data,
       });
+
       if (event.data.gateway === "Moonpay") {
         let returnedNextStep: any; //: NextStep;
         try {
@@ -81,7 +93,13 @@ const IframeView: React.FC<{
           reportError(e.message, false, event.data);
         }
       } else if (event.data.type) {
-        replaceScreen(<Step nextStep={event.data as NextStep} />);
+        if (event.data.type === "error")
+          reportError(
+            "Payment failed, please try again later.",
+            false,
+            event.data
+          );
+        else replaceScreen(<Step nextStep={event.data as NextStep} />);
       } else if (typeof event.data === "string") {
         reportError(event.data, false, event.data);
       } else {
@@ -100,7 +118,7 @@ const IframeView: React.FC<{
   return (
     <div className={styles.view}>
       <Header
-        title={nextStep.humanName ?? "Complete payment"}
+        title={nextStep.humanName ?? t("miscViews.completePayment")}
         hideBurgerButton={nextStep.type === "iframe" && nextStep.fullscreen}
         backButton
       />

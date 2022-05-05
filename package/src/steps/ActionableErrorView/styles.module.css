@@ -7,7 +7,7 @@
     font-size: 1rem;
 }
 
-.body img, .success-icon {
+.body img, .fail-icon {
     margin: 2rem 0;
     height: 5rem;
 }
@@ -20,6 +20,7 @@
     font-size: 0.875rem;
     color: grey;
     margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 
 .button--link {
@@ -37,6 +38,7 @@
 .button--basic {
     font-size: 1rem;
     margin-top: 1rem;
+    margin-bottom: 1rem;
     background-color: #41ad49;
     outline: none;
     cursor: pointer;

@@ -12,6 +12,7 @@ import Footer from "./common/Footer";
 import { on, EVENTS } from "./Onramper";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
+import './i18n/setup';
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -39,7 +40,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
       key={flagRestart}
       id="main"
       style={style}
-      className={`isolate-inheritance ${styles.theme} ${className}`}
+      className={`isolate-inheritance ${styles.theme} ${className} ${props.darkMode ? styles.dark : ""}`}
     >
       <ErrorBoundary
         fallback={({ resetError }) => (
@@ -61,6 +62,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             defaultPaymentMethod={props.defaultPaymentMethod}
             filters={props.filters}
             country={props.country}
+            language={props.language}
             isAddressEditable={props.isAddressEditable}
             themeColor={color.slice(1)}
             displayChatBubble={props.displayChatBubble}

@@ -17,7 +17,7 @@ import type { CollectedStateType } from '../../ApiContext'
 import { NavContext } from '../../NavContext'
 import icons from 'rendered-country-flags'
 
-import countryNames from '../../ApiContext/utils/contryNames'
+import countryNames from '../../ApiContext/utils/countryNames'
 import phoneCodes from '../../ApiContext/utils/phoneCodes'
 import usStates from '../../ApiContext/utils/usStates'
 import caStates from '../../ApiContext/utils/caStates'
@@ -26,6 +26,7 @@ import { scrollTo } from '../../utils'
 import { GroupFieldsController } from './utils'
 import BuyCryptoView from '../../BuyCryptoView'
 import ChooseGatewayView from '../../ChooseGatewayView'
+import { useTranslation } from 'react-i18next'
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = ['ccNumber', 'ccMonth', 'ccYear', 'ccCVV']
 const PHONE_NUMBER_FIELDS_NAME_GROUP = ['phoneCountryCode', 'phoneNumber']
@@ -44,6 +45,8 @@ type BodyFormViewType = {
 }
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
+    const { t } = useTranslation();
+
     const { handleInputChange, onActionButton, fields = [] } = props
     const { collected, apiInterface } = useContext(APIContext);
     const { backScreen, nextScreen, onlyScreen } = useContext(NavContext)
@@ -225,6 +228,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         return (
                             (field.name === 'cryptocurrencyAddress' && (
                                 <InputCryptoAddr
+                                    label={field.humanName}
                                     ref={inputRefs[i].ref}
                                     hint={field.hint}
                                     type={getInputType(field)}
@@ -242,11 +246,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         isRequired={field.required !== false}
                                         ref={inputRefs[i].ref}
                                         onHintClick={() => nextScreen(
-                                            <HelpView buttonText={"Got it👌"} dismissAfterClick>
+                                            <HelpView buttonText={t('verifyCreditCardScreen.gotIt')} dismissAfterClick>
                                                 <Help2FACreditCard />
                                             </HelpView>
                                         )}
-                                        hint={"Where do I find this code?"}
+                                        hint={t('verifyCreditCardScreen.hint')}
                                         name={field.name} onChange={onChange}
                                         label={field.humanName}
                                         placeholder=""
@@ -254,7 +258,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         className={stylesCommon.body__child}
                                         type={getInputType(field)}
                                     />
-                                    <span key={998} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
+                                    <span key={998} onClick={() => backScreen()} className={styles.resend}>{t('verifyCreditCardScreen.resendCode')}&nbsp;</span>
                                 </React.Fragment>
                             ))
                             || ((field.name === 'verifyPhoneCode' || field.name === 'verifyEmailCode') && (
@@ -272,15 +276,21 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                         type={getInputType(field)}
                                         value={verifyCode}
                                     />
-                                    <span key={999} onClick={() => backScreen()} className={styles.resend}>Resend code&nbsp;</span>
+                                    <span key={999} onClick={() => backScreen()} className={styles.resend}>{t('verifyCreditCardScreen.resendCode')}&nbsp;</span>
                                 </React.Fragment>
                             ))
                             || ((field.type === 'boolean' && field.name === 'termsOfUse') && (
                                 <label key={i} className={`${stylesCommon.body__child} ${styles.terms}`}>
-                                    <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;I accept {
+                                    <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;{t('formView.termsAgreement')} {
                                         field.terms?.map<React.ReactNode>((term, i) => <a key={i} href={term.url} target='_blank' rel="noopener noreferrer">{term.humanName}</a>)
-                                            .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ' and ' : ', ', actual])
+                                            .reduce((acc, actual, i, arr) => [acc, i === arr.length - 1 ? ` ${t('misc.and')} ` : ', ', actual])
                                     }.</label>
+                            ))
+                            || ((field.type === 'boolean') && (field.name === 'areFundsFromLegalSources') && (
+                                <label key={i} className={`${stylesCommon.body__child} ${styles.terms}`}>
+                                    <input type="checkbox" checked={collected[field.name] ?? false} name={field.name} onChange={(e) => onChange(e.currentTarget.name, e.currentTarget.checked, e.currentTarget.type)} />&nbsp;{
+                                    field.humanName
+                                    }</label>
                             ))
                             || ((field.type === 'select') && (
                                 <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
@@ -316,16 +326,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                     onChange(name, item.id.toLowerCase())
                                                     backScreen()
                                                 }}
-                                                items={Object.entries(countryNames).map(([code, name]) => ({
+                                                items={Object.entries(countryNames).map(([code]) => ({
                                                     id: code,
-                                                    name,
+                                                    name: t(`countries.${code}`),
                                                     icon: icons[code],
                                                     info: code
                                                 }))}
                                                 searchable
                                             />
                                         )}
-                                    label={field.humanName} selectedOption={countryNames[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} icon={icons[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} />
+                                    label={field.humanName} selectedOption={t(`countries.${(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()}`)} icon={icons[(collected[field.name] ?? DEFAULT_COUNTRY).toUpperCase()]} />
                             )) || ((field.type === 'choice') && (
                                 <InputButton ref={inputRefs[i].ref} key={i} className={stylesCommon.body__child}
                                     error={errorObj?.[field.name]}
@@ -403,13 +413,13 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                                         items={Object.entries(phoneCodes).map(([code, infoObj]) => ({
                                                             id: code,
                                                             name: infoObj.phoneCode,
-                                                            info: infoObj.name,
+                                                            info: t(`countries.${code}`),
                                                             searchWords: infoObj.searchWords
                                                         }))}
                                                         searchable
                                                     />
                                                 )}
-                                            className={stylesCommon['row-fields__child']} label="Country code"
+                                            className={stylesCommon['row-fields__child']} label={groupedFieldDataPHONE['phoneCountryCode'].humanName}
                                             selectedOption={'+' + collected.phoneCountryCode ?? phoneCodes[(collected.country ?? 'gb').toUpperCase()].phoneCode}
                                             error={errorObj?.phoneCountryCode}
                                         />
@@ -422,7 +432,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                                             onChange={onChange}
                                             className={`${stylesCommon['row-fields__child']}
                                             ${stylesCommon.grow}`}
-                                            label="Phone number"
+                                            label={groupedFieldDataPHONE['phoneNumber'].humanName}
                                             placeholder="654 56 84 56"
                                             hint={groupedFieldDataPHONE['phoneNumber']?.hint}
                                         />
@@ -448,7 +458,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     })
                 }
                 <div className={`${stylesCommon.body__child} ${push2Bottom ? '' : stylesCommon.grow}`}>
-                    <ButtonAction onClick={onActionButton} text={isLoading ? 'Sending...' : 'Continue'} disabled={!isFilled || isLoading} />
+                    <ButtonAction onClick={onActionButton} text={isLoading ? t('kycScreens.sendingProgressMessage') : t('kycScreens.continueButtonText')} disabled={!isFilled || isLoading} />
                 </div>
             </>
         </main >
@@ -466,19 +476,19 @@ const getValueByField = (field: BodyFormViewType['fields'][0], collected: Collec
 const getInputType = (field: BodyFormViewType['fields'][0]) => {
     if (field.type === 'integer')
         return 'number'
-    
+
     if (field.name === 'email')
         return 'email'
-    
+
     if (field.name === 'password')
         return 'password'
-    
+
     if (field.type === 'string')
         return 'text'
-    
+
     if (field.type === 'boolean')
         return 'checkbox'
-    
+
     return field.type
 }
 
