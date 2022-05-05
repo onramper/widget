@@ -1,8 +1,9 @@
 import React from "react";
-import Header from "../../common/Header";
-import styles from "../../styles.module.css";
 import { NextStep } from "../../ApiContext";
 import BodyActionableErrorView from "./BodyActionableErrorView";
+import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
+
+import styles from "../../styles.module.css";
 
 type ActionableErrorProps = {
   nextStep: Partial<NextStep> & { type: "actionable-error" };
@@ -11,7 +12,7 @@ type ActionableErrorProps = {
 const ActionableErrorView: React.FC<ActionableErrorProps> = (props) => {
   return (
     <div className={styles.view}>
-      <Header title={props.nextStep.humanName ?? ""} backButton={false} />
+      <ProgressHeader title={props.nextStep.humanName ?? ""} />
       <BodyActionableErrorView
         title={props.nextStep.title}
         message={props.nextStep.message}
