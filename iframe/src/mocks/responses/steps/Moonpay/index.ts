@@ -18,7 +18,7 @@ const getNextStep = (currentStep: string) => {
     case "residence_permit":
     case "driving_licence":
     case "selfie":
-      return uploadStep(getDocumetnHumanName(currentStep), false);
+      return uploadStep(getDocumentHumanName(currentStep), false);
     case "registerBank":
       return bankStep;
     case "iframe":
@@ -234,7 +234,7 @@ const iframeStep = {
     "https://moonpay.sandbox.staging.onramper.tech/?customerId=demo&transactionId=0&customerAddress=e30=&apiKey=1",
 };
 
-const getDocumetnHumanName = (doc: string) => {
+const getDocumentHumanName = (doc: string) => {
   switch (doc) {
     case "passport":
       return "Passport";
