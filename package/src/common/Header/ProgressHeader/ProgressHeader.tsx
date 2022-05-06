@@ -31,14 +31,15 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
         {props.title || ""}
       </div>
 
-      {!props.hideBurgerButton && (
-        <div className={headerClasses["header-icon-container"]}>
-          <IconMenu
-            className={classes["header-burger-icon"]}
-            onClick={onMenuClick}
-          />
-        </div>
-      )}
+      <div
+        className={headerClasses["header-icon-container"]}
+        style={!props.hideBurgerButton ? undefined : { visibility: "hidden" }}
+      >
+        <IconMenu
+          className={classes["header-burger-icon"]}
+          onClick={props.hideBurgerButton ? undefined : onMenuClick}
+        />
+      </div>
 
       {props.noSeparator && (
         <div
