@@ -19,6 +19,7 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
       className={`${classes["default"]} ${
         props.primary ? classes.primary : ""
       } ${classes["header"]}`}
+      style={props.noSeparator ? { border: "none" } : undefined}
     >
       {props.useBackButton && (
         <ArrowLeftIcon
