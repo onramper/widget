@@ -175,7 +175,7 @@ const CurrencySwitcher: React.FC = () => {
     getSortedCryptoListItem,
   ]);
 
-  if (pair.length === 0 || pair.some((i) => !i)) {
+  if (pair.length === 0 || pair.some((i) => !i || i.item?.name === undefined)) {
     return <Skeleton />;
   }
 
