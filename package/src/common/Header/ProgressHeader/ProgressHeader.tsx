@@ -31,12 +31,14 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
         {props.title || ""}
       </div>
 
-      <div className={headerClasses["header-icon-container"]}>
-        <IconMenu
-          className={classes["header-burger-icon"]}
-          onClick={onMenuClick}
-        />
-      </div>
+      {!props.hideBurgerButton && (
+        <div className={headerClasses["header-icon-container"]}>
+          <IconMenu
+            className={classes["header-burger-icon"]}
+            onClick={onMenuClick}
+          />
+        </div>
+      )}
 
       {props.noSeparator && (
         <div

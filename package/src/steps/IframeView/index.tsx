@@ -14,7 +14,7 @@ import {
 } from "@onramper/moonpay-adapter";
 
 import { NavContext } from "../../NavContext";
-import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
+import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
@@ -116,10 +116,11 @@ const IframeView: React.FC<{
 
   return (
     <div className={styles.view}>
-      <HeaderPicker
+      <ProgressHeader
         title={nextStep.humanName ?? "Complete payment"}
         hideBurgerButton={nextStep.type === "iframe" && nextStep.fullscreen}
-        backButton
+        percentage={nextStep.progress}
+        useBackButton
       />
       <BodyIframeView
         textInfo={nextStep.type === "redirect" ? nextStep.hint : undefined}

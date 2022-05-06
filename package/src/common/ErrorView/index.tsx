@@ -9,11 +9,11 @@ import {
   CRASH_ERROR,
 } from "./errors";
 
-import Header from "../../common/Header";
 import { NavContext } from "../../NavContext";
 import BuyCryptoView from "../../BuyCryptoView";
 import { APIContext } from "../../ApiContext";
 import Footer from "../Footer";
+import ProgressHeader from "../Header/ProgressHeader/ProgressHeader";
 
 interface ErrorViewProps {
   buttonText?: string;
@@ -79,7 +79,7 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
   return (
     <>
       <div className={stylesCommon.view}>
-        {props.type !== "CRASH" && <Header title="" noSeparator />}
+        {props.type !== "CRASH" && <ProgressHeader noSeparator />}
         <div className={`${stylesCommon.body} ${styles.body}`}>
           {CurrentError}
         </div>
