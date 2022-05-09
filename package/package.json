@@ -39,7 +39,7 @@
     "checklint": "eslint src --ext ts,js,tsx --no-ignore --cache"
   },
   "dependencies": {
-    "@onramper/flag-icons": "^1.0.0",
+    "@onramper/flag-icons": "^1.0.1",
     "@onramper/moonpay-adapter": "^1.6.17",
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
