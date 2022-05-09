@@ -27,6 +27,24 @@ const generateInjectedStep = (
     ? collected.amount
     : collected.selectedGateway?.receivedCrypto || 0;
 
+  const fiatSubItems = [];
+  if (collected.selectedGateway?.fees !== undefined) {
+    fiatSubItems.push({
+      contentValues: {
+        label: "Transfer Fee",
+        value: `${collected.selectedGateway.fees} ${collected.selectedCurrency?.name}`,
+      },
+    });
+  }
+  if (collected.selectedGateway?.rate !== undefined) {
+    fiatSubItems.push({
+      contentValues: {
+        label: "Conversion Rate",
+        value: `${collected.selectedGateway.rate} ${collected.selectedCurrency?.name}`,
+      },
+    });
+  }
+
   return {
     type: "paymentReview",
     progress: nextStep.progress,
@@ -42,23 +60,11 @@ const generateInjectedStep = (
             title: `${payAmount} ${collected.selectedCurrency?.name}`,
             name: "fiatCurrency",
             icon: collected.selectedCurrency?.icon,
-            items: [
-              {
-                contentValues: {
-                  label: "Conversion Rate",
-                  value: collected.selectedGateway?.rate,
-                },
-              },
-              {
-                contentValues: {
-                  label: "Transfer Fee",
-                  value: collected.selectedGateway?.fees,
-                },
-              },
-            ],
+            items: fiatSubItems,
           },
           {
             description: "You receive",
+            name: "cryptoCurrency",
             title: `${cryptoAmount} ${collected.selectedCrypto?.name || ""}`,
             icon: collected.selectedCrypto?.icon,
             info: "This might differ due to voltality of the market.",
