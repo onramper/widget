@@ -23,6 +23,11 @@ const decorateOverviewItems = (data: PayamentReviewDataItem[]) => {
         return item;
       }
 
+      if (item.name === "cryptoCurrency") {
+        item.className = classes["crypto-currency"];
+        return item;
+      }
+
       if (iconsMapping[item.name]) {
         item.icon = iconsMapping[item.name];
         return item;
