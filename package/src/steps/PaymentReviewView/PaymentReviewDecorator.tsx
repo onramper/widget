@@ -18,7 +18,8 @@ import { PaymentReviewStep } from "../../ApiContext/api/types/nextStep";
 
 const generateInjectedStep = (
   collected: CollectedStateType,
-  nextStep: NextStep
+  nextStep: NextStep,
+  includeCryptoAddr?: boolean
 ) => {
   const payAmount = collected.amountInCrypto
     ? collected.selectedGateway?.receivedCrypto || 0
@@ -27,23 +28,74 @@ const generateInjectedStep = (
     ? collected.amount
     : collected.selectedGateway?.receivedCrypto || 0;
 
-  const fiatSubItems = [];
-  if (collected.selectedGateway?.fees !== undefined) {
-    fiatSubItems.push({
-      contentValues: {
-        label: "Transfer Fee",
-        value: `${collected.selectedGateway.fees} ${collected.selectedCurrency?.name}`,
+  const getFiatItems = () => {
+    const fiatSubItems = [];
+    if (collected.selectedGateway?.fees !== undefined) {
+      fiatSubItems.push({
+        contentValues: {
+          label: "Transfer Fee",
+          value: `${collected.selectedGateway.fees} ${collected.selectedCurrency?.name}`,
+        },
+      });
+    }
+    if (collected.selectedGateway?.rate !== undefined) {
+      fiatSubItems.push({
+        contentValues: {
+          label: "Conversion Rate",
+          value: `${collected.selectedGateway.rate} ${collected.selectedCurrency?.name}`,
+        },
+      });
+    }
+    return fiatSubItems;
+  };
+
+  const getTransactionTime = () => {
+    if (!collected.selectedGateway?.duration) {
+      return [];
+    }
+
+    return [
+      {
+        type: "StepsOverview",
+        items: [
+          {
+            description: "Expected transaction time",
+            title: collected.selectedGateway.duration.message,
+            name: "ExpectedTransationTime",
+          },
+        ],
       },
-    });
-  }
-  if (collected.selectedGateway?.rate !== undefined) {
-    fiatSubItems.push({
-      contentValues: {
-        label: "Conversion Rate",
-        value: `${collected.selectedGateway.rate} ${collected.selectedCurrency?.name}`,
+    ];
+  };
+
+  const getAddressTag = () => {
+    if (!includeCryptoAddr) {
+      return [];
+    }
+
+    return [
+      {
+        type: "StepsOverview",
+        items: [
+          {
+            description: "Wallet address",
+            title: collected.cryptocurrencyAddress?.address,
+            name: "WalletAddress",
+          },
+        ],
       },
-    });
-  }
+      {
+        type: "StepsOverview",
+        items: [
+          {
+            description: "Address tag",
+            title: collected.cryptocurrencyAddress?.memo,
+            name: "AddressTag",
+          },
+        ],
+      },
+    ].filter((i) => !!i.items[0].title);
+  };
 
   return {
     type: "paymentReview",
@@ -60,7 +112,7 @@ const generateInjectedStep = (
             title: `${payAmount} ${collected.selectedCurrency?.name}`,
             name: "fiatCurrency",
             icon: collected.selectedCurrency?.icon,
-            items: fiatSubItems,
+            items: getFiatItems(),
           },
           {
             description: "You receive",
@@ -71,6 +123,8 @@ const generateInjectedStep = (
           },
         ],
       },
+      ...getTransactionTime(),
+      ...getAddressTag(),
     ],
   } as PaymentReviewStep;
 };
@@ -80,7 +134,9 @@ const PaymentReviewDecorator: React.FC<
 > = (props) => {
   const { nextScreen } = useContext(NavContext);
   const { collected } = useContext(APIContext);
-  const stepRef = useRef(generateInjectedStep(collected, props.nextStep));
+  const stepRef = useRef(
+    generateInjectedStep(collected, props.nextStep, props.includeCryptoAddr)
+  );
 
   const onButtonAction = () => {
     nextScreen(<Step nextStep={props.nextStep} isConfirmed />);
