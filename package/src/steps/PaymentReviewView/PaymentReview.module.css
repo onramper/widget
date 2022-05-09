@@ -7,6 +7,10 @@
   --icon-padding: 5px;
 }
 
+.crypto-currency {
+  --icon-bg-color: var(--background-color);
+}
+
 .fiat-currency img[itemProp="icon"] {
   filter: invert(1);
 }
