@@ -149,11 +149,20 @@ export type SwapOverviewStepData = {
   userId: string;
 };
 
-export type SwapOverviewVewStep = {
+export type SwapOverviewViewStep = {
   type: "transactionOverview";
   progress: number;
   url: string;
   data: SwapOverviewStepData;
+};
+
+export type PaymentProgressViewStep = {
+  type: "paymentProgress";
+  progress: number;
+  tokenIn: TokenInfo;
+  tokenOut: TokenInfo;
+  gateway: string;
+  transactionHash: string;
 };
 
 type NextStep = NextStepBase &
@@ -205,7 +214,8 @@ type NextStep = NextStepBase &
       }
     | EmailVerificationStep
     | PaymentReviewStep
-    | SwapOverviewVewStep
+    | SwapOverviewViewStep
+    | PaymentProgressViewStep
   );
 
 interface FieldError {

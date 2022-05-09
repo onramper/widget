@@ -20,15 +20,16 @@ import Footer from "../../common/Footer";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
+import { PaymentProgressView } from "../PaymentProgressView";
 
 export interface NewStepProps {
   nextStep?: NextStep;
   isConfirmed?: boolean;
+  withSwap?: boolean;
 }
 const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
-  const { replaceScreen, backScreen /* , onlyScreen */ } = useContext(
-    NavContext
-  );
+  const { replaceScreen, backScreen /* , onlyScreen */ } =
+    useContext(NavContext);
   const { inputInterface, collected } = useContext(APIContext);
   const [isProcessingStep, setIsProcessingStep] = useState(true);
 
@@ -41,7 +42,9 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       isConfirmed === false ||
       (!isConfirmed &&
         (nextStep.type === "iframe" ||
-          nextStep.type === "requestBankTransaction") && nextStep.type==='iframe' && !nextStep.fullscreen)
+          nextStep.type === "requestBankTransaction") &&
+        nextStep.type === "iframe" &&
+        !nextStep.fullscreen)
     ) {
       let includeAddr = true;
       if (
@@ -64,21 +67,20 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       return;
     }
 
-    const showPaymentReview = (nextStep: NextStep & { type: "paymentReview" }) => {
+    const showPaymentReview = (
+      nextStep: NextStep & { type: "paymentReview" }
+    ) => {
       if (!collected.isAddressEditable) {
         const newAddress =
           collected.defaultAddrs[collected.selectedCrypto?.id ?? ""];
-          
+
         inputInterface.handleInputChange("cryptocurrencyAddress", newAddress);
       }
 
       replaceScreen(
-        <PaymentReview
-          nextStep={nextStep}
-          includeCryptoAddr={true}
-        />
+        <PaymentReview nextStep={nextStep} includeCryptoAddr={true} />
       );
-    }
+    };
 
     switch (nextStep.type) {
       case "form":
@@ -115,7 +117,10 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         showPaymentReview(nextStep);
         break;
       case "transactionOverview":
-          replaceScreen(<SwapOverviewView nextStep={nextStep} />);
+        replaceScreen(<SwapOverviewView nextStep={nextStep} />);
+        break;
+      case "paymentProgress":
+        replaceScreen(<PaymentProgressView nextStep={nextStep} />);
         break;
       default:
         break;

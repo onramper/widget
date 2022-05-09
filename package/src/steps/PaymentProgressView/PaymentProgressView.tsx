@@ -7,7 +7,7 @@ import { ReactComponent as Mail } from "../../icons/mail.svg";
 import Heading from "../../common/Heading/Heading";
 import { SingleNotification } from "../WidgetNotification/WidgetNotification";
 import { NotificationType } from "../../NotificationContext";
-import { resolveWeth, TokenInfo, uriToHttp } from "layer2";
+import { resolveWeth, uriToHttp } from "layer2";
 import { ReactComponent as Wallet } from "../../icons/wallet2.svg";
 import Spinner from "../../common/Spinner";
 import { ReactComponent as Check } from "../../icons/check.svg";
@@ -15,25 +15,13 @@ import { ImageWithFallback } from "../../common/ImageWithFallback/ImageWithFallb
 import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg";
 import { ReactComponent as Chevron } from "../../icons/chevron2.svg";
 import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
+import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
 
 // TODO: discuss interface for data from backend and refactor
-interface Props {
-  gateway: string; // "Moonpay"
-  tokenIn: TokenInfo;
-  tokenOut: TokenInfo;
-}
-
-enum Status {
-  Pending = "Pending",
-  Success = "Success",
-  Fail = "Fail",
-}
 
 export const PaymentProgressView = ({
-  gateway = "moonpay",
-  tokenIn,
-  tokenOut,
-}: Props) => {
+  nextStep: { gateway = "moonpay", tokenIn, tokenOut },
+}: PaymentProgressViewProps) => {
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
