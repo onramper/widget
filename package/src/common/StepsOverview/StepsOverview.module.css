@@ -65,14 +65,14 @@
 
 .item > .content .title {
   font-weight: 500;
-  font-size: 17px;
-  line-height: 30px;
+  font-size: 15px;
+  line-height: 28px;
   word-break: break-all;
 }
 
 .item > .content .description {
-  font-size: 14px;
-  line-height: 23px;
+  font-size: 13px;
+  line-height: 22px;
   color: var(--text-light-color);
 }
 
