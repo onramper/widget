@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../../common/Header";
+import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import PopupLauncherView from "./PopupView";
-import styles from "../../styles.module.css";
-/* import ErrorView from '../../common/ErrorView' */
-
 import Step from "../Step";
-
 import { sentryHub, ApiError } from "../../ApiContext/api/index";
 import { NextStep } from "../../ApiContext";
-
 import { NavContext } from "../../NavContext";
 
+import styles from "../../styles.module.css";
 
 const PopupView: React.FC<{
   nextStep: NextStep & { type: "popup" };
@@ -47,8 +43,7 @@ const PopupView: React.FC<{
         data: event.data,
       });
 
-      if(event.data.gateway === "Coinify") {
-
+      if (event.data.gateway === "Coinify") {
         const state = event.data.state;
 
         setProcessFinished(true);
@@ -70,17 +65,22 @@ const PopupView: React.FC<{
     };
     window.addEventListener("message", receiveMessage);
     return () => window.removeEventListener("message", receiveMessage);
-  }, [replaceScreen, nextStep.nextStep, nextStep.type, nextStep.url, nextScreen]);
+  }, [
+    replaceScreen,
+    nextStep.nextStep,
+    nextStep.type,
+    nextStep.url,
+    nextScreen,
+  ]);
 
   return (
     <div className={styles.view}>
-      <Header
+      <ProgressHeader
         title={nextStep.humanName ?? "Complete payment"}
-        // hideBurgerButton={nextStep.type === "iframe" && nextStep.fullscreen}
-        backButton
+        useBackButton
       />
       <PopupLauncherView
-        textInfo={""/*nextStep.message*/}
+        textInfo={"" /*nextStep.message*/}
         error={error}
         fatalError={fatalError}
         features={
@@ -88,7 +88,7 @@ const PopupView: React.FC<{
         }
         src={nextStep.url}
         type={nextStep.type}
-        failStep = {nextStep.failStep}
+        failStep={nextStep.failStep}
         onErrorDismissClick={(type) =>
           type === "FATAL" ? setFatalError(undefined) : setError(undefined)
         }

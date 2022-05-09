@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import Header from "../../common/Header";
 import BodyUpload from "./BodyUpload";
 import styles from "../../styles.module.css";
 
@@ -9,6 +8,7 @@ import { APIContext } from "../../ApiContext";
 import { NextStep } from "../../ApiContext/api/types/nextStep";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
+import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 
 const UploadView: React.FC<{ nextStep: NextStep & { type: "file" } }> = (
   props
@@ -42,7 +42,11 @@ const UploadView: React.FC<{ nextStep: NextStep & { type: "file" } }> = (
 
   return (
     <div className={styles.view}>
-      <Header title={`Upload ${props.nextStep.humanName ?? ""}`} backButton />
+      <ProgressHeader
+        title={`Upload ${props.nextStep.humanName ?? ""}`}
+        percentage={props.nextStep.progress}
+        useBackButton
+      />
       <BodyUpload
         onActionButton={handleButtonAction}
         textInfo={props.nextStep.hint}

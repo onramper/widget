@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../../common/Header";
 import BodyLoading from "./BodyLoading";
 import styles from "../../styles.module.css";
 
@@ -10,6 +9,7 @@ import { NextStep } from "../../ApiContext/api/types/nextStep";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
 import Footer from "../../common/Footer";
+import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 
 const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   props
@@ -73,7 +73,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
 
   return (
     <div className={styles.view}>
-      <Header title="" backButton />
+      <ProgressHeader percentage={props.nextStep.progress} useBackButton />
       <BodyLoading
         error={error}
         title={props.nextStep.title}

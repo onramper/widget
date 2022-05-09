@@ -19,6 +19,7 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
       className={`${classes["default"]} ${
         props.primary ? classes.primary : ""
       } ${classes["header"]}`}
+      style={props.noSeparator ? { border: "none" } : undefined}
     >
       {props.useBackButton && (
         <ArrowLeftIcon
@@ -31,10 +32,13 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
         {props.title || ""}
       </div>
 
-      <div className={headerClasses["header-icon-container"]}>
+      <div
+        className={headerClasses["header-icon-container"]}
+        style={!props.hideBurgerButton ? undefined : { visibility: "hidden" }}
+      >
         <IconMenu
           className={classes["header-burger-icon"]}
-          onClick={onMenuClick}
+          onClick={props.hideBurgerButton ? undefined : onMenuClick}
         />
       </div>
 

@@ -1,13 +1,12 @@
 import React, { useCallback, useContext } from "react";
-import Header from "../../common/Header";
+import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import BodyWireTransfer from "./BodyWireTransfer";
-import styles from "../../styles.module.css";
-
 import SuccessView from "../SuccessView";
 import { APIContext, NextStep } from "../../ApiContext";
-
 import { copyToClipBoard } from "./utils";
 import { NavContext } from "../../NavContext";
+
+import styles from "../../styles.module.css";
 
 const WireTransferView: React.FC<{
   nextStep: NextStep & { type: "requestBankTransaction" };
@@ -21,7 +20,7 @@ const WireTransferView: React.FC<{
 
   return (
     <div className={styles.view}>
-      <Header title="Wire transfer details" />
+      <ProgressHeader title="Wire transfer details" />
       <BodyWireTransfer
         onActionButton={() =>
           nextScreen(
