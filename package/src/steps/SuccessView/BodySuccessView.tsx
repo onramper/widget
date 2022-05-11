@@ -76,7 +76,7 @@ const BodySuccessView: React.FC<BodySuccessViewType> = (props) => {
             props.txType === "pending"
               ? styles["button--pending"]
               : styles["button--instant"]
-          }`}
+          } ${styles["finish-btn"]}`}
         >
           {collected.redirectURL ? "Finish" : "Buy more crypto"}
         </button>

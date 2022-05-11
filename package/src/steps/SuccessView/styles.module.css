@@ -60,3 +60,7 @@
 .button--tracking {
   background-color: var(--primary-color);
 }
+
+.info + .finish-btn {
+  margin-top: 1.5rem;
+}
