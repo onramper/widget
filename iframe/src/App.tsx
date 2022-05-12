@@ -7,7 +7,7 @@ const dev_key = "pk_test_oDsXkHokDdr06zZ0_sxJGw00";
 const defaultApiKey =
   window.self !== window.top
     ? undefined
-    : window.location.origin.split(".")[2] === "com"
+    : window.location.origin.split(".").reverse()[0] === "com"
     ? com_key
     : dev_key;
 
