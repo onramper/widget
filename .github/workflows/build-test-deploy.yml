@@ -2,7 +2,7 @@ name: Build & deploy
 
 on:
   push:
-    branches: [ master, dev, ice-master, ice-dev, demo ]
+    branches: [ master, dev, ice-master, ice-dev, demo, master-legacy ]
   pull_request:
 
 concurrency:
@@ -32,7 +32,7 @@ jobs:
        github.ref == 'refs/heads/dev' ||
        github.ref == 'refs/heads/ice-master' ||
        github.ref == 'refs/heads/ice-dev' ||
-       github.ref == 'refs/heads/demo')
+       github.ref == 'refs/heads/master-legacy')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -55,6 +55,10 @@ jobs:
         then
           echo "::set-output name=stage::dev"
           echo "::set-output name=domain::iceberg.onramper.dev"
+        elif [ $REF == 'refs/heads/master-legacy' ]
+        then
+          echo "::set-output name=stage::prod"
+          echo "::set-output name=domain::legacy.widget.onramper.com"
         elif [ $REF == 'refs/heads/demo' ]
         then
           echo "::set-output name=stage::demo"
