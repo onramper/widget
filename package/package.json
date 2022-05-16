@@ -1,6 +1,9 @@
 {
   "name": "@onramper/widget",
   "version": "2.2.14",
+  "engines": {
+    "node": ">=16.14.2"
+  },
   "private": false,
   "license": "MIT",
   "repository": {
