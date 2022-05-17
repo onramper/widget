@@ -15,6 +15,7 @@ import {
 
 import { NavContext } from "../../NavContext";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
+import { isStepData } from "../../ApiContext/api/types/nextStep";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
@@ -98,7 +99,9 @@ const IframeView: React.FC<{
             false,
             event.data
           );
-        else replaceScreen(<Step nextStep={event.data as NextStep} />);
+        else if (isStepData(event.data)) {
+          replaceScreen(<Step nextStep={event.data as NextStep} />);
+        }
       } else if (typeof event.data === "string") {
         reportError(event.data, false, event.data);
       } else {
