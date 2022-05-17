@@ -197,7 +197,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
           >
             <span>
               {
-                "It's posible that your bank rejected the transaction. Please. use another credit card or try with another gateway."
+                "It's posible that your bank rejected the transaction. Please use another credit card or try with another gateway."
               }
             </span>
           </InfoBox>
