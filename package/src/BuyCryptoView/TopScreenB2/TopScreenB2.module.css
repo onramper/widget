@@ -8,6 +8,12 @@
   text-align: center;
 }
 
+@media (max-width: 440px) {
+  .heading {
+    margin-top: 0;
+  }
+}
+
 .exchange-ui-wrapper {
   display: flex;
   flex-direction: column;
