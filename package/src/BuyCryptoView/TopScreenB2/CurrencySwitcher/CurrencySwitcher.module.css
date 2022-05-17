@@ -6,6 +6,13 @@
   min-height: 42px;
 }
 
+@media (max-width: 440px) {
+  .switcher-wrapper {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
 .arrow-right {
   margin: 0 19px;
 }

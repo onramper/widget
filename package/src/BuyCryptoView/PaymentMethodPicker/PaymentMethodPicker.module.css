@@ -6,6 +6,12 @@
   --item-width: 124px;
 }
 
+@media (max-width: 440px) {
+  .wrapper {
+    margin-bottom: 12px;
+  }
+}
+
 .option-wrapper {
   min-width: var(--item-width);
   height: 57px;
