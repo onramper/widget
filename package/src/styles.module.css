@@ -34,8 +34,8 @@ theme styles
   --pt-heading: 12px;
   --pb-heading: 35px;
   /* header */
-  --header-height: 82px;
-  --header-tabs-height: 63px;
+  --header-height: 65px;
+  --header-tabs-height: 54px;
   /* lists */
   --list-hover-color: #f7fafd;
   --list-active-color: #6c77dc;
