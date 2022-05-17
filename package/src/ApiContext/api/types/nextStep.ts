@@ -226,6 +226,30 @@ type NextStep = NextStepBase &
     | PaymentReviewStep
   );
 
+export const isStepData = (_obj: unknown) => {
+  const obj = _obj as NextStep;
+  if (!obj.type) {
+    return false;
+  }
+  return [
+    "file",
+    "information",
+    "form",
+    "iframe",
+    "redirect",
+    "popup",
+    "actionable-error",
+    "wait",
+    "pickOne",
+    "completed",
+    "requestBankTransaction",
+    "instruction",
+    "emailVerification",
+    "orderComplete",
+    "paymentReview",
+  ].includes(obj.type);
+};
+
 interface FieldError {
   field: string;
   message: string;
