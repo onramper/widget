@@ -104,7 +104,9 @@ const IframeView: React.FC<{
         }
       } else if (typeof event.data === "string") {
         reportError(event.data, false, event.data);
-      } else {
+      } 
+      /*
+      else {
         reportError(
           "Unknow error. Please, contact help@onramper.com and provide the following info: " +
             nextStep.url,
@@ -112,6 +114,7 @@ const IframeView: React.FC<{
           event.data
         );
       }
+      */
     };
     window.addEventListener("message", receiveMessage);
     return () => window.removeEventListener("message", receiveMessage);
