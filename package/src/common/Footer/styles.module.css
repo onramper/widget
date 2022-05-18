@@ -15,7 +15,19 @@
   color: var(--text-light-color);
 }
 
-.footer > * {
+.footer a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  text-decoration: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.footer a > * {
   opacity: 0.2;
 }
 

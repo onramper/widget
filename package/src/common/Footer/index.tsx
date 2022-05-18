@@ -12,12 +12,14 @@ const Footer: React.FC<{ className?: string }> = (props) => {
         props.className || ""
       }`}
     >
-      <span>{t("footer.onramperPrefix")}</span>
-      <img
-        style={{ opacity: 0.5, marginLeft: "0.5rem" }}
-        src={LogoOnramper}
-        alt="logo"
-      ></img>
+      <a href="https://onramper.com" target="_blank" rel="noreferrer">
+        <span>{t("footer.onramperPrefix")}</span>
+        <img
+          style={{ opacity: 0.5, marginLeft: "0.5rem" }}
+          src={LogoOnramper}
+          alt="logo"
+        ></img>
+      </a>
     </footer>
   );
 };
