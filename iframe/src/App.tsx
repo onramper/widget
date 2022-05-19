@@ -50,6 +50,7 @@ const recommendedCryptoCurrencies = getArrayParam(
   "recommendedCryptoCurrencies"
 );
 const darkMode = getParam("darkMode");
+const selectGatewayBy =  getParam("selectGatewayBy", "price");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -89,6 +90,7 @@ function App() {
               onlyGateways: onlyGateways,
               onlyFiat: onlyFiat,
             }}
+            selectGatewayBy={selectGatewayBy}
             country={country}
             language={language}
             isAddressEditable={

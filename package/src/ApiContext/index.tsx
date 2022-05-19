@@ -75,6 +75,7 @@ interface APIProviderType {
   isAmountEditable?: boolean;
   recommendedCryptoCurrencies?: string[];
   darkMode?: boolean;
+  selectGatewayBy?: string | "price" | "performance";
 }
 
 /**
@@ -124,6 +125,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       recommendedCryptoCurrencies: props.recommendedCryptoCurrencies
         ? arrayUnique(props.recommendedCryptoCurrencies)
         : undefined,
+      selectGatewayBy: props.selectGatewayBy
     };
   }, [
     defaultAddrs,
@@ -138,6 +140,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.supportBuy,
     props.isAmountEditable,
     props.recommendedCryptoCurrencies,
+    props.selectGatewayBy
   ]);
 
   const iniState: StateType = {

@@ -19,7 +19,7 @@ import NotificationSection from "./NotificationSection/NotificationSection";
 import Step from "./../steps/Step";
 import TopScreenA from "./ScreenA/TopScreenA";
 import OverlayPicker from "../common/OverlayPicker/OverlayPicker";
-import { getBestAvailableGateway } from "../utils";
+import { getBestGatewayByPrice, getBestGatewayByPerformance } from "../utils";
 import { LoadingItem } from "./constants";
 import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
 import Footer from "../common/Footer";
@@ -119,11 +119,14 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   useEffect(() => {
     handleInputChange(
       "selectedGateway",
-      getBestAvailableGateway(allRates, !!collected.amountInCrypto)
+      collected.selectGatewayBy === "performance"
+        ? getBestGatewayByPerformance(allRates, !!collected.amountInCrypto)
+        : getBestGatewayByPrice(allRates, !!collected.amountInCrypto)
     );
   }, [
     allRates,
     collected.amountInCrypto,
+    collected.selectGatewayBy,
     collected.selectedCrypto,
     collected.selectedCurrency,
     collected.selectedPaymentMethod,

@@ -158,7 +158,7 @@ export const getArrOfMinsMaxs = (
   return easiests;
 };
 
-export function getBestAvailableGateway(
+export function getBestGatewayByPrice(
   allRates: GatewayRateOption[],
   amountInCrypto: boolean
 ) {
@@ -179,6 +179,16 @@ export function getBestAvailableGateway(
   }
 
   return bestGateway;
+}
+
+/*
+  TODO: actual select by performance
+*/
+export function getBestGatewayByPerformance(
+  allRates: GatewayRateOption[],
+  amountInCrypto: boolean
+) {
+  return getBestGatewayByPrice(allRates, amountInCrypto);
 }
 
 //ADD TYPES
