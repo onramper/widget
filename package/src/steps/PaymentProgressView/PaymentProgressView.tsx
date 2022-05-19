@@ -22,7 +22,7 @@ import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 export const PaymentProgressView = ({
   nextStep: { gateway = "moonpay", tokenIn, tokenOut },
 }: PaymentProgressViewProps) => {
-  const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
+  const [layer1TransactionStatus, setLayer1TransactionStatus] = useState<Status>(Status.Pending);
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
   const { nextScreen } = useNav();
@@ -34,20 +34,20 @@ export const PaymentProgressView = ({
   const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0] ?? "";
 
   const heading = (): string => {
-    if (layer1Status === Status.Pending) {
+    if (layer1TransactionStatus === Status.Pending) {
       return "Order in Progress. Receiving payment.";
     }
-    if (layer1Status === Status.Success) {
+    if (layer1TransactionStatus === Status.Success) {
       return `Your ${symbolInUpper} has arrived!`;
     }
     return "";
   };
 
   const subHeading = (): string => {
-    if (layer1Status === Status.Pending) {
+    if (layer1TransactionStatus === Status.Pending) {
       return `${gateway.toLocaleLowerCase()} is sending you your ${symbolInUpper}. Once your ${symbolInUpper} arrives in your wallet, you will receive an email to complete step 3.`;
     }
-    if (layer1Status === Status.Success) {
+    if (layer1TransactionStatus === Status.Success) {
       return `${gateway.toLocaleLowerCase()} has successfully sent you ${symbolInUpper}. You can now swap ${symbolInUpper} for ${symbolOutUpper} here. We don’t add fees on top of Uniswap.`;
     }
     return "";
@@ -64,8 +64,8 @@ export const PaymentProgressView = ({
     <div className={commonClasses.view}>
       <ProgressHeader />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
-        {layer1Status === Status.Pending && <Mail className={classes.icon} />}
-        {layer1Status === Status.Success && (
+        {layer1TransactionStatus === Status.Pending && <Mail className={classes.icon} />}
+        {layer1TransactionStatus === Status.Success && (
           <CheckCircle className={classes.icon} />
         )}
         <Heading
@@ -75,10 +75,10 @@ export const PaymentProgressView = ({
         />
 
         <div
-          className={`${classes.stepBar} ${classes.status} ${classes[layer1Status]}`}
+          className={`${classes.stepBar} ${classes.status} ${classes[layer1TransactionStatus]}`}
         >
           <div
-            className={`${classes.stepIconContainer} ${classes[layer1Status]}`}
+            className={`${classes.stepIconContainer} ${classes[layer1TransactionStatus]}`}
           >
             <Wallet className={classes.walletIcon} />
           </div>
@@ -90,21 +90,21 @@ export const PaymentProgressView = ({
               Awaiting deposit in your wallet...
             </div>
           </div>
-          {layer1Status === Status.Pending && (
+          {layer1TransactionStatus === Status.Pending && (
             <Spinner className={classes.statusIcon} />
           )}
-          {layer1Status === Status.Success && (
+          {layer1TransactionStatus === Status.Success && (
             <Check className={classes.statusIcon} />
           )}
         </div>
 
         <button
-          disabled={layer1Status !== Status.Success}
+          disabled={layer1TransactionStatus !== Status.Success}
           onClick={handleNext}
-          className={`${classes.stepBar} ${classes.button} ${classes[layer1Status]}`}
+          className={`${classes.stepBar} ${classes.button} ${classes[layer1TransactionStatus]}`}
         >
           <div
-            className={`${classes.stepIconContainer} ${classes[layer1Status]}`}
+            className={`${classes.stepIconContainer} ${classes[layer1TransactionStatus]}`}
           >
             <ImageWithFallback
               className={classes.tokenIcon}
@@ -124,7 +124,7 @@ export const PaymentProgressView = ({
           </div>
           <Chevron className={classes.chevron} />
         </button>
-        {layer1Status === Status.Pending && (
+        {layer1TransactionStatus === Status.Pending && (
           <SingleNotification
             className={classes.notification}
             notification={{
