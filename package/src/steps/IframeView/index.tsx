@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import BodyIframeView from "./BodyIframeView";
 import styles from "../../styles.module.css";
 /* import ErrorView from '../../common/ErrorView' */
@@ -6,7 +6,7 @@ import styles from "../../styles.module.css";
 import Step from "../Step";
 
 import { sentryHub, ApiError } from "../../ApiContext/api/index";
-import { NextStep } from "../../ApiContext";
+import { NextStep, APIContext } from "../../ApiContext";
 import {
   finishCCTransaction,
   baseCreditCardSandboxUrl,
@@ -15,8 +15,10 @@ import {
 
 import { NavContext } from "../../NavContext";
 import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
+import { PaymentProgressView } from "../PaymentProgressView";
 
-const btcdirectFinishedOrigin = "https://btcdirect.sandbox.staging.onramper.tech";
+const btcdirectFinishedOrigin =
+  "https://btcdirect.sandbox.staging.onramper.tech";
 
 const IframeView: React.FC<{
   nextStep: NextStep & { type: "iframe" | "redirect" };
@@ -25,6 +27,9 @@ const IframeView: React.FC<{
   //const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
   const [error, setError] = useState<string>();
   const [fatalError, setFatalError] = useState<string>();
+  const {
+    collected: { selectedGateway },
+  } = useContext(APIContext);
 
   function reportError(message: string, fatal: boolean, eventData: any) {
     sentryHub.addBreadcrumb({
@@ -41,9 +46,14 @@ const IframeView: React.FC<{
     }
   }
 
-  useEffect(() => {
-    const receiveMessage = async (event: MessageEvent) => {
-      if (![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(event.origin)) return;
+  const handleReceiveMessage = useCallback(
+    async (event: MessageEvent) => {
+      if (
+        ![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(
+          event.origin
+        )
+      )
+        return;
       if (event.data.type === "INIT") {
         setError(undefined);
         setFatalError(undefined);
@@ -69,16 +79,54 @@ const IframeView: React.FC<{
           } else {
             throw new Error("Unexpected response received");
           }
-          replaceScreen(<Step nextStep={returnedNextStep as NextStep} />);
-        } catch (e) {
-          if (event.data.type === "card-completed") {
-            (event.source as Window)?.postMessage("reset", "*");
-          } else if (event.data.type === "2fa-completed") {
-            /* nextScreen(<ErrorView type="TX" />) */
-            reportError(e.message, true, event.data);
+          console.log({ returnedNextStep, eventData: event.data });
+          if (
+            returnedNextStep.type === "completed" &&
+            selectedGateway?.name === "Moonpay_Uniswap"
+          ) {
+            replaceScreen(
+              <PaymentProgressView
+                nextStep={{
+                  type: "paymentProgress",
+                  progress: 80,
+                  tokenIn: {
+                    name: "Wrapped Ether",
+                    address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+                    symbol: "WETH",
+                    decimals: 18,
+                    chainId: 4,
+                    logoURI:
+                      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+                  },
+                  tokenOut: {
+                    name: "Uniswap",
+                    address: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+                    symbol: "UNI",
+                    decimals: 18,
+                    chainId: 4,
+                    logoURI:
+                      "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
+                  },
+                  gateway: "moonpay",
+                  transactionHash:
+                    "--------------------------please-fill-something-better-here",
+                }}
+              />
+            );
             return;
           }
-          reportError(e.message, false, event.data);
+          replaceScreen(<Step nextStep={returnedNextStep as NextStep} />);
+        } catch (e) {
+          if (e instanceof Error) {
+            if (event.data.type === "card-completed") {
+              (event.source as Window)?.postMessage("reset", "*");
+            } else if (event.data.type === "2fa-completed") {
+              /* nextScreen(<ErrorView type="TX" />) */
+              reportError(e.message, true, event.data);
+              return;
+            }
+            reportError(e.message, false, event.data);
+          }
         }
       } else if (event.data.type) {
         replaceScreen(<Step nextStep={event.data as NextStep} />);
@@ -92,10 +140,24 @@ const IframeView: React.FC<{
           event.data
         );
       }
-    };
-    window.addEventListener("message", receiveMessage);
-    return () => window.removeEventListener("message", receiveMessage);
-  }, [replaceScreen, nextStep.type, nextStep.url, nextScreen]);
+    },
+    [nextStep.url, replaceScreen, selectedGateway?.name]
+  );
+
+  useEffect(
+    () => {
+      window.addEventListener("message", handleReceiveMessage);
+      return () => window.removeEventListener("message", handleReceiveMessage);
+    }, //eslint-disable=-next-line
+    [
+      replaceScreen,
+      nextStep.type,
+      nextStep.url,
+      nextScreen,
+      selectedGateway?.name,
+      handleReceiveMessage,
+    ]
+  );
 
   return (
     <div className={styles.view}>

@@ -16,6 +16,7 @@ import BuyCryptoView from "../../BuyCryptoView";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
+import { PaymentProgressView } from "../PaymentProgressView";
 
 interface BodyIframeViewType {
   src: string;
@@ -53,7 +54,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   const { selectedGateway } = collected;
   const [isRestartCalled, setIsRestartCalled] = useState(false);
 
-  const { onlyScreen, nextScreen } = useContext(NavContext);
+  const { onlyScreen, nextScreen, replaceScreen } = useContext(NavContext);
 
   const hostname = getHostname(props.src);
   const isAGateway =
@@ -64,6 +65,10 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
   };
+
+  const isL2MoonpayNewWindowIntegration = () =>
+    selectedGateway?.name === "Moonpay_Uniswap" &&
+    props.src.indexOf("https://api.moonpay.io/v3/payment") === -1;
 
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
@@ -87,7 +92,38 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       "_blank",
       "height=595,width=440,scrollbars=yes,left=0"
     ); //todo: add config
-    //if opened -> all is ok
+
+    if (windowObjectReference && isL2MoonpayNewWindowIntegration()) {
+      return replaceScreen(
+        <PaymentProgressView
+          nextStep={{
+            type: "paymentProgress",
+            progress: 80,
+            tokenIn: {
+              name: "Wrapped Ether",
+              address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+              symbol: "WETH",
+              decimals: 18,
+              chainId: 4,
+              logoURI:
+                "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+            },
+            tokenOut: {
+              name: collected.selectedCrypto?.name || "token in",
+              address: "address",
+              symbol: collected.selectedCrypto?.symbol || "UNKNOWN",
+              decimals: 18,
+              chainId: 4,
+              logoURI: "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
+            },
+            gateway: "moonpay",
+            transactionHash:
+              "--------------------------please-fill-something-better-here",
+          }}
+        />
+      );
+    }
+
     if (windowObjectReference) {
       const interval = 250;
       const times2Count = (1000 * 60) / interval;
@@ -103,6 +139,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     }
     //if not opened -> warn user about popup blocked + ask user for click a button
     setAutoRedirect(false);
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {

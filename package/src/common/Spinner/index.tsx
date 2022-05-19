@@ -10,6 +10,7 @@ const Spinner = ({ className = "" }: SpinnerProps) => {
     <svg className={`${className} ${classes.Spinner}`} viewBox="0 0 50 50">
       <circle
         className={classes.path}
+        stroke="currentColor"
         cx="25"
         cy="25"
         r="20"
