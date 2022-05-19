@@ -84,7 +84,6 @@ const ErrorView: React.FC<ErrorViewProps> = (props) => {
           {CurrentError}
         </div>
       </div>
-      <Footer />
     </>
   );
 };
