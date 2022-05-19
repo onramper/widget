@@ -31,3 +31,10 @@
   left: -6px;
   top: -6px;
 }
+
+.close-btn {
+  width: auto;
+  margin-top: 0;
+  height: 50px;
+  padding: 1.110rem;
+}

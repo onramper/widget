@@ -24,7 +24,10 @@ const ChooseGatewayView = () => {
   }, [data.allRates]);
 
   return (
-    <OverlayView title="Choose seller">
+    <OverlayView
+      title="Choose seller"
+      closeBtnTxt="Confirm"
+    >
       {data.allRates.length === 0 && <FallbackErrorView />}
 
       {data.allRates.length > 0 && (
