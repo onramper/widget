@@ -12,7 +12,6 @@ import {
 import { NavContext } from "../../NavContext";
 import BuyCryptoView from "../../BuyCryptoView";
 import { APIContext } from "../../ApiContext";
-import Footer from "../Footer";
 import ProgressHeader from "../Header/ProgressHeader/ProgressHeader";
 
 interface ErrorViewProps {
