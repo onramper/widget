@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import TagManager from "react-gtm-module";
+import React from "react";
 import OnramperWidget, { Onramper } from "@onramper/widget";
 
 const com_key = "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00";
@@ -65,17 +64,6 @@ function App() {
     height: "100%",
     backgroundColor: inIframe() ? "transparent" : "whitesmoke",
   } as React.CSSProperties;
-
-  // Google Tag Manager
-  useEffect(() => {
-    const tagManagerArgs = {
-      gtmId: process.env.REACT_APP_GTM_ID ?? '',
-      dataLayer: {
-        apiKey: apiKey,
-      },
-    };
-    TagManager.initialize(tagManagerArgs);
-  }, []);
 
   return (
     <>
