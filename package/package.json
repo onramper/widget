@@ -2,7 +2,7 @@
   "name": "@onramper/widget",
   "version": "2.2.15",
   "engines": {
-    "node": ">=16.14.2"
+    "node": ">=16.0.0"
   },
   "private": false,
   "license": "MIT",
