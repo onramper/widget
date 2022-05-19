@@ -35,7 +35,7 @@ import {
   NotificationType,
   useWidgetNotifications,
 } from "../../NotificationContext";
-import TransactionErrorOverlay from "../../SwapCryptoView/TransactionErrorOverlay/TransactionErrorOverlay";
+import TransactionErrorOverlay from "./TransactionErrorOverlay/TransactionErrorOverlay";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };

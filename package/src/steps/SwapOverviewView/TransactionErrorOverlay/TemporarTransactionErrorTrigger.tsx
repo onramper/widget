@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { NavContext } from "../../NavContext";
-import WalletInput from "../../steps/SwapOverviewView/DestinationWalletView/WalletInput/WalletInput";
+import { NavContext } from "../../../NavContext";
+import WalletInput from "../DestinationWalletView/WalletInput/WalletInput";
 import TransactionErrorOverlay from "./TransactionErrorOverlay";
 import { TransactionErrorOverlayProps } from "./TransactionErrorOverlay.models";
 

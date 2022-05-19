@@ -92,11 +92,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       "_blank",
       "height=595,width=440,scrollbars=yes,left=0"
     ); //todo: add config
-    
-    if (
-      windowObjectReference &&
-      isL2MoonpayNewWindowIntegration()
-    ) {
+
+    if (windowObjectReference && isL2MoonpayNewWindowIntegration()) {
       return replaceScreen(
         <PaymentProgressView
           nextStep={{
@@ -142,6 +139,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     }
     //if not opened -> warn user about popup blocked + ask user for click a button
     setAutoRedirect(false);
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {

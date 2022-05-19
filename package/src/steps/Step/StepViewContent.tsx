@@ -20,12 +20,10 @@ import Footer from "../../common/Footer";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
-import { PaymentProgressView } from "../PaymentProgressView";
 
 export interface NewStepProps {
   nextStep?: NextStep;
   isConfirmed?: boolean;
-  withSwap?: boolean;
 }
 const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
   const { replaceScreen, backScreen /* , onlyScreen */ } =
@@ -118,9 +116,6 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         break;
       case "transactionOverview":
         replaceScreen(<SwapOverviewView nextStep={nextStep} />);
-        break;
-      case "paymentProgress":
-        replaceScreen(<PaymentProgressView nextStep={nextStep} />);
         break;
       default:
         break;

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import BodyIframeView from "./BodyIframeView";
 import styles from "../../styles.module.css";
 /* import ErrorView from '../../common/ErrorView' */
@@ -17,7 +17,8 @@ import { NavContext } from "../../NavContext";
 import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
 import { PaymentProgressView } from "../PaymentProgressView";
 
-const btcdirectFinishedOrigin = "https://btcdirect.sandbox.staging.onramper.tech";
+const btcdirectFinishedOrigin =
+  "https://btcdirect.sandbox.staging.onramper.tech";
 
 const IframeView: React.FC<{
   nextStep: NextStep & { type: "iframe" | "redirect" };
@@ -26,7 +27,9 @@ const IframeView: React.FC<{
   //const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
   const [error, setError] = useState<string>();
   const [fatalError, setFatalError] = useState<string>();
-  const { collected: { selectedGateway } } = useContext(APIContext);
+  const {
+    collected: { selectedGateway },
+  } = useContext(APIContext);
 
   function reportError(message: string, fatal: boolean, eventData: any) {
     sentryHub.addBreadcrumb({
@@ -43,9 +46,14 @@ const IframeView: React.FC<{
     }
   }
 
-  useEffect(() => {
-    const receiveMessage = async (event: MessageEvent) => {
-      if (![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(event.origin)) return;
+  const handleReceiveMessage = useCallback(
+    async (event: MessageEvent) => {
+      if (
+        ![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(
+          event.origin
+        )
+      )
+        return;
       if (event.data.type === "INIT") {
         setError(undefined);
         setFatalError(undefined);
@@ -71,7 +79,7 @@ const IframeView: React.FC<{
           } else {
             throw new Error("Unexpected response received");
           }
-          console.log({returnedNextStep, eventData: event.data});
+          console.log({ returnedNextStep, eventData: event.data });
           if (
             returnedNextStep.type === "completed" &&
             selectedGateway?.name === "Moonpay_Uniswap"
@@ -109,14 +117,16 @@ const IframeView: React.FC<{
           }
           replaceScreen(<Step nextStep={returnedNextStep as NextStep} />);
         } catch (e) {
-          if (event.data.type === "card-completed") {
-            (event.source as Window)?.postMessage("reset", "*");
-          } else if (event.data.type === "2fa-completed") {
-            /* nextScreen(<ErrorView type="TX" />) */
-            reportError(e.message, true, event.data);
-            return;
+          if (e instanceof Error) {
+            if (event.data.type === "card-completed") {
+              (event.source as Window)?.postMessage("reset", "*");
+            } else if (event.data.type === "2fa-completed") {
+              /* nextScreen(<ErrorView type="TX" />) */
+              reportError(e.message, true, event.data);
+              return;
+            }
+            reportError(e.message, false, event.data);
           }
-          reportError(e.message, false, event.data);
         }
       } else if (event.data.type) {
         replaceScreen(<Step nextStep={event.data as NextStep} />);
@@ -130,10 +140,24 @@ const IframeView: React.FC<{
           event.data
         );
       }
-    };
-    window.addEventListener("message", receiveMessage);
-    return () => window.removeEventListener("message", receiveMessage);
-  }, [replaceScreen, nextStep.type, nextStep.url, nextScreen]);
+    },
+    [nextStep.url, replaceScreen, selectedGateway?.name]
+  );
+
+  useEffect(
+    () => {
+      window.addEventListener("message", handleReceiveMessage);
+      return () => window.removeEventListener("message", handleReceiveMessage);
+    }, //eslint-disable=-next-line
+    [
+      replaceScreen,
+      nextStep.type,
+      nextStep.url,
+      nextScreen,
+      selectedGateway?.name,
+      handleReceiveMessage,
+    ]
+  );
 
   return (
     <div className={styles.view}>

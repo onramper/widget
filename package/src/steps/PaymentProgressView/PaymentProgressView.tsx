@@ -16,8 +16,8 @@ import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg"
 import { ReactComponent as Chevron } from "../../icons/chevron2.svg";
 import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
 import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
-
-// TODO: discuss interface for data from backend and refactor
+import { useNav } from "../../NavContext";
+import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 
 export const PaymentProgressView = ({
   nextStep: { gateway = "moonpay", tokenIn, tokenOut },
@@ -25,6 +25,7 @@ export const PaymentProgressView = ({
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
+  const { nextScreen } = useNav();
 
   // useEffect(() => {
   //   setTimeout(() => setLayer1Status(Status.Success), 3000);
@@ -34,7 +35,7 @@ export const PaymentProgressView = ({
 
   const heading = (): string => {
     if (layer1Status === Status.Pending) {
-      return "Sep 1 Complete! Payment Received.";
+      return "Order in Progress. Receiving payment.";
     }
     if (layer1Status === Status.Success) {
       return `Your ${symbolInUpper} has arrived!`;
@@ -54,7 +55,9 @@ export const PaymentProgressView = ({
 
   const handleNext = () => {
     console.log("next screen");
-    //nextScreen(<SwapOverviewVew  />);
+    // nextScreen(
+    //   <SwapOverviewView />
+    // );
   };
 
   return (
