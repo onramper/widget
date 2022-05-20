@@ -17,7 +17,6 @@ export const isMobile = (): boolean => {
     return false;
   }
 };
-
 /**
  * The default factory enabled fee amounts, denominated in hundredths of bips.
  */
