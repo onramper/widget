@@ -17,9 +17,11 @@ export const isMobile = (): boolean => {
     return false;
   }
 };
+
 /**
  * The default factory enabled fee amounts, denominated in hundredths of bips.
  */
+
 export enum FeeAmount {
   LOWEST = 100,
   LOW = 500,
