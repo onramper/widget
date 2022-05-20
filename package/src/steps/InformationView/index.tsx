@@ -8,6 +8,7 @@ import { NextStep } from "../../ApiContext/api/types/nextStep";
 import HelpView from "../../common/HelpView";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
+import { isNextStepError } from "../../ApiContext/api";
 
 const InformationView: React.FC<{
   nextStep: NextStep & { type: "information" };
@@ -56,11 +57,14 @@ const InformationView: React.FC<{
       replaceScreen(<Step nextStep={newNextStep} />);
       return true;
     } catch (error) {
-      if (error.fatal) {
-        replaceScreen(<ErrorView />);
-      } else {
-        setError(error.message);
+      if (isNextStepError(error)) {
+        if (error.fatal) {
+          replaceScreen(<ErrorView />);
+        } else {
+          setError(error.message);
+        }
       }
+
       return false;
     }
   };

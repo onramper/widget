@@ -10,6 +10,7 @@ import { NextStep } from "../../ApiContext/api/types/nextStep";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
 import Footer from "../../common/Footer";
+import { isNextStepError } from "../../ApiContext/api";
 
 const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
   props
@@ -47,14 +48,16 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
           newNextStep = await executeStep(newNextStep, payload);
           handleInputChange("isPartnerContextSent", true);
         } catch (error) {
-          failed = true;
-          if (error.fatal) nextScreen(<ErrorView message={error.message} />);
-          else
-            setError(
-              error.message ??
-                "Couldn't process your information, please, try again."
-            );
-          break;
+          if (isNextStepError(error)) {
+            failed = true;
+            if (error.fatal) nextScreen(<ErrorView message={error.message} />);
+            else
+              setError(
+                error.message ??
+                  "Couldn't process your information, please, try again."
+              );
+            break;
+          }
         }
       }
       if (!failed) replaceScreen(<Step nextStep={newNextStep} />);

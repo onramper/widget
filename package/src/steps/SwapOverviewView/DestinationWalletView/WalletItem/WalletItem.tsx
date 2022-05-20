@@ -8,10 +8,11 @@ import { ReactComponent as CheckmarkRoundIcon } from "../../../../icons/check-ro
 import { ReactComponent as GarbageCanIcon } from "../../../../icons/garbage-can.svg";
 import { CSSTransition } from "react-transition-group";
 import WalletInput from "../WalletInput/WalletInput";
-import { formatEther, useEtherBalance, BigNumberish } from "layer2";
+import { useEtherBalance } from "layer2";
+import { utils, BigNumberish } from "ethers";
 
 const computeBalance = (bigNum?: BigNumberish) =>
-  bigNum ? Number(formatEther(bigNum)).toFixed(4) : "0";
+  bigNum ? Number(utils.formatEther(bigNum)).toFixed(4) : "0";
 
 const WalletItem: React.FC<WalletItemProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);

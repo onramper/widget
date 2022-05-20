@@ -1,3 +1,4 @@
+import { isErrorWithMessage } from "./api";
 import ERC20COINS from "./utils/erc20Coins";
 
 export enum ProviderNames {
@@ -73,9 +74,11 @@ export class ProviderManager {
 
   static getMetamaskAccounts = async () => {
     try {
-      const ethereum = window.ethereum
-      if (!ethereum) return
-      const eth_account = await ethereum.request({method:'eth_requestAccounts'});
+      const ethereum = window.ethereum;
+      if (!ethereum) return;
+      const eth_account = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
       return ERC20COINS.reduce(
         (acc, act) => ({ ...acc, [act]: eth_account[0] }),
         {}
@@ -142,14 +145,16 @@ export class ProviderManager {
 
       return accounts;
     } catch (error) {
-      imToken.callAPI("native.toast", {
-        type: "info",
-        message: error.message,
-        align: "top",
-        model: "banner",
-        duration: 1000 * 3,
-      });
-      return undefined;
+      if (isErrorWithMessage(error)) {
+        imToken.callAPI("native.toast", {
+          type: "info",
+          message: error.message,
+          align: "top",
+          model: "banner",
+          duration: 1000 * 3,
+        });
+        return undefined;
+      }
     }
   };
 }

@@ -8,7 +8,6 @@ import classes from "./SwapOverviewView.module.css";
 import { apiKey, parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
-  formatEther,
   isMetamaskEnabled,
   useEtherBalance,
   getQuote,
@@ -36,6 +35,7 @@ import {
   useWidgetNotifications,
 } from "../../NotificationContext";
 import TransactionErrorOverlay from "./TransactionErrorOverlay/TransactionErrorOverlay";
+import { utils } from "ethers";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -113,7 +113,7 @@ const SwapOverviewView: React.FC<{
       });
       try {
         const res = await getSwapParams(
-          Number(formatEther(balance)),
+          Number(utils.formatEther(balance)),
           tokenIn,
           tokenOut,
           Number(amountDecimals),

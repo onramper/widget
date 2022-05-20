@@ -189,6 +189,26 @@ export const processResponse = async (
   }
 };
 
+type ErrorWithMessage = {
+  message: string;
+};
+
+export function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as Record<string, unknown>).message === "string"
+  );
+}
+
+export function isNextStepError(error: unknown): error is NextStepError {
+  return (
+    error !== null &&
+    (error as Record<string, unknown>).message === "NextStepError"
+  );
+}
+
 class ApiError extends Error {
   data?: any;
   constructor(message: string, name?: string) {

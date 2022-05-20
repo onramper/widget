@@ -26,7 +26,6 @@ import classes from "./EditSwapView.module.css";
 import { ApiError } from "../../../ApiContext/api";
 import { CSSTransition } from "react-transition-group";
 import {
-  formatEther,
   useEtherBalance,
   getQuote,
   useTokenBalance,
@@ -41,6 +40,7 @@ import {
 import { useUsdPriceImpact } from "../../../TransactionContext/hooks/useUsdPriceImpact";
 import { generateBreakdown } from "./utils";
 import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
+import { utils } from "ethers";
 
 const insufficientFoundsError =
   "You have insufficient funds to complete this transaction";
@@ -133,7 +133,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
               return reject(new DOMException("Aborted", "AbortError"));
             }
 
-            if (ethBalance && Number(formatEther(ethBalance)) < Number(value)) {
+            if (
+              ethBalance &&
+              Number(utils.formatEther(ethBalance)) < Number(value)
+            ) {
               throw new ApiError(insufficientFoundsError, "INSUFICIENT_FUNDS");
             }
 
@@ -198,8 +201,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   const onMaxClick = useCallback(async () => {
     if (ethBalance) {
-      setActualSpentValue(formatEther(ethBalance));
-      updateReceivedValue(formatEther(ethBalance));
+      setActualSpentValue(utils.formatEther(ethBalance));
+      updateReceivedValue(utils.formatEther(ethBalance));
     }
   }, [ethBalance, updateReceivedValue]);
 
@@ -218,7 +221,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     if (swapErrorMessage && swapErrorMessage !== insufficientFoundsError) {
       return;
     }
-    if (ethBalance && Number(formatEther(ethBalance)) < Number(spentValue)) {
+    if (
+      ethBalance &&
+      Number(utils.formatEther(ethBalance)) < Number(spentValue)
+    ) {
       setSwapErrorMessage(insufficientFoundsError);
       return;
     }
@@ -248,7 +254,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           }
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${
-            ethBalance ? formatEther(ethBalance).slice(0, 5) : "0.00"
+            ethBalance ? utils.formatEther(ethBalance).slice(0, 5) : "0.00"
           }`}
           onMaxClick={onMaxClick}
           suffix={`(${cryptoSpent.fiatSymbol}${cryptoSpent.fiatConversion})`}
@@ -267,7 +273,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${
             targetTokenBalance
-              ? formatEther(targetTokenBalance).slice(0, 5)
+              ? utils.formatEther(targetTokenBalance).slice(0, 5)
               : "0.00"
           }`}
           suffix={`(${cryptoReceived.fiatSymbol}${cryptoReceived.fiatConversion})`}

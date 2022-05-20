@@ -4,7 +4,8 @@ import { BASE_API } from "../../ApiContext/api/constants";
 import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 import { ActionTypes } from "../reducers";
 import { useTransactionContext } from "./useTransactionContext";
-import { getEnsNameFromAddress, isAddress, useEthers, useLayer2 } from "layer2";
+import { getEnsNameFromAddress, useEthers, useLayer2 } from "layer2";
+import { utils } from "ethers";
 
 export const useTransactionCtxWallets = () => {
   const { dispatch } = useContext(TransactionContext);
@@ -76,7 +77,7 @@ export const useTransactionCtxWallets = () => {
         );
       }
 
-      if (!isAddress(newAddress)) {
+      if (!utils.isAddress(newAddress)) {
         return Promise.reject(new Error(`Not a valid wallet address.`));
       }
 
@@ -150,7 +151,7 @@ export const useTransactionCtxWallets = () => {
         );
       }
 
-      if(newAddress === wallet.address) {
+      if (newAddress === wallet.address) {
         return Promise.resolve();
       }
 
@@ -165,7 +166,7 @@ export const useTransactionCtxWallets = () => {
         );
       }
 
-      if (!isAddress(newAddress)) {
+      if (!utils.isAddress(newAddress)) {
         return Promise.reject(new Error(`Not a valid wallet address.`));
       }
 
