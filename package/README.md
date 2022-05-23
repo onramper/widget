@@ -19,7 +19,7 @@ import OnramperWidget from "@onramper/widget";
 
 export default function OnramperWidgetContainer() {
   return (
-    <div style={{maxWidth: '440px',  maxHeight: '595px',  height: '100%',  width: '100%'}}>
+    <div style={{maxWidth: '482px',  maxHeight: '660px',  height: '100%',  width: '100%'}}>
       <OnramperWidget
         color="#0316C1"
         defaultAmount={200}
