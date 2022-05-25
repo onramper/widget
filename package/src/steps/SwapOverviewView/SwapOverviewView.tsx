@@ -36,6 +36,8 @@ import {
 } from "../../NotificationContext";
 import TransactionErrorOverlay from "./TransactionErrorOverlay/TransactionErrorOverlay";
 import { utils } from "ethers";
+import { isErrorWithName } from "../../ApiContext/api";
+import { storeTransactionData } from "../../services/transactionData";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -83,7 +85,7 @@ const SwapOverviewView: React.FC<{
         setQuote(newQuote);
       }
     } catch (error) {
-      if ((error as Error)?.name === "AbortError") {
+      if (isErrorWithName(error) && error.name === "AbortError") {
         return;
       }
     } finally {
@@ -211,11 +213,17 @@ const SwapOverviewView: React.FC<{
           tokenOut={tokenOut}
         />
       );
+
+      storeTransactionData({
+        transactionResponse: state.transaction,
+        address: metaAddress,
+        transactionId: "cA_iZlMfIbwHVOp346CQ9w--", // TODO: get transaction id from L1
+      });
     }
     if (state.status === "Exception") {
       handleException(state);
     }
-  }, [handleException, nextScreen, state, tokenOut]);
+  }, [handleException, metaAddress, nextScreen, state, tokenOut]);
 
   useEffect(() => {
     const onBeforeUnload = () => {
