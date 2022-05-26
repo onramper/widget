@@ -1,6 +1,10 @@
 import "abort-controller/polyfill";
 import { GatewayRate, RateResponse } from "./types/rate";
-import { Currency, GatewaysResponse } from "./types/gateways";
+import {
+  Currency,
+  GatewaysResponse,
+  GatewayStaticRoutingResponse,
+} from "./types/gateways";
 import { FieldError } from "./types/nextStep";
 import { NextStep } from "..";
 import processMoonpayStep, { moonpayUrlRegex } from "@onramper/moonpay-adapter";
@@ -394,6 +398,54 @@ const sell = async (
   return rates;
 };
 
+const getGatewayStaticRouting = async (country?: string) => {
+  const url = `${BASE_API}/static-routing/${country}`;
+  logRequest(url);
+  // TODO: use request from the backend
+  // const response = await fetch(url, {
+  //   headers,
+  //   credentials: process.env.STAGE === "local" ? "omit" : "include",
+  // });
+  // TODO: remove this
+  // const response = await new Promise<Response>((resolve) => {
+  //   setTimeout(() => {
+  //     resolve(
+  //       new Response(
+  //         `{"message": "This is an error from me"}`,
+  //         { status: 400, statusText: "OK" }
+  //       )
+  //     );
+  //   }, 200);
+  // });
+
+  const response = await new Promise<Response>((resolve) => {
+    setTimeout(() => {
+      resolve(
+        new Response(
+          `{
+          "recommended": [
+              {
+                  "crypto": "BTC",
+                  "fiat": "USD",
+                  "gateway": "mercuryo"
+              },
+              {
+                  "crypto": "ETH",
+                  "fiat": "USD",
+                  "gateway": "mercuryo"
+              }
+          ]
+      }`,
+          { status: 200, statusText: "OK" }
+        )
+      );
+    }, 200);
+  });
+
+  const data: GatewayStaticRoutingResponse = await processResponse(response);
+  return data;
+};
+
 export {
   authenticate,
   gateways,
@@ -405,6 +457,7 @@ export {
   getAcceptLanguageParameter,
   updateAcceptLanguageParameter,
   sell,
+  getGatewayStaticRouting,
   NextStepError,
   sentryHub,
   ApiError,

@@ -6,7 +6,12 @@ import React, {
   useState,
 } from "react";
 
-import { StateType, initialState, ItemCategory } from "./initialState";
+import {
+  StateType,
+  initialState,
+  ItemCategory,
+  StaticRoutingItemType,
+} from "./initialState";
 import { mainReducer, CollectedActionsType, DataActionsType } from "./reducers";
 
 import { arrayUnique, arrayObjUnique } from "../utils";
@@ -83,9 +88,8 @@ interface APIProviderType {
  *
  * @param language The ISO 639-1 language code. E.g. 'ja'. See: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
  */
- function updateLanguageIfRequired(language: string) {
-  if (i18n.language !== language)
-    i18n.changeLanguage(language);
+function updateLanguageIfRequired(language: string) {
+  if (i18n.language !== language) i18n.changeLanguage(language);
   if (API.getAcceptLanguageParameter() !== language)
     API.updateAcceptLanguageParameter();
 }
@@ -125,7 +129,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       recommendedCryptoCurrencies: props.recommendedCryptoCurrencies
         ? arrayUnique(props.recommendedCryptoCurrencies)
         : undefined,
-      selectGatewayBy: props.selectGatewayBy
+      selectGatewayBy: props.selectGatewayBy,
     };
   }, [
     defaultAddrs,
@@ -140,7 +144,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.supportBuy,
     props.isAmountEditable,
     props.recommendedCryptoCurrencies,
-    props.selectGatewayBy
+    props.selectGatewayBy,
   ]);
 
   const iniState: StateType = {
@@ -172,6 +176,15 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       dispatch({
         type: CollectedActionsType.AddField,
         payload: { name, value },
+      }),
+    []
+  );
+
+  const updateStaticRouting = useCallback(
+    (value: StaticRoutingItemType[]) =>
+      dispatch({
+        type: CollectedActionsType.UpdateStaticRoute,
+        payload: { value },
       }),
     []
   );
@@ -243,6 +256,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       let rawResponseGateways: GatewaysResponse;
       let responseGateways: GatewaysResponse;
       try {
+        if (props.selectGatewayBy === "performance") {
+          updateStaticRouting(
+            (await API.getGatewayStaticRouting(actualCountry)).recommended
+          );
+        }
+        
         clearErrors();
         rawResponseGateways = await API.gateways({
           country: actualCountry,
@@ -367,6 +386,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       props.displayChatBubble,
       props.recommendedCryptoCurrencies,
       props.language,
+      props.selectGatewayBy,
+      updateStaticRouting,
     ]
   );
 
@@ -1036,5 +1057,5 @@ export type {
   APIProviderType,
   CollectedStateType,
   GatewayRateOptionSimple,
-  PickOneOption
+  PickOneOption,
 };
