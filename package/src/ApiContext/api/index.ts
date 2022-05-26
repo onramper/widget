@@ -427,12 +427,12 @@ const getGatewayStaticRouting = async (country?: string) => {
               {
                   "crypto": "BTC",
                   "fiat": "USD",
-                  "gateway": "mercuryo"
+                  "gateway": "moonpay"
               },
               {
                   "crypto": "ETH",
                   "fiat": "USD",
-                  "gateway": "mercuryo"
+                  "gateway": "moonpay"
               }
           ]
       }`,
