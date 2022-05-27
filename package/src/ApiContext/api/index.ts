@@ -8,6 +8,8 @@ import { BrowserClient, Hub } from "@sentry/browser";
 import type { CryptoAddrType } from "../initialState";
 
 import { BASE_API } from "./constants";
+import { RawData, Transaction, TransactionData } from "./types/transaction";
+import { isTransactionHash } from "../../utils";
 
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers();
@@ -422,6 +424,45 @@ const sell = async (
   return rates;
 };
 
+const pollTransaction = async (
+  txId: string
+): Promise<Transaction | undefined> => {
+  const res = await fetch(`${BASE_API}/v2/transaction/${txId}`, {
+    method: "GET",
+    headers,
+  });
+  const json = (await res.json()) as Transaction;
+  if (json.lastStatus !== "init") {
+    return json;
+  }
+};
+
+// type casting here, we know these values are not null, but the type from the conte3xt will always be nullable
+function formatData(data: RawData): TransactionData {
+  const { nonce, hash } = data.transactionResponse;
+  return {
+    transactionId: data.transactionId,
+    txHash: hash,
+    userAddress: data.address as string,
+    nonce: nonce,
+  };
+}
+
+export function storeTransactionData(data: RawData) {
+  if (data.address && data.transactionResponse) {
+    const formattedData = formatData(data);
+
+    if (!isTransactionHash(formattedData.txHash)) {
+      throw new Error("Invalid transaction hash");
+    }
+    return fetch(`${BASE_API}/v2/storeTxHash`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(formattedData),
+    });
+  }
+}
+
 export {
   authenticate,
   gateways,
@@ -434,4 +475,5 @@ export {
   NextStepError,
   sentryHub,
   ApiError,
+  pollTransaction,
 };

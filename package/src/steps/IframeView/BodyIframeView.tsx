@@ -115,11 +115,9 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
               symbol: collected.selectedCrypto?.symbol || "UNKNOWN",
               decimals: 18,
               chainId: 4,
-              logoURI: "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
+              logoURI: "",
             },
             gateway: selectedGateway?.name.split("_")[0] ?? "",
-            transactionHash:
-              "--------------------------please-fill-something-better-here",
             txId: props.nextStep.txId ?? "",
           }}
         />

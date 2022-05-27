@@ -36,8 +36,7 @@ import {
 } from "../../NotificationContext";
 import TransactionErrorOverlay from "./TransactionErrorOverlay/TransactionErrorOverlay";
 import { utils } from "ethers";
-import { isErrorWithName } from "../../ApiContext/api";
-import { storeTransactionData } from "../../services/transactionData";
+import { isErrorWithName, storeTransactionData } from "../../ApiContext/api";
 
 const SwapOverviewView: React.FC<{
   nextStep: NextStep & { type: "transactionOverview" };
@@ -213,17 +212,25 @@ const SwapOverviewView: React.FC<{
           tokenOut={tokenOut}
         />
       );
-
-      storeTransactionData({
-        transactionResponse: state.transaction,
-        address: metaAddress,
-        transactionId: "cA_iZlMfIbwHVOp346CQ9w--", // TODO: get transaction id from L1
-      });
+      if (state.transaction && metaAddress) {
+        storeTransactionData({
+          transactionResponse: state.transaction,
+          address: metaAddress,
+          transactionId: nextStep.data.txId,
+        });
+      }
     }
     if (state.status === "Exception") {
       handleException(state);
     }
-  }, [handleException, metaAddress, nextScreen, state, tokenOut]);
+  }, [
+    handleException,
+    metaAddress,
+    nextScreen,
+    nextStep.data.txId,
+    state,
+    tokenOut,
+  ]);
 
   useEffect(() => {
     const onBeforeUnload = () => {

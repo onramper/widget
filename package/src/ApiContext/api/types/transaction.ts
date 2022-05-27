@@ -1,3 +1,5 @@
+import { TransactionResponse } from "@ethersproject/abstract-provider";
+
 export interface Transaction {
   apiKey: string;
   countryIp: string;
@@ -20,12 +22,15 @@ export interface Transaction {
   cryptocurrencyAddress: string;
 }
 
-export const pollTransaction = async (
-  txId: string
-): Promise<Transaction | undefined> => {
-  const res = await fetch(`/v2/transaction${txId}`);
-  const json = (await res.json()) as Transaction;
-  if (json.lastStatus === "ok") {
-    return json;
-  }
-};
+export interface TransactionData {
+  transactionId: string; // 'cA_iZlMfIbwHVOp346CQ9w--'
+  txHash: string; // '0xd1c23e15108dddca22167f7ac6b528a84060e05a0f7e736e11a9ad3e39e4c891'
+  userAddress: string; // '0x5787F70018649cfa4E89D648653D0058eC383bEE'
+  nonce: number; // 52
+}
+
+export interface RawData {
+  transactionResponse: TransactionResponse;
+  address: string;
+  transactionId: string;
+}

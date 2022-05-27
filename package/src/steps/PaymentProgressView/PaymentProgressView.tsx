@@ -7,7 +7,7 @@ import { ReactComponent as Mail } from "../../icons/mail.svg";
 import Heading from "../../common/Heading/Heading";
 import { SingleNotification } from "../WidgetNotification/WidgetNotification";
 import { NotificationType } from "../../NotificationContext";
-import { resolveWeth, uriToHttp } from "layer2";
+import { resolveWeth, TokenInfo, uriToHttp } from "layer2";
 import { ReactComponent as Wallet } from "../../icons/wallet2.svg";
 import Spinner from "../../common/Spinner";
 import { ReactComponent as Check } from "../../icons/check.svg";
@@ -15,19 +15,48 @@ import { ImageWithFallback } from "../../common/ImageWithFallback/ImageWithFallb
 import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg";
 import { ReactComponent as Chevron } from "../../icons/chevron2.svg";
 import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
+import { ReactComponent as Error } from "../../icons/close_circle.svg";
 import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
-import { useNav } from "../../NavContext";
-import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
-import { pollTransaction } from "../../services/pollTransaction";
+import { pollTransaction } from "../../ApiContext/api";
+
+const defaults: {
+  tokenIn: TokenInfo;
+  tokenOut: TokenInfo;
+  gateway: string;
+  txId: string;
+} = {
+  tokenIn: {
+    name: "Input Token Name",
+    address: "In address",
+    symbol: "WETH",
+    decimals: 18,
+    chainId: 3,
+    logoURI: "",
+  },
+  tokenOut: {
+    name: "Output Token Name",
+    address: "output token address",
+    symbol: "OUT",
+    decimals: 18,
+    chainId: 3,
+    logoURI: "",
+  },
+  gateway: "Gateway_DExchange",
+  txId: "--some--random--L1--tx--id--",
+};
 
 export const PaymentProgressView = ({
-  nextStep: { gateway = "moonpay", tokenIn, tokenOut, txId },
+  nextStep: {
+    gateway = defaults.gateway,
+    tokenIn = defaults.tokenIn,
+    tokenOut = defaults.tokenOut,
+    txId = defaults.txId,
+  },
 }: PaymentProgressViewProps) => {
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
   const [userAddress, setUserAddress] = useState<string>("");
-  const { nextScreen } = useNav();
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -54,6 +83,9 @@ export const PaymentProgressView = ({
     if (layer1Status === Status.Success) {
       return `Your ${symbolInUpper} has arrived!`;
     }
+    if (layer1Status === Status.Fail) {
+      return `Your transaction failed.`;
+    }
     return "";
   };
 
@@ -63,6 +95,9 @@ export const PaymentProgressView = ({
     }
     if (layer1Status === Status.Success) {
       return `${gateway.toLocaleLowerCase()} has successfully sent you ${symbolInUpper}. You can now swap ${symbolInUpper} for ${symbolOutUpper} here. We don’t add fees on top of Uniswap.`;
+    }
+    if (layer1Status === Status.Fail) {
+      return `${gateway.toLocaleLowerCase()} has failed to send your ${symbolInUpper}. The may be something wrong with the network. Please try again later.`;
     }
     return "";
   };
@@ -90,6 +125,7 @@ export const PaymentProgressView = ({
         {layer1Status === Status.Success && (
           <CheckCircle className={classes.icon} />
         )}
+        {layer1Status === Status.Fail && <Error className={classes.icon} />}
         <Heading
           className={classes.heading}
           text={heading()}
@@ -152,6 +188,16 @@ export const PaymentProgressView = ({
             notification={{
               type: NotificationType.Info,
               message: "Attention! You do not need to keep your browser open.",
+            }}
+          />
+        )}
+
+        {layer1Status === Status.Fail && (
+          <SingleNotification
+            className={classes.notification}
+            notification={{
+              type: NotificationType.Error,
+              message: "Oh no! Something's gone wrong. Please try again later.",
             }}
           />
         )}

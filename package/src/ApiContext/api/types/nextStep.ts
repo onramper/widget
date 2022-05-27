@@ -147,6 +147,7 @@ export type SwapOverviewStepData = {
   fiatSymbol: string;
   balance: number;
   userId: string;
+  txId: string;
 };
 
 export type SwapOverviewViewStep = {
@@ -162,7 +163,6 @@ export type PaymentProgressViewStep = {
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
   gateway: string;
-  transactionHash: string;
   txId: string;
 };
 

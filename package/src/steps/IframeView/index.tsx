@@ -109,8 +109,6 @@ const IframeView: React.FC<{
                   },
                   txId: nextStep.txId ?? "",
                   gateway: selectedGateway?.name.split("_")[0],
-                  transactionHash:
-                    "--------------------------please-fill-something-better-here",
                 }}
               />
             );
