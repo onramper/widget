@@ -399,47 +399,11 @@ const sell = async (
 };
 
 const getGatewayStaticRouting = async (country?: string) => {
-  const url = `${BASE_API}/static-routing/${country}`;
+  const url = `${BASE_API}/routing/${country}`;
   logRequest(url);
-  // TODO: use request from the backend
-  // const response = await fetch(url, {
-  //   headers,
-  //   credentials: process.env.STAGE === "local" ? "omit" : "include",
-  // });
-  // TODO: remove this
-  // const response = await new Promise<Response>((resolve) => {
-  //   setTimeout(() => {
-  //     resolve(
-  //       new Response(
-  //         `{"message": "This is an error from me"}`,
-  //         { status: 400, statusText: "OK" }
-  //       )
-  //     );
-  //   }, 200);
-  // });
-
-  const response = await new Promise<Response>((resolve) => {
-    setTimeout(() => {
-      resolve(
-        new Response(
-          `{
-          "recommended": [
-              {
-                  "crypto": "BTC",
-                  "fiat": "USD",
-                  "gateway": "moonpay"
-              },
-              {
-                  "crypto": "ETH",
-                  "fiat": "USD",
-                  "gateway": "moonpay"
-              }
-          ]
-      }`,
-          { status: 200, statusText: "OK" }
-        )
-      );
-    }, 200);
+  const response = await fetch(url, {
+    headers,
+    credentials: process.env.STAGE === "local" ? "omit" : "include",
   });
 
   const data: GatewayStaticRoutingResponse = await processResponse(response);
