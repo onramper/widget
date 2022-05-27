@@ -163,6 +163,7 @@ export type PaymentProgressViewStep = {
   tokenOut: TokenInfo;
   gateway: string;
   transactionHash: string;
+  txId: string;
 };
 
 type NextStep = NextStepBase &
@@ -183,6 +184,7 @@ type NextStep = NextStepBase &
     | {
         type: "iframe";
         url: string;
+        txId?: string;
         fullscreen: boolean;
         neededFeatures?: string;
       }
@@ -190,6 +192,7 @@ type NextStep = NextStepBase &
         type: "redirect";
         url: string;
         hint?: string;
+        txId?: string;
       }
     | {
         type: "wait";

@@ -9,7 +9,7 @@ import {
   MOONPAY_HOSTNAME,
   COINIFY_HOSTNAME,
 } from "../../ApiContext/api/constants";
-import { APIContext } from "../../ApiContext";
+import { APIContext, NextStep } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
 
 import BuyCryptoView from "../../BuyCryptoView";
@@ -19,6 +19,7 @@ import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";
 
 interface BodyIframeViewType {
+  nextStep: NextStep & { type: "iframe" | "redirect" };
   src: string;
   type: string;
   textInfo?: string;
@@ -67,7 +68,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   };
 
   const isL2MoonpayNewWindowIntegration = () =>
-    selectedGateway?.name === "Moonpay_Uniswap" &&
+    selectedGateway?.name.split("_").at(-1) === "Uniswap" &&
     props.src.indexOf("https://api.moonpay.io/v3/payment") === -1;
 
   useEffect(() => {
@@ -116,9 +117,10 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
               chainId: 4,
               logoURI: "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
             },
-            gateway: "moonpay",
+            gateway: selectedGateway?.name.split("_")[0] ?? "",
             transactionHash:
               "--------------------------please-fill-something-better-here",
+            txId: props.nextStep.txId ?? "",
           }}
         />
       );

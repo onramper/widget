@@ -18,18 +18,32 @@ import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
 import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
 import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
+import { pollTransaction } from "../../services/pollTransaction";
 
 export const PaymentProgressView = ({
-  nextStep: { gateway = "moonpay", tokenIn, tokenOut },
+  nextStep: { gateway = "moonpay", tokenIn, tokenOut, txId },
 }: PaymentProgressViewProps) => {
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
+  const [userAddress, setUserAddress] = useState<string>("");
   const { nextScreen } = useNav();
 
-  // useEffect(() => {
-  //   setTimeout(() => setLayer1Status(Status.Success), 3000);
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const tx = await pollTransaction(txId);
+      if (tx && tx.lastStatus === "ok") {
+        setLayer1Status(Status.Success);
+        setUserAddress(tx.cryptocurrencyAddress);
+        clearInterval(interval);
+      }
+      if (tx && tx.lastStatus === "rip") {
+        setLayer1Status(Status.Fail);
+        clearInterval(interval);
+      }
+    }, 2000);
+    //eslint-disable-next-line
+  }, []);
 
   const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0] ?? "";
 
@@ -55,9 +69,17 @@ export const PaymentProgressView = ({
 
   const handleNext = () => {
     console.log("next screen");
-    // nextScreen(
-    //   <SwapOverviewView />
-    // );
+    // nextScreen(<SwapOverviewView nextStep={{
+    //   userData: {
+    //     userAddress: userAddress
+    //   },
+    //   transactionData:
+    //   tokenIn: TokenInfo;
+    //   tokenOut: TokenInfo;
+    //   fiatSymbol: string;
+    //   balance: number;
+    //   userId: string;
+    // }} />);
   };
 
   return (

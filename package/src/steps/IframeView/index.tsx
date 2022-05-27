@@ -107,7 +107,8 @@ const IframeView: React.FC<{
                     logoURI:
                       "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
                   },
-                  gateway: "moonpay",
+                  txId: nextStep.txId ?? "",
+                  gateway: selectedGateway?.name.split("_")[0],
                   transactionHash:
                     "--------------------------please-fill-something-better-here",
                 }}
@@ -167,6 +168,7 @@ const IframeView: React.FC<{
         backButton
       />
       <BodyIframeView
+        nextStep={nextStep}
         textInfo={nextStep.type === "redirect" ? nextStep.hint : undefined}
         error={error}
         fatalError={fatalError}
