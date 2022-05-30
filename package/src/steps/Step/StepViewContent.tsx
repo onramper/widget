@@ -50,13 +50,10 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       isAddressEditable,
     } = collected;
 
-    triggerGTMEvent({
-      event: "fiat-to-crypto",
-      category: selectedGateway?.id || "",
-      label: nextStep?.type,
-      action: "step",
-      value: {
-        step: currentStep(),
+    const registerStepGmtEvent = () => {
+      const currentStepIndex = currentStep() + 1;
+      const category = selectedGateway?.id || "";
+      const value = {
         payment: {
           amount,
           amountInCrypto,
@@ -72,8 +69,28 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
           selectedCrypto: selectedCrypto?.id,
           selectedGateway: selectedGateway?.id,
         },
-      },
-    });
+      };
+
+      //register the landing screen being passed-by successfully
+      if (currentStepIndex === 2) {
+        triggerGTMEvent({
+          event: "fiat-to-crypto",
+          category,
+          label: "transactionForm",
+          action: `step 1`,
+          value,
+        });
+      }
+
+      triggerGTMEvent({
+        event: "fiat-to-crypto",
+        category,
+        label: nextStep?.eventLabel || nextStep?.type,
+        action: `step ${currentStepIndex}`,
+        value,
+      });
+    };
+    registerStepGmtEvent();
 
     if (!nextStep) {
       setIsProcessingStep(false);
@@ -139,7 +156,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
         replaceScreen(<PopupView nextStep={nextStep} />);
         break;
       case "actionable-error":
-        replaceScreen(<ActionableErrorView nextStep={nextStep}/>);
+        replaceScreen(<ActionableErrorView nextStep={nextStep} />);
         break;
       case "wait":
         replaceScreen(<WaitView nextStep={nextStep} />);
