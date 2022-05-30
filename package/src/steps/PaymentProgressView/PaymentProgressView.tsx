@@ -7,7 +7,7 @@ import { ReactComponent as Mail } from "../../icons/mail.svg";
 import Heading from "../../common/Heading/Heading";
 import { SingleNotification } from "../WidgetNotification/WidgetNotification";
 import { NotificationType } from "../../NotificationContext";
-import { resolveWeth, TokenInfo, uriToHttp } from "layer2";
+import { QuoteDetails, resolveWeth, TokenInfo, uriToHttp } from "layer2";
 import { ReactComponent as Wallet } from "../../icons/wallet2.svg";
 import Spinner from "../../common/Spinner";
 import { ReactComponent as Check } from "../../icons/check.svg";
@@ -18,11 +18,13 @@ import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
 import { ReactComponent as Error } from "../../icons/close_circle.svg";
 import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
 import { pollTransaction } from "../../ApiContext/api";
+import { useNav } from "../../NavContext";
+import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 
 const defaults: {
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
-  gateway: string;
+  gatewayAndDex: string;
   txId: string;
 } = {
   tokenIn: {
@@ -41,13 +43,13 @@ const defaults: {
     chainId: 3,
     logoURI: "",
   },
-  gateway: "Gateway_DExchange",
+  gatewayAndDex: "Gateway_DExchange",
   txId: "--some--random--L1--tx--id--",
 };
 
 export const PaymentProgressView = ({
   nextStep: {
-    gateway = defaults.gateway,
+    gatewayAndDex = defaults.gatewayAndDex,
     tokenIn = defaults.tokenIn,
     tokenOut = defaults.tokenOut,
     txId = defaults.txId,
@@ -57,6 +59,7 @@ export const PaymentProgressView = ({
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
   const [userAddress, setUserAddress] = useState<string>("");
+  const { nextScreen } = useNav();
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -97,24 +100,36 @@ export const PaymentProgressView = ({
       return `${gateway.toLocaleLowerCase()} has successfully sent you ${symbolInUpper}. You can now swap ${symbolInUpper} for ${symbolOutUpper} here. We don’t add fees on top of Uniswap.`;
     }
     if (layer1Status === Status.Fail) {
-      return `${gateway.toLocaleLowerCase()} has failed to send your ${symbolInUpper}. The may be something wrong with the network. Please try again later.`;
+      return `${gateway.toLocaleLowerCase()} has failed to send your ${symbolInUpper}. There may be something wrong with the network. Please try again later.`;
     }
     return "";
   };
 
+  const [gateway, dex] = gatewayAndDex.split("_");
+
   const handleNext = () => {
     console.log("next screen");
-    // nextScreen(<SwapOverviewView nextStep={{
-    //   userData: {
-    //     userAddress: userAddress
-    //   },
-    //   transactionData:
-    //   tokenIn: TokenInfo;
-    //   tokenOut: TokenInfo;
-    //   fiatSymbol: string;
-    //   balance: number;
-    //   userId: string;
-    // }} />);
+    nextScreen(
+      <SwapOverviewView
+        nextStep={{
+          type: "transactionOverview",
+          progress: 80,
+          url: "",
+          data: {
+            userData: {
+              userAddress: "0xC54070dA79E7E3e2c95D3a91fe98A42000e65a48",
+            },
+            transactionData: {} as QuoteDetails,
+            tokenIn: tokenIn,
+            tokenOut: tokenOut,
+            fiatSymbol: "$",
+            balance: 0,
+            userId: "",
+            txId: txId,
+          },
+        }}
+      />
+    );
   };
 
   return (
@@ -177,7 +192,7 @@ export const PaymentProgressView = ({
               className={classes.stepTitle}
             >{`Step 3: ${symbolInUpper}-to-${symbolOutUpper} token`}</div>
             <div className={classes.stepDescription}>
-              {`Swap ${symbolInUpper} for ${symbolOutUpper} via Uniswap`}
+              {`Swap ${symbolInUpper} for ${symbolOutUpper} via ${dex}`}
             </div>
           </div>
           <Chevron className={classes.chevron} />

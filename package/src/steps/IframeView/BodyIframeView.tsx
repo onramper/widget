@@ -17,6 +17,8 @@ import ButtonAction from "../../common/Buttons/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";
+import { findWethAddress } from "../../utils";
+import { TokenInfo } from "layer2";
 
 interface BodyIframeViewType {
   nextStep: NextStep & { type: "iframe" | "redirect" };
@@ -100,24 +102,12 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
           nextStep={{
             type: "paymentProgress",
             progress: 80,
-            tokenIn: {
-              name: "Wrapped Ether",
-              address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-              symbol: "WETH",
-              decimals: 18,
-              chainId: 4,
-              logoURI:
-                "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-            },
-            tokenOut: {
-              name: collected.selectedCrypto?.name || "token in",
-              address: "address",
-              symbol: collected.selectedCrypto?.symbol || "UNKNOWN",
-              decimals: 18,
-              chainId: 4,
-              logoURI: "",
-            },
-            gateway: selectedGateway?.name.split("_")[0] ?? "",
+            // infer weth from output chainID
+            tokenIn: findWethAddress(
+              props.nextStep?.l2TokenData.chainId as number
+            ),
+            tokenOut: props.nextStep?.l2TokenData as TokenInfo,
+            gatewayAndDex: selectedGateway?.name ?? "",
             txId: props.nextStep.txId ?? "",
           }}
         />

@@ -162,7 +162,7 @@ export type PaymentProgressViewStep = {
   progress: number;
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
-  gateway: string;
+  gatewayAndDex: string;
   txId: string;
 };
 
@@ -184,7 +184,9 @@ type NextStep = NextStepBase &
     | {
         type: "iframe";
         url: string;
-        txId?: string;
+        l2TokenData: TokenInfo;
+        cryptocurrencyAddress: string;
+        txId: string;
         fullscreen: boolean;
         neededFeatures?: string;
       }
@@ -192,7 +194,9 @@ type NextStep = NextStepBase &
         type: "redirect";
         url: string;
         hint?: string;
-        txId?: string;
+        l2TokenData: TokenInfo;
+        cryptocurrencyAddress: string;
+        txId: string;
       }
     | {
         type: "wait";

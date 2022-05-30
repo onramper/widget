@@ -16,6 +16,8 @@ import {
 import { NavContext } from "../../NavContext";
 import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
 import { PaymentProgressView } from "../PaymentProgressView";
+import { findWethAddress } from "../../utils";
+import { TokenInfo } from "layer2";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
@@ -89,26 +91,13 @@ const IframeView: React.FC<{
                 nextStep={{
                   type: "paymentProgress",
                   progress: 80,
-                  tokenIn: {
-                    name: "Wrapped Ether",
-                    address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-                    symbol: "WETH",
-                    decimals: 18,
-                    chainId: 4,
-                    logoURI:
-                      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-                  },
-                  tokenOut: {
-                    name: "Uniswap",
-                    address: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-                    symbol: "UNI",
-                    decimals: 18,
-                    chainId: 4,
-                    logoURI:
-                      "ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg",
-                  },
+                  // infer weth from output chainI
+                  tokenIn: findWethAddress(
+                    nextStep?.l2TokenData.chainId as number
+                  ),
+                  tokenOut: nextStep?.l2TokenData as TokenInfo,
+                  gatewayAndDex: selectedGateway?.name ?? "",
                   txId: nextStep.txId ?? "",
-                  gateway: selectedGateway?.name.split("_")[0],
                 }}
               />
             );

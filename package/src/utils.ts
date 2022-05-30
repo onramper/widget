@@ -1,7 +1,30 @@
-import { TokenInfo } from "layer2";
+import { knownWethAddresses, TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 
 export const apiKey = "oIMeQOqDsg9vFAs6WU1ks2hFxZ32DONF4MkhyDyI";
+
+const baseWeth = {
+  name: "Wrapped Ether",
+  address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+  symbol: "WETH",
+  decimals: 18,
+  chainId: 3,
+  logoURI:
+    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+};
+
+export const findWethAddress = (chainId: number): TokenInfo => {
+  const wethFromChain = knownWethAddresses.find(
+    (weth) => weth.chainId === chainId
+  );
+  if (wethFromChain) {
+    return {
+      ...baseWeth,
+      ...wethFromChain,
+    };
+  }
+  return baseWeth;
+};
 
 export const isTransactionHash = (hash: string) => {
   return /^0x([A-Fa-f0-9]{64})$/.test(hash);
