@@ -134,6 +134,7 @@ type NextStepBase = {
   progress?: number;
   humanName?: string;
   description?: string;
+  eventLabel?: string;
 };
 
 export type PayamentReviewDataItem = {
