@@ -45,6 +45,7 @@ While importing the widget as a React component, you can customize it using the 
 | onlyGateways   | String[]? | `["Moonpay", "Wyre"]`                | undefined     |
 | color          | String?   | `"#000000"`                          | "#31a5ff"     |
 | API_KEY        | String    | `"pk_live_YOUR-API-KEY"`             | -             |
+| selectGatewayBy| String    | `"performance"`                      | "price"       |
 
 ## Customize
 You can pass the following arguments to customize the widget
