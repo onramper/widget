@@ -166,6 +166,25 @@ export type PaymentProgressViewStep = {
   txId: string;
 };
 
+export type IframeStep = {
+  type: "iframe";
+  url: string;
+  l2TokenData: TokenInfo;
+  cryptocurrencyAddress: string;
+  txId: string;
+  fullscreen: boolean;
+  neededFeatures?: string;
+};
+
+export type RedirectStep = {
+  type: "redirect";
+  url: string;
+  hint?: string;
+  l2TokenData: TokenInfo;
+  cryptocurrencyAddress: string;
+  txId: string;
+};
+
 type NextStep = NextStepBase &
   (
     | FileStep
@@ -181,23 +200,8 @@ type NextStep = NextStepBase &
         data: StepDataItems;
         hint?: string;
       }
-    | {
-        type: "iframe";
-        url: string;
-        l2TokenData: TokenInfo;
-        cryptocurrencyAddress: string;
-        txId: string;
-        fullscreen: boolean;
-        neededFeatures?: string;
-      }
-    | {
-        type: "redirect";
-        url: string;
-        hint?: string;
-        l2TokenData: TokenInfo;
-        cryptocurrencyAddress: string;
-        txId: string;
-      }
+    | IframeStep
+    | RedirectStep
     | {
         type: "wait";
         url: string;

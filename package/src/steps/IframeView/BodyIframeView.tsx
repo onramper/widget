@@ -19,6 +19,10 @@ import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";
 import { findWethAddress } from "../../utils";
 import { TokenInfo } from "layer2";
+import {
+  isIframeStep,
+  isRedirectStep,
+} from "../../ApiContext/api/types/guards";
 
 interface BodyIframeViewType {
   nextStep: NextStep & { type: "iframe" | "redirect" };
@@ -96,19 +100,21 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       "height=595,width=440,scrollbars=yes,left=0"
     ); //todo: add config
 
-    if (windowObjectReference && isL2MoonpayNewWindowIntegration()) {
+    if (
+      windowObjectReference &&
+      isL2MoonpayNewWindowIntegration() &&
+      (isIframeStep(props.nextStep) || isRedirectStep(props.nextStep))
+    ) {
       return replaceScreen(
         <PaymentProgressView
           nextStep={{
             type: "paymentProgress",
             progress: 80,
             // infer weth from output chainID
-            tokenIn: findWethAddress(
-              props.nextStep?.l2TokenData.chainId as number
-            ),
-            tokenOut: props.nextStep?.l2TokenData as TokenInfo,
+            tokenIn: findWethAddress(props.nextStep.l2TokenData.chainId),
+            tokenOut: props.nextStep.l2TokenData,
             gatewayAndDex: selectedGateway?.name ?? "",
-            txId: props.nextStep.txId ?? "",
+            txId: props.nextStep.txId,
           }}
         />
       );

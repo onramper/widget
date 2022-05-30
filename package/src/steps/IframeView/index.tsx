@@ -18,6 +18,10 @@ import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
 import { PaymentProgressView } from "../PaymentProgressView";
 import { findWethAddress } from "../../utils";
 import { TokenInfo } from "layer2";
+import {
+  isIframeStep,
+  isRedirectStep,
+} from "../../ApiContext/api/types/guards";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
@@ -84,7 +88,8 @@ const IframeView: React.FC<{
           console.log({ returnedNextStep, eventData: event.data });
           if (
             returnedNextStep.type === "completed" &&
-            selectedGateway?.name === "Moonpay_Uniswap"
+            selectedGateway?.name === "Moonpay_Uniswap" &&
+            (isIframeStep(nextStep) || isRedirectStep(nextStep))
           ) {
             replaceScreen(
               <PaymentProgressView
@@ -92,12 +97,10 @@ const IframeView: React.FC<{
                   type: "paymentProgress",
                   progress: 80,
                   // infer weth from output chainI
-                  tokenIn: findWethAddress(
-                    nextStep?.l2TokenData.chainId as number
-                  ),
-                  tokenOut: nextStep?.l2TokenData as TokenInfo,
-                  gatewayAndDex: selectedGateway?.name ?? "",
-                  txId: nextStep.txId ?? "",
+                  tokenIn: findWethAddress(nextStep.l2TokenData.chainId),
+                  tokenOut: nextStep.l2TokenData,
+                  gatewayAndDex: selectedGateway.name,
+                  txId: nextStep.txId,
                 }}
               />
             );
