@@ -24,6 +24,7 @@ import InstructionView from "../InstructionView";
 import { triggerGTMEvent } from "../../helpers/useGTM";
 import PopupView from "../PopupView";
 import ActionableErrorView from "../ActionableErrorView";
+import { generateGtmStepValue } from "./utils";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -36,157 +37,142 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
   const [isProcessingStep, setIsProcessingStep] = useState(true);
 
   useEffect(() => {
-    const {
-      amount,
-      amountInCrypto,
-      country,
-      state,
-      selectedCountry,
-      selectedCrypto,
-      selectedCurrency,
-      selectedGateway,
-      selectedPaymentMethod,
-      defaultAddrs,
-      isAddressEditable,
-    } = collected;
-
-    const registerStepGmtEvent = () => {
-      const currentStepIndex = currentStep() + 1;
-      const category = selectedGateway?.id || "";
-      const value = {
-        payment: {
-          amount,
-          amountInCrypto,
-          selectedCurrency: selectedCurrency?.id,
-          selectedPaymentMethod: selectedPaymentMethod?.id,
-        },
-        location: {
-          country,
-          selectedCountry,
-          state,
-        },
-        crypto: {
-          selectedCrypto: selectedCrypto?.id,
-          selectedGateway: selectedGateway?.id,
-        },
-      };
-
-      //register the landing screen being passed-by successfully
-      if (currentStepIndex === 2) {
-        triggerGTMEvent({
-          event: "fiat-to-crypto",
-          category,
-          label: "transactionForm",
-          action: `step 1`,
-          value,
-        });
-      }
-
-      triggerGTMEvent({
-        event: "fiat-to-crypto",
-        category,
-        label: nextStep?.eventLabel || nextStep?.type,
-        action: `step ${currentStepIndex}`,
-        value,
-      });
-    };
-    registerStepGmtEvent();
-
     if (!nextStep) {
       setIsProcessingStep(false);
       return;
     }
-    if (
-      isConfirmed === false ||
-      (!isConfirmed &&
-        (nextStep.type === "iframe" ||
-          nextStep.type === "requestBankTransaction") &&
-        nextStep.type === "iframe" &&
-        !nextStep.fullscreen)
-    ) {
-      let includeAddr = true;
+
+    const { selectedCrypto, selectedGateway, defaultAddrs, isAddressEditable } =
+      collected;
+      
+    const reviewAsFrontendStepIfApplicable = () => {
       if (
-        nextStep.type !== "iframe" &&
-        nextStep.type !== "requestBankTransaction"
+        isConfirmed === false ||
+        (!isConfirmed &&
+          (nextStep.type === "iframe" ||
+            nextStep.type === "requestBankTransaction") &&
+          nextStep.type === "iframe" &&
+          !nextStep.fullscreen)
       ) {
-        includeAddr = false;
-        if (!isAddressEditable)
-          inputInterface.handleInputChange(
-            "cryptocurrencyAddress",
-            defaultAddrs[selectedCrypto?.id ?? ""]
-          );
+        let includeAddr = true;
+        if (
+          nextStep.type !== "iframe" &&
+          nextStep.type !== "requestBankTransaction"
+        ) {
+          includeAddr = false;
+          if (!isAddressEditable)
+            inputInterface.handleInputChange(
+              "cryptocurrencyAddress",
+              defaultAddrs[selectedCrypto?.id ?? ""]
+            );
+        }
+
+        triggerGTMEvent({
+          event: "fiat-to-crypto",
+          category: selectedGateway?.id || "",
+          label: "review",
+          action: `step ${currentStep() + 1}`,
+          value: generateGtmStepValue(collected),
+        });
+
+        replaceScreen(
+          <PaymentReviewDecorator
+            nextStep={nextStep}
+            includeCryptoAddr={includeAddr}
+          />
+        );
+        return true;
       }
-      replaceScreen(
-        <PaymentReviewDecorator
-          nextStep={nextStep}
-          includeCryptoAddr={includeAddr}
-        />
-      );
+      return false;
+    };
+    const registerStepGmtEvent = () => {
+      const isIframeOrRedirect =
+        nextStep?.type && ["redirect", "iframe"].indexOf(nextStep?.type) > -1;
+      if (!isIframeOrRedirect) {
+        triggerGTMEvent({
+          event: "fiat-to-crypto",
+          category: selectedGateway?.id || "",
+          label: nextStep?.eventLabel || nextStep?.type,
+          action: `step ${currentStep() + 1}`,
+          value: generateGtmStepValue(collected),
+        });
+      }
+    };
+    const getMatchedStepCallback = () => {
+      switch (nextStep.type) {
+        case "form":
+          return () => replaceScreen(<FormView nextStep={nextStep} />);
+
+        case "file":
+          return () => replaceScreen(<UploadView nextStep={nextStep} />);
+
+        case "pickOne":
+          return () => replaceScreen(<PickOptionView nextStep={nextStep} />);
+
+        case "redirect":
+          return () => replaceScreen(<IframeView nextStep={nextStep} />);
+
+        case "popup":
+          return () => replaceScreen(<PopupView nextStep={nextStep} />);
+
+        case "actionable-error":
+          return () =>
+            replaceScreen(<ActionableErrorView nextStep={nextStep} />);
+
+        case "wait":
+          return () => replaceScreen(<WaitView nextStep={nextStep} />);
+
+        case "completed":
+          return () =>
+            replaceScreen(<SuccessView txType="instant" nextStep={nextStep} />);
+
+        case "iframe":
+          return () => replaceScreen(<IframeView nextStep={nextStep} />);
+
+        case "requestBankTransaction":
+          return () => replaceScreen(<WireTranserView nextStep={nextStep} />);
+
+        case "information":
+          return () => replaceScreen(<InformationView nextStep={nextStep} />);
+
+        case "emailVerification":
+          return () =>
+            replaceScreen(<EmailVerificationView nextStep={nextStep} />);
+
+        case "instruction":
+          return () => replaceScreen(<InstructionView nextStep={nextStep} />);
+
+        case "orderComplete":
+          return () => replaceScreen(<OrderCompleteView nextStep={nextStep} />);
+
+        case "paymentReview":
+          return () => {
+            if (!isAddressEditable) {
+              const newAddress = defaultAddrs[selectedCrypto?.id ?? ""];
+              inputInterface.handleInputChange(
+                "cryptocurrencyAddress",
+                newAddress
+              );
+            }
+
+            replaceScreen(
+              <PaymentReview nextStep={nextStep} includeCryptoAddr={true} />
+            );
+          };
+        default:
+          return undefined;
+      }
+    };
+
+    if (reviewAsFrontendStepIfApplicable()) {
       return;
     }
 
-    const showPaymentReview = (
-      nextStep: NextStep & { type: "paymentReview" }
-    ) => {
-      if (!isAddressEditable) {
-        const newAddress = defaultAddrs[selectedCrypto?.id ?? ""];
-
-        inputInterface.handleInputChange("cryptocurrencyAddress", newAddress);
-      }
-
-      replaceScreen(
-        <PaymentReview nextStep={nextStep} includeCryptoAddr={true} />
-      );
-    };
-
-    switch (nextStep.type) {
-      case "form":
-        replaceScreen(<FormView nextStep={nextStep} />);
-        break;
-      case "file":
-        replaceScreen(<UploadView nextStep={nextStep} />);
-        break;
-      case "pickOne":
-        replaceScreen(<PickOptionView nextStep={nextStep} />);
-        break;
-      case "redirect":
-        replaceScreen(<IframeView nextStep={nextStep} />);
-        break;
-      case "popup":
-        replaceScreen(<PopupView nextStep={nextStep} />);
-        break;
-      case "actionable-error":
-        replaceScreen(<ActionableErrorView nextStep={nextStep} />);
-        break;
-      case "wait":
-        replaceScreen(<WaitView nextStep={nextStep} />);
-        break;
-      case "completed":
-        replaceScreen(<SuccessView txType="instant" nextStep={nextStep} />);
-        break;
-      case "iframe":
-        replaceScreen(<IframeView nextStep={nextStep} />);
-        break;
-      case "requestBankTransaction":
-        replaceScreen(<WireTranserView nextStep={nextStep} />);
-        break;
-      case "information":
-        replaceScreen(<InformationView nextStep={nextStep} />);
-        break;
-      case "emailVerification":
-        replaceScreen(<EmailVerificationView nextStep={nextStep} />);
-        break;
-      case "instruction":
-        replaceScreen(<InstructionView nextStep={nextStep} />);
-        break;
-      case "orderComplete":
-        replaceScreen(<OrderCompleteView nextStep={nextStep} />);
-        break;
-      case "paymentReview":
-        showPaymentReview(nextStep);
-        break;
-      default:
-        break;
+    const stepCallback = getMatchedStepCallback();
+    if (stepCallback) {
+      registerStepGmtEvent();
+      stepCallback();
+      return;
     }
     setIsProcessingStep(false);
   }, [

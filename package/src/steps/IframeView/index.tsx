@@ -16,6 +16,7 @@ import {
 import { NavContext } from "../../NavContext";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { isStepData } from "../../ApiContext/api/types/nextStep";
+import useIframeGtm from "./useIframeGtm";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
@@ -27,6 +28,10 @@ const IframeView: React.FC<{
   //const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
   const [error, setError] = useState<string>();
   const [fatalError, setFatalError] = useState<string>();
+  const gtmPayload = useIframeGtm({
+    nextStep,
+    errors: [error, fatalError],
+  });
 
   function reportError(message: string, fatal: boolean, eventData: any) {
     sentryHub.addBreadcrumb({
@@ -137,6 +142,7 @@ const IframeView: React.FC<{
         }
         src={nextStep.url}
         type={nextStep.type}
+        gtmPayload={gtmPayload}
         onErrorDismissClick={(type) =>
           type === "FATAL" ? setFatalError(undefined) : setError(undefined)
         }

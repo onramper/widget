@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
 import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
 
@@ -16,6 +22,7 @@ import BuyCryptoView from "../../BuyCryptoView";
 import ButtonAction from "../../common/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
+import { triggerGTMEvent } from "../../helpers/useGTM";
 
 interface BodyIframeViewType {
   src: string;
@@ -26,6 +33,7 @@ interface BodyIframeViewType {
   onErrorDismissClick: (type?: string) => void;
   isFullScreen?: boolean;
   features?: string;
+  gtmPayload: any;
 }
 
 const getHostname = (href: string) => {
@@ -60,6 +68,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     selectedGateway?.nextStep?.type === "redirect" &&
     hostname === getHostname(selectedGateway?.nextStep.url);
 
+  const gtmPayloadRef = useRef(props.gtmPayload);
+
   const restartWidget = () => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
@@ -89,6 +99,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     ); //todo: add config
     //if opened -> all is ok
     if (windowObjectReference) {
+      triggerGTMEvent(gtmPayloadRef.current);
+
       const interval = 250;
       const times2Count = (1000 * 60) / interval;
       let count = 0;

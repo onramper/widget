@@ -24,6 +24,8 @@ import { LoadingItem } from "./constants";
 import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
 import Footer from "../common/Footer";
 import { useTranslation } from "react-i18next";
+import { generateGtmStepValue } from "../steps/Step/utils";
+import { triggerGTMEvent } from "../helpers/useGTM";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -79,17 +81,26 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     );
   }, [collected.selectedGateway]);
 
-  const onNextStep = useCallback(
-    () =>
-      !!collected.selectedGateway &&
-      nextScreen(
-        <Step
-          nextStep={collected.selectedGateway.nextStep}
-          isConfirmed={!isNextStepConfirmed()}
-        />
-      ),
-    [collected.selectedGateway, isNextStepConfirmed, nextScreen]
-  );
+  const onNextStep = useCallback(() => {
+    if (!collected.selectedGateway) {
+      return;
+    }
+
+    triggerGTMEvent({
+      event: "fiat-to-crypto",
+      category: collected.selectedGateway?.id || "",
+      label: "transactionForm",
+      action: `step 1`,
+      value: generateGtmStepValue(collected),
+    });
+
+    nextScreen(
+      <Step
+        nextStep={collected.selectedGateway.nextStep}
+        isConfirmed={!isNextStepConfirmed()}
+      />
+    );
+  }, [collected, isNextStepConfirmed, nextScreen]);
 
   const openMorePaymentOptions = useCallback(() => {
     if (availablePaymentMethods.length > 1) {
