@@ -1,9 +1,29 @@
 import { knownWethAddresses, TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 
+// for quote api
 export const apiKey = "oIMeQOqDsg9vFAs6WU1ks2hFxZ32DONF4MkhyDyI";
 
-const baseWeth = {
+const supportedDexes = ["uniswap"];
+// Moonpay_Uniswap => true
+
+export const getDexFromGateway = (
+  gateway: string | undefined
+): string | undefined => {
+  if (!gateway) return undefined;
+  if (!isL2Gateway(gateway)) return undefined;
+  return gateway.toLowerCase().split("_").at(-1);
+};
+
+export const isL2Gateway = (gateway: string | undefined): boolean => {
+  if (gateway === undefined) return false;
+
+  const dex = getDexFromGateway(gateway);
+  if (dex === undefined) return false;
+  return supportedDexes.includes(dex);
+};
+
+const baseWeth: TokenInfo = {
   name: "Wrapped Ether",
   address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
   symbol: "WETH",

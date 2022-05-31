@@ -18,7 +18,6 @@ import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";
 import { findWethAddress } from "../../utils";
-import { TokenInfo } from "layer2";
 import {
   isIframeStep,
   isRedirectStep,

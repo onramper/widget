@@ -6,15 +6,15 @@ import { SwapDetailsBarProps } from "./SwapDetailsBar.models";
 import { ImageWithFallback } from "../../../common/ImageWithFallback/ImageWithFallback";
 import { ReactComponent as Fallback } from "../../../icons/fallback_token_icon.svg";
 
-const SwapDetailsBar = ({
-  className = "",
-  tokenIn,
-  tokenOut,
-  estimate,
-  conversionIn,
-  conversionOut,
-}: SwapDetailsBarProps) => {
-  // TODO: fallback logo icons
+const SwapDetailsBar = (props: SwapDetailsBarProps) => {
+  const {
+    className = "",
+    fiatSymbol = "$",
+    amountIn = 200,
+    amountOut = 0.0055,
+    tokenIn,
+    tokenOut,
+  } = props;
   const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
   const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
 
@@ -31,10 +31,8 @@ const SwapDetailsBar = ({
         )}
         <div className={classes.textContainer}>
           <div className={classes.description}>You spend</div>
-          <div className={classes.amount}>
-            {Number(estimate.amountDecimals).toFixed(5)}
-          </div>
-          <div className={classes.conversion}>({conversionIn})</div>
+          <div className={classes.amount}>{amountIn.toFixed(5)}</div>
+          <div className={classes.conversion}>({fiatSymbol})</div>
         </div>
       </div>
       <SwapArrows className={classes.swapIcon} />
@@ -49,10 +47,8 @@ const SwapDetailsBar = ({
         )}
         <div className={classes.textContainer}>
           <div className={classes.description}>You receive</div>
-          <div className={classes.amount}>
-            {Number(estimate.quoteGasAdjustedDecimals).toFixed(5)}
-          </div>
-          <div className={classes.conversion}>({conversionOut})</div>
+          <div className={classes.amount}>{amountOut.toFixed(5)}</div>
+          <div className={classes.conversion}>({fiatSymbol})</div>
         </div>
       </div>
     </div>

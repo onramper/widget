@@ -50,7 +50,7 @@ export const useTransactionCtxWallets = () => {
   }, [dispatch, userId]);
 
   const getGenericWalletName = useCallback(
-    () => `Account ${wallets.length + 1}`,
+    () => `Account ${wallets?.length + 1 ?? 0}`,
     [wallets.length]
   );
 

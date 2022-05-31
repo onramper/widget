@@ -114,7 +114,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       case "paymentReview":
         showPaymentReview(nextStep);
         break;
-      case "transactionOverview":
+      case "swapOverview":
         replaceScreen(<SwapOverviewView nextStep={nextStep} />);
         break;
       default:

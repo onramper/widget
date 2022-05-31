@@ -17,7 +17,6 @@ import { NavContext } from "../../NavContext";
 import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
 import { PaymentProgressView } from "../PaymentProgressView";
 import { findWethAddress } from "../../utils";
-import { TokenInfo } from "layer2";
 import {
   isIframeStep,
   isRedirectStep,
@@ -132,7 +131,7 @@ const IframeView: React.FC<{
         );
       }
     },
-    [nextStep.url, replaceScreen, selectedGateway?.name]
+    [nextStep, replaceScreen, selectedGateway?.name]
   );
 
   useEffect(

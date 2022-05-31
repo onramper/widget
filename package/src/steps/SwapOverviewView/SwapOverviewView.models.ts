@@ -1,5 +1,5 @@
-import { PaymentProgressViewStep } from "../../ApiContext/api/types/nextStep";
+import { SwapOverviewViewStep } from "../../ApiContext/api/types/nextStep";
 
 export type SwapOverviewViewProps = {
-  nextStep: PaymentProgressViewStep;
+  nextStep: SwapOverviewViewStep;
 };

@@ -7,7 +7,7 @@ import { ReactComponent as Mail } from "../../icons/mail.svg";
 import Heading from "../../common/Heading/Heading";
 import { SingleNotification } from "../WidgetNotification/WidgetNotification";
 import { NotificationType } from "../../NotificationContext";
-import { QuoteDetails, resolveWeth, TokenInfo, uriToHttp } from "layer2";
+import { resolveWeth, TokenInfo, uriToHttp } from "layer2";
 import { ReactComponent as Wallet } from "../../icons/wallet2.svg";
 import Spinner from "../../common/Spinner";
 import { ReactComponent as Check } from "../../icons/check.svg";
@@ -58,7 +58,6 @@ export const PaymentProgressView = ({
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
-  const [userAddress, setUserAddress] = useState<string>("");
   const { nextScreen } = useNav();
 
   useEffect(() => {
@@ -66,7 +65,6 @@ export const PaymentProgressView = ({
       const tx = await pollTransaction(txId);
       if (tx && tx.lastStatus === "ok") {
         setLayer1Status(Status.Success);
-        setUserAddress(tx.cryptocurrencyAddress);
         clearInterval(interval);
       }
       if (tx && tx.lastStatus === "rip") {
@@ -108,25 +106,29 @@ export const PaymentProgressView = ({
   const [gateway, dex] = gatewayAndDex.split("_");
 
   const handleNext = () => {
-    console.log("next screen");
+    console.log("SwapOverviewProps", {
+      type: "transactionOverview",
+      progress: 80,
+      amountIn: 200,
+      amountOut: 0.055,
+      tokenIn: tokenIn,
+      tokenOut: tokenOut,
+      fiatSymbol: "$",
+      userId: "",
+      txId: txId,
+    });
     nextScreen(
       <SwapOverviewView
         nextStep={{
-          type: "transactionOverview",
+          type: "swapOverview",
           progress: 80,
-          url: "",
-          data: {
-            userData: {
-              userAddress: "0xC54070dA79E7E3e2c95D3a91fe98A42000e65a48",
-            },
-            transactionData: {} as QuoteDetails,
-            tokenIn: tokenIn,
-            tokenOut: tokenOut,
-            fiatSymbol: "$",
-            balance: 0,
-            userId: "",
-            txId: txId,
-          },
+          amountIn: 200,
+          amountOut: 0.055,
+          tokenIn: tokenIn,
+          tokenOut: tokenOut,
+          fiatSymbol: "$",
+          userId: "",
+          txId: txId,
         }}
       />
     );

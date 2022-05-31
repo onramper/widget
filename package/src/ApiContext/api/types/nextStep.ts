@@ -137,24 +137,16 @@ export type BrakdownItem = {
   hint?: string;
 };
 
-export type SwapOverviewStepData = {
-  userData: {
-    userAddress: string;
-  };
-  transactionData: QuoteDetails;
+export type SwapOverviewViewStep = {
+  type: "swapOverview";
+  progress: number;
+  amountIn: number;
+  amountOut: number;
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
   fiatSymbol: string;
-  balance: number;
   userId: string;
   txId: string;
-};
-
-export type SwapOverviewViewStep = {
-  type: "transactionOverview";
-  progress: number;
-  url: string;
-  data: SwapOverviewStepData;
 };
 
 export type PaymentProgressViewStep = {

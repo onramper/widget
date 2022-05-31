@@ -52,21 +52,17 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const {
     tokenIn,
     tokenOut,
-    currentQuote,
+    quote,
     fiatSymbol,
-    fiatConversionIn,
-    fiatConversionOut,
     slippageTolerance,
     selectedWalletAddress,
   } = useTransactionContext();
   const { setQuote } = useTransactionCtxActions();
-  const [cryptoSpent] = useState(
-    computeTokenIn(tokenIn, currentQuote, fiatSymbol, fiatConversionIn)
-  );
+  const [cryptoSpent] = useState(computeTokenIn(tokenIn, quote, fiatSymbol));
   const [cryptoReceived] = useState(
-    computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversionOut)
+    computeTokenOut(tokenOut, quote, fiatSymbol)
   );
-  const [localQuote, setLocalQuote] = useState(currentQuote);
+  const [localQuote, setLocalQuote] = useState(quote);
   const priceImpact = useUsdPriceImpact(
     tokenIn,
     tokenOut,
@@ -123,7 +119,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             const newQuote = await getQuote(
               cryptoSpent,
               cryptoReceived,
-              Number(value),
+              value,
               false,
               apiKey,
               signal
@@ -257,7 +253,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             ethBalance ? utils.formatEther(ethBalance).slice(0, 5) : "0.00"
           }`}
           onMaxClick={onMaxClick}
-          suffix={`(${cryptoSpent.fiatSymbol}${cryptoSpent.fiatConversion})`}
+          suffix={`(${cryptoSpent.fiatSymbol})`}
           handleProps={{
             icon: cryptoSpent.icon,
             value: cryptoSpent.currencyShortName,
@@ -276,7 +272,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
               ? utils.formatEther(targetTokenBalance).slice(0, 5)
               : "0.00"
           }`}
-          suffix={`(${cryptoReceived.fiatSymbol}${cryptoReceived.fiatConversion})`}
+          suffix={`(${cryptoReceived.fiatSymbol})`}
           handleProps={{
             icon: cryptoReceived.icon,
             value: cryptoReceived.currencyShortName,
@@ -369,8 +365,7 @@ const computeHeading = (
 const computeTokenIn = (
   tokenIn: TokenInfo,
   quote: QuoteDetails,
-  fiatSymbol: string,
-  fiatConversion: number
+  fiatSymbol: string
 ) => {
   const parsedTokenIn = parseWrappedTokens(tokenIn);
   const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
@@ -379,7 +374,6 @@ const computeTokenIn = (
     ...parsedTokenIn,
     label: "You spend",
     value: quote.amountDecimals,
-    fiatConversion,
     fiatSymbol,
     currencyShortName: parsedTokenIn.symbol,
     currencyLongName: parsedTokenIn.name,
@@ -390,8 +384,7 @@ const computeTokenIn = (
 const computeTokenOut = (
   tokenOut: TokenInfo,
   quote: QuoteDetails,
-  fiatSymbol: string,
-  fiatConversion: number
+  fiatSymbol: string
 ) => {
   const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
 
@@ -399,7 +392,6 @@ const computeTokenOut = (
     ...tokenOut,
     label: "You receive",
     value: quote.quoteGasAdjustedDecimals,
-    fiatConversion,
     fiatSymbol,
     currencyShortName: tokenOut.symbol,
     currencyLongName: tokenOut.name,

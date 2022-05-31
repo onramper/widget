@@ -169,7 +169,6 @@ export const processResponse = async (
 ): Promise<any> => {
   if (response.ok) {
     const data = await response.json();
-    console.log("--response data--", data);
     return data;
   } else {
     let errorResponse;
@@ -370,12 +369,6 @@ const filterRatesResponse = (
   defaultAddrs?: DefaultAddrs,
   selectedCrypto?: string
 ): RateResponse => {
-  console.log("--filterRatesResponse--\n", {
-    ratesResponse,
-    onlyGateways,
-    defaultAddrs,
-    selectedCrypto,
-  });
   return ratesResponse.filter((gateway) => {
     if (
       onlyGateways !== undefined &&

@@ -1,10 +1,11 @@
-import { StateType } from "./models";
 import { DEFAULTS as defaultSettings } from "layer2";
+import { StateType } from "./models";
 
-export default {
+const initialState: StateType = {
   key: 0,
   userId: "",
-  currentQuote: {
+  txId: "---transaction--id---",
+  quote: {
     blockNumber: "0",
     amount: "0",
     amountDecimals: "0",
@@ -39,8 +40,14 @@ export default {
   },
   wallets: [],
   fiatSymbol: "$",
-  fiatConversionIn: 0,
-  fiatConversionOut: 0,
   slippageTolerance: defaultSettings.slippageTolerance,
   deadline: defaultSettings.deadline,
-} as StateType;
+};
+
+export default initialState;
+// key: number; **
+// wallets: WalletItemData[];
+// selectedWalletAddress?: string;
+// slippageTolerance: number; **
+// deadline: number; **
+// quote?: QuoteDetails;
