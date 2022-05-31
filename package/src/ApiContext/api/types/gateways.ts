@@ -41,6 +41,11 @@ interface IGatewayItem {
   cryptoCurrencies: Currency[];
 }
 
+export enum SelectGatewayByType {
+  Performance = "performance",
+  Price = "price",
+}
+
 export type {
   GatewaysResponse,
   IconGatewaysResponse,

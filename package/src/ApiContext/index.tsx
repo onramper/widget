@@ -28,7 +28,7 @@ import type {
   CollectedStateType,
   GatewayRateOptionSimple,
 } from "./initialState";
-import { GatewaysResponse } from "./api/types/gateways";
+import { GatewaysResponse, SelectGatewayByType } from "./api/types/gateways";
 import { RateResponse } from "./api/types/rate";
 import type {
   NextStep,
@@ -256,7 +256,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       let rawResponseGateways: GatewaysResponse;
       let responseGateways: GatewaysResponse;
       try {
-        if (props.selectGatewayBy === "performance") {
+        if (props.selectGatewayBy === SelectGatewayByType.Performance) {
           updateStaticRouting(
             (await API.getGatewayStaticRouting(actualCountry)).recommended
           );
