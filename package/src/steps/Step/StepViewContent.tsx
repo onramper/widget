@@ -45,7 +45,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
     const { selectedCrypto, selectedGateway, defaultAddrs, isAddressEditable } =
       collected;
       
-    const reviewAsFrontendStepIfApplicable = () => {
+    const showReviewAsFrontendStepIfApplicable = () => {
       if (
         isConfirmed === false ||
         (!isConfirmed &&
@@ -85,7 +85,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       }
       return false;
     };
-    const registerStepGmtEvent = () => {
+    const registerStepGtmEvent = () => {
       const isIframeOrRedirect =
         nextStep?.type && ["redirect", "iframe"].indexOf(nextStep?.type) > -1;
       if (!isIframeOrRedirect) {
@@ -164,13 +164,13 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       }
     };
 
-    if (reviewAsFrontendStepIfApplicable()) {
+    if (showReviewAsFrontendStepIfApplicable()) {
       return;
     }
 
     const stepCallback = getMatchedStepCallback();
     if (stepCallback) {
-      registerStepGmtEvent();
+      registerStepGtmEvent();
       stepCallback();
       return;
     }
