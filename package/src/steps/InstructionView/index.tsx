@@ -24,7 +24,9 @@ const PickOptionView: React.FC<{
       setIsLoading(true);
       try {
         const newNextStep = await apiInterface.executeStep(nextStep, {});
-        nextScreen(<Step nextStep={newNextStep} />);
+        nextScreen(
+          <Step gtmToBeRegisterStep={nextStep} nextStep={newNextStep} />
+        );
       } catch (_error) {
         const error = _error as { fatal: any; message: string };
         if (error.fatal) {

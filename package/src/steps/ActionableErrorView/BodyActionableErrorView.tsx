@@ -14,6 +14,7 @@ type ActionableErrorViewType = {
   message?: string;
   fatal?: boolean;
   step?: NextStep;
+  parentStep?: NextStep;
   optionalUrl?: string;
 };
 
@@ -55,8 +56,13 @@ const BodyActionableErrorView: React.FC<ActionableErrorViewType> = (props) => {
             onClick={
             (props.fatal === false) ?
               () => {
-                replaceScreen(<Step nextStep={props.step as NextStep} />);
-              }
+                    replaceScreen(
+                      <Step
+                        gtmToBeRegisterStep={props.parentStep}
+                        nextStep={props.step as NextStep}
+                      />
+                    );
+                  }
             : () => {
                 nextScreen(<BuyCryptoView />);
               } }

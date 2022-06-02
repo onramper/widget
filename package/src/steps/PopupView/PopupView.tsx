@@ -22,7 +22,7 @@ interface PopupLauncherViewType {
     uploadFailed?: boolean
     processFinished?: boolean
     failStep: NextStep
-
+    nextStep?: NextStep
     onErrorDismissClick: (type?: string) => void
 }
 
@@ -126,7 +126,14 @@ const PopupLauncherView: React.FC<PopupLauncherViewType> = (props) => {
                                         }
                                         :() => {
                                             console.log("tried to do fail step", props.processFinished, props.uploadFailed)
-                                            replaceScreen(<Step nextStep={props.failStep} />);
+                                            replaceScreen(
+                                              <Step
+                                                gtmToBeRegisterStep={
+                                                  props.nextStep
+                                                }
+                                                nextStep={props.failStep}
+                                              />
+                                            );
                                         }
                                     } />
                             </span>

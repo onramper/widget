@@ -6,6 +6,7 @@ import { PaymentReviewProps } from "./PaymentReview.models";
 import { NextStep, APIContext, CollectedStateType } from "../../ApiContext";
 import ConfirmPaymentView from ".";
 import { PaymentReviewStep } from "../../ApiContext/api/types/nextStep";
+import { triggerGTMEvent, generateGtmStepValue } from "../../helpers/useGTM";
 
 /**
  * Temporary solution:
@@ -132,13 +133,20 @@ const generateInjectedStep = (
 const PaymentReviewDecorator: React.FC<
   Omit<PaymentReviewProps, "nextStep"> & { nextStep: NextStep }
 > = (props) => {
-  const { nextScreen } = useContext(NavContext);
+  const { nextScreen, currentStep } = useContext(NavContext);
   const { collected } = useContext(APIContext);
   const stepRef = useRef(
     generateInjectedStep(collected, props.nextStep, props.includeCryptoAddr)
   );
 
   const onButtonAction = () => {
+    triggerGTMEvent({
+      event: "fiat-to-crypto",
+      category: collected.selectedGateway?.id || "",
+      label: "review",
+      action: `step ${currentStep() + 1}`,
+      value: generateGtmStepValue(collected),
+    });
     nextScreen(<Step nextStep={props.nextStep} isConfirmed />);
   };
 

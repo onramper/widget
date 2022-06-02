@@ -1,4 +1,4 @@
-import { NextStepError, StepDataItems, CollectedStateType } from "../../ApiContext";
+import { NextStepError, StepDataItems } from "../../ApiContext";
 
 export const processError = (
   error: NextStepError,
@@ -18,36 +18,4 @@ export const processError = (
   } else if (error.message) newErr.message = error.message;
 
   return newErr;
-};
-
-export const generateGtmStepValue = (collected: CollectedStateType) => {
-  const {
-    amount,
-    amountInCrypto,
-    country,
-    state,
-    selectedCountry,
-    selectedCrypto,
-    selectedCurrency,
-    selectedGateway,
-    selectedPaymentMethod,
-  } = collected;
-
-  return {
-    payment: {
-      amount,
-      amountInCrypto,
-      selectedCurrency: selectedCurrency?.id,
-      selectedPaymentMethod: selectedPaymentMethod?.id,
-    },
-    location: {
-      country,
-      selectedCountry,
-      state,
-    },
-    crypto: {
-      selectedCrypto: selectedCrypto?.id,
-      selectedGateway: selectedGateway?.id,
-    },
-  };
 };

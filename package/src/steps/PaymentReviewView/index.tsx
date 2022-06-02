@@ -57,7 +57,9 @@ const ConfirmPaymentView: React.FC<PaymentReviewProps> = (props) => {
     setErrorMessage(undefined);
     try {
       const newNextStep = await apiInterface.executeStep(props.nextStep, {});
-      nextScreen(<Step nextStep={newNextStep} />);
+      nextScreen(
+        <Step gtmToBeRegisterStep={props.nextStep} nextStep={newNextStep} />
+      );
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
       if (error.fatal) {

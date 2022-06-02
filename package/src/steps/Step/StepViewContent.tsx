@@ -21,16 +21,20 @@ import EmailVerificationView from "../EmailVerificationView/EmailVerificationVie
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 import InstructionView from "../InstructionView";
-import { triggerGTMEvent } from "../../helpers/useGTM";
+import { triggerGTMEvent, generateGtmStepValue } from "../../helpers/useGTM";
 import PopupView from "../PopupView";
 import ActionableErrorView from "../ActionableErrorView";
-import { generateGtmStepValue } from "./utils";
 
 export interface NewStepProps {
   nextStep?: NextStep;
+  gtmToBeRegisterStep?: NextStep;
   isConfirmed?: boolean;
 }
-const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
+const StepViewContent: React.FC<NewStepProps> = ({
+  nextStep,
+  gtmToBeRegisterStep,
+  isConfirmed,
+}) => {
   const { replaceScreen, backScreen, currentStep /* , onlyScreen */ } =
     useContext(NavContext);
   const { inputInterface, collected } = useContext(APIContext);
@@ -44,7 +48,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
 
     const { selectedCrypto, selectedGateway, defaultAddrs, isAddressEditable } =
       collected;
-      
+
     const showReviewAsFrontendStepIfApplicable = () => {
       if (
         isConfirmed === false ||
@@ -67,14 +71,6 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
             );
         }
 
-        triggerGTMEvent({
-          event: "fiat-to-crypto",
-          category: selectedGateway?.id || "",
-          label: "review",
-          action: `step ${currentStep() + 1}`,
-          value: generateGtmStepValue(collected),
-        });
-
         replaceScreen(
           <PaymentReviewDecorator
             nextStep={nextStep}
@@ -86,17 +82,16 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
       return false;
     };
     const registerStepGtmEvent = () => {
-      const isIframeOrRedirect =
-        nextStep?.type && ["redirect", "iframe"].indexOf(nextStep?.type) > -1;
-      if (!isIframeOrRedirect) {
-        triggerGTMEvent({
-          event: "fiat-to-crypto",
-          category: selectedGateway?.id || "",
-          label: nextStep?.eventLabel || nextStep?.type,
-          action: `step ${currentStep() + 1}`,
-          value: generateGtmStepValue(collected),
-        });
+      if (!gtmToBeRegisterStep) {
+        return;
       }
+      triggerGTMEvent({
+        event: "fiat-to-crypto",
+        category: selectedGateway?.id || "",
+        label: gtmToBeRegisterStep?.eventLabel || gtmToBeRegisterStep?.type,
+        action: `step ${currentStep() + 1}`,
+        value: generateGtmStepValue(collected),
+      });
     };
     const getMatchedStepCallback = () => {
       switch (nextStep.type) {
@@ -183,6 +178,7 @@ const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
     isConfirmed,
     inputInterface,
     collected,
+    gtmToBeRegisterStep,
   ]);
 
   return (

@@ -57,7 +57,11 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
           break;
         }
       }
-      if (!failed) replaceScreen(<Step nextStep={newNextStep} />);
+      if (!failed) {
+        replaceScreen(
+          <Step gtmToBeRegisterStep={nextStep} nextStep={newNextStep} />
+        );
+      }
     };
     callback();
   }, [

@@ -1,3 +1,5 @@
+import { CollectedStateType } from "../ApiContext";
+
 /**
  * Pushing any events to the data layer for GTM event tracking
  * @param {object} gtmObject
@@ -33,5 +35,47 @@ export const triggerGTMEvent = ({
     label,
     action,
     value,
+  });
+};
+
+export const generateGtmStepValue = (collected: CollectedStateType) => {
+  const {
+    amount,
+    amountInCrypto,
+    country,
+    state,
+    selectedCountry,
+    selectedCrypto,
+    selectedCurrency,
+    selectedGateway,
+    selectedPaymentMethod,
+  } = collected;
+
+  return {
+    payment: {
+      amount,
+      amountInCrypto,
+      selectedCurrency: selectedCurrency?.id,
+      selectedPaymentMethod: selectedPaymentMethod?.id,
+    },
+    location: {
+      country,
+      selectedCountry,
+      state,
+    },
+    crypto: {
+      selectedCrypto: selectedCrypto?.id,
+      selectedGateway: selectedGateway?.id,
+    },
+  };
+};
+
+export const triggerLandingViewGtmEvent = (collected: CollectedStateType) => {
+  triggerGTMEvent({
+    event: "fiat-to-crypto",
+    category: collected.selectedGateway?.id || "",
+    label: "transactionForm",
+    action: `step 1`,
+    value: generateGtmStepValue(collected),
   });
 };

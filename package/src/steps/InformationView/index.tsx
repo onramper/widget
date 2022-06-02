@@ -53,7 +53,9 @@ const InformationView: React.FC<{
       }
       newNextStep = await apiInterface.executeStep(newNextStep, payload);
       setButtonText("Got it!");
-      replaceScreen(<Step nextStep={newNextStep} />);
+      replaceScreen(
+        <Step gtmToBeRegisterStep={props.nextStep} nextStep={newNextStep} />
+      );
       return true;
     } catch (error) {
       if (error.fatal) {

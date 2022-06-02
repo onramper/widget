@@ -19,8 +19,9 @@ const FormView: React.FC<{ nextStep: NextStep & { type: "form" } }> = ({
   const [isFilled, setIsFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string>();
-  const [errorObj, setErrorObj] =
-    useState<{ [key: string]: string | undefined }>();
+  const [errorObj, setErrorObj] = useState<{
+    [key: string]: string | undefined;
+  }>();
   const [title, setTitle] = useState(
     nextStep.title || (nextStep.humanName ?? "Purchase form")
   );
@@ -103,7 +104,9 @@ const FormView: React.FC<{ nextStep: NextStep & { type: "form" } }> = ({
       const payload = { ...params, partnerContext: collected.partnerContext };
       const newNextStep = await apiInterface.executeStep(nextStep, payload);
       inputInterface.handleInputChange("isPartnerContextSent", true);
-      nextScreen(<Step nextStep={newNextStep} />);
+      nextScreen(
+        <Step gtmToBeRegisterStep={nextStep} nextStep={newNextStep} />
+      );
     } catch (_error) {
       const error = _error as NextStepError;
       const processedError = processError(error, nextStepData);

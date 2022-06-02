@@ -1,7 +1,6 @@
 import { useRef, useContext, useEffect } from "react";
 import { NavContext } from "../../NavContext";
-import { generateGtmStepValue } from "../Step/utils";
-import { triggerGTMEvent } from "../../helpers/useGTM";
+import { triggerGTMEvent, generateGtmStepValue } from "../../helpers/useGTM";
 import { APIContext, NextStep } from "../../ApiContext";
 
 type UseIframeGtmProps = {

@@ -34,7 +34,12 @@ const PickOptionView: React.FC<{
     setIsLoading(true);
     try {
       if (selectedOption) {
-        nextScreen(<Step nextStep={selectedOption.nextStep} />);
+        nextScreen(
+          <Step
+            gtmToBeRegisterStep={nextStep}
+            nextStep={selectedOption.nextStep}
+          />
+        );
       }
     } catch (_error) {
       const error = _error as { fatal: any; message: string };

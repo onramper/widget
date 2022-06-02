@@ -18,6 +18,7 @@ const ActionableErrorView: React.FC<ActionableErrorProps> = (props) => {
         message={props.nextStep.message}
         fatal={props.nextStep.fatal}
         step={props.nextStep.nextStep}
+        parentStep={props.nextStep as NextStep}
         optionalUrl={props.nextStep.optionalUrl}
       />
     </div>

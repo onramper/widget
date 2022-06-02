@@ -92,6 +92,7 @@ const PopupView: React.FC<{
         onErrorDismissClick={(type) =>
           type === "FATAL" ? setFatalError(undefined) : setError(undefined)
         }
+        nextStep={nextStep}
         uploadFailed={uploadFailed}
         processFinished={processFinished}
       />
