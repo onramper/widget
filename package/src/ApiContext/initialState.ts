@@ -41,6 +41,12 @@ export interface CryptoAddrType {
   memo?: string;
 }
 
+export interface StaticRoutingItemType {
+  crypto: string;
+  fiat: string;
+  gateway: string;
+}
+
 export type CollectedStateType = {
   amount: number;
   amountInCrypto?: boolean;
@@ -64,6 +70,7 @@ export type CollectedStateType = {
   supportSell: boolean;
   supportBuy: boolean;
   isAmountEditable?: boolean;
+  staticRouting?: StaticRoutingItemType[];
   [key: string]: any;
 };
 

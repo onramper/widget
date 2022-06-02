@@ -89,6 +89,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             supportBuy={props.supportBuy}
             isAmountEditable={props.isAmountEditable}
             recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
+            selectGatewayBy={props.selectGatewayBy}
           >
             <div style={{ flexGrow: 1, display: "flex" }}>
               <NavContainer home={<BuyCryptoView />} />

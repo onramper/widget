@@ -1,4 +1,5 @@
 import { GatewayRateOption } from "./ApiContext";
+import { StaticRoutingItemType } from "./ApiContext/initialState";
 
 export const copyToClipBoard = async (
   text: string,
@@ -158,7 +159,7 @@ export const getArrOfMinsMaxs = (
   return easiests;
 };
 
-export function getBestAvailableGateway(
+export function getBestGatewayByPrice(
   allRates: GatewayRateOption[],
   amountInCrypto: boolean
 ) {
@@ -178,6 +179,38 @@ export function getBestAvailableGateway(
     }
   }
 
+  return bestGateway;
+}
+
+/**
+ * selects best success-reliable gateway based on given fiat->crypto
+ * uses best price as fallback
+ * @param allRates 
+ * @param amountInCrypto 
+ * @param fiat 
+ * @param crypto 
+ * @param staticRouting 
+ */
+export function getBestGatewayByPerformance(
+  allRates: GatewayRateOption[],
+  amountInCrypto: boolean,
+  fiat?: string,
+  crypto?: string,
+  staticRouting?: StaticRoutingItemType[]
+) {
+  const bestGatewayName = staticRouting?.find(
+    (i) => i.fiat === fiat && i.crypto === crypto
+  )?.gateway?.toLowerCase();
+  if (!bestGatewayName) {
+    return getBestGatewayByPrice(allRates, amountInCrypto);
+  }
+
+  const bestGateway = allRates
+    .filter((item) => item.available)
+    .find((i) => i.name?.toLocaleLowerCase() === bestGatewayName);
+  if (!bestGateway) {
+    return getBestGatewayByPrice(allRates, amountInCrypto);
+  }
   return bestGateway;
 }
 

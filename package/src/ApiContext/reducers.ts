@@ -1,4 +1,9 @@
-import { StateType, DataStateType, ErrorObjectType } from "./initialState";
+import {
+  StateType,
+  DataStateType,
+  ErrorObjectType,
+  StaticRoutingItemType,
+} from "./initialState";
 import { CollectedStateType, ItemType } from ".";
 
 export enum CollectedActionsType {
@@ -7,10 +12,12 @@ export enum CollectedActionsType {
   DeleteFile = "DELETE_FILE",
   AddError = "ADD_ERROR",
   ResetCollected = "RESET_COLLECTED",
+  UpdateStaticRoute = "UPDATE_STATIC_ROUTING",
 }
 
 export enum DataActionsType {
   AddData = "ADD_DATA",
+  // TODO: it seems that the following 2 are no longer used: investigate and proceed to delete them
   Init = "INIT",
   AddCollected = "ADD_COLLECTED",
 }
@@ -53,6 +60,12 @@ export type DataActions =
       type: CollectedActionsType.ResetCollected;
       payload: {
         value: CollectedStateType;
+      };
+    }
+  | {
+      type: CollectedActionsType.UpdateStaticRoute;
+      payload: {
+        value: StaticRoutingItemType[];
       };
     };
 
@@ -109,6 +122,12 @@ export const collectedReducer = (state: StateType, action: DataActions) => {
           errors: { ...state.collected.errors, ...error },
         };
       else return state.collected;
+    }
+    case CollectedActionsType.UpdateStaticRoute: {
+      return {
+        ...state.collected,
+        staticRouting: action.payload.value,
+      };
     }
     case CollectedActionsType.ResetCollected: {
       return action.payload.value;

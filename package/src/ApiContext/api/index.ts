@@ -1,6 +1,10 @@
 import "abort-controller/polyfill";
 import { GatewayRate, RateResponse } from "./types/rate";
-import { Currency, GatewaysResponse } from "./types/gateways";
+import {
+  Currency,
+  GatewaysResponse,
+  GatewayStaticRoutingResponse,
+} from "./types/gateways";
 import { FieldError } from "./types/nextStep";
 import { NextStep } from "..";
 import processMoonpayStep, { moonpayUrlRegex } from "@onramper/moonpay-adapter";
@@ -394,6 +398,18 @@ const sell = async (
   return rates;
 };
 
+const getGatewayStaticRouting = async (country?: string) => {
+  const url = `${BASE_API}/routing/${country}`;
+  logRequest(url);
+  const response = await fetch(url, {
+    headers,
+    credentials: process.env.STAGE === "local" ? "omit" : "include",
+  });
+
+  const data: GatewayStaticRoutingResponse = await processResponse(response);
+  return data;
+};
+
 export {
   authenticate,
   gateways,
@@ -405,6 +421,7 @@ export {
   getAcceptLanguageParameter,
   updateAcceptLanguageParameter,
   sell,
+  getGatewayStaticRouting,
   NextStepError,
   sentryHub,
   ApiError,
