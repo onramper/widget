@@ -156,12 +156,16 @@ export type PaymentProgressViewStep = {
   tokenOut: TokenInfo;
   gatewayAndDex: string;
   txId: string;
+  inAmount: number;
+  inCurrency: string; //EUR
 };
 
 export type IframeStep = {
   type: "iframe";
   url: string;
   l2TokenData: TokenInfo;
+  inAmount: number;
+  inCurrency: string; //EUR
   cryptocurrencyAddress: string;
   txId: string;
   fullscreen: boolean;
@@ -175,6 +179,8 @@ export type RedirectStep = {
   l2TokenData: TokenInfo;
   cryptocurrencyAddress: string;
   txId: string;
+  inAmount: number;
+  inCurrency: string; //EUR
 };
 
 type NextStep = NextStepBase &

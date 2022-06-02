@@ -66,6 +66,16 @@ export const useTransactionCtxActions = () => {
     [dispatch]
   );
 
+  const updateInAmount = useCallback(
+    (inAmount: number) => {
+      dispatch({
+        type: ActionTypes.UpdateInAmount,
+        payload: inAmount,
+      });
+    },
+    [dispatch]
+  );
+
   const initialiseTransactionContext = useCallback(
     (payload: {
       txId: string;
@@ -73,6 +83,7 @@ export const useTransactionCtxActions = () => {
       tokenIn: TokenInfo;
       tokenOut: TokenInfo;
       fiatSymbol: string;
+      inAmount: number;
     }) => {
       dispatch({
         type: ActionTypes.Init,
@@ -89,5 +100,6 @@ export const useTransactionCtxActions = () => {
     updateTokenIn,
     updateTokenOut,
     updateFiatSymbol,
+    updateInAmount,
   };
 };

@@ -20,13 +20,9 @@ import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
 import { pollTransaction } from "../../ApiContext/api";
 import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
+import { PaymentProgressViewStep } from "../../ApiContext/api/types/nextStep";
 
-const defaults: {
-  tokenIn: TokenInfo;
-  tokenOut: TokenInfo;
-  gatewayAndDex: string;
-  txId: string;
-} = {
+const defaults: Omit<PaymentProgressViewStep, "type" | "progress"> = {
   tokenIn: {
     name: "Input Token Name",
     address: "In address",
@@ -45,7 +41,46 @@ const defaults: {
   },
   gatewayAndDex: "Gateway_DExchange",
   txId: "--some--random--L1--tx--id--",
+  inAmount: 0.005,
+  inCurrency: "USD",
 };
+
+// const res = {
+//   type: "redirect",
+//   url: "https://buy-staging.moonpay.com?apiKey=pk_test_PjABKr88VlgosyTueq3exrVnYYLd4ZB&currencyCode=ETH&baseCurrencyAmount=200&baseCurrencyCode=EUR&externalTransactionId=UGF8MxyjgB8pjWdiE8I9Cg--&lockAmount=true",
+//   txId: "UGF8MxyjgB8pjWdiE8I9Cg--",
+//   apiKey: "pk_test_oDsXkHokDdr06zZ0_sxJGw00",
+//   inCurrency: "EUR",
+//   timestamp: 1654004424105,
+//   ip: "127.0.0.1",
+//   outCurrency: "ETH",
+//   lastStatus_date: "init#2022-05-31T13:40:24.105Z",
+//   inAmount: 200,
+//   lastStatus: "init",
+//   outAmount: 200,
+//   countryIp: "es",
+//   gatewayId: 0,
+//   host: "localhost:3001",
+//   onramperFee: 1,
+//   partnerFee: 0,
+//   SK: "tx#metadata",
+//   paymentMethod: 0,
+//   PK: "tx#UGF8MxyjgB8pjWdiE8I9Cg--",
+//   customerCrypto: "ALICE_ETH",
+//   customerGateway: "Moonpay_Uniswap",
+//   transactionType: "L2",
+//   expectedReceivedCrypto: 200,
+//   l2TokenOutAmount: 200,
+//   l2TokenData: {
+//     name: "My Neighbor Alice",
+//     symbol: "ALICE",
+//     address: "0xAC51066d7bEC65Dc4589368da368b212745d63E8",
+//     logoURI:
+//       "https://assets.coingecko.com/coins/images/14375/thumb/alice_logo.jpg?1615782968",
+//     chainId: 1,
+//     decimals: 6,
+//   },
+// };
 
 export const PaymentProgressView = ({
   nextStep: {
@@ -53,6 +88,8 @@ export const PaymentProgressView = ({
     tokenIn = defaults.tokenIn,
     tokenOut = defaults.tokenOut,
     txId = defaults.txId,
+    inAmount = defaults.inAmount, // ETH
+    inCurrency = defaults.inCurrency, // USD
   },
 }: PaymentProgressViewProps) => {
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
@@ -107,10 +144,10 @@ export const PaymentProgressView = ({
 
   const handleNext = () => {
     console.log("SwapOverviewProps", {
-      type: "transactionOverview",
+      type: "swapOverview",
       progress: 80,
-      amountIn: 200,
-      amountOut: 0.055,
+      amountIn: 0.005,
+      amountOut: 0,
       tokenIn: tokenIn,
       tokenOut: tokenOut,
       fiatSymbol: "$",
@@ -121,12 +158,12 @@ export const PaymentProgressView = ({
       <SwapOverviewView
         nextStep={{
           type: "swapOverview",
-          progress: 80,
-          amountIn: 200,
-          amountOut: 0.055,
+          progress: 0,
+          amountIn: inAmount,
+          amountOut: 0,
           tokenIn: tokenIn,
           tokenOut: tokenOut,
-          fiatSymbol: "$",
+          fiatSymbol: inCurrency,
           userId: "",
           txId: txId,
         }}

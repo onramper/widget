@@ -114,6 +114,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             tokenOut: props.nextStep.l2TokenData,
             gatewayAndDex: selectedGateway?.name ?? "",
             txId: props.nextStep.txId,
+            inCurrency: props.nextStep.inCurrency,
+            inAmount: props.nextStep.inAmount,
           }}
         />
       );

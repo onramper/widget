@@ -13,9 +13,14 @@ export enum ActionTypes {
   UpdateTokenIn = "UpdateTokenIn",
   UpdateTokenOut = "UpdateTokenOut",
   UpdateFiatSymbol = "UpdateFiatSymbol",
+  UpdateInAmount = "UpdateInAmount",
 }
 
 export type DataActions =
+  | {
+      type: ActionTypes.UpdateInAmount;
+      payload: number;
+    }
   | {
       type: ActionTypes.UpdateFiatSymbol;
       payload: string;
@@ -57,6 +62,11 @@ export type DataActions =
 
 export default (state: StateType, action: DataActions): StateType => {
   switch (action.type) {
+    case ActionTypes.UpdateInAmount:
+      return {
+        ...state,
+        inAmount: action.payload,
+      };
     case ActionTypes.UpdateTokenIn:
       return {
         ...state,

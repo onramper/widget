@@ -57,7 +57,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     slippageTolerance,
     selectedWalletAddress,
   } = useTransactionContext();
-  const { setQuote } = useTransactionCtxActions();
+  const { setQuote, updateInAmount } = useTransactionCtxActions();
   const [cryptoSpent] = useState(computeTokenIn(tokenIn, quote, fiatSymbol));
   const [cryptoReceived] = useState(
     computeTokenOut(tokenOut, quote, fiatSymbol)
@@ -87,8 +87,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   const onActionButton = useCallback(async () => {
     setQuote(localQuote);
+    updateInAmount(Number(spentValue));
     backScreen();
-  }, [backScreen, localQuote, setQuote]);
+  }, [backScreen, localQuote, setQuote, spentValue, updateInAmount]);
 
   const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();

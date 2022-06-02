@@ -39,7 +39,7 @@ import { SwapOverviewViewProps } from "./SwapOverviewView.models";
 const SwapOverviewView = ({
   nextStep: {
     progress,
-    amountIn,
+    amountIn: initialAmountIn,
     amountOut,
     tokenIn: initialTokenIn,
     tokenOut: initialTokenOut,
@@ -50,19 +50,28 @@ const SwapOverviewView = ({
 }: SwapOverviewViewProps) => {
   const { setQuote, initialiseTransactionContext } = useTransactionCtxActions();
 
-  const { account: metaAddress, active } = useLayer2();
+  const { account: metaAddress, active, chainId } = useLayer2();
   const balance = useEtherBalance(metaAddress);
-  const { fiatSymbol, tokenIn, tokenOut, slippageTolerance, deadline, quote } =
-    useTransactionContext();
-
-  console.log({
+  const {
     fiatSymbol,
     tokenIn,
     tokenOut,
     slippageTolerance,
     deadline,
     quote,
-  });
+    inAmount,
+  } = useTransactionContext();
+
+  useEffect(() => {
+    if (balance && metaAddress && chainId) {
+      console.table({
+        account: metaAddress,
+        active: active,
+        chainId: chainId,
+        balance: Number(utils.formatEther(balance)),
+      });
+    }
+  }, [active, balance, chainId, metaAddress]);
 
   // const { fetchAndUpdateUserWallets } = useTransactionCtxWallets();
 
@@ -109,13 +118,14 @@ const SwapOverviewView = ({
       tokenIn: initialTokenIn,
       tokenOut: initialTokenOut,
       fiatSymbol: initialFiatSymbol,
+      inAmount: initialAmountIn,
     });
     //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    handleUpdate(amountIn);
-  }, [amountIn, handleUpdate]);
+    handleUpdate(initialAmountIn);
+  }, [initialAmountIn, handleUpdate]);
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
@@ -145,7 +155,7 @@ const SwapOverviewView = ({
           Number(utils.formatEther(balance)),
           tokenIn,
           tokenOut,
-          amountIn,
+          inAmount,
           metaAddress,
           undefined,
           {
@@ -278,7 +288,7 @@ const SwapOverviewView = ({
         <SwapDetailsBar
           tokenIn={parsedTokenIn}
           tokenOut={tokenOut}
-          amountIn={Number(quote?.amountDecimals) ?? amountIn}
+          amountIn={Number(quote?.amountDecimals) ?? inAmount}
           amountOut={Number(quote?.quoteDecimals) ?? amountOut}
           fiatSymbol={fiatSymbol}
         />

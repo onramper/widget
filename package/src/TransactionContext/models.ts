@@ -4,6 +4,7 @@ import { WalletItemData } from "../ApiContext/api/types/nextStep";
 export interface StateType {
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
+  inAmount: number;
   fiatSymbol: string;
   txId: string;
   key: number;

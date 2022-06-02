@@ -92,14 +92,24 @@ const IframeView: React.FC<{
           ) {
             replaceScreen(
               <PaymentProgressView
+                // type: "paymentProgress";
+                // progress: number;
+                // tokenIn: TokenInfo;
+                // tokenOut: TokenInfo;
+                // gatewayAndDex: string;
+                // txId: string;
+                // inAmount: number;
+                // inCurrency: string; //EUR
                 nextStep={{
                   type: "paymentProgress",
-                  progress: 80,
+                  progress: 0,
                   // infer weth from output chainI
                   tokenIn: findWethAddress(nextStep.l2TokenData.chainId),
                   tokenOut: nextStep.l2TokenData,
                   gatewayAndDex: selectedGateway.name,
+                  inAmount: nextStep.inAmount,
                   txId: nextStep.txId,
+                  inCurrency: nextStep.inCurrency,
                 }}
               />
             );

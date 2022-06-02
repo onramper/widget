@@ -23,7 +23,7 @@ export const isL2Gateway = (gateway: string | undefined): boolean => {
   return supportedDexes.includes(dex);
 };
 
-const baseWeth: TokenInfo = {
+const ropstenWeth: TokenInfo = {
   name: "Wrapped Ether",
   address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
   symbol: "WETH",
@@ -39,11 +39,11 @@ export const findWethAddress = (chainId: number): TokenInfo => {
   );
   if (wethFromChain) {
     return {
-      ...baseWeth,
+      ...ropstenWeth,
       ...wethFromChain,
     };
   }
-  return baseWeth;
+  return ropstenWeth;
 };
 
 export const isTransactionHash = (hash: string) => {
