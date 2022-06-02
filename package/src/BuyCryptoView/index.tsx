@@ -9,6 +9,7 @@ import { APIContext, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
 import TabsHeader from "../common/Header/TabsHeader/TabsHeader";
 import { tabNames } from "./constants";
+import { triggerLandingViewGtmCtfEvent, GtmEventNames } from "../helpers/useGTM";
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -63,6 +64,11 @@ const BuyCryptoView: React.FC = () => {
           amountInCrypto: true,
           country: collected.selectedCountry,
         });
+        
+        if (nextStep?.nextStep?.type) {
+          nextStep.nextStep.eventName = GtmEventNames.CryptoToFiat;
+          nextStep.nextStep.eventCategory = nextStep.identifier;
+        }
         setBuyStep(nextStep.nextStep);
       } catch (error) {
         console.error(error);
@@ -80,7 +86,11 @@ const BuyCryptoView: React.FC = () => {
         }
         tabSelected={0}
         onClickItem={(i: number) => {
-          if (i === 0) return;
+          if (i === 0) {
+            return;
+          }
+
+          triggerLandingViewGtmCtfEvent(collected, buyStep?.eventCategory);
           nextScreen(<Step nextStep={buyStep} />);
         }}
       />

@@ -24,7 +24,7 @@ import { LoadingItem } from "./constants";
 import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
 import Footer from "../common/Footer";
 import { useTranslation } from "react-i18next";
-import { triggerLandingViewGtmEvent } from "../helpers/useGTM";
+import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -85,7 +85,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
       return;
     }
 
-    triggerLandingViewGtmEvent(collected);
+    triggerLandingViewGtmFtcEvent(collected);
     nextScreen(
       <Step
         nextStep={collected.selectedGateway.nextStep}

@@ -70,12 +70,42 @@ export const generateGtmStepValue = (collected: CollectedStateType) => {
   };
 };
 
-export const triggerLandingViewGtmEvent = (collected: CollectedStateType) => {
+export const triggerLandingViewGtmFtcEvent = (
+  collected: CollectedStateType
+) => {
   triggerGTMEvent({
-    event: "fiat-to-crypto",
+    event: GtmEventNames.FiatToCrypto,
     category: collected.selectedGateway?.id || "",
     label: "transactionForm",
     action: `step 1`,
     value: generateGtmStepValue(collected),
   });
 };
+
+export const triggerLandingViewGtmCtfEvent = (
+  collected: CollectedStateType,
+  buyStepGateway?: string
+) => {
+  triggerGTMEvent({
+    event: GtmEventNames.CryptoToFiat,
+    category: buyStepGateway,
+    label: "transactionForm",
+    action: `step 1`,
+    value: {
+      location: {
+        country: collected.country,
+        selectedCountry: collected.selectedCountry,
+        state: collected.state,
+      },
+      crypto: {
+        selectedGateway: buyStepGateway,
+      },
+      payment: {},
+    },
+  });
+};
+
+export enum GtmEventNames {
+  FiatToCrypto = "fiat-to-crypto",
+  CryptoToFiat = "crypto-to-fiat",
+}

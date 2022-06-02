@@ -21,7 +21,7 @@ import EmailVerificationView from "../EmailVerificationView/EmailVerificationVie
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 import InstructionView from "../InstructionView";
-import { triggerGTMEvent, generateGtmStepValue } from "../../helpers/useGTM";
+import { triggerGTMEvent, generateGtmStepValue, GtmEventNames } from "../../helpers/useGTM";
 import PopupView from "../PopupView";
 import ActionableErrorView from "../ActionableErrorView";
 
@@ -86,8 +86,8 @@ const StepViewContent: React.FC<NewStepProps> = ({
         return;
       }
       triggerGTMEvent({
-        event: "fiat-to-crypto",
-        category: selectedGateway?.id || "",
+        event: gtmToBeRegisterStep?.eventName || GtmEventNames.FiatToCrypto,
+        category: gtmToBeRegisterStep?.eventCategory || selectedGateway?.id || "",
         label: gtmToBeRegisterStep?.eventLabel || gtmToBeRegisterStep?.type,
         action: `step ${currentStep() + 1}`,
         value: generateGtmStepValue(collected),

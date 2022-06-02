@@ -6,7 +6,7 @@ import { PaymentReviewProps } from "./PaymentReview.models";
 import { NextStep, APIContext, CollectedStateType } from "../../ApiContext";
 import ConfirmPaymentView from ".";
 import { PaymentReviewStep } from "../../ApiContext/api/types/nextStep";
-import { triggerGTMEvent, generateGtmStepValue } from "../../helpers/useGTM";
+import { triggerGTMEvent, generateGtmStepValue, GtmEventNames } from "../../helpers/useGTM";
 
 /**
  * Temporary solution:
@@ -141,8 +141,8 @@ const PaymentReviewDecorator: React.FC<
 
   const onButtonAction = () => {
     triggerGTMEvent({
-      event: "fiat-to-crypto",
-      category: collected.selectedGateway?.id || "",
+      event: GtmEventNames.FiatToCrypto,
+      category: props.nextStep?.eventCategory || collected.selectedGateway?.id || "",
       label: "review",
       action: `step ${currentStep() + 1}`,
       value: generateGtmStepValue(collected),

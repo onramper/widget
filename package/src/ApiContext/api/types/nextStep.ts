@@ -134,6 +134,8 @@ type NextStepBase = {
   progress?: number;
   humanName?: string;
   description?: string;
+  eventName?: string;
+  eventCategory?: string;
   eventLabel?: string;
 };
 

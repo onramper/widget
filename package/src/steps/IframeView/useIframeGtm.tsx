@@ -1,6 +1,10 @@
 import { useRef, useContext, useEffect } from "react";
 import { NavContext } from "../../NavContext";
-import { triggerGTMEvent, generateGtmStepValue } from "../../helpers/useGTM";
+import {
+  triggerGTMEvent,
+  generateGtmStepValue,
+  GtmEventNames,
+} from "../../helpers/useGTM";
 import { APIContext, NextStep } from "../../ApiContext";
 
 type UseIframeGtmProps = {
@@ -20,8 +24,8 @@ const useIframeGtm = ({ nextStep, errors }: UseIframeGtmProps) => {
   const hasAnyErrorRef = useRef(false);
   const isIframeTypeRef = useRef(nextStep.type === "iframe");
   const gtmPayloadRef = useRef({
-    event: "fiat-to-crypto",
-    category: collected.selectedGateway?.id || "",
+    event: nextStep?.eventName || GtmEventNames.FiatToCrypto,
+    category: nextStep?.eventCategory || collected.selectedGateway?.id || "",
     label: nextStep?.eventLabel || nextStep?.type,
     action: `step ${currentStep() + 1}`,
     value: generateGtmStepValue(collected),
