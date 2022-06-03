@@ -15,7 +15,7 @@ const stepIgnoreList = [
 ];
 
 export const useStepGtmCall = (step?: NextStep) => {
-  const [callback, setCallback] = useState(() => () => {});
+  const [callback, setCallback] = useState<() => void>();
   const firstRenderRef = useRef(false);
   const { currentStep } = useContext(NavContext);
   const { collected } = useContext(APIContext);
@@ -27,6 +27,7 @@ export const useStepGtmCall = (step?: NextStep) => {
     firstRenderRef.current = true;
 
     if (!step || stepIgnoreList.indexOf(step.type) > -1) {
+      setCallback(() => () => {});
       return;
     }
 
@@ -37,7 +38,7 @@ export const useStepGtmCall = (step?: NextStep) => {
       return `step ${currentStep()}`;
     })();
 
-    setCallback(() => {
+    setCallback(() => () => {
       triggerGTMEvent({
         event: step?.eventName || GtmEventNames.FiatToCrypto,
         category: step?.eventCategory || collected?.selectedGateway?.id || "",
