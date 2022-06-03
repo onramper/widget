@@ -8,6 +8,7 @@ import { NextStep } from "../../ApiContext/api/types/nextStep";
 import HelpView from "../../common/HelpView";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
+import { useStepGtm } from "../../helpers/gtmHooks";
 
 const InformationView: React.FC<{
   nextStep: NextStep & { type: "information" };
@@ -19,6 +20,8 @@ const InformationView: React.FC<{
     error ? "Close" : "Got it!"
   );
   const [collectedStore] = React.useState(collected);
+  
+  useStepGtm(props.nextStep);
 
   React.useEffect(() => {
     setButtonText(error ? "Close" : "Got it!");

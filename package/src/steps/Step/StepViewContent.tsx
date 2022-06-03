@@ -21,9 +21,9 @@ import EmailVerificationView from "../EmailVerificationView/EmailVerificationVie
 import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
 import InstructionView from "../InstructionView";
-import { triggerGTMEvent, generateGtmStepValue, GtmEventNames } from "../../helpers/useGTM";
 import PopupView from "../PopupView";
 import ActionableErrorView from "../ActionableErrorView";
+import { useStepGtmCall } from "./hooks";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -35,10 +35,10 @@ const StepViewContent: React.FC<NewStepProps> = ({
   gtmToBeRegisterStep,
   isConfirmed,
 }) => {
-  const { replaceScreen, backScreen, currentStep /* , onlyScreen */ } =
-    useContext(NavContext);
+  const { replaceScreen } = useContext(NavContext);
   const { inputInterface, collected } = useContext(APIContext);
   const [isProcessingStep, setIsProcessingStep] = useState(true);
+  const registerStepGtmEvent = useStepGtmCall(gtmToBeRegisterStep);
 
   useEffect(() => {
     if (!nextStep) {
@@ -46,8 +46,7 @@ const StepViewContent: React.FC<NewStepProps> = ({
       return;
     }
 
-    const { selectedCrypto, selectedGateway, defaultAddrs, isAddressEditable } =
-      collected;
+    const { selectedCrypto, defaultAddrs, isAddressEditable } = collected;
 
     const showReviewAsFrontendStepIfApplicable = () => {
       if (
@@ -80,18 +79,6 @@ const StepViewContent: React.FC<NewStepProps> = ({
         return true;
       }
       return false;
-    };
-    const registerStepGtmEvent = () => {
-      if (!gtmToBeRegisterStep) {
-        return;
-      }
-      triggerGTMEvent({
-        event: gtmToBeRegisterStep?.eventName || GtmEventNames.FiatToCrypto,
-        category: gtmToBeRegisterStep?.eventCategory || selectedGateway?.id || "",
-        label: gtmToBeRegisterStep?.eventLabel || gtmToBeRegisterStep?.type,
-        action: `step ${currentStep() + 1}`,
-        value: generateGtmStepValue(collected),
-      });
     };
     const getMatchedStepCallback = () => {
       switch (nextStep.type) {
@@ -173,12 +160,10 @@ const StepViewContent: React.FC<NewStepProps> = ({
   }, [
     nextStep,
     replaceScreen,
-    backScreen,
-    currentStep,
     isConfirmed,
     inputInterface,
     collected,
-    gtmToBeRegisterStep,
+    registerStepGtmEvent,
   ]);
 
   return (
