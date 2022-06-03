@@ -4,9 +4,10 @@ import BodyActionableErrorView from "./BodyActionableErrorView";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 
 import styles from "../../styles.module.css";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 type ActionableErrorProps = {
-  nextStep: Partial<NextStep> & { type: "actionable-error" };
+  nextStep: Partial<NextStep> & { type: StepType.actionableError };
 };
 
 const ActionableErrorView: React.FC<ActionableErrorProps> = (props) => {

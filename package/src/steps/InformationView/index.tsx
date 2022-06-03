@@ -4,14 +4,14 @@ import BodyInformation from "./BodyInformation";
 import { NavContext } from "../../NavContext";
 import { APIContext } from "../../ApiContext";
 
-import { NextStep } from "../../ApiContext/api/types/nextStep";
+import { NextStep, StepType } from "../../ApiContext/api/types/nextStep";
 import HelpView from "../../common/HelpView";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
 import { useStepGtm } from "../../helpers/gtmHooks";
 
 const InformationView: React.FC<{
-  nextStep: NextStep & { type: "information" };
+  nextStep: NextStep & { type: StepType.information };
 }> = (props) => {
   const { replaceScreen, backScreen } = useContext(NavContext);
   const { apiInterface, collected } = useContext(APIContext);
@@ -32,12 +32,12 @@ const InformationView: React.FC<{
       setButtonText("Loading...");
       let payload = { partnerContext: collectedStore.partnerContext };
       let newNextStep: NextStep = props.nextStep;
-      if (newNextStep.type === "information" && newNextStep.url === undefined) {
+      if (newNextStep.type === StepType.information && newNextStep.url === undefined) {
         backScreen();
         return false;
       }
       if (
-        newNextStep.type === "information" &&
+        newNextStep.type === StepType.information &&
         newNextStep.extraData &&
         newNextStep.extraData.length > 0
       ) {

@@ -16,9 +16,10 @@ import ErrorView from "../../common/ErrorView";
 import Step from "../Step";
 import { NavContext } from "../../NavContext";
 import InputDelegator from "../../common/Input/InputDelegator";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const EmailVerificationView: React.FC<{
-  nextStep: NextStep & { type: "emailVerification" };
+  nextStep: NextStep & { type: StepType.emailVerification };
 }> = ({ nextStep }) => {
   const [field] = useState(nextStep.data);
   const [isLoading, setIsLoading] = useState(false);

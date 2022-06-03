@@ -5,13 +5,13 @@ import styles from "../../styles.module.css";
 import { NavContext } from "../../NavContext";
 import { APIContext } from "../../ApiContext";
 import { delay } from "../utils";
-import { NextStep } from "../../ApiContext/api/types/nextStep";
+import { NextStep, StepType } from "../../ApiContext/api/types/nextStep";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
 import Footer from "../../common/Footer";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 
-const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
+const LoadingView: React.FC<{ nextStep: NextStep & { type: StepType.wait } }> = (
   props
 ) => {
   const { nextScreen, backScreen, replaceScreen } = useContext(NavContext);
@@ -26,7 +26,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
     const callback = async () => {
       let newNextStep: NextStep = nextStep;
       let failed = false;
-      while (newNextStep.type === "wait" && !failed) {
+      while (newNextStep.type === StepType.wait && !failed) {
         try {
           await delay(500);
           let payload = { partnerContext: collectedStore.partnerContext };

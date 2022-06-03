@@ -24,6 +24,7 @@ import InstructionView from "../InstructionView";
 import PopupView from "../PopupView";
 import ActionableErrorView from "../ActionableErrorView";
 import { useStepGtmCall } from "./hooks";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 export interface NewStepProps {
   nextStep?: NextStep;
@@ -52,15 +53,15 @@ const StepViewContent: React.FC<NewStepProps> = ({
       if (
         isConfirmed === false ||
         (!isConfirmed &&
-          (nextStep.type === "iframe" ||
-            nextStep.type === "requestBankTransaction") &&
-          nextStep.type === "iframe" &&
+          (nextStep.type === StepType.iframe ||
+            nextStep.type === StepType.requestBankTransaction) &&
+          nextStep.type === StepType.iframe &&
           !nextStep.fullscreen)
       ) {
         let includeAddr = true;
         if (
-          nextStep.type !== "iframe" &&
-          nextStep.type !== "requestBankTransaction"
+          nextStep.type !== StepType.iframe &&
+          nextStep.type !== StepType.requestBankTransaction
         ) {
           includeAddr = false;
           if (!isAddressEditable)
@@ -82,52 +83,52 @@ const StepViewContent: React.FC<NewStepProps> = ({
     };
     const getMatchedStepCallback = () => {
       switch (nextStep.type) {
-        case "form":
+        case StepType.form:
           return () => replaceScreen(<FormView nextStep={nextStep} />);
 
-        case "file":
+        case StepType.file:
           return () => replaceScreen(<UploadView nextStep={nextStep} />);
 
-        case "pickOne":
+        case StepType.pickOne:
           return () => replaceScreen(<PickOptionView nextStep={nextStep} />);
 
-        case "redirect":
+        case StepType.redirect:
           return () => replaceScreen(<IframeView nextStep={nextStep} />);
 
-        case "popup":
+        case StepType.popup:
           return () => replaceScreen(<PopupView nextStep={nextStep} />);
 
-        case "actionable-error":
+        case StepType.actionableError:
           return () =>
             replaceScreen(<ActionableErrorView nextStep={nextStep} />);
 
-        case "wait":
+        case StepType.wait:
           return () => replaceScreen(<WaitView nextStep={nextStep} />);
 
-        case "completed":
+        case StepType.completed:
           return () =>
             replaceScreen(<SuccessView txType="instant" nextStep={nextStep} />);
 
-        case "iframe":
+        case StepType.iframe:
           return () => replaceScreen(<IframeView nextStep={nextStep} />);
 
-        case "requestBankTransaction":
+        case StepType.requestBankTransaction:
           return () => replaceScreen(<WireTranserView nextStep={nextStep} />);
 
-        case "information":
+        case StepType.information:
           return () => replaceScreen(<InformationView nextStep={nextStep} />);
 
-        case "emailVerification":
+        case StepType.emailVerification:
           return () =>
             replaceScreen(<EmailVerificationView nextStep={nextStep} />);
 
-        case "instruction":
+        case StepType.instruction:
           return () => replaceScreen(<InstructionView nextStep={nextStep} />);
 
-        case "orderComplete":
+        case StepType.orderComplete:
           return () => replaceScreen(<OrderCompleteView nextStep={nextStep} />);
 
-        case "paymentReview":
+        case StepType.paymentReview:
           return () => {
             if (!isAddressEditable) {
               const newAddress = defaultAddrs[selectedCrypto?.id ?? ""];

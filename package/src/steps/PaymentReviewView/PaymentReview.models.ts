@@ -1,8 +1,8 @@
 import { NextStep } from "../../ApiContext";
-import { PayamentReviewDataItem } from "../../ApiContext/api/types/nextStep";
+import { PayamentReviewDataItem, StepType } from "../../ApiContext/api/types/nextStep";
 
 export type PaymentReviewProps = {
-  nextStep: NextStep & { type: "paymentReview" };
+  nextStep: NextStep & { type: StepType.paymentReview };
   includeCryptoAddr?: boolean;
   onButtonAction?: () => void;
 };

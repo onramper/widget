@@ -15,14 +15,14 @@ import {
 
 import { NavContext } from "../../NavContext";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-import { isStepData } from "../../ApiContext/api/types/nextStep";
+import { isStepData, StepType } from "../../ApiContext/api/types/nextStep";
 import useIframeGtm from "./useIframeGtm";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
 
 const IframeView: React.FC<{
-  nextStep: NextStep & { type: "iframe" | "redirect" };
+  nextStep: NextStep & { type: StepType.iframe | StepType.redirect };
 }> = ({ nextStep }) => {
   const { replaceScreen, nextScreen } = useContext(NavContext);
   //const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
@@ -129,16 +129,16 @@ const IframeView: React.FC<{
     <div className={styles.view}>
       <ProgressHeader
         title={nextStep.humanName ?? "Complete payment"}
-        hideBurgerButton={nextStep.type === "iframe" && nextStep.fullscreen}
+        hideBurgerButton={nextStep.type === StepType.iframe && nextStep.fullscreen}
         percentage={nextStep.progress}
         useBackButton
       />
       <BodyIframeView
-        textInfo={nextStep.type === "redirect" ? nextStep.hint : undefined}
+        textInfo={nextStep.type === StepType.redirect ? nextStep.hint : undefined}
         error={error}
         fatalError={fatalError}
         features={
-          nextStep.type === "iframe" ? nextStep.neededFeatures : undefined
+          nextStep.type === StepType.iframe ? nextStep.neededFeatures : undefined
         }
         src={nextStep.url}
         type={nextStep.type}
@@ -146,7 +146,7 @@ const IframeView: React.FC<{
         onErrorDismissClick={(type) =>
           type === "FATAL" ? setFatalError(undefined) : setError(undefined)
         }
-        isFullScreen={nextStep.type === "iframe" ? nextStep.fullscreen : false}
+        isFullScreen={nextStep.type === StepType.iframe ? nextStep.fullscreen : false}
       />
     </div>
   );

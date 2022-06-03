@@ -7,9 +7,10 @@ import { NextStep } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
 
 import styles from "../../styles.module.css";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const PopupView: React.FC<{
-  nextStep: NextStep & { type: "popup" };
+  nextStep: NextStep & { type: StepType.popup };
 }> = ({ nextStep }) => {
   const { replaceScreen, nextScreen } = useContext(NavContext);
   //const textInfo = 'Complete your payment. The form below is in a secure sandbox.'

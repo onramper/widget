@@ -10,8 +10,9 @@ import { areAllKeysFilled } from "../utils";
 
 import { processError } from "../Step/utils";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
-const FormView: React.FC<{ nextStep: NextStep & { type: "form" } }> = ({
+const FormView: React.FC<{ nextStep: NextStep & { type: StepType.form } }> = ({
   nextStep,
 }) => {
   const { nextScreen } = useContext(NavContext);

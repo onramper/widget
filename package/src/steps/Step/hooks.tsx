@@ -6,8 +6,13 @@ import {
   GtmEventNames,
   generateGtmStepValue,
 } from "../../helpers/useGTM";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
-const stepIgnoreList = ["iframe", "redirect", "information"];
+const stepIgnoreList = [
+  StepType.iframe,
+  StepType.redirect,
+  StepType.information,
+];
 
 export const useStepGtmCall = (step?: NextStep) => {
   const [callback, setCallback] = useState(() => () => {});
@@ -26,7 +31,7 @@ export const useStepGtmCall = (step?: NextStep) => {
     }
 
     const action = (() => {
-      if (step.type === "wait") {
+      if (step.type === StepType.wait) {
         return `(waiting for) step ${currentStep() + 1}`;
       }
       return `step ${currentStep()}`;

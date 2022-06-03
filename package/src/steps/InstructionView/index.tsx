@@ -10,9 +10,10 @@ import InstructionBody from "./InstructionBody";
 
 import commonStyles from "../../styles.module.css";
 import styles from "./styles.module.css";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const PickOptionView: React.FC<{
-  nextStep: NextStep & { type: "instruction" };
+  nextStep: NextStep & { type: StepType.instruction };
 }> = ({ nextStep }) => {
   const { nextScreen } = useContext(NavContext);
   const { apiInterface } = useContext(APIContext);

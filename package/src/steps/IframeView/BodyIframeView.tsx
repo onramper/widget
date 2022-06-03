@@ -23,6 +23,7 @@ import ButtonAction from "../../common/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
 import { triggerGTMEvent } from "../../helpers/useGTM";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 interface BodyIframeViewType {
   src: string;
@@ -65,7 +66,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
 
   const hostname = getHostname(props.src);
   const isAGateway =
-    selectedGateway?.nextStep?.type === "redirect" &&
+    selectedGateway?.nextStep?.type === StepType.redirect &&
     hostname === getHostname(selectedGateway?.nextStep.url);
 
   const gtmPayloadRef = useRef(props.gtmPayload);
@@ -144,7 +145,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
 
   useEffect(() => {
     if (countDown <= 0 || !isAGateway) {
-      if (type === "redirect") redirect(iframeUrl);
+      if (type === StepType.redirect) redirect(iframeUrl);
       return;
     }
     let countDownId: ReturnType<typeof setTimeout>;
@@ -174,7 +175,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       {!props.isFullScreen && (
         <>
           <InfoBox
-            in={!!textInfo && type !== "redirect"}
+            in={!!textInfo && type !== StepType.redirect}
             className={`${stylesCommon.body__child} ${styles.body__child}`}
           >
             {textInfo}
@@ -221,7 +222,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             <span>{props.fatalError}</span>
           </div>
         )) ||
-          (isAGateway && type === "redirect" && (
+          (isAGateway && type === StepType.redirect && (
             <div className={`${styles.center}`}>
               <div className={styles.block}>
                 {countDown <= 0 ? (
@@ -271,7 +272,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
               )}
             </div>
           )) ||
-          (type === "redirect" && autoRedirect && (
+          (type === StepType.redirect && autoRedirect && (
             <div className={`${styles.center}`}>
               {!userClosedPopup ? (
                 <>
@@ -309,7 +310,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
               )}
             </div>
           )) ||
-          (type === "redirect" && !autoRedirect && (
+          (type === StepType.redirect && !autoRedirect && (
             <div className={`${styles.center}`}>
               <span className={`${stylesCommon.body__child} `}>
                 Please, click the button below to finish the process.{" "}

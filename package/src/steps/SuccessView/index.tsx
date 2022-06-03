@@ -5,9 +5,10 @@ import type { NextStep } from "../../ApiContext";
 import { APIContext } from "../../ApiContext";
 import { EVENTS, emit } from "../../Onramper";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 type SuccessViewProps = {
-  nextStep: Partial<NextStep> & { type: "completed" };
+  nextStep: Partial<NextStep> & { type: StepType.completed };
   txType: "instant" | "pending";
 };
 

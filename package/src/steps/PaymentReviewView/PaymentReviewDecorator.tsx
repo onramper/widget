@@ -5,7 +5,7 @@ import { NavContext } from "../../NavContext";
 import { PaymentReviewProps } from "./PaymentReview.models";
 import { NextStep, APIContext, CollectedStateType } from "../../ApiContext";
 import ConfirmPaymentView from ".";
-import { PaymentReviewStep } from "../../ApiContext/api/types/nextStep";
+import { PaymentReviewStep, StepType } from "../../ApiContext/api/types/nextStep";
 import { triggerGTMEvent, generateGtmStepValue, GtmEventNames } from "../../helpers/useGTM";
 
 /**
@@ -57,7 +57,7 @@ const generateInjectedStep = (
 
     return [
       {
-        type: "StepsOverview",
+        type: StepType.StepsOverview,
         items: [
           {
             description: "Expected transaction time",
@@ -76,7 +76,7 @@ const generateInjectedStep = (
 
     return [
       {
-        type: "StepsOverview",
+        type: StepType.StepsOverview,
         items: [
           {
             description: "Wallet address",
@@ -86,7 +86,7 @@ const generateInjectedStep = (
         ],
       },
       {
-        type: "StepsOverview",
+        type: StepType.StepsOverview,
         items: [
           {
             description: "Address tag",
@@ -99,14 +99,14 @@ const generateInjectedStep = (
   };
 
   return {
-    type: "paymentReview",
+    type: StepType.paymentReview,
     progress: nextStep.progress,
     useHeading: true,
     title: "Review Payment",
     description: "Please verify the details below carefully",
     data: [
       {
-        type: "StepsOverview",
+        type: StepType.StepsOverview,
         items: [
           {
             description: "You pay",

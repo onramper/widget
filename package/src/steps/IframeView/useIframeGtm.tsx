@@ -6,6 +6,7 @@ import {
   GtmEventNames,
 } from "../../helpers/useGTM";
 import { APIContext, NextStep } from "../../ApiContext";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 type UseIframeGtmProps = {
   nextStep: NextStep;
@@ -22,7 +23,7 @@ const useIframeGtm = ({ nextStep, errors }: UseIframeGtmProps) => {
   const { currentStep } = useContext(NavContext);
 
   const hasAnyErrorRef = useRef(false);
-  const isIframeTypeRef = useRef(nextStep.type === "iframe");
+  const isIframeTypeRef = useRef(nextStep.type === StepType.iframe);
   const gtmPayloadRef = useRef({
     event: nextStep?.eventName || GtmEventNames.FiatToCrypto,
     category: nextStep?.eventCategory || collected.selectedGateway?.id || "",
