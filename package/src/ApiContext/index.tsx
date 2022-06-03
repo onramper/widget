@@ -256,12 +256,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       let rawResponseGateways: GatewaysResponse;
       let responseGateways: GatewaysResponse;
       try {
-        if (props.selectGatewayBy === SelectGatewayByType.Performance) {
-          updateStaticRouting(
-            (await API.getGatewayStaticRouting(actualCountry)).recommended
-          );
-        }
-        
         clearErrors();
         rawResponseGateways = await API.gateways({
           country: actualCountry,
@@ -305,6 +299,21 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             message: "No gateways found.",
           },
         });
+      }
+
+      if (props.selectGatewayBy === SelectGatewayByType.Performance) {
+        try {
+          updateStaticRouting(
+            (await API.getGatewayStaticRouting(widgetsCountry)).recommended
+          );
+        } catch (error) {
+          return processErrors({
+            GATEWAYS: {
+              type: "API",
+              message: error.message,
+            },
+          });
+        }
       }
 
       const ICONS_MAP = responseGateways.icons || {};
