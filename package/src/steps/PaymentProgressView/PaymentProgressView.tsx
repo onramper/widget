@@ -41,7 +41,6 @@ const defaults: Omit<PaymentProgressViewStep, "type" | "progress"> = {
   },
   gatewayAndDex: "Gateway_DExchange",
   txId: "--some--random--L1--tx--id--",
-  inAmount: 0.005,
   inCurrency: "USD",
 };
 
@@ -88,7 +87,6 @@ export const PaymentProgressView = ({
     tokenIn = defaults.tokenIn,
     tokenOut = defaults.tokenOut,
     txId = defaults.txId,
-    inAmount = defaults.inAmount, // ETH
     inCurrency = defaults.inCurrency, // USD
   },
 }: PaymentProgressViewProps) => {
@@ -96,12 +94,22 @@ export const PaymentProgressView = ({
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
   const { nextScreen } = useNav();
+  const [inAmount, setInAmount] = useState<number>(0);
+
+  console.table({
+    gatewayAndDex: defaults.gatewayAndDex,
+    tokenIn: defaults.tokenIn,
+    tokenOut: defaults.tokenOut,
+    txId: defaults.txId,
+    inCurrency: defaults.inCurrency,
+  });
 
   useEffect(() => {
     const interval = setInterval(async () => {
       const tx = await pollTransaction(txId);
       if (tx && tx.lastStatus === "ok") {
         setLayer1Status(Status.Success);
+        setInAmount(tx.outAmount);
         clearInterval(interval);
       }
       if (tx && tx.lastStatus === "rip") {
@@ -112,7 +120,7 @@ export const PaymentProgressView = ({
     //eslint-disable-next-line
   }, []);
 
-  const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0] ?? "";
+  const tokenOutURL = tokenOut?.logoURI ? uriToHttp(tokenOut?.logoURI)[0] : "";
 
   const heading = (): string => {
     if (layer1Status === Status.Pending) {

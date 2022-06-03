@@ -5,7 +5,7 @@ interface Props extends React.ComponentProps<"img"> {
   className?: string;
   fallbackSrc?: string;
   FallbackComponent?: React.FunctionComponent | SvgrComponent;
-  src: string;
+  src: string | undefined;
 }
 
 export const ImageWithFallback = ({

@@ -369,7 +369,7 @@ const computeTokenIn = (
   fiatSymbol: string
 ) => {
   const parsedTokenIn = parseWrappedTokens(tokenIn);
-  const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
+  const tokenInURL = tokenIn?.logoURI ? uriToHttp(tokenIn.logoURI)[0] : "";
 
   return {
     ...parsedTokenIn,
@@ -387,7 +387,7 @@ const computeTokenOut = (
   quote: QuoteDetails,
   fiatSymbol: string
 ) => {
-  const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
+  const tokenOutURL = tokenOut?.logoURI ? uriToHttp(tokenOut.logoURI)[0] : "";
 
   return {
     ...tokenOut,

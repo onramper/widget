@@ -115,7 +115,6 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             gatewayAndDex: selectedGateway?.name ?? "",
             txId: props.nextStep.txId,
             inCurrency: props.nextStep.inCurrency,
-            inAmount: props.nextStep.inAmount,
           }}
         />
       );

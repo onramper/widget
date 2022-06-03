@@ -2,9 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import BodyIframeView from "./BodyIframeView";
 import styles from "../../styles.module.css";
 /* import ErrorView from '../../common/ErrorView' */
-
 import Step from "../Step";
-
 import { sentryHub, ApiError } from "../../ApiContext/api/index";
 import { NextStep, APIContext } from "../../ApiContext";
 import {
@@ -12,7 +10,6 @@ import {
   baseCreditCardSandboxUrl,
   checkTransaction,
 } from "@onramper/moonpay-adapter";
-
 import { NavContext } from "../../NavContext";
 import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
 import { PaymentProgressView } from "../PaymentProgressView";
@@ -107,7 +104,6 @@ const IframeView: React.FC<{
                   tokenIn: findWethAddress(nextStep.l2TokenData.chainId),
                   tokenOut: nextStep.l2TokenData,
                   gatewayAndDex: selectedGateway.name,
-                  inAmount: nextStep.inAmount,
                   txId: nextStep.txId,
                   inCurrency: nextStep.inCurrency,
                 }}

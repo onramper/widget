@@ -156,7 +156,6 @@ export type PaymentProgressViewStep = {
   tokenOut: TokenInfo;
   gatewayAndDex: string;
   txId: string;
-  inAmount: number;
   inCurrency: string; //EUR
 };
 

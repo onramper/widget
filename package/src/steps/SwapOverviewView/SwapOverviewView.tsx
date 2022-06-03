@@ -87,6 +87,11 @@ const SwapOverviewView = ({
 
   const handleUpdate = useCallback(
     async (amountIn: number) => {
+      addNotification({
+        type: NotificationType.Info,
+        message: "Loading Swap Data...",
+        shouldExpire: true,
+      });
       setLoading(true);
       try {
         const newQuote = await getQuote(
@@ -108,7 +113,7 @@ const SwapOverviewView = ({
         setLoading(false);
       }
     },
-    [setQuote, tokenIn, tokenOut]
+    [addNotification, setQuote, tokenIn, tokenOut]
   );
 
   useEffect(() => {
@@ -147,7 +152,7 @@ const SwapOverviewView = ({
       setLoading(true);
       addNotification({
         type: NotificationType.Info,
-        message: "Fetching best price...",
+        message: "Getting ready to swap...",
         shouldExpire: true,
       });
       try {
