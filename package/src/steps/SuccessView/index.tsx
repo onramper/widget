@@ -6,6 +6,7 @@ import { APIContext } from "../../ApiContext";
 import { EVENTS, emit } from "../../Onramper";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { StepType } from "../../ApiContext/api/types/nextStep";
+import { useStepGtm } from "../../helpers/gtmHooks";
 
 type SuccessViewProps = {
   nextStep: Partial<NextStep> & { type: StepType.completed };
@@ -14,6 +15,7 @@ type SuccessViewProps = {
 
 const SuccessView: React.FC<SuccessViewProps> = (props) => {
   const { collected } = React.useContext(APIContext);
+  useStepGtm(props.nextStep as NextStep);
 
   React.useEffect(() => {
     emit(EVENTS.PURCHASE_COMPLETED, {
