@@ -61,6 +61,7 @@ const StepViewContent: React.FC<NewStepProps> = ({
             );
         }
 
+        registerStepGtmEvent();
         replaceScreen(
           <PaymentReviewDecorator
             nextStep={nextStep}
