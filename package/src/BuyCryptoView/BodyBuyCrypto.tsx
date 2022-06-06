@@ -26,6 +26,7 @@ import Footer from "../common/Footer";
 import { useTranslation } from "react-i18next";
 import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
 import { StepType } from "../ApiContext/api/types/nextStep";
+import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -123,7 +124,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   useEffect(() => {
     handleInputChange(
       "selectedGateway",
-      collected.selectGatewayBy === "performance"
+      collected.selectGatewayBy === SelectGatewayByType.Performance
         ? getBestGatewayByPerformance(
             allRates,
             !!collected.amountInCrypto,
@@ -191,6 +192,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
             isLoading={collected.isCalculatingAmount}
             isInitialLoading={isGatewayInitialLoading}
             amountInCrypto={!!collected.amountInCrypto}
+            byPerformance={collected.selectGatewayBy === SelectGatewayByType.Performance}
           />
         )}
 

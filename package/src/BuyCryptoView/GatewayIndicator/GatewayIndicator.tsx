@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 const Skeleton = React.forwardRef<
   HTMLDivElement,
-  { optionLeftStyle: React.CSSProperties }
+  { optionLeftStyle: React.CSSProperties; byPerformance: boolean }
 >((props, ref) => {
   const { t } = useTranslation();
 
@@ -20,7 +20,9 @@ const Skeleton = React.forwardRef<
         ></span>
         <div className={`${styles["option-body"]} ${styles["sk-option-body"]}`}>
           <span className={`${styles["option-label"]}`}>
-            {t("buyCryptoView.bestRate")}
+            {props.byPerformance
+              ? t("buyCryptoView.bestPerformance")
+              : t("buyCryptoView.bestRate")}
           </span>
           <span
             className={`${styles["option-handle"]} ${commonStyles["skeleton-box"]}`}
@@ -95,7 +97,11 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (
 
   if (props.isInitialLoading || !props.selectedGateway)
     return (
-      <Skeleton optionLeftStyle={optionLeftStyle} ref={optionWrapperRef} />
+      <Skeleton
+        byPerformance={props.byPerformance}
+        optionLeftStyle={optionLeftStyle}
+        ref={optionWrapperRef}
+      />
     );
 
   if (props.isLoading) {
@@ -116,7 +122,9 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (
         />
         <div className={styles["option-body"]}>
           <div className={`${styles["option-label"]}`}>
-            {t("buyCryptoView.bestRate")}
+            {props.byPerformance
+              ? t("buyCryptoView.bestPerformance")
+              : t("buyCryptoView.bestRate")}
           </div>
           <div className={styles["option-handle"]}>
             <span>{props.selectedGateway.name}</span>{" "}
