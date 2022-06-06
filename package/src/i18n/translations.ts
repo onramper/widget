@@ -12,6 +12,7 @@ export const resources = {
         youGet: "You get ",
         paymentMethod: "Payment method",
         bestRate: "Best rate via",
+        bestPerformance: "Best performance via",
         includeAllFees: "Includes all fees",
         buy: "Buy",
       },
