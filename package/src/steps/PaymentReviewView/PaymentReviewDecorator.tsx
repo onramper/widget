@@ -5,7 +5,8 @@ import { NavContext } from "../../NavContext";
 import { PaymentReviewProps } from "./PaymentReview.models";
 import { NextStep, APIContext, CollectedStateType } from "../../ApiContext";
 import ConfirmPaymentView from ".";
-import { PaymentReviewStep } from "../../ApiContext/api/types/nextStep";
+import { PaymentReviewStep, StepType } from "../../ApiContext/api/types/nextStep";
+import { triggerGTMEvent, generateGtmStepValue, GtmEventNames } from "../../helpers/useGTM";
 
 /**
  * Temporary solution:
@@ -56,7 +57,7 @@ const generateInjectedStep = (
 
     return [
       {
-        type: "StepsOverview",
+        type: StepType.stepsOverview,
         items: [
           {
             description: "Expected transaction time",
@@ -75,7 +76,7 @@ const generateInjectedStep = (
 
     return [
       {
-        type: "StepsOverview",
+        type: StepType.stepsOverview,
         items: [
           {
             description: "Wallet address",
@@ -85,7 +86,7 @@ const generateInjectedStep = (
         ],
       },
       {
-        type: "StepsOverview",
+        type: StepType.stepsOverview,
         items: [
           {
             description: "Address tag",
@@ -98,14 +99,14 @@ const generateInjectedStep = (
   };
 
   return {
-    type: "paymentReview",
+    type: StepType.paymentReview,
     progress: nextStep.progress,
     useHeading: true,
     title: "Review Payment",
     description: "Please verify the details below carefully",
     data: [
       {
-        type: "StepsOverview",
+        type: StepType.stepsOverview,
         items: [
           {
             description: "You pay",
@@ -132,13 +133,20 @@ const generateInjectedStep = (
 const PaymentReviewDecorator: React.FC<
   Omit<PaymentReviewProps, "nextStep"> & { nextStep: NextStep }
 > = (props) => {
-  const { nextScreen } = useContext(NavContext);
+  const { nextScreen, currentStep } = useContext(NavContext);
   const { collected } = useContext(APIContext);
   const stepRef = useRef(
     generateInjectedStep(collected, props.nextStep, props.includeCryptoAddr)
   );
 
   const onButtonAction = () => {
+    triggerGTMEvent({
+      event: GtmEventNames.FiatToCrypto,
+      category: props.nextStep?.eventCategory || collected.selectedGateway?.id || "",
+      label: "review",
+      action: `step ${currentStep() + 1}`,
+      value: generateGtmStepValue(collected),
+    });
     nextScreen(<Step nextStep={props.nextStep} isConfirmed />);
   };
 

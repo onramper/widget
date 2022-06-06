@@ -11,6 +11,7 @@ import { NavContext } from '../../NavContext'
 import BuyCryptoView from '../../BuyCryptoView'
 import ButtonAction from '../../common/ButtonAction'
 import Step from '../Step'
+import { StepType } from '../../ApiContext/api/types/nextStep'
 
 interface PopupLauncherViewType {
     src: string
@@ -22,7 +23,7 @@ interface PopupLauncherViewType {
     uploadFailed?: boolean
     processFinished?: boolean
     failStep: NextStep
-
+    nextStep?: NextStep
     onErrorDismissClick: (type?: string) => void
 }
 
@@ -112,7 +113,7 @@ const PopupLauncherView: React.FC<PopupLauncherViewType> = (props) => {
                             <span>{props.fatalError}</span>
                         </div>
                     ))
-                    || ((type === "popup") && (
+                    || ((type === StepType.popup) && (
                         <div className={`${styles.center}`} >
                             <span style={{ width: '75%', marginBottom: "2rem" }} className={`${stylesCommon.body__child} `}>Coinify is legally required to have proof of your identity. After clicking the button bellow, please follow the instructions to upload and verify your documents. </span>
 
@@ -126,7 +127,14 @@ const PopupLauncherView: React.FC<PopupLauncherViewType> = (props) => {
                                         }
                                         :() => {
                                             console.log("tried to do fail step", props.processFinished, props.uploadFailed)
-                                            replaceScreen(<Step nextStep={props.failStep} />);
+                                            replaceScreen(
+                                              <Step
+                                                gtmToBeRegisterStep={
+                                                  props.nextStep
+                                                }
+                                                nextStep={props.failStep}
+                                              />
+                                            );
                                         }
                                     } />
                             </span>

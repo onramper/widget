@@ -13,9 +13,10 @@ import ErrorView from "../../common/ErrorView";
 import commonStyles from "../../styles.module.css";
 import styles from "./styles.module.css";
 import InfoBox from "../../common/InfoBox";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const PickOptionView: React.FC<{
-  nextStep: NextStep & { type: "pickOne" };
+  nextStep: NextStep & { type: StepType.pickOne };
 }> = ({ nextStep }) => {
   const { t } = useTranslation();
   const { nextScreen } = useContext(NavContext);
@@ -34,7 +35,12 @@ const PickOptionView: React.FC<{
     setIsLoading(true);
     try {
       if (selectedOption) {
-        nextScreen(<Step nextStep={selectedOption.nextStep} />);
+        nextScreen(
+          <Step
+            gtmToBeRegisterStep={nextStep}
+            nextStep={selectedOption.nextStep}
+          />
+        );
       }
     } catch (_error) {
       const error = _error as { fatal: any; message: string };

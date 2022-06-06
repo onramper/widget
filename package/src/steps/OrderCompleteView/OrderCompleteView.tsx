@@ -4,9 +4,10 @@ import classes from "./OrderCompleteView.module.css";
 import commonClasses from "./../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { ReactComponent as CheckmarkSuccessIcon } from "../../icons/checkmark-success.svg";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const OrderCompleteView: React.FC<{
-  nextStep: NextStep & { type: "orderComplete" };
+  nextStep: NextStep & { type: StepType.orderComplete };
 }> = ({ nextStep }) => {
   return (
     <div className={`${commonClasses.view} ${classes["view"]}`}>

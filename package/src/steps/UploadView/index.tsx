@@ -5,12 +5,12 @@ import styles from "../../styles.module.css";
 import { NavContext } from "../../NavContext";
 import { APIContext } from "../../ApiContext";
 
-import { NextStep } from "../../ApiContext/api/types/nextStep";
+import { NextStep, StepType } from "../../ApiContext/api/types/nextStep";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 
-const UploadView: React.FC<{ nextStep: NextStep & { type: "file" } }> = (
+const UploadView: React.FC<{ nextStep: NextStep & { type: StepType.file } }> = (
   props
 ) => {
   const { nextScreen } = useContext(NavContext);
@@ -26,7 +26,9 @@ const UploadView: React.FC<{ nextStep: NextStep & { type: "file" } }> = (
 
     try {
       const newNextStep = await apiInterface.executeStep(props.nextStep, file);
-      nextScreen(<Step nextStep={newNextStep} />);
+      nextScreen(
+        <Step gtmToBeRegisterStep={props.nextStep} nextStep={newNextStep} />
+      );
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
       if (error.fatal) {
