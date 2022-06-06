@@ -57,7 +57,7 @@ const generateInjectedStep = (
 
     return [
       {
-        type: StepType.StepsOverview,
+        type: StepType.stepsOverview,
         items: [
           {
             description: "Expected transaction time",
@@ -76,7 +76,7 @@ const generateInjectedStep = (
 
     return [
       {
-        type: StepType.StepsOverview,
+        type: StepType.stepsOverview,
         items: [
           {
             description: "Wallet address",
@@ -86,7 +86,7 @@ const generateInjectedStep = (
         ],
       },
       {
-        type: StepType.StepsOverview,
+        type: StepType.stepsOverview,
         items: [
           {
             description: "Address tag",
@@ -106,7 +106,7 @@ const generateInjectedStep = (
     description: "Please verify the details below carefully",
     data: [
       {
-        type: StepType.StepsOverview,
+        type: StepType.stepsOverview,
         items: [
           {
             description: "You pay",

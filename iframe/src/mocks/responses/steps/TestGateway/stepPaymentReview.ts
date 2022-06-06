@@ -9,7 +9,7 @@ export default {
   url: `${BASE_API}/GoTo/TestGateway/personalInfoStep/WyJHWHVZZGVBb1B6SF9JcXJWQXh6R3ZRLS0iLDEwMCwiRVVSIiwiQlRDIiwiY3JlZGl0Q2FyZCJd`,
   data: [
     {
-      type: "StepsOverview",
+      type: "stepsOverview",
       items: [
         {
           description: "You pay",
@@ -40,7 +40,7 @@ export default {
       ],
     },
     {
-      type: "StepsOverview",
+      type: "stepsOverview",
       items: [
         {
           description: "BTC wallet address",
@@ -50,7 +50,7 @@ export default {
       ],
     },
     {
-      type: "StepsOverview",
+      type: "stepsOverview",
       items: [
         {
           description: "Address tag",
@@ -60,7 +60,7 @@ export default {
       ],
     },
     {
-      type: "StepsOverview",
+      type: "stepsOverview",
       items: [
         {
           description: "Expected transaction time",

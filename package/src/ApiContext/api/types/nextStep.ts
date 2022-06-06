@@ -93,7 +93,7 @@ export enum StepType {
   emailVerification = "emailVerification",
   orderComplete = "orderComplete",
   paymentReview = "paymentReview",
-  StepsOverview = "StepsOverview",
+  stepsOverview = "stepsOverview",
 }
 
 interface FileStep {
@@ -159,7 +159,7 @@ type NextStepBase = {
 };
 
 export type PayamentReviewDataItem = {
-  type: StepType.StepsOverview;
+  type: StepType.stepsOverview;
   items: OverviewStepItem[];
 };
 
