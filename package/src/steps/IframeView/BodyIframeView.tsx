@@ -104,17 +104,20 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       isL2MoonpayNewWindowIntegration() &&
       (isIframeStep(props.nextStep) || isRedirectStep(props.nextStep))
     ) {
+      const {
+        nextStep: { l2TokenData, txId, inCurrency },
+      } = props;
       return replaceScreen(
         <PaymentProgressView
           nextStep={{
             type: "paymentProgress",
             progress: 80,
             // infer weth from output chainID
-            tokenIn: findWethAddress(props.nextStep.l2TokenData.chainId),
-            tokenOut: props.nextStep.l2TokenData,
+            tokenIn: findWethAddress(l2TokenData.chainId),
+            tokenOut: l2TokenData,
             gatewayAndDex: selectedGateway?.name ?? "",
-            txId: props.nextStep.txId,
-            inCurrency: props.nextStep.inCurrency,
+            txId: txId,
+            inCurrency: inCurrency,
           }}
         />
       );
