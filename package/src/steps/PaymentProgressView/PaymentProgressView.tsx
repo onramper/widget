@@ -7,7 +7,7 @@ import { ReactComponent as Mail } from "../../icons/mail.svg";
 import Heading from "../../common/Heading/Heading";
 import { SingleNotification } from "../WidgetNotification/WidgetNotification";
 import { NotificationType } from "../../NotificationContext";
-import { resolveWeth, TokenInfo, uriToHttp } from "layer2";
+import { resolveWeth, uriToHttp } from "layer2";
 import { ReactComponent as Wallet } from "../../icons/wallet2.svg";
 import Spinner from "../../common/Spinner";
 import { ReactComponent as Check } from "../../icons/check.svg";
