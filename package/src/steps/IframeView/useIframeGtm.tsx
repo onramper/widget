@@ -4,6 +4,7 @@ import {
   triggerGTMEvent,
   generateGtmStepValue,
   GtmEventNames,
+  GtmEventLabels,
 } from "../../helpers/useGTM";
 import { APIContext, NextStep } from "../../ApiContext";
 import { StepType } from "../../ApiContext/api/types/nextStep";
@@ -23,7 +24,11 @@ const useIframeGtm = ({ nextStep, errors }: UseIframeGtmProps) => {
   const { currentStep } = useContext(NavContext);
 
   const hasAnyErrorRef = useRef(false);
-  const isIframeTypeRef = useRef(nextStep.type === StepType.iframe);
+  const nextStepRef = useRef(nextStep);
+  const isWaitingInitialErrorsRef = useRef(
+    nextStep.type === StepType.iframe &&
+      nextStepRef.current.eventLabel !== GtmEventLabels.PaymentMethod
+  );
   const gtmPayloadRef = useRef({
     event: nextStep?.eventName || GtmEventNames.FiatToCrypto,
     category: nextStep?.eventCategory || collected.selectedGateway?.id || "",
@@ -37,7 +42,7 @@ const useIframeGtm = ({ nextStep, errors }: UseIframeGtmProps) => {
   }, [errors]);
 
   useEffect(() => {
-    if (!isIframeTypeRef.current) {
+    if (!isWaitingInitialErrorsRef.current) {
       return;
     }
 

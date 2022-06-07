@@ -109,3 +109,7 @@ export enum GtmEventNames {
   FiatToCrypto = "fiat-to-crypto",
   CryptoToFiat = "crypto-to-fiat",
 }
+
+export enum GtmEventLabels {
+  PaymentMethod = "paymentMethod",
+}

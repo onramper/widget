@@ -17,6 +17,7 @@ import { NavContext } from "../../NavContext";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { isStepData, StepType } from "../../ApiContext/api/types/nextStep";
 import useIframeGtm from "./useIframeGtm";
+import { triggerGTMEvent } from "../../helpers/useGTM";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
@@ -78,6 +79,7 @@ const IframeView: React.FC<{
               event.data.transactionId,
               event.data.ccTokenId
             );
+            triggerGTMEvent(gtmPayload);
           } else if (event.data.type === "2fa-completed") {
             returnedNextStep = await checkTransaction(
               event.data.moonpayTxId,
@@ -123,7 +125,7 @@ const IframeView: React.FC<{
     };
     window.addEventListener("message", receiveMessage);
     return () => window.removeEventListener("message", receiveMessage);
-  }, [replaceScreen, nextStep.type, nextStep.url, nextScreen]);
+  }, [replaceScreen, nextStep.type, nextStep.url, nextScreen, gtmPayload]);
 
   return (
     <div className={styles.view}>
