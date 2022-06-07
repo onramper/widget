@@ -9,15 +9,22 @@ import {
   MOONPAY_HOSTNAME,
   COINIFY_HOSTNAME,
 } from "../../ApiContext/api/constants";
-import { APIContext } from "../../ApiContext";
+import { APIContext, NextStep } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
 
 import BuyCryptoView from "../../BuyCryptoView";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
+import { PaymentProgressView } from "../PaymentProgressView";
+import { findWethAddress } from "../../utils";
+import {
+  isIframeStep,
+  isRedirectStep,
+} from "../../ApiContext/api/types/guards";
 
 interface BodyIframeViewType {
+  nextStep: NextStep & { type: "iframe" | "redirect" };
   src: string;
   type: string;
   textInfo?: string;
@@ -53,7 +60,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   const { selectedGateway } = collected;
   const [isRestartCalled, setIsRestartCalled] = useState(false);
 
-  const { onlyScreen, nextScreen } = useContext(NavContext);
+  const { onlyScreen, nextScreen, replaceScreen } = useContext(NavContext);
 
   const hostname = getHostname(props.src);
   const isAGateway =
@@ -64,6 +71,10 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
   };
+
+  const isL2MoonpayNewWindowIntegration = () =>
+    selectedGateway?.name.split("_").at(-1) === "Uniswap" &&
+    props.src.indexOf("https://api.moonpay.io/v3/payment") === -1;
 
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
@@ -87,7 +98,31 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       "_blank",
       "height=595,width=440,scrollbars=yes,left=0"
     ); //todo: add config
-    //if opened -> all is ok
+
+    if (
+      windowObjectReference &&
+      isL2MoonpayNewWindowIntegration() &&
+      (isIframeStep(props.nextStep) || isRedirectStep(props.nextStep))
+    ) {
+      const {
+        nextStep: { l2TokenData, txId, inCurrency },
+      } = props;
+      return replaceScreen(
+        <PaymentProgressView
+          nextStep={{
+            type: "paymentProgress",
+            progress: 80,
+            // infer weth from output chainID
+            tokenIn: findWethAddress(l2TokenData.chainId),
+            tokenOut: l2TokenData,
+            gatewayAndDex: selectedGateway?.name ?? "",
+            txId: txId,
+            inCurrency: inCurrency,
+          }}
+        />
+      );
+    }
+
     if (windowObjectReference) {
       const interval = 250;
       const times2Count = (1000 * 60) / interval;
@@ -103,6 +138,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     }
     //if not opened -> warn user about popup blocked + ask user for click a button
     setAutoRedirect(false);
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {

@@ -1,22 +1,26 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import BodyIframeView from "./BodyIframeView";
 import styles from "../../styles.module.css";
 /* import ErrorView from '../../common/ErrorView' */
-
 import Step from "../Step";
-
 import { sentryHub, ApiError } from "../../ApiContext/api/index";
-import { NextStep } from "../../ApiContext";
+import { NextStep, APIContext } from "../../ApiContext";
 import {
   finishCCTransaction,
   baseCreditCardSandboxUrl,
   checkTransaction,
 } from "@onramper/moonpay-adapter";
-
 import { NavContext } from "../../NavContext";
 import HeaderPicker from "../../common/Header/HeaderPicker/HeaderPicker";
+import { PaymentProgressView } from "../PaymentProgressView";
+import { findWethAddress } from "../../utils";
+import {
+  isIframeStep,
+  isRedirectStep,
+} from "../../ApiContext/api/types/guards";
 
-const btcdirectFinishedOrigin = "https://btcdirect.sandbox.staging.onramper.tech";
+const btcdirectFinishedOrigin =
+  "https://btcdirect.sandbox.staging.onramper.tech";
 
 const IframeView: React.FC<{
   nextStep: NextStep & { type: "iframe" | "redirect" };
@@ -25,6 +29,9 @@ const IframeView: React.FC<{
   //const textInfo = 'Complete your payment. The form below is in a secure sandbox.'
   const [error, setError] = useState<string>();
   const [fatalError, setFatalError] = useState<string>();
+  const {
+    collected: { selectedGateway },
+  } = useContext(APIContext);
 
   function reportError(message: string, fatal: boolean, eventData: any) {
     sentryHub.addBreadcrumb({
@@ -41,9 +48,14 @@ const IframeView: React.FC<{
     }
   }
 
-  useEffect(() => {
-    const receiveMessage = async (event: MessageEvent) => {
-      if (![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(event.origin)) return;
+  const handleReceiveMessage = useCallback(
+    async (event: MessageEvent) => {
+      if (
+        ![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(
+          event.origin
+        )
+      )
+        return;
       if (event.data.type === "INIT") {
         setError(undefined);
         setFatalError(undefined);
@@ -69,16 +81,48 @@ const IframeView: React.FC<{
           } else {
             throw new Error("Unexpected response received");
           }
-          replaceScreen(<Step nextStep={returnedNextStep as NextStep} />);
-        } catch (e) {
-          if (event.data.type === "card-completed") {
-            (event.source as Window)?.postMessage("reset", "*");
-          } else if (event.data.type === "2fa-completed") {
-            /* nextScreen(<ErrorView type="TX" />) */
-            reportError(e.message, true, event.data);
+          console.log({ returnedNextStep, eventData: event.data });
+          if (
+            returnedNextStep.type === "completed" &&
+            selectedGateway?.name === "Moonpay_Uniswap" &&
+            (isIframeStep(nextStep) || isRedirectStep(nextStep))
+          ) {
+            replaceScreen(
+              <PaymentProgressView
+                // type: "paymentProgress";
+                // progress: number;
+                // tokenIn: TokenInfo;
+                // tokenOut: TokenInfo;
+                // gatewayAndDex: string;
+                // txId: string;
+                // inAmount: number;
+                // inCurrency: string; //EUR
+                nextStep={{
+                  type: "paymentProgress",
+                  progress: 0,
+                  // infer weth from output chainI
+                  tokenIn: findWethAddress(nextStep.l2TokenData.chainId),
+                  tokenOut: nextStep.l2TokenData,
+                  gatewayAndDex: selectedGateway.name,
+                  txId: nextStep.txId,
+                  inCurrency: nextStep.inCurrency,
+                }}
+              />
+            );
             return;
           }
-          reportError(e.message, false, event.data);
+          replaceScreen(<Step nextStep={returnedNextStep as NextStep} />);
+        } catch (e) {
+          if (e instanceof Error) {
+            if (event.data.type === "card-completed") {
+              (event.source as Window)?.postMessage("reset", "*");
+            } else if (event.data.type === "2fa-completed") {
+              /* nextScreen(<ErrorView type="TX" />) */
+              reportError(e.message, true, event.data);
+              return;
+            }
+            reportError(e.message, false, event.data);
+          }
         }
       } else if (event.data.type) {
         replaceScreen(<Step nextStep={event.data as NextStep} />);
@@ -92,10 +136,24 @@ const IframeView: React.FC<{
           event.data
         );
       }
-    };
-    window.addEventListener("message", receiveMessage);
-    return () => window.removeEventListener("message", receiveMessage);
-  }, [replaceScreen, nextStep.type, nextStep.url, nextScreen]);
+    },
+    [nextStep, replaceScreen, selectedGateway?.name]
+  );
+
+  useEffect(
+    () => {
+      window.addEventListener("message", handleReceiveMessage);
+      return () => window.removeEventListener("message", handleReceiveMessage);
+    }, //eslint-disable=-next-line
+    [
+      replaceScreen,
+      nextStep.type,
+      nextStep.url,
+      nextScreen,
+      selectedGateway?.name,
+      handleReceiveMessage,
+    ]
+  );
 
   return (
     <div className={styles.view}>
@@ -105,6 +163,7 @@ const IframeView: React.FC<{
         backButton
       />
       <BodyIframeView
+        nextStep={nextStep}
         textInfo={nextStep.type === "redirect" ? nextStep.hint : undefined}
         error={error}
         fatalError={fatalError}

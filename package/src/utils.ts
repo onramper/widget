@@ -1,7 +1,54 @@
-import { TokenInfo } from "layer2";
+import { knownWethAddresses, TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 
+// for quote api
 export const apiKey = "oIMeQOqDsg9vFAs6WU1ks2hFxZ32DONF4MkhyDyI";
+
+const supportedDexes = ["uniswap"];
+// Moonpay_Uniswap => true
+
+export const getDexFromGateway = (
+  gateway: string | undefined
+): string | undefined => {
+  if (!gateway) return undefined;
+  if (!isL2Gateway(gateway)) return undefined;
+  return gateway.toLowerCase().split("_").at(-1);
+};
+
+export const isL2Gateway = (gateway: string | undefined): boolean => {
+  if (gateway === undefined) return false;
+
+  const dex = getDexFromGateway(gateway);
+  if (dex === undefined) return false;
+  return supportedDexes.includes(dex);
+};
+
+const ropstenWeth: TokenInfo = {
+  name: "Wrapped Ether",
+  address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+  symbol: "WETH",
+  decimals: 18,
+  chainId: 3,
+  logoURI:
+    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+};
+
+export const findWethAddress = (chainId: number): TokenInfo => {
+  const wethFromChain = knownWethAddresses.find(
+    (weth) => weth.chainId === chainId
+  );
+  if (wethFromChain) {
+    return {
+      ...ropstenWeth,
+      ...wethFromChain,
+    };
+  }
+  return ropstenWeth;
+};
+
+export const isTransactionHash = (hash: string) => {
+  return /^0x([A-Fa-f0-9]{64})$/.test(hash);
+};
 
 export const isMobile = (): boolean => {
   if (
@@ -21,6 +68,7 @@ export const isMobile = (): boolean => {
 /**
  * The default factory enabled fee amounts, denominated in hundredths of bips.
  */
+
 export enum FeeAmount {
   LOWEST = 100,
   LOW = 500,

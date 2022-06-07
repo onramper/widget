@@ -1,15 +1,10 @@
-import {
-  formatEther,
-  shortenIfAddress,
-  useEtherBalance,
-  useLayer2,
-  useEns,
-} from "layer2";
+import { shortenIfAddress, useEtherBalance, useLayer2, useEns } from "layer2";
 import React from "react";
 import buttonClasses from "../../../common/ListItemButtonGroup/ListItemButton/ListItemButton.module.css";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import { AccountDetailsProps } from "./AccountDetails.models";
 import classes from "./AccountDetails.module.css";
+import { utils } from "ethers";
 
 const AccountDetails = ({ className }: AccountDetailsProps) => {
   const { account, active } = useLayer2();
@@ -42,7 +37,7 @@ const AccountDetails = ({ className }: AccountDetailsProps) => {
         </div>
         <div className={classes["account-balance"]}>
           {`Balance: ${
-            balance ? formatEther(balance).slice(0, 5) : "0.00"
+            balance ? utils.formatEther(balance).slice(0, 5) : "0.00"
           } ETH`}
         </div>
       </div>

@@ -10,9 +10,29 @@ export enum ActionTypes {
   SetQuote = "SetQuote",
   UpdateDeadline = "UpdateDeadline",
   UpdateSlippageTolerance = "UpdateSlippageTolerance",
+  UpdateTokenIn = "UpdateTokenIn",
+  UpdateTokenOut = "UpdateTokenOut",
+  UpdateFiatSymbol = "UpdateFiatSymbol",
+  UpdateInAmount = "UpdateInAmount",
 }
 
 export type DataActions =
+  | {
+      type: ActionTypes.UpdateInAmount;
+      payload: number;
+    }
+  | {
+      type: ActionTypes.UpdateFiatSymbol;
+      payload: string;
+    }
+  | {
+      type: ActionTypes.UpdateTokenIn;
+      payload: TokenInfo;
+    }
+  | {
+      type: ActionTypes.UpdateTokenOut;
+      payload: TokenInfo;
+    }
   | {
       type: ActionTypes.UpdateWallets;
       payload: WalletItemData[];
@@ -24,14 +44,11 @@ export type DataActions =
   | {
       type: ActionTypes.Init;
       payload: {
-        key: number;
+        txId: string;
         userId: string;
         tokenIn: TokenInfo;
         tokenOut: TokenInfo;
-        currentQuote: QuoteDetails;
         fiatSymbol: string;
-        fiatConversionIn: number;
-        fiatConversionOut: number;
       };
     }
   | {
@@ -45,6 +62,29 @@ export type DataActions =
 
 export default (state: StateType, action: DataActions): StateType => {
   switch (action.type) {
+    case ActionTypes.UpdateInAmount:
+      return {
+        ...state,
+        inAmount: action.payload,
+      };
+    case ActionTypes.UpdateTokenIn:
+      return {
+        ...state,
+        tokenIn: action.payload,
+      };
+
+    case ActionTypes.UpdateTokenOut:
+      return {
+        ...state,
+        tokenOut: action.payload,
+      };
+
+    case ActionTypes.UpdateFiatSymbol:
+      return {
+        ...state,
+        fiatSymbol: action.payload,
+      };
+
     case ActionTypes.Init:
       return {
         ...initialState,
@@ -66,7 +106,7 @@ export default (state: StateType, action: DataActions): StateType => {
     case ActionTypes.SetQuote:
       return {
         ...state,
-        currentQuote: action.payload,
+        quote: action.payload,
       };
 
     case ActionTypes.UpdateDeadline:

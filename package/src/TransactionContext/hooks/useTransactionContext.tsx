@@ -5,7 +5,7 @@ import { TransactionContext } from "..";
 export const useTransactionContext = () => {
   const { account: metaAddress } = useLayer2();
   const { state } = useContext(TransactionContext);
-  
+
   if (!state.selectedWalletAddress) {
     return { ...state, selectedWalletAddress: metaAddress };
   }

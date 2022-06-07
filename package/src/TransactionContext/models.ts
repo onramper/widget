@@ -1,17 +1,17 @@
 import { QuoteDetails, TokenInfo } from "layer2";
 import { WalletItemData } from "../ApiContext/api/types/nextStep";
 
-export type StateType = {
-  key: number;
-  userId: string;
+export interface StateType {
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
-  currentQuote: QuoteDetails;
+  inAmount: number;
   fiatSymbol: string;
-  fiatConversionIn: number;
-  fiatConversionOut: number;
+  txId: string;
+  key: number;
+  userId: string;
   wallets: WalletItemData[];
   selectedWalletAddress?: string;
   slippageTolerance: number;
   deadline: number;
-};
+  quote: QuoteDetails;
+}

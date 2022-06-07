@@ -6,16 +6,16 @@ import React, {
   useState,
 } from "react";
 import { TransactionErrorOverlayProps } from "./TransactionErrorOverlay.models";
-import commonClasses from "../../styles.module.css";
+import commonClasses from "../../../styles.module.css";
 import classes from "./TransactionErrorOverlay.module.css";
-import { ReactComponent as SettingsIcon } from "./../../icons/settings.svg";
-import { ReactComponent as CloseIcon } from "./../../icons/close.svg";
-import { NavContext } from "../../NavContext";
-import ButtonAction from "../../common/Buttons/ButtonAction";
+import { ReactComponent as SettingsIcon } from "./../../../icons/settings.svg";
+import { ReactComponent as CloseIcon } from "./../../../icons/close.svg";
+import { NavContext } from "../../../NavContext";
+import ButtonAction from "../../../common/Buttons/ButtonAction";
 import { CSSTransition } from "react-transition-group";
 
 const contentsTimeout = 500;
-let timeout:ReturnType<typeof setTimeout>;
+let timeout: ReturnType<typeof setTimeout>;
 
 const TransactionErrorOverlay: React.FC<TransactionErrorOverlayProps> = (
   props
@@ -44,32 +44,35 @@ const TransactionErrorOverlay: React.FC<TransactionErrorOverlayProps> = (
   }, []);
 
   return (
-  <Transition ref={wrapperRef} in={active}>
-    <div ref={wrapperRef} className={`${commonClasses.view} ${classes["view"]}`}>
-      <nav>
-        <div> Failed </div>
-        <CloseIcon className={classes["close-icon"]} onClick={onDismiss} />
-      </nav>
+    <Transition ref={wrapperRef} in={active}>
+      <div
+        ref={wrapperRef}
+        className={`${commonClasses.view} ${classes["view"]}`}
+      >
+        <nav>
+          <div> Failed </div>
+          <CloseIcon className={classes["close-icon"]} onClick={onDismiss} />
+        </nav>
 
-      <main style={style} className={commonClasses.body}>
-        <div className={classes["wrapper"]}>
-          <div className={classes["settings-wrapper"]}>
-            <SettingsIcon className={classes["setting-icon"]} />
+        <main style={style} className={commonClasses.body}>
+          <div className={classes["wrapper"]}>
+            <div className={classes["settings-wrapper"]}>
+              <SettingsIcon className={classes["setting-icon"]} />
+            </div>
+
+            <div className={classes["title"]}>Transaction Failed</div>
+            <div className={classes["text-alert"]}>{props.textAlert}</div>
+            <div className={classes["description"]}>{props.description}</div>
+
+            <ButtonAction
+              className={classes["dismiss-btn"]}
+              onClick={onDismiss}
+              text={"Dismiss"}
+            />
           </div>
-
-          <div className={classes["title"]}>Transaction Failed</div>
-          <div className={classes["text-alert"]}>{props.textAlert}</div>
-          <div className={classes["description"]}>{props.description}</div>
-
-          <ButtonAction
-            className={classes["dismiss-btn"]}
-            onClick={onDismiss}
-            text={"Dismiss"}
-          />
-        </div>
-      </main>
-    </div>
-  </Transition>
+        </main>
+      </div>
+    </Transition>
   );
 };
 

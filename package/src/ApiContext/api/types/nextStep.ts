@@ -137,23 +137,49 @@ export type BrakdownItem = {
   hint?: string;
 };
 
-export type SwapOverviewStepData = {
-  userData: {
-    userAddress: string;
-  };
-  transactionData: QuoteDetails;
+export type SwapOverviewViewStep = {
+  type: "swapOverview";
+  progress: number;
+  amountIn: number;
+  amountOut: number;
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
   fiatSymbol: string;
-  balance: number;
   userId: string;
+  txId: string;
 };
 
-export type SwapOverviewVewStep = {
-  type: "transactionOverview";
+export type PaymentProgressViewStep = {
+  type: "paymentProgress";
   progress: number;
+  tokenIn: TokenInfo;
+  tokenOut: TokenInfo;
+  gatewayAndDex: string;
+  txId: string;
+  inCurrency: string; //EUR
+};
+
+export type IframeStep = {
+  type: "iframe";
   url: string;
-  data: SwapOverviewStepData;
+  l2TokenData: TokenInfo;
+  inAmount: number;
+  inCurrency: string; //EUR
+  cryptocurrencyAddress: string;
+  txId: string;
+  fullscreen: boolean;
+  neededFeatures?: string;
+};
+
+export type RedirectStep = {
+  type: "redirect";
+  url: string;
+  hint?: string;
+  l2TokenData: TokenInfo;
+  cryptocurrencyAddress: string;
+  txId: string;
+  inAmount: number;
+  inCurrency: string; //EUR
 };
 
 type NextStep = NextStepBase &
@@ -171,17 +197,8 @@ type NextStep = NextStepBase &
         data: StepDataItems;
         hint?: string;
       }
-    | {
-        type: "iframe";
-        url: string;
-        fullscreen: boolean;
-        neededFeatures?: string;
-      }
-    | {
-        type: "redirect";
-        url: string;
-        hint?: string;
-      }
+    | IframeStep
+    | RedirectStep
     | {
         type: "wait";
         url: string;
@@ -205,7 +222,8 @@ type NextStep = NextStepBase &
       }
     | EmailVerificationStep
     | PaymentReviewStep
-    | SwapOverviewVewStep
+    | SwapOverviewViewStep
+    | PaymentProgressViewStep
   );
 
 interface FieldError {

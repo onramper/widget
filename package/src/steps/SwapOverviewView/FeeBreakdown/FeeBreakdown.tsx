@@ -2,13 +2,20 @@ import React from "react";
 import { FeeBreakdownProps } from "./FeeBreakdown.models";
 import classes from "./FeeBreakdown.module.css";
 
-const FeeBreakdown = ({ transactionDetails }: FeeBreakdownProps) => {
+const defaultValues = {
+  amountDecimals: "0.0000",
+  gasUseEstimate: "00000",
+  gasUseEstimateUSD: "00000",
+  quoteGasAdjustedDecimals: "00000",
+};
+
+const FeeBreakdown = ({ quote }: FeeBreakdownProps) => {
   const {
     amountDecimals,
     gasUseEstimate,
     gasUseEstimateUSD,
     quoteGasAdjustedDecimals,
-  } = transactionDetails;
+  } = quote ?? defaultValues;
 
   return (
     <menu className={classes.FeeBreakdown}>

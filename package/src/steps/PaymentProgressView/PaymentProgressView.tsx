@@ -7,7 +7,7 @@ import { ReactComponent as Mail } from "../../icons/mail.svg";
 import Heading from "../../common/Heading/Heading";
 import { SingleNotification } from "../WidgetNotification/WidgetNotification";
 import { NotificationType } from "../../NotificationContext";
-import { resolveWeth, TokenInfo, uriToHttp } from "layer2";
+import { resolveWeth, uriToHttp } from "layer2";
 import { ReactComponent as Wallet } from "../../icons/wallet2.svg";
 import Spinner from "../../common/Spinner";
 import { ReactComponent as Check } from "../../icons/check.svg";
@@ -15,41 +15,122 @@ import { ImageWithFallback } from "../../common/ImageWithFallback/ImageWithFallb
 import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg";
 import { ReactComponent as Chevron } from "../../icons/chevron2.svg";
 import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
+import { ReactComponent as Error } from "../../icons/close_circle.svg";
+import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
+import { pollTransaction } from "../../ApiContext/api";
+import { useNav } from "../../NavContext";
+import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
+import { PaymentProgressViewStep } from "../../ApiContext/api/types/nextStep";
 
-// TODO: discuss interface for data from backend and refactor
-interface Props {
-  gateway: string; // "Moonpay"
-  tokenIn: TokenInfo;
-  tokenOut: TokenInfo;
-}
+const defaults: Omit<PaymentProgressViewStep, "type" | "progress"> = {
+  tokenIn: {
+    name: "Input Token Name",
+    address: "In address",
+    symbol: "WETH",
+    decimals: 18,
+    chainId: 3,
+    logoURI: "",
+  },
+  tokenOut: {
+    name: "Output Token Name",
+    address: "output token address",
+    symbol: "OUT",
+    decimals: 18,
+    chainId: 3,
+    logoURI: "",
+  },
+  gatewayAndDex: "Gateway_DExchange",
+  txId: "--some--random--L1--tx--id--",
+  inCurrency: "USD",
+};
 
-enum Status {
-  Pending = "Pending",
-  Success = "Success",
-  Fail = "Fail",
-}
+// const res = {
+//   type: "redirect",
+//   url: "https://buy-staging.moonpay.com?apiKey=pk_test_PjABKr88VlgosyTueq3exrVnYYLd4ZB&currencyCode=ETH&baseCurrencyAmount=200&baseCurrencyCode=EUR&externalTransactionId=UGF8MxyjgB8pjWdiE8I9Cg--&lockAmount=true",
+//   txId: "UGF8MxyjgB8pjWdiE8I9Cg--",
+//   apiKey: "pk_test_oDsXkHokDdr06zZ0_sxJGw00",
+//   inCurrency: "EUR",
+//   timestamp: 1654004424105,
+//   ip: "127.0.0.1",
+//   outCurrency: "ETH",
+//   lastStatus_date: "init#2022-05-31T13:40:24.105Z",
+//   inAmount: 200,
+//   lastStatus: "init",
+//   outAmount: 200,
+//   countryIp: "es",
+//   gatewayId: 0,
+//   host: "localhost:3001",
+//   onramperFee: 1,
+//   partnerFee: 0,
+//   SK: "tx#metadata",
+//   paymentMethod: 0,
+//   PK: "tx#UGF8MxyjgB8pjWdiE8I9Cg--",
+//   customerCrypto: "ALICE_ETH",
+//   customerGateway: "Moonpay_Uniswap",
+//   transactionType: "L2",
+//   expectedReceivedCrypto: 200,
+//   l2TokenOutAmount: 200,
+//   l2TokenData: {
+//     name: "My Neighbor Alice",
+//     symbol: "ALICE",
+//     address: "0xAC51066d7bEC65Dc4589368da368b212745d63E8",
+//     logoURI:
+//       "https://assets.coingecko.com/coins/images/14375/thumb/alice_logo.jpg?1615782968",
+//     chainId: 1,
+//     decimals: 6,
+//   },
+// };
 
 export const PaymentProgressView = ({
-  gateway = "moonpay",
-  tokenIn,
-  tokenOut,
-}: Props) => {
+  nextStep: {
+    gatewayAndDex = defaults.gatewayAndDex,
+    tokenIn = defaults.tokenIn,
+    tokenOut = defaults.tokenOut,
+    txId = defaults.txId,
+    inCurrency = defaults.inCurrency, // USD
+  },
+}: PaymentProgressViewProps) => {
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
   const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
   const symbolOutUpper = tokenOut.symbol.toUpperCase();
+  const { nextScreen } = useNav();
+  const [inAmount, setInAmount] = useState<number>(0);
 
-  // useEffect(() => {
-  //   setTimeout(() => setLayer1Status(Status.Success), 3000);
-  // }, []);
+  console.table({
+    gatewayAndDex: defaults.gatewayAndDex,
+    tokenIn: defaults.tokenIn,
+    tokenOut: defaults.tokenOut,
+    txId: defaults.txId,
+    inCurrency: defaults.inCurrency,
+  });
 
-  const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0] ?? "";
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const tx = await pollTransaction(txId);
+      if (tx && tx.lastStatus === "ok") {
+        setLayer1Status(Status.Success);
+        setInAmount(tx.outAmount);
+        clearInterval(interval);
+      }
+      if (tx && tx.lastStatus === "rip") {
+        setLayer1Status(Status.Fail);
+        clearInterval(interval);
+      }
+    }, 2000);
+    //eslint-disable-next-line
+  }, []);
+
+  const tokenOutURL = tokenOut?.logoURI ? uriToHttp(tokenOut?.logoURI)[0] : "";
 
   const heading = (): string => {
     if (layer1Status === Status.Pending) {
-      return "Sep 1 Complete! Payment Received.";
+      return "Order in Progress. Receiving payment.";
     }
     if (layer1Status === Status.Success) {
       return `Your ${symbolInUpper} has arrived!`;
+    }
+    if (layer1Status === Status.Fail) {
+      return `Your transaction failed.`;
     }
     return "";
   };
@@ -61,12 +142,41 @@ export const PaymentProgressView = ({
     if (layer1Status === Status.Success) {
       return `${gateway.toLocaleLowerCase()} has successfully sent you ${symbolInUpper}. You can now swap ${symbolInUpper} for ${symbolOutUpper} here. We don’t add fees on top of Uniswap.`;
     }
+    if (layer1Status === Status.Fail) {
+      return `${gateway.toLocaleLowerCase()} has failed to send your ${symbolInUpper}. There may be something wrong with the network. Please try again later.`;
+    }
     return "";
   };
 
+  const [gateway, dex] = gatewayAndDex.split("_");
+
   const handleNext = () => {
-    console.log("next screen");
-    //nextScreen(<SwapOverviewVew  />);
+    console.log("SwapOverviewProps", {
+      type: "swapOverview",
+      progress: 80,
+      amountIn: 0.005,
+      amountOut: 0,
+      tokenIn: tokenIn,
+      tokenOut: tokenOut,
+      fiatSymbol: "$",
+      userId: "",
+      txId: txId,
+    });
+    nextScreen(
+      <SwapOverviewView
+        nextStep={{
+          type: "swapOverview",
+          progress: 0,
+          amountIn: inAmount,
+          amountOut: 0,
+          tokenIn: tokenIn,
+          tokenOut: tokenOut,
+          fiatSymbol: inCurrency,
+          userId: "",
+          txId: txId,
+        }}
+      />
+    );
   };
 
   return (
@@ -77,6 +187,7 @@ export const PaymentProgressView = ({
         {layer1Status === Status.Success && (
           <CheckCircle className={classes.icon} />
         )}
+        {layer1Status === Status.Fail && <Error className={classes.icon} />}
         <Heading
           className={classes.heading}
           text={heading()}
@@ -128,7 +239,7 @@ export const PaymentProgressView = ({
               className={classes.stepTitle}
             >{`Step 3: ${symbolInUpper}-to-${symbolOutUpper} token`}</div>
             <div className={classes.stepDescription}>
-              {`Swap ${symbolInUpper} for ${symbolOutUpper} via Uniswap`}
+              {`Swap ${symbolInUpper} for ${symbolOutUpper} via ${dex}`}
             </div>
           </div>
           <Chevron className={classes.chevron} />
@@ -139,6 +250,16 @@ export const PaymentProgressView = ({
             notification={{
               type: NotificationType.Info,
               message: "Attention! You do not need to keep your browser open.",
+            }}
+          />
+        )}
+
+        {layer1Status === Status.Fail && (
+          <SingleNotification
+            className={classes.notification}
+            notification={{
+              type: NotificationType.Error,
+              message: "Oh no! Something's gone wrong. Please try again later.",
             }}
           />
         )}

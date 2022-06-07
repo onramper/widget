@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-import { NextStep } from "../../ApiContext";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
 import { apiKey, parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import {
-  formatEther,
   isMetamaskEnabled,
   useEtherBalance,
   getQuote,
@@ -26,8 +24,6 @@ import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import EditSwapView from "./EditSwapView/EditSwapView";
 import {
   useTransactionContext,
-  useTransactionCtxWallets,
-  useTranasactionCtxInit,
   useTransactionCtxActions,
 } from "../../TransactionContext/hooks";
 import { WidgetNotification } from "../WidgetNotification/WidgetNotification";
@@ -35,88 +31,136 @@ import {
   NotificationType,
   useWidgetNotifications,
 } from "../../NotificationContext";
-import TransactionErrorOverlay from "../../SwapCryptoView/TransactionErrorOverlay/TransactionErrorOverlay";
+import TransactionErrorOverlay from "./TransactionErrorOverlay/TransactionErrorOverlay";
+import { utils } from "ethers";
+import { isErrorWithName, storeTransactionData } from "../../ApiContext/api";
+import { SwapOverviewViewProps } from "./SwapOverviewView.models";
 
-const SwapOverviewView: React.FC<{
-  nextStep: NextStep & { type: "transactionOverview" };
-}> = (props) => {
-  const [nextStep] = useState(props.nextStep);
-  const { account: metaAddress, active } = useLayer2();
+const SwapOverviewView = ({
+  nextStep: {
+    progress,
+    amountIn: initialAmountIn,
+    amountOut,
+    tokenIn: initialTokenIn,
+    tokenOut: initialTokenOut,
+    fiatSymbol: initialFiatSymbol,
+    userId,
+    txId,
+  },
+}: SwapOverviewViewProps) => {
+  const { setQuote, initialiseTransactionContext } = useTransactionCtxActions();
+
+  const { account: metaAddress, active, chainId } = useLayer2();
   const balance = useEtherBalance(metaAddress);
   const {
-    currentQuote: quote,
-    fiatConversionOut,
-    fiatConversionIn,
     fiatSymbol,
     tokenIn,
     tokenOut,
     slippageTolerance,
     deadline,
+    quote,
+    inAmount,
   } = useTransactionContext();
-  const { setQuote } = useTransactionCtxActions();
-  const { fetchAndUpdateUserWallets } = useTransactionCtxWallets();
+
+  useEffect(() => {
+    if (balance && metaAddress && chainId) {
+      console.table({
+        account: metaAddress,
+        active: active,
+        chainId: chainId,
+        balance: Number(utils.formatEther(balance)),
+      });
+    }
+  }, [active, balance, chainId, metaAddress]);
+
+  // const { fetchAndUpdateUserWallets } = useTransactionCtxWallets();
 
   const { sendTransaction, state } = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const isActive = metaAddress && active;
-  useWalletSupportRedirect(nextStep.progress);
+  useWalletSupportRedirect(progress);
   const { connect, connectionPending } = useConnectWallet();
   const { nextScreen } = useNav();
   const { addNotification } = useWidgetNotifications();
 
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
-  const { amountDecimals } = quote;
-
-  const handleUpdate = useCallback(async () => {
-    setLoading(true);
-    try {
-      const newQuote = await getQuote(
-        tokenIn,
-        tokenOut,
-        Number(amountDecimals),
-        false,
-        apiKey,
-        beforeUnLoadRef.current.signal
-      );
-      if (newQuote) {
-        setQuote(newQuote);
+  const handleUpdate = useCallback(
+    async (amountIn: number) => {
+      addNotification({
+        type: NotificationType.Info,
+        message: "Loading Swap Data...",
+        shouldExpire: true,
+      });
+      setLoading(true);
+      try {
+        const newQuote = await getQuote(
+          tokenIn,
+          tokenOut,
+          amountIn,
+          false,
+          apiKey,
+          beforeUnLoadRef.current.signal
+        );
+        if (newQuote) {
+          setQuote(newQuote);
+        }
+      } catch (error) {
+        if (isErrorWithName(error) && error.name === "AbortError") {
+          return;
+        }
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      if ((error as Error)?.name === "AbortError") {
-        return;
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [amountDecimals, setQuote, tokenIn, tokenOut]);
+    },
+    [addNotification, setQuote, tokenIn, tokenOut]
+  );
 
   useEffect(() => {
-    handleUpdate();
-  }, [handleUpdate]);
+    initialiseTransactionContext({
+      txId,
+      userId,
+      tokenIn: initialTokenIn,
+      tokenOut: initialTokenOut,
+      fiatSymbol: initialFiatSymbol,
+      inAmount: initialAmountIn,
+    });
+    //eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    handleUpdate(initialAmountIn);
+  }, [initialAmountIn, handleUpdate]);
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
   const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
   const handleEdit = useCallback(async () => {
-    nextScreen(<EditSwapView progress={nextStep.progress} />);
-  }, [nextScreen, nextStep.progress]);
+    nextScreen(<EditSwapView progress={progress} />);
+  }, [nextScreen, progress]);
 
   const handleSwap = async () => {
+    if (!balance) {
+      addNotification({
+        type: NotificationType.Error,
+        message: "Your balance is 0",
+        shouldExpire: true,
+      });
+    }
     if (metaAddress && balance) {
       setLoading(true);
       addNotification({
         type: NotificationType.Info,
-        message: "Fetching best price...",
+        message: "Getting ready to swap...",
         shouldExpire: true,
       });
       try {
         const res = await getSwapParams(
-          Number(formatEther(balance)),
+          Number(utils.formatEther(balance)),
           tokenIn,
           tokenOut,
-          Number(amountDecimals),
+          inAmount,
           metaAddress,
           undefined,
           {
@@ -211,11 +255,18 @@ const SwapOverviewView: React.FC<{
           tokenOut={tokenOut}
         />
       );
+      if (state.transaction && metaAddress) {
+        storeTransactionData({
+          transactionResponse: state.transaction,
+          address: metaAddress,
+          transactionId: txId,
+        });
+      }
     }
     if (state.status === "Exception") {
       handleException(state);
     }
-  }, [handleException, nextScreen, state, tokenOut]);
+  }, [handleException, metaAddress, nextScreen, txId, state, tokenOut]);
 
   useEffect(() => {
     const onBeforeUnload = () => {
@@ -225,32 +276,28 @@ const SwapOverviewView: React.FC<{
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, []);
 
-  useEffect(() => {
-    try {
-      fetchAndUpdateUserWallets();
-    } catch (err) {
-      console.log(err);
-    }
-  }, [fetchAndUpdateUserWallets]);
+  // useEffect(() => {
+  //   try {
+  //     fetchAndUpdateUserWallets();
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, [fetchAndUpdateUserWallets]);
 
   return (
     <div className={commonClasses.view}>
-      <ProgressHeader
-        noSeparator
-        useBackButton
-        percentage={nextStep.progress}
-      />
+      <ProgressHeader noSeparator useBackButton percentage={progress} />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <Heading className={classes.heading} text={heading} />
         <WidgetNotification />
         <SwapDetailsBar
-          estimate={quote}
           tokenIn={parsedTokenIn}
           tokenOut={tokenOut}
-          conversionIn={`${fiatSymbol}${fiatConversionIn}`}
-          conversionOut={`${fiatSymbol}${fiatConversionOut}`}
+          amountIn={Number(quote?.amountDecimals) ?? inAmount}
+          amountOut={Number(quote?.quoteDecimals) ?? amountOut}
+          fiatSymbol={fiatSymbol}
         />
-        <FeeBreakdown transactionDetails={quote} />
+        <FeeBreakdown quote={quote} />
         <div className={classes.buttonContainer}>
           {isActive ? (
             <>
@@ -283,19 +330,4 @@ const SwapOverviewView: React.FC<{
   );
 };
 
-const WithContextInit: React.FC<{
-  nextStep: NextStep & { type: "transactionOverview" };
-}> = (props) => {
-  const isInit = useTranasactionCtxInit(props.nextStep.data, Date.now());
-  const { replaceScreen } = useNav();
-
-  useEffect(() => {
-    if (isInit) {
-      replaceScreen(<SwapOverviewView nextStep={props.nextStep} />);
-    }
-  }, [isInit, props.nextStep, replaceScreen]);
-
-  return <></>;
-};
-
-export default WithContextInit;
+export default SwapOverviewView;

@@ -26,7 +26,6 @@ import classes from "./EditSwapView.module.css";
 import { ApiError } from "../../../ApiContext/api";
 import { CSSTransition } from "react-transition-group";
 import {
-  formatEther,
   useEtherBalance,
   getQuote,
   useTokenBalance,
@@ -41,6 +40,7 @@ import {
 import { useUsdPriceImpact } from "../../../TransactionContext/hooks/useUsdPriceImpact";
 import { generateBreakdown } from "./utils";
 import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
+import { utils } from "ethers";
 
 const insufficientFoundsError =
   "You have insufficient funds to complete this transaction";
@@ -52,21 +52,17 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const {
     tokenIn,
     tokenOut,
-    currentQuote,
+    quote,
     fiatSymbol,
-    fiatConversionIn,
-    fiatConversionOut,
     slippageTolerance,
     selectedWalletAddress,
   } = useTransactionContext();
-  const { setQuote } = useTransactionCtxActions();
-  const [cryptoSpent] = useState(
-    computeTokenIn(tokenIn, currentQuote, fiatSymbol, fiatConversionIn)
-  );
+  const { setQuote, updateInAmount } = useTransactionCtxActions();
+  const [cryptoSpent] = useState(computeTokenIn(tokenIn, quote, fiatSymbol));
   const [cryptoReceived] = useState(
-    computeTokenOut(tokenOut, currentQuote, fiatSymbol, fiatConversionOut)
+    computeTokenOut(tokenOut, quote, fiatSymbol)
   );
-  const [localQuote, setLocalQuote] = useState(currentQuote);
+  const [localQuote, setLocalQuote] = useState(quote);
   const priceImpact = useUsdPriceImpact(
     tokenIn,
     tokenOut,
@@ -91,8 +87,9 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   const onActionButton = useCallback(async () => {
     setQuote(localQuote);
+    updateInAmount(Number(spentValue));
     backScreen();
-  }, [backScreen, localQuote, setQuote]);
+  }, [backScreen, localQuote, setQuote, spentValue, updateInAmount]);
 
   const getAndUpdateAbortController = useCallback(() => {
     const newController = new AbortController();
@@ -123,7 +120,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             const newQuote = await getQuote(
               cryptoSpent,
               cryptoReceived,
-              Number(value),
+              value,
               false,
               apiKey,
               signal
@@ -133,7 +130,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
               return reject(new DOMException("Aborted", "AbortError"));
             }
 
-            if (ethBalance && Number(formatEther(ethBalance)) < Number(value)) {
+            if (
+              ethBalance &&
+              Number(utils.formatEther(ethBalance)) < Number(value)
+            ) {
               throw new ApiError(insufficientFoundsError, "INSUFICIENT_FUNDS");
             }
 
@@ -198,8 +198,8 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   const onMaxClick = useCallback(async () => {
     if (ethBalance) {
-      setActualSpentValue(formatEther(ethBalance));
-      updateReceivedValue(formatEther(ethBalance));
+      setActualSpentValue(utils.formatEther(ethBalance));
+      updateReceivedValue(utils.formatEther(ethBalance));
     }
   }, [ethBalance, updateReceivedValue]);
 
@@ -218,7 +218,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     if (swapErrorMessage && swapErrorMessage !== insufficientFoundsError) {
       return;
     }
-    if (ethBalance && Number(formatEther(ethBalance)) < Number(spentValue)) {
+    if (
+      ethBalance &&
+      Number(utils.formatEther(ethBalance)) < Number(spentValue)
+    ) {
       setSwapErrorMessage(insufficientFoundsError);
       return;
     }
@@ -248,10 +251,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           }
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${
-            ethBalance ? formatEther(ethBalance).slice(0, 5) : "0.00"
+            ethBalance ? utils.formatEther(ethBalance).slice(0, 5) : "0.00"
           }`}
           onMaxClick={onMaxClick}
-          suffix={`(${cryptoSpent.fiatSymbol}${cryptoSpent.fiatConversion})`}
+          suffix={`(${cryptoSpent.fiatSymbol})`}
           handleProps={{
             icon: cryptoSpent.icon,
             value: cryptoSpent.currencyShortName,
@@ -267,10 +270,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           className={inputClasses["swap-screen"]}
           hint={`Balance: ${
             targetTokenBalance
-              ? formatEther(targetTokenBalance).slice(0, 5)
+              ? utils.formatEther(targetTokenBalance).slice(0, 5)
               : "0.00"
           }`}
-          suffix={`(${cryptoReceived.fiatSymbol}${cryptoReceived.fiatConversion})`}
+          suffix={`(${cryptoReceived.fiatSymbol})`}
           handleProps={{
             icon: cryptoReceived.icon,
             value: cryptoReceived.currencyShortName,
@@ -363,17 +366,15 @@ const computeHeading = (
 const computeTokenIn = (
   tokenIn: TokenInfo,
   quote: QuoteDetails,
-  fiatSymbol: string,
-  fiatConversion: number
+  fiatSymbol: string
 ) => {
   const parsedTokenIn = parseWrappedTokens(tokenIn);
-  const tokenInURL = uriToHttp(tokenIn.logoURI as string)[0];
+  const tokenInURL = tokenIn?.logoURI ? uriToHttp(tokenIn.logoURI)[0] : "";
 
   return {
     ...parsedTokenIn,
     label: "You spend",
     value: quote.amountDecimals,
-    fiatConversion,
     fiatSymbol,
     currencyShortName: parsedTokenIn.symbol,
     currencyLongName: parsedTokenIn.name,
@@ -384,16 +385,14 @@ const computeTokenIn = (
 const computeTokenOut = (
   tokenOut: TokenInfo,
   quote: QuoteDetails,
-  fiatSymbol: string,
-  fiatConversion: number
+  fiatSymbol: string
 ) => {
-  const tokenOutURL = uriToHttp(tokenOut.logoURI as string)[0];
+  const tokenOutURL = tokenOut?.logoURI ? uriToHttp(tokenOut.logoURI)[0] : "";
 
   return {
     ...tokenOut,
     label: "You receive",
     value: quote.quoteGasAdjustedDecimals,
-    fiatConversion,
     fiatSymbol,
     currencyShortName: tokenOut.symbol,
     currencyLongName: tokenOut.name,
