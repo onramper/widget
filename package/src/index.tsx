@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import styles from "./styles.module.css";
-import BuyCryptoView from "./BuyCryptoView";
+// import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
 import { NavProvider, NavContainer } from "./NavContext";
 import { APIProvider } from "./ApiContext";
@@ -19,6 +19,8 @@ import { L2Provider } from "layer2";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
 import { G_TAG_ID } from "./ApiContext/api/constants";
+import SwapOverviewView from "./steps/SwapOverviewView/SwapOverviewView";
+import { startProps } from "./steps/SwapOverviewView/SwapOverviewView.models";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -98,7 +100,9 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               <TransactionContextProvider>
                 <NotificationProvider>
                   <div style={{ flexGrow: 1, display: "flex" }}>
-                    <NavContainer home={<BuyCryptoView />} />
+                    <NavContainer
+                      home={<SwapOverviewView nextStep={startProps.nextStep} />}
+                    />
                   </div>
                 </NotificationProvider>
               </TransactionContextProvider>

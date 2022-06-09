@@ -32,8 +32,8 @@ import {
 import { triggerGTMEvent } from "../../helpers/useGTM";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 
-interface  BodyIframeViewType  {
-  nextStep: NextStep &  (StepType.iframe | StepType.redirect);
+interface BodyIframeViewType {
+  nextStep: NextStep & { type: StepType.iframe | StepType.redirect };
   src: string;
   type: string;
   textInfo?: string;
@@ -86,7 +86,6 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     selectedGateway?.name.split("_").at(-1) === "Uniswap" &&
     props.src.indexOf("https://api.moonpay.io/v3/payment") === -1;
 
-
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
       onlyScreen(<BuyCryptoView />);
@@ -123,7 +122,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       return replaceScreen(
         <PaymentProgressView
           nextStep={{
-            type: "paymentProgress",
+            type: StepType.paymentProgress,
             progress: 80,
             // infer weth from output chainID
             tokenIn: findWethAddress(l2TokenData.chainId),

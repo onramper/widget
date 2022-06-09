@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import Step from "../Step";
 import { APIContext, NextStep } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
-import ButtonAction from "../../common/ButtonAction";
+import ButtonAction from "../../common/Buttons/ButtonAction";
 import Footer from "../../common/Footer";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import ErrorView from "../../common/ErrorView";

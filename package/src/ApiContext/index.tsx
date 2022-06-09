@@ -310,12 +310,14 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             (await API.getGatewayStaticRouting(widgetsCountry)).recommended
           );
         } catch (error) {
-          return processErrors({
-            GATEWAYS: {
-              type: "API",
-              message: error.message,
-            },
-          });
+          if (API.isErrorWithMessage(error)) {
+            return processErrors({
+              GATEWAYS: {
+                type: "API",
+                message: error.message,
+              },
+            });
+          }
         }
       }
 

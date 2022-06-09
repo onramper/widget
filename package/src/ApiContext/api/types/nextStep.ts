@@ -1,5 +1,5 @@
 import { OverviewStepItem } from "../../../common/StepsOverview/StepsOverview.models";
-import { QuoteDetails, TokenInfo } from "layer2";
+import { TokenInfo } from "layer2";
 type StepFormBaseField = {
   placeholder?: string;
   icon?: string;
@@ -94,6 +94,8 @@ export enum StepType {
   orderComplete = "orderComplete",
   paymentReview = "paymentReview",
   stepsOverview = "stepsOverview",
+  swapOverview = "swapOverview",
+  paymentProgress = "paymentProgress",
 }
 
 interface FileStep {
@@ -142,7 +144,6 @@ type EmailVerificationStep = {
   };
 };
 
-
 type OrderCompleteStep = {
   type: StepType.orderComplete;
   description?: string;
@@ -188,7 +189,7 @@ export type BrakdownItem = {
 };
 
 export type SwapOverviewViewStep = {
-  type: "swapOverview";
+  type: StepType.swapOverview;
   progress: number;
   amountIn: number;
   amountOut: number;
@@ -200,7 +201,7 @@ export type SwapOverviewViewStep = {
 };
 
 export type PaymentProgressViewStep = {
-  type: "paymentProgress";
+  type: StepType.paymentProgress;
   progress: number;
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
@@ -209,7 +210,7 @@ export type PaymentProgressViewStep = {
   inCurrency: string; //EUR
 };
 
-export type Iframe = {
+export type IframeStep = {
   type: StepType.iframe;
   url: string;
   fullscreen: boolean;
@@ -219,9 +220,9 @@ export type Iframe = {
   inCurrency: string; //EUR
   cryptocurrencyAddress: string;
   txId: string;
-}
+};
 
-export type Redirect = {
+export type RedirectStep = {
   type: StepType.redirect;
   url: string;
   hint?: string;
@@ -230,7 +231,7 @@ export type Redirect = {
   txId: string;
   inAmount: number;
   inCurrency: string; //EUR
-}
+};
 
 type NextStep = NextStepBase &
   (
@@ -247,9 +248,8 @@ type NextStep = NextStepBase &
         data: StepDataItems;
         hint?: string;
       }
-    | 
-      Iframe
-    | Redirect
+    | IframeStep
+    | RedirectStep
     | {
         type: StepType.popup;
         url: string;

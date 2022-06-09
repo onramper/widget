@@ -1,4 +1,7 @@
-import { SwapOverviewViewStep } from "../../ApiContext/api/types/nextStep";
+import {
+  StepType,
+  SwapOverviewViewStep,
+} from "../../ApiContext/api/types/nextStep";
 
 export type SwapOverviewViewProps = {
   nextStep: SwapOverviewViewStep;
@@ -6,7 +9,7 @@ export type SwapOverviewViewProps = {
 
 export const startProps: SwapOverviewViewProps = {
   nextStep: {
-    type: "swapOverview",
+    type: StepType.swapOverview,
     progress: 80,
     amountIn: 0.005,
     amountOut: 0,

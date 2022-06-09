@@ -12,7 +12,6 @@ import WireTranserView from "../WireTranserView";
 import WaitView from "../WaitView";
 import InformationView from "../InformationView";
 import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
-import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import InstructionView from "../InstructionView";
 import PopupView from "../PopupView";
 import ActionableErrorView from "../ActionableErrorView";
@@ -69,9 +68,6 @@ export const useStepResolutionCall = (nextStep?: NextStep) => {
 
         case StepType.instruction:
           return () => replaceScreen(<InstructionView nextStep={nextStep} />);
-
-        case StepType.orderComplete:
-          return () => replaceScreen(<OrderCompleteView nextStep={nextStep} />);
 
         case StepType.paymentReview:
           return () => {

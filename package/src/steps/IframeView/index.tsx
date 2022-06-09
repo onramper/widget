@@ -18,9 +18,8 @@ import {
   isRedirectStep,
 } from "../../ApiContext/api/types/guards";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-import { isStepData, StepType } from "../../ApiContext/api/types/nextStep";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 import useIframeGtm from "./useIframeGtm";
-import { triggerGTMEvent } from "../../helpers/useGTM";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
@@ -56,7 +55,7 @@ const IframeView: React.FC<{
     }
   }
 
- const handleReceiveMessage = useCallback(
+  const handleReceiveMessage = useCallback(
     async (event: MessageEvent) => {
       if (
         ![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(
@@ -97,16 +96,8 @@ const IframeView: React.FC<{
           ) {
             replaceScreen(
               <PaymentProgressView
-                // type: "paymentProgress";
-                // progress: number;
-                // tokenIn: TokenInfo;
-                // tokenOut: TokenInfo;
-                // gatewayAndDex: string;
-                // txId: string;
-                // inAmount: number;
-                // inCurrency: string; //EUR
                 nextStep={{
-                  type: "paymentProgress",
+                  type: StepType.paymentProgress,
                   progress: 0,
                   // infer weth from output chainI
                   tokenIn: findWethAddress(nextStep.l2TokenData.chainId),
@@ -162,22 +153,28 @@ const IframeView: React.FC<{
       handleReceiveMessage,
     ]
   );
-  
+
   return (
     <div className={styles.view}>
       <ProgressHeader
         title={nextStep.humanName ?? "Complete payment"}
-        hideBurgerButton={nextStep.type === StepType.iframe && nextStep.fullscreen}
+        hideBurgerButton={
+          nextStep.type === StepType.iframe && nextStep.fullscreen
+        }
         percentage={nextStep.progress}
         useBackButton
       />
       <BodyIframeView
-        textInfo={nextStep.type === StepType.redirect ? nextStep.hint : undefined}
+        textInfo={
+          nextStep.type === StepType.redirect ? nextStep.hint : undefined
+        }
         error={error}
         fatalError={fatalError}
         nextStep={nextStep}
         features={
-          nextStep.type === StepType.iframe ? nextStep.neededFeatures : undefined
+          nextStep.type === StepType.iframe
+            ? nextStep.neededFeatures
+            : undefined
         }
         src={nextStep.url}
         type={nextStep.type}
@@ -185,7 +182,9 @@ const IframeView: React.FC<{
         onErrorDismissClick={(type) =>
           type === "FATAL" ? setFatalError(undefined) : setError(undefined)
         }
-        isFullScreen={nextStep.type === StepType.iframe ? nextStep.fullscreen : false}
+        isFullScreen={
+          nextStep.type === StepType.iframe ? nextStep.fullscreen : false
+        }
       />
     </div>
   );

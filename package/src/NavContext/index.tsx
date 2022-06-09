@@ -118,7 +118,7 @@ const NavProvider: React.FC = (props) => {
         nextScreen,
         replaceScreen,
         triggerChat,
-        canGoBack
+        canGoBack,
         currentStep,
       }}
     >

@@ -12,7 +12,7 @@ const stepIgnoreList = [
   StepType.iframe,
   StepType.redirect,
   StepType.information,
-  StepType.completed
+  StepType.completed,
 ];
 
 export const useStepGtmCall = (step?: NextStep) => {

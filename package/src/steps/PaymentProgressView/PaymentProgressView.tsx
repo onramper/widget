@@ -20,7 +20,10 @@ import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
 import { pollTransaction } from "../../ApiContext/api";
 import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
-import { PaymentProgressViewStep } from "../../ApiContext/api/types/nextStep";
+import {
+  PaymentProgressViewStep,
+  StepType,
+} from "../../ApiContext/api/types/nextStep";
 
 const defaults: Omit<PaymentProgressViewStep, "type" | "progress"> = {
   tokenIn: {
@@ -151,21 +154,10 @@ export const PaymentProgressView = ({
   const [gateway, dex] = gatewayAndDex.split("_");
 
   const handleNext = () => {
-    console.log("SwapOverviewProps", {
-      type: "swapOverview",
-      progress: 80,
-      amountIn: 0.005,
-      amountOut: 0,
-      tokenIn: tokenIn,
-      tokenOut: tokenOut,
-      fiatSymbol: "$",
-      userId: "",
-      txId: txId,
-    });
     nextScreen(
       <SwapOverviewView
         nextStep={{
-          type: "swapOverview",
+          type: StepType.swapOverview,
           progress: 0,
           amountIn: inAmount,
           amountOut: 0,

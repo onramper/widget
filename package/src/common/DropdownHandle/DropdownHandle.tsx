@@ -16,7 +16,7 @@ const DropdownHandle: React.FC<DropdownHandleProps> = ({
       className={`${styles["handle-wrapper"]} ${className || ""} ${
         disabled ? styles["disabled"] : ""
       }`}
-      onClick={() => !disabled && onClick(value)}
+      onClick={() => !disabled && onClick && onClick(value)}
     >
       <div
         className={`${styles["icon-handle-wrapper"]} ${iconClassname || ""}`}
