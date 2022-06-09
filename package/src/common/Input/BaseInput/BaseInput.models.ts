@@ -34,9 +34,9 @@ export type InputFacadeProps = {
 }
 
 export type BaseInputProps = Omit<InputFacadeProps, "onChange"> & {
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void  | boolean
-    iconClassName?: "icon-chevron" | "icon-date",
-    inputSupportFallbackNode?: ReactChild,
-    inputNotSupported?: boolean,
-    formatValue?: (value?: any) => string
-}
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void | boolean;
+  iconClassName?: "icon-chevron" | "icon-date";
+  inputSupportFallbackNode?: ReactChild;
+  inputNotSupported?: boolean;
+  formatValue?: (value?: any) => string;
+};

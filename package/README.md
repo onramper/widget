@@ -19,7 +19,7 @@ import OnramperWidget from "@onramper/widget";
 
 export default function OnramperWidgetContainer() {
   return (
-    <div style={{maxWidth: '440px',  maxHeight: '595px',  height: '100%',  width: '100%'}}>
+    <div style={{maxWidth: '482px',  maxHeight: '660px',  height: '100%',  width: '100%'}}>
       <OnramperWidget
         color="#0316C1"
         defaultAmount={200}
@@ -45,6 +45,7 @@ While importing the widget as a React component, you can customize it using the 
 | onlyGateways   | String[]? | `["Moonpay", "Wyre"]`                | undefined     |
 | color          | String?   | `"#000000"`                          | "#31a5ff"     |
 | API_KEY        | String    | `"pk_live_YOUR-API-KEY"`             | -             |
+| selectGatewayBy| String    | `"performance"`                      | "price"       |
 
 ## Customize
 You can pass the following arguments to customize the widget

@@ -1,6 +1,9 @@
 {
   "name": "@onramper/widget",
-  "version": "2.2.6",
+  "version": "2.2.16",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "private": false,
   "license": "MIT",
   "repository": {
@@ -34,14 +37,21 @@
     "start:demo": "webpack --env NODE_ENV=development --env STAGE=demo",
     "start:local": "webpack --env NODE_ENV=development --env STAGE=local",
     "start:l2": "webpack --env NODE_ENV=development --env STAGE=l2",
-    "prepublishOnly": "npm run build:prod"
+    "setup": "npm ci --omit=peer",
+    "prepublishOnly": "npm run build:prod",
+    "lint": "eslint src --ext ts,js,tsx --no-ignore --fix --cache",
+    "checklint": "eslint src --ext ts,js,tsx --no-ignore --cache"
   },
   "dependencies": {
-    "@onramper/flag-icons": "^1.0.0",
-    "@onramper/moonpay-adapter": "^1.6.15",
+    "@onramper/flag-icons": "^1.0.1",
+    "@onramper/moonpay-adapter": "^1.6.18",
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
+    "@types/react-gtm-module": "^2.0.1",
     "abort-controller": "^3.0.0",
+    "i18next": "^21.6.11",
+    "i18next-browser-languagedetector": "^6.1.3",
+    "i18next-http-backend": "^1.3.2",
     "iso3166-alpha-converter": "^1.0.0",
     "layer2": "github:onramper/layer2#bug/gs/add-netowrk-to-config",
     "lottie-react": "^2.1.0",
@@ -50,7 +60,9 @@
     "react-jazzicon": "^1.0.3",
     "react-transition-group": "^4.4.1",
     "rendered-country-flags": "^1.2.0",
-    "use-debounce": "^7.0.1"
+    "use-debounce": "^7.0.1",
+    "react-gtm-module": "^2.0.11",
+    "react-i18next": "^11.15.5"
   },
   "peerDependencies": {
     "react": "^17.0.2",

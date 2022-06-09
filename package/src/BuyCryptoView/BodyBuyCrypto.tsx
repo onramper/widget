@@ -19,16 +19,20 @@ import NotificationSection from "./NotificationSection/NotificationSection";
 import Step from "./../steps/Step";
 import TopScreenA from "./ScreenA/TopScreenA";
 import OverlayPicker from "../common/OverlayPicker/OverlayPicker";
-import { getBestAvailableGateway } from "../utils";
+import { getBestGatewayByPrice, getBestGatewayByPerformance } from "../utils";
 import { LoadingItem } from "./constants";
 import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
 import Footer from "../common/Footer";
+import { useTranslation } from "react-i18next";
+import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
+import { StepType } from "../ApiContext/api/types/nextStep";
+import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
-): IGatewaySelected | null {
+): IGatewaySelected | undefined {
   if (!selectedGateway) {
-    return null;
+    return;
   }
   return {
     name: selectedGateway.name,
@@ -38,6 +42,7 @@ function mapGatewaySelectedToPicker(
 }
 
 const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
+  const { t } = useTranslation();
   const {
     onBuyCrypto,
     handleInputChange,
@@ -72,22 +77,24 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
 
     return (
       collected.selectedGateway.identifier === "Wyre" &&
-      nextStep.type === "form" &&
+      nextStep.type === StepType.form &&
       nextStep.data.some((field) => field.name === "ccNumber")
     );
   }, [collected.selectedGateway]);
 
-  const onNextStep = useCallback(
-    () =>
-      !!collected.selectedGateway &&
-      nextScreen(
-        <Step
-          nextStep={collected.selectedGateway.nextStep}
-          isConfirmed={!isNextStepConfirmed()}
-        />
-      ),
-    [collected.selectedGateway, isNextStepConfirmed, nextScreen]
-  );
+  const onNextStep = useCallback(() => {
+    if (!collected.selectedGateway) {
+      return;
+    }
+
+    triggerLandingViewGtmFtcEvent(collected);
+    nextScreen(
+      <Step
+        nextStep={collected.selectedGateway.nextStep}
+        isConfirmed={!isNextStepConfirmed()}
+      />
+    );
+  }, [collected, isNextStepConfirmed, nextScreen]);
 
   const openMorePaymentOptions = useCallback(() => {
     if (availablePaymentMethods.length > 1) {
@@ -117,15 +124,25 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   useEffect(() => {
     handleInputChange(
       "selectedGateway",
-      getBestAvailableGateway(allRates, !!collected.amountInCrypto)
+      collected.selectGatewayBy === SelectGatewayByType.Performance
+        ? getBestGatewayByPerformance(
+            allRates,
+            !!collected.amountInCrypto,
+            collected.selectedCurrency?.name,
+            collected.selectedCrypto?.name,
+            collected.staticRouting
+          )
+        : getBestGatewayByPrice(allRates, !!collected.amountInCrypto)
     );
   }, [
     allRates,
     collected.amountInCrypto,
+    collected.selectGatewayBy,
     collected.selectedCrypto,
     collected.selectedCurrency,
     collected.selectedPaymentMethod,
     handleInputChange,
+    collected.staticRouting,
   ]);
 
   useEffect(() => {
@@ -175,13 +192,14 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
             isLoading={collected.isCalculatingAmount}
             isInitialLoading={isGatewayInitialLoading}
             amountInCrypto={!!collected.amountInCrypto}
+            byPerformance={collected.selectGatewayBy === SelectGatewayByType.Performance}
           />
         )}
 
       <div className={`${stylesCommon["body__child-grow"]}`}>
         <ButtonAction
           onClick={onNextStep}
-          text={`Buy ${selectedCrypto.name}`}
+          text={`${t("buyCryptoView.buy")} ${selectedCrypto.name}`}
           disabled={
             !isFilled ||
             collected.isCalculatingAmount ||

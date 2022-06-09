@@ -4,7 +4,8 @@ export type ProgressHeaderProps = {
   title?: string;
   useBackButton?: boolean;
   useExitButton?: boolean;
-  onExitClick?: () => void;
+  hideBurgerButton?: boolean;
   noSeparator?: boolean;
+  onExitClick?: () => void;
   onMenuClick?: () => {};
 };

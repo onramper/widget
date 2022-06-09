@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
 import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
 
@@ -23,8 +29,11 @@ import {
   isRedirectStep,
 } from "../../ApiContext/api/types/guards";
 
-interface BodyIframeViewType {
-  nextStep: NextStep & { type: "iframe" | "redirect" };
+import { triggerGTMEvent } from "../../helpers/useGTM";
+import { StepType } from "../../ApiContext/api/types/nextStep";
+
+interface  BodyIframeViewType  {
+  nextStep: NextStep &  (StepType.iframe | StepType.redirect);
   src: string;
   type: string;
   textInfo?: string;
@@ -33,6 +42,7 @@ interface BodyIframeViewType {
   onErrorDismissClick: (type?: string) => void;
   isFullScreen?: boolean;
   features?: string;
+  gtmPayload: any;
 }
 
 const getHostname = (href: string) => {
@@ -61,8 +71,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   const [isRestartCalled, setIsRestartCalled] = useState(false);
 
   const { onlyScreen, nextScreen, replaceScreen } = useContext(NavContext);
-
   const hostname = getHostname(props.src);
+  const gtmPayloadRef = useRef(props.gtmPayload);
   const isAGateway =
     selectedGateway?.nextStep?.type === "redirect" &&
     hostname === getHostname(selectedGateway?.nextStep.url);
@@ -75,6 +85,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   const isL2MoonpayNewWindowIntegration = () =>
     selectedGateway?.name.split("_").at(-1) === "Uniswap" &&
     props.src.indexOf("https://api.moonpay.io/v3/payment") === -1;
+
 
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
@@ -98,7 +109,9 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       "_blank",
       "height=595,width=440,scrollbars=yes,left=0"
     ); //todo: add config
-
+    if (windowObjectReference) {
+      triggerGTMEvent(gtmPayloadRef.current);
+    }
     if (
       windowObjectReference &&
       isL2MoonpayNewWindowIntegration() &&
@@ -168,7 +181,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
 
   useEffect(() => {
     if (countDown <= 0 || !isAGateway) {
-      if (type === "redirect") redirect(iframeUrl);
+      if (type === StepType.redirect) redirect(iframeUrl);
       return;
     }
     let countDownId: ReturnType<typeof setTimeout>;
@@ -198,7 +211,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       {!props.isFullScreen && (
         <>
           <InfoBox
-            in={!!textInfo && type !== "redirect"}
+            in={!!textInfo && type !== StepType.redirect}
             className={`${stylesCommon.body__child} ${styles.body__child}`}
           >
             {textInfo}
@@ -233,7 +246,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
           >
             <span>
               {
-                "It's posible that your bank rejected the transaction. Please. use another credit card or try with another gateway."
+                "It's possible that your bank rejected the transaction. Please use another credit card or try with another gateway."
               }
             </span>
           </InfoBox>
@@ -245,7 +258,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             <span>{props.fatalError}</span>
           </div>
         )) ||
-          (isAGateway && type === "redirect" && (
+          (isAGateway && type === StepType.redirect && (
             <div className={`${styles.center}`}>
               <div className={styles.block}>
                 {countDown <= 0 ? (
@@ -295,7 +308,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
               )}
             </div>
           )) ||
-          (type === "redirect" && autoRedirect && (
+          (type === StepType.redirect && autoRedirect && (
             <div className={`${styles.center}`}>
               {!userClosedPopup ? (
                 <>
@@ -333,7 +346,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
               )}
             </div>
           )) ||
-          (type === "redirect" && !autoRedirect && (
+          (type === StepType.redirect && !autoRedirect && (
             <div className={`${styles.center}`}>
               <span className={`${stylesCommon.body__child} `}>
                 Please, click the button below to finish the process.{" "}

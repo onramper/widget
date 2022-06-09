@@ -5,6 +5,10 @@ on:
     branches: [master, dev, ice-master, ice-dev, demo, ice-demo, layer2-dev]
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
@@ -18,11 +22,16 @@ jobs:
           git config --global url."https://github.com/".insteadOf
           ssh://git@github.com/
       - name: Get Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: "16.4.1"
+          node-version: "16.x"
+          cache: "npm"
+          cache-dependency-path: |
+            package/package-lock.json
+            iframe/package-lock.json
       - run: (cd package && npm ci --omit peer &&  npm run build:dev)
       - run: (cd iframe && npm ci &&  npm run build)
+
   deploy:
     needs: [lint-and-build]
     if: >
@@ -60,10 +69,6 @@ jobs:
           then
             echo "::set-output name=stage::demo"
             echo "::set-output name=domain::icebergdemo.onramper.dev"
-          elif [ $REF == 'refs/heads/layer2-dev' ]
-          then
-            echo "::set-output name=stage::l2"
-            echo "::set-output name=domain::volcano.onramper.dev"
           elif [ $REF == 'refs/heads/demo' ]
           then
             echo "::set-output name=stage::demo"
@@ -74,9 +79,13 @@ jobs:
         env:
           REF: ${{ github.ref }}
       - name: Get Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: "16.4.1"
+          node-version: "16.x"
+          cache: "npm"
+          cache-dependency-path: |
+            package/package-lock.json
+            iframe/package-lock.json
       - run: (cd package && npm ci --omit peer && npm run build:$STAGE)
         env:
           STAGE: ${{ steps.git-branch.outputs.stage }}
@@ -97,9 +106,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Get Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: "16.4.1"
+          node-version: "16.x"
+          cache: "npm"
+          cache-dependency-path: |
+            package/package-lock.json
           registry-url: "https://registry.npmjs.org"
       - name: Clean install and build
         run: (cd package && npm ci --omit peer && npm run build:prod)

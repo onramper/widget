@@ -17,7 +17,7 @@ const Checkbox: React.FC<CheckboxProps> = (props) => {
         onClick={props.onClick}
       />
       <div className={classes["check"]}>
-          <div className={classes["circle"]}> </div>
+        <div className={classes["circle"]}> </div>
       </div>
     </div>
   );

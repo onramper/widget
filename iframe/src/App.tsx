@@ -31,6 +31,7 @@ const excludeFiat = getArrayParam("excludeFiat");
 const onlyGateways = getArrayParam("onlyGateways");
 const onlyFiat = getArrayParam("onlyFiat");
 const country = getParam("country");
+const language = getParam("language");
 const isAddressEditable = getParam("isAddressEditable");
 const wallets = getWalletsParam();
 const displayChatBubble = getParam("displayChatBubble", "false");
@@ -48,6 +49,8 @@ const isAmountEditable = getParam("isAmountEditable", "true") === "true";
 const recommendedCryptoCurrencies = getArrayParam(
   "recommendedCryptoCurrencies"
 );
+const darkMode = getParam("darkMode");
+const selectGatewayBy =  getParam("selectGatewayBy", "price");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -87,7 +90,9 @@ function App() {
               onlyGateways: onlyGateways,
               onlyFiat: onlyFiat,
             }}
+            selectGatewayBy={selectGatewayBy}
             country={country}
+            language={language}
             isAddressEditable={
               isAddressEditable === undefined
                 ? undefined
@@ -110,6 +115,7 @@ function App() {
             supportBuy={supportBuy}
             isAmountEditable={isAmountEditable}
             recommendedCryptoCurrencies={recommendedCryptoCurrencies}
+            darkMode={darkMode === "true"}
           />
         </div>
       </div>

@@ -1,27 +1,27 @@
 .wrapper {
-    flex-grow: 0;
-    height: 64px;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 20px;
-    text-align: center;    
-    color: var(--text-dark-color);
-    flex-shrink: 0;
-    display: flex;
-    padding: 0 var(--padding-rl);
+  flex-grow: 0;
+  height: 64px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--text-dark-color);
+  flex-shrink: 0;
+  display: flex;
+  padding: 0 var(--padding-rl);
 }
 
 .text {
-    flex-grow: 1;
-    text-align: center;
-    padding-left: 12px;
-    color: var(--text-dark-color);
-    position: relative;
+  flex-grow: 1;
+  text-align: center;
+  padding-left: 12px;
+  color: var(--text-dark-color);
+  position: relative;
 }
 
 .close-icon-wrapper {
-    position: relative;
+  position: relative;
 }
 
 .clickable-area {
@@ -34,4 +34,11 @@
 
 .close-icon {
     color: var(--text-light-color);
+}
+ 
+.close-btn {
+  width: auto;
+  margin-top: 0;
+  height: 50px;
+  padding: 1.110rem;
 }

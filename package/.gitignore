@@ -1,3 +1,6 @@
 dist
 /*.tgz
 yarn.lock
+
+# ES lint cache
+.eslintcache

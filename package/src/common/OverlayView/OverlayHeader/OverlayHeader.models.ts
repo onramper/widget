@@ -1,4 +1,5 @@
 export type OverlayHeaderProps = {
-    text: string;
-    close: () => void;
-  };
+  text: string;
+  closeBtnTxt?: string;
+  close: () => void;
+};

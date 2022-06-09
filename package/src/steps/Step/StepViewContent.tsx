@@ -2,134 +2,96 @@ import React, { useContext, useEffect, useState } from "react";
 import stylesCommon from "../../styles.module.css";
 
 import ErrorVisual from "../../common/ErrorVisual";
-
-import PaymentReview from "../PaymentReviewView";
-import UploadView from "../UploadView";
-import PickOptionView from "../PickOptionView";
-import FormView from "../FormView";
-import SuccessView from "../SuccessView";
-import IframeView from "../IframeView";
-import WireTranserView from "../WireTranserView";
-import WaitView from "../WaitView";
-
 import { NavContext } from "../../NavContext";
 
 import { APIContext, NextStep } from "../../ApiContext";
-import InformationView from "../InformationView";
 import Footer from "../../common/Footer";
-import EmailVerificationView from "../EmailVerificationView/EmailVerificationView";
 import PaymentReviewDecorator from "../PaymentReviewView/PaymentReviewDecorator";
-import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
+import { useStepGtmCall } from "./hooks";
+import useStepResolutionCall from "./useStepResolutionCall";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 export interface NewStepProps {
   nextStep?: NextStep;
+  gtmToBeRegisterStep?: NextStep;
   isConfirmed?: boolean;
 }
-const StepViewContent: React.FC<NewStepProps> = ({ nextStep, isConfirmed }) => {
-  const { replaceScreen, backScreen /* , onlyScreen */ } =
-    useContext(NavContext);
+const StepViewContent: React.FC<NewStepProps> = ({
+  nextStep,
+  gtmToBeRegisterStep,
+  isConfirmed,
+}) => {
+  const { replaceScreen } = useContext(NavContext);
   const { inputInterface, collected } = useContext(APIContext);
   const [isProcessingStep, setIsProcessingStep] = useState(true);
+  const registerStepGtmEvent = useStepGtmCall(gtmToBeRegisterStep);
+  const getMatchedStepCallback = useStepResolutionCall(nextStep);
 
   useEffect(() => {
+    if (!getMatchedStepCallback || !registerStepGtmEvent) {
+      return;
+    }
+
     if (!nextStep) {
       setIsProcessingStep(false);
       return;
     }
-    if (
-      isConfirmed === false ||
-      (!isConfirmed &&
-        (nextStep.type === "iframe" ||
-          nextStep.type === "requestBankTransaction") &&
-        nextStep.type === "iframe" &&
-        !nextStep.fullscreen)
-    ) {
-      let includeAddr = true;
+
+    const { selectedCrypto, defaultAddrs, isAddressEditable } = collected;
+
+    const showReviewAsFrontendStepIfApplicable = () => {
       if (
-        nextStep.type !== "iframe" &&
-        nextStep.type !== "requestBankTransaction"
+        isConfirmed === false ||
+        (!isConfirmed &&
+          (nextStep.type === StepType.iframe ||
+            nextStep.type === StepType.requestBankTransaction) &&
+          nextStep.type === StepType.iframe &&
+          !nextStep.fullscreen)
       ) {
-        includeAddr = false;
-        if (!collected.isAddressEditable)
-          inputInterface.handleInputChange(
-            "cryptocurrencyAddress",
-            collected.defaultAddrs[collected.selectedCrypto?.id ?? ""]
-          );
+        let includeAddr = true;
+        if (
+          nextStep.type !== StepType.iframe &&
+          nextStep.type !== StepType.requestBankTransaction
+        ) {
+          includeAddr = false;
+          if (!isAddressEditable)
+            inputInterface.handleInputChange(
+              "cryptocurrencyAddress",
+              defaultAddrs[selectedCrypto?.id ?? ""]
+            );
+        }
+
+        registerStepGtmEvent();
+        replaceScreen(
+          <PaymentReviewDecorator
+            nextStep={nextStep}
+            includeCryptoAddr={includeAddr}
+          />
+        );
+        return true;
       }
-      replaceScreen(
-        <PaymentReviewDecorator
-          nextStep={nextStep}
-          includeCryptoAddr={includeAddr}
-        />
-      );
+      return false;
+    };
+
+    if (showReviewAsFrontendStepIfApplicable()) {
       return;
     }
 
-    const showPaymentReview = (
-      nextStep: NextStep & { type: "paymentReview" }
-    ) => {
-      if (!collected.isAddressEditable) {
-        const newAddress =
-          collected.defaultAddrs[collected.selectedCrypto?.id ?? ""];
-
-        inputInterface.handleInputChange("cryptocurrencyAddress", newAddress);
-      }
-
-      replaceScreen(
-        <PaymentReview nextStep={nextStep} includeCryptoAddr={true} />
-      );
-    };
-
-    switch (nextStep.type) {
-      case "form":
-        replaceScreen(<FormView nextStep={nextStep} />);
-        break;
-      case "file":
-        replaceScreen(<UploadView nextStep={nextStep} />);
-        break;
-      case "pickOne":
-        replaceScreen(<PickOptionView nextStep={nextStep} />);
-        break;
-      case "redirect":
-        replaceScreen(<IframeView nextStep={nextStep} />);
-        break;
-      case "wait":
-        replaceScreen(<WaitView nextStep={nextStep} />);
-        break;
-      case "completed":
-        replaceScreen(<SuccessView txType="instant" nextStep={nextStep} />);
-        break;
-      case "iframe":
-        replaceScreen(<IframeView nextStep={nextStep} />);
-        break;
-      case "requestBankTransaction":
-        replaceScreen(<WireTranserView nextStep={nextStep} />);
-        break;
-      case "information":
-        replaceScreen(<InformationView nextStep={nextStep} />);
-        break;
-      case "emailVerification":
-        replaceScreen(<EmailVerificationView nextStep={nextStep} />);
-        break;
-      case "paymentReview":
-        showPaymentReview(nextStep);
-        break;
-      case "swapOverview":
-        replaceScreen(<SwapOverviewView nextStep={nextStep} />);
-        break;
-      default:
-        break;
+    const stepCallback = getMatchedStepCallback();
+    if (stepCallback) {
+      registerStepGtmEvent();
+      stepCallback();
+      return;
     }
     setIsProcessingStep(false);
   }, [
     nextStep,
     replaceScreen,
-    backScreen,
     isConfirmed,
     inputInterface,
-    collected.defaultAddrs,
-    collected.selectedCrypto?.id,
-    collected.isAddressEditable,
+    collected,
+    registerStepGtmEvent,
+    getMatchedStepCallback,
   ]);
 
   return (

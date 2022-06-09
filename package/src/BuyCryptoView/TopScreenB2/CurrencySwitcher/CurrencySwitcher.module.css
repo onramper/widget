@@ -1,17 +1,24 @@
 .switcher-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 23px;
-    margin-bottom: 39px;
-    min-height: 42px;
+  display: flex;
+  justify-content: center;
+  margin-top: 23px;
+  margin-bottom: 39px;
+  min-height: 42px;
+}
+
+@media (max-width: 440px) {
+  .switcher-wrapper {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 }
 
 .arrow-right {
-    margin: 0 19px;
+  margin: 0 19px;
 }
 
 div.crypto-icon {
-    background-color: unset;
+  background-color: unset;
 }
 
 div.fiat-icon {
@@ -20,11 +27,11 @@ div.fiat-icon {
 }
 
 .fiat-icon img {
-    filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
-@media (max-width: 330px) { 
-    .arrow-right {
-        margin: 0 10px;
-    }
+@media (max-width: 330px) {
+  .arrow-right {
+    margin: 0 10px;
+  }
 }

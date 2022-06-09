@@ -7,7 +7,12 @@ import React, {
   useContext,
 } from "react";
 
-import { StateType, initialState, ItemCategory } from "./initialState";
+import {
+  StateType,
+  initialState,
+  ItemCategory,
+  StaticRoutingItemType,
+} from "./initialState";
 import { mainReducer, CollectedActionsType, DataActionsType } from "./reducers";
 
 import { arrayUnique, arrayObjUnique } from "../utils";
@@ -24,18 +29,21 @@ import type {
   CollectedStateType,
   GatewayRateOptionSimple,
 } from "./initialState";
-import { GatewaysResponse } from "./api/types/gateways";
+import { GatewaysResponse, SelectGatewayByType } from "./api/types/gateways";
 import { RateResponse } from "./api/types/rate";
 import type {
   NextStep,
   StepDataItems,
   FileStep,
+  PickOneOption,
   InfoDepositBankAccount,
 } from "./api/types/nextStep";
 
 import { NextStepError } from "./api";
 import type { Filters } from "./api";
 import phoneCodes from "./utils/phoneCodes";
+import i18n from "../i18n/config";
+import { isLanguageSupported, supportedLanguages } from "./utils/languages";
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
@@ -62,6 +70,7 @@ interface APIProviderType {
   defaultPaymentMethod?: string;
   filters?: Filters;
   country?: string;
+  language?: string;
   isAddressEditable?: boolean;
   themeColor: string;
   displayChatBubble?: boolean;
@@ -73,6 +82,19 @@ interface APIProviderType {
   supportBuy: boolean;
   isAmountEditable?: boolean;
   recommendedCryptoCurrencies?: string[];
+  darkMode?: boolean;
+  selectGatewayBy?: string | "price" | "performance";
+}
+
+/**
+ * Provided a language will update the i18n and headers if required.
+ *
+ * @param language The ISO 639-1 language code. E.g. 'ja'. See: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ */
+function updateLanguageIfRequired(language: string) {
+  if (i18n.language !== language) i18n.changeLanguage(language);
+  if (API.getAcceptLanguageParameter() !== language)
+    API.updateAcceptLanguageParameter();
 }
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
@@ -110,6 +132,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       recommendedCryptoCurrencies: props.recommendedCryptoCurrencies
         ? arrayUnique(props.recommendedCryptoCurrencies)
         : undefined,
+      selectGatewayBy: props.selectGatewayBy,
     };
   }, [
     defaultAddrs,
@@ -124,6 +147,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.supportBuy,
     props.isAmountEditable,
     props.recommendedCryptoCurrencies,
+    props.selectGatewayBy,
   ]);
 
   const iniState: StateType = {
@@ -155,6 +179,15 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       dispatch({
         type: CollectedActionsType.AddField,
         payload: { name, value },
+      }),
+    []
+  );
+
+  const updateStaticRouting = useCallback(
+    (value: StaticRoutingItemType[]) =>
+      dispatch({
+        type: CollectedActionsType.UpdateStaticRoute,
+        payload: { value },
       }),
     []
   );
@@ -206,6 +239,22 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       const actualCountry = props.country || country;
+
+      // The language provided explicitly via the '?language=' query parameter.
+      let explicitLanguage;
+      if (props.language) {
+        if (isLanguageSupported(props.language))
+          explicitLanguage = props.language;
+        else
+          console.error(
+            `The language set by the query parameter '?language=${props.language}' is not supported. ` +
+              `The following languages are currently supported by Onramper: [${supportedLanguages}]. ` +
+              `For more information, see: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes.`
+          );
+      }
+
+      if (explicitLanguage) updateLanguageIfRequired(explicitLanguage);
+
       // REQUEST AVAILABLE GATEWAYS
       let rawResponseGateways: GatewaysResponse;
       let responseGateways: GatewaysResponse;
@@ -253,6 +302,21 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             message: "No gateways found.",
           },
         });
+      }
+
+      if (props.selectGatewayBy === SelectGatewayByType.Performance) {
+        try {
+          updateStaticRouting(
+            (await API.getGatewayStaticRouting(widgetsCountry)).recommended
+          );
+        } catch (error) {
+          return processErrors({
+            GATEWAYS: {
+              type: "API",
+              message: error.message,
+            },
+          });
+        }
       }
 
       const ICONS_MAP = responseGateways.icons || {};
@@ -333,6 +397,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       props.country,
       props.displayChatBubble,
       props.recommendedCryptoCurrencies,
+      props.language,
+      props.selectGatewayBy,
+      updateStaticRouting,
     ]
   );
 
@@ -1002,4 +1069,5 @@ export type {
   APIProviderType,
   CollectedStateType,
   GatewayRateOptionSimple,
+  PickOneOption,
 };

@@ -15,7 +15,7 @@ export const styleVariables = {
     "--border-size-dot": "3px",
     "--icon-size": "32px",
     "--dot-size": "16px",
-  } as CSSProperties
+  } as CSSProperties,
 };
 
 export const transitionClasses = {

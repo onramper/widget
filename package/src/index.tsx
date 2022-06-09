@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import styles from "./styles.module.css";
 import BuyCryptoView from "./BuyCryptoView";
@@ -9,11 +9,16 @@ import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
+import TagManager from "react-gtm-module";
+
+import "./i18n/config";
+
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 import { L2Provider } from "layer2";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
+import { G_TAG_ID } from "./ApiContext/api/constants";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -36,12 +41,24 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     "--font-family": fontFamily,
   } as React.CSSProperties;
 
+  useEffect(() => {
+    const tagManagerArgs = {
+      gtmId: G_TAG_ID,
+      dataLayer: {
+        apiKey: props.API_KEY,
+      },
+    };
+    TagManager.initialize(tagManagerArgs);
+  }, [props.API_KEY]);
+
   return (
     <div
       key={flagRestart}
       id="main"
       style={style}
-      className={`isolate-inheritance ${styles.theme} ${className}`}
+      className={`isolate-inheritance ${styles.theme} ${className} ${
+        props.darkMode ? styles.dark : ""
+      }`}
     >
       <ErrorBoundary
         fallback={({ resetError }) => (
@@ -64,6 +81,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               defaultPaymentMethod={props.defaultPaymentMethod}
               filters={props.filters}
               country={props.country}
+              language={props.language}
               isAddressEditable={props.isAddressEditable}
               themeColor={color.slice(1)}
               displayChatBubble={props.displayChatBubble}
@@ -75,6 +93,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               supportBuy={props.supportBuy}
               isAmountEditable={props.isAmountEditable}
               recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
+              selectGatewayBy={props.selectGatewayBy}
             >
               <TransactionContextProvider>
                 <NotificationProvider>

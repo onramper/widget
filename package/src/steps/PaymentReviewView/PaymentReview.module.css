@@ -1,12 +1,16 @@
 .button-wrapper {
-    padding-top: 30px;
+  padding-top: 30px;
 }
 
 .fiat-currency {
-    --icon-bg-color: var(--primary-color);
-    --icon-padding: 5px;
+  --icon-bg-color: var(--primary-color);
+  --icon-padding: 5px;
+}
+
+.crypto-currency {
+  --icon-bg-color: var(--background-color);
 }
 
 .fiat-currency img[itemProp="icon"] {
-    filter: invert(1);
+  filter: invert(1);
 }

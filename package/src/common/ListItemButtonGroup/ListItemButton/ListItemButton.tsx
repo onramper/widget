@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import {
   ListItemButtonChildProps,
   ListItemButtonProps,
@@ -10,6 +12,7 @@ import { ReactComponent as CheckvronUp } from "./../../../icons/chevron-up.svg";
 import { CSSTransition } from "react-transition-group";
 
 const ListItem: React.FC<ListItemButtonChildProps> = (props) => {
+  const { t } = useTranslation();
   return (
     <div
       onClick={props.onClick}
@@ -24,7 +27,7 @@ const ListItem: React.FC<ListItemButtonChildProps> = (props) => {
       <div
         className={`${classes["list-text"]} ${commonClasses["clickable-txt"]}`}
       >
-        {!props.link && <>{props.text}</>}
+        {!props.link && <>{t(props.text)}</>}
         {!!props.link && (
           <a
             href={props.link}
@@ -32,7 +35,7 @@ const ListItem: React.FC<ListItemButtonChildProps> = (props) => {
             target="_blank"
             rel="noreferrer"
           >
-            {props.text}
+            {t(props.text)}
           </a>
         )}
       </div>
@@ -82,7 +85,7 @@ const ListItemButton: React.FC<ListItemButtonProps> = (props) => {
           enter: commonClasses["collapse-enter"],
           enterActive: commonClasses["collapse-enter-active"],
           exit: commonClasses["collapse-exit"],
-          exitActive: commonClasses["collapse-exit-active"]
+          exitActive: commonClasses["collapse-exit-active"],
         }}
       >
         <div ref={childrenWrapperRef}>

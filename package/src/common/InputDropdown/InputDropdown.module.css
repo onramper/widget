@@ -10,6 +10,7 @@
 .content-wrapper {
   display: flex;
   align-items: center;
+  height: 88px;
   background: rgba(255, 255, 255, 0.01);
   border: 1px solid rgba(0, 75, 235, 0.04);
   box-shadow: 0px 3.88908px 40px rgba(26, 60, 85, 0.09);
@@ -37,10 +38,22 @@
   overflow: hidden;
   white-space: nowrap;
 }
+.input-wrapper {
+  flex-grow: 1;
+  padding: 20px 10px 17px 32px;
+}
 
 .input {
   display: inline-block;
+  width: 100%;
   outline: none;
+  border: 0;
+  margin: 2px 0px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 32px;
+  padding: 0;
 }
 
 .input,

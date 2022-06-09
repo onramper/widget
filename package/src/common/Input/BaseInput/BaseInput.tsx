@@ -32,9 +32,6 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>((props, ref) 
   }, [props.iconPosition, props.symbol, symbolPosition]);
 
   const formatValue = (value?: any) => {
-    if(props.formatValue) {
-      return props.formatValue(value);
-    }
     return value;
   };
 

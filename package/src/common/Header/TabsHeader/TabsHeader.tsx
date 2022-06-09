@@ -11,11 +11,14 @@ export type ITabsHeaderProps = {
   tabs: string[];
   tabSelected: number;
   onClickItem: (index: number) => void;
-}
+};
 
 const TabsHeader: React.FC<ITabsHeaderProps> = (props: ITabsHeaderProps) => {
   const { nextScreen } = useContext(NavContext);
-  const { onMenuClick = () => nextScreen(<Menu className={classes["tabs-header-menu"]} />) } = props;
+  const {
+    onMenuClick = () =>
+      nextScreen(<Menu className={classes["tabs-header-menu"]} />),
+  } = props;
 
   return (
     <nav className={classes.header}>

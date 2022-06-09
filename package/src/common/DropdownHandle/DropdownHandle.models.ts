@@ -4,5 +4,5 @@ export type DropdownHandleProps = {
     className?: string
     iconClassname?: string
     disabled?: boolean;
-    onClick?: (value: string) => void
+    onClick: (value: string) => void
 }

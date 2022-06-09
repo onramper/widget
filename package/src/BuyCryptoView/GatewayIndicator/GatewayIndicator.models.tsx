@@ -2,10 +2,11 @@ export interface GatewayIndicatorProps {
   unitFiat?: string;
   unitCrypto?: string;
   openMoreOptions: () => void;
-  selectedGateway?: IGatewaySelected | null;
+  selectedGateway?: IGatewaySelected;
   isLoading: boolean;
   isInitialLoading: boolean;
   amountInCrypto: boolean;
+  byPerformance: boolean;
 }
 
 export interface IGatewaySelected {

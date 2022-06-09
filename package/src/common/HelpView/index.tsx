@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import commonStyles from "../../styles.module.css";
-
 import { NavContext } from "../../NavContext";
 import { CSSTransition } from "react-transition-group";
 import ButtonAction from "../Buttons/ButtonAction";

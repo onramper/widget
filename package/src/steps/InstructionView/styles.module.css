@@ -1,0 +1,33 @@
+.body-wrapper {
+  padding-top: calc(var(--pt-heading) + var(--padding-top));
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-wrapper {
+  grid-gap: 45px;
+  padding-bottom: 50px;
+}
+
+.item-wrapper .item {
+  width: 60%;
+}
+
+.item-text {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--text-light-color);
+  padding-top: 12px;
+  text-align: center;
+}
+
+.heading {
+  --pt-heading: 0px;
+  --pb-heading: 0px;
+  padding-bottom: 20px;
+}

@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../../common/Header";
 import BodyLoading from "./BodyLoading";
 import styles from "../../styles.module.css";
 
 import { NavContext } from "../../NavContext";
 import { APIContext } from "../../ApiContext";
 import { delay } from "../utils";
-import { NextStep } from "../../ApiContext/api/types/nextStep";
+import { NextStep, StepType } from "../../ApiContext/api/types/nextStep";
 import Step from "../Step";
 import ErrorView from "../../common/ErrorView";
 import Footer from "../../common/Footer";
 import { isNextStepError } from "../../ApiContext/api";
+import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 
-const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
+const LoadingView: React.FC<{ nextStep: NextStep & { type: StepType.wait } }> = (
   props
 ) => {
   const { nextScreen, backScreen, replaceScreen } = useContext(NavContext);
@@ -27,7 +27,7 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
     const callback = async () => {
       let newNextStep: NextStep = nextStep;
       let failed = false;
-      while (newNextStep.type === "wait" && !failed) {
+      while (newNextStep.type === StepType.wait && !failed) {
         try {
           await delay(500);
           let payload = { partnerContext: collectedStore.partnerContext };
@@ -60,7 +60,11 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
           }
         }
       }
-      if (!failed) replaceScreen(<Step nextStep={newNextStep} />);
+      if (!failed) {
+        replaceScreen(
+          <Step gtmToBeRegisterStep={nextStep} nextStep={newNextStep} />
+        );
+      }
     };
     callback();
   }, [
@@ -76,8 +80,12 @@ const LoadingView: React.FC<{ nextStep: NextStep & { type: "wait" } }> = (
 
   return (
     <div className={styles.view}>
-      <Header title="" backButton />
-      <BodyLoading error={error} />
+      <ProgressHeader percentage={props.nextStep.progress} useBackButton />
+      <BodyLoading
+        error={error}
+        title={props.nextStep.title}
+        message={props.nextStep.message}
+      />
       <Footer />
     </div>
   );

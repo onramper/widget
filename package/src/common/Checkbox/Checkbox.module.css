@@ -51,3 +51,7 @@
 .wrapper > input[type="checkbox"]:checked {
   cursor: default;
 }
+
+.wrapper.disabled > .check {
+  opacity: 0.3;
+}

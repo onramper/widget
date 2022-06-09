@@ -16,9 +16,10 @@ import ErrorView from "../../common/ErrorView";
 import Step from "../Step";
 import { NavContext } from "../../NavContext";
 import InputDelegator from "../../common/Input/InputDelegator";
+import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const EmailVerificationView: React.FC<{
-  nextStep: NextStep & { type: "emailVerification" };
+  nextStep: NextStep & { type: StepType.emailVerification };
 }> = ({ nextStep }) => {
   const [field] = useState(nextStep.data);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +35,9 @@ const EmailVerificationView: React.FC<{
 
     try {
       const newNextStep = await apiInterface.executeStep(nextStep, {});
-      nextScreen(<Step nextStep={newNextStep} />);
+      nextScreen(
+        <Step gtmToBeRegisterStep={nextStep} nextStep={newNextStep} />
+      );
     } catch (_error) {
       const error = _error as { fatal: any; message: string };
       if (error.fatal) {

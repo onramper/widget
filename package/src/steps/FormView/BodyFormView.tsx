@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
-
 import CreditCardInput from "./renderers/creditCard";
 import InputCryptoAddr from "../../common/Input/InputCryptoAddr";
 import ButtonAction from "../../common/Buttons/ButtonAction";
@@ -412,6 +411,27 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 .
               </label>
             )) ||
+            (field.type === "boolean" &&
+              field.name === "areFundsFromLegalSources" && (
+                <label
+                  key={i}
+                  className={`${stylesCommon.body__child} ${styles.terms}`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={collected[field.name] ?? false}
+                    name={field.name}
+                    onChange={(e) =>
+                      onChange(
+                        e.currentTarget.name,
+                        e.currentTarget.checked,
+                        e.currentTarget.type
+                      )
+                    }
+                  />
+                  &nbsp;{field.humanName}
+                </label>
+              )) ||
             (field.type === "select" && (
               <InputButton
                 ref={inputRefs[i].ref}

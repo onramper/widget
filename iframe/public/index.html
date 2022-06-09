@@ -1,25 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169406093-6"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    try{
-      let params = (new URL(document.location)).searchParams;
-      let apiKey = params.get('apiKey')
-      gtag('config', 'UA-169406093-6', {
-        campaign: {
-          source: apiKey,
-          host: window.parent.location
-        }
-      });
-    } catch(e){
-      gtag('config', 'UA-169406093-6')
-    }
-  </script>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

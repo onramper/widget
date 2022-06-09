@@ -1,18 +1,41 @@
 import "abort-controller/polyfill";
 import { GatewayRate, RateResponse } from "./types/rate";
-import { Currency, GatewaysResponse } from "./types/gateways";
+import {
+  Currency,
+  GatewaysResponse,
+  GatewayStaticRoutingResponse,
+} from "./types/gateways";
 import { FieldError } from "./types/nextStep";
 import { NextStep } from "..";
 import processMoonpayStep, { moonpayUrlRegex } from "@onramper/moonpay-adapter";
 import { BrowserClient, Hub } from "@sentry/browser";
 import type { CryptoAddrType } from "../initialState";
-
+import i18next from "i18next";
+import i18n from "../../i18n/config";
 import { BASE_API } from "./constants";
 import { RawData, Transaction, TransactionData } from "./types/transaction";
 import { isTransactionHash } from "../../utils";
 
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers();
+
+
+// The language that will be appended to every request as a query parameter. This will indicate the language we want the
+// content of the backend to be in.
+let currentAcceptLanguage = i18next.language;
+
+const getAcceptLanguageParameter = () => {
+  return currentAcceptLanguage;
+};
+
+// Language parameter is set here for i18n. The backend will use this to set the language of the responses.
+const updateAcceptLanguageParameter = () => {
+  const currentI18nLanguage = i18n.language;
+  if (currentAcceptLanguage !== currentI18nLanguage)
+    currentAcceptLanguage = currentI18nLanguage;
+};
+updateAcceptLanguageParameter();
+
 // See https://github.com/getsentry/sentry-javascript/issues/1656#issuecomment-430295616
 const sentryClient = new BrowserClient({
   dsn: "https://283a138678d94cc295852f634d4cdd1c@o506512.ingest.sentry.io/5638949",
@@ -82,7 +105,7 @@ const rate = async (
   const urlParams = createUrlParamsFromObject(params ?? {});
   const ratesUrl = `${BASE_API}/v2/rate/${currency}/${crypto}/${paymentMethod}/${amount}?${urlParams}`;
 
-  // logRequest(ratesUrl);
+  logRequest(ratesUrl);
   const ratesRes = await fetch(ratesUrl, {
     headers,
     signal,
@@ -142,7 +165,7 @@ const executeStep = async (
   logRequest(step.url);
   const nextStepType = step.url.split("/")[5];
   let nextStep: FetchResponse;
-  if (isMoonpay && nextStepType !== "iframe") {
+  if (isMoonpay && nextStepType !== "redirect") {
     nextStep = await processMoonpayStep(step.url, { method, headers, body });
   } else {
     nextStep = await fetch(`${step.url}?${urlParams}`, {
@@ -198,7 +221,7 @@ type ErrorWithName = {
   name: string;
 };
 
-export function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+ function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
   return (
     typeof error === "object" &&
     error !== null &&
@@ -207,7 +230,7 @@ export function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
   );
 }
 
-export function isErrorWithName(error: unknown): error is ErrorWithName {
+ function isErrorWithName(error: unknown): error is ErrorWithName {
   return (
     typeof error === "object" &&
     error !== null &&
@@ -216,7 +239,7 @@ export function isErrorWithName(error: unknown): error is ErrorWithName {
   );
 }
 
-export function isNextStepError(error: unknown): error is NextStepError {
+ function isNextStepError(error: unknown): error is NextStepError {
   return (
     error !== null &&
     (error as Record<string, unknown>).message === "NextStepError"
@@ -441,7 +464,7 @@ function formatData(data: RawData): TransactionData {
   };
 }
 
-export function storeTransactionData(data: RawData) {
+ function storeTransactionData(data: RawData) {
   if (data.address && data.transactionResponse) {
     const formattedData = formatData(data);
 
@@ -456,6 +479,18 @@ export function storeTransactionData(data: RawData) {
   }
 }
 
+const getGatewayStaticRouting = async (country?: string) => {
+  const url = `${BASE_API}/routing/${country}`;
+  logRequest(url);
+  const response = await fetch(url, {
+    headers,
+    credentials: process.env.STAGE === "local" ? "omit" : "include",
+  });
+
+  const data: GatewayStaticRoutingResponse = await processResponse(response);
+  return data;
+};
+
 export {
   authenticate,
   gateways,
@@ -464,9 +499,17 @@ export {
   filterGatewaysResponse,
   sortCryptoByRecommended,
   filterRatesResponse,
+  getAcceptLanguageParameter,
+  updateAcceptLanguageParameter,
   sell,
+  getGatewayStaticRouting,
   NextStepError,
   sentryHub,
   ApiError,
   pollTransaction,
+  isErrorWithMessage,
+  isErrorWithName,
+  isNextStepError,
+  formatData,
+  storeTransactionData
 };

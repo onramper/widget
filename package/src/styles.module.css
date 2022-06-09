@@ -19,6 +19,11 @@ theme styles
   --grey-color-level1: #54595d;
   --grey-color-level2: #757575;
   --grey-color-level3: #7e7e7e;
+  --error-color: #d25656;
+  --success-color: #3ad66f;
+  --text-dark-color: #292d32;
+  --text-light-color: #7c7d82;
+  --grey-light-color: #abadb8;
   --text-negative-color: #fff;
   --text-negative-secondary-color: #d5d7e7;
   --seperator-color: #eff0f4;
@@ -45,10 +50,10 @@ theme styles
   --padding-rl: 35px;
   --padding-bottom: 1.125rem;
   --pt-heading: 12px;
-  --pb-heading: 22px;
+  --pb-heading: 35px;
   /* header */
-  --header-height: 82px;
-  --header-tabs-height: 63px;
+  --header-height: 65px;
+  --header-tabs-height: 54px;
   /* lists */
   --list-hover-color: #f7fafd;
   --list-active-color: #6c77dc;
@@ -120,6 +125,10 @@ theme styles
   line-height: 22px;
 }
 
+.theme.dark {
+  filter: invert(1) hue-rotate(180deg) opacity(0.8) contrast(0.95);
+}
+
 /*********
 general styles
 *********/
@@ -188,7 +197,7 @@ components
 }
 
 .body .footer {
-  padding: 9px var(--padding-rl) 16px var(--padding-rl);
+  margin-top: var(--body-space-childs);
 }
 
 .row-fields {
@@ -455,6 +464,10 @@ a {
 
 .chevron.up {
   transform: rotateZ(-90deg);
+}
+
+.shrink-0 {
+    flex-shrink: 0;
 }
 
 /* general transition */
