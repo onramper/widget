@@ -10,15 +10,15 @@ import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
 import TagManager from "react-gtm-module";
-
 import "./i18n/config";
-
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 import { L2Provider } from "layer2";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
 import { G_TAG_ID } from "./ApiContext/api/constants";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { PaymentProgressView } from "./steps/PaymentProgressView";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -52,61 +52,74 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   }, [props.API_KEY]);
 
   return (
-    <div
-      key={flagRestart}
-      id="main"
-      style={style}
-      className={`isolate-inheritance ${styles.theme} ${className} ${
-        props.darkMode ? styles.dark : ""
-      }`}
-    >
-      <ErrorBoundary
-        fallback={({ resetError }) => (
-          <ErrorView type="CRASH" callback={resetError} />
-        )}
-        onReset={() => {
-          // reset the state of your app so the error doesn't happen again
-          setFlagRestart((old) => ++old);
-        }}
+    <BrowserRouter>
+      <div
+        key={flagRestart}
+        id="main"
+        style={style}
+        className={`isolate-inheritance ${styles.theme} ${className} ${
+          props.darkMode ? styles.dark : ""
+        }`}
       >
-        <L2Provider>
-          <NavProvider>
-            <APIProvider
-              API_KEY={props.API_KEY}
-              defaultAmount={props.defaultAmount}
-              defaultAddrs={props.defaultAddrs}
-              defaultCrypto={props.defaultCrypto}
-              defaultFiat={props.defaultFiat}
-              defaultFiatSoft={props.defaultFiatSoft}
-              defaultPaymentMethod={props.defaultPaymentMethod}
-              filters={props.filters}
-              country={props.country}
-              language={props.language}
-              isAddressEditable={props.isAddressEditable}
-              themeColor={color.slice(1)}
-              displayChatBubble={props.displayChatBubble}
-              amountInCrypto={props.amountInCrypto}
-              partnerContext={props.partnerContext}
-              redirectURL={props.redirectURL}
-              minAmountEur={props.minAmountEur}
-              supportSell={props.supportSell}
-              supportBuy={props.supportBuy}
-              isAmountEditable={props.isAmountEditable}
-              recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
-              selectGatewayBy={props.selectGatewayBy}
-            >
-              <TransactionContextProvider>
-                <NotificationProvider>
-                  <div style={{ flexGrow: 1, display: "flex" }}>
-                    <NavContainer home={<BuyCryptoView />} />
-                  </div>
-                </NotificationProvider>
-              </TransactionContextProvider>
-            </APIProvider>
-          </NavProvider>
-        </L2Provider>
-      </ErrorBoundary>
-    </div>
+        <ErrorBoundary
+          fallback={({ resetError }) => (
+            <ErrorView type="CRASH" callback={resetError} />
+          )}
+          onReset={() => {
+            // reset the state of your app so the error doesn't happen again
+            setFlagRestart((old) => ++old);
+          }}
+        >
+          <L2Provider>
+            <NavProvider>
+              <APIProvider
+                API_KEY={props.API_KEY}
+                defaultAmount={props.defaultAmount}
+                defaultAddrs={props.defaultAddrs}
+                defaultCrypto={props.defaultCrypto}
+                defaultFiat={props.defaultFiat}
+                defaultFiatSoft={props.defaultFiatSoft}
+                defaultPaymentMethod={props.defaultPaymentMethod}
+                filters={props.filters}
+                country={props.country}
+                language={props.language}
+                isAddressEditable={props.isAddressEditable}
+                themeColor={color.slice(1)}
+                displayChatBubble={props.displayChatBubble}
+                amountInCrypto={props.amountInCrypto}
+                partnerContext={props.partnerContext}
+                redirectURL={props.redirectURL}
+                minAmountEur={props.minAmountEur}
+                supportSell={props.supportSell}
+                supportBuy={props.supportBuy}
+                isAmountEditable={props.isAmountEditable}
+                recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
+                selectGatewayBy={props.selectGatewayBy}
+              >
+                <TransactionContextProvider>
+                  <NotificationProvider>
+                    <Routes>
+                      <Route
+                        path="/"
+                        element={
+                          <div style={{ flexGrow: 1, display: "flex" }}>
+                            <NavContainer home={<BuyCryptoView />} />
+                          </div>
+                        }
+                      />
+                      <Route
+                        path="/swap/:txId"
+                        element={<PaymentProgressView />}
+                      />
+                    </Routes>
+                  </NotificationProvider>
+                </TransactionContextProvider>
+              </APIProvider>
+            </NavProvider>
+          </L2Provider>
+        </ErrorBoundary>
+      </div>
+    </BrowserRouter>
   );
 };
 

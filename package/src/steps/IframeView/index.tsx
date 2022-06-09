@@ -12,7 +12,7 @@ import {
 } from "@onramper/moonpay-adapter";
 import { NavContext } from "../../NavContext";
 import { PaymentProgressView } from "../PaymentProgressView";
-import { findWethAddress } from "../../utils";
+import { findWeth } from "../../utils";
 import {
   isIframeStep,
   isRedirectStep,
@@ -100,7 +100,7 @@ const IframeView: React.FC<{
                   type: StepType.paymentProgress,
                   progress: 0,
                   // infer weth from output chainI
-                  tokenIn: findWethAddress(nextStep.l2TokenData.chainId),
+                  tokenIn: findWeth(nextStep.l2TokenData.chainId),
                   tokenOut: nextStep.l2TokenData,
                   gatewayAndDex: selectedGateway.name,
                   txId: nextStep.txId,

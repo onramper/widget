@@ -16,36 +16,18 @@ import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg"
 import { ReactComponent as Chevron } from "../../icons/chevron2.svg";
 import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
 import { ReactComponent as Error } from "../../icons/close_circle.svg";
-import { PaymentProgressViewProps, Status } from "./PaymentProgressView.models";
+import {
+  defaults,
+  PaymentProgressViewProps,
+  Status,
+  SwapData,
+} from "./PaymentProgressView.models";
 import { pollTransaction } from "../../ApiContext/api";
 import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
-import {
-  PaymentProgressViewStep,
-  StepType,
-} from "../../ApiContext/api/types/nextStep";
-
-const defaults: Omit<PaymentProgressViewStep, "type" | "progress"> = {
-  tokenIn: {
-    name: "Input Token Name",
-    address: "In address",
-    symbol: "WETH",
-    decimals: 18,
-    chainId: 3,
-    logoURI: "",
-  },
-  tokenOut: {
-    name: "Output Token Name",
-    address: "output token address",
-    symbol: "OUT",
-    decimals: 18,
-    chainId: 3,
-    logoURI: "",
-  },
-  gatewayAndDex: "Gateway_DExchange",
-  txId: "--some--random--L1--tx--id--",
-  inCurrency: "USD",
-};
+import { StepType } from "../../ApiContext/api/types/nextStep";
+import { useParams } from "react-router-dom";
+import { findWeth } from "../../utils";
 
 // const res = {
 //   type: "redirect",
@@ -84,46 +66,55 @@ const defaults: Omit<PaymentProgressViewStep, "type" | "progress"> = {
 //   },
 // };
 
-export const PaymentProgressView = ({
-  nextStep: {
-    gatewayAndDex = defaults.gatewayAndDex,
-    tokenIn = defaults.tokenIn,
-    tokenOut = defaults.tokenOut,
-    txId = defaults.txId,
-    inCurrency = defaults.inCurrency, // USD
-  },
-}: PaymentProgressViewProps) => {
+export const PaymentProgressView = (props: PaymentProgressViewProps) => {
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
-  const symbolInUpper = resolveWeth(tokenIn).symbol.toUpperCase();
-  const symbolOutUpper = tokenOut.symbol.toUpperCase();
+  const { txId } = useParams();
+  const [swapData, setSwapData] = useState<SwapData>(
+    props?.nextStep ?? defaults
+  );
+
+  const symbolInUpper = resolveWeth(swapData.tokenIn).symbol.toUpperCase();
+  const symbolOutUpper = swapData.tokenOut.symbol.toUpperCase();
   const { nextScreen } = useNav();
   const [inAmount, setInAmount] = useState<number>(0);
 
-  console.table({
-    gatewayAndDex: defaults.gatewayAndDex,
-    tokenIn: defaults.tokenIn,
-    tokenOut: defaults.tokenOut,
-    txId: defaults.txId,
-    inCurrency: defaults.inCurrency,
-  });
+  useEffect(() => {
+    const getSwapData = async () => {
+      if (txId) {
+        const tx = await pollTransaction(txId);
+        if (tx && tx.lastStatus === "init") {
+          const tokenIn = findWeth(tx.l2TokenData.chainId);
+          const tokenOut = tx.l2TokenData;
+          const gatewayAndDex = tx.customerGateway;
+          const inCurrency = tx.inCurrency;
+          setSwapData({ tokenIn, tokenOut, gatewayAndDex, inCurrency });
+        }
+      }
+    };
+    getSwapData();
+  }, [txId]);
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      const tx = await pollTransaction(txId);
-      if (tx && tx.lastStatus === "ok") {
-        setLayer1Status(Status.Success);
-        setInAmount(tx.outAmount);
-        clearInterval(interval);
-      }
-      if (tx && tx.lastStatus === "rip") {
-        setLayer1Status(Status.Fail);
-        clearInterval(interval);
-      }
-    }, 2000);
-    //eslint-disable-next-line
-  }, []);
+    if (txId) {
+      const interval = setInterval(async () => {
+        const tx = await pollTransaction(txId);
+        if (tx && tx.lastStatus === "ok") {
+          setLayer1Status(Status.Success);
+          setInAmount(tx.outAmount);
+          clearInterval(interval);
+        }
+        if (tx && tx.lastStatus === "rip") {
+          setLayer1Status(Status.Fail);
+          clearInterval(interval);
+        }
+      }, 2000);
+      //eslint-disable-next-line
+    }
+  }, [txId]);
 
-  const tokenOutURL = tokenOut?.logoURI ? uriToHttp(tokenOut?.logoURI)[0] : "";
+  const tokenOutURL = swapData.tokenOut?.logoURI
+    ? uriToHttp(swapData.tokenOut?.logoURI)[0]
+    : "";
 
   const heading = (): string => {
     if (layer1Status === Status.Pending) {
@@ -151,24 +142,26 @@ export const PaymentProgressView = ({
     return "";
   };
 
-  const [gateway, dex] = gatewayAndDex.split("_");
+  const [gateway, dex] = swapData.gatewayAndDex.split("_");
 
   const handleNext = () => {
-    nextScreen(
-      <SwapOverviewView
-        nextStep={{
-          type: StepType.swapOverview,
-          progress: 0,
-          amountIn: inAmount,
-          amountOut: 0,
-          tokenIn: tokenIn,
-          tokenOut: tokenOut,
-          fiatSymbol: inCurrency,
-          userId: "",
-          txId: txId,
-        }}
-      />
-    );
+    if (txId) {
+      nextScreen(
+        <SwapOverviewView
+          nextStep={{
+            type: StepType.swapOverview,
+            progress: 0,
+            amountIn: inAmount,
+            amountOut: 0,
+            tokenIn: swapData.tokenIn,
+            tokenOut: swapData.tokenOut,
+            fiatSymbol: swapData.inCurrency,
+            userId: "",
+            txId: txId,
+          }}
+        />
+      );
+    }
   };
 
   return (
@@ -221,7 +214,7 @@ export const PaymentProgressView = ({
             <ImageWithFallback
               className={classes.tokenIcon}
               src={tokenOutURL}
-              alt={tokenOut?.name ?? "token to buy"}
+              alt={swapData.tokenOut?.name ?? "token to buy"}
               FallbackComponent={Fallback}
             />
           </div>

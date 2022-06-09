@@ -23,7 +23,7 @@ import ButtonAction from "../../common/Buttons/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";
-import { findWethAddress } from "../../utils";
+import { findWeth } from "../../utils";
 import {
   isIframeStep,
   isRedirectStep,
@@ -125,7 +125,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             type: StepType.paymentProgress,
             progress: 80,
             // infer weth from output chainID
-            tokenIn: findWethAddress(l2TokenData.chainId),
+            tokenIn: findWeth(l2TokenData.chainId),
             tokenOut: l2TokenData,
             gatewayAndDex: selectedGateway?.name ?? "",
             txId: txId,
