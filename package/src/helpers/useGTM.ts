@@ -29,14 +29,6 @@ export const triggerGTMEvent = ({
   label?: string;
   value?: any;
 }) => {
-  console.log({
-    event,
-    context: category,
-    label,
-    action,
-    value,
-  });
-
   triggerGTM({
     event,
     context: category,
