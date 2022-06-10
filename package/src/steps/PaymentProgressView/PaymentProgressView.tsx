@@ -12,7 +12,7 @@ import { ReactComponent as Wallet } from "../../icons/wallet2.svg";
 import Spinner from "../../common/Spinner";
 import { ReactComponent as Check } from "../../icons/check.svg";
 import { ImageWithFallback } from "../../common/ImageWithFallback/ImageWithFallback";
-import { ReactComponent as Fallback } from "../../icons/fallback_token_icon.svg";
+import Fallback from "../../icons/fallback_token_icon.svg";
 import { ReactComponent as Chevron } from "../../icons/chevron2.svg";
 import { ReactComponent as CheckCircle } from "../../icons/check_circle.svg";
 import { ReactComponent as Error } from "../../icons/close_circle.svg";
@@ -27,7 +27,7 @@ import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 import { useNavigate, useParams } from "react-router-dom";
-import { findWeth, sleep } from "../../utils";
+import { findWeth } from "../../utils";
 import { useAPI } from "../../ApiContext";
 import BuyCryptoView from "../../BuyCryptoView";
 
@@ -223,7 +223,7 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
               className={classes.tokenIcon}
               src={tokenOutURL}
               alt={swapData.tokenOut?.name ?? "token to buy"}
-              FallbackComponent={Fallback}
+              fallbackSrc={Fallback}
             />
           </div>
 
