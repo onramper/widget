@@ -70,65 +70,65 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             setFlagRestart((old) => ++old);
           }}
         >
-          <L2Provider>
-            <NavProvider>
-              <APIProvider
-                API_KEY={props.API_KEY}
-                defaultAmount={props.defaultAmount}
-                defaultAddrs={props.defaultAddrs}
-                defaultCrypto={props.defaultCrypto}
-                defaultFiat={props.defaultFiat}
-                defaultFiatSoft={props.defaultFiatSoft}
-                defaultPaymentMethod={props.defaultPaymentMethod}
-                filters={props.filters}
-                country={props.country}
-                language={props.language}
-                isAddressEditable={props.isAddressEditable}
-                themeColor={color.slice(1)}
-                displayChatBubble={props.displayChatBubble}
-                amountInCrypto={props.amountInCrypto}
-                partnerContext={props.partnerContext}
-                redirectURL={props.redirectURL}
-                minAmountEur={props.minAmountEur}
-                supportSell={props.supportSell}
-                supportBuy={props.supportBuy}
-                isAmountEditable={props.isAmountEditable}
-                recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
-                selectGatewayBy={props.selectGatewayBy}
-              >
-                <TransactionContextProvider>
-                  <NotificationProvider>
-                    <Routes>
-                      <Route
-                        path="/"
-                        element={
-                          <div style={{ flexGrow: 1, display: "flex" }}>
-                            <NavContainer home={<BuyCryptoView />} />
-                          </div>
-                        }
-                      />
-                      <Route
-                        path="/swap/:txId"
-                        element={
+          <NavProvider>
+            <APIProvider
+              API_KEY={props.API_KEY}
+              defaultAmount={props.defaultAmount}
+              defaultAddrs={props.defaultAddrs}
+              defaultCrypto={props.defaultCrypto}
+              defaultFiat={props.defaultFiat}
+              defaultFiatSoft={props.defaultFiatSoft}
+              defaultPaymentMethod={props.defaultPaymentMethod}
+              filters={props.filters}
+              country={props.country}
+              language={props.language}
+              isAddressEditable={props.isAddressEditable}
+              themeColor={color.slice(1)}
+              displayChatBubble={props.displayChatBubble}
+              amountInCrypto={props.amountInCrypto}
+              partnerContext={props.partnerContext}
+              redirectURL={props.redirectURL}
+              minAmountEur={props.minAmountEur}
+              supportSell={props.supportSell}
+              supportBuy={props.supportBuy}
+              isAmountEditable={props.isAmountEditable}
+              recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
+              selectGatewayBy={props.selectGatewayBy}
+            >
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <div style={{ flexGrow: 1, display: "flex" }}>
+                      <NavContainer home={<BuyCryptoView />} />
+                    </div>
+                  }
+                />
+                <Route
+                  path="/swap/:txId"
+                  element={
+                    <L2Provider>
+                      <NotificationProvider>
+                        <TransactionContextProvider>
                           <div style={{ flexGrow: 1, display: "flex" }}>
                             <NavContainer home={<PaymentProgressView />} />
                           </div>
-                        }
-                      />
-                      <Route
-                        path="/*"
-                        element={
-                          <div style={{ flexGrow: 1, display: "flex" }}>
-                            <NavContainer home={<BuyCryptoView />} />
-                          </div>
-                        }
-                      />
-                    </Routes>
-                  </NotificationProvider>
-                </TransactionContextProvider>
-              </APIProvider>
-            </NavProvider>
-          </L2Provider>
+                        </TransactionContextProvider>
+                      </NotificationProvider>
+                    </L2Provider>
+                  }
+                />
+                <Route
+                  path="/*"
+                  element={
+                    <div style={{ flexGrow: 1, display: "flex" }}>
+                      <NavContainer home={<BuyCryptoView />} />
+                    </div>
+                  }
+                />
+              </Routes>
+            </APIProvider>
+          </NavProvider>
         </ErrorBoundary>
       </div>
     </BrowserRouter>

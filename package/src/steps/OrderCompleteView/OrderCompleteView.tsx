@@ -9,6 +9,7 @@ import { APIContext } from "../../ApiContext";
 import { useNav } from "../../NavContext";
 import BuyCryptoView from "../../BuyCryptoView";
 import { TokenInfo, useAddTokenToMetamask } from "layer2";
+import { useNavigate } from "react-router-dom";
 
 const OrderCompleteView: React.FC<{
   description: string;
@@ -19,6 +20,7 @@ const OrderCompleteView: React.FC<{
   const { onlyScreen } = useNav();
   const [autoPlay, setAutoPlay] = useState(false);
   const { addToken } = useAddTokenToMetamask(props.tokenOut);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -27,14 +29,17 @@ const OrderCompleteView: React.FC<{
     return () => clearTimeout(timeout);
   }, []);
 
+  const exitHandler = () => {
+    navigate("/", { replace: true });
+    collected.redirectURL
+      ? window.open(collected.redirectURL, "_parent")
+      : onlyScreen(<BuyCryptoView />);
+  };
+
   return (
     <div className={`${commonClasses.view} ${classes["view"]}`}>
       <ProgressHeader
-        onExitClick={
-          collected.redirectURL
-            ? () => window.open(collected.redirectURL, "_parent")
-            : () => onlyScreen(<BuyCryptoView />)
-        }
+        onExitClick={exitHandler}
         useExitButton
         primary
         noSeparator
