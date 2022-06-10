@@ -26,8 +26,10 @@ import { pollTransaction } from "../../ApiContext/api";
 import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 import { StepType } from "../../ApiContext/api/types/nextStep";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { findWeth, sleep } from "../../utils";
+import { useAPI } from "../../ApiContext";
+import BuyCryptoView from "../../BuyCryptoView";
 
 // const res = {
 //   type: "redirect",
@@ -72,14 +74,15 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
   const { txId: txIdFromUrl } = useParams();
   const txId = txIdFromUrl || props.nextStep?.txId;
-
+  const { collected } = useAPI();
+  const { onlyScreen, nextScreen } = useNav();
   const [swapData, setSwapData] = useState<SwapData>(
     props?.nextStep ?? defaults
   );
+  const navigate = useNavigate();
 
   const symbolInUpper = resolveWeth(swapData.tokenIn).symbol.toUpperCase();
   const symbolOutUpper = swapData.tokenOut.symbol.toUpperCase();
-  const { nextScreen } = useNav();
   const [inAmount, setInAmount] = useState<number>(0);
 
   useEffect(() => {
@@ -159,9 +162,19 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
     }
   };
 
+  const exitHandler = () => {
+    navigate("/", { replace: true });
+    collected.redirectURL
+      ? window.open(collected.redirectURL, "_parent")
+      : onlyScreen(<BuyCryptoView />);
+  };
+
   return (
     <div className={commonClasses.view}>
-      <ProgressHeader useExitButton={layer1Status === Status.Fail} />
+      <ProgressHeader
+        onExitClick={exitHandler}
+        useExitButton={layer1Status === Status.Fail}
+      />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         {layer1Status === Status.Pending && <Mail className={classes.icon} />}
         {layer1Status === Status.Success && (
