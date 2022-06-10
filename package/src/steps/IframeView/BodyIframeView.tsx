@@ -31,7 +31,7 @@ import {
 
 import { triggerGTMEvent } from "../../helpers/useGTM";
 import { StepType } from "../../ApiContext/api/types/nextStep";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface BodyIframeViewType {
   nextStep: NextStep & { type: StepType.iframe | StepType.redirect };
