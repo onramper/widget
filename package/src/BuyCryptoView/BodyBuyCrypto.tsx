@@ -24,13 +24,10 @@ import { LoadingItem } from "./constants";
 import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
 import Footer from "../common/Footer";
 import { useTranslation } from "react-i18next";
-import {
-  triggerLandingViewGtmFtcEvent,
-  triggerGTMEvent,
-  generateGtmCtxValue,
-} from "../helpers/useGTM";
+import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
 import { StepType } from "../ApiContext/api/types/nextStep";
 import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
+import { useGatewaySelectionGtm } from "./hooks";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -64,10 +61,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   const [isGatewayInitialLoading, setIsGatewayInitialLoading] =
     useState<boolean>(true);
   const [showScreenA, setShowScreenA] = useState(false);
-  const [gatewayChangeTriggered, setGatewayChangeTriggered] = useState<{
-    selectionBy: SelectGatewayByType;
-    gateway: GatewayRateOption;
-  }>();
+  const registerGtmGatewayChange = useGatewaySelectionGtm();
 
   useEffect(() => {
     const errType = collected.errors?.RATE?.type;
@@ -139,7 +133,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
       );
       if (gatewayByPerformance) {
         handleInputChange("selectedGateway", gatewayByPerformance);
-        setGatewayChangeTriggered({
+        registerGtmGatewayChange({
           selectionBy: SelectGatewayByType.Performance,
           gateway: gatewayByPerformance,
         });
@@ -153,7 +147,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     );
     handleInputChange("selectedGateway", gatewayByPrice);
     gatewayByPrice &&
-      setGatewayChangeTriggered({
+      registerGtmGatewayChange({
         selectionBy: SelectGatewayByType.Price,
         gateway: gatewayByPrice,
       });
@@ -166,25 +160,8 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     collected.selectedPaymentMethod,
     handleInputChange,
     collected.staticRouting,
+    registerGtmGatewayChange,
   ]);
-
-  useEffect(() => {
-    if (!gatewayChangeTriggered) {
-      return;
-    }
-
-    triggerGTMEvent({
-      event: "gateway-selection",
-      category: gatewayChangeTriggered.gateway?.name,
-      label:
-        gatewayChangeTriggered.selectionBy === SelectGatewayByType.Performance
-          ? "best"
-          : "price",
-      action: "manualSelection",
-      value: generateGtmCtxValue(collected),
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gatewayChangeTriggered?.gateway, gatewayChangeTriggered?.selectionBy]);
 
   useEffect(() => {
     if (isGatewayInitialLoading) {
