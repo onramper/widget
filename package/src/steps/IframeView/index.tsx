@@ -4,7 +4,7 @@ import styles from "../../styles.module.css";
 /* import ErrorView from '../../common/ErrorView' */
 import Step from "../Step";
 import { sentryHub, ApiError } from "../../ApiContext/api/index";
-import { NextStep, APIContext } from "../../ApiContext";
+import { NextStep, useAPI } from "../../ApiContext";
 import {
   finishCCTransaction,
   baseCreditCardSandboxUrl,
@@ -20,6 +20,7 @@ import {
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 import useIframeGtm from "./useIframeGtm";
+import { useNavigate } from "react-router-dom";
 
 const btcdirectFinishedOrigin =
   "https://btcdirect.sandbox.staging.onramper.tech";
@@ -33,7 +34,8 @@ const IframeView: React.FC<{
   const [fatalError, setFatalError] = useState<string>();
   const {
     collected: { selectedGateway },
-  } = useContext(APIContext);
+  } = useAPI();
+  const navigate = useNavigate();
 
   const gtmPayload = useIframeGtm({
     nextStep,
@@ -94,6 +96,7 @@ const IframeView: React.FC<{
             selectedGateway?.name === "Moonpay_Uniswap" &&
             (isIframeStep(nextStep) || isRedirectStep(nextStep))
           ) {
+            navigate(`/swap/${nextStep.txId}`, { replace: true });
             replaceScreen(
               <PaymentProgressView
                 nextStep={{
@@ -136,7 +139,7 @@ const IframeView: React.FC<{
         );
       }
     },
-    [nextStep, replaceScreen, selectedGateway?.name]
+    [navigate, nextStep, replaceScreen, selectedGateway?.name]
   );
 
   useEffect(

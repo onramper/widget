@@ -27,7 +27,7 @@ import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 import { useParams } from "react-router-dom";
-import { findWeth } from "../../utils";
+import { findWeth, sleep } from "../../utils";
 
 // const res = {
 //   type: "redirect",
@@ -62,13 +62,17 @@ import { findWeth } from "../../utils";
 //     logoURI:
 //       "https://assets.coingecko.com/coins/images/14375/thumb/alice_logo.jpg?1615782968",
 //     chainId: 1,
-//     decimals: 6,
+//     decimals: 6,c
 //   },
 // };
 
+// const failedTxId = "2gRJ_18g7yLS-7Dgv9hE4A--";
+
 export const PaymentProgressView = (props: PaymentProgressViewProps) => {
   const [layer1Status, setLayer1Status] = useState<Status>(Status.Pending);
-  const { txId } = useParams();
+  const { txId: txIdFromUrl } = useParams();
+  const txId = txIdFromUrl || props.nextStep?.txId;
+
   const [swapData, setSwapData] = useState<SwapData>(
     props?.nextStep ?? defaults
   );
@@ -79,25 +83,16 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
   const [inAmount, setInAmount] = useState<number>(0);
 
   useEffect(() => {
-    const getSwapData = async () => {
-      if (txId) {
+    if (txId) {
+      const interval = setInterval(async () => {
         const tx = await pollTransaction(txId);
-        if (tx && tx.lastStatus === "init") {
+        if (tx) {
           const tokenIn = findWeth(tx.l2TokenData.chainId);
           const tokenOut = tx.l2TokenData;
           const gatewayAndDex = tx.customerGateway;
           const inCurrency = tx.inCurrency;
           setSwapData({ tokenIn, tokenOut, gatewayAndDex, inCurrency });
         }
-      }
-    };
-    getSwapData();
-  }, [txId]);
-
-  useEffect(() => {
-    if (txId) {
-      const interval = setInterval(async () => {
-        const tx = await pollTransaction(txId);
         if (tx && tx.lastStatus === "ok") {
           setLayer1Status(Status.Success);
           setInAmount(tx.outAmount);
@@ -107,7 +102,7 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
           setLayer1Status(Status.Fail);
           clearInterval(interval);
         }
-      }, 2000);
+      }, 1000);
       //eslint-disable-next-line
     }
   }, [txId]);
@@ -166,7 +161,7 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
 
   return (
     <div className={commonClasses.view}>
-      <ProgressHeader />
+      <ProgressHeader useExitButton={layer1Status === Status.Fail} />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         {layer1Status === Status.Pending && <Mail className={classes.icon} />}
         {layer1Status === Status.Success && (
@@ -229,6 +224,16 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
           </div>
           <Chevron className={classes.chevron} />
         </button>
+
+        {layer1Status === Status.Success && (
+          <SingleNotification
+            className={classes.notification}
+            notification={{
+              type: NotificationType.Success,
+              message: "Please proceed to the next step",
+            }}
+          />
+        )}
         {layer1Status === Status.Pending && (
           <SingleNotification
             className={classes.notification}

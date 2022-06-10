@@ -109,7 +109,19 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                       />
                       <Route
                         path="/swap/:txId"
-                        element={<PaymentProgressView />}
+                        element={
+                          <div style={{ flexGrow: 1, display: "flex" }}>
+                            <NavContainer home={<PaymentProgressView />} />
+                          </div>
+                        }
+                      />
+                      <Route
+                        path="/*"
+                        element={
+                          <div style={{ flexGrow: 1, display: "flex" }}>
+                            <NavContainer home={<BuyCryptoView />} />
+                          </div>
+                        }
                       />
                     </Routes>
                   </NotificationProvider>

@@ -6,6 +6,11 @@ import { StaticRoutingItemType } from "./ApiContext/initialState";
 export const apiKey = "oIMeQOqDsg9vFAs6WU1ks2hFxZ32DONF4MkhyDyI";
 
 const supportedDexes = ["uniswap"];
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 // Moonpay_Uniswap => true
 
 export const getDexFromGateway = (

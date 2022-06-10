@@ -31,6 +31,7 @@ import {
 
 import { triggerGTMEvent } from "../../helpers/useGTM";
 import { StepType } from "../../ApiContext/api/types/nextStep";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface BodyIframeViewType {
   nextStep: NextStep & { type: StepType.iframe | StepType.redirect };
@@ -63,6 +64,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   /* const [isAGateway, setisAGateway] = useState(true) */
   const [iframeUrl, setIframeUrl] = useState(props.src);
   const [countDown, setCountDown] = useState(textInfo ? 10 : 3);
+  const navigate = useNavigate();
 
   const [userClosedPopup, setUserClosedPopup] = useState(false);
 
@@ -119,6 +121,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       const {
         nextStep: { l2TokenData, txId, inCurrency },
       } = props;
+      navigate(`/swap/${txId}`, { replace: true });
       return replaceScreen(
         <PaymentProgressView
           nextStep={{
