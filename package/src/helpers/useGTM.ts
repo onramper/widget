@@ -29,6 +29,14 @@ export const triggerGTMEvent = ({
   label?: string;
   value?: any;
 }) => {
+  console.log({
+    event,
+    context: category,
+    label,
+    action,
+    value,
+  });
+
   triggerGTM({
     event,
     context: category,
@@ -38,7 +46,7 @@ export const triggerGTMEvent = ({
   });
 };
 
-export const generateGtmStepValue = (collected: CollectedStateType) => {
+export const generateGtmCtxValue = (collected: CollectedStateType) => {
   const {
     amount,
     amountInCrypto,
@@ -78,7 +86,7 @@ export const triggerLandingViewGtmFtcEvent = (
     category: collected.selectedGateway?.id || "",
     label: "transactionForm",
     action: `step 1`,
-    value: generateGtmStepValue(collected),
+    value: generateGtmCtxValue(collected),
   });
 };
 
