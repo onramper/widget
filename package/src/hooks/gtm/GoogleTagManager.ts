@@ -1,4 +1,5 @@
 import TagManager from "react-gtm-module";
+import * as constants from "../../ApiContext/api/constants";
 
 export type IGtmParams = {
   gtmId: string;
@@ -39,6 +40,6 @@ export const initGTM = ({
  * @param data - The data to push
  */
 export const sendToGTM = ({ dataLayerName, data }: ISendToGTM): void => {
-  const _dataLayerName = dataLayerName ?? "dataLayer";
+  const _dataLayerName = dataLayerName ?? constants.DEFAULT_GTM_DATA_LAYER;
   window[_dataLayerName].push(data);
 };

@@ -31,3 +31,5 @@ export const COINIFY_HOSTNAME =
 
 export const GOOGLE_TAG_ID =
   process.env.STAGE === "prod" ? "GTM-MKWPFXR" : "GTM-W8KDKZR";
+
+export const DEFAULT_GTM_DATA_LAYER = "dataLayer";

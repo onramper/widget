@@ -6,6 +6,7 @@ import React, {
   useReducer,
 } from "react";
 import { IGtmParams, initGTM, sendToGTM } from "./GoogleTagManager";
+import * as constants from "../../ApiContext/api/constants";
 
 export type GTMProviderProps = {
   state?: IGtmParams;
@@ -15,7 +16,7 @@ export type GTMProviderProps = {
 const initialState: IGtmParams = {
   gtmId: "",
   dataLayer: undefined,
-  dataLayerName: "dataLayer",
+  dataLayerName: constants.DEFAULT_GTM_DATA_LAYER,
 };
 
 export const GTMContext = createContext<IGtmParams | undefined>(initialState);
