@@ -23,7 +23,7 @@ import ButtonAction from "../../common/Buttons/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";
-import { findWethAddress } from "../../utils";
+import { findWeth } from "../../utils";
 import {
   isIframeStep,
   isRedirectStep,
@@ -31,6 +31,7 @@ import {
 
 import { triggerGTMEvent } from "../../helpers/useGTM";
 import { StepType } from "../../ApiContext/api/types/nextStep";
+import { useNavigate } from "react-router-dom";
 
 interface BodyIframeViewType {
   nextStep: NextStep & { type: StepType.iframe | StepType.redirect };
@@ -63,6 +64,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   /* const [isAGateway, setisAGateway] = useState(true) */
   const [iframeUrl, setIframeUrl] = useState(props.src);
   const [countDown, setCountDown] = useState(textInfo ? 10 : 3);
+  const navigate = useNavigate();
 
   const [userClosedPopup, setUserClosedPopup] = useState(false);
 
@@ -119,13 +121,14 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       const {
         nextStep: { l2TokenData, txId, inCurrency },
       } = props;
+      navigate(`/swap/${txId}`, { replace: true });
       return replaceScreen(
         <PaymentProgressView
           nextStep={{
             type: StepType.paymentProgress,
             progress: 80,
             // infer weth from output chainID
-            tokenIn: findWethAddress(l2TokenData.chainId),
+            tokenIn: findWeth(l2TokenData.chainId),
             tokenOut: l2TokenData,
             gatewayAndDex: selectedGateway?.name ?? "",
             txId: txId,

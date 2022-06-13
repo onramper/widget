@@ -6,6 +6,7 @@ import { StaticRoutingItemType } from "./ApiContext/initialState";
 export const apiKey = "oIMeQOqDsg9vFAs6WU1ks2hFxZ32DONF4MkhyDyI";
 
 const supportedDexes = ["uniswap"];
+
 // Moonpay_Uniswap => true
 
 export const getDexFromGateway = (
@@ -34,7 +35,7 @@ const ropstenWeth: TokenInfo = {
     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
 };
 
-export const findWethAddress = (chainId: number): TokenInfo => {
+export const findWeth = (chainId: number): TokenInfo => {
   const wethFromChain = knownWethAddresses.find(
     (weth) => weth.chainId === chainId
   );
@@ -153,9 +154,6 @@ export default function uriToHttp(uri: string): string[] {
       return [];
   }
 }
-
-
-
 
 export const copyToClipBoard = async (
   text: string,
@@ -341,11 +339,11 @@ export function getBestGatewayByPrice(
 /**
  * selects best success-reliable gateway based on given fiat->crypto
  * uses best price as fallback
- * @param allRates 
- * @param amountInCrypto 
- * @param fiat 
- * @param crypto 
- * @param staticRouting 
+ * @param allRates
+ * @param amountInCrypto
+ * @param fiat
+ * @param crypto
+ * @param staticRouting
  */
 export function getBestGatewayByPerformance(
   allRates: GatewayRateOption[],
@@ -354,9 +352,9 @@ export function getBestGatewayByPerformance(
   crypto?: string,
   staticRouting?: StaticRoutingItemType[]
 ) {
-  const bestGatewayName = staticRouting?.find(
-    (i) => i.fiat === fiat && i.crypto === crypto
-  )?.gateway?.toLowerCase();
+  const bestGatewayName = staticRouting
+    ?.find((i) => i.fiat === fiat && i.crypto === crypto)
+    ?.gateway?.toLowerCase();
   if (!bestGatewayName) {
     return getBestGatewayByPrice(allRates, amountInCrypto);
   }

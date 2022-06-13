@@ -10,15 +10,15 @@ import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
 import TagManager from "react-gtm-module";
-
 import "./i18n/config";
-
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 import { L2Provider } from "layer2";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
 import { G_TAG_ID } from "./ApiContext/api/constants";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { PaymentProgressView } from "./steps/PaymentProgressView";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -52,24 +52,24 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   }, [props.API_KEY]);
 
   return (
-    <div
-      key={flagRestart}
-      id="main"
-      style={style}
-      className={`isolate-inheritance ${styles.theme} ${className} ${
-        props.darkMode ? styles.dark : ""
-      }`}
-    >
-      <ErrorBoundary
-        fallback={({ resetError }) => (
-          <ErrorView type="CRASH" callback={resetError} />
-        )}
-        onReset={() => {
-          // reset the state of your app so the error doesn't happen again
-          setFlagRestart((old) => ++old);
-        }}
+    <BrowserRouter>
+      <div
+        key={flagRestart}
+        id="main"
+        style={style}
+        className={`isolate-inheritance ${styles.theme} ${className} ${
+          props.darkMode ? styles.dark : ""
+        }`}
       >
-        <L2Provider>
+        <ErrorBoundary
+          fallback={({ resetError }) => (
+            <ErrorView type="CRASH" callback={resetError} />
+          )}
+          onReset={() => {
+            // reset the state of your app so the error doesn't happen again
+            setFlagRestart((old) => ++old);
+          }}
+        >
           <NavProvider>
             <APIProvider
               API_KEY={props.API_KEY}
@@ -95,18 +95,43 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
               selectGatewayBy={props.selectGatewayBy}
             >
-              <TransactionContextProvider>
-                <NotificationProvider>
-                  <div style={{ flexGrow: 1, display: "flex" }}>
-                    <NavContainer home={<BuyCryptoView />} />
-                  </div>
-                </NotificationProvider>
-              </TransactionContextProvider>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <div style={{ flexGrow: 1, display: "flex" }}>
+                      <NavContainer home={<BuyCryptoView />} />
+                    </div>
+                  }
+                />
+                <Route
+                  path="/swap/:txId"
+                  element={
+                    <L2Provider>
+                      <NotificationProvider>
+                        <TransactionContextProvider>
+                          <div style={{ flexGrow: 1, display: "flex" }}>
+                            <NavContainer home={<PaymentProgressView />} />
+                          </div>
+                        </TransactionContextProvider>
+                      </NotificationProvider>
+                    </L2Provider>
+                  }
+                />
+                <Route
+                  path="/*"
+                  element={
+                    <div style={{ flexGrow: 1, display: "flex" }}>
+                      <NavContainer home={<BuyCryptoView />} />
+                    </div>
+                  }
+                />
+              </Routes>
             </APIProvider>
           </NavProvider>
-        </L2Provider>
-      </ErrorBoundary>
-    </div>
+        </ErrorBoundary>
+      </div>
+    </BrowserRouter>
   );
 };
 

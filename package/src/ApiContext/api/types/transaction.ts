@@ -1,4 +1,5 @@
 import { TransactionResponse } from "@ethersproject/abstract-provider";
+import { TokenInfo } from "layer2";
 
 export interface Transaction {
   apiKey: string;
@@ -20,6 +21,8 @@ export interface Transaction {
   paymentMethod: number;
   timestamp: number;
   cryptocurrencyAddress: string;
+  l2TokenData: TokenInfo; // important
+  customerGateway: string; // "Moonpay_Uniswap",
 }
 
 export interface TransactionData {
