@@ -20,6 +20,7 @@ export type ISendToGTM = {
  * Function to init the GTM
  * @param gtmId - The ID of the GTM
  * @param dataLayer - The dataLayer
+ *  @param dataLayerName - The dataLayer name
  */
 export const initGTM = ({
   gtmId,

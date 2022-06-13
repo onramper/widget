@@ -53,9 +53,8 @@ const GTMProvider: React.FC<GTMProviderProps> = ({ state, children }) => {
 
 function useGTMDispatch() {
   const context = useContext(GTMContextDispatch);
-  if (context === undefined) {
+  if (context === undefined)
     throw new Error("dispatchGTMEvent must be used within a GTMProvider");
-  }
 
   return context;
 }
