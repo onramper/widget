@@ -489,16 +489,16 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     ]
   );
 
-  const sortByDefaultPaymentMethods = useCallback(
-    (item1: string, item2: string) => {
-      const findOrder = (str: string) => {
-        const i = defaultPaymentMethod.indexOf(str);
-        return i < 0 ? Number.MAX_SAFE_INTEGER : i;
-      };
-      const indexOf1 = findOrder(item1);
-      const indexOf2 = findOrder(item2);
-      if (indexOf1 === indexOf2) return 0;
-      return indexOf1 < indexOf2 ? -1 : 1;
+  const withSortedByDefaultPaymentMethods = useCallback(
+    (availablePaymentMethods: string[]) => {
+      const prioritized = defaultPaymentMethod.filter((item) =>
+        availablePaymentMethods.some((availableItem) => availableItem === item)
+      );
+      const unPrioritized = availablePaymentMethods.filter(
+        (item) => !prioritized.some((defaultItem) => defaultItem === item)
+        );
+        console.log({availablePaymentMethods, unPrioritized})
+      return [...prioritized, ...unPrioritized];
     },
     [defaultPaymentMethod]
   );
@@ -568,8 +568,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           filtredGatewaysByCurrency[i].paymentMethods
         );
       }
-      availablePaymentMethods = arrayUnique(availablePaymentMethods).sort(
-        sortByDefaultPaymentMethods
+      availablePaymentMethods = withSortedByDefaultPaymentMethods(
+        arrayUnique(availablePaymentMethods)
       );
       if (availablePaymentMethods.length <= 0) {
         return processErrors({
@@ -612,7 +612,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       defaultFiat,
       defaultFiatSoft,
       props.amountInCrypto,
-      sortByDefaultPaymentMethods,
+      withSortedByDefaultPaymentMethods,
     ]
   );
 
