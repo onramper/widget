@@ -76,7 +76,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   const hostname = getHostname(props.src);
   const gtmPayloadRef = useRef(props.gtmPayload);
   const isAGateway =
-    selectedGateway?.nextStep?.type === "redirect" &&
+    selectedGateway?.nextStep?.type === StepType.redirect &&
     hostname === getHostname(selectedGateway?.nextStep.url);
 
   const restartWidget = () => {

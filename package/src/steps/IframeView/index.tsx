@@ -1,13 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import BodyIframeView from "./BodyIframeView";
 import styles from "../../styles.module.css";
-/* import ErrorView from '../../common/ErrorView' */
 import Step from "../Step";
 import { sentryHub, ApiError } from "../../ApiContext/api/index";
 import { NextStep, useAPI } from "../../ApiContext";
 import {
   finishCCTransaction,
-  baseCreditCardSandboxUrl,
   checkTransaction,
 } from "@onramper/moonpay-adapter";
 import { NavContext } from "../../NavContext";
@@ -18,12 +16,10 @@ import {
   isRedirectStep,
 } from "../../ApiContext/api/types/guards";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
-import { StepType } from "../../ApiContext/api/types/nextStep";
+import { StepType, isStepData } from "../../ApiContext/api/types/nextStep";
 import useIframeGtm from "./useIframeGtm";
 import { useNavigate } from "react-router-dom";
-
-const btcdirectFinishedOrigin =
-  "https://btcdirect.sandbox.staging.onramper.tech";
+import { triggerGTMEvent } from "../../helpers/useGTM";
 
 const IframeView: React.FC<{
   nextStep: NextStep & { type: StepType.iframe | StepType.redirect };
@@ -59,12 +55,6 @@ const IframeView: React.FC<{
 
   const handleReceiveMessage = useCallback(
     async (event: MessageEvent) => {
-      if (
-        ![baseCreditCardSandboxUrl, btcdirectFinishedOrigin].includes(
-          event.origin
-        )
-      )
-        return;
       if (event.data.type === "INIT") {
         setError(undefined);
         setFatalError(undefined);
@@ -82,6 +72,7 @@ const IframeView: React.FC<{
               event.data.transactionId,
               event.data.ccTokenId
             );
+            triggerGTMEvent(gtmPayload);
           } else if (event.data.type === "2fa-completed") {
             returnedNextStep = await checkTransaction(
               event.data.moonpayTxId,
@@ -127,10 +118,20 @@ const IframeView: React.FC<{
           }
         }
       } else if (event.data.type) {
-        replaceScreen(<Step nextStep={event.data as NextStep} />);
+        if (event.data.type === "error")
+          reportError(
+            "Payment failed, please try again later.",
+            false,
+            event.data
+          );
+        else if (isStepData(event.data)) {
+          replaceScreen(<Step nextStep={event.data as NextStep} />);
+        }
       } else if (typeof event.data === "string") {
         reportError(event.data, false, event.data);
-      } else {
+      } 
+      /*
+      else {
         reportError(
           "Unknow error. Please, contact help@onramper.com and provide the following info: " +
             nextStep.url,
@@ -138,8 +139,9 @@ const IframeView: React.FC<{
           event.data
         );
       }
+      */
     },
-    [navigate, nextStep, replaceScreen, selectedGateway?.name]
+    [navigate, nextStep, replaceScreen, selectedGateway?.name, gtmPayload]
   );
 
   useEffect(
