@@ -16,7 +16,7 @@
   justify-content: flex-start;
   align-items: center;
   flex-shrink: 0;
-  padding: 19px var(--padding-rl);
+  padding: 12px var(--padding-rl);
   background: #ffffff;
   cursor: pointer;
 }
