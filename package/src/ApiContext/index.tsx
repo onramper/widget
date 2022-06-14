@@ -497,7 +497,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       const unPrioritized = availablePaymentMethods.filter(
         (item) => !prioritized.some((defaultItem) => defaultItem === item)
         );
-        console.log({availablePaymentMethods, unPrioritized})
       return [...prioritized, ...unPrioritized];
     },
     [defaultPaymentMethod]
