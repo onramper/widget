@@ -52,7 +52,7 @@ export const DEFAULT_US_STATE = "AL";
 export const DEFAULT_CA_STATE = "AB";
 const NO_CHAT_COUNTRIES = ["ng"];
 const DEFAULT_DISPLAYCHATBUBBLE = true;
-const DEFAULT_PAYMENT_METHOD = "creditCard";
+const DEFAULT_PAYMENT_METHOD = ["creditCard"];
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -64,7 +64,7 @@ interface APIProviderType {
   defaultCrypto?: string;
   defaultFiat?: string;
   defaultFiatSoft?: string;
-  defaultPaymentMethod?: string;
+  defaultPaymentMethod?: string[];
   filters?: Filters;
   country?: string;
   language?: string;
@@ -489,6 +489,20 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     ]
   );
 
+  const sortByDefaultPaymentMethods = useCallback(
+    (item1: string, item2: string) => {
+      const findOrder = (str: string) => {
+        const i = defaultPaymentMethod.indexOf(str);
+        return i < 0 ? Number.MAX_SAFE_INTEGER : i;
+      };
+      const indexOf1 = findOrder(item1);
+      const indexOf2 = findOrder(item2);
+      if (indexOf1 === indexOf2) return 0;
+      return indexOf1 < indexOf2 ? -1 : 1;
+    },
+    [defaultPaymentMethod]
+  );
+
   const handleCurrencyChange = useCallback(
     (selectedCurrency?: ItemType): ErrorObjectType | undefined | {} => {
       let _selectedCurrency: typeof selectedCurrency;
@@ -554,7 +568,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           filtredGatewaysByCurrency[i].paymentMethods
         );
       }
-      availablePaymentMethods = arrayUnique(availablePaymentMethods);
+      availablePaymentMethods = arrayUnique(availablePaymentMethods).sort(
+        sortByDefaultPaymentMethods
+      );
       if (availablePaymentMethods.length <= 0) {
         return processErrors({
           GATEWAYS: {
@@ -596,45 +612,33 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       defaultFiat,
       defaultFiatSoft,
       props.amountInCrypto,
+      sortByDefaultPaymentMethods,
     ]
   );
 
   const handlePaymentMethodChange = useCallback(
     (selectedPaymentMethod?: ItemType): ErrorObjectType | undefined | {} => {
-      let _selectedPaymentMethod: typeof selectedPaymentMethod;
-      if (!selectedPaymentMethod)
-        _selectedPaymentMethod =
-          state.collected.selectedPaymentMethod ||
-          (defaultPaymentMethod
-            ? {
-                id: defaultPaymentMethod,
-                name: defaultPaymentMethod,
-              }
-            : undefined);
-      else _selectedPaymentMethod = selectedPaymentMethod;
-
-      // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
-      if (!state.data.responseGateways) return {};
       if (
+        !state.data.responseGateways ||
         !state.data.availablePaymentMethods ||
         state.data.availablePaymentMethods.length <= 0
-      )
+      ) {
         return {};
+      }
 
+      const paymentToSearch =
+        selectedPaymentMethod || state.collected.selectedPaymentMethod;
       const actualPaymentMethod =
         state.data.availablePaymentMethods.find(
-          (currency) => currency.id === _selectedPaymentMethod?.id
+          (currency) => currency.id === paymentToSearch?.id
         ) || state.data.availablePaymentMethods[0];
-
-      // save to state.collected
       handleInputChange("selectedPaymentMethod", actualPaymentMethod);
     },
     [
       handleInputChange,
+      state.collected.selectedPaymentMethod,
       state.data.availablePaymentMethods,
       state.data.responseGateways,
-      state.collected.selectedPaymentMethod,
-      defaultPaymentMethod,
     ]
   );
 
