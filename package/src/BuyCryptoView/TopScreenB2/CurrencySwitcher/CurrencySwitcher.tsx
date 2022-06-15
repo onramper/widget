@@ -13,7 +13,7 @@ import OverlayPicker from "../../../common/OverlayPicker/OverlayPicker";
 import { ViewListItemType } from "../../../common/ViewList/ViewList.models";
 import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
 import { CurrencyIcon } from "@onramper/flag-icons";
-import { GtmEvent } from "../../../enums/GtmEvent";
+import { GtmEvent, GtmEventAction, GtmEventCategory } from "../../../../enums";
 import { useGTMDispatch } from "../../../hooks/gtm";
 
 const Skeleton: React.FC = () => {
@@ -58,16 +58,16 @@ const CurrencySwitcher: React.FC = () => {
       if (name === "crypto") {
         gtmData = {
           event: GtmEvent.ELEMENT_CLICK,
-          action: "outCurrencySelection",
-          category: "select",
+          action: GtmEventAction.OUT_CURRENCY_SELECTION,
+          category: GtmEventCategory.DROPDOWN_VALUE,
           label: item.name,
         };
         data.handleCryptoChange(item);
       } else if (name === "currency") {
         gtmData = {
           event: GtmEvent.ELEMENT_CLICK,
-          action: "inCurrencySelection",
-          category: "select",
+          action: GtmEventAction.IN_CURRENCY_SELECTION,
+          category: GtmEventCategory.DROPDOWN_VALUE,
           label: item.name,
         };
         data.handleCurrencyChange(item);
