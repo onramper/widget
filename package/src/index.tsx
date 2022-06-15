@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
@@ -9,13 +9,13 @@ import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
-import TagManager from "react-gtm-module";
 
 import "./i18n/config";
 
 import "./isolateinheritance.css";
 import "./normalize.min.css";
-import { G_TAG_ID } from "./ApiContext/api/constants";
+import { GTM_ID } from "./ApiContext/api/constants";
+import { GTMProvider } from "./hooks/gtm";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -38,15 +38,10 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     "--font-family": fontFamily,
   } as React.CSSProperties;
 
-  useEffect(() => {
-    const tagManagerArgs = {
-      gtmId: G_TAG_ID,
-      dataLayer: {
-        apiKey: props.API_KEY,
-      },
-    };
-    TagManager.initialize(tagManagerArgs);
-  }, [props.API_KEY]);
+  const gtmParams = {
+    gtmId: GTM_ID,
+    dataLayer: { apiKey: props.API_KEY },
+  };
 
   return (
     <div
@@ -66,36 +61,38 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           setFlagRestart((old) => ++old);
         }}
       >
-        <NavProvider>
-          <APIProvider
-            API_KEY={props.API_KEY}
-            defaultAmount={props.defaultAmount}
-            defaultAddrs={props.defaultAddrs}
-            defaultCrypto={props.defaultCrypto}
-            defaultFiat={props.defaultFiat}
-            defaultFiatSoft={props.defaultFiatSoft}
-            defaultPaymentMethod={props.defaultPaymentMethod}
-            filters={props.filters}
-            country={props.country}
-            language={props.language}
-            isAddressEditable={props.isAddressEditable}
-            themeColor={color.slice(1)}
-            displayChatBubble={props.displayChatBubble}
-            amountInCrypto={props.amountInCrypto}
-            partnerContext={props.partnerContext}
-            redirectURL={props.redirectURL}
-            minAmountEur={props.minAmountEur}
-            supportSell={props.supportSell}
-            supportBuy={props.supportBuy}
-            isAmountEditable={props.isAmountEditable}
-            recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
-            selectGatewayBy={props.selectGatewayBy}
-          >
-            <div style={{ flexGrow: 1, display: "flex" }}>
-              <NavContainer home={<BuyCryptoView />} />
-            </div>
-          </APIProvider>
-        </NavProvider>
+        <GTMProvider state={gtmParams}>
+          <NavProvider>
+            <APIProvider
+              API_KEY={props.API_KEY}
+              defaultAmount={props.defaultAmount}
+              defaultAddrs={props.defaultAddrs}
+              defaultCrypto={props.defaultCrypto}
+              defaultFiat={props.defaultFiat}
+              defaultFiatSoft={props.defaultFiatSoft}
+              defaultPaymentMethod={props.defaultPaymentMethod}
+              filters={props.filters}
+              country={props.country}
+              language={props.language}
+              isAddressEditable={props.isAddressEditable}
+              themeColor={color.slice(1)}
+              displayChatBubble={props.displayChatBubble}
+              amountInCrypto={props.amountInCrypto}
+              partnerContext={props.partnerContext}
+              redirectURL={props.redirectURL}
+              minAmountEur={props.minAmountEur}
+              supportSell={props.supportSell}
+              supportBuy={props.supportBuy}
+              isAmountEditable={props.isAmountEditable}
+              recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
+              selectGatewayBy={props.selectGatewayBy}
+            >
+              <div style={{ flexGrow: 1, display: "flex" }}>
+                <NavContainer home={<BuyCryptoView />} />
+              </div>
+            </APIProvider>
+          </NavProvider>
+        </GTMProvider>
       </ErrorBoundary>
     </div>
   );
