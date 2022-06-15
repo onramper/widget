@@ -1,17 +1,17 @@
 import TagManager from "react-gtm-module";
 import * as constants from "../../ApiContext/api/constants";
 
-export type IGtmParams = {
+export type GtmParams = {
   gtmId: string;
-  dataLayer: IDataLayer | undefined;
+  dataLayer: DataLayer | undefined;
   dataLayerName?: string;
 };
 
-export type IDataLayer = {
+export type DataLayer = {
   [key: string]: any;
 };
 
-export type ISendToGTM = {
+export type SendToGTM = {
   dataLayerName?: string;
   data: Object;
 };
@@ -20,13 +20,9 @@ export type ISendToGTM = {
  * Function to init the GTM
  * @param gtmId - The ID of the GTM
  * @param dataLayer - The dataLayer
- *  @param dataLayerName - The dataLayer name
+ * @param dataLayerName - The dataLayer name
  */
-export const initGTM = ({
-  gtmId,
-  dataLayer,
-  dataLayerName = "",
-}: IGtmParams) => {
+export const initGTM = ({ gtmId, dataLayer, dataLayerName }: GtmParams) => {
   const tagManagerArgs = {
     gtmId,
     dataLayer,
@@ -40,7 +36,7 @@ export const initGTM = ({
  * @param dataLayerName - The dataLayer name
  * @param data - The data to push
  */
-export const sendToGTM = ({ dataLayerName, data }: ISendToGTM): void => {
+export const sendToGTM = ({ dataLayerName, data }: SendToGTM): void => {
   const _dataLayerName = dataLayerName ?? constants.DEFAULT_GTM_DATA_LAYER;
   window[_dataLayerName].push(data);
 };

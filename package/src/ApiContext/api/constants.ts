@@ -29,7 +29,7 @@ export const COINIFY_HOSTNAME =
     ? "https://trade-ui.coinify.com"
     : "https://trade-ui.sandbox.coinify.com";
 
-export const GOOGLE_TAG_ID =
+export const GTM_ID =
   process.env.STAGE === "prod" ? "GTM-MKWPFXR" : "GTM-W8KDKZR";
 
 export const DEFAULT_GTM_DATA_LAYER = "dataLayer";

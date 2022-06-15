@@ -14,7 +14,7 @@ import "./i18n/config";
 
 import "./isolateinheritance.css";
 import "./normalize.min.css";
-import { GOOGLE_TAG_ID } from "./ApiContext/api/constants";
+import { GTM_ID } from "./ApiContext/api/constants";
 import { GTMProvider } from "./hooks/gtm";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
@@ -39,7 +39,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
   } as React.CSSProperties;
 
   const gtmParams = {
-    gtmId: GOOGLE_TAG_ID,
+    gtmId: GTM_ID,
     dataLayer: { apiKey: props.API_KEY },
   };
 
