@@ -6,7 +6,7 @@ import { PaymentReviewProps } from "./PaymentReview.models";
 import { NextStep, APIContext, CollectedStateType } from "../../ApiContext";
 import ConfirmPaymentView from ".";
 import { PaymentReviewStep, StepType } from "../../ApiContext/api/types/nextStep";
-import { triggerGTMEvent, generateGtmStepValue, GtmEventNames } from "../../helpers/useGTM";
+import { triggerGTMEvent, generateGtmCtxValue, GtmEventNames } from "../../helpers/useGTM";
 
 /**
  * Temporary solution:
@@ -145,7 +145,7 @@ const PaymentReviewDecorator: React.FC<
       category: props.nextStep?.eventCategory || collected.selectedGateway?.id || "",
       label: "review",
       action: `step ${currentStep() + 1}`,
-      value: generateGtmStepValue(collected),
+      value: generateGtmCtxValue(collected),
     });
     nextScreen(<Step nextStep={props.nextStep} isConfirmed />);
   };

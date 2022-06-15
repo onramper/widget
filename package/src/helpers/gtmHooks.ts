@@ -1,6 +1,6 @@
 import { useRef, useContext, useEffect } from "react";
 import { NavContext } from "./../NavContext";
-import { triggerGTMEvent, generateGtmStepValue, GtmEventNames } from "./useGTM";
+import { triggerGTMEvent, generateGtmCtxValue, GtmEventNames } from "./useGTM";
 import { APIContext, NextStep } from "./../ApiContext";
 
 export const useStepGtm = (nextStep: NextStep) => {
@@ -19,7 +19,7 @@ export const useStepGtm = (nextStep: NextStep) => {
       category: nextStep?.eventCategory || collected.selectedGateway?.id || "",
       label: nextStep?.eventLabel || nextStep?.type,
       action: `step ${currentStep() + 1}`,
-      value: generateGtmStepValue(collected),
+      value: generateGtmCtxValue(collected),
     });
   }, [collected, currentStep, nextStep]);
   return "";

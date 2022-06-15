@@ -4,7 +4,7 @@ import { NavContext } from "../../NavContext";
 import {
   triggerGTMEvent,
   GtmEventNames,
-  generateGtmStepValue,
+  generateGtmCtxValue,
 } from "../../helpers/useGTM";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 
@@ -45,7 +45,7 @@ export const useStepGtmCall = (step?: NextStep) => {
         category: step?.eventCategory || collected?.selectedGateway?.id || "",
         label: step?.eventLabel || step?.type,
         action,
-        value: generateGtmStepValue(collected),
+        value: generateGtmCtxValue(collected),
       });
     });
   }, [collected, currentStep, step]);

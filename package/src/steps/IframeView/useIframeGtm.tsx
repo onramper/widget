@@ -2,7 +2,7 @@ import { useRef, useContext, useEffect } from "react";
 import { NavContext } from "../../NavContext";
 import {
   triggerGTMEvent,
-  generateGtmStepValue,
+  generateGtmCtxValue,
   GtmEventNames,
   GtmEventLabels,
 } from "../../helpers/useGTM";
@@ -34,7 +34,7 @@ const useIframeGtm = ({ nextStep, errors }: UseIframeGtmProps) => {
     category: nextStep?.eventCategory || collected.selectedGateway?.id || "",
     label: nextStep?.eventLabel || nextStep?.type,
     action: `step ${currentStep() + 1}`,
-    value: generateGtmStepValue(collected),
+    value: generateGtmCtxValue(collected),
   });
 
   useEffect(() => {

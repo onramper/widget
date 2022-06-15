@@ -193,7 +193,6 @@ export function getBestGatewayByPrice(
  */
 export function getBestGatewayByPerformance(
   allRates: GatewayRateOption[],
-  amountInCrypto: boolean,
   fiat?: string,
   crypto?: string,
   staticRouting?: StaticRoutingItemType[]
@@ -202,14 +201,14 @@ export function getBestGatewayByPerformance(
     (i) => i.fiat === fiat && i.crypto === crypto
   )?.gateway?.toLowerCase();
   if (!bestGatewayName) {
-    return getBestGatewayByPrice(allRates, amountInCrypto);
+    return null;
   }
 
   const bestGateway = allRates
     .filter((item) => item.available)
     .find((i) => i.name?.toLocaleLowerCase() === bestGatewayName);
   if (!bestGateway) {
-    return getBestGatewayByPrice(allRates, amountInCrypto);
+    return null;
   }
   return bestGateway;
 }

@@ -38,7 +38,7 @@ export const triggerGTMEvent = ({
   });
 };
 
-export const generateGtmStepValue = (collected: CollectedStateType) => {
+export const generateGtmCtxValue = (collected: CollectedStateType) => {
   const {
     amount,
     amountInCrypto,
@@ -49,6 +49,7 @@ export const generateGtmStepValue = (collected: CollectedStateType) => {
     selectedCurrency,
     selectedGateway,
     selectedPaymentMethod,
+    lastGatewaySuggestion,
   } = collected;
 
   return {
@@ -67,6 +68,7 @@ export const generateGtmStepValue = (collected: CollectedStateType) => {
       selectedCrypto: selectedCrypto?.id,
       selectedGateway: selectedGateway?.id,
     },
+    gatewaySuggestion: lastGatewaySuggestion,
   };
 };
 
@@ -78,7 +80,7 @@ export const triggerLandingViewGtmFtcEvent = (
     category: collected.selectedGateway?.id || "",
     label: "transactionForm",
     action: `step 1`,
-    value: generateGtmStepValue(collected),
+    value: generateGtmCtxValue(collected),
   });
 };
 
@@ -108,8 +110,19 @@ export const triggerLandingViewGtmCtfEvent = (
 export enum GtmEventNames {
   FiatToCrypto = "fiat-to-crypto",
   CryptoToFiat = "crypto-to-fiat",
+  GatewaySelection = "gateway-selection",
 }
 
 export enum GtmEventLabels {
   PaymentMethod = "paymentMethod",
+}
+
+export enum GtmGatewaySelectionType {
+  performance = "best",
+  price = "price",
+  notSuggested = "notSuggested",
+}
+
+export enum GtmActionTypes {
+  manualSelection = "manualSelection",
 }
