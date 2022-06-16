@@ -35,6 +35,7 @@ import {
   GtmEventLabel,
   GtmEventCategory,
 } from "../../enums";
+import { buyBtnClickGtmEvent } from "../hooks/gtm/buyCryptoViewEvents";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -93,6 +94,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   }, [collected.selectedGateway]);
 
   const onNextStep = useCallback(() => {
+    sendDataToGTM(buyBtnClickGtmEvent);
     if (!collected.selectedGateway) {
       return;
     }
@@ -104,7 +106,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         isConfirmed={!isNextStepConfirmed()}
       />
     );
-  }, [collected, isNextStepConfirmed, nextScreen]);
+  }, [collected, isNextStepConfirmed, nextScreen, sendDataToGTM]);
 
   const openMorePaymentOptions = useCallback(() => {
     if (availablePaymentMethods.length > 1) {
