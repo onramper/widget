@@ -28,6 +28,8 @@ import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
 import { StepType } from "../ApiContext/api/types/nextStep";
 import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
 import { useGatewaySelectionGtm } from "./hooks";
+import { GtmEvent } from "../enums/GtmEvent";
+import { useGTMDispatch } from "../hooks/gtm";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -62,6 +64,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     useState<boolean>(true);
   const [showScreenA, setShowScreenA] = useState(false);
   const registerGtmGatewayChange = useGatewaySelectionGtm();
+  const sendDataToGTM = useGTMDispatch();
 
   useEffect(() => {
     const errType = collected.errors?.RATE?.type;
@@ -110,6 +113,12 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
           items={availablePaymentMethods}
           onItemClick={(name: string, index: number, item: ItemType) => {
             handlePaymentMethodChange(item);
+            sendDataToGTM({
+              event: GtmEvent.ELEMENT_CLICK,
+              action: "paymentMethodSelection",
+              category: "select",
+              label: item.name,
+            });
             backScreen();
           }}
         />
@@ -121,6 +130,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     collected.selectedPaymentMethod?.id,
     handlePaymentMethodChange,
     nextScreen,
+    sendDataToGTM,
   ]);
 
   useEffect(() => {
