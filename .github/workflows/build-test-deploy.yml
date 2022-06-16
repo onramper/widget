@@ -2,7 +2,7 @@ name: Build & deploy
 
 on:
   push:
-    branches: [ master, dev, ice-master, ice-dev, demo, ice-demo ]
+    branches: [ master, dev, demo ]
   pull_request:
 
 concurrency:
@@ -13,15 +13,11 @@ jobs:
   lint-and-build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Get Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16.x'
-        cache: 'npm'
-        cache-dependency-path: |
-          package/package-lock.json
-          iframe/package-lock.json
     - run: (cd package && npm ci --omit peer &&  npm run build:dev)
     - run: (cd iframe && npm ci && npm run build)
   deploy:
@@ -30,13 +26,10 @@ jobs:
      github.event_name == 'push' && (
        github.ref == 'refs/heads/master' ||
        github.ref == 'refs/heads/dev' ||
-       github.ref == 'refs/heads/ice-master' ||
-       github.ref == 'refs/heads/ice-dev' ||
-       github.ref == 'refs/heads/demo' ||
-       github.ref == 'refs/heads/ice-demo')
+       github.ref == 'refs/heads/demo')
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Get git branch
       id: git-branch
       run: |
@@ -48,18 +41,6 @@ jobs:
         then
           echo "::set-output name=stage::dev"
           echo "::set-output name=domain::widget.onramper.dev"
-        elif [ $REF == 'refs/heads/ice-master' ]
-        then
-          echo "::set-output name=stage::prod"
-          echo "::set-output name=domain::iceberg.onramper.com"
-        elif [ $REF == 'refs/heads/ice-dev' ]
-        then
-          echo "::set-output name=stage::dev"
-          echo "::set-output name=domain::iceberg.onramper.dev"
-        elif [ $REF == 'refs/heads/ice-demo' ]
-        then
-          echo "::set-output name=stage::demo"
-          echo "::set-output name=domain::icebergdemo.onramper.dev"
         elif [ $REF == 'refs/heads/demo' ]
         then
           echo "::set-output name=stage::demo"
@@ -70,7 +51,7 @@ jobs:
       env:
         REF: ${{ github.ref }}
     - name: Get Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16.x'
         cache: 'npm'
@@ -95,9 +76,9 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Get Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16.x'
         cache: 'npm'
