@@ -8,4 +8,5 @@ export type OverlayPickerProps = {
   indexSelected?: number;
   searchable?: boolean;
   onItemClick?: (listName: string, index: number, item: ItemType) => void;
+  onCloseBtn?: () => void;
 };
