@@ -126,14 +126,14 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
             });
             backScreen();
           }}
-          onCloseBtn={() =>
+          onCloseBtn={() => {
             sendDataToGTM({
               event: GtmEvent.ELEMENT_CLICK,
               action: GtmEventAction.PAYMENT_METHOD_SELECTION,
               category: GtmEventCategory.BUTTON,
               label: GtmEventLabel.PAYMENT_METHOD_CLOSE,
-            })
-          }
+            });
+          }}
         />
       );
     }

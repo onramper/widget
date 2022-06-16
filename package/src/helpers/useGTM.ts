@@ -1,4 +1,5 @@
 import { CollectedStateType } from "../ApiContext";
+import { GtmEvent } from "../../enums";
 
 /**
  * Pushing any events to the data layer for GTM event tracking
@@ -83,7 +84,7 @@ export const triggerLandingViewGtmFtcEvent = (
   collected: CollectedStateType
 ) => {
   triggerGTMEvent({
-    event: GtmEventNames.FiatToCrypto,
+    event: GtmEvent.FIAT_TO_CRYPTO,
     category: collected.selectedGateway?.id || "",
     label: "transactionForm",
     action: `step 1`,
@@ -96,7 +97,7 @@ export const triggerLandingViewGtmCtfEvent = (
   buyStepGateway?: string
 ) => {
   triggerGTMEvent({
-    event: GtmEventNames.CryptoToFiat,
+    event: GtmEvent.CRYPTO_TO_FIAT,
     category: buyStepGateway,
     label: "transactionForm",
     action: `step 1`,
@@ -113,23 +114,3 @@ export const triggerLandingViewGtmCtfEvent = (
     },
   });
 };
-
-export enum GtmEventNames {
-  FiatToCrypto = "fiat-to-crypto",
-  CryptoToFiat = "crypto-to-fiat",
-  GatewaySelection = "gateway-selection",
-}
-
-export enum GtmEventLabels {
-  PaymentMethod = "paymentMethod",
-}
-
-export enum GtmGatewaySelectionType {
-  performance = "best",
-  price = "price",
-  notSuggested = "notSuggested",
-}
-
-export enum GtmActionTypes {
-  manualSelection = "manualSelection",
-}

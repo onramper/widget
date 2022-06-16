@@ -9,7 +9,8 @@ import { APIContext, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
 import TabsHeader from "../common/Header/TabsHeader/TabsHeader";
 import { tabNames } from "./constants";
-import { triggerLandingViewGtmCtfEvent, GtmEventNames } from "../helpers/useGTM";
+import { triggerLandingViewGtmCtfEvent } from "../helpers/useGTM";
+import { GtmEvent } from "../../enums";
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -64,9 +65,9 @@ const BuyCryptoView: React.FC = () => {
           amountInCrypto: true,
           country: collected.selectedCountry,
         });
-        
+
         if (nextStep?.nextStep?.type) {
-          nextStep.nextStep.eventName = GtmEventNames.CryptoToFiat;
+          nextStep.nextStep.eventName = GtmEvent.CRYPTO_TO_FIAT;
           nextStep.nextStep.eventCategory = nextStep.identifier;
         }
         setBuyStep(nextStep.nextStep);
