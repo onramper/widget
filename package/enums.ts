@@ -7,8 +7,14 @@ export enum GtmEvent {
 export enum GtmEventAction {
   OUT_CURRENCY_SELECTION = "outCurrencySelection",
   IN_CURRENCY_SELECTION = "inCurrencySelection",
+  PAYMENT_METHOD_SELECTION = "paymentMethodSelection",
 }
 
 export enum GtmEventCategory {
   DROPDOWN_VALUE = "dropdownValue",
+  BUTTON = "button",
+}
+
+export enum GtmEventLabel {
+  PAYMENT_METHOD_CLOSE = "paymentMethodClose",
 }
