@@ -18,7 +18,12 @@ jobs:
     - run: (cd iframe && npm ci &&  npm run build)
   deploy:
     needs: [lint-and-build]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/demo')
+    if: >
+     github.event_name == 'push' && (
+       github.ref == 'refs/heads/master' ||
+       github.ref == 'refs/heads/dev' ||
+       github.ref == 'refs/heads/demo' ||
+       github.ref == 'refs/heads/demo-legacy')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -37,6 +42,10 @@ jobs:
         then
           echo "::set-output name=stage::demo"
           echo "::set-output name=domain::demo.onramper.dev"
+        elif [ $REF == 'refs/heads/demo-legacy' ]
+        then
+          echo "::set-output name=stage::demo"
+          echo "::set-output name=domain::legacy.demo.onramper.dev"
         else
           exit 1
         fi
