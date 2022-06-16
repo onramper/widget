@@ -4,10 +4,12 @@ import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
 import {
   triggerGTMEvent,
   generateGtmCtxValue,
-  GtmEventNames,
-  GtmGatewaySelectionType,
-  GtmActionTypes,
 } from "../helpers/useGTM";
+import {
+  GtmEvent,
+  GtmGatewaySelectionType,
+  GtmEventAction,
+} from "../../enums";
 
 export const useGatewaySelectionGtm = () => {
   const {
@@ -26,14 +28,14 @@ export const useGatewaySelectionGtm = () => {
 
     const suggestionType =
       gatewayChangeTriggered.selectionBy === SelectGatewayByType.Performance
-        ? GtmGatewaySelectionType.performance
-        : GtmGatewaySelectionType.price;
+        ? GtmGatewaySelectionType.PERFORMANCE
+        : GtmGatewaySelectionType.PRICE;
 
     triggerGTMEvent({
-      event: GtmEventNames.GatewaySelection,
+      event: GtmEvent.GATEWAY_SELECTION,
       category: gatewayChangeTriggered.gateway?.name,
       label: suggestionType,
-      action: GtmActionTypes.manualSelection,
+      action: GtmEventAction.MANUAL_SELECTION,
       value: generateGtmCtxValue(collected),
     });
     handleInputChange("lastGatewaySuggestion", suggestionType);

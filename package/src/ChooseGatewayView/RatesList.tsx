@@ -11,10 +11,12 @@ import { getArrOfMinsMaxs } from "../utils";
 import {
   generateGtmCtxValue,
   triggerGTMEvent,
-  GtmEventNames,
-  GtmGatewaySelectionType,
-  GtmActionTypes,
 } from "../helpers/useGTM";
+import {
+  GtmEvent,
+  GtmGatewaySelectionType,
+  GtmEventAction,
+} from "../../enums";
 
 const RatesList: React.FC<IRatesListProps> = (props) => {
   const {
@@ -82,15 +84,15 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
   const triggerGtm = useCallback(
     (gatewayName?: string) => {
       triggerGTMEvent({
-        event: GtmEventNames.GatewaySelection,
+        event: GtmEvent.GATEWAY_SELECTION,
         category: gatewayName,
-        label: GtmGatewaySelectionType.notSuggested,
-        action: GtmActionTypes.manualSelection,
+        label: GtmGatewaySelectionType.NOT_SUGGESTED,
+        action: GtmEventAction.MANUAL_SELECTION,
         value: generateGtmCtxValue(collected),
       });
       handleInputChange(
         "lastGatewaySuggestion",
-        GtmGatewaySelectionType.notSuggested
+        GtmGatewaySelectionType.NOT_SUGGESTED
       );
     },
     [collected, handleInputChange]
