@@ -7,7 +7,7 @@ import {
 } from "../../helpers/useGTM";
 import {
   GtmEvent,
-} from "../../../enums";
+} from "../../enums";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const stepIgnoreList = [

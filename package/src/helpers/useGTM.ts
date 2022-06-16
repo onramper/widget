@@ -1,5 +1,5 @@
 import { CollectedStateType } from "../ApiContext";
-import { GtmEvent } from "../../enums";
+import { GtmEvent } from "../enums";
 
 /**
  * Pushing any events to the data layer for GTM event tracking

@@ -1,7 +1,7 @@
 import { useRef, useContext, useEffect } from "react";
 import { NavContext } from "./../NavContext";
 import { triggerGTMEvent, generateGtmCtxValue } from "./useGTM";
-import { GtmEvent } from "./../../enums";
+import { GtmEvent } from "../enums";
 import { APIContext, NextStep } from "./../ApiContext";
 
 export const useStepGtm = (nextStep: NextStep) => {

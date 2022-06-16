@@ -10,7 +10,7 @@ import * as API from "../ApiContext/api";
 import TabsHeader from "../common/Header/TabsHeader/TabsHeader";
 import { tabNames } from "./constants";
 import { triggerLandingViewGtmCtfEvent } from "../helpers/useGTM";
-import { GtmEvent } from "../../enums";
+import { GtmEvent } from "../enums";
 import {
   buyTabClickGtmEvent,
   sellTabClickGtmEvent,

@@ -34,7 +34,7 @@ import {
   GtmEventAction,
   GtmEventLabel,
   GtmEventCategory,
-} from "../../enums";
+} from "../enums";
 import { buyBtnClickGtmEvent } from "../hooks/gtm/buyCryptoViewEvents";
 
 function mapGatewaySelectedToPicker(

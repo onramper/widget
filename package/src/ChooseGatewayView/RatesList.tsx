@@ -16,7 +16,7 @@ import {
   GtmEvent,
   GtmGatewaySelectionType,
   GtmEventAction,
-} from "../../enums";
+} from "../enums";
 
 const RatesList: React.FC<IRatesListProps> = (props) => {
   const {

@@ -7,7 +7,7 @@ import {
 import {
   GtmEvent,
   GtmEventLabel,
-} from "../../../enums";
+} from "../../enums";
 import { APIContext, NextStep } from "../../ApiContext";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 

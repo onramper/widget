@@ -3,7 +3,7 @@ import {
   GtmEventAction,
   GtmEventLabel,
   GtmEventCategory,
-} from "../../../enums";
+} from "../../enums";
 
 export const amountClickGtmEvent = {
   event: GtmEvent.ELEMENT_CLICK,

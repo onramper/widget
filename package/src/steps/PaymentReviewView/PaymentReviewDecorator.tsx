@@ -10,7 +10,7 @@ import {
   StepType,
 } from "../../ApiContext/api/types/nextStep";
 import { triggerGTMEvent, generateGtmCtxValue } from "../../helpers/useGTM";
-import { GtmEvent } from "../../../enums";
+import { GtmEvent } from "../../enums";
 
 /**
  * Temporary solution:

@@ -9,7 +9,7 @@ import {
   GtmEvent,
   GtmGatewaySelectionType,
   GtmEventAction,
-} from "../../enums";
+} from "../enums";
 
 export const useGatewaySelectionGtm = () => {
   const {
