@@ -116,10 +116,18 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
             sendDataToGTM({
               event: GtmEvent.ELEMENT_CLICK,
               action: "paymentMethodSelection",
-              category: "select",
-              label: item.name,
+              category: "dropdownValue",
+              label: item.id,
             });
             backScreen();
+          }}
+          onCloseBtn={() => {
+            sendDataToGTM({
+              event: GtmEvent.ELEMENT_CLICK,
+              action: "paymentMethodSelection",
+              category: "button",
+              label: "paymentMethodClose",
+            });
           }}
         />
       );

@@ -8,7 +8,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
   const { onItemClick = () => null, name = "" } = props;
 
   return (
-    <OverlayView title={props.title}>
+    <OverlayView title={props.title} onCloseBtn={props.onCloseBtn}>
       <ViewList
         onItemClick={(index, item) => onItemClick(name, index, item)}
         items={props.items}

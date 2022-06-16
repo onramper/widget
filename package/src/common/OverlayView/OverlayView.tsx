@@ -54,7 +54,14 @@ const OverlayView: React.FC<IOverlayViewProps> = (props) => {
           }`}
         >
           {props.title && (
-            <OverlayHeader text={props.title} close={handleDismiss} closeBtnTxt={props.closeBtnTxt}/>
+            <OverlayHeader
+              text={props.title}
+              close={() => {
+                props.onCloseBtn && props.onCloseBtn();
+                handleDismiss();
+              }}
+              closeBtnTxt={props.closeBtnTxt}
+            />
           )}
           {props.children}
         </div>
