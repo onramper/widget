@@ -2,7 +2,7 @@ name: Build & deploy
 
 on:
   push:
-    branches: [ master, dev, ice-master, ice-dev, demo, ice-demo ]
+    branches: [ master, dev, demo ]
   pull_request:
 
 concurrency:
@@ -30,10 +30,7 @@ jobs:
      github.event_name == 'push' && (
        github.ref == 'refs/heads/master' ||
        github.ref == 'refs/heads/dev' ||
-       github.ref == 'refs/heads/ice-master' ||
-       github.ref == 'refs/heads/ice-dev' ||
-       github.ref == 'refs/heads/demo' ||
-       github.ref == 'refs/heads/ice-demo')
+       github.ref == 'refs/heads/demo')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -48,18 +45,6 @@ jobs:
         then
           echo "::set-output name=stage::dev"
           echo "::set-output name=domain::widget.onramper.dev"
-        elif [ $REF == 'refs/heads/ice-master' ]
-        then
-          echo "::set-output name=stage::prod"
-          echo "::set-output name=domain::iceberg.onramper.com"
-        elif [ $REF == 'refs/heads/ice-dev' ]
-        then
-          echo "::set-output name=stage::dev"
-          echo "::set-output name=domain::iceberg.onramper.dev"
-        elif [ $REF == 'refs/heads/ice-demo' ]
-        then
-          echo "::set-output name=stage::demo"
-          echo "::set-output name=domain::icebergdemo.onramper.dev"
         elif [ $REF == 'refs/heads/demo' ]
         then
           echo "::set-output name=stage::demo"
