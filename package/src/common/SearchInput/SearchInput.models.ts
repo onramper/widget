@@ -3,4 +3,5 @@ export type SearchInputProps = {
   placeholder?: string;
   onChange: (value: string) => void;
   autoFocus?: boolean;
+  onClick?: () => void;
 };

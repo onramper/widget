@@ -16,7 +16,7 @@ const OverlayView: React.FC<IOverlayViewProps> = (props) => {
   const { backScreen } = useContext(NavContext);
   const [isActive, setIsActive] = useState(false);
 
-  const { maxHeight = defaultMaxHeight, fixedHeight = false } = props;
+  const { maxHeight = defaultMaxHeight, fixedHeight = false, onClose } = props;
   const classPrefix = fixedHeight ? "-fixed" : "";
 
   useEffect(() => {
@@ -26,6 +26,7 @@ const OverlayView: React.FC<IOverlayViewProps> = (props) => {
   const handleDismiss = () => {
     setIsActive((oldValue) => !oldValue);
     setTimeout(backScreen, defaultAnimTimeout);
+    onClose?.();
   };
 
   const style = {
@@ -56,10 +57,7 @@ const OverlayView: React.FC<IOverlayViewProps> = (props) => {
           {props.title && (
             <OverlayHeader
               text={props.title}
-              close={() => {
-                props.onCloseBtn && props.onCloseBtn();
-                handleDismiss();
-              }}
+              close={handleDismiss}
               closeBtnTxt={props.closeBtnTxt}
             />
           )}

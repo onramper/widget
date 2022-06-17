@@ -3,5 +3,5 @@ export interface IOverlayViewProps {
   fixedHeight?: boolean;
   title?: string;
   closeBtnTxt?: string;
-  onCloseBtn?: () => void;
+  onClose?: () => void;
 }
