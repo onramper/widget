@@ -13,7 +13,7 @@ import OverlayPicker from "../../../common/OverlayPicker/OverlayPicker";
 import { ViewListItemType } from "../../../common/ViewList/ViewList.models";
 import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
 import { CurrencyIcon } from "@onramper/flag-icons";
-import { GtmEvent, GtmEventAction, GtmEventCategory } from "../../../../enums";
+import { GtmEvent, GtmEventAction, GtmEventCategory } from "../../../enums";
 import { useGTMDispatch } from "../../../hooks/gtm";
 
 const Skeleton: React.FC = () => {

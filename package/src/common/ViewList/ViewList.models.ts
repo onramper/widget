@@ -17,4 +17,5 @@ export type ViewListProps = {
   onItemClick?: (index: number, item: ItemType) => void;
   searchable?: boolean;
   indexSelected?: number;
+  onSearchBoxClick?: () => void;
 };
