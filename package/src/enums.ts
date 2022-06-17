@@ -27,8 +27,9 @@ export enum GtmEventAction {
 
 export enum GtmEventCategory {
   DROPDOWN_VALUE = "dropdownValue",
-  BUTTON = "button",
   FIELD = "field",
+  BUTTON = "button",
+  LINK = "link",
   DROPDOWN = "dropdown",
   TAB = "tab",
   OPTION = "option",
@@ -54,9 +55,6 @@ export enum GtmGatewaySelectionType {
   PERFORMANCE = "best",
   PRICE = "price",
   NOT_SUGGESTED = "notSuggested",
-  FIELD = "field",
-  BUTTON = "button",
-  LINK = "link",
 }
 
 export enum MenuItem {
