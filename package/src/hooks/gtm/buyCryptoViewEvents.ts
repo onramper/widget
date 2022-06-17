@@ -60,3 +60,10 @@ export const genPaymentMethodOptionEvent = (paymentMethodId: String) => ({
   category: GtmEventCategory.OPTION,
   label: paymentMethodId,
 });
+
+export const genPaymentMethodSelectEvent = (id: string) => ({
+  event: GtmEvent.ELEMENT_CLICK,
+  action: GtmEventAction.PAYMENT_METHOD_SELECTION,
+  category: GtmEventCategory.DROPDOWN_VALUE,
+  label: id,
+});

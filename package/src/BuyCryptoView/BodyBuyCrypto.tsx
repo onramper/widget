@@ -30,12 +30,9 @@ import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
 import { useGatewaySelectionGtm } from "./hooks";
 import { useGTMDispatch } from "../hooks/gtm";
 import {
-  GtmEvent,
-  GtmEventAction,
-  GtmEventLabel,
-  GtmEventCategory,
-} from "../enums";
-import { buyBtnClickGtmEvent } from "../hooks/gtm/buyCryptoViewEvents";
+  buyBtnClickGtmEvent,
+  genPaymentMethodSelectEvent,
+} from "../hooks/gtm/buyCryptoViewEvents";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -120,21 +117,8 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
           items={availablePaymentMethods}
           onItemClick={(name: string, index: number, item: ItemType) => {
             handlePaymentMethodChange(item);
-            sendDataToGTM({
-              event: GtmEvent.ELEMENT_CLICK,
-              action: GtmEventAction.PAYMENT_METHOD_SELECTION,
-              category: GtmEventCategory.DROPDOWN_VALUE,
-              label: item.id,
-            });
+            sendDataToGTM(genPaymentMethodSelectEvent(item.id));
             backScreen();
-          }}
-          onCloseBtn={() => {
-            sendDataToGTM({
-              event: GtmEvent.ELEMENT_CLICK,
-              action: GtmEventAction.PAYMENT_METHOD_SELECTION,
-              category: GtmEventCategory.BUTTON,
-              label: GtmEventLabel.PAYMENT_METHOD_CLOSE,
-            });
           }}
         />
       );
