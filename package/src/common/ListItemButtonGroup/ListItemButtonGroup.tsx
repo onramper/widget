@@ -9,10 +9,9 @@ import classes from "./ListItemButtonGroup.module.css";
 const ListItemButtonGroup: React.FC<ListItemButtonGroupProps> = (props) => {
   const onClick = (item: ListItemType) => {
     if (item.link) {
+      props.onClick?.(item);
       window.open(item.link);
-      return;
     }
-    props.onClick && props.onClick(item);
   };
 
   return (
