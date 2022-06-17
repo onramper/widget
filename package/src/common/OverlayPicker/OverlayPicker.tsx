@@ -8,7 +8,6 @@ import {
   GtmEvent,
   GtmEventAction,
   GtmEventCategory,
-  GtmEventElement,
   GtmEventLabel,
 } from "../../enums";
 import { useTranslation } from "react-i18next";
@@ -25,7 +24,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
     let category;
     const { title } = props;
     switch (element) {
-      case GtmEventElement.CURRENCY_CLOSE:
+      case GtmEventAction.CURRENCY_CLOSE:
         label = title.includes(t("header.selectCrypto"))
           ? GtmEventLabel.OUT_CURRENCY_CLOSE
           : GtmEventLabel.IN_CURRENCY_CLOSE;
@@ -34,7 +33,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
           : GtmEventAction.IN_CURRENCY_CLOSE;
         category = GtmEventCategory.BUTTON;
         break;
-      case GtmEventElement.CURRENCY_SEARCH:
+      case GtmEventAction.CURRENCY_SEARCH:
         label = title.includes(t("header.selectCrypto"))
           ? GtmEventLabel.OUT_CURRENCY_SEARCH
           : GtmEventLabel.IN_CURRENCY_SEARCH;
@@ -64,7 +63,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
         handleOverlayGTMEvents(
           props.title.includes(t("header.selectCrypto")) ||
             props.title.includes(t("header.selectFiat"))
-            ? GtmEventElement.CURRENCY_SEARCH
+            ? GtmEventAction.CURRENCY_SEARCH
             : ""
         );
       }}
@@ -78,7 +77,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
           handleOverlayGTMEvents(
             props.title.includes(t("header.selectCrypto")) ||
               props.title.includes(t("header.selectFiat"))
-              ? GtmEventElement.CURRENCY_CLOSE
+              ? GtmEventAction.CURRENCY_CLOSE
               : ""
           )
         }
