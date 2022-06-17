@@ -35,3 +35,11 @@ export enum GtmEventCategory {
   BUTTON = "button",
   LINK = "link",
 }
+
+export enum MenuItem {
+  "faq" = GtmEventAction.FAQ_MENU_LINK,
+  "privacy-policy" = GtmEventAction.PRIVACY_POLICY_MENU_LINK,
+  "terms" = GtmEventAction.TERMS_OF_USAGE_MENU_LINK,
+  "support-moonpay" = GtmEventAction.MOONPAY_SUPPORT_LINK,
+  "support-uniswap" = GtmEventAction.UNISWAP_SUPPORT_MENU_LINK,
+}

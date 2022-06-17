@@ -11,6 +11,7 @@ import {
   GtmEventAction,
   GtmEventCategory,
   GtmEventLabel,
+  MenuItem,
 } from "../../../enums";
 
 const Menu: React.FC<{ className?: string }> = (props) => {
@@ -18,29 +19,9 @@ const Menu: React.FC<{ className?: string }> = (props) => {
   const sendDataToGTM = useGTMDispatch();
 
   const handleSendMenuDataToGTM = (item: ListItemType) => {
-    let action;
-    switch (item.id) {
-      case "faq":
-        action = GtmEventAction.FAQ_MENU_LINK;
-        break;
-      case "privacy-policy":
-        action = GtmEventAction.PRIVACY_POLICY_MENU_LINK;
-        break;
-      case "terms":
-        action = GtmEventAction.TERMS_OF_USAGE_MENU_LINK;
-        break;
-      case "support-moonpay":
-        action = GtmEventAction.MOONPAY_SUPPORT_LINK;
-        break;
-      case "support-uniswap":
-        action = GtmEventAction.UNISWAP_SUPPORT_MENU_LINK;
-        break;
-      default:
-        break;
-    }
     const gtmData = {
       event: GtmEvent.ELEMENT_CLICK,
-      action,
+      action: MenuItem[item.id as keyof typeof MenuItem],
       category: GtmEventCategory.LINK,
       label: item.id,
     };
