@@ -2,7 +2,7 @@ name: Build & deploy
 
 on:
   push:
-    branches: [ master, dev, demo ]
+    branches: [ master, dev, demo, demo-legacy ]
   pull_request:
 
 jobs:
