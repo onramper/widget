@@ -18,7 +18,6 @@ const Menu: React.FC<{ className?: string }> = (props) => {
   const sendDataToGTM = useGTMDispatch();
 
   const handleSendMenuDataToGTM = (item: ListItemType) => {
-    console.log(item);
     let action;
     switch (item.id) {
       case "faq":
