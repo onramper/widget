@@ -61,7 +61,8 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   const [isGatewayInitialLoading, setIsGatewayInitialLoading] =
     useState<boolean>(true);
   const [showScreenA, setShowScreenA] = useState(false);
-  const registerGtmGatewayChange = useGatewaySelectionGtm();
+  const { registerGtmGatewayChange, gatewaySelectionTxt } =
+    useGatewaySelectionGtm();
 
   useEffect(() => {
     const errType = collected.errors?.RATE?.type;
@@ -204,15 +205,13 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
             selectedGateway={mapGatewaySelectedToPicker(
               collected.selectedGateway
             )}
+            gatewaySelectionTxt={gatewaySelectionTxt}
             unitCrypto={collected.selectedCrypto?.name}
             unitFiat={collected.selectedCurrency?.name}
             openMoreOptions={onBuyCrypto}
             isLoading={collected.isCalculatingAmount}
             isInitialLoading={isGatewayInitialLoading}
             amountInCrypto={!!collected.amountInCrypto}
-            byPerformance={
-              collected.selectGatewayBy === SelectGatewayByType.Performance
-            }
           />
         )}
 
