@@ -43,7 +43,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
         category = GtmEventCategory.FIELD;
         break;
       default:
-        break;
+        return;
     }
 
     const gtmData = {
@@ -59,7 +59,14 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
   return (
     <OverlayView
       title={props.title}
-      onClose={() => handleOverlayGTMEvents(GtmEventAction.CURRENCY_CLOSE)}
+      onClose={() => {
+        handleOverlayGTMEvents(
+          props.title.includes(t("header.selectCrypto")) ||
+            props.title.includes(t("header.selectFiat"))
+            ? GtmEventAction.CURRENCY_SEARCH
+            : ""
+        );
+      }}
     >
       <ViewList
         onItemClick={(index, item) => onItemClick(name, index, item)}
@@ -67,7 +74,12 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
         searchable={!!props.searchable}
         indexSelected={props.indexSelected}
         onSearchBoxClick={() =>
-          handleOverlayGTMEvents(GtmEventAction.CURRENCY_SEARCH)
+          handleOverlayGTMEvents(
+            props.title.includes(t("header.selectCrypto")) ||
+              props.title.includes(t("header.selectFiat"))
+              ? GtmEventAction.CURRENCY_CLOSE
+              : ""
+          )
         }
       />
     </OverlayView>
