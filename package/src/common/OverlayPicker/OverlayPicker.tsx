@@ -63,7 +63,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
       onClose={() => {
         handleOverlayGTMEvents(
           props.title.includes(t("header.selectCrypto")) ||
-            props.title.includes(t("selectFiat"))
+            props.title.includes(t("header.selectFiat"))
             ? GtmEventElement.CURRENCY_SEARCH
             : ""
         );
@@ -77,7 +77,7 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
         onSearchBoxClick={() =>
           handleOverlayGTMEvents(
             props.title.includes(t("header.selectCrypto")) ||
-              props.title.includes(t("selectFiat"))
+              props.title.includes(t("header.selectFiat"))
               ? GtmEventElement.CURRENCY_CLOSE
               : ""
           )
