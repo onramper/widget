@@ -45,13 +45,13 @@ const PickView: React.FC<OverlayPickerProps> = (props) => {
 const nameToCloseGtmMap: { [key: string]: any } = {
   crypto: {
     event: GtmEvent.ELEMENT_CLICK,
-    action: GtmEventAction.OUT_CURRENCY_CLOSE,
+    action: GtmEventAction.OUT_CURRENCY_SELECTION,
     category: GtmEventCategory.BUTTON,
     label: GtmEventLabel.OUT_CURRENCY_CLOSE,
   },
   currency: {
     event: GtmEvent.ELEMENT_CLICK,
-    action: GtmEventAction.IN_CURRENCY_CLOSE,
+    action: GtmEventAction.IN_CURRENCY_SELECTION,
     category: GtmEventCategory.BUTTON,
     label: GtmEventLabel.IN_CURRENCY_CLOSE,
   },
@@ -66,13 +66,13 @@ const nameToCloseGtmMap: { [key: string]: any } = {
 const nameToSeachGtmMap: { [key: string]: any } = {
   crypto: {
     event: GtmEvent.ELEMENT_CLICK,
-    action: GtmEventAction.OUT_CURRENCY_SEARCH,
+    action: GtmEventAction.OUT_CURRENCY_SELECTION,
     category: GtmEventCategory.FIELD,
     label: GtmEventLabel.OUT_CURRENCY_SEARCH,
   },
   currency: {
     event: GtmEvent.ELEMENT_CLICK,
-    action: GtmEventAction.IN_CURRENCY_SEARCH,
+    action: GtmEventAction.IN_CURRENCY_SELECTION,
     category: GtmEventCategory.FIELD,
     label: GtmEventLabel.IN_CURRENCY_SEARCH,
   },
