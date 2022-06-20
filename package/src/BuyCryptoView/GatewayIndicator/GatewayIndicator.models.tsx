@@ -6,7 +6,7 @@ export interface GatewayIndicatorProps {
   isLoading: boolean;
   isInitialLoading: boolean;
   amountInCrypto: boolean;
-  byPerformance: boolean;
+  gatewaySelectionTxt: string;
 }
 
 export interface IGatewaySelected {
