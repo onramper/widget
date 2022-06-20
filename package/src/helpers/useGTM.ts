@@ -1,4 +1,5 @@
 import { CollectedStateType } from "../ApiContext";
+import { GtmEvent } from "../enums";
 
 /**
  * Pushing any events to the data layer for GTM event tracking
@@ -29,6 +30,13 @@ export const triggerGTMEvent = ({
   label?: string;
   value?: any;
 }) => {
+  console.log("gtm-event", {
+    event,
+    context: category,
+    label,
+    action,
+    value,
+  });
   triggerGTM({
     event,
     context: category,
@@ -38,7 +46,7 @@ export const triggerGTMEvent = ({
   });
 };
 
-export const generateGtmStepValue = (collected: CollectedStateType) => {
+export const generateGtmCtxValue = (collected: CollectedStateType) => {
   const {
     amount,
     amountInCrypto,
@@ -49,6 +57,7 @@ export const generateGtmStepValue = (collected: CollectedStateType) => {
     selectedCurrency,
     selectedGateway,
     selectedPaymentMethod,
+    lastGatewaySuggestion,
   } = collected;
 
   return {
@@ -67,6 +76,7 @@ export const generateGtmStepValue = (collected: CollectedStateType) => {
       selectedCrypto: selectedCrypto?.id,
       selectedGateway: selectedGateway?.id,
     },
+    gatewaySuggestion: lastGatewaySuggestion,
   };
 };
 
@@ -74,11 +84,11 @@ export const triggerLandingViewGtmFtcEvent = (
   collected: CollectedStateType
 ) => {
   triggerGTMEvent({
-    event: GtmEventNames.FiatToCrypto,
+    event: GtmEvent.FIAT_TO_CRYPTO,
     category: collected.selectedGateway?.id || "",
     label: "transactionForm",
     action: `step 1`,
-    value: generateGtmStepValue(collected),
+    value: generateGtmCtxValue(collected),
   });
 };
 
@@ -87,7 +97,7 @@ export const triggerLandingViewGtmCtfEvent = (
   buyStepGateway?: string
 ) => {
   triggerGTMEvent({
-    event: GtmEventNames.CryptoToFiat,
+    event: GtmEvent.CRYPTO_TO_FIAT,
     category: buyStepGateway,
     label: "transactionForm",
     action: `step 1`,
@@ -104,12 +114,3 @@ export const triggerLandingViewGtmCtfEvent = (
     },
   });
 };
-
-export enum GtmEventNames {
-  FiatToCrypto = "fiat-to-crypto",
-  CryptoToFiat = "crypto-to-fiat",
-}
-
-export enum GtmEventLabels {
-  PaymentMethod = "paymentMethod",
-}

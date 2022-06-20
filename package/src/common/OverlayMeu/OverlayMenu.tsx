@@ -19,6 +19,7 @@ const OverlayMenu: React.FC<OverlayMenuProps> = (props) => {
   const handleDismiss = () => {
     setIsActive((oldValue) => !oldValue);
     setTimeout(backScreen, transitionTimeout);
+    props.onClose?.();
   };
 
   return (

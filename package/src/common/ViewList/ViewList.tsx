@@ -8,7 +8,7 @@ const determineIsSmallScreen = () =>
   window.screen.height <= 615 || window.screen.width <= 575;
 
 const ViewList: React.FC<ViewListProps> = (props: ViewListProps) => {
-  const { onItemClick = () => null } = props;
+  const { onItemClick = () => null, onSearchBoxClick } = props;
 
   const [isSmallHeightScreen] = useState(determineIsSmallScreen());
   const [query, setQuery] = useState("");
@@ -53,6 +53,7 @@ const ViewList: React.FC<ViewListProps> = (props: ViewListProps) => {
             value={query}
             onChange={(value) => setQuery(value.toLowerCase())}
             autoFocus={!isSmallHeightScreen}
+            onClick={onSearchBoxClick}
           />
         </div>
       )}

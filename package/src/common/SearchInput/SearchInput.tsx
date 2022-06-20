@@ -27,6 +27,7 @@ const SearchInput: React.FC<SearchInputProps> = (props: SearchInputProps) => {
         onChange={(e) => props.onChange(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        onClick={() => props.onClick?.()}
       />
     </div>
   );

@@ -2,10 +2,12 @@ import { useRef, useContext, useEffect } from "react";
 import { NavContext } from "../../NavContext";
 import {
   triggerGTMEvent,
-  generateGtmStepValue,
-  GtmEventNames,
-  GtmEventLabels,
+  generateGtmCtxValue,
 } from "../../helpers/useGTM";
+import {
+  GtmEvent,
+  GtmEventLabel,
+} from "../../enums";
 import { APIContext, NextStep } from "../../ApiContext";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 
@@ -27,14 +29,14 @@ const useIframeGtm = ({ nextStep, errors }: UseIframeGtmProps) => {
   const nextStepRef = useRef(nextStep);
   const isWaitingInitialErrorsRef = useRef(
     nextStep.type === StepType.iframe &&
-      nextStepRef.current.eventLabel !== GtmEventLabels.PaymentMethod
+      nextStepRef.current.eventLabel !== GtmEventLabel.PAYMENT_METHOD
   );
   const gtmPayloadRef = useRef({
-    event: nextStep?.eventName || GtmEventNames.FiatToCrypto,
+    event: nextStep?.eventName || GtmEvent.FIAT_TO_CRYPTO,
     category: nextStep?.eventCategory || collected.selectedGateway?.id || "",
     label: nextStep?.eventLabel || nextStep?.type,
     action: `step ${currentStep() + 1}`,
-    value: generateGtmStepValue(collected),
+    value: generateGtmCtxValue(collected),
   });
 
   useEffect(() => {

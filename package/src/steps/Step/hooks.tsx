@@ -3,9 +3,11 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { NavContext } from "../../NavContext";
 import {
   triggerGTMEvent,
-  GtmEventNames,
-  generateGtmStepValue,
+  generateGtmCtxValue,
 } from "../../helpers/useGTM";
+import {
+  GtmEvent,
+} from "../../enums";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const stepIgnoreList = [
@@ -41,11 +43,11 @@ export const useStepGtmCall = (step?: NextStep) => {
 
     setCallback(() => () => {
       triggerGTMEvent({
-        event: step?.eventName || GtmEventNames.FiatToCrypto,
+        event: step?.eventName || GtmEvent.FIAT_TO_CRYPTO,
         category: step?.eventCategory || collected?.selectedGateway?.id || "",
         label: step?.eventLabel || step?.type,
         action,
-        value: generateGtmStepValue(collected),
+        value: generateGtmCtxValue(collected),
       });
     });
   }, [collected, currentStep, step]);
