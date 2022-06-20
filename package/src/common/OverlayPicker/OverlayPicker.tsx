@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import { OverlayPickerProps } from "./OverlayPicker.models";
 import OverlayView from "../OverlayView/OverlayView";
@@ -10,80 +10,72 @@ import {
   GtmEventCategory,
   GtmEventLabel,
 } from "../../enums";
-import { useTranslation } from "react-i18next";
 
 const PickView: React.FC<OverlayPickerProps> = (props) => {
   const { onItemClick = () => null, name = "" } = props;
   const sendDataToGTM = useGTMDispatch();
-  const { t } = useTranslation();
 
-  //All overlay retaled GTM events can be handled here
-  const handleOverlayGTMEvents = (element: string) => {
-    let action;
-    let label;
-    let category;
-    const { title } = props;
-    switch (element) {
-      case GtmEventAction.CURRENCY_CLOSE:
-        label = title.includes(t("header.selectCrypto"))
-          ? GtmEventLabel.OUT_CURRENCY_CLOSE
-          : GtmEventLabel.IN_CURRENCY_CLOSE;
-        action = title.includes(t("header.selectCrypto"))
-          ? GtmEventAction.OUT_CURRENCY_CLOSE
-          : GtmEventAction.IN_CURRENCY_CLOSE;
-        category = GtmEventCategory.BUTTON;
-        break;
-      case GtmEventAction.CURRENCY_SEARCH:
-        label = title.includes(t("header.selectCrypto"))
-          ? GtmEventLabel.OUT_CURRENCY_SEARCH
-          : GtmEventLabel.IN_CURRENCY_SEARCH;
-        action = title.includes(t("header.selectCrypto"))
-          ? GtmEventAction.OUT_CURRENCY_SEARCH
-          : GtmEventAction.IN_CURRENCY_SEARCH;
-        category = GtmEventCategory.FIELD;
-        break;
-      default:
-        return;
+  const handleCloseGtmEvent = useCallback(() => {
+    if (!props.name || !nameToCloseGtmMap[props.name]) {
+      return;
     }
+    sendDataToGTM(nameToCloseGtmMap[props.name]);
+  }, [props.name, sendDataToGTM]);
 
-    const gtmData = {
-      event: GtmEvent.ELEMENT_CLICK,
-      action,
-      category,
-      label,
-    };
-
-    sendDataToGTM(gtmData);
-  };
+  const handleSeachGtmEvent = useCallback(() => {
+    if (!props.name || !nameToSeachGtmMap[props.name]) {
+      return;
+    }
+    sendDataToGTM(nameToSeachGtmMap[props.name]);
+  }, [props.name, sendDataToGTM]);
 
   return (
-    <OverlayView
-      title={props.title}
-      onClose={() => {
-        handleOverlayGTMEvents(
-          props.title.includes(t("header.selectCrypto")) ||
-            props.title.includes(t("header.selectFiat"))
-            ? GtmEventAction.CURRENCY_SEARCH
-            : ""
-        );
-      }}
-    >
+    <OverlayView title={props.title} onClose={handleCloseGtmEvent}>
       <ViewList
         onItemClick={(index, item) => onItemClick(name, index, item)}
         items={props.items}
         searchable={!!props.searchable}
         indexSelected={props.indexSelected}
-        onSearchBoxClick={() =>
-          handleOverlayGTMEvents(
-            props.title.includes(t("header.selectCrypto")) ||
-              props.title.includes(t("header.selectFiat"))
-              ? GtmEventAction.CURRENCY_CLOSE
-              : ""
-          )
-        }
+        onSearchBoxClick={handleSeachGtmEvent}
       />
     </OverlayView>
   );
+};
+
+const nameToCloseGtmMap: { [key: string]: any } = {
+  crypto: {
+    event: GtmEvent.ELEMENT_CLICK,
+    action: GtmEventAction.OUT_CURRENCY_SELECTION,
+    category: GtmEventCategory.BUTTON,
+    label: GtmEventLabel.OUT_CURRENCY_CLOSE,
+  },
+  currency: {
+    event: GtmEvent.ELEMENT_CLICK,
+    action: GtmEventAction.IN_CURRENCY_SELECTION,
+    category: GtmEventCategory.BUTTON,
+    label: GtmEventLabel.IN_CURRENCY_CLOSE,
+  },
+  paymentMethod: {
+    event: GtmEvent.ELEMENT_CLICK,
+    action: GtmEventAction.PAYMENT_METHOD_SELECTION,
+    category: GtmEventCategory.BUTTON,
+    label: GtmEventLabel.PAYMENT_METHOD_CLOSE,
+  },
+};
+
+const nameToSeachGtmMap: { [key: string]: any } = {
+  crypto: {
+    event: GtmEvent.ELEMENT_CLICK,
+    action: GtmEventAction.OUT_CURRENCY_SELECTION,
+    category: GtmEventCategory.FIELD,
+    label: GtmEventLabel.OUT_CURRENCY_SEARCH,
+  },
+  currency: {
+    event: GtmEvent.ELEMENT_CLICK,
+    action: GtmEventAction.IN_CURRENCY_SELECTION,
+    category: GtmEventCategory.FIELD,
+    label: GtmEventLabel.IN_CURRENCY_SEARCH,
+  },
 };
 
 export default PickView;

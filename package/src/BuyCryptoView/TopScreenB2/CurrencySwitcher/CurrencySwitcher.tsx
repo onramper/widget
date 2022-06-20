@@ -15,6 +15,10 @@ import CryptoListItemRight from "../../CryptoListItemRight/CryptoListItemRight";
 import { CurrencyIcon } from "@onramper/flag-icons";
 import { GtmEvent, GtmEventAction, GtmEventCategory } from "../../../enums";
 import { useGTMDispatch } from "../../../hooks/gtm";
+import {
+  inCurrencyClickGtmEvent,
+  outCurrencyClickGtmEvent,
+} from "../../../hooks/gtm/buyCryptoViewEvents";
 
 const Skeleton: React.FC = () => {
   const handleJsx = (
@@ -158,12 +162,13 @@ const CurrencySwitcher: React.FC = () => {
   const handleDropdown = useCallback(
     (item?: ItemType) => {
       if (item?.currencyType === ItemCategory.Crypto) {
+        sendDataToGTM(outCurrencyClickGtmEvent);
         return openPickCrypto();
       }
-
+      sendDataToGTM(inCurrencyClickGtmEvent);
       openPickCurrency();
     },
-    [openPickCrypto, openPickCurrency]
+    [openPickCrypto, openPickCurrency, sendDataToGTM]
   );
 
   const getIconClassName = useCallback(

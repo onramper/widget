@@ -28,6 +28,11 @@ import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
 import { StepType } from "../ApiContext/api/types/nextStep";
 import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
 import { useGatewaySelectionGtm } from "./hooks";
+import { useGTMDispatch } from "../hooks/gtm";
+import {
+  buyBtnClickGtmEvent,
+  genPaymentMethodSelectEvent,
+} from "../hooks/gtm/buyCryptoViewEvents";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -61,6 +66,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   const [isGatewayInitialLoading, setIsGatewayInitialLoading] =
     useState<boolean>(true);
   const [showScreenA, setShowScreenA] = useState(false);
+  const sendDataToGTM = useGTMDispatch();
   const { registerGtmGatewayChange, gatewaySelectionTxt } =
     useGatewaySelectionGtm();
 
@@ -86,6 +92,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   }, [collected.selectedGateway]);
 
   const onNextStep = useCallback(() => {
+    sendDataToGTM(buyBtnClickGtmEvent);
     if (!collected.selectedGateway) {
       return;
     }
@@ -97,7 +104,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         isConfirmed={!isNextStepConfirmed()}
       />
     );
-  }, [collected, isNextStepConfirmed, nextScreen]);
+  }, [collected, isNextStepConfirmed, nextScreen, sendDataToGTM]);
 
   const openMorePaymentOptions = useCallback(() => {
     if (availablePaymentMethods.length > 1) {
@@ -111,6 +118,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
           items={availablePaymentMethods}
           onItemClick={(name: string, index: number, item: ItemType) => {
             handlePaymentMethodChange(item);
+            sendDataToGTM(genPaymentMethodSelectEvent(item.id));
             backScreen();
           }}
         />
@@ -122,6 +130,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     collected.selectedPaymentMethod?.id,
     handlePaymentMethodChange,
     nextScreen,
+    sendDataToGTM,
   ]);
 
   useEffect(() => {

@@ -5,8 +5,12 @@ import { NavContext } from "../../NavContext";
 import { PaymentReviewProps } from "./PaymentReview.models";
 import { NextStep, APIContext, CollectedStateType } from "../../ApiContext";
 import ConfirmPaymentView from ".";
-import { PaymentReviewStep, StepType } from "../../ApiContext/api/types/nextStep";
-import { triggerGTMEvent, generateGtmCtxValue, GtmEventNames } from "../../helpers/useGTM";
+import {
+  PaymentReviewStep,
+  StepType,
+} from "../../ApiContext/api/types/nextStep";
+import { triggerGTMEvent, generateGtmCtxValue } from "../../helpers/useGTM";
+import { GtmEvent } from "../../enums";
 
 /**
  * Temporary solution:
@@ -141,8 +145,9 @@ const PaymentReviewDecorator: React.FC<
 
   const onButtonAction = () => {
     triggerGTMEvent({
-      event: GtmEventNames.FiatToCrypto,
-      category: props.nextStep?.eventCategory || collected.selectedGateway?.id || "",
+      event: GtmEvent.FIAT_TO_CRYPTO,
+      category:
+        props.nextStep?.eventCategory || collected.selectedGateway?.id || "",
       label: "review",
       action: `step ${currentStep() + 1}`,
       value: generateGtmCtxValue(collected),

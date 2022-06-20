@@ -4,6 +4,8 @@ import { PaymentMethodPickerProps } from "./PaymentMethodPicker.models";
 import styles from "./PaymentMethodPicker.module.css";
 import commonStyles from "../../styles.module.css";
 import { useTranslation } from "react-i18next";
+import { genPaymentMethodOptionEvent } from "../../hooks/gtm/buyCryptoViewEvents";
+import { useGTMDispatch } from "../../hooks/gtm";
 
 const Skeleton = React.forwardRef<
   HTMLUListElement,
@@ -63,6 +65,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
 
   const containerRef = useRef<HTMLUListElement>(null);
   const itemsLengthRef = useRef<Number>(items.length);
+  const sendDataToGTM = useGTMDispatch();
 
   const setMaxLength = (value: number) => {
     _setMaxLength(value);
@@ -207,7 +210,10 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
             className={`${styles["option-wrapper"]} ${
               item.id === props.selectedId ? " " + styles.selected : ""
             }`}
-            onClick={() => props.onChange(item)}
+            onClick={() => {
+              sendDataToGTM(genPaymentMethodOptionEvent(item.id));
+              props.onChange(item);
+            }}
           >
             {item.icon && (
               <div className={styles["option-logo-wrapper"]}>
