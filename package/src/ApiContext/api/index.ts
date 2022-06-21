@@ -77,7 +77,10 @@ const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
   logRequest(gatewaysUrl);
   const gatewaysRes = await fetch(gatewaysUrl, {
     headers,
-    credentials: process.env.STAGE === "local" ? "omit" : "include",
+    credentials:
+      process.env.STAGE === "local" || process.env.STAGE === "l2"
+        ? "omit"
+        : "include",
   });
   const gateways: GatewaysResponse = await processResponse(gatewaysRes);
   return gateways;
