@@ -19,7 +19,6 @@ import { isTransactionHash } from "../../utils";
 // Note: custom headers most be allowed by the preflight checks, make sure to add them to `access-control-allow-headers` corsPreflight on the server
 const headers = new Headers();
 
-
 // The language that will be appended to every request as a query parameter. This will indicate the language we want the
 // content of the backend to be in.
 let currentAcceptLanguage = i18next.language;
@@ -78,7 +77,10 @@ const gateways = async (params: GatewaysParams): Promise<GatewaysResponse> => {
   logRequest(gatewaysUrl);
   const gatewaysRes = await fetch(gatewaysUrl, {
     headers,
-    credentials: process.env.STAGE === "local" ? "omit" : "include",
+    credentials:
+      process.env.STAGE === "local" || process.env.STAGE === "l2"
+        ? "omit"
+        : "include",
   });
   const gateways: GatewaysResponse = await processResponse(gatewaysRes);
   return gateways;
@@ -221,7 +223,7 @@ type ErrorWithName = {
   name: string;
 };
 
- function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
   return (
     typeof error === "object" &&
     error !== null &&
@@ -230,7 +232,7 @@ type ErrorWithName = {
   );
 }
 
- function isErrorWithName(error: unknown): error is ErrorWithName {
+function isErrorWithName(error: unknown): error is ErrorWithName {
   return (
     typeof error === "object" &&
     error !== null &&
@@ -239,7 +241,7 @@ type ErrorWithName = {
   );
 }
 
- function isNextStepError(error: unknown): error is NextStepError {
+function isNextStepError(error: unknown): error is NextStepError {
   return (
     error !== null &&
     (error as Record<string, unknown>).message === "NextStepError"
@@ -464,7 +466,7 @@ function formatData(data: RawData): TransactionData {
   };
 }
 
- function storeTransactionData(data: RawData) {
+function storeTransactionData(data: RawData) {
   if (data.address && data.transactionResponse) {
     const formattedData = formatData(data);
 
@@ -511,5 +513,5 @@ export {
   isErrorWithName,
   isNextStepError,
   formatData,
-  storeTransactionData
+  storeTransactionData,
 };
