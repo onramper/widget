@@ -22,7 +22,7 @@ import {
   Status,
   SwapData,
 } from "./PaymentProgressView.models";
-import { pollTransaction } from "../../ApiContext/api";
+import { isErrorWithMessage, pollTransaction } from "../../ApiContext/api";
 import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 import { StepType } from "../../ApiContext/api/types/nextStep";
@@ -84,26 +84,39 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
   const symbolInUpper = resolveWeth(swapData.tokenIn).symbol.toUpperCase();
   const symbolOutUpper = swapData.tokenOut.symbol.toUpperCase();
   const [inAmount, setInAmount] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (txId) {
       const interval = setInterval(async () => {
-        const tx = await pollTransaction(txId);
-        if (tx) {
-          const tokenIn = findWeth(tx.l2TokenData.chainId);
-          const tokenOut = tx.l2TokenData;
-          const gatewayAndDex = tx.customerGateway;
-          const inCurrency = tx.inCurrency;
-          setSwapData({ tokenIn, tokenOut, gatewayAndDex, inCurrency });
-        }
-        if (tx && tx.lastStatus === "ok") {
-          setLayer1Status(Status.Success);
-          setInAmount(tx.outAmount);
-          clearInterval(interval);
-        }
-        if (tx && tx.lastStatus === "rip") {
-          setLayer1Status(Status.Fail);
-          clearInterval(interval);
+        try {
+          const tx = await pollTransaction(txId);
+
+          if (tx) {
+            const tokenIn = findWeth(tx.l2TokenData.chainId);
+            const tokenOut = tx.l2TokenData;
+            const gatewayAndDex = tx.customerGateway;
+            const inCurrency = tx.inCurrency;
+            setSwapData({ tokenIn, tokenOut, gatewayAndDex, inCurrency });
+          }
+          if (tx && tx.lastStatus === "ok") {
+            setLayer1Status(Status.Success);
+            setInAmount(tx.outAmount);
+            clearInterval(interval);
+          }
+          if (tx && tx.lastStatus === "rip") {
+            setLayer1Status(Status.Fail);
+            clearInterval(interval);
+          }
+        } catch (error) {
+          if (
+            isErrorWithMessage(error) &&
+            error.message === "Transaction not found"
+          ) {
+            setLayer1Status(Status.Fail);
+            clearInterval(interval);
+            setError(error.message);
+          }
         }
       }, 1000);
       //eslint-disable-next-line
@@ -122,7 +135,7 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
       return `Your ${symbolInUpper} has arrived!`;
     }
     if (layer1Status === Status.Fail) {
-      return `Your transaction failed.`;
+      return error ?? `Your transaction failed.`;
     }
     return "";
   };
@@ -135,7 +148,9 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
       return `${gateway.toLocaleLowerCase()} has successfully sent you ${symbolInUpper}. You can now swap ${symbolInUpper} for ${symbolOutUpper} here. We don’t add fees on top of Uniswap.`;
     }
     if (layer1Status === Status.Fail) {
-      return `${gateway.toLocaleLowerCase()} has failed to send your ${symbolInUpper}. There may be something wrong with the network. Please try again later.`;
+      return error
+        ? "We could not find the transaction you were looking for."
+        : `${gateway.toLocaleLowerCase()} has failed to send your ${symbolInUpper}. There may be something wrong with the network. Please try again later.`;
     }
     return "";
   };
