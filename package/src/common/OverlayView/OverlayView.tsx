@@ -10,6 +10,7 @@ import {
   getTransitionClasses,
 } from "./constants";
 import OverlayHeader from "./OverlayHeader/OverlayHeader";
+import OverlayFooter from "./OverlayFooter/OverlayFooter";
 
 const OverlayView: React.FC<IOverlayViewProps> = (props) => {
   const transitionRef = React.useRef(null);
@@ -34,37 +35,45 @@ const OverlayView: React.FC<IOverlayViewProps> = (props) => {
   } as React.CSSProperties;
 
   return (
-    <div
-      className={`${commonStyles.view} ${styles["help-view"]}`}
-      onClick={handleDismiss}
-    >
-      <CSSTransition
-        nodeRef={transitionRef}
-        in={isActive}
-        timeout={defaultAnimTimeout}
-        classNames={getTransitionClasses(styles, classPrefix)}
-        mountOnEnter={true}
-        unmountOnExit={true}
+    <>
+      <div
+        className={`${commonStyles.view} ${styles["help-view"]}`}
+        onClick={handleDismiss}
       >
-        <div
-          ref={transitionRef}
-          style={style}
-          onClick={(e) => e.stopPropagation()}
-          className={`${styles["help-pane"]} ${
-            styles["help-pane" + classPrefix]
-          }`}
+        <CSSTransition
+          nodeRef={transitionRef}
+          in={isActive}
+          timeout={defaultAnimTimeout}
+          classNames={getTransitionClasses(styles, classPrefix)}
+          mountOnEnter={true}
+          unmountOnExit={true}
         >
-          {props.title && (
-            <OverlayHeader
-              text={props.title}
-              close={handleDismiss}
-              closeBtnTxt={props.closeBtnTxt}
-            />
-          )}
-          {props.children}
-        </div>
-      </CSSTransition>
-    </div>
+          <div
+            ref={transitionRef}
+            style={style}
+            onClick={(e) => e.stopPropagation()}
+            className={`${styles["help-pane"]} ${
+              styles["help-pane" + classPrefix]
+            }`}
+          >
+            {props.title && (
+              <OverlayHeader
+                text={props.title}
+                close={handleDismiss}
+                closeBtnTxt={props.closeBtnTxt}
+              />
+            )}
+            {props.children}
+          </div>
+        </CSSTransition>
+      </div>
+      {props.footerBtnTxt && (
+        <OverlayFooter
+          footerBtnTxt={props.footerBtnTxt}
+          onOverlayClose={handleDismiss}
+        />
+      )}
+    </>
   );
 };
 
