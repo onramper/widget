@@ -4,10 +4,7 @@ import styles from "./styles.module.css";
 import { APIContext, GatewayRateOption } from "../ApiContext";
 import OverlayView from "../common/OverlayView/OverlayView";
 import FallbackErrorView from "./FallbackErrorView";
-import InfoBox from "../common/InfoBox";
 import RatesList from "./RatesList";
-import { cryptoAmountsWarning } from "./constants";
-import ButtonAction from "../common/ButtonAction";
 
 const ChooseGatewayView = () => {
   const { data } = useContext(APIContext);
