@@ -59,7 +59,6 @@ const ListItemButton: React.FC<ListItemButtonProps> = (props) => {
   const onClickItem = (item: ListItemType) => {
     if (props.parent.items && item.id === props.parent.id) {
       setChildrenVisible(!childrenVisible);
-      return;
     }
     props.onClick(item);
   };
