@@ -11,7 +11,7 @@ import {
   GtmEventAction,
   GtmEventCategory,
   GtmEventLabel,
-  MenuItem,
+  MenuItemLabel,
 } from "../../../enums";
 
 const Menu: React.FC<{ className?: string }> = (props) => {
@@ -21,11 +21,10 @@ const Menu: React.FC<{ className?: string }> = (props) => {
   const handleSendMenuDataToGTM = (item: ListItemType) => {
     const gtmData = {
       event: GtmEvent.ELEMENT_CLICK,
-      action: MenuItem[item.id as keyof typeof MenuItem],
+      action: GtmEventAction.MENU,
       category: GtmEventCategory.LINK,
-      label: item.id,
+      label: MenuItemLabel[item.id as keyof typeof MenuItemLabel],
     };
-
     sendDataToGTM(gtmData);
   };
 
