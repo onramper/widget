@@ -67,8 +67,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     useState<boolean>(true);
   const [showScreenA, setShowScreenA] = useState(false);
   const sendDataToGTM = useGTMDispatch();
-  const { registerGtmGatewayChange, gatewaySelectionTxt } =
-    useGatewaySelectionGtm();
+  const { gatewaySelectionTxt } = useGatewaySelectionGtm();
 
   useEffect(() => {
     const errType = collected.errors?.RATE?.type;
@@ -143,10 +142,6 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
       );
       if (gatewayByPerformance) {
         handleInputChange("selectedGateway", gatewayByPerformance);
-        registerGtmGatewayChange({
-          selectionBy: SelectGatewayByType.Performance,
-          gateway: gatewayByPerformance,
-        });
         return;
       }
     }
@@ -156,11 +151,6 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
       !!collected.amountInCrypto
     );
     handleInputChange("selectedGateway", gatewayByPrice);
-    gatewayByPrice &&
-      registerGtmGatewayChange({
-        selectionBy: SelectGatewayByType.Price,
-        gateway: gatewayByPrice,
-      });
   }, [
     allRates,
     collected.amountInCrypto,
@@ -170,7 +160,6 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     collected.selectedPaymentMethod,
     handleInputChange,
     collected.staticRouting,
-    registerGtmGatewayChange,
   ]);
 
   useEffect(() => {

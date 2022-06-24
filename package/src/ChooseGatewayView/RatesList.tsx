@@ -8,17 +8,11 @@ import type {
 import { APIContext, GatewayRateOption } from "../ApiContext";
 import { documents } from "../ApiContext/api/constants";
 import { getArrOfMinsMaxs } from "../utils";
-import {
-  generateGtmCtxValue,
-  triggerGTMEvent,
-} from "../helpers/useGTM";
-import {
-  GtmEvent,
-  GtmGatewaySelectionType,
-  GtmEventAction,
-} from "../enums";
+import { GtmEvent, GtmGatewaySelectionType, GtmEventAction } from "../enums";
+import { useGTMDispatch } from "../hooks/gtm";
 
 const RatesList: React.FC<IRatesListProps> = (props) => {
+  const sendDataToGTM = useGTMDispatch();
   const {
     collected,
     inputInterface: { handleInputChange },
@@ -83,19 +77,15 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
 
   const triggerGtm = useCallback(
     (gatewayName?: string) => {
-      triggerGTMEvent({
+      sendDataToGTM({
         event: GtmEvent.GATEWAY_SELECTION,
         category: gatewayName,
-        label: GtmGatewaySelectionType.NOT_SUGGESTED,
+        label: GtmGatewaySelectionType.PRICE,
         action: GtmEventAction.MANUAL_SELECTION,
-        value: generateGtmCtxValue(collected),
       });
-      handleInputChange(
-        "lastGatewaySuggestion",
-        GtmGatewaySelectionType.NOT_SUGGESTED
-      );
+      handleInputChange("lastGatewaySuggestion", GtmGatewaySelectionType.PRICE);
     },
-    [collected, handleInputChange]
+    [handleInputChange, sendDataToGTM]
   );
 
   const setSelectedGateway = useCallback(

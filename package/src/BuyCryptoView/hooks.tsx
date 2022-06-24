@@ -1,9 +1,8 @@
-import { useEffect, useState, useContext, useCallback } from "react";
-import { GatewayRateOption, APIContext } from "../ApiContext";
-import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
-import { triggerGTMEvent, generateGtmCtxValue } from "../helpers/useGTM";
-import { GtmEvent, GtmGatewaySelectionType, GtmEventAction } from "../enums";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { APIContext, GatewayRateOption } from "../ApiContext";
+import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
+import { GtmGatewaySelectionType } from "../enums";
 
 export const useGatewaySelectionGtm = () => {
   const {
@@ -50,13 +49,6 @@ export const useGatewaySelectionGtm = () => {
         ? GtmGatewaySelectionType.PERFORMANCE
         : GtmGatewaySelectionType.PRICE;
 
-    triggerGTMEvent({
-      event: GtmEvent.GATEWAY_SELECTION,
-      category: gatewayChangeTriggered.gateway?.name,
-      label: suggestionType,
-      action: GtmEventAction.MANUAL_SELECTION,
-      value: generateGtmCtxValue(collected),
-    });
     handleInputChange("lastGatewaySuggestion", suggestionType);
 
     setSuggestiveGateway({

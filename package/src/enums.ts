@@ -17,11 +17,6 @@ export enum GtmEventAction {
   OUT_CURRENCY_CLOSE = "outCurrencyClose",
   CURRENCY_CLOSE = "currencyClose",
   CURRENCY_SEARCH = "currencySearch",
-  // FAQ_MENU_LINK = "faqMenuLink",
-  // PRIVACY_POLICY_MENU_LINK = "privacyPolicyMenuLink",
-  // TERMS_OF_USAGE_MENU_LINK = "termsOfUsageMunuLink",
-  // MOONPAY_SUPPORT_LINK = "moonPaySupportMenuLink",
-  // UNISWAP_SUPPORT_MENU_LINK = "uniswapSupportMenuLink",
   MENU = "menu",
   MENU_CLOSE = "menuClose",
 }
