@@ -31,8 +31,6 @@ const defaultApiKey = (() => {
   return dev_key;
 })();
 
-alert(defaultApiKey);
-
 const apiKey = getParam("apiKey", defaultApiKey);
 const defaultColor = `#${getParam("color", "0316C1")}`;
 const fontFamily = getParam("fontFamily", "'Inter', sans-serif");
