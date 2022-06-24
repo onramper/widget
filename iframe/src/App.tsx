@@ -18,13 +18,20 @@ const defaultApiKey = (() => {
   // if iframe
   if (window.self !== window.top) return undefined;
 
-  if (process.env.REACT_APP_STAGE === "l2") return l2_key;
+  if (process.env.REACT_APP_STAGE === "l2") {
+    if (isProd()) {
+      return prod_key;
+    } else {
+      return l2_key;
+    }
+  }
 
   if (window.location.origin.split(".")[2] === "com") return com_key;
 
-  if (isProd()) return prod_key;
   return dev_key;
 })();
+
+alert(defaultApiKey);
 
 const apiKey = getParam("apiKey", defaultApiKey);
 const defaultColor = `#${getParam("color", "0316C1")}`;
