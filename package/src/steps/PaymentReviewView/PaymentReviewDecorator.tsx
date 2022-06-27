@@ -124,7 +124,7 @@ const generateInjectedStep = (
             name: "cryptoCurrency",
             title: `${cryptoAmount} ${collected.selectedCrypto?.name || ""}`,
             icon: collected.selectedCrypto?.icon,
-            info: "This might differ due to voltality of the market.",
+            info: "This might differ due to market volatility.",
           },
         ],
       },
