@@ -445,7 +445,6 @@ const sell = async (
 const pollTransaction = async (
   txId: string
 ): Promise<Transaction | undefined> => {
-  console.log("from pollTransaction", BASE_API);
   const res = await fetch(`${BASE_API}/v2/transaction/${txId}`, {
     method: "GET",
     headers,

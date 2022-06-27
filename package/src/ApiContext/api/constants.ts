@@ -10,7 +10,7 @@ export const BASE_API = (() => {
     case "local":
       return "http://localhost:3000/l2";
     case "l2":
-      return "https://bwspdt92de.execute-api.us-west-1.amazonaws.com/dev"; // "https://l2.onramper.tech";
+      return "https://l2.onramper.tech/dev"; //  "https://bwspdt92de.execute-api.us-west-1.amazonaws.com" ;
     case "prod":
       return "https://onramper.tech";
     case "demo":
@@ -19,9 +19,6 @@ export const BASE_API = (() => {
       return "http://localhost:3000/dev";
   }
 })();
-
-console.log("STAGE: ", process.env.STAGE);
-console.log("BASE_API: ", BASE_API);
 
 export const isDemoEnv = process.env.STAGE === "demo";
 
