@@ -714,7 +714,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 type={getInputType(field)}
                 onClick={()=>{
 
-                  if(getInputType(field)=="email"){
+                  if(getInputType(field)==="email"){
                     const gtmData = {
                       event: GtmEvent.ELEMENT_CLICK,
                       action: GtmEventAction.EMAIL_FORM,
@@ -723,7 +723,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     };
                     sendDataToGTM(gtmData);
                   }
-                  if(getInputType(field)=="password"){
+                  if(getInputType(field)==="password"){
                     const gtmData = {
                       event: GtmEvent.ELEMENT_CLICK,
                       action: GtmEventAction.EMAIL_FORM,
