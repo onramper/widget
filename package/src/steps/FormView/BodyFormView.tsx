@@ -43,6 +43,13 @@ import Heading from "../../common/Heading/Heading";
 import InputDelegator from "../../common/Input/InputDelegator";
 import OverlayPicker from "../../common/OverlayPicker/OverlayPicker";
 import { CountryIcon } from "@onramper/flag-icons";
+import {
+  GtmEvent,
+  GtmEventAction,
+  GtmEventCategory,
+  GtmEventLabel,
+} from "../../enums";
+import { useGTMDispatch } from "../../hooks/gtm";
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
@@ -67,6 +74,7 @@ type BodyFormViewType = {
 };
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
+  const sendDataToGTM = useGTMDispatch();
   const { handleInputChange, onActionButton, fields = [] } = props;
   const { collected, apiInterface } = useContext(APIContext);
   const { backScreen, nextScreen, onlyScreen } = useContext(NavContext);
@@ -704,6 +712,27 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 className={stylesCommon["body-form-child"]}
                 label={field.humanName}
                 type={getInputType(field)}
+                onClick={()=>{
+
+                  if(getInputType(field)=="email"){
+                    const gtmData = {
+                      event: GtmEvent.ELEMENT_CLICK,
+                      action: GtmEventAction.EMAIL_FORM,
+                      category: GtmEventCategory.FIELD,
+                      label: GtmEventLabel.EMAIL_ADDRESS,
+                    };
+                    sendDataToGTM(gtmData);
+                  }
+                  if(getInputType(field)=="password"){
+                    const gtmData = {
+                      event: GtmEvent.ELEMENT_CLICK,
+                      action: GtmEventAction.EMAIL_FORM,
+                      category: GtmEventCategory.FIELD,
+                      label: GtmEventLabel.PASSWORD,
+                    };
+                    sendDataToGTM(gtmData);
+                  }
+                }}
                 placeholder={field.placeholder}
                 disabled={
                   field.name === "cryptocurrencyAddressTag" &&
@@ -721,7 +750,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           }`}
         >
           <ButtonAction
-            onClick={onActionButton}
+            onClick={()=>{
+              onActionButton();
+              const gtmData = {
+                event: GtmEvent.ELEMENT_CLICK,
+                action: GtmEventAction.WALLET_FORM,
+                category: GtmEventCategory.BUTTON,
+                label: GtmEventLabel.CONTINUE,
+              };
+              sendDataToGTM(gtmData);             
+            }}
             text={isLoading ? "Sending..." : "Continue"}
             disabled={!isFilled || isLoading}
           />
@@ -731,7 +769,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     </main>
   );
 };
-
 const getValueByField = (
   field: BodyFormViewType["fields"][0],
   collected: CollectedStateType

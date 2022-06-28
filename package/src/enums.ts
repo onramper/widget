@@ -23,6 +23,8 @@ export enum GtmEventAction {
   MOONPAY_SUPPORT_LINK = "moonPaySupportMenuLink",
   UNISWAP_SUPPORT_MENU_LINK = "uniswapSupportMenuLink",
   MENU_CLOSE = "menuClose",
+  WALLET_FORM = "walletForm",
+  EMAIL_FORM = "emailForm",
 }
 
 export enum GtmEventCategory {
@@ -49,6 +51,10 @@ export enum GtmEventLabel {
   MENU = "menu",
   AMOUNT = "amount",
   MENU_CLOSE = "menuClose",
+  CONTINUE = "continue",
+  EMAIL_ADDRESS = "emailAddress",
+  WALLET_ADDRESS = "walletAddress",
+  PASSWORD = "password",
 }
 
 export enum GtmGatewaySelectionType {

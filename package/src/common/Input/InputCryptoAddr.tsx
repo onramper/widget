@@ -9,6 +9,13 @@ import {
 } from "../../ApiContext/ProvidersManager";
 import { APIContext } from "../../ApiContext";
 import InputDelegator from "./InputDelegator";
+import {
+  GtmEvent,
+  GtmEventAction,
+  GtmEventCategory,
+  GtmEventLabel,
+} from "../../enums";
+import { useGTMDispatch } from "../../hooks/gtm";
 
 type InputCryptoAddrType = {
   handleInputChange: (name: string, value: any) => void;
@@ -16,6 +23,7 @@ type InputCryptoAddrType = {
   className: string;
   type?: string;
   hint?: string;
+  onClick?: () => void;
   onHelpClick?: () => void;
   disabled?: boolean;
 };
@@ -27,6 +35,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
 
     const [newErr, setNewErr] = React.useState(error);
     const [newInfo, setNewInfo] = React.useState<string>();
+    const sendDataToGTM = useGTMDispatch();
 
     useEffect(() => {
       setNewErr(error);
@@ -59,7 +68,15 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
       },
       [handleInputChange, collected.cryptocurrencyAddress]
     );
-
+    const walletFieldClick = useCallback(async () =>{
+      const gtmData = {
+        event: GtmEvent.ELEMENT_CLICK,
+        action: GtmEventAction.WALLET_FORM,
+        category: GtmEventCategory.FIELD,
+        label: GtmEventLabel.WALLET_ADDRESS,
+      };
+      sendDataToGTM(gtmData);
+    },[]);
     const getWalletAddrs = useCallback(async () => {
       setNewInfo(undefined);
       const importedWallets = await ProviderManager.getAccounts();
@@ -115,6 +132,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
             : undefined
         }
         onIconClick={getWalletAddrs}
+        onClick={walletFieldClick}
         ref={ref}
         hint={
           ProviderManager.providerName && collected.isAddressEditable
