@@ -6,15 +6,12 @@ import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
 import { apiKey, parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
+import { isMetamaskEnabled, getQuote, getSwapParams } from "layer2";
 import {
-  isMetamaskEnabled,
   useEtherBalance,
-  getQuote,
-  getSwapParams,
-  useLayer2,
   useSendTransaction,
   TransactionStatus,
-} from "layer2";
+} from "@usedapp/core";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
@@ -35,6 +32,7 @@ import TransactionErrorOverlay from "./TransactionErrorOverlay/TransactionErrorO
 import { utils } from "ethers";
 import { isErrorWithName, storeTransactionData } from "../../ApiContext/api";
 import { SwapOverviewViewProps } from "./SwapOverviewView.models";
+import { useLayer2 } from "../../web3/config";
 
 const SwapOverviewView = ({
   nextStep: {
@@ -117,6 +115,8 @@ const SwapOverviewView = ({
   );
 
   useEffect(() => {
+    //eslint-disable-next-line
+    debugger;
     initialiseTransactionContext({
       txId,
       userId,

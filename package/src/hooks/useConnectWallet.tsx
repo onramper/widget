@@ -1,4 +1,5 @@
-import { isMetamaskEnabled, useEthers } from "layer2";
+import { isMetamaskEnabled } from "layer2";
+import { useLayer2 } from "../web3/config";
 import { useEffect, useState } from "react";
 import {
   NotificationType,
@@ -18,7 +19,7 @@ export interface MetamaskError extends Error {
 
 export const useConnectWallet = (): ConnectWallet => {
   const { account, active, activateBrowserWallet, deactivate, error } =
-    useEthers();
+    useLayer2();
   const [connectionError, setConnectionError] = useState<
     MetamaskError | Error | null
   >(null);

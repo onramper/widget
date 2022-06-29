@@ -25,13 +25,8 @@ import TransactionSettings from "../TransactionSettings/TransactionSettings";
 import classes from "./EditSwapView.module.css";
 import { ApiError } from "../../../ApiContext/api";
 import { CSSTransition } from "react-transition-group";
-import {
-  useEtherBalance,
-  getQuote,
-  useTokenBalance,
-  TokenInfo,
-  QuoteDetails,
-} from "layer2";
+import { getQuote, TokenInfo, QuoteDetails } from "layer2";
+import { useEtherBalance, useTokenBalance } from "@usedapp/core";
 import { useDebouncedCallback } from "use-debounce";
 import {
   useTransactionContext,

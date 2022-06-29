@@ -1,6 +1,6 @@
-import { useLayer2 } from "layer2";
 import { useContext } from "react";
 import { TransactionContext } from "..";
+import { useLayer2 } from "../../web3/config";
 
 export const useTransactionContext = () => {
   const { account: metaAddress } = useLayer2();

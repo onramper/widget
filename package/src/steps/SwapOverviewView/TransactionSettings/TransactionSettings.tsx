@@ -17,7 +17,8 @@ import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
 import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
 import BaseInput from "../../../common/Input/BaseInput/BaseInput";
-import { useLayer2, DEFAULTS as defaultSettings } from "layer2";
+import { DEFAULTS as defaultSettings } from "layer2";
+import { useLayer2 } from "../../../web3/config";
 import { metamaskWallet } from "../constants";
 import {
   useTransactionContext,

@@ -1,4 +1,4 @@
-import { chainIDToNetworkInfo, useLayer2 } from "layer2";
+import { chainIDToNetworkInfo } from "layer2";
 import React, { ReactNode, useCallback, useEffect, useReducer } from "react";
 import {
   AddNotificationPayload,
@@ -10,6 +10,7 @@ import { NotificationContext } from "./context";
 import { nanoid } from "nanoid";
 import { useTransactionContext } from "../TransactionContext/hooks";
 import { useInterval, usePrevious } from "../hooks";
+import { useLayer2 } from "../web3/config";
 
 interface Props {
   children: ReactNode;

@@ -13,12 +13,12 @@ import TagManager from "react-gtm-module";
 import "./i18n/config";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
-import { L2Provider } from "layer2";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
 import { G_TAG_ID } from "./ApiContext/api/constants";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PaymentProgressView } from "./steps/PaymentProgressView";
+import { L2Provider } from "./web3/config";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
