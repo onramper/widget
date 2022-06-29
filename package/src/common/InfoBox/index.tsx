@@ -4,6 +4,7 @@ import { CSSTransition } from "react-transition-group";
 import ButtonAction from "../ButtonAction";
 import { APIContext } from "../../ApiContext";
 import { URLize } from "./utils";
+import CancelIcon from "../../icons/cancel.svg";
 
 type InfoBoxType = {
   type?: "info" | "error" | "notification";
@@ -26,7 +27,6 @@ const InfoBox = React.forwardRef<
 
   const {
     type = "info",
-    onDismissClick = () => null,
     canBeDismissed = false,
     className = "",
     actionText = "See more",
@@ -79,7 +79,10 @@ const InfoBox = React.forwardRef<
       defaultRef.current &&
       props.focus
     ) {
-      defaultRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      defaultRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
   }, [defaultRef, props.focus]);
 
@@ -104,6 +107,13 @@ const InfoBox = React.forwardRef<
           !props.children ? styles["infobox-simple"] : ""
         } ${styles[classBoxType]} ${className}`}
       >
+        {type === "error" && (
+          <img
+            style={{ marginRight: "0.8rem" }}
+            src={CancelIcon}
+            alt="cancellogo"
+          />
+        )}
         {typeof message === "string" && props.message && (
           <>
             <span className={styles.text}>{message}</span>
@@ -131,16 +141,11 @@ const InfoBox = React.forwardRef<
                 className={`${styles["button-action"]}`}
                 size="small"
                 text={disableButton ? "Loading..." : actionText}
-                onClick={_onActionClick} /* disabled={disableButton} */
+                onClick={_onActionClick}
               />
             </span>
           )}
         </div>
-        {canBeDismissed && (
-          <span className={styles["close-button"]} onClick={onDismissClick}>
-            ✖
-          </span>
-        )}
       </div>
     </CSSTransition>
   );
