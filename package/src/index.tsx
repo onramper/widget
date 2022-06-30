@@ -113,8 +113,8 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                   path="/swap/:txId"
                   element={
                     <L2Provider>
-                      <NotificationProvider>
-                        <TransactionContextProvider>
+                      <TransactionContextProvider>
+                        <NotificationProvider>
                           <div style={{ flexGrow: 1, display: "flex" }}>
                             <NavContainer
                               home={
@@ -125,8 +125,8 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                               }
                             />
                           </div>
-                        </TransactionContextProvider>
-                      </NotificationProvider>
+                        </NotificationProvider>
+                      </TransactionContextProvider>
                     </L2Provider>
                   }
                 />
