@@ -1,7 +1,25 @@
-import { Dexes, knownWethAddresses, TokenInfo } from "layer2";
+import { BigNumberish } from "ethers";
+import { formatUnits } from "ethers/lib/utils";
+import { Dexes, TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 import { StaticRoutingItemType } from "./ApiContext/initialState";
 
+export const trimLargeNumber = (
+  num: string | number,
+  trailingDecimals: number
+): string => {
+  if (typeof num === "number") {
+    return num.toFixed(trailingDecimals);
+  }
+  return Number(num).toFixed(trailingDecimals);
+};
+export const formatTokenAmount = (
+  token: TokenInfo,
+  amount: BigNumberish
+): string => {
+  const { decimals } = token;
+  return formatUnits(amount, decimals);
+};
 // for quote api
 export const apiKey = "oIMeQOqDsg9vFAs6WU1ks2hFxZ32DONF4MkhyDyI";
 
@@ -19,29 +37,6 @@ export const isL2Gateway = (gateway: string | undefined): boolean => {
   const dex = getDexFromGateway(gateway);
   if (dex === undefined) return false;
   return Dexes.includes(dex);
-};
-
-const ropstenWeth: TokenInfo = {
-  name: "Wrapped Ether",
-  address: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-  symbol: "WETH",
-  decimals: 18,
-  chainId: 3,
-  logoURI:
-    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-};
-
-export const findWeth = (chainId: number): TokenInfo => {
-  const wethFromChain = knownWethAddresses.find(
-    (weth) => weth.chainId === chainId
-  );
-  if (wethFromChain) {
-    return {
-      ...ropstenWeth,
-      ...wethFromChain,
-    };
-  }
-  return ropstenWeth;
 };
 
 export const isTransactionHash = (hash: string) => {

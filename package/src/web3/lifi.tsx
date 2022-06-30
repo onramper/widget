@@ -7,7 +7,7 @@ const testEnvConfig: ConfigUpdate = {
 };
 
 export const lifi = new LIFI(
-  process.env.NODE_ENV !== "production" ? testEnvConfig : undefined
+  process.env.STAGE !== "prod" ? testEnvConfig : undefined
 );
 
 export const getLifiQuote = async (

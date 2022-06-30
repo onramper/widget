@@ -45,7 +45,7 @@ const SwapOverviewView = ({
     customerGateway,
     progress,
     amountIn: initialAmountIn,
-    amountOut,
+    amountOut: initialAmountOut,
     tokenIn: initialTokenIn,
     tokenOut: initialTokenOut,
     fiatSymbol: initialFiatSymbol,
@@ -141,7 +141,7 @@ const SwapOverviewView = ({
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
-  const heading = `Swap ${parsedTokenIn.name} (${parsedTokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
+  const heading = `Swap ${tokenIn.name} (${tokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
   const handleEdit = useCallback(async () => {
     nextScreen(<EditSwapView progress={progress} />);
@@ -326,7 +326,7 @@ const SwapOverviewView = ({
         <Heading className={classes.heading} text={heading} />
         <WidgetNotification />
         <SwapDetailsBar />
-        <FeeBreakdown quote={quote} />
+        <FeeBreakdown />
         <div className={classes.buttonContainer}>
           {isActive ? (
             <>
