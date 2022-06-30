@@ -22,7 +22,8 @@ import { L2Provider } from "./web3/config";
 import SwapOverviewView from "./steps/SwapOverviewView/SwapOverviewView";
 import {
   startProps,
-  startPropsLifi,
+  startPropsMainnet,
+  startPropsTestnet,
 } from "./steps/SwapOverviewView/SwapOverviewView.models";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
@@ -120,7 +121,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                               home={
                                 // <PaymentProgressView />
                                 <SwapOverviewView
-                                  nextStep={startPropsLifi.nextStep}
+                                  nextStep={startPropsMainnet.nextStep}
                                 />
                               }
                             />

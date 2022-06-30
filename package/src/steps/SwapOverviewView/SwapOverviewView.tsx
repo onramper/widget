@@ -75,7 +75,11 @@ const SwapOverviewView = ({
   const { addNotification } = useWidgetNotifications();
 
   const { updateQuote, loading: quoteLoading } = useUpdateQuote();
-  const { executeTransaction, loading, state } = useExecuteTransaction();
+  const {
+    executeTransaction,
+    loading: transactionLoading,
+    state,
+  } = useExecuteTransaction();
 
   useEffect(() => {
     initialiseTransactionContext({
@@ -123,14 +127,14 @@ const SwapOverviewView = ({
                 className={classes.buttonInGroup}
                 text="Edit"
                 onClick={handleEdit}
-                disabled={loading}
+                disabled={transactionLoading}
               />
               <ButtonAction
-                disabled={!isActive || loading}
+                disabled={!isActive || transactionLoading || quoteLoading}
                 className={classes.buttonInGroup}
                 text={"Confirm Swap"}
                 onClick={executeTransaction}
-                pending={loading}
+                pending={transactionLoading || quoteLoading}
               />
             </>
           ) : (

@@ -68,12 +68,14 @@ const FeeBreakdown = () => {
     .reduce((a, b) => Number(a) + Number(b), 0)
     .toString();
 
-  const feeCostsArray = feeCosts?.map((fee) => {
-    return {
-      name: fee.name,
-      feeAmount: formatTokenAmount(fee.token, fee.amount),
-    };
-  });
+  const feeCostsArray =
+    feeCosts &&
+    feeCosts?.map((fee) => {
+      return {
+        name: fee.name,
+        feeAmount: formatTokenAmount(fee.token, fee.amount),
+      };
+    });
 
   return (
     <menu className={classes.FeeBreakdown}>
@@ -94,7 +96,8 @@ const FeeBreakdown = () => {
           )} gwei`}</div>
         </div>
       )}
-      {feeCostsArray?.length &&
+      {feeCostsArray &&
+        feeCostsArray?.length > 0 &&
         feeCostsArray?.map((fee) => (
           <div key={fee.name} className={classes.row}>
             <div className={classes.label}>{fee.name}</div>

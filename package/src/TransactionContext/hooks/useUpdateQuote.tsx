@@ -13,13 +13,19 @@ import { useTransactionCtxActions } from "./useTransactionCtxActions";
 export const useUpdateQuote = () => {
   const [loading, setLoading] = useState(false);
   const { addNotification } = useWidgetNotifications();
-  const { tokenIn, tokenOut } = useTransactionContext();
+  const { tokenIn, tokenOut, selectedWalletAddress, slippageTolerance } =
+    useTransactionContext();
   const { setQuote, setTransactionRequest } = useTransactionCtxActions();
   const { account } = useLayer2();
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
+  // we can't update quote without a destination wallet. this is so we can do a quote update before user connects.
+  const dummyAccount = "0xC54070dA79E7E3e2c95D3a91fe98A42000e65a48";
+
   const updateQuote = useCallback(
     async (amountIn: number) => {
+      const fromAddress = account ?? dummyAccount;
+      const destinationAddress = selectedWalletAddress ?? account;
       addNotification({
         type: NotificationType.Info,
         message: "Loading Swap Data...",
@@ -31,8 +37,10 @@ export const useUpdateQuote = () => {
           tokenIn,
           tokenOut,
           amountIn,
-          account,
-          beforeUnLoadRef.current.signal
+          fromAddress,
+          destinationAddress,
+          beforeUnLoadRef.current.signal,
+          slippageTolerance
         );
         if (res) {
           setQuote(res.estimate);
@@ -51,6 +59,7 @@ export const useUpdateQuote = () => {
     [
       account,
       addNotification,
+      selectedWalletAddress,
       setQuote,
       setTransactionRequest,
       tokenIn,

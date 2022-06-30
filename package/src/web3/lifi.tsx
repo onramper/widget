@@ -14,8 +14,10 @@ export const getLifiQuote = async (
   tokenIn: TokenInfo,
   tokenOut: TokenInfo,
   inputAmount: number, // not formatted
+  userAccount: string,
   destinationAddress?: string,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  slippage: number = 0.05
 ) => {
   const formattedAmount = utils
     .parseUnits(inputAmount.toString(), tokenIn.decimals)
@@ -23,11 +25,12 @@ export const getLifiQuote = async (
   const request: QuoteRequest = {
     fromChain: tokenIn.chainId,
     fromToken: tokenIn.address,
-    fromAddress: tokenIn.address,
+    fromAddress: userAccount,
     fromAmount: formattedAmount,
     toChain: tokenOut.chainId,
     toToken: tokenOut.address,
     toAddress: destinationAddress,
+    slippage: slippage,
   };
   return lifi.getQuote(request, { signal });
 };

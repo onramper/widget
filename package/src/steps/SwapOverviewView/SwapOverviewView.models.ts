@@ -7,7 +7,7 @@ export type SwapOverviewViewProps = {
   nextStep: SwapOverviewViewStep;
 };
 
-export const startPropsLifi: SwapOverviewViewProps = {
+export const startPropsTestnet: SwapOverviewViewProps = {
   nextStep: {
     type: StepType.swapOverview,
     customerGateway: "Moonpay_Lifi",
@@ -25,9 +25,40 @@ export const startPropsLifi: SwapOverviewViewProps = {
     },
     tokenOut: {
       address: "0x31f42841c2db5173425b5223809cf3a38fede360",
+      decimals: 18,
+      symbol: "DAI",
+      chainId: 3,
+      name: "DAI",
+      logoURI:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+    },
+    fiatSymbol: "$",
+    userId: "123",
+    txId: "testTxId",
+  },
+};
+
+export const startPropsMainnet: SwapOverviewViewProps = {
+  nextStep: {
+    type: StepType.swapOverview,
+    customerGateway: "Moonpay_Lifi",
+    progress: 80,
+    amountIn: 0.0002,
+    amountOut: 0,
+    tokenIn: {
+      address: "0x0000000000000000000000000000000000000000",
+      decimals: 18,
+      symbol: "ETH",
+      chainId: 1,
+      name: "ETH",
+      logoURI:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+    },
+    tokenOut: {
+      address: "0x6b175474e89094c44da98b954eedeac495271d0f",
       symbol: "DAI",
       decimals: 18,
-      chainId: 3,
+      chainId: 1,
       name: "DAI",
       logoURI:
         "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",

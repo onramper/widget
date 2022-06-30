@@ -28,6 +28,7 @@ export const useExecuteTransaction = () => {
     transactionRequest,
     selectedWalletAddress,
     txId,
+    slippageTolerance,
   } = useTransactionContext();
   const { addNotification } = useWidgetNotifications();
   const balance = useEtherBalance(account);
@@ -37,7 +38,8 @@ export const useExecuteTransaction = () => {
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
   const executeTransaction = useCallback(async () => {
-    setLoading(true);
+    const destinationAddress = selectedWalletAddress ?? account;
+
     if (!account) {
       addNotification({
         type: NotificationType.Info,
@@ -60,7 +62,7 @@ export const useExecuteTransaction = () => {
       }
       addNotification({
         type: NotificationType.Warning,
-        message: `You are on the incorrect network. PLease switch to ${tokenInChainName}`,
+        message: `You are on the incorrect network. Please switch to ${tokenInChainName}`,
         shouldExpire: true,
       });
       return;
@@ -75,6 +77,7 @@ export const useExecuteTransaction = () => {
     }
     try {
       if (transactionRequest) {
+        setLoading(true);
         addNotification({
           type: NotificationType.Info,
           message: "Please sign transaction",
@@ -87,6 +90,7 @@ export const useExecuteTransaction = () => {
           value: transactionRequest.value,
         });
       } else {
+        setLoading(true);
         addNotification({
           type: NotificationType.Info,
           message: "Getting ready to swap...",
@@ -98,7 +102,9 @@ export const useExecuteTransaction = () => {
           tokenOut,
           inAmount,
           account,
-          beforeUnLoadRef.current.signal
+          destinationAddress,
+          beforeUnLoadRef.current.signal,
+          slippageTolerance
         );
         if (res?.transactionRequest) {
           const receipt = await sendTransaction({
@@ -115,6 +121,7 @@ export const useExecuteTransaction = () => {
             });
           }
         } else {
+          setLoading(false);
           addNotification({
             type: NotificationType.Error,
             message: "Could not find a route for your requested trade",
@@ -123,8 +130,6 @@ export const useExecuteTransaction = () => {
         }
       }
     } catch (error) {
-      //eslint-disable-next-line
-      debugger;
       addNotification({
         type: NotificationType.Error,
         message: (error as Error)?.message ?? "something went wrong",
@@ -141,6 +146,7 @@ export const useExecuteTransaction = () => {
     inAmount,
     selectedWalletAddress,
     sendTransaction,
+    slippageTolerance,
     tokenIn,
     tokenOut,
     transactionRequest,

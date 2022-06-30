@@ -8,6 +8,7 @@ const initialState: StateType = {
   txId: "---transaction--id---",
   quote: null,
   transactionRequest: null,
+  selectedWalletAddress: undefined,
   tokenIn: {
     name: "",
     address: "",
