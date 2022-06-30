@@ -17,6 +17,10 @@ interface Props {
   children: ReactNode;
 }
 
+export interface MetamaskError extends Error {
+  code: number;
+}
+
 const checkInterval = 1000; //ms
 const expirationPeriod = 5000; //ms
 

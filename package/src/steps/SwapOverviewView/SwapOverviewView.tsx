@@ -5,7 +5,7 @@ import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
 import ButtonAction from "../../common/Buttons/ButtonAction";
-import { isMetamaskEnabled } from "layer2";
+import { isMetamaskEnabled, lifiChains } from "layer2";
 import { getLifiQuote } from "../../web3/lifi";
 import {
   useEtherBalance,
@@ -144,6 +144,25 @@ const SwapOverviewView = ({
       addNotification({
         type: NotificationType.Info,
         message: "Please connect wallet",
+        shouldExpire: true,
+      });
+      return;
+    }
+    if (chainId !== tokenIn.chainId) {
+      const tokenInChainName = lifiChains.find(
+        (c) => c.chainId === tokenIn.chainId
+      )?.name;
+      if (!tokenInChainName) {
+        addNotification({
+          type: NotificationType.Error,
+          message: "This network is currently not supported",
+          shouldExpire: true,
+        });
+        return;
+      }
+      addNotification({
+        type: NotificationType.Warning,
+        message: `You are on the incorrect network. PLease switch to ${tokenInChainName}`,
         shouldExpire: true,
       });
       return;
