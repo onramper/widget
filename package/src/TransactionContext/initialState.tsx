@@ -1,4 +1,4 @@
-import { Step, UNISWAP_DEFAULTS as defaultSettings } from "layer2";
+import { UNISWAP_DEFAULTS as defaultSettings } from "layer2";
 import { StateType } from "./models";
 
 const initialState: StateType = {
@@ -6,23 +6,8 @@ const initialState: StateType = {
   userId: "",
   inAmount: 0,
   txId: "---transaction--id---",
-  quote: {
-    blockNumber: "",
-    amount: "",
-    amountDecimals: "",
-    quote: "",
-    quoteDecimals: "",
-    quoteGasAdjusted: "",
-    quoteGasAdjustedDecimals: "",
-    gasUseEstimateQuote: "",
-    gasUseEstimateQuoteDecimals: "",
-    gasUseEstimate: "",
-    gasUseEstimateUSD: "",
-    gasPriceWei: "",
-    route: [],
-    routeString: "",
-    quoteId: "",
-  },
+  quote: null,
+  transactionRequest: null,
   tokenIn: {
     name: "",
     address: "",
@@ -39,7 +24,6 @@ const initialState: StateType = {
     chainId: 3,
     logoURI: "",
   },
-  lifiQuote: {} as Step,
   wallets: [],
   customerGateway: "gateway_dex",
   fiatSymbol: "$",

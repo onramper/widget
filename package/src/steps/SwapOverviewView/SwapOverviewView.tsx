@@ -10,8 +10,8 @@ import {
   isMetamaskEnabled,
   getUniswapQuote,
   getUniswapSwapParams,
-  getLifiQuote,
 } from "layer2";
+import { getLifiQuote } from "../../web3/lifi";
 import {
   useEtherBalance,
   useSendTransaction,
@@ -325,13 +325,7 @@ const SwapOverviewView = ({
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <Heading className={classes.heading} text={heading} />
         <WidgetNotification />
-        <SwapDetailsBar
-          tokenIn={parsedTokenIn}
-          tokenOut={tokenOut}
-          amountIn={Number(quote?.amountDecimals) ?? inAmount}
-          amountOut={Number(quote?.quoteDecimals) ?? amountOut}
-          fiatSymbol={fiatSymbol}
-        />
+        <SwapDetailsBar />
         <FeeBreakdown quote={quote} />
         <div className={classes.buttonContainer}>
           {isActive ? (

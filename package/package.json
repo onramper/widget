@@ -43,6 +43,7 @@
     "checklint": "eslint src --ext ts,js,tsx --no-ignore --cache"
   },
   "dependencies": {
+    "@lifinance/sdk": "^1.0.0-beta.12",
     "@onramper/flag-icons": "^1.0.1",
     "@onramper/moonpay-adapter": "^1.6.18",
     "@sentry/browser": "^6.1.0",

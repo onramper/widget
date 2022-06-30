@@ -12,7 +12,7 @@ export const startPropsLifi: SwapOverviewViewProps = {
     type: StepType.swapOverview,
     customerGateway: "Moonpay_Lifi",
     progress: 80,
-    amountIn: 0.0001,
+    amountIn: 0.0002,
     amountOut: 0,
     tokenIn: {
       address: "0x0000000000000000000000000000000000000000",
@@ -24,13 +24,13 @@ export const startPropsLifi: SwapOverviewViewProps = {
         "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
     },
     tokenOut: {
-      address: "0xf76d4a441e4ba86a923ce32b89aff89dbccaa075",
-      symbol: "COMP",
-      decimals: 18,
-      chainId: 3,
-      name: "Compound",
+      name: "Onramper Test Token",
+      symbol: "OTT",
+      address: "0xBe8AFb431f18C126a69B79E87cA3016936D7060C",
       logoURI:
-        "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_COMP.svg",
+        "https://pbs.twimg.com/profile_images/1309065154856980480/dXJItCo4_400x400.jpg",
+      chainId: 3,
+      decimals: 18,
     },
     fiatSymbol: "$",
     userId: "123",

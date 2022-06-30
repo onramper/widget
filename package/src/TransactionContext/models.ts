@@ -13,8 +13,8 @@ export interface StateType {
   wallets: WalletItemData[];
   slippageTolerance: number;
   deadline: number;
-  quote: Estimate;
-  transactionRequest: providers.TransactionRequest;
+  quote: Estimate | null;
+  transactionRequest: providers.TransactionRequest | null;
   customerGateway: string;
   selectedWalletAddress?: string;
 }
