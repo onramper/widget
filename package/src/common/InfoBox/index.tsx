@@ -4,7 +4,7 @@ import { CSSTransition } from "react-transition-group";
 import ButtonAction from "../ButtonAction";
 import { APIContext } from "../../ApiContext";
 import { URLize } from "./utils";
-import CancelIcon from "../../icons/cancel.svg";
+import cancelIcon from "../../icons/cancel.svg";
 
 type InfoBoxType = {
   type?: "info" | "error" | "notification";
@@ -24,6 +24,8 @@ const InfoBox = React.forwardRef<
 >((props, ref) => {
   const [disableButton, setDisableButton] = useState(false);
   const { collected } = useContext(APIContext);
+  let icon;
+  let header;
 
   const {
     type = "info",
@@ -36,6 +38,8 @@ const InfoBox = React.forwardRef<
   switch (type) {
     case "error":
       classBoxType = "infobox--error";
+      icon = cancelIcon;
+      header = "Something went wrong";
       break;
     case "notification":
       classBoxType = "infobox--notification";
@@ -108,28 +112,17 @@ const InfoBox = React.forwardRef<
         } ${styles[classBoxType]} ${className}`}
       >
         {type === "error" && (
-          <img
-            style={{ marginRight: "0.8rem" }}
-            src={CancelIcon}
-            alt="cancellogo"
-          />
-        )}
-        {typeof message === "string" && props.message && (
-          <>
-            <span className={styles.text}>{message}</span>
-            <br />
-          </>
+          <img style={{ marginRight: "0.8rem" }} src={icon} alt="cancellogo" />
         )}
         <div
           className={`${styles["child-node"]} ${
             !props.children ? styles["child-node-simple"] : ""
           }`}
         >
-          {props.message && typeof message !== "string" ? (
-            <span className={styles.text}>{message}</span>
-          ) : (
-            <span className={styles.text}>{props.children}</span>
-          )}
+          <>
+            <b style={{ marginBottom: "0.1rem" }}>{header}</b>
+            <span className={styles.text}>{props.children ?? message}</span>
+          </>
           {props.onActionClick && (
             <span
               style={{
