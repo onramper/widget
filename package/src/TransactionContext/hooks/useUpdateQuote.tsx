@@ -17,13 +17,12 @@ export const useUpdateQuote = () => {
     useTransactionContext();
   const { setQuote, setTransactionRequest } = useTransactionCtxActions();
   const { account } = useLayer2();
-  const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
   // we can't update quote without a destination wallet. this is so we can do a quote update before user connects.
   const dummyAccount = "0xC54070dA79E7E3e2c95D3a91fe98A42000e65a48";
 
   const updateQuote = useCallback(
-    async (amountIn: number) => {
+    async (amountIn: number, signal?: AbortSignal) => {
       const fromAddress = account ?? dummyAccount;
       const destinationAddress = selectedWalletAddress ?? account;
       addNotification({
@@ -39,9 +38,13 @@ export const useUpdateQuote = () => {
           amountIn,
           fromAddress,
           destinationAddress,
-          beforeUnLoadRef.current.signal,
+          signal,
           slippageTolerance
         );
+        if (signal?.aborted) {
+          setLoading(false);
+          return;
+        }
         if (res) {
           setQuote(res.estimate);
           if (res.transactionRequest) {
@@ -62,18 +65,11 @@ export const useUpdateQuote = () => {
       selectedWalletAddress,
       setQuote,
       setTransactionRequest,
+      slippageTolerance,
       tokenIn,
       tokenOut,
     ]
   );
-
-  useEffect(() => {
-    const onBeforeUnload = () => {
-      beforeUnLoadRef.current.abort();
-    };
-    window.addEventListener("beforeunload", onBeforeUnload);
-    return () => window.removeEventListener("beforeunload", onBeforeUnload);
-  }, []);
 
   return {
     loading,

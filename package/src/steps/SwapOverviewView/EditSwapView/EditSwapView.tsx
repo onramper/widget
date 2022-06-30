@@ -59,53 +59,17 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
   const { backScreen } = useNav();
   const { updateQuote, loading: quoteLoading } = useUpdateQuote();
-
+  const beforeUnLoadRef = useRef<AbortController>(new AbortController());
   const heading = `Swap ${tokenIn.name} (${tokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
-
-  // const onActionButton = useCallback(async () => {
-  //   setQuote(localQuote);
-  //   updateInAmount(Number(spentValue));
-  //   backScreen();
-  // }, [backScreen, localQuote, setQuote, spentValue, updateInAmount]);
-
-  // const updateReceivedValue = useCallback(
-  //   (value: string) => {
-  //     setSpentValue(value);
-
-  //     if (Number(value) === 0) {
-  //       getAndUpdateAbortController();
-  //       setReceivedValue("0");
-  //       setIsLoading(false);
-  //       setSwapErrorMessage("");
-  //       return;
-  //     }
-
-  //     const onUpdate = async () => {
-  //       try {
-  //         const response = await spendCryptoApi(Number(value));
-  //         setSwapErrorMessage(undefined);
-  //         if (response) {
-  //           setReceivedValue(response.receivedCrypto);
-  //         }
-  //       } catch (_error) {
-  //         const error = _error as Error;
-  //         if (error?.name !== "AbortError") {
-  //           setSwapErrorMessage(
-  //             error?.message || "Oops! Something went wrong."
-  //           );
-  //         }
-  //       }
-  //     };
-  //     onUpdate();
-  //   },
-  //   [getAndUpdateAbortController, spendCryptoApi]
-  // );
 
   const debouncedUpdateQuote = useDebouncedCallback(updateQuote, 600);
 
   useEffect(() => {
     if (Number(localInAmount) > 0) {
-      debouncedUpdateQuote(Number(localInAmount));
+      debouncedUpdateQuote(
+        Number(localInAmount),
+        beforeUnLoadRef.current.signal
+      );
     }
   }, [debouncedUpdateQuote, localInAmount]);
 
@@ -180,6 +144,19 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const formattedOutputAmount = quote?.toAmountMin
     ? formatTokenAmount(tokenOut, quote?.toAmountMin)
     : "0.000";
+
+  useEffect(() => {
+    const onBeforeUnload = () => {
+      // //eslint-disable-next-line
+      // debugger;
+      beforeUnLoadRef.current.abort();
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => {
+      onBeforeUnload();
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    };
+  }, []);
 
   return (
     <div className={commonClasses.view}>

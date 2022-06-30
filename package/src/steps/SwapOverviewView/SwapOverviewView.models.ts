@@ -7,6 +7,9 @@ export type SwapOverviewViewProps = {
   nextStep: SwapOverviewViewStep;
 };
 
+// https://li.quest/v1/tokens?chains=ETH => mainnet token list
+// https://staging.li.quest/v1/tokens?chains=ROP ==> testnet tokens
+
 export const startPropsTestnet: SwapOverviewViewProps = {
   nextStep: {
     type: StepType.swapOverview,

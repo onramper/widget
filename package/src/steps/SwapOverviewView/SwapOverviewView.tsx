@@ -80,6 +80,7 @@ const SwapOverviewView = ({
     loading: transactionLoading,
     state,
   } = useExecuteTransaction();
+  const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
   useEffect(() => {
     initialiseTransactionContext({
@@ -95,7 +96,7 @@ const SwapOverviewView = ({
   }, []);
 
   useEffect(() => {
-    updateQuote(initialAmountIn);
+    updateQuote(initialAmountIn, beforeUnLoadRef.current.signal);
   }, [initialAmountIn, updateQuote]);
 
   const heading = `Swap ${tokenIn.name} (${tokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
@@ -104,13 +105,16 @@ const SwapOverviewView = ({
     nextScreen(<EditSwapView progress={progress} />);
   }, [nextScreen, progress]);
 
-  // useEffect(() => {
-  //   try {
-  //     fetchAndUpdateUserWallets();
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [fetchAndUpdateUserWallets]);
+  useEffect(() => {
+    const onBeforeUnload = () => {
+      beforeUnLoadRef.current.abort();
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => {
+      onBeforeUnload();
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    };
+  }, []);
 
   return (
     <div className={commonClasses.view}>
