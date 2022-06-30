@@ -38,6 +38,7 @@ import { utils } from "ethers";
 import { isErrorWithName, storeTransactionData } from "../../ApiContext/api";
 import { SwapOverviewViewProps } from "./SwapOverviewView.models";
 import { useLayer2 } from "../../web3/config";
+import { formatEther } from "ethers/lib/utils";
 
 const SwapOverviewView = ({
   nextStep: {
@@ -61,10 +62,12 @@ const SwapOverviewView = ({
     fiatSymbol,
     tokenIn,
     tokenOut,
+    selectedWalletAddress,
     slippageTolerance,
     deadline,
     quote,
     inAmount,
+    transactionRequest,
   } = useTransactionContext();
 
   // const { fetchAndUpdateUserWallets } = useTransactionCtxWallets();
@@ -145,14 +148,42 @@ const SwapOverviewView = ({
   }, [nextScreen, progress]);
 
   const handleExecuteLifi = useCallback(async () => {
-    setLoading(true);
-    addNotification({
-      type: NotificationType.Info,
-      message: "Getting ready to swap...",
-      shouldExpire: true,
-    });
-    if (metaAddress) {
-      try {
+    if (!metaAddress) {
+      addNotification({
+        type: NotificationType.Info,
+        message: "Please connect wallet",
+        shouldExpire: true,
+      });
+      return;
+    }
+    if (balance && Number(formatEther(balance)) <= inAmount) {
+      addNotification({
+        type: NotificationType.Warning,
+        message: "You have Insufficient funds to perform this transaction.",
+        shouldExpire: true,
+      });
+      return;
+    }
+    try {
+      if (transactionRequest) {
+        setLoading(true);
+        addNotification({
+          type: NotificationType.Info,
+          message: "Please sign transaction",
+          shouldExpire: true,
+        });
+        await sendTransaction({
+          data: transactionRequest.data,
+          from: selectedWalletAddress ?? metaAddress,
+          to: transactionRequest.to,
+          value: transactionRequest.value,
+        });
+      } else {
+        addNotification({
+          type: NotificationType.Info,
+          message: "Getting ready to swap...",
+          shouldExpire: true,
+        });
         //update quote before tx
         const res = await getLifiQuote(
           tokenIn,
@@ -162,42 +193,47 @@ const SwapOverviewView = ({
           beforeUnLoadRef.current.signal
         );
         if (res?.transactionRequest) {
-          addNotification({
-            type: NotificationType.Info,
-            message: "Please sign transaction",
-            shouldExpire: true,
-          });
-          await sendTransaction({
+          const receipt = await sendTransaction({
             data: res.transactionRequest.data,
-            from: metaAddress,
+            from: selectedWalletAddress ?? metaAddress,
             to: res.transactionRequest.to,
             value: res.transactionRequest.value,
           });
+          if (receipt && receipt.blockHash) {
+            addNotification({
+              type: NotificationType.Success,
+              message: "Transaction Successful!",
+              shouldExpire: true,
+            });
+          }
+        } else {
+          addNotification({
+            type: NotificationType.Error,
+            message: "Could not find a route for your requested trade",
+            shouldExpire: true,
+          });
         }
-      } catch (error) {
-        console.log(error);
-        addNotification({
-          type: NotificationType.Error,
-          message: (error as Error)?.message ?? "something went wrong",
-          shouldExpire: true,
-        });
-      } finally {
-        setLoading(false);
       }
-    } else {
+    } catch (error) {
+      console.log(error);
       addNotification({
-        type: NotificationType.Info,
-        message: "Please connect wallet",
+        type: NotificationType.Error,
+        message: (error as Error)?.message ?? "something went wrong",
         shouldExpire: true,
       });
+    } finally {
+      setLoading(false);
     }
   }, [
     addNotification,
+    balance,
     inAmount,
     metaAddress,
+    selectedWalletAddress,
     sendTransaction,
     tokenIn,
     tokenOut,
+    transactionRequest,
   ]);
 
   const handleException = useCallback(
