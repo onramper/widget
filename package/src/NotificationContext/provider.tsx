@@ -11,6 +11,7 @@ import { nanoid } from "nanoid";
 import { useTransactionContext } from "../TransactionContext/hooks";
 import { useInterval, usePrevious } from "../hooks";
 import { useLayer2 } from "../web3/config";
+import { getDexFromGateway } from "../utils";
 
 interface Props {
   children: ReactNode;
@@ -35,93 +36,9 @@ function getExpiredNotifications(
 export function NotificationProvider({ children }: Props) {
   const [notifications, dispatch] = useReducer(notificationReducer, []);
   const { chainId, account, active } = useLayer2();
-  const { tokenIn, tokenOut } = useTransactionContext();
+  const { tokenIn, tokenOut, customerGateway } = useTransactionContext();
 
-  const tokenChain =
-    chainIDToNetworkInfo.find((c) => c.chainId === tokenIn.chainId) ?? null;
-
-  useEffect(() => {
-    if (active && account && chainId) {
-      dispatch({
-        type: "ADD_NOTIFICATION",
-        notification: {
-          submittedAt: Date.now(),
-          type: NotificationType.Success,
-          id: nanoid(),
-          message: "Wallet Connected",
-          shouldExpire: true,
-        },
-      });
-    } else {
-      if (previouslyConnected) {
-        dispatch({
-          type: "ADD_NOTIFICATION",
-          notification: {
-            submittedAt: Date.now(),
-            type: NotificationType.Info,
-            id: nanoid(),
-            message: "Disconnected",
-            shouldExpire: true,
-          },
-        });
-      }
-    }
-    //eslint-disable-next-line
-  }, [account, active, chainId]);
-
-  useEffect(() => {
-    if (chainId && account) {
-      if (tokenIn.chainId !== tokenOut.chainId) {
-        dispatch({
-          type: "ADD_NOTIFICATION",
-          notification: {
-            submittedAt: Date.now(),
-            type: NotificationType.Error,
-            id: nanoid(),
-            message: "Tokens are on incompatible networks",
-            shouldExpire: true,
-          },
-        });
-      } else {
-        if (tokenIn.chainId !== chainId) {
-          dispatch({
-            type: "ADD_NOTIFICATION",
-            notification: {
-              submittedAt: Date.now(),
-              type: NotificationType.Warning,
-              id: nanoid(),
-              message: `You are on an incorrect Network, please switch to ${
-                tokenChain?.name ?? "unknown"
-              }`,
-              shouldExpire: true,
-            },
-          });
-        }
-      }
-    }
-    //eslint-disable-next-line
-  }, [tokenIn, tokenOut, chainId, account]);
-
-  useEffect(() => {
-    if (chainId) {
-      if (previousChainId !== undefined && chainId !== previousChainId) {
-        dispatch({
-          type: "ADD_NOTIFICATION",
-          notification: {
-            submittedAt: Date.now(),
-            type: NotificationType.Info,
-            id: nanoid(),
-            message: `Network Changed. You are on ${
-              chainIDToNetworkInfo.find((chain) => chain.chainId === chainId)
-                ?.name ?? "an unknown network"
-            }`,
-            shouldExpire: true,
-          },
-        });
-      }
-    }
-    //eslint-disable-next-line
-  }, [chainId]);
+  const dex = getDexFromGateway(customerGateway);
 
   const addNotification = useCallback(
     ({ message, type, shouldExpire }: AddNotificationPayload) => {
@@ -158,6 +75,90 @@ export function NotificationProvider({ children }: Props) {
       removeNotification(notification.id);
     }
   }, checkInterval);
+
+  useEffect(() => {
+    if (chainId && account) {
+      if (dex === "UNISWAP" && tokenIn.chainId !== tokenOut.chainId) {
+        // Uniswap can not bridge over chains
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          notification: {
+            submittedAt: Date.now(),
+            type: NotificationType.Error,
+            id: nanoid(),
+            message: "Tokens are on incompatible networks",
+            shouldExpire: true,
+          },
+        });
+      } else {
+        if (tokenIn.chainId !== chainId) {
+          const tokenChain =
+            chainIDToNetworkInfo.find((c) => c.chainId === tokenIn.chainId) ??
+            null;
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            notification: {
+              submittedAt: Date.now(),
+              type: NotificationType.Warning,
+              id: nanoid(),
+              message: `You are on an incorrect Network, please switch to ${
+                tokenChain?.name ?? "unknown"
+              }`,
+              shouldExpire: true,
+            },
+          });
+        }
+      }
+    }
+    //eslint-disable-next-line
+  }, [tokenIn, tokenOut, chainId, account]);
+
+  useEffect(() => {
+    if (active && account && chainId) {
+      if (!previouslyConnected) {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          notification: {
+            submittedAt: Date.now(),
+            type: NotificationType.Success,
+            id: nanoid(),
+            message: "Wallet Connected",
+            shouldExpire: true,
+          },
+        });
+        return;
+      }
+      if (previousChainId !== undefined && chainId !== previousChainId) {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          notification: {
+            submittedAt: Date.now(),
+            type: NotificationType.Info,
+            id: nanoid(),
+            message: `Network Changed. You are on ${
+              chainIDToNetworkInfo.find((chain) => chain.chainId === chainId)
+                ?.name ?? "an unknown network"
+            }`,
+            shouldExpire: true,
+          },
+        });
+      }
+    } else {
+      if (previouslyConnected) {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          notification: {
+            submittedAt: Date.now(),
+            type: NotificationType.Info,
+            id: nanoid(),
+            message: "Disconnected",
+            shouldExpire: true,
+          },
+        });
+      }
+    }
+    //eslint-disable-next-line
+  }, [account, active, chainId]);
 
   const previousChainId = usePrevious<number | undefined>(chainId);
   const previouslyConnected = usePrevious<boolean>(active);

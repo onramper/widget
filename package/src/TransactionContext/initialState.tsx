@@ -1,4 +1,4 @@
-import { DEFAULTS as defaultSettings } from "layer2";
+import { Step, UNISWAP_DEFAULTS as defaultSettings } from "layer2";
 import { StateType } from "./models";
 
 const initialState: StateType = {
@@ -39,7 +39,9 @@ const initialState: StateType = {
     chainId: 3,
     logoURI: "",
   },
+  lifiQuote: {} as Step,
   wallets: [],
+  customerGateway: "gateway_dex",
   fiatSymbol: "$",
   slippageTolerance: defaultSettings.slippageTolerance,
   deadline: defaultSettings.deadline,

@@ -28,7 +28,6 @@ import {
   isIframeStep,
   isRedirectStep,
 } from "../../ApiContext/api/types/guards";
-
 import { triggerGTMEvent } from "../../helpers/useGTM";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 import { useNavigate } from "react-router-dom";
@@ -65,6 +64,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   const [iframeUrl, setIframeUrl] = useState(props.src);
   const [countDown, setCountDown] = useState(textInfo ? 10 : 3);
   const navigate = useNavigate();
+  console.log("BodyIframeView PROPS: ", props);
 
   const [userClosedPopup, setUserClosedPopup] = useState(false);
 
@@ -85,7 +85,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   };
 
   const isL2MoonpayNewWindowIntegration = () =>
-    selectedGateway?.name.split("_").at(-1) === "Uniswap" &&
+    selectedGateway?.name.split("_").at(-1)?.toUpperCase() === "UNISWAP" &&
     props.src.indexOf("https://api.moonpay.io/v3/payment") === -1;
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             // infer weth from output chainID
             tokenIn: findWeth(l2TokenData.chainId),
             tokenOut: l2TokenData,
-            gatewayAndDex: selectedGateway?.name ?? "",
+            customerGateway: selectedGateway?.name ?? "",
             txId: txId,
             inCurrency: inCurrency,
           }}

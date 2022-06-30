@@ -19,6 +19,11 @@ import { G_TAG_ID } from "./ApiContext/api/constants";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PaymentProgressView } from "./steps/PaymentProgressView";
 import { L2Provider } from "./web3/config";
+import SwapOverviewView from "./steps/SwapOverviewView/SwapOverviewView";
+import {
+  startProps,
+  startPropsLifi,
+} from "./steps/SwapOverviewView/SwapOverviewView.models";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -111,7 +116,14 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                       <NotificationProvider>
                         <TransactionContextProvider>
                           <div style={{ flexGrow: 1, display: "flex" }}>
-                            <NavContainer home={<PaymentProgressView />} />
+                            <NavContainer
+                              home={
+                                <PaymentProgressView />
+                                // <SwapOverviewView
+                                //   nextStep={startPropsLifi.nextStep}
+                                // />
+                              }
+                            />
                           </div>
                         </TransactionContextProvider>
                       </NotificationProvider>

@@ -25,7 +25,7 @@ import TransactionSettings from "../TransactionSettings/TransactionSettings";
 import classes from "./EditSwapView.module.css";
 import { ApiError } from "../../../ApiContext/api";
 import { CSSTransition } from "react-transition-group";
-import { getQuote, TokenInfo, QuoteDetails } from "layer2";
+import { getUniswapQuote, TokenInfo, QuoteDetails } from "layer2";
 import { useEtherBalance, useTokenBalance } from "@usedapp/core";
 import { useDebouncedCallback } from "use-debounce";
 import {
@@ -112,7 +112,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         const timeout = setTimeout(async () => {
           try {
             setIsLoading(true);
-            const newQuote = await getQuote(
+            const newQuote = await getUniswapQuote(
               cryptoSpent,
               cryptoReceived,
               value,

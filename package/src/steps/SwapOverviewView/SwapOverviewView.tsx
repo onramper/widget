@@ -4,9 +4,14 @@ import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
-import { apiKey, parseWrappedTokens } from "../../utils";
+import { apiKey, getDexFromGateway, parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
-import { isMetamaskEnabled, getQuote, getSwapParams } from "layer2";
+import {
+  isMetamaskEnabled,
+  getUniswapQuote,
+  getUniswapSwapParams,
+  getLifiQuote,
+} from "layer2";
 import {
   useEtherBalance,
   useSendTransaction,
@@ -36,6 +41,7 @@ import { useLayer2 } from "../../web3/config";
 
 const SwapOverviewView = ({
   nextStep: {
+    customerGateway,
     progress,
     amountIn: initialAmountIn,
     amountOut,
@@ -46,7 +52,8 @@ const SwapOverviewView = ({
     txId,
   },
 }: SwapOverviewViewProps) => {
-  const { setQuote, initialiseTransactionContext } = useTransactionCtxActions();
+  const { setQuote, setTransactionRequest, initialiseTransactionContext } =
+    useTransactionCtxActions();
 
   const { account: metaAddress, active, chainId } = useLayer2();
   const balance = useEtherBalance(metaAddress);
@@ -60,17 +67,6 @@ const SwapOverviewView = ({
     inAmount,
   } = useTransactionContext();
 
-  useEffect(() => {
-    if (balance && metaAddress && chainId) {
-      console.table({
-        account: metaAddress,
-        active: active,
-        chainId: chainId,
-        balance: Number(utils.formatEther(balance)),
-      });
-    }
-  }, [active, balance, chainId, metaAddress]);
-
   // const { fetchAndUpdateUserWallets } = useTransactionCtxWallets();
 
   const { sendTransaction, state } = useSendTransaction();
@@ -83,7 +79,38 @@ const SwapOverviewView = ({
 
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
-  const handleUpdate = useCallback(
+  // const handleUpdateUniswap = useCallback(
+  //   async (amountIn: number) => {
+  //     addNotification({
+  //       type: NotificationType.Info,
+  //       message: "Loading Swap Data...",
+  //       shouldExpire: true,
+  //     });
+  //     setLoading(true);
+  //     try {
+  //       const newQuote = await getUniswapQuote(
+  //         tokenIn,
+  //         tokenOut,
+  //         amountIn,
+  //         false,
+  //         apiKey,
+  //         beforeUnLoadRef.current.signal
+  //       );
+  //       if (newQuote) {
+  //         setQuote(newQuote);
+  //       }
+  //     } catch (error) {
+  //       if (isErrorWithName(error) && error.name === "AbortError") {
+  //         return;
+  //       }
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   },
+  //   [addNotification, setQuote, tokenIn, tokenOut]
+  // );
+
+  const handleUpdateLifi = useCallback(
     async (amountIn: number) => {
       addNotification({
         type: NotificationType.Info,
@@ -92,16 +119,17 @@ const SwapOverviewView = ({
       });
       setLoading(true);
       try {
-        const newQuote = await getQuote(
+        const res = await getLifiQuote(
           tokenIn,
           tokenOut,
           amountIn,
-          false,
-          apiKey,
           beforeUnLoadRef.current.signal
         );
-        if (newQuote) {
-          setQuote(newQuote);
+        if (res) {
+          setQuote(res.estimate);
+          if (res.transactionRequest) {
+            setTransactionRequest(res.transactionRequest);
+          }
         }
       } catch (error) {
         if (isErrorWithName(error) && error.name === "AbortError") {
@@ -111,13 +139,12 @@ const SwapOverviewView = ({
         setLoading(false);
       }
     },
-    [addNotification, setQuote, tokenIn, tokenOut]
+    [addNotification, setQuote, setTransactionRequest, tokenIn, tokenOut]
   );
 
   useEffect(() => {
-    //eslint-disable-next-line
-    debugger;
     initialiseTransactionContext({
+      customerGateway: customerGateway,
       txId,
       userId,
       tokenIn: initialTokenIn,
@@ -129,8 +156,8 @@ const SwapOverviewView = ({
   }, []);
 
   useEffect(() => {
-    handleUpdate(initialAmountIn);
-  }, [initialAmountIn, handleUpdate]);
+    handleUpdateLifi(initialAmountIn);
+  }, [initialAmountIn, handleUpdateLifi]);
 
   // if tokenIn === "WETH" then we want to display ETH instead
   const parsedTokenIn = parseWrappedTokens(tokenIn);
@@ -140,7 +167,7 @@ const SwapOverviewView = ({
     nextScreen(<EditSwapView progress={progress} />);
   }, [nextScreen, progress]);
 
-  const handleSwap = async () => {
+  const handleExecuteUniswap = async () => {
     if (!balance) {
       addNotification({
         type: NotificationType.Error,
@@ -156,7 +183,7 @@ const SwapOverviewView = ({
         shouldExpire: true,
       });
       try {
-        const res = await getSwapParams(
+        const res = await getUniswapSwapParams(
           Number(utils.formatEther(balance)),
           tokenIn,
           tokenOut,
@@ -200,6 +227,55 @@ const SwapOverviewView = ({
       });
     }
   };
+
+  const handleExecuteLifi = useCallback(async () => {
+    setLoading(true);
+    addNotification({
+      type: NotificationType.Info,
+      message: "Getting ready to swap...",
+      shouldExpire: true,
+    });
+    if (metaAddress) {
+      try {
+        const res = await getLifiQuote(tokenIn, tokenOut, inAmount);
+        if (res?.transactionRequest) {
+          addNotification({
+            type: NotificationType.Info,
+            message: "Please sign transaction",
+            shouldExpire: true,
+          });
+          await sendTransaction({
+            data: res.transactionRequest.data,
+            from: metaAddress,
+            to: res.transactionRequest.to,
+            value: res.transactionRequest.value,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        addNotification({
+          type: NotificationType.Error,
+          message: (error as Error)?.message ?? "something went wrong",
+          shouldExpire: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      addNotification({
+        type: NotificationType.Info,
+        message: "Please connect wallet",
+        shouldExpire: true,
+      });
+    }
+  }, [
+    addNotification,
+    inAmount,
+    metaAddress,
+    sendTransaction,
+    tokenIn,
+    tokenOut,
+  ]);
 
   const handleException = useCallback(
     ({ status, errorMessage }: TransactionStatus) => {
@@ -284,6 +360,17 @@ const SwapOverviewView = ({
   //   }
   // }, [fetchAndUpdateUserWallets]);
 
+  const handleExecute = () => {
+    const dex = getDexFromGateway(customerGateway);
+    if (!dex) alert("No dex found!");
+    if (dex === "UNISWAP") {
+      handleExecuteUniswap();
+    }
+    if (dex === "LIFI") {
+      handleExecuteLifi();
+    }
+  };
+
   return (
     <div className={commonClasses.view}>
       <ProgressHeader noSeparator useBackButton percentage={progress} />
@@ -311,7 +398,7 @@ const SwapOverviewView = ({
                 disabled={!isActive || loading}
                 className={classes.buttonInGroup}
                 text={"Confirm Swap"}
-                onClick={handleSwap}
+                onClick={handleExecute}
                 pending={loading}
               />
             </>

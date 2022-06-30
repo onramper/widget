@@ -1,5 +1,6 @@
-import { QuoteDetails, TokenInfo } from "layer2";
+import { Estimate, TokenInfo } from "layer2";
 import { WalletItemData } from "../ApiContext/api/types/nextStep";
+import { providers } from "ethers";
 
 export interface StateType {
   tokenIn: TokenInfo;
@@ -10,8 +11,10 @@ export interface StateType {
   key: number;
   userId: string;
   wallets: WalletItemData[];
-  selectedWalletAddress?: string;
   slippageTolerance: number;
   deadline: number;
-  quote: QuoteDetails;
+  quote: Estimate;
+  transactionRequest: providers.TransactionRequest;
+  customerGateway: string;
+  selectedWalletAddress?: string;
 }

@@ -33,6 +33,6 @@ export const defaults: SwapData = {
     chainId: 3,
     logoURI: "",
   },
-  gatewayAndDex: "Gateway_DExchange",
+  customerGateway: "Gateway_DExchange",
   inCurrency: "USD",
 };

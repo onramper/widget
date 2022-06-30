@@ -96,7 +96,7 @@ const IframeView: React.FC<{
                   // infer weth from output chainI
                   tokenIn: findWeth(nextStep.l2TokenData.chainId),
                   tokenOut: nextStep.l2TokenData,
-                  gatewayAndDex: selectedGateway.name,
+                  customerGateway: selectedGateway.name,
                   txId: nextStep.txId,
                   inCurrency: nextStep.inCurrency,
                 }}
@@ -129,7 +129,7 @@ const IframeView: React.FC<{
         }
       } else if (typeof event.data === "string") {
         reportError(event.data, false, event.data);
-      } 
+      }
       /*
       else {
         reportError(

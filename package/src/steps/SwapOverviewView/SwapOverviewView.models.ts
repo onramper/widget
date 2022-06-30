@@ -7,9 +7,41 @@ export type SwapOverviewViewProps = {
   nextStep: SwapOverviewViewStep;
 };
 
+export const startPropsLifi: SwapOverviewViewProps = {
+  nextStep: {
+    type: StepType.swapOverview,
+    customerGateway: "Moonpay_Lifi",
+    progress: 80,
+    amountIn: 0.0001,
+    amountOut: 0,
+    tokenIn: {
+      address: "0x0000000000000000000000000000000000000000",
+      decimals: 18,
+      symbol: "ETH",
+      chainId: 3,
+      name: "ETH",
+      logoURI:
+        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+    },
+    tokenOut: {
+      address: "0xf76d4a441e4ba86a923ce32b89aff89dbccaa075",
+      symbol: "COMP",
+      decimals: 18,
+      chainId: 3,
+      name: "Compound",
+      logoURI:
+        "https://raw.githubusercontent.com/compound-finance/token-list/master/assets/asset_COMP.svg",
+    },
+    fiatSymbol: "$",
+    userId: "123",
+    txId: "testTxId",
+  },
+};
+
 export const startProps: SwapOverviewViewProps = {
   nextStep: {
     type: StepType.swapOverview,
+    customerGateway: "Moonpay_Lifi",
     progress: 80,
     amountIn: 0.005,
     amountOut: 0,
