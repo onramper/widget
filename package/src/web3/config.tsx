@@ -8,6 +8,7 @@ import {
   Goerli,
   useEthers,
   DAppProvider,
+  Kovan,
 } from "@usedapp/core";
 import React, { createContext, ReactNode, useContext } from "react";
 import { useConnectEnsName, useEnsAvatar } from "./hooks/ens";
@@ -17,7 +18,7 @@ const infuraProjectId = "bb5c9b186fcf4139865a530801c160f9";
 //TODO: create function to set valid chains and respective urls
 
 export const config: Config = {
-  networks: [Localhost, Hardhat, Ropsten, Rinkeby, Mainnet, Goerli],
+  networks: [Localhost, Hardhat, Ropsten, Rinkeby, Mainnet, Goerli, Kovan],
   autoConnect: false,
   readOnlyUrls: {
     1: `https://mainnet.infura.io/v3/${infuraProjectId}`,

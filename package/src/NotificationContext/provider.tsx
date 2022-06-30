@@ -1,4 +1,4 @@
-import { chainIDToNetworkInfo } from "layer2";
+import { lifiChains } from "layer2";
 import React, { ReactNode, useCallback, useEffect, useReducer } from "react";
 import {
   AddNotificationPayload,
@@ -77,43 +77,6 @@ export function NotificationProvider({ children }: Props) {
   }, checkInterval);
 
   useEffect(() => {
-    if (chainId && account) {
-      if (dex === "UNISWAP" && tokenIn.chainId !== tokenOut.chainId) {
-        // Uniswap can not bridge over chains
-        dispatch({
-          type: "ADD_NOTIFICATION",
-          notification: {
-            submittedAt: Date.now(),
-            type: NotificationType.Error,
-            id: nanoid(),
-            message: "Tokens are on incompatible networks",
-            shouldExpire: true,
-          },
-        });
-      } else {
-        if (tokenIn.chainId !== chainId) {
-          const tokenChain =
-            chainIDToNetworkInfo.find((c) => c.chainId === tokenIn.chainId) ??
-            null;
-          dispatch({
-            type: "ADD_NOTIFICATION",
-            notification: {
-              submittedAt: Date.now(),
-              type: NotificationType.Warning,
-              id: nanoid(),
-              message: `You are on an incorrect Network, please switch to ${
-                tokenChain?.name ?? "unknown"
-              }`,
-              shouldExpire: true,
-            },
-          });
-        }
-      }
-    }
-    //eslint-disable-next-line
-  }, [tokenIn, tokenOut, chainId, account]);
-
-  useEffect(() => {
     if (active && account && chainId) {
       if (!previouslyConnected) {
         dispatch({
@@ -136,8 +99,8 @@ export function NotificationProvider({ children }: Props) {
             type: NotificationType.Info,
             id: nanoid(),
             message: `Network Changed. You are on ${
-              chainIDToNetworkInfo.find((chain) => chain.chainId === chainId)
-                ?.name ?? "an unknown network"
+              lifiChains.find((chain) => chain.chainId === chainId)?.name ??
+              "an unknown network"
             }`,
             shouldExpire: true,
           },
@@ -159,6 +122,56 @@ export function NotificationProvider({ children }: Props) {
     }
     //eslint-disable-next-line
   }, [account, active, chainId]);
+
+  useEffect(() => {
+    if (chainId && account) {
+      if (dex === "UNISWAP" && tokenIn.chainId !== tokenOut.chainId) {
+        // Uniswap can not bridge over chains
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          notification: {
+            submittedAt: Date.now(),
+            type: NotificationType.Error,
+            id: nanoid(),
+            message: "Tokens are on incompatible networks",
+            shouldExpire: true,
+          },
+        });
+      } else {
+        if (tokenIn.chainId !== chainId) {
+          const tokenChain = lifiChains.find(
+            (c) => c.chainId === tokenIn.chainId
+          );
+          if (tokenChain) {
+            dispatch({
+              type: "ADD_NOTIFICATION",
+              notification: {
+                submittedAt: Date.now(),
+                type: NotificationType.Warning,
+                id: nanoid(),
+                message: `You are on an incorrect Network, please switch to ${
+                  tokenChain?.name ?? "unknown"
+                }`,
+                shouldExpire: true,
+              },
+            });
+          } else {
+            dispatch({
+              type: "ADD_NOTIFICATION",
+              notification: {
+                submittedAt: Date.now(),
+                type: NotificationType.Warning,
+                id: nanoid(),
+                message: "This network is not currently supported by LiFi",
+                shouldExpire: true,
+              },
+            });
+          }
+        }
+      }
+    }
+    //eslint-disable-next-line
+  }, [tokenIn, tokenOut, chainId, account]);
 
   const previousChainId = usePrevious<number | undefined>(chainId);
   const previouslyConnected = usePrevious<boolean>(active);

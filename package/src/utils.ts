@@ -1,8 +1,19 @@
 import { BigNumberish } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
-import { Dexes, TokenInfo } from "layer2";
+import { Dexes, lifiChains, TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 import { StaticRoutingItemType } from "./ApiContext/initialState";
+
+// for now we just do ethereum,
+export const getNativeToken = (chainId: number): TokenInfo => {
+  const tokenChain = lifiChains.find((c) => c.chainId === chainId);
+
+  if (tokenChain) {
+    return tokenChain;
+  }
+
+  throw new Error("Chain not supported!");
+};
 
 export const trimLargeNumber = (
   num: string | number,
