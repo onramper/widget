@@ -4,13 +4,8 @@ import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
-import { apiKey, getDexFromGateway, parseWrappedTokens } from "../../utils";
 import ButtonAction from "../../common/Buttons/ButtonAction";
-import {
-  isMetamaskEnabled,
-  getUniswapQuote,
-  getUniswapSwapParams,
-} from "layer2";
+import { isMetamaskEnabled } from "layer2";
 import { getLifiQuote } from "../../web3/lifi";
 import {
   useEtherBalance,
@@ -34,7 +29,6 @@ import {
   useWidgetNotifications,
 } from "../../NotificationContext";
 import TransactionErrorOverlay from "./TransactionErrorOverlay/TransactionErrorOverlay";
-import { utils } from "ethers";
 import { isErrorWithName, storeTransactionData } from "../../ApiContext/api";
 import { SwapOverviewViewProps } from "./SwapOverviewView.models";
 import { useLayer2 } from "../../web3/config";
@@ -139,8 +133,6 @@ const SwapOverviewView = ({
     handleUpdateLifi(initialAmountIn);
   }, [initialAmountIn, handleUpdateLifi]);
 
-  // if tokenIn === "WETH" then we want to display ETH instead
-  const parsedTokenIn = parseWrappedTokens(tokenIn);
   const heading = `Swap ${tokenIn.name} (${tokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
 
   const handleEdit = useCallback(async () => {
