@@ -121,7 +121,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                               home={
                                 // <PaymentProgressView />
                                 <SwapOverviewView
-                                  nextStep={startPropsMainnet.nextStep}
+                                  nextStep={startPropsTestnet.nextStep}
                                 />
                               }
                             />

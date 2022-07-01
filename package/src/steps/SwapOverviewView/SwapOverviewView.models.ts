@@ -37,7 +37,7 @@ export const startPropsTestnet: SwapOverviewViewProps = {
     },
     fiatSymbol: "$",
     userId: "123",
-    txId: "testTxId",
+    txId: "hZoCHgQdR58_7_51kc3f6w--",
   },
 };
 

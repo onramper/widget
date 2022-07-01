@@ -45,14 +45,14 @@ export function NotificationProvider({ children }: Props) {
   const dex = getDexFromGateway(customerGateway);
 
   const addNotification = useCallback(
-    ({ message, type, shouldExpire }: AddNotificationPayload) => {
+    ({ message, type, shouldExpire, id }: AddNotificationPayload) => {
       dispatch({
         type: "ADD_NOTIFICATION",
         notification: {
           submittedAt: Date.now(),
           message,
           type,
-          id: nanoid(),
+          id: id ?? nanoid(),
           shouldExpire,
         },
       });

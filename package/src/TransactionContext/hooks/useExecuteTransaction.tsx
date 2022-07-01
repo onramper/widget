@@ -5,6 +5,7 @@ import {
 } from "@usedapp/core";
 import { formatEther } from "ethers/lib/utils";
 import { lifiChains } from "layer2";
+import { nanoid } from "nanoid";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { storeTransactionData } from "../../ApiContext/api";
 import { useNav } from "../../NavContext";
@@ -30,7 +31,7 @@ export const useExecuteTransaction = () => {
     txId,
     slippageTolerance,
   } = useTransactionContext();
-  const { addNotification } = useWidgetNotifications();
+  const { addNotification, removeNotification } = useWidgetNotifications();
   const balance = useEtherBalance(account);
   const [loading, setLoading] = useState<boolean>(false);
   const { sendTransaction, state } = useSendTransaction();
@@ -39,7 +40,6 @@ export const useExecuteTransaction = () => {
 
   const executeTransaction = useCallback(async () => {
     const destinationAddress = selectedWalletAddress ?? account;
-
     if (!account) {
       addNotification({
         type: NotificationType.Info,
@@ -67,7 +67,8 @@ export const useExecuteTransaction = () => {
       });
       return;
     }
-    if (balance && Number(formatEther(balance)) <= inAmount) {
+    const formattedBalance = balance && Number(formatEther(balance));
+    if (formattedBalance && formattedBalance <= inAmount) {
       addNotification({
         type: NotificationType.Warning,
         message: "You have Insufficient funds to perform this transaction.",
@@ -78,10 +79,12 @@ export const useExecuteTransaction = () => {
     try {
       if (transactionRequest) {
         setLoading(true);
+        const id = nanoid();
         addNotification({
           type: NotificationType.Info,
           message: "Please sign transaction",
-          shouldExpire: true,
+          shouldExpire: false,
+          id,
         });
         await sendTransaction({
           data: transactionRequest.data,
@@ -89,6 +92,7 @@ export const useExecuteTransaction = () => {
           to: transactionRequest.to,
           value: transactionRequest.value,
         });
+        removeNotification(id);
       } else {
         setLoading(true);
         addNotification({
@@ -109,6 +113,11 @@ export const useExecuteTransaction = () => {
           slippageTolerance
         );
         if (res?.transactionRequest) {
+          addNotification({
+            type: NotificationType.Info,
+            message: "Please sign transaction",
+            shouldExpire: true,
+          });
           const receipt = await sendTransaction({
             data: res.transactionRequest.data,
             from: selectedWalletAddress ?? account,
@@ -146,6 +155,7 @@ export const useExecuteTransaction = () => {
     balance,
     chainId,
     inAmount,
+    removeNotification,
     selectedWalletAddress,
     sendTransaction,
     slippageTolerance,
@@ -199,27 +209,45 @@ export const useExecuteTransaction = () => {
     [nextScreen]
   );
 
-  useEffect(() => {
-    if (state.status === "Mining") {
-      nextScreen(
-        <OrderCompleteView
-          title="Success! Your Swap has been executed."
-          description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
-          tokenOut={tokenOut}
-        />
-      );
-      if (state.transaction && account) {
+  const handleMining = useCallback(async () => {
+    if (state.transaction && account) {
+      try {
+        //eslint-disable-next-line
+        debugger;
         storeTransactionData({
           transactionResponse: state.transaction,
           address: account,
           transactionId: txId,
         });
+      } catch (error) {
+        console.log(error);
       }
+    }
+    nextScreen(
+      <OrderCompleteView
+        title="Success! Your Swap has been executed."
+        description="You will receive an email when the swap is complete and the crypto has arrived in your wallet. "
+        tokenOut={tokenOut}
+      />
+    );
+  }, [account, nextScreen, state.transaction, tokenOut, txId]);
+
+  useEffect(() => {
+    if (state.status === "Mining") {
+      handleMining();
     }
     if (state.status === "Exception") {
       handleException(state);
     }
-  }, [handleException, account, nextScreen, txId, state, tokenOut]);
+  }, [
+    handleException,
+    account,
+    nextScreen,
+    txId,
+    state,
+    tokenOut,
+    handleMining,
+  ]);
 
   useEffect(() => {
     const onBeforeUnload = () => {

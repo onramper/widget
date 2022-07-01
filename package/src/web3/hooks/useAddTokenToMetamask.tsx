@@ -1,7 +1,7 @@
-import { useEthers } from "@usedapp/core";
 import { isMetaMaskProvider, TokenInfo } from "layer2";
 import { useCallback, useState } from "react";
 import uriToHttp from "../../utils";
+import { useLayer2 } from "../config";
 
 export const useAddTokenToMetamask = (
   token: TokenInfo
@@ -10,9 +10,11 @@ export const useAddTokenToMetamask = (
   success: boolean | null;
 } => {
   const [success, setSuccess] = useState<boolean | null>(null);
-  const { library } = useEthers();
+  const { library } = useLayer2();
 
   const addToken = useCallback(() => {
+    //eslint-disable-next-line
+    debugger;
     if (library && isMetaMaskProvider(library) && token) {
       const { address, symbol, decimals, logoURI } = token;
       const logoURL = logoURI ? uriToHttp(logoURI)[0] : "";

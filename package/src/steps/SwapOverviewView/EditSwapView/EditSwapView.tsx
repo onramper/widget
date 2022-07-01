@@ -33,25 +33,30 @@ import {
   useTransactionContext,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
-import { useUsdPriceImpact } from "../../../TransactionContext/hooks/useUsdPriceImpact";
 import { generateBreakdown } from "./utils";
 import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
 import { utils } from "ethers";
 import { useLayer2 } from "../../../web3/config";
 import { useUpdateQuote } from "../../../TransactionContext/hooks/useUpdateQuote";
+import { WidgetNotification } from "../../WidgetNotification/WidgetNotification";
+import {
+  NotificationType,
+  useWidgetNotifications,
+} from "../../../NotificationContext";
+import { nanoid } from "nanoid";
 
-const insufficientFoundsError =
+const insufficientFundsError =
   "You have insufficient funds to complete this transaction";
 
 const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [swapErrorMessage, setSwapErrorMessage] = useState<string>();
   const { account } = useLayer2();
-
+  const { addNotification, removeNotification } = useWidgetNotifications();
   const { inAmount, tokenIn, tokenOut, quote } = useTransactionContext();
-
   const [localInAmount, setLocalInAmount] = useState<string>(
     inAmount.toString()
   );
+  const { updateInAmount } = useTransactionCtxActions();
 
   const ethBalance = useEtherBalance(account);
   const tokenOutBalance = useTokenBalance(tokenOut.address, account);
@@ -61,7 +66,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const { updateQuote, loading: quoteLoading } = useUpdateQuote();
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
   const heading = `Swap ${tokenIn.name} (${tokenIn.symbol}) for ${tokenOut.name} (${tokenOut.symbol})`;
-
+  const [notificationId, setNotificationId] = useState<string | undefined>();
   const debouncedUpdateQuote = useDebouncedCallback(updateQuote, 600);
 
   useEffect(() => {
@@ -79,6 +84,15 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     }
   }, [ethBalance]);
 
+  const onBackClick = () => {
+    updateQuote(inAmount);
+  };
+
+  const handleContinue = () => {
+    updateInAmount(Number(localInAmount));
+    backScreen();
+  };
+
   // useEffect(() => {
   //   setBreakdown(
   //     generateBreakdown(
@@ -90,56 +104,47 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   //   );
   // }, [cryptoReceived.symbol, localQuote, priceImpact, slippageTolerance]);
 
-  // useEffect(() => {
-  //   if (swapErrorMessage && swapErrorMessage !== insufficientFoundsError) {
-  //     return;
-  //   }
-  //   if (
-  //     ethBalance &&
-  //     Number(utils.formatEther(ethBalance)) < Number(spentValue)
-  //   ) {
-  //     setSwapErrorMessage(insufficientFoundsError);
-  //     return;
-  //   }
-  //   setSwapErrorMessage("");
-  // }, [ethBalance, spentValue, swapErrorMessage]);
+  const handleErrorMessage = useCallback(() => {
+    if (!notificationId) {
+      if (
+        ethBalance &&
+        Number(utils.formatEther(ethBalance)) < Number(localInAmount)
+      ) {
+        const id = nanoid();
+        setNotificationId(id);
+        addNotification({
+          type: NotificationType.Warning,
+          message: insufficientFundsError,
+          shouldExpire: false,
+          id: id,
+        });
+      }
+    }
+  }, [addNotification, ethBalance, localInAmount, notificationId]);
 
-  const computeTokenIn = (
-    tokenIn: TokenInfo,
-    quote: QuoteDetails,
-    fiatSymbol: string
-  ) => {
-    const parsedTokenIn = parseWrappedTokens(tokenIn);
-    const tokenInURL = tokenIn?.logoURI ? uriToHttp(tokenIn.logoURI)[0] : "";
+  const handleRemoveErrorMessage = useCallback(() => {
+    if (notificationId) removeNotification(notificationId);
+  }, [notificationId, removeNotification]);
 
-    return {
-      ...parsedTokenIn,
-      label: "You spend",
-      value: quote.amountDecimals,
-      fiatSymbol,
-      currencyShortName: parsedTokenIn.symbol,
-      currencyLongName: parsedTokenIn.name,
-      icon: tokenInURL,
-    };
-  };
-
-  const computeTokenOut = (
-    tokenOut: TokenInfo,
-    quote: QuoteDetails,
-    fiatSymbol: string
-  ) => {
-    const tokenOutURL = tokenOut?.logoURI ? uriToHttp(tokenOut.logoURI)[0] : "";
-
-    return {
-      ...tokenOut,
-      label: "You receive",
-      value: quote.quoteGasAdjustedDecimals,
-      fiatSymbol,
-      currencyShortName: tokenOut.symbol,
-      currencyLongName: tokenOut.name,
-      icon: tokenOutURL,
-    };
-  };
+  useEffect(() => {
+    if (
+      ethBalance &&
+      Number(utils.formatEther(ethBalance)) < Number(localInAmount)
+    ) {
+      handleErrorMessage();
+    } else {
+      handleRemoveErrorMessage();
+    }
+  }, [
+    addNotification,
+    ethBalance,
+    handleErrorMessage,
+    handleRemoveErrorMessage,
+    localInAmount,
+    notificationId,
+    removeNotification,
+    swapErrorMessage,
+  ]);
 
   const formattedOutputAmount = quote?.toAmountMin
     ? formatTokenAmount(tokenOut, quote?.toAmountMin)
@@ -147,8 +152,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   useEffect(() => {
     const onBeforeUnload = () => {
-      // //eslint-disable-next-line
-      // debugger;
       beforeUnLoadRef.current.abort();
     };
     window.addEventListener("beforeunload", onBeforeUnload);
@@ -160,14 +163,18 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
 
   return (
     <div className={commonClasses.view}>
-      <ProgressHeader percentage={props.progress} useBackButton />
+      <ProgressHeader
+        onBackClick={onBackClick}
+        percentage={props.progress}
+        useBackButton
+      />
       <main className={`${commonClasses.body} ${classes["wrapper"]}`}>
         <div className={classes["top-section"]}>
           <Heading className={classes.heading} text={heading} />
           <TransactionSettings className={classes["settings"]} />
         </div>
-
-        <ErrorIndication message={swapErrorMessage} />
+        <WidgetNotification />
+        {/* <ErrorIndication message={swapErrorMessage} /> */}
 
         <InputDropdown
           label={"You spend"}
@@ -223,7 +230,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
           className={`${commonClasses["body-form-child"]} ${commonClasses["grow-col"]}`}
         >
           <ButtonAction
-            onClick={backScreen}
+            onClick={handleContinue}
             text={quoteLoading ? "Updating quote..." : "Continue"}
             disabled={
               !Number(localInAmount) || !!swapErrorMessage || quoteLoading
