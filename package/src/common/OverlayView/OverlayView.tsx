@@ -64,15 +64,15 @@ const OverlayView: React.FC<IOverlayViewProps> = (props) => {
               />
             )}
             {props.children}
+            {props.footerBtnTxt && (
+              <OverlayFooter
+                footerBtnTxt={props.footerBtnTxt}
+                onOverlayClose={handleDismiss}
+              />
+            )}
           </div>
         </CSSTransition>
       </div>
-      {props.footerBtnTxt && (
-        <OverlayFooter
-          footerBtnTxt={props.footerBtnTxt}
-          onOverlayClose={handleDismiss}
-        />
-      )}
     </>
   );
 };
