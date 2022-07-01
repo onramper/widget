@@ -109,8 +109,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   };
 
   const walletFieldClick = useCallback(async () =>{
-    gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD,GtmEventLabel.WALLET_ADDRESS);
-},[]);
+    gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD, GtmEventLabel.WALLET_ADDRESS);
+}, []);
 
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
@@ -733,10 +733,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 type={getInputType(field)}
                 onClick={()=>{
                   if(getInputType(field)==="email"){
-                    gtmEventFormData(GtmEventAction.EMAIL_FORM,GtmEventCategory.FIELD,GtmEventLabel.EMAIL_ADDRESS);
+                    gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.EMAIL_ADDRESS);
                   }
                   if(getInputType(field)==="password"){
-                    gtmEventFormData(GtmEventAction.EMAIL_FORM,GtmEventCategory.FIELD,GtmEventLabel.PASSWORD);
+                    gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.PASSWORD);
                   }
                 }}
                 placeholder={field.placeholder}
@@ -758,7 +758,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           <ButtonAction
             onClick={()=>{
               onActionButton();
-              gtmEventFormData(GtmEventAction.WALLET_FORM,GtmEventCategory.BUTTON,GtmEventLabel.CONTINUE);            
+              gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
             }}
             text={isLoading ? "Sending..." : "Continue"}
             disabled={!isFilled || isLoading}
