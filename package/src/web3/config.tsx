@@ -1,17 +1,4 @@
-import {
-  Config,
-  Localhost,
-  Hardhat,
-  Ropsten,
-  Rinkeby,
-  Mainnet,
-  Goerli,
-  useEthers,
-  DAppProvider,
-  Kovan,
-  Avalanche,
-  DEFAULT_SUPPORTED_CHAINS,
-} from "@usedapp/core";
+import { Config, useEthers, DAppProvider } from "@usedapp/core";
 import React, { createContext, ReactNode, useContext } from "react";
 import { useConnectEnsName, useEnsAvatar } from "./hooks/ens";
 

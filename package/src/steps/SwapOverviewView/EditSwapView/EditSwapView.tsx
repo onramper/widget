@@ -1,12 +1,6 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { NavContext, useNav } from "../../../NavContext";
-import { EditSwapViewInput, EditSwapViewProps } from "./EditSwapView.models";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useNav } from "../../../NavContext";
+import { EditSwapViewProps } from "./EditSwapView.models";
 import commonClasses from "../../../styles.module.css";
 import inputClasses from "../../../common/InputDropdown/InputDropdown.module.css";
 import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader";
@@ -14,27 +8,20 @@ import Footer from "../../../common/Footer";
 import ButtonAction from "../../../common/Buttons/ButtonAction";
 import Heading from "../../../common/Heading/Heading";
 import InputDropdown from "../../../common/InputDropdown/InputDropdown";
-import uriToHttp, {
+import {
   formatTokenAmount,
   onChangeFloat,
-  parseWrappedTokens,
   trimLargeNumber,
 } from "../../../utils";
 import Breakdown from "../../../common/Breakdown/Breakdown";
-import { ReactComponent as HexExclamationIcon } from "./../../../icons/hex-exclamation.svg";
 import TransactionSettings from "../TransactionSettings/TransactionSettings";
 import classes from "./EditSwapView.module.css";
-import { ApiError } from "../../../ApiContext/api";
-import { CSSTransition } from "react-transition-group";
-import { getUniswapQuote, TokenInfo, QuoteDetails } from "layer2";
 import { useEtherBalance, useTokenBalance } from "@usedapp/core";
 import { useDebouncedCallback } from "use-debounce";
 import {
   useTransactionContext,
   useTransactionCtxActions,
 } from "../../../TransactionContext/hooks";
-import { generateBreakdown } from "./utils";
-import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
 import { utils } from "ethers";
 import { useLayer2 } from "../../../web3/config";
 import { useUpdateQuote } from "../../../TransactionContext/hooks/useUpdateQuote";
@@ -71,14 +58,18 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const [notificationId, setNotificationId] = useState<string | undefined>();
   const debouncedUpdateQuote = useDebouncedCallback(updateQuote, 600);
 
+  const insufficientFunds =
+    ethBalance !== undefined &&
+    Number(utils.formatEther(ethBalance)) < Number(localInAmount);
+
   useEffect(() => {
-    if (Number(localInAmount) > 0) {
+    if (Number(localInAmount) > 0 && !insufficientFunds) {
       debouncedUpdateQuote(
         Number(localInAmount),
         beforeUnLoadRef.current.signal
       );
     }
-  }, [debouncedUpdateQuote, localInAmount]);
+  }, [debouncedUpdateQuote, insufficientFunds, localInAmount]);
 
   const onMaxClick = useCallback(async () => {
     if (ethBalance) {
@@ -112,6 +103,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         ethBalance &&
         Number(utils.formatEther(ethBalance)) < Number(localInAmount)
       ) {
+        setSwapErrorMessage(insufficientFundsError);
         const id = nanoid();
         setNotificationId(id);
         addNotification({
@@ -125,28 +117,19 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   }, [addNotification, ethBalance, localInAmount, notificationId]);
 
   const handleRemoveErrorMessage = useCallback(() => {
-    if (notificationId) removeNotification(notificationId);
+    if (notificationId) {
+      setSwapErrorMessage(undefined);
+      removeNotification(notificationId);
+    }
   }, [notificationId, removeNotification]);
 
   useEffect(() => {
-    if (
-      ethBalance &&
-      Number(utils.formatEther(ethBalance)) < Number(localInAmount)
-    ) {
+    if (insufficientFunds) {
       handleErrorMessage();
     } else {
       handleRemoveErrorMessage();
     }
-  }, [
-    addNotification,
-    ethBalance,
-    handleErrorMessage,
-    handleRemoveErrorMessage,
-    localInAmount,
-    notificationId,
-    removeNotification,
-    swapErrorMessage,
-  ]);
+  }, [handleErrorMessage, handleRemoveErrorMessage, insufficientFunds]);
 
   const formattedOutputAmount = quote?.toAmountMin
     ? formatTokenAmount(tokenOut, quote?.toAmountMin)
@@ -238,7 +221,10 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
             onClick={handleContinue}
             text={quoteLoading ? "Updating quote..." : "Continue"}
             disabled={
-              !Number(localInAmount) || !!swapErrorMessage || quoteLoading
+              !Number(localInAmount) ||
+              !!swapErrorMessage ||
+              quoteLoading ||
+              insufficientFunds
             }
           />
           <Footer />

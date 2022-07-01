@@ -1,38 +1,24 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import classes from "./SwapOverviewView.module.css";
 import ButtonAction from "../../common/Buttons/ButtonAction";
-import { isMetamaskEnabled, lifiChains } from "layer2";
-import { getLifiQuote } from "../../web3/lifi";
-import {
-  useEtherBalance,
-  useSendTransaction,
-  TransactionStatus,
-} from "@usedapp/core";
+import { isMetamaskEnabled } from "layer2";
 import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import SwapDetailsBar from "./SwapDetailsBar/SwapDetailsBar";
 import FeeBreakdown from "./FeeBreakdown/FeeBreakdown";
 import { useWalletSupportRedirect, useConnectWallet } from "../../hooks";
 import { useNav } from "../../NavContext";
-import OrderCompleteView from "../OrderCompleteView/OrderCompleteView";
 import EditSwapView from "./EditSwapView/EditSwapView";
 import {
   useTransactionContext,
   useTransactionCtxActions,
 } from "../../TransactionContext/hooks";
 import { WidgetNotification } from "../WidgetNotification/WidgetNotification";
-import {
-  NotificationType,
-  useWidgetNotifications,
-} from "../../NotificationContext";
-import TransactionErrorOverlay from "./TransactionErrorOverlay/TransactionErrorOverlay";
-import { isErrorWithName, storeTransactionData } from "../../ApiContext/api";
 import { SwapOverviewViewProps } from "./SwapOverviewView.models";
 import { useLayer2 } from "../../web3/config";
-import { formatEther } from "ethers/lib/utils";
 import { useUpdateQuote } from "../../TransactionContext/hooks/useUpdateQuote";
 import { useExecuteTransaction } from "../../TransactionContext/hooks/useExecuteTransaction";
 
@@ -41,7 +27,6 @@ const SwapOverviewView = ({
     customerGateway,
     progress,
     amountIn: initialAmountIn,
-    amountOut: initialAmountOut,
     tokenIn: initialTokenIn,
     tokenOut: initialTokenOut,
     fiatSymbol: initialFiatSymbol,
@@ -49,22 +34,10 @@ const SwapOverviewView = ({
     txId,
   },
 }: SwapOverviewViewProps) => {
-  const { setQuote, setTransactionRequest, initialiseTransactionContext } =
-    useTransactionCtxActions();
+  const { initialiseTransactionContext } = useTransactionCtxActions();
 
-  const { account: metaAddress, active, chainId } = useLayer2();
-  const balance = useEtherBalance(metaAddress);
-  const {
-    fiatSymbol,
-    tokenIn,
-    tokenOut,
-    selectedWalletAddress,
-    slippageTolerance,
-    deadline,
-    quote,
-    inAmount,
-    transactionRequest,
-  } = useTransactionContext();
+  const { account: metaAddress, active } = useLayer2();
+  const { tokenIn, tokenOut } = useTransactionContext();
 
   // const { fetchAndUpdateUserWallets } = useTransactionCtxWallets();
 

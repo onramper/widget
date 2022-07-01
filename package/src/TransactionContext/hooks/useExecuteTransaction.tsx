@@ -68,7 +68,8 @@ export const useExecuteTransaction = () => {
       return;
     }
     const formattedBalance = balance && Number(formatEther(balance));
-    if (formattedBalance && formattedBalance <= inAmount) {
+
+    if (formattedBalance !== undefined && formattedBalance < inAmount) {
       addNotification({
         type: NotificationType.Warning,
         message: "You have Insufficient funds to perform this transaction.",

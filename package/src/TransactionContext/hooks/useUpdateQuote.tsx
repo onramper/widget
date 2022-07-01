@@ -1,6 +1,5 @@
-import { useTransactionsContext } from "@usedapp/core/dist/esm/src/providers";
 import { nanoid } from "nanoid";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { isErrorWithName } from "../../ApiContext/api";
 import {
   NotificationType,

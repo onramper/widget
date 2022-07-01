@@ -103,7 +103,7 @@ export const startProps: SwapOverviewViewProps = {
   },
 };
 
-const testnetResponse = {
+export const testnetResponse = {
   id: "9a4aae3e-5eec-4083-b863-0b4e9ce0fa00",
   type: "swap",
   tool: "0x",
@@ -258,7 +258,7 @@ const testnetResponse = {
   },
 };
 
-const mainnetResponse = {
+export const mainnetResponse = {
   id: "a2a8f9ca-8243-40a0-96ea-78ccbb98045b",
   type: "swap",
   tool: "1inch",

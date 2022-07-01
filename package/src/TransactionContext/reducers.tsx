@@ -1,5 +1,5 @@
 import { providers } from "ethers";
-import { Estimate, QuoteDetails, Step, TokenInfo } from "layer2";
+import { Estimate, TokenInfo } from "layer2";
 import { WalletItemData } from "../ApiContext/api/types/nextStep";
 import initialState from "./initialState";
 import { StateType } from "./models";
