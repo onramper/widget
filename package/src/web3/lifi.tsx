@@ -2,13 +2,23 @@ import LIFI, { ConfigUpdate, QuoteRequest } from "@lifinance/sdk";
 import { utils } from "ethers";
 import { TokenInfo } from "layer2";
 
-const testEnvConfig: ConfigUpdate = {
-  apiUrl: "https://staging.li.quest/v1/",
+// if ?prod=true
+const isProd = (): boolean => {
+  const url = new URL(window.location.href);
+  const prodValue = url.searchParams.get("prod");
+  if (prodValue) return true;
+  return false;
 };
 
-export const lifi = new LIFI(
-  process.env.STAGE !== "prod" ? testEnvConfig : undefined
-);
+const lifiUrl = isProd()
+  ? "https://li.quest/v1/"
+  : "https://staging.li.quest/v1/";
+
+const lifiConfig: ConfigUpdate = {
+  apiUrl: lifiUrl,
+};
+
+export const lifi = new LIFI(lifiConfig);
 
 export const getLifiQuote = async (
   tokenIn: TokenInfo,
