@@ -32,6 +32,8 @@ export const useUpdateQuote = () => {
       });
       setLoading(true);
       try {
+        //eslint-disable-next-line
+        debugger;
         const res = await getLifiQuote(
           tokenIn,
           tokenOut,
@@ -41,13 +43,16 @@ export const useUpdateQuote = () => {
           signal,
           slippageTolerance
         );
+        //eslint-disable-next-line
+        debugger;
         if (signal?.aborted) {
           setLoading(false);
           return;
         }
         if (res) {
           setQuote(res.estimate);
-          if (res.transactionRequest) {
+          // we do not want to save a txRequest to a dummy address (this was just for displaying an initial quote)
+          if (res.transactionRequest && fromAddress !== dummyAccount) {
             setTransactionRequest(res.transactionRequest);
           }
         }

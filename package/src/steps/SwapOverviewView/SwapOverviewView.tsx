@@ -72,14 +72,10 @@ const SwapOverviewView = ({
   useWalletSupportRedirect(progress);
   const { connect, connectionPending } = useConnectWallet();
   const { nextScreen } = useNav();
-  const { addNotification } = useWidgetNotifications();
 
   const { updateQuote, loading: quoteLoading } = useUpdateQuote();
-  const {
-    executeTransaction,
-    loading: transactionLoading,
-    state,
-  } = useExecuteTransaction();
+  const { executeTransaction, loading: transactionLoading } =
+    useExecuteTransaction();
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
 
   useEffect(() => {
