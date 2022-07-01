@@ -1,13 +1,24 @@
-import { QuoteDetails, TokenInfo } from "layer2";
+import { Estimate, TokenInfo } from "layer2";
 import { useCallback, useContext } from "react";
 import { TransactionContext } from "..";
 import { ActionTypes } from "../reducers";
+import { providers } from "ethers";
 
 export const useTransactionCtxActions = () => {
   const { dispatch } = useContext(TransactionContext);
 
+  const setTransactionRequest = useCallback(
+    (transaction: providers.TransactionRequest) => {
+      dispatch({
+        type: ActionTypes.SetTransactionRequest,
+        payload: transaction,
+      });
+    },
+    [dispatch]
+  );
+
   const setQuote = useCallback(
-    (quote: QuoteDetails) => {
+    (quote: Estimate) => {
       dispatch({
         type: ActionTypes.SetQuote,
         payload: quote,
@@ -78,6 +89,7 @@ export const useTransactionCtxActions = () => {
 
   const initialiseTransactionContext = useCallback(
     (payload: {
+      customerGateway: string;
       txId: string;
       userId: string;
       tokenIn: TokenInfo;
@@ -92,6 +104,7 @@ export const useTransactionCtxActions = () => {
     },
     [dispatch]
   );
+
   return {
     initialiseTransactionContext,
     setQuote,
@@ -101,5 +114,6 @@ export const useTransactionCtxActions = () => {
     updateTokenOut,
     updateFiatSymbol,
     updateInAmount,
+    setTransactionRequest,
   };
 };

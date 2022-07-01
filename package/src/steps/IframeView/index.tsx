@@ -10,7 +10,6 @@ import {
 } from "@onramper/moonpay-adapter";
 import { NavContext } from "../../NavContext";
 import { PaymentProgressView } from "../PaymentProgressView";
-import { findWeth } from "../../utils";
 import {
   isIframeStep,
   isRedirectStep,
@@ -20,6 +19,7 @@ import { StepType, isStepData } from "../../ApiContext/api/types/nextStep";
 import useIframeGtm from "./useIframeGtm";
 import { useNavigate } from "react-router-dom";
 import { triggerGTMEvent } from "../../helpers/useGTM";
+import { getNativeToken } from "../../utils";
 
 const IframeView: React.FC<{
   nextStep: NextStep & { type: StepType.iframe | StepType.redirect };
@@ -94,9 +94,9 @@ const IframeView: React.FC<{
                   type: StepType.paymentProgress,
                   progress: 0,
                   // infer weth from output chainI
-                  tokenIn: findWeth(nextStep.l2TokenData.chainId),
+                  tokenIn: getNativeToken(nextStep.l2TokenData.chainId),
                   tokenOut: nextStep.l2TokenData,
-                  gatewayAndDex: selectedGateway.name,
+                  customerGateway: selectedGateway.name,
                   txId: nextStep.txId,
                   inCurrency: nextStep.inCurrency,
                 }}
@@ -129,7 +129,7 @@ const IframeView: React.FC<{
         }
       } else if (typeof event.data === "string") {
         reportError(event.data, false, event.data);
-      } 
+      }
       /*
       else {
         reportError(

@@ -40,7 +40,7 @@ export const WidgetNotification = ({ className }: WidgetNotificationProps) => {
   const { notifications } = useWidgetNotifications();
 
   const notificationToRender =
-    notifications.length > 0 ? notifications[notifications.length - 1] : null;
+    notifications.length > 0 ? notifications.at(-1) : null;
 
   return (
     <div className={classes.notificationContainer}>

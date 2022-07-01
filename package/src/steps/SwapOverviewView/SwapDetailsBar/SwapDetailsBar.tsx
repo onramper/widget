@@ -5,18 +5,22 @@ import uriToHttp from "../../../utils";
 import { SwapDetailsBarProps } from "./SwapDetailsBar.models";
 import { ImageWithFallback } from "../../../common/ImageWithFallback/ImageWithFallback";
 import Fallback from "../../../icons/fallback_token_icon.svg";
+import { useTransactionContext } from "../../../TransactionContext/hooks";
+import { formatEther } from "ethers/lib/utils";
 
-const SwapDetailsBar = (props: SwapDetailsBarProps) => {
-  const {
-    className = "",
-    fiatSymbol = "$",
-    amountIn = 200,
-    amountOut = 0.0055,
-    tokenIn,
-    tokenOut,
-  } = props;
+const SwapDetailsBar = ({ className }: SwapDetailsBarProps) => {
+  const { tokenIn, tokenOut, quote } = useTransactionContext();
+
   const tokenInURL = tokenIn?.logoURI ? uriToHttp(tokenIn.logoURI)[0] : "";
   const tokenOutURL = tokenOut?.logoURI ? uriToHttp(tokenOut?.logoURI)[0] : "";
+
+  const formattedInputAmount = quote
+    ? Number(formatEther(quote.fromAmount)).toFixed(5)
+    : "0.00";
+
+  const formattedOutputAmount = quote
+    ? Number(formatEther(quote.toAmount)).toFixed(5)
+    : "0.00";
 
   return (
     <div className={`${className} ${classes.SwapDetailsBar}`}>
@@ -30,8 +34,10 @@ const SwapDetailsBar = (props: SwapDetailsBarProps) => {
 
         <div className={classes.textContainer}>
           <div className={classes.description}>You spend</div>
-          <div className={classes.amount}>{amountIn.toFixed(5)}</div>
-          <div className={classes.conversion}>({fiatSymbol})</div>
+          <div className={classes.amount}>{formattedInputAmount}</div>
+          <div className={classes.conversion}>
+            {`($ ${quote?.fromAmountUSD ?? "0.00"})`}
+          </div>
         </div>
       </div>
       <SwapArrows className={classes.swapIcon} />
@@ -44,8 +50,11 @@ const SwapDetailsBar = (props: SwapDetailsBarProps) => {
         />
         <div className={classes.textContainer}>
           <div className={classes.description}>You receive</div>
-          <div className={classes.amount}>{amountOut.toFixed(5)}</div>
-          <div className={classes.conversion}>({fiatSymbol})</div>
+          <div className={classes.amount}>{formattedOutputAmount}</div>
+          <div className={classes.conversion}>
+            {" "}
+            {`($ ${quote?.toAmountUSD ?? "0.00"})`}
+          </div>
         </div>
       </div>
     </div>

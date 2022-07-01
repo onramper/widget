@@ -1,9 +1,11 @@
-import { isMetamaskEnabled, useEthers } from "layer2";
-import { useEffect, useState } from "react";
+import { isMetamaskEnabled } from "layer2";
+import { useLayer2 } from "../web3/config";
+import { useCallback, useEffect, useState } from "react";
 import {
   NotificationType,
   useWidgetNotifications,
 } from "../NotificationContext";
+import { isErrorWithMessage } from "../ApiContext/api";
 
 interface ConnectWallet {
   disconnect: () => void;
@@ -16,9 +18,19 @@ export interface MetamaskError extends Error {
   code: number;
 }
 
+function isMetaMaskError(error: unknown): error is MetamaskError {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as Record<string, unknown>).message === "string" &&
+    "code" in error &&
+    typeof (error as Record<string, unknown>).code === "number"
+  );
+}
 export const useConnectWallet = (): ConnectWallet => {
   const { account, active, activateBrowserWallet, deactivate, error } =
-    useEthers();
+    useLayer2();
   const [connectionError, setConnectionError] = useState<
     MetamaskError | Error | null
   >(null);
@@ -32,12 +44,17 @@ export const useConnectWallet = (): ConnectWallet => {
     }
   }, [active, account]);
 
-  useEffect(() => {
-    if (error) {
+  const handleError = useCallback(
+    (error: MetamaskError) => {
       // here we can add custom wallet connection errors
-      const metamaskError = error as MetamaskError;
-      setConnectionError(metamaskError);
-      if (metamaskError.message.includes("wallet_requestPermissions")) {
+      setConnectionError(error);
+
+      if (
+        error.message.includes("wallet_requestPermissions") ||
+        error.message.includes("requestAccounts")
+      ) {
+        //eslint-disable-next-line
+        debugger;
         setConnectionPending(true);
         addNotification({
           type: NotificationType.Info,
@@ -48,28 +65,55 @@ export const useConnectWallet = (): ConnectWallet => {
         setConnectionPending(false);
         addNotification({
           type: NotificationType.Error,
-          message: metamaskError.message,
+          message: error.message,
           shouldExpire: true,
         });
       }
-    }
-  }, [addNotification, error]);
+    },
+    [addNotification]
+  );
 
-  const connect = () => {
+  useEffect(() => {
+    if (error && isMetaMaskError(error)) {
+      handleError(error);
+    }
+  }, [error, handleError]);
+
+  const connect = useCallback(() => {
     if (isMetamaskEnabled()) {
+      try {
+        addNotification({
+          type: NotificationType.Info,
+          message: "Please open Metamask and Connect",
+          shouldExpire: true,
+        });
+        setConnectionError(null);
+        setConnectionPending(true);
+        activateBrowserWallet();
+      } catch (e) {
+        //eslint-disable-next-line
+        debugger;
+        if (isErrorWithMessage(e)) {
+          setConnectionError(e as Error);
+          if (e.message.includes("eth_requestAccounts")) {
+            addNotification({
+              type: NotificationType.Info,
+              message: "Please open Metamask and Connect",
+              shouldExpire: true,
+            });
+          }
+        }
+      }
+    } else {
       addNotification({
-        type: NotificationType.Info,
-        message: "Please open Metamask and Connect",
+        type: NotificationType.Error,
+        message: "No wallet found on browser",
         shouldExpire: true,
       });
-      setConnectionError(null);
-      setConnectionPending(true);
-      activateBrowserWallet();
-    } else {
       setConnectionError(new Error("Metamask not enabled!"));
       setConnectionPending(false);
     }
-  };
+  }, [activateBrowserWallet, addNotification]);
 
   const disconnect = () => {
     setConnectionError(null);

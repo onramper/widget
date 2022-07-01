@@ -198,6 +198,7 @@ export type SwapOverviewViewStep = {
   fiatSymbol: string;
   userId: string;
   txId: string;
+  customerGateway: string;
 };
 
 export type PaymentProgressViewStep = {
@@ -205,7 +206,7 @@ export type PaymentProgressViewStep = {
   progress: number;
   tokenIn: TokenInfo;
   tokenOut: TokenInfo;
-  gatewayAndDex: string;
+  customerGateway: string;
   txId: string;
   inCurrency: string; //EUR
 };

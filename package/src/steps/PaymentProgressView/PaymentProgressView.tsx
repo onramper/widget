@@ -27,9 +27,9 @@ import { useNav } from "../../NavContext";
 import SwapOverviewView from "../SwapOverviewView/SwapOverviewView";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 import { useNavigate, useParams } from "react-router-dom";
-import { findWeth } from "../../utils";
 import { useAPI } from "../../ApiContext";
 import BuyCryptoView from "../../BuyCryptoView";
+import { getNativeToken } from "../../utils";
 
 // const res = {
 //   type: "redirect",
@@ -93,11 +93,11 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
           const tx = await pollTransaction(txId);
 
           if (tx) {
-            const tokenIn = findWeth(tx.l2TokenData.chainId);
+            const tokenIn = getNativeToken(tx.l2TokenData.chainId);
             const tokenOut = tx.l2TokenData;
-            const gatewayAndDex = tx.customerGateway;
+            const customerGateway = tx.customerGateway;
             const inCurrency = tx.inCurrency;
-            setSwapData({ tokenIn, tokenOut, gatewayAndDex, inCurrency });
+            setSwapData({ tokenIn, tokenOut, customerGateway, inCurrency });
           }
           if (tx && tx.lastStatus === "ok") {
             setLayer1Status(Status.Success);
@@ -155,13 +155,14 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
     return "";
   };
 
-  const [gateway, dex] = swapData.gatewayAndDex.split("_");
+  const [gateway, dex] = swapData.customerGateway.split("_");
 
   const handleNext = () => {
     if (txId) {
       nextScreen(
         <SwapOverviewView
           nextStep={{
+            customerGateway: "Moonpay_Lifi", // TODO:revert back to => swapData.customerGateway,
             type: StepType.swapOverview,
             progress: 0,
             amountIn: inAmount,

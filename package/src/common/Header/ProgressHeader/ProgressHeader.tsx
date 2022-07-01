@@ -15,6 +15,11 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
       nextScreen(<Menu className={headerClasses["header-menu"]} />),
   } = props;
 
+  const handleBackClick = () => {
+    props?.onBackClick && props?.onBackClick();
+    backScreen();
+  };
+
   return (
     <nav
       className={`${classes["default"]} ${
@@ -30,7 +35,7 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
       {props.useBackButton && (
         <ArrowLeftIcon
           className={classes["arrow-back"]}
-          onClick={() => backScreen()}
+          onClick={handleBackClick}
         />
       )}
 

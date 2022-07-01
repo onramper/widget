@@ -8,4 +8,5 @@ export type ProgressHeaderProps = {
   noSeparator?: boolean;
   onExitClick?: () => void;
   onMenuClick?: () => {};
+  onBackClick?: () => void;
 };

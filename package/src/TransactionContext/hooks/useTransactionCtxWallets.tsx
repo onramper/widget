@@ -4,14 +4,14 @@ import { BASE_API } from "../../ApiContext/api/constants";
 import { WalletItemData } from "../../ApiContext/api/types/nextStep";
 import { ActionTypes } from "../reducers";
 import { useTransactionContext } from "./useTransactionContext";
-import { getEnsNameFromAddress, useEthers, useLayer2 } from "layer2";
+import { getEnsNameFromAddress } from "layer2";
+import { useLayer2 } from "../../web3/config";
 import { utils } from "ethers";
 
 export const useTransactionCtxWallets = () => {
   const { dispatch } = useContext(TransactionContext);
   const { userId, wallets, selectedWalletAddress } = useTransactionContext();
-  const { library } = useEthers();
-  const { account: metaAddress } = useLayer2();
+  const { account: metaAddress, library } = useLayer2();
 
   const updateWallets = useCallback(
     (wallets: WalletItemData[]) => {

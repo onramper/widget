@@ -445,7 +445,7 @@ const sell = async (
 const pollTransaction = async (
   txId: string
 ): Promise<Transaction | undefined> => {
-  const res = await fetch(`${BASE_API}/v2/transaction/${txId}`, {
+  const res = await fetch(`${BASE_API}/v2/getTransaction/${txId}`, {
     method: "GET",
     headers,
   });

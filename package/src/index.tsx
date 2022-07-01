@@ -13,12 +13,18 @@ import TagManager from "react-gtm-module";
 import "./i18n/config";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
-import { L2Provider } from "layer2";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
 import { G_TAG_ID } from "./ApiContext/api/constants";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PaymentProgressView } from "./steps/PaymentProgressView";
+import { L2Provider } from "./web3/config";
+// import SwapOverviewView from "./steps/SwapOverviewView/SwapOverviewView";
+// import {
+//   startProps,
+//   startPropsMainnet,
+//   startPropsTestnet,
+// } from "./steps/SwapOverviewView/SwapOverviewView.models";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -108,13 +114,13 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                   path="/swap/:txId"
                   element={
                     <L2Provider>
-                      <NotificationProvider>
-                        <TransactionContextProvider>
+                      <TransactionContextProvider>
+                        <NotificationProvider>
                           <div style={{ flexGrow: 1, display: "flex" }}>
                             <NavContainer home={<PaymentProgressView />} />
                           </div>
-                        </TransactionContextProvider>
-                      </NotificationProvider>
+                        </NotificationProvider>
+                      </TransactionContextProvider>
                     </L2Provider>
                   }
                 />

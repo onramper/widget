@@ -11,8 +11,14 @@ export interface Notification {
   message: string;
   type: NotificationType;
   shouldExpire: boolean;
+  externalId?: string;
 }
 
 export type Notifications = Notification[];
 
-export type AddNotificationPayload = Omit<Notification, "id" | "submittedAt">;
+export interface AddNotificationPayload {
+  id?: string;
+  message: string;
+  type: NotificationType;
+  shouldExpire: boolean;
+}

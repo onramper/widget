@@ -11,11 +11,11 @@ import ErrorView from "../../../common/ErrorView";
 import WalletItem from "./WalletItem/WalletItem";
 import WalletInput from "./WalletInput/WalletInput";
 import { metamaskWallet } from "../constants";
-import { useLayer2 } from "layer2";
 import {
   useTransactionContext,
   useTransactionCtxWallets,
 } from "../../../TransactionContext/hooks";
+import { useLayer2 } from "../../../web3/config";
 
 const DestinationWalletView: React.FC = () => {
   const { wallets, selectedWalletAddress } = useTransactionContext();

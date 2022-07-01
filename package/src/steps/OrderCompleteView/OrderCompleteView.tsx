@@ -8,8 +8,9 @@ import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
 import { APIContext } from "../../ApiContext";
 import { useNav } from "../../NavContext";
 import BuyCryptoView from "../../BuyCryptoView";
-import { TokenInfo, useAddTokenToMetamask } from "layer2";
+import { TokenInfo } from "layer2";
 import { useNavigate } from "react-router-dom";
+import { useAddTokenToMetamask } from "../../web3/hooks/useAddTokenToMetamask";
 
 const OrderCompleteView: React.FC<{
   description: string;

@@ -1,18 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import commonClasses from "../../styles.module.css";
-import { BreakdownProps } from "./Breakdown.models";
 import { ReactComponent as ChevronRightIcon } from "../../icons/chevron-right.svg";
 import { ReactComponent as IconHint } from "../../icons/hint.svg";
 import classes from "./Breakdown.module.css";
+import { useTransactionContext } from "../../TransactionContext/hooks";
+import { useFeeBreakdown } from "../../TransactionContext/hooks/useFeeBreakdown";
+import { trimLargeNumber } from "../../utils";
+import { nanoid } from "nanoid";
 
 const transitionTimeout = 300;
 
-const Breakdown: React.FC<BreakdownProps> = (props) => {
+const Breakdown = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const itemsWrapperRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const { tokenIn, tokenOut, slippageTolerance } = useTransactionContext();
   useEffect(() => {
     const onClickEvent = (event: MouseEvent) => {
       if (!event.target || wrapperRef.current?.contains(event.target as Node)) {
@@ -26,6 +30,8 @@ const Breakdown: React.FC<BreakdownProps> = (props) => {
       window.removeEventListener("click", onClickEvent);
     };
   }, []);
+
+  const { inAmount, totalGas, minimumOutput, fees } = useFeeBreakdown();
 
   return (
     <div
@@ -44,7 +50,7 @@ const Breakdown: React.FC<BreakdownProps> = (props) => {
           className={classes["activator-section"]}
           onClick={() => setIsExpanded((value) => !value)}
         >
-          <div className={classes["label"]}>{props.label}</div>
+          <div className={classes["label"]}>Fee Breakdown:</div>
           <ChevronRightIcon
             className={`${commonClasses["chevron"]} ${
               isExpanded ? commonClasses["up"] : ""
@@ -53,36 +59,90 @@ const Breakdown: React.FC<BreakdownProps> = (props) => {
         </div>
         <Transition ref={itemsWrapperRef} in={isExpanded}>
           <div ref={itemsWrapperRef} className={classes["items-wrapper"]}>
-            {props.groups.map((items, index) => (
-              <div key={index} className={classes["items-group"]}>
-                {items.map((item, itemIndex) => (
-                  <div
-                    key={itemIndex}
-                    className={`${classes["item"]} ${
-                      item.strong ? classes["strong"] : ""
-                    }`}
-                  >
-                    <div className={classes["item-label"]}>
-                      <div className={classes["item-main-label"]}>
-                        <span> {item.label} </span>
-                        {item.hint && (
-                          <span
-                            data-tooltip={item.hint}
-                            className={`${commonClasses["tooltip"]} ${classes["hint"]}`}
-                          >
-                            <IconHint />
-                          </span>
-                        )}
-                      </div>
-                      {item.subLabel && <div className={classes["item-sec-label"]}>{item.subLabel}</div>}
-                    </div>
-                    <div className={classes["item-value"]}>{item.value}</div>
-                  </div>
+            <div className={classes["items-group"]}>
+              <FeeItem
+                strong
+                label={inAmount.label}
+                amount={inAmount.amount}
+                trimDecimals={6}
+                symbol={tokenIn.symbol}
+              />
+              <FeeItem
+                label={totalGas.label}
+                amount={totalGas.amount}
+                trimDecimals={0}
+                symbol={"gwei"}
+              />
+              {fees &&
+                fees.length > 0 &&
+                fees.map((fee) => (
+                  <FeeItem
+                    key={nanoid()}
+                    label={fee.label}
+                    amount={fee.amount}
+                    trimDecimals={0}
+                    symbol={"gwei"}
+                  />
                 ))}
-              </div>
-            ))}
+              <FeeItem
+                label={"slippage"}
+                amount={slippageTolerance.toString()}
+                trimDecimals={2}
+                symbol={"%"}
+                hint="slippage is the difference between a trade's expected price and the actual price at which the trade is executed."
+              />
+              <FeeItem
+                strong
+                label={minimumOutput.label}
+                amount={minimumOutput.amount}
+                trimDecimals={6}
+                symbol={tokenOut.symbol}
+              />
+            </div>
           </div>
         </Transition>
+      </div>
+    </div>
+  );
+};
+
+const FeeItem = ({
+  strong = false,
+  subLabel,
+  hint,
+  label,
+  amount,
+  trimDecimals,
+  symbol,
+}: {
+  strong?: boolean;
+  label: string;
+  amount: string;
+  trimDecimals: number;
+  symbol: string;
+  hint?: string;
+  subLabel?: string;
+}) => {
+  return (
+    <div className={`${classes["item"]} ${strong ? classes["strong"] : ""}`}>
+      <div className={classes["item-label"]}>
+        <div className={classes["item-main-label"]}>
+          <span> {label} </span>
+          {hint && (
+            <span
+              data-tooltip={hint}
+              className={`${commonClasses["tooltip"]} ${classes["hint"]}`}
+            >
+              <IconHint />
+            </span>
+          )}
+        </div>
+        {subLabel && (
+          <div className={classes["item-sec-label"]}>{subLabel}</div>
+        )}
+      </div>
+      <div className={classes["item-value"]}>
+        {`${trimLargeNumber(amount, trimDecimals)} ${symbol}`}
       </div>
     </div>
   );

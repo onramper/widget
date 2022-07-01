@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
-
 import InfoBox from "../../common/InfoBox";
 
 import {
@@ -23,12 +22,11 @@ import ButtonAction from "../../common/Buttons/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";
-import { findWeth } from "../../utils";
+import { getNativeToken } from "../../utils";
 import {
   isIframeStep,
   isRedirectStep,
 } from "../../ApiContext/api/types/guards";
-
 import { triggerGTMEvent } from "../../helpers/useGTM";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 import { useNavigate } from "react-router-dom";
@@ -65,6 +63,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   const [iframeUrl, setIframeUrl] = useState(props.src);
   const [countDown, setCountDown] = useState(textInfo ? 10 : 3);
   const navigate = useNavigate();
+  console.log("BodyIframeView PROPS: ", props);
 
   const [userClosedPopup, setUserClosedPopup] = useState(false);
 
@@ -85,7 +84,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   };
 
   const isL2MoonpayNewWindowIntegration = () =>
-    selectedGateway?.name.split("_").at(-1) === "Uniswap" &&
+    selectedGateway?.name.split("_").at(-1)?.toUpperCase() === "UNISWAP" &&
     props.src.indexOf("https://api.moonpay.io/v3/payment") === -1;
 
   useEffect(() => {
@@ -128,9 +127,9 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             type: StepType.paymentProgress,
             progress: 80,
             // infer weth from output chainID
-            tokenIn: findWeth(l2TokenData.chainId),
+            tokenIn: getNativeToken(l2TokenData.chainId),
             tokenOut: l2TokenData,
-            gatewayAndDex: selectedGateway?.name ?? "",
+            customerGateway: selectedGateway?.name ?? "",
             txId: txId,
             inCurrency: inCurrency,
           }}

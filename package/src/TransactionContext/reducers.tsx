@@ -1,4 +1,5 @@
-import { QuoteDetails, TokenInfo } from "layer2";
+import { providers } from "ethers";
+import { Estimate, TokenInfo } from "layer2";
 import { WalletItemData } from "../ApiContext/api/types/nextStep";
 import initialState from "./initialState";
 import { StateType } from "./models";
@@ -8,6 +9,7 @@ export enum ActionTypes {
   SetSelectedWalletAddress = "SetSelectedWalletAddress",
   Init = "Init",
   SetQuote = "SetQuote",
+  SetTransactionRequest = "SetTransactionRequest",
   UpdateDeadline = "UpdateDeadline",
   UpdateSlippageTolerance = "UpdateSlippageTolerance",
   UpdateTokenIn = "UpdateTokenIn",
@@ -17,6 +19,10 @@ export enum ActionTypes {
 }
 
 export type DataActions =
+  | {
+      type: ActionTypes.SetTransactionRequest;
+      payload: providers.TransactionRequest;
+    }
   | {
       type: ActionTypes.UpdateInAmount;
       payload: number;
@@ -44,6 +50,7 @@ export type DataActions =
   | {
       type: ActionTypes.Init;
       payload: {
+        customerGateway: string;
         txId: string;
         userId: string;
         tokenIn: TokenInfo;
@@ -53,7 +60,7 @@ export type DataActions =
     }
   | {
       type: ActionTypes.SetQuote;
-      payload: QuoteDetails;
+      payload: Estimate;
     }
   | {
       type: ActionTypes.UpdateDeadline | ActionTypes.UpdateSlippageTolerance;
@@ -62,6 +69,11 @@ export type DataActions =
 
 export default (state: StateType, action: DataActions): StateType => {
   switch (action.type) {
+    case ActionTypes.SetTransactionRequest:
+      return {
+        ...state,
+        transactionRequest: action.payload,
+      };
     case ActionTypes.UpdateInAmount:
       return {
         ...state,

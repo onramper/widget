@@ -17,7 +17,8 @@ import { WalletItemData } from "../../../ApiContext/api/types/nextStep";
 import DestinationWalletView from "../DestinationWalletView/DestinationWalletView";
 import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
 import BaseInput from "../../../common/Input/BaseInput/BaseInput";
-import { useLayer2, DEFAULTS as defaultSettings } from "layer2";
+import { UNISWAP_DEFAULTS as defaultSettings } from "layer2";
+import { useLayer2 } from "../../../web3/config";
 import { metamaskWallet } from "../constants";
 import {
   useTransactionContext,
@@ -199,7 +200,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
               text={getSlippageWarningText()}
             />
           </div>
-          <div className={classes["setting-item"]}>
+          {/* <div className={classes["setting-item"]}>
             <div className={classes["setting-name"]}>Transaction deadline:</div>
             <div className={classes["setting-content"]}>
               <BaseInput
@@ -218,7 +219,7 @@ const TransactionSettings: React.FC<TransactionSettingsProps> = (props) => {
               />
               <div className={classes["setting-label"]}>Minutes</div>
             </div>
-          </div>
+          </div> */}
 
           <div className={classes["setting-item"]}>
             <div className={classes["setting-name"]}>Destination wallet:</div>

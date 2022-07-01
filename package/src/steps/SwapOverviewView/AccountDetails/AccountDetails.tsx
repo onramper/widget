@@ -1,4 +1,5 @@
-import { shortenIfAddress, useEtherBalance, useLayer2, useEns } from "layer2";
+import { useLayer2, useEns } from "../../../web3/config";
+import { shortenIfAddress, useEtherBalance } from "@usedapp/core";
 import React from "react";
 import buttonClasses from "../../../common/ListItemButtonGroup/ListItemButton/ListItemButton.module.css";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";

@@ -1,4 +1,4 @@
-import { DEFAULTS as defaultSettings } from "layer2";
+import { UNISWAP_DEFAULTS as defaultSettings } from "layer2";
 import { StateType } from "./models";
 
 const initialState: StateType = {
@@ -6,23 +6,9 @@ const initialState: StateType = {
   userId: "",
   inAmount: 0,
   txId: "---transaction--id---",
-  quote: {
-    blockNumber: "",
-    amount: "",
-    amountDecimals: "",
-    quote: "",
-    quoteDecimals: "",
-    quoteGasAdjusted: "",
-    quoteGasAdjustedDecimals: "",
-    gasUseEstimateQuote: "",
-    gasUseEstimateQuoteDecimals: "",
-    gasUseEstimate: "",
-    gasUseEstimateUSD: "",
-    gasPriceWei: "",
-    route: [],
-    routeString: "",
-    quoteId: "",
-  },
+  quote: null,
+  transactionRequest: null,
+  selectedWalletAddress: undefined,
   tokenIn: {
     name: "",
     address: "",
@@ -40,6 +26,7 @@ const initialState: StateType = {
     logoURI: "",
   },
   wallets: [],
+  customerGateway: "gateway_dex",
   fiatSymbol: "$",
   slippageTolerance: defaultSettings.slippageTolerance,
   deadline: defaultSettings.deadline,
