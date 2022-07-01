@@ -38,7 +38,10 @@ import { BrakdownItem } from "../../../ApiContext/api/types/nextStep";
 import { utils } from "ethers";
 import { useLayer2 } from "../../../web3/config";
 import { useUpdateQuote } from "../../../TransactionContext/hooks/useUpdateQuote";
-import { WidgetNotification } from "../../WidgetNotification/WidgetNotification";
+import {
+  SingleNotification,
+  WidgetNotification,
+} from "../../WidgetNotification/WidgetNotification";
 import {
   NotificationType,
   useWidgetNotifications,
@@ -61,7 +64,6 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   const ethBalance = useEtherBalance(account);
   const tokenOutBalance = useTokenBalance(tokenOut.address, account);
 
-  const [breakdown, setBreakdown] = useState<BrakdownItem[][]>([]);
   const { backScreen } = useNav();
   const { updateQuote, loading: quoteLoading } = useUpdateQuote();
   const beforeUnLoadRef = useRef<AbortController>(new AbortController());
@@ -218,11 +220,14 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         />
 
         <div className={classes["bottom-fields"]}>
-          <Breakdown label={"Fee breakdown:"} groups={breakdown} />
-          <IndicationItem
-            text={
-              "Above mentioned figures are valid for 1 minute based upon current market rates."
-            }
+          <Breakdown label={"Fee breakdown:"} />
+          <SingleNotification
+            className={classes.notification}
+            notification={{
+              type: NotificationType.Info,
+              message:
+                "Above mentioned figures are valid for 1 minute based upon current market rates.",
+            }}
           />
         </div>
 
@@ -243,47 +248,47 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   );
 };
 
-const ErrorIndication: React.FC<{ message?: string }> = (props) => {
-  const [message, setMessage] = useState(props.message || "");
-  const ref = useRef<HTMLDivElement>(null);
+// const ErrorIndication: React.FC<{ message?: string }> = (props) => {
+//   const [message, setMessage] = useState(props.message || "");
+//   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (props.message) {
-      setMessage(props.message);
-    }
-  }, [props.message]);
+//   useEffect(() => {
+//     if (props.message) {
+//       setMessage(props.message);
+//     }
+//   }, [props.message]);
 
-  return (
-    <CSSTransition
-      nodeRef={ref}
-      in={!!props.message}
-      timeout={200}
-      classNames={{
-        enter: commonClasses["collapse-enter"],
-        enterActive: commonClasses["collapse-enter-active"],
-        exit: commonClasses["collapse-exit"],
-        exitActive: commonClasses["collapse-exit-active"],
-      }}
-      mountOnEnter
-      unmountOnExit
-    >
-      <div className={classes["error-section"]} ref={ref}>
-        <IndicationItem error text={message} />
-      </div>
-    </CSSTransition>
-  );
-};
-const IndicationItem: React.FC<{ error?: boolean; text: string }> = (props) => {
-  return (
-    <div
-      className={`${classes["info-wrapper"]} ${
-        props.error ? classes["indication-error"] : ""
-      }`}
-    >
-      <HexExclamationIcon className={classes["exclamation-icon"]} />
-      <div className={classes["info-txt"]}>{props.text}</div>
-    </div>
-  );
-};
+//   return (
+//     <CSSTransition
+//       nodeRef={ref}
+//       in={!!props.message}
+//       timeout={200}
+//       classNames={{
+//         enter: commonClasses["collapse-enter"],
+//         enterActive: commonClasses["collapse-enter-active"],
+//         exit: commonClasses["collapse-exit"],
+//         exitActive: commonClasses["collapse-exit-active"],
+//       }}
+//       mountOnEnter
+//       unmountOnExit
+//     >
+//       <div className={classes["error-section"]} ref={ref}>
+//         <IndicationItem error text={message} />
+//       </div>
+//     </CSSTransition>
+//   );
+// };
+// const IndicationItem: React.FC<{ error?: boolean; text: string }> = (props) => {
+//   return (
+//     <div
+//       className={`${classes["info-wrapper"]} ${
+//         props.error ? classes["indication-error"] : ""
+//       }`}
+//     >
+//       <HexExclamationIcon className={classes["exclamation-icon"]} />
+//       <div className={classes["info-txt"]}>{props.text}</div>
+//     </div>
+//   );
+// };
 
 export default EditSwapView;

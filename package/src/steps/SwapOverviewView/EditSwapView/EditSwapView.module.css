@@ -15,7 +15,7 @@
   align-items: center;
   padding-top: 12px;
   padding-bottom: 33px;
-} 
+}
 
 .top-section .heading {
   flex: 1;
@@ -40,13 +40,8 @@
   padding: 0 32px;
 }
 
-.info-wrapper {
-  font-size: 13px;
-  line-height: 21px;
-  letter-spacing: 0.015em;
-  color: var(--list-active-color);
-  display: flex;
-  padding-left: 15px;
+.notification {
+  margin-top: 18px;
 }
 
 .info-wrapper.indication-error {
