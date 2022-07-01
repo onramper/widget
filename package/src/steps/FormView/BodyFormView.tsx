@@ -108,9 +108,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     sendDataToGTM(gtmData);
   };
 
-  const walletFieldClick = useCallback(async () =>{
+  const walletFieldClick = () =>{
     gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD, GtmEventLabel.WALLET_ADDRESS);
-}, [gtmEventFormData]);
+  };
 
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
