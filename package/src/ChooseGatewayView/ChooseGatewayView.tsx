@@ -22,7 +22,7 @@ const ChooseGatewayView = () => {
   }, [data.allRates]);
 
   return (
-    <OverlayView title="Gateways" footerBtnTxt="Choose Gateway">
+    <OverlayView title="Onramps" footerBtnTxt="Choose Onramp">
       {data.allRates.length === 0 && <FallbackErrorView />}
 
       {data.allRates.length > 0 && (
