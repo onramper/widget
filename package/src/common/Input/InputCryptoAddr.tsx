@@ -68,15 +68,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
       },
       [handleInputChange, collected.cryptocurrencyAddress]
     );
-    const walletFieldClick = useCallback(async () =>{
-      const gtmData = {
-        event: GtmEvent.ELEMENT_CLICK,
-        action: GtmEventAction.WALLET_FORM,
-        category: GtmEventCategory.FIELD,
-        label: GtmEventLabel.WALLET_ADDRESS,
-      };
-      sendDataToGTM(gtmData);
-    },[]);
+    
     const getWalletAddrs = useCallback(async () => {
       setNewInfo(undefined);
       const importedWallets = await ProviderManager.getAccounts();
