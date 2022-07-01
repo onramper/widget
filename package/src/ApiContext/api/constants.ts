@@ -10,7 +10,7 @@ export const BASE_API = (() => {
     case "local":
       return "http://localhost:3000/dev";
     case "l2":
-      return "https://l2.onramper.tech/dev"; //  "https://bwspdt92de.execute-api.us-west-1.amazonaws.com" ;
+      return "https://l2.onramper.tech"; //  "https://bwspdt92de.execute-api.us-west-1.amazonaws.com" ;
     case "prod":
       return "https://onramper.tech";
     case "demo":

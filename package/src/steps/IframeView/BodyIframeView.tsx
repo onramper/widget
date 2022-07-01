@@ -16,7 +16,6 @@ import {
 } from "../../ApiContext/api/constants";
 import { APIContext, NextStep } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
-
 import BuyCryptoView from "../../BuyCryptoView";
 import ButtonAction from "../../common/Buttons/ButtonAction";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
@@ -84,8 +83,8 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   };
 
   const isL2MoonpayNewWindowIntegration = () =>
-    selectedGateway?.name.split("_").at(-1)?.toUpperCase() === "UNISWAP" &&
-    props.src.indexOf("https://api.moonpay.io/v3/payment") === -1;
+    selectedGateway?.name.split("_").at(-1)?.toUpperCase() === "LIFI" &&
+    props.src.toLowerCase().includes("moonpay");
 
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
@@ -108,7 +107,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       url,
       "_blank",
       "height=595,width=440,scrollbars=yes,left=0"
-    ); //todo: add config
+    );
     if (windowObjectReference) {
       triggerGTMEvent(gtmPayloadRef.current);
     }
