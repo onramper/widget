@@ -110,7 +110,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
   const walletFieldClick = useCallback(async () =>{
     gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD, GtmEventLabel.WALLET_ADDRESS);
-}, []);
+}, [gtmEventFormData]);
 
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
