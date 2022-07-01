@@ -41,7 +41,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
       : collected.selectedCrypto?.name;
     const amount = collected.amountInCrypto
       ? receivedCrypto
-      : toMaxDecimalsFloor(receivedCrypto,5);
+      : toMaxDecimalsFloor(receivedCrypto, 5);
     return `${name} ${amount}`;
   }, [
     collected.amountInCrypto,
