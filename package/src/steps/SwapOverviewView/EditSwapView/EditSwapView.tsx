@@ -220,7 +220,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
         />
 
         <div className={classes["bottom-fields"]}>
-          <Breakdown label={"Fee breakdown:"} />
+          <Breakdown />
           <SingleNotification
             className={classes.notification}
             notification={{

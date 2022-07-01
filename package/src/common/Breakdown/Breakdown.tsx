@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import commonClasses from "../../styles.module.css";
-import { BreakdownProps } from "./Breakdown.models";
 import { ReactComponent as ChevronRightIcon } from "../../icons/chevron-right.svg";
 import { ReactComponent as IconHint } from "../../icons/hint.svg";
 import classes from "./Breakdown.module.css";
@@ -12,7 +11,7 @@ import { nanoid } from "nanoid";
 
 const transitionTimeout = 300;
 
-const Breakdown: React.FC<BreakdownProps> = () => {
+const Breakdown = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const itemsWrapperRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
