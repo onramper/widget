@@ -6,6 +6,7 @@ import { badgeItemMap } from "./constants";
 import { GateWayOptionProps, BadgeType } from "./ChooseGatewayView.models";
 import { ReactComponent as ArrowUpSvg } from "../icons/arrow-up.svg";
 import Checkbox from "../common/Checkbox/Checkbox";
+import { toMaxDecimalsFloor } from "../utils";
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
   const { collected } = useContext(APIContext);
@@ -40,7 +41,7 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
       : collected.selectedCrypto?.name;
     const amount = collected.amountInCrypto
       ? receivedCrypto
-      : receivedCrypto.toFixed(5);
+      : toMaxDecimalsFloor(receivedCrypto,5);
     return `${name} ${amount}`;
   }, [
     collected.amountInCrypto,
