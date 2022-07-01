@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
-
 import InfoBox from "../../common/InfoBox";
 
 import {

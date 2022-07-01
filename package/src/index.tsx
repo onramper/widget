@@ -119,10 +119,10 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
                           <div style={{ flexGrow: 1, display: "flex" }}>
                             <NavContainer
                               home={
-                                // <PaymentProgressView />
-                                <SwapOverviewView
-                                  nextStep={startPropsTestnet.nextStep}
-                                />
+                                <PaymentProgressView />
+                                // <SwapOverviewView
+                                //   nextStep={startPropsTestnet.nextStep}
+                                // />
                               }
                             />
                           </div>
