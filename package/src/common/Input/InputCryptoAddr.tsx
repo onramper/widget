@@ -132,7 +132,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
             : undefined
         }
         onIconClick={getWalletAddrs}
-        onClick={walletFieldClick}
+        onClick={props.onClick}
         ref={ref}
         hint={
           ProviderManager.providerName && collected.isAddressEditable

@@ -74,7 +74,6 @@ type BodyFormViewType = {
 };
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
-  const sendDataToGTM = useGTMDispatch();
   const { handleInputChange, onActionButton, fields = [] } = props;
   const { collected, apiInterface } = useContext(APIContext);
   const { backScreen, nextScreen, onlyScreen } = useContext(NavContext);
@@ -88,11 +87,30 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
   const [isRestartCalled, setIsRestartCalled] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
+  const sendDataToGTM = useGTMDispatch();
 
   const restartToAnotherGateway = () => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
   };
+
+  const gtmEventFormData = (
+    action : GtmEventAction,
+    category : GtmEventCategory,
+    label : GtmEventLabel,
+    ) =>{
+    const gtmData = {
+      event: GtmEvent.ELEMENT_CLICK,
+      action: action,
+      category: category,
+      label: label,
+    };
+    sendDataToGTM(gtmData);
+  };
+
+  const walletFieldClick = useCallback(async () =>{
+    gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD,GtmEventLabel.WALLET_ADDRESS);
+},[]);
 
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
@@ -325,6 +343,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 handleInputChange={onChange}
                 error={errorObj?.[field.name]}
                 disabled={!collected.isAddressEditable}
+                onClick={walletFieldClick}
               />
             )) ||
             (field.name === "verifyCreditCard" && (
@@ -713,24 +732,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 label={field.humanName}
                 type={getInputType(field)}
                 onClick={()=>{
-
                   if(getInputType(field)==="email"){
-                    const gtmData = {
-                      event: GtmEvent.ELEMENT_CLICK,
-                      action: GtmEventAction.EMAIL_FORM,
-                      category: GtmEventCategory.FIELD,
-                      label: GtmEventLabel.EMAIL_ADDRESS,
-                    };
-                    sendDataToGTM(gtmData);
+                    gtmEventFormData(GtmEventAction.EMAIL_FORM,GtmEventCategory.FIELD,GtmEventLabel.EMAIL_ADDRESS);
                   }
                   if(getInputType(field)==="password"){
-                    const gtmData = {
-                      event: GtmEvent.ELEMENT_CLICK,
-                      action: GtmEventAction.EMAIL_FORM,
-                      category: GtmEventCategory.FIELD,
-                      label: GtmEventLabel.PASSWORD,
-                    };
-                    sendDataToGTM(gtmData);
+                    gtmEventFormData(GtmEventAction.EMAIL_FORM,GtmEventCategory.FIELD,GtmEventLabel.PASSWORD);
                   }
                 }}
                 placeholder={field.placeholder}
@@ -752,13 +758,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           <ButtonAction
             onClick={()=>{
               onActionButton();
-              const gtmData = {
-                event: GtmEvent.ELEMENT_CLICK,
-                action: GtmEventAction.WALLET_FORM,
-                category: GtmEventCategory.BUTTON,
-                label: GtmEventLabel.CONTINUE,
-              };
-              sendDataToGTM(gtmData);             
+              gtmEventFormData(GtmEventAction.WALLET_FORM,GtmEventCategory.BUTTON,GtmEventLabel.CONTINUE);            
             }}
             text={isLoading ? "Sending..." : "Continue"}
             disabled={!isFilled || isLoading}
@@ -769,6 +769,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     </main>
   );
 };
+ 
 const getValueByField = (
   field: BodyFormViewType["fields"][0],
   collected: CollectedStateType
