@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./OverlayFooter.module.css";
 import commonStyles from "./../../../styles.module.css";
 import { OverlayFooterProps } from "./OverlayFooter.models";
-import ButtonAction from "../../ButtonAction";
+import { ButtonAction } from "../../Buttons";
 
 const OverlayFooter: React.FC<OverlayFooterProps> = (
   props: OverlayFooterProps

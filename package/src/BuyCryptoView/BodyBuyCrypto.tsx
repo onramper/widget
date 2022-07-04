@@ -6,7 +6,7 @@ import React, {
   useLayoutEffect,
 } from "react";
 import stylesCommon from "../styles.module.css";
-import ButtonAction from "../common/Buttons/ButtonAction";
+import { ButtonAction } from "../common/Buttons";
 import { APIContext, GatewayRateOption } from "../ApiContext";
 import type { ItemType } from "../ApiContext";
 import { NavContext } from "../NavContext";

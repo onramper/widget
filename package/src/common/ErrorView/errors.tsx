@@ -2,7 +2,7 @@ import React from "react";
 import { ReactComponent as ErrorIllustration } from "../../icons/error.svg";
 import countryNames from "../../ApiContext/utils/contryNames";
 import styles from "./styles.module.css";
-import ButtonAction from "../Buttons/ButtonAction";
+import { ButtonAction } from "../Buttons";
 
 export const COUNTRY_NOT_SUPPORTED = (country?: string): JSX.Element => {
   const _country =

@@ -10,7 +10,7 @@ import stylesCommon from "../../styles.module.css";
 import styles from "./styles.module.css";
 import CreditCardInput from "./renderers/creditCard";
 import InputCryptoAddr from "../../common/Input/InputCryptoAddr";
-import ButtonAction from "../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../common/Buttons";
 import InputButton from "../../common/Input/InputButton/InputButton";
 import InfoBox from "../../common/InfoBox";
 import HelpView from "../../common/HelpView";
@@ -94,10 +94,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   };
 
   const gtmEventFormData = (
-    action : GtmEventAction,
-    category : GtmEventCategory,
-    label : GtmEventLabel,
-    ) =>{
+    action: GtmEventAction,
+    category: GtmEventCategory,
+    label: GtmEventLabel
+  ) => {
     const gtmData = {
       event: GtmEvent.ELEMENT_CLICK,
       action: action,
@@ -107,17 +107,29 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     sendDataToGTM(gtmData);
   };
 
-  const walletFieldClick = () =>{
-    gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD, GtmEventLabel.WALLET_ADDRESS);
+  const walletFieldClick = () => {
+    gtmEventFormData(
+      GtmEventAction.WALLET_FORM,
+      GtmEventCategory.FIELD,
+      GtmEventLabel.WALLET_ADDRESS
+    );
   };
 
-  const handleFormFieldClick = (field: BodyFormViewType["fields"][0]) =>{
-    if(getInputType(field)==="email"){
-      gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.EMAIL_ADDRESS);
+  const handleFormFieldClick = (field: BodyFormViewType["fields"][0]) => {
+    if (getInputType(field) === "email") {
+      gtmEventFormData(
+        GtmEventAction.EMAIL_FORM,
+        GtmEventCategory.FIELD,
+        GtmEventLabel.EMAIL_ADDRESS
+      );
     }
-    if(getInputType(field)==="password"){
-      gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.PASSWORD);
-    } 
+    if (getInputType(field) === "password") {
+      gtmEventFormData(
+        GtmEventAction.EMAIL_FORM,
+        GtmEventCategory.FIELD,
+        GtmEventLabel.PASSWORD
+      );
+    }
   };
 
   useEffect(() => {
@@ -757,9 +769,13 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           }`}
         >
           <ButtonAction
-            onClick={()=>{
+            onClick={() => {
               onActionButton();
-              gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
+              gtmEventFormData(
+                GtmEventAction.WALLET_FORM,
+                GtmEventCategory.BUTTON,
+                GtmEventLabel.CONTINUE
+              );
             }}
             text={isLoading ? "Sending..." : "Continue"}
             disabled={!isFilled || isLoading}
@@ -770,7 +786,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     </main>
   );
 };
- 
+
 const getValueByField = (
   field: BodyFormViewType["fields"][0],
   collected: CollectedStateType

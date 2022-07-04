@@ -4,7 +4,7 @@ import commonClasses from "./../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import Lottie from "lottie-react";
 import successAnimation from "../../icons/animations/success.json";
-import ButtonSecondary from "../../common/Buttons/ButtonSecondary";
+import { ButtonSecondary } from "../../common/Buttons";
 import { APIContext } from "../../ApiContext";
 import { useNav } from "../../NavContext";
 import BuyCryptoView from "../../BuyCryptoView";

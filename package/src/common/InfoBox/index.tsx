@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "./styles.module.css";
 import { CSSTransition } from "react-transition-group";
-import ButtonAction from "../Buttons/ButtonAction";
+import { ButtonAction } from "../Buttons";
 import { APIContext } from "../../ApiContext";
 import { URLize } from "./utils";
 import cancelIcon from "../../icons/cancel.svg";

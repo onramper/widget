@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import stylesCommon from "../../styles.module.css";
 
 import InputDelegator from "../../common/Input/InputDelegator";
-import ButtonAction from "../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../common/Buttons";
 import InfoBox from "../../common/InfoBox";
 
 import IconCopy from "../../icons/copy.svg";

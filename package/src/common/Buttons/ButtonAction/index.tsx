@@ -11,7 +11,7 @@ type ButtonActionType = {
   pending?: boolean;
 };
 
-const ButtonAction: React.FC<ButtonActionType> = (props) => {
+export const ButtonAction: React.FC<ButtonActionType> = (props) => {
   const {
     onClick,
     text,
@@ -34,5 +34,3 @@ const ButtonAction: React.FC<ButtonActionType> = (props) => {
     </button>
   );
 };
-
-export default ButtonAction;

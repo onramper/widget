@@ -5,7 +5,7 @@ import { NextStep, PickOneOption } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
 import Heading from "../../common/Heading/Heading";
 import OptionsView from "./OptionsView";
-import ButtonAction from "../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../common/Buttons";
 import Footer from "../../common/Footer";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import ErrorView from "../../common/ErrorView";

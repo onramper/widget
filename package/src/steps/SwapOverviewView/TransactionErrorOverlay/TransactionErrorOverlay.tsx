@@ -11,7 +11,7 @@ import classes from "./TransactionErrorOverlay.module.css";
 import { ReactComponent as SettingsIcon } from "./../../../icons/settings.svg";
 import { ReactComponent as CloseIcon } from "./../../../icons/close.svg";
 import { NavContext } from "../../../NavContext";
-import ButtonAction from "../../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../../common/Buttons";
 import { CSSTransition } from "react-transition-group";
 
 const contentsTimeout = 500;

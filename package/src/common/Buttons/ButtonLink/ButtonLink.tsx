@@ -9,7 +9,7 @@ interface Props extends React.HTMLAttributes<HTMLAnchorElement> {
   className?: string;
 }
 
-const ButtonLink = ({
+export const ButtonLink = ({
   path,
   text,
   external = false,
@@ -36,5 +36,3 @@ const ButtonLink = ({
     </a>
   );
 };
-
-export default ButtonLink;

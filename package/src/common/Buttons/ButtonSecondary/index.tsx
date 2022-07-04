@@ -10,14 +10,14 @@ type ButtonActionType = {
   primary?: boolean;
 };
 
-const ButtonSecondary: React.FC<ButtonActionType> = (props) => {
+export const ButtonSecondary: React.FC<ButtonActionType> = (props) => {
   const {
     onClick,
     text,
     disabled = false,
     size = "large",
     className = "",
-    primary
+    primary,
   } = props;
 
   return (
@@ -32,5 +32,3 @@ const ButtonSecondary: React.FC<ButtonActionType> = (props) => {
     </button>
   );
 };
-
-export default ButtonSecondary;

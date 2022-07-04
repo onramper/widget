@@ -17,7 +17,7 @@ import {
 import { APIContext, NextStep } from "../../ApiContext";
 import { NavContext } from "../../NavContext";
 import BuyCryptoView from "../../BuyCryptoView";
-import ButtonAction from "../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../common/Buttons";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";

@@ -5,7 +5,7 @@ import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader
 import Heading from "../../../common/Heading/Heading";
 import { NavContext } from "../../../NavContext";
 import InfoBox from "../../../common/InfoBox";
-import ButtonAction from "../../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../../common/Buttons";
 import Footer from "../../../common/Footer";
 import ErrorView from "../../../common/ErrorView";
 import WalletItem from "./WalletItem/WalletItem";

@@ -3,7 +3,7 @@ import styles from "./OverlayHeader.module.css";
 import commonStyles from "./../../../styles.module.css";
 import closeIcon from "./../../../icons/close.svg";
 import { OverlayHeaderProps } from "./OverlayHeader.models";
-import ButtonAction from "../../Buttons/ButtonAction";
+import { ButtonAction } from "../../Buttons";
 
 const OverlayHeader: React.FC<OverlayHeaderProps> = (
   props: OverlayHeaderProps

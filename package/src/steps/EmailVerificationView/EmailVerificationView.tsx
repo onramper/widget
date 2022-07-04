@@ -11,7 +11,7 @@ import commonClasses from "./../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import logo from "../../icons/onramper-logo.png";
 import Footer from "../../common/Footer";
-import ButtonAction from "../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../common/Buttons";
 import ErrorView from "../../common/ErrorView";
 import Step from "../Step";
 import { NavContext } from "../../NavContext";

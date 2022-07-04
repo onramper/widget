@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import stylesCommon from "../../styles.module.css";
 
 import InfoBox from "../../common/InfoBox";
-import ButtonAction from "../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../common/Buttons";
 import UploadBox from "./UploadBox";
 import { isFileUploaded } from "../utils";
 import Footer from "../../common/Footer";

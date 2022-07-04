@@ -5,7 +5,7 @@ import commonClasses from "../../../styles.module.css";
 import inputClasses from "../../../common/InputDropdown/InputDropdown.module.css";
 import ProgressHeader from "../../../common/Header/ProgressHeader/ProgressHeader";
 import Footer from "../../../common/Footer";
-import ButtonAction from "../../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../../common/Buttons";
 import Heading from "../../../common/Heading/Heading";
 import InputDropdown from "../../../common/InputDropdown/InputDropdown";
 import {

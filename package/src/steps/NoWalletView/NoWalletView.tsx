@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import Heading from "../../common/Heading/Heading";
 import classes from "./NoWalletView.module.css";
 import { ReactComponent as Metamask } from "../../icons/metamask.svg";
-import ButtonLink from "../../common/Buttons/ButtonLink/ButtonLink";
+import { ButtonLink } from "../../common/Buttons";
 import commonClasses from "../../styles.module.css";
 import ProgressHeader from "../../common/Header/ProgressHeader/ProgressHeader";
 import { isMetamaskEnabled } from "layer2";

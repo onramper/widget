@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import stylesCommon from "../../styles.module.css";
 import classes from "./PaymentReview.module.css";
 
-import ButtonAction from "../../common/Buttons/ButtonAction";
+import { ButtonAction } from "../../common/Buttons";
 import Footer from "../../common/Footer";
 import Heading from "../../common/Heading/Heading";
 import InfoBox from "../../common/InfoBox";
