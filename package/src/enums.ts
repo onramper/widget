@@ -19,6 +19,8 @@ export enum GtmEventAction {
   CURRENCY_SEARCH = "currencySearch",
   MENU = "menu",
   MENU_CLOSE = "menuClose",
+  WALLET_FORM = "walletForm",
+  EMAIL_FORM = "emailForm",
 }
 
 export enum GtmEventCategory {
@@ -45,6 +47,10 @@ export enum GtmEventLabel {
   MENU = "menu",
   AMOUNT = "amount",
   MENU_CLOSE = "menuClose",
+  CONTINUE = "continue",
+  EMAIL_ADDRESS = "emailAddress",
+  WALLET_ADDRESS = "walletAddress",
+  PASSWORD = "password",
   MENU_FAQ = "faq",
   MENU_PRIVACY_POLICY = "privacyPolicy",
   MENU_TERMS = "termsOfUsage",
