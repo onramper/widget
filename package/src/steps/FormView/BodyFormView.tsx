@@ -42,6 +42,13 @@ import Heading from "../../common/Heading/Heading";
 import InputDelegator from "../../common/Input/InputDelegator";
 import OverlayPicker from "../../common/OverlayPicker/OverlayPicker";
 import { CountryIcon } from "@onramper/flag-icons";
+import {
+  GtmEvent,
+  GtmEventAction,
+  GtmEventCategory,
+  GtmEventLabel,
+} from "../../enums";
+import { useGTMDispatch } from "../../hooks/gtm";
 
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
@@ -79,10 +86,38 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
   const [isRestartCalled, setIsRestartCalled] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
+  const sendDataToGTM = useGTMDispatch();
 
   const restartToAnotherGateway = () => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
+  };
+
+  const gtmEventFormData = (
+    action : GtmEventAction,
+    category : GtmEventCategory,
+    label : GtmEventLabel,
+    ) =>{
+    const gtmData = {
+      event: GtmEvent.ELEMENT_CLICK,
+      action: action,
+      category: category,
+      label: label,
+    };
+    sendDataToGTM(gtmData);
+  };
+
+  const walletFieldClick = () =>{
+    gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD, GtmEventLabel.WALLET_ADDRESS);
+  };
+
+  const handleFormFieldClick = (field: BodyFormViewType["fields"][0]) =>{
+    if(getInputType(field)==="email"){
+      gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.EMAIL_ADDRESS);
+    }
+    if(getInputType(field)==="password"){
+      gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.PASSWORD);
+    } 
   };
 
   useEffect(() => {
@@ -316,6 +351,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 handleInputChange={onChange}
                 error={errorObj?.[field.name]}
                 disabled={!collected.isAddressEditable}
+                onClick={walletFieldClick}
               />
             )) ||
             (field.name === "verifyCreditCard" && (
@@ -703,6 +739,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 className={stylesCommon["body-form-child"]}
                 label={field.humanName}
                 type={getInputType(field)}
+                onClick={() => handleFormFieldClick(field)}
                 placeholder={field.placeholder}
                 disabled={
                   field.name === "cryptocurrencyAddressTag" &&
@@ -720,7 +757,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           }`}
         >
           <ButtonAction
-            onClick={onActionButton}
+            onClick={()=>{
+              onActionButton();
+              gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
+            }}
             text={isLoading ? "Sending..." : "Continue"}
             disabled={!isFilled || isLoading}
           />
@@ -730,7 +770,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     </main>
   );
 };
-
+ 
 const getValueByField = (
   field: BodyFormViewType["fields"][0],
   collected: CollectedStateType

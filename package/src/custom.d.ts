@@ -38,5 +38,6 @@ interface Window {
       }
     | undefined;
 
-  dataLayer?: any;
+  dataLayer: any;
+  [key: string]: any;
 }

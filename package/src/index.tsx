@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import styles from "./styles.module.css";
 import BuyCryptoView from "./BuyCryptoView";
@@ -9,22 +9,16 @@ import type { APIProviderType } from "./ApiContext";
 import "./polyfills/composedpath.polyfill";
 import { ErrorBoundary } from "@sentry/react";
 import { on, EVENTS } from "./Onramper";
-import TagManager from "react-gtm-module";
 import "./i18n/config";
 import "./isolateinheritance.css";
 import "./normalize.min.css";
 import { TransactionContextProvider } from "./TransactionContext";
 import { NotificationProvider } from "./NotificationContext";
-import { G_TAG_ID } from "./ApiContext/api/constants";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PaymentProgressView } from "./steps/PaymentProgressView";
 import { L2Provider } from "./web3/config";
-// import SwapOverviewView from "./steps/SwapOverviewView/SwapOverviewView";
-// import {
-//   startProps,
-//   startPropsMainnet,
-//   startPropsTestnet,
-// } from "./steps/SwapOverviewView/SwapOverviewView.models";
+import { GTM_ID } from "./ApiContext/api/constants";
+import { GTMProvider } from "./hooks/gtm";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -47,15 +41,10 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     "--font-family": fontFamily,
   } as React.CSSProperties;
 
-  useEffect(() => {
-    const tagManagerArgs = {
-      gtmId: G_TAG_ID,
-      dataLayer: {
-        apiKey: props.API_KEY,
-      },
-    };
-    TagManager.initialize(tagManagerArgs);
-  }, [props.API_KEY]);
+  const gtmParams = {
+    gtmId: GTM_ID,
+    dataLayer: { apiKey: props.API_KEY },
+  };
 
   return (
     <BrowserRouter>
@@ -76,65 +65,67 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             setFlagRestart((old) => ++old);
           }}
         >
-          <NavProvider>
-            <APIProvider
-              API_KEY={props.API_KEY}
-              defaultAmount={props.defaultAmount}
-              defaultAddrs={props.defaultAddrs}
-              defaultCrypto={props.defaultCrypto}
-              defaultFiat={props.defaultFiat}
-              defaultFiatSoft={props.defaultFiatSoft}
-              defaultPaymentMethod={props.defaultPaymentMethod}
-              filters={props.filters}
-              country={props.country}
-              language={props.language}
-              isAddressEditable={props.isAddressEditable}
-              themeColor={color.slice(1)}
-              displayChatBubble={props.displayChatBubble}
-              amountInCrypto={props.amountInCrypto}
-              partnerContext={props.partnerContext}
-              redirectURL={props.redirectURL}
-              minAmountEur={props.minAmountEur}
-              supportSell={props.supportSell}
-              supportBuy={props.supportBuy}
-              isAmountEditable={props.isAmountEditable}
-              recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
-              selectGatewayBy={props.selectGatewayBy}
-            >
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <div style={{ flexGrow: 1, display: "flex" }}>
-                      <NavContainer home={<BuyCryptoView />} />
-                    </div>
-                  }
-                />
-                <Route
-                  path="/swap/:txId"
-                  element={
-                    <L2Provider>
-                      <TransactionContextProvider>
-                        <NotificationProvider>
-                          <div style={{ flexGrow: 1, display: "flex" }}>
-                            <NavContainer home={<PaymentProgressView />} />
-                          </div>
-                        </NotificationProvider>
-                      </TransactionContextProvider>
-                    </L2Provider>
-                  }
-                />
-                <Route
-                  path="/*"
-                  element={
-                    <div style={{ flexGrow: 1, display: "flex" }}>
-                      <NavContainer home={<BuyCryptoView />} />
-                    </div>
-                  }
-                />
-              </Routes>
-            </APIProvider>
-          </NavProvider>
+          <GTMProvider state={gtmParams}>
+            <NavProvider>
+              <APIProvider
+                API_KEY={props.API_KEY}
+                defaultAmount={props.defaultAmount}
+                defaultAddrs={props.defaultAddrs}
+                defaultCrypto={props.defaultCrypto}
+                defaultFiat={props.defaultFiat}
+                defaultFiatSoft={props.defaultFiatSoft}
+                defaultPaymentMethod={props.defaultPaymentMethod}
+                filters={props.filters}
+                country={props.country}
+                language={props.language}
+                isAddressEditable={props.isAddressEditable}
+                themeColor={color.slice(1)}
+                displayChatBubble={props.displayChatBubble}
+                amountInCrypto={props.amountInCrypto}
+                partnerContext={props.partnerContext}
+                redirectURL={props.redirectURL}
+                minAmountEur={props.minAmountEur}
+                supportSell={props.supportSell}
+                supportBuy={props.supportBuy}
+                isAmountEditable={props.isAmountEditable}
+                recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
+                selectGatewayBy={props.selectGatewayBy}
+              >
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <div style={{ flexGrow: 1, display: "flex" }}>
+                        <NavContainer home={<BuyCryptoView />} />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="/swap/:txId"
+                    element={
+                      <L2Provider>
+                        <TransactionContextProvider>
+                          <NotificationProvider>
+                            <div style={{ flexGrow: 1, display: "flex" }}>
+                              <NavContainer home={<PaymentProgressView />} />
+                            </div>
+                          </NotificationProvider>
+                        </TransactionContextProvider>
+                      </L2Provider>
+                    }
+                  />
+                  <Route
+                    path="/*"
+                    element={
+                      <div style={{ flexGrow: 1, display: "flex" }}>
+                        <NavContainer home={<BuyCryptoView />} />
+                      </div>
+                    }
+                  />
+                </Routes>
+              </APIProvider>
+            </NavProvider>
+          </GTMProvider>
         </ErrorBoundary>
       </div>
     </BrowserRouter>

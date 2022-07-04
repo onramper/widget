@@ -8,10 +8,8 @@ import { useTranslation } from "react-i18next";
 
 const Skeleton = React.forwardRef<
   HTMLDivElement,
-  { optionLeftStyle: React.CSSProperties; byPerformance: boolean }
+  { optionLeftStyle: React.CSSProperties; gatewaySelectionTxt: string }
 >((props, ref) => {
-  const { t } = useTranslation();
-
   return (
     <div className={`${styles.wrapper} ${commonStyles["skeleton-wrapper"]}`}>
       <div className={`${styles["option-wrapper"]}`} ref={ref}>
@@ -20,9 +18,7 @@ const Skeleton = React.forwardRef<
         ></span>
         <div className={`${styles["option-body"]} ${styles["sk-option-body"]}`}>
           <span className={`${styles["option-label"]}`}>
-            {props.byPerformance
-              ? t("buyCryptoView.bestPerformance")
-              : t("buyCryptoView.bestRate")}
+            {props.gatewaySelectionTxt}
           </span>
           <span
             className={`${styles["option-handle"]} ${commonStyles["skeleton-box"]}`}
@@ -98,7 +94,7 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (
   if (props.isInitialLoading || !props.selectedGateway)
     return (
       <Skeleton
-        byPerformance={props.byPerformance}
+        gatewaySelectionTxt={props.gatewaySelectionTxt}
         optionLeftStyle={optionLeftStyle}
         ref={optionWrapperRef}
       />
@@ -122,9 +118,7 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (
         />
         <div className={styles["option-body"]}>
           <div className={`${styles["option-label"]}`}>
-            {props.byPerformance
-              ? t("buyCryptoView.bestPerformance")
-              : t("buyCryptoView.bestRate")}
+            {props.gatewaySelectionTxt}
           </div>
           <div className={styles["option-handle"]}>
             <span>{props.selectedGateway.name}</span>{" "}

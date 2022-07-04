@@ -8,6 +8,8 @@ import React, {
 import styles from "./CurrencyInput.module.css";
 import { APIContext } from "../../../ApiContext";
 import { onChangeTextNumber } from "../../../utils";
+import { amountClickGtmEvent } from "../../../hooks/gtm/buyCryptoViewEvents";
+import { useGTMDispatch } from "../../../hooks/gtm";
 
 const defaultPrecision = 2;
 
@@ -23,6 +25,7 @@ const CurrencyInput: React.FC = () => {
   const [hasError, setHasError] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const sendDataToGTM = useGTMDispatch();
 
   const onFocus = () => setIsFocused(true);
   const onBlur = () => setIsFocused(false);
@@ -74,7 +77,10 @@ const CurrencyInput: React.FC = () => {
       className={`${styles["input-box"]} ${
         isFocused ? styles["is-focused"] : ""
       } ${hasError ? styles["with-error"] : ""}`}
-      onClick={() => inputRef.current?.focus()}
+      onClick={() => {
+        sendDataToGTM(amountClickGtmEvent);
+        inputRef.current?.focus();
+      }}
     >
       {symbol && (
         <span className={`${styles["text"]} ${styles["symbol"]}`}>

@@ -59,7 +59,6 @@ const ListItemButton: React.FC<ListItemButtonProps> = (props) => {
   const onClickItem = (item: ListItemType) => {
     if (props.parent.items && item.id === props.parent.id) {
       setChildrenVisible(!childrenVisible);
-      return;
     }
     props.onClick(item);
   };
@@ -70,7 +69,6 @@ const ListItemButton: React.FC<ListItemButtonProps> = (props) => {
         id={props.parent.id}
         icon={props.parent.icon}
         text={props.parent.text}
-        link={props.parent.link}
         childrenVisible={childrenVisible}
         onClick={() => onClickItem(props.parent)}
         hasChildren={!!props.parent.items}
@@ -95,7 +93,6 @@ const ListItemButton: React.FC<ListItemButtonProps> = (props) => {
                 className={classes["child"]}
                 id={item.id}
                 key={item.id}
-                link={item.link}
                 onClick={() => props.onClick(item)}
                 icon={item.icon}
                 text={item.text}
