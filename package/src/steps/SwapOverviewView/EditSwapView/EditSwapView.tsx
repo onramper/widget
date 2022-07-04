@@ -78,6 +78,7 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
   }, [ethBalance]);
 
   const onBackClick = () => {
+    onBeforeUnload();
     updateQuote(inAmount);
   };
 
@@ -135,10 +136,11 @@ const EditSwapView: React.FC<EditSwapViewProps> = (props) => {
     ? formatTokenAmount(tokenOut, quote?.toAmountMin)
     : "0.000";
 
+  const onBeforeUnload = () => {
+    beforeUnLoadRef.current.abort();
+  };
+
   useEffect(() => {
-    const onBeforeUnload = () => {
-      beforeUnLoadRef.current.abort();
-    };
     window.addEventListener("beforeunload", onBeforeUnload);
     return () => {
       onBeforeUnload();
