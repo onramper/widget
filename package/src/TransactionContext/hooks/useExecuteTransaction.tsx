@@ -164,7 +164,7 @@ export const useExecuteTransaction = () => {
   ]);
 
   const handleException = useCallback(
-    ({ status, errorMessage }: TransactionStatus) => {
+    (status, errorMessage) => {
       if (status === "Exception") {
         if (errorMessage?.includes("INSUFFICIENT_OUTPUT_AMOUNT")) {
           nextScreen(
@@ -193,15 +193,19 @@ export const useExecuteTransaction = () => {
               description="You have insufficient funds to complete this transaction"
             />
           );
-        } else {
+        } else if (
+          errorMessage
+            ?.toLocaleLowerCase()
+            .includes("denied transaction signature")
+        ) {
           nextScreen(
             <TransactionErrorOverlay
-              {...{
-                textAlert: "Rejected transaction",
-                description: "You rejected this transaction.",
-              }}
+              textAlert="Rejected transaction"
+              description="You rejected this transaction."
             />
           );
+        } else {
+          alert(errorMessage);
         }
       }
     },
@@ -227,23 +231,25 @@ export const useExecuteTransaction = () => {
         tokenOut={tokenOut}
       />
     );
-  }, [account, nextScreen, state.transaction, tokenOut, txId]);
+  }, [account, nextScreen, state, tokenOut, txId]);
 
   useEffect(() => {
     if (state.status === "Mining") {
       handleMining();
     }
     if (state.status === "Exception") {
-      handleException(state);
+      handleException(state.errorCode, state.errorMessage);
     }
   }, [
     handleException,
     account,
     nextScreen,
     txId,
-    state,
+    state.errorMessage,
+    state.errorCode,
     tokenOut,
     handleMining,
+    state.status,
   ]);
 
   useEffect(() => {
