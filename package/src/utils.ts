@@ -1,8 +1,10 @@
 import { BigNumberish } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
-import { Dexes, lifiChains, TokenInfo } from "layer2";
+import { lifiChains, TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 import { StaticRoutingItemType } from "./ApiContext/initialState";
+
+export const knownDexes = ["LIFI", "UNISWAP"];
 
 // for now we just do ethereum,
 export const getNativeToken = (chainId: number): TokenInfo => {
@@ -47,7 +49,7 @@ export const isL2Gateway = (gateway: string | undefined): boolean => {
 
   const dex = getDexFromGateway(gateway);
   if (dex === undefined) return false;
-  return Dexes.includes(dex);
+  return knownDexes.includes(dex);
 };
 
 export const isTransactionHash = (hash: string) => {

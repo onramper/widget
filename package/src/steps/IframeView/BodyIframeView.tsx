@@ -21,7 +21,7 @@ import { ButtonAction } from "../../common/Buttons";
 import ChooseGatewayView from "../../ChooseGatewayView/ChooseGatewayView";
 import Footer from "../../common/Footer";
 import { PaymentProgressView } from "../PaymentProgressView";
-import { getNativeToken } from "../../utils";
+import { getNativeToken, isL2Gateway, knownDexes } from "../../utils";
 import {
   isIframeStep,
   isRedirectStep,
@@ -82,10 +82,6 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     setIsRestartCalled(true);
   };
 
-  const isL2MoonpayNewWindowIntegration = () =>
-    selectedGateway?.name.split("_").at(-1)?.toUpperCase() === "LIFI" &&
-    props.src.toLowerCase().includes("moonpay");
-
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
       onlyScreen(<BuyCryptoView />);
@@ -113,7 +109,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     }
     if (
       windowObjectReference &&
-      isL2MoonpayNewWindowIntegration() &&
+      isL2Gateway(selectedGateway?.name) &&
       (isIframeStep(props.nextStep) || isRedirectStep(props.nextStep))
     ) {
       const {
