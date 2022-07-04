@@ -112,11 +112,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD, GtmEventLabel.WALLET_ADDRESS);
   };
 
-  const formFieldClick = (fieldType: string) =>{
-    if(fieldType==="email"){
+  const handleFormFieldClick = (field: BodyFormViewType["fields"][0]) =>{
+    if(getInputType(field)==="email"){
       gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.EMAIL_ADDRESS);
     }
-    if(fieldType==="password"){
+    if(getInputType(field)==="password"){
       gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.PASSWORD);
     } 
   };
@@ -740,10 +740,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 className={stylesCommon["body-form-child"]}
                 label={field.humanName}
                 type={getInputType(field)}
-                onClick={()=>{
-                  const fieldType = getInputType(field);
-                  formFieldClick(fieldType);
-                }}
+                onClick={() => handleFormFieldClick(field)}
                 placeholder={field.placeholder}
                 disabled={
                   field.name === "cryptocurrencyAddressTag" &&
