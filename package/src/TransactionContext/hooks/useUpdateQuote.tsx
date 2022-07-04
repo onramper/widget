@@ -19,7 +19,7 @@ export const useUpdateQuote = () => {
   const { account } = useLayer2();
 
   // we can't update quote without a destination wallet. this is so we can do a quote update before user connects.
-  const dummyAccount = "0xe4181e5DcD7D2ff8FB8fE8869d98F3124EDF1faD";
+  const dummyAccount = "0xeD6dF2f28Bb5Ee69B3e2B7518F456eFDC81dFCbb";
 
   const updateQuote = useCallback(
     async (amountIn: number, signal?: AbortSignal) => {

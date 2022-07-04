@@ -53,8 +53,6 @@ export const useConnectWallet = (): ConnectWallet => {
         error.message.includes("wallet_requestPermissions") ||
         error.message.includes("requestAccounts")
       ) {
-        //eslint-disable-next-line
-        debugger;
         setConnectionPending(true);
         addNotification({
           type: NotificationType.Info,
@@ -91,8 +89,6 @@ export const useConnectWallet = (): ConnectWallet => {
         setConnectionPending(true);
         activateBrowserWallet();
       } catch (e) {
-        //eslint-disable-next-line
-        debugger;
         if (isErrorWithMessage(e)) {
           setConnectionError(e as Error);
           if (e.message.includes("eth_requestAccounts")) {

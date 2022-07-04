@@ -13,8 +13,6 @@ export const useAddTokenToMetamask = (
   const { library } = useLayer2();
 
   const addToken = useCallback(() => {
-    //eslint-disable-next-line
-    debugger;
     if (library && isMetaMaskProvider(library) && token) {
       const { address, symbol, decimals, logoURI } = token;
       const logoURL = logoURI ? uriToHttp(logoURI)[0] : "";

@@ -101,8 +101,6 @@ export const useExecuteTransaction = () => {
           message: "Getting ready to swap...",
           shouldExpire: true,
         });
-        // //eslint-disable-next-line
-        // debugger;
         //update quote before tx
         const res = await getLifiQuote(
           tokenIn,
@@ -213,8 +211,6 @@ export const useExecuteTransaction = () => {
   const handleMining = useCallback(async () => {
     if (state.transaction && account) {
       try {
-        //eslint-disable-next-line
-        debugger;
         storeTransactionData({
           transactionResponse: state.transaction,
           address: account,
