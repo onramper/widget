@@ -112,6 +112,15 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD, GtmEventLabel.WALLET_ADDRESS);
   };
 
+  const formFieldClick = (fieldType: string) =>{
+    if(fieldType==="email"){
+      gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.EMAIL_ADDRESS);
+    }
+    if(fieldType==="password"){
+      gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.PASSWORD);
+    } 
+  };
+
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
       onlyScreen(<BuyCryptoView />);
@@ -732,12 +741,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 label={field.humanName}
                 type={getInputType(field)}
                 onClick={()=>{
-                  if(getInputType(field)==="email"){
-                    gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.EMAIL_ADDRESS);
-                  }
-                  if(getInputType(field)==="password"){
-                    gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.PASSWORD);
-                  }
+                  const fieldType = getInputType(field);
+                  formFieldClick(fieldType);
                 }}
                 placeholder={field.placeholder}
                 disabled={
