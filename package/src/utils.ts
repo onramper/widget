@@ -1,6 +1,6 @@
 import { BigNumberish } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
-import { lifiChains, TokenInfo } from "layer2";
+import { TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 import { StaticRoutingItemType } from "./ApiContext/initialState";
 import { lifi } from "./web3/lifi";
