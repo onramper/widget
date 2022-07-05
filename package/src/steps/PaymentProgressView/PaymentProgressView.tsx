@@ -93,7 +93,7 @@ export const PaymentProgressView = (props: PaymentProgressViewProps) => {
           const tx = await pollTransaction(txId);
 
           if (tx) {
-            const tokenIn = getNativeToken(tx.l2TokenData.chainId);
+            const tokenIn = await getNativeToken(tx.l2TokenData.chainId);
             const tokenOut = tx.l2TokenData;
             const customerGateway = tx.customerGateway;
             const inCurrency = tx.inCurrency;

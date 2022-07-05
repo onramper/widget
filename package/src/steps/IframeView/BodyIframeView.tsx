@@ -115,6 +115,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       const {
         nextStep: { l2TokenData, txId, inCurrency },
       } = props;
+      const nativeToken = await getNativeToken(l2TokenData.chainId);
       navigate(`/swap/${txId}`, { replace: true });
       return replaceScreen(
         <PaymentProgressView
@@ -122,7 +123,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             type: StepType.paymentProgress,
             progress: 80,
             // infer weth from output chainID
-            tokenIn: getNativeToken(l2TokenData.chainId),
+            tokenIn: nativeToken,
             tokenOut: l2TokenData,
             customerGateway: selectedGateway?.name ?? "",
             txId: txId,

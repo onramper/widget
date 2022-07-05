@@ -87,6 +87,9 @@ const IframeView: React.FC<{
             selectedGateway?.name === "Moonpay_Uniswap" &&
             (isIframeStep(nextStep) || isRedirectStep(nextStep))
           ) {
+            const nativeToken = await getNativeToken(
+              nextStep.l2TokenData.chainId
+            );
             navigate(`/swap/${nextStep.txId}`, { replace: true });
             replaceScreen(
               <PaymentProgressView
@@ -94,7 +97,7 @@ const IframeView: React.FC<{
                   type: StepType.paymentProgress,
                   progress: 0,
                   // infer weth from output chainI
-                  tokenIn: getNativeToken(nextStep.l2TokenData.chainId),
+                  tokenIn: nativeToken,
                   tokenOut: nextStep.l2TokenData,
                   customerGateway: selectedGateway.name,
                   txId: nextStep.txId,

@@ -3,15 +3,33 @@ import { formatUnits } from "ethers/lib/utils";
 import { lifiChains, TokenInfo } from "layer2";
 import { GatewayRateOption } from "./ApiContext";
 import { StaticRoutingItemType } from "./ApiContext/initialState";
+import { lifi } from "./web3/lifi";
 
 export const knownDexes = ["LIFI", "UNISWAP"];
 
-// for now we just do ethereum,
-export const getNativeToken = (chainId: number): TokenInfo => {
-  const tokenChain = lifiChains.find((c) => c.chainId === chainId);
+export const lifiNativeTokens = async (): Promise<TokenInfo[]> => {
+  const res = await lifi.getChains();
+  return res.map((chain) => {
+    return {
+      chainId: Number(chain.metamask.chainId),
+      symbol: chain.metamask.nativeCurrency.symbol,
+      address: "0x0000000000000000000000000000000000000000",
+      name: chain.metamask.nativeCurrency.name,
+      decimals: chain.metamask.nativeCurrency.decimals,
+      logoURI: chain.logoURI,
+    };
+  });
+};
 
-  if (tokenChain) {
-    return tokenChain;
+// for now we just do ethereum,
+export const getNativeToken = async (chainId: number): Promise<TokenInfo> => {
+  const chainTokens = await lifiNativeTokens();
+
+  if (chainTokens) {
+    const nativeToken = chainTokens.find((chain) => chain.chainId === chainId);
+    if (nativeToken) {
+      return nativeToken;
+    }
   }
 
   throw new Error("Chain not supported!");
