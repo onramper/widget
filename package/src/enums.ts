@@ -22,7 +22,10 @@ export enum GtmEventAction {
   TERMS_OF_USAGE_MENU_LINK = "termsOfUsageMunuLink",
   MOONPAY_SUPPORT_LINK = "moonPaySupportMenuLink",
   UNISWAP_SUPPORT_MENU_LINK = "uniswapSupportMenuLink",
+  MENU = "menu",
   MENU_CLOSE = "menuClose",
+  WALLET_FORM = "walletForm",
+  EMAIL_FORM = "emailForm",
 }
 
 export enum GtmEventCategory {
@@ -49,6 +52,16 @@ export enum GtmEventLabel {
   MENU = "menu",
   AMOUNT = "amount",
   MENU_CLOSE = "menuClose",
+  CONTINUE = "continue",
+  EMAIL_ADDRESS = "emailAddress",
+  WALLET_ADDRESS = "walletAddress",
+  PASSWORD = "password",
+  MENU_FAQ = "faq",
+  MENU_PRIVACY_POLICY = "privacyPolicy",
+  MENU_TERMS = "termsOfUsage",
+  MENU_HELP = "help",
+  MENU_MOONPAY_SUPPORT = "moonPaySupport",
+  MENU_UNISWAP_SUPPORT = "uniswapSupport",
 }
 
 export enum GtmGatewaySelectionType {
@@ -57,10 +70,11 @@ export enum GtmGatewaySelectionType {
   NOT_SUGGESTED = "notSuggested",
 }
 
-export enum MenuItem {
-  "faq" = GtmEventAction.FAQ_MENU_LINK,
-  "privacy-policy" = GtmEventAction.PRIVACY_POLICY_MENU_LINK,
-  "terms" = GtmEventAction.TERMS_OF_USAGE_MENU_LINK,
-  "support-moonpay" = GtmEventAction.MOONPAY_SUPPORT_LINK,
-  "support-uniswap" = GtmEventAction.UNISWAP_SUPPORT_MENU_LINK,
+export enum MenuItemLabel {
+  "faq" = GtmEventLabel.MENU_FAQ,
+  "privacy-policy" = GtmEventLabel.MENU_PRIVACY_POLICY,
+  "terms" = GtmEventLabel.MENU_TERMS,
+  "support-moonpay" = GtmEventLabel.MENU_MOONPAY_SUPPORT,
+  "support-uniswap" = GtmEventLabel.MENU_UNISWAP_SUPPORT,
+  "help" = GtmEventLabel.MENU_HELP,
 }
