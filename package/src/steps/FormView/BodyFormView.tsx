@@ -50,7 +50,7 @@ import {
   GtmEventLabel,
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
-
+import { OnramperValidator } from "@onramper/validator/dist";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
   "ccMonth",
@@ -74,6 +74,7 @@ type BodyFormViewType = {
 };
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
+  const validator = useRef(new OnramperValidator({}));
   const { handleInputChange, onActionButton, fields = [] } = props;
   const { collected, apiInterface } = useContext(APIContext);
   const { backScreen, nextScreen, onlyScreen } = useContext(NavContext);
@@ -95,10 +96,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   };
 
   const gtmEventFormData = (
-    action : GtmEventAction,
-    category : GtmEventCategory,
-    label : GtmEventLabel,
-    ) =>{
+    action: GtmEventAction,
+    category: GtmEventCategory,
+    label: GtmEventLabel
+  ) => {
     const gtmData = {
       event: GtmEvent.ELEMENT_CLICK,
       action: action,
@@ -108,17 +109,29 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     sendDataToGTM(gtmData);
   };
 
-  const walletFieldClick = () =>{
-    gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.FIELD, GtmEventLabel.WALLET_ADDRESS);
+  const walletFieldClick = () => {
+    gtmEventFormData(
+      GtmEventAction.WALLET_FORM,
+      GtmEventCategory.FIELD,
+      GtmEventLabel.WALLET_ADDRESS
+    );
   };
 
-  const handleFormFieldClick = (field: BodyFormViewType["fields"][0]) =>{
-    if(getInputType(field)==="email"){
-      gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.EMAIL_ADDRESS);
+  const handleFormFieldClick = (field: BodyFormViewType["fields"][0]) => {
+    if (getInputType(field) === "email") {
+      gtmEventFormData(
+        GtmEventAction.EMAIL_FORM,
+        GtmEventCategory.FIELD,
+        GtmEventLabel.EMAIL_ADDRESS
+      );
     }
-    if(getInputType(field)==="password"){
-      gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.FIELD, GtmEventLabel.PASSWORD);
-    } 
+    if (getInputType(field) === "password") {
+      gtmEventFormData(
+        GtmEventAction.EMAIL_FORM,
+        GtmEventCategory.FIELD,
+        GtmEventLabel.PASSWORD
+      );
+    }
   };
 
   useEffect(() => {
@@ -164,6 +177,13 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         }
       }
 
+      fields.forEach((field) => {
+        if (field.name === name) {
+          console.log("IIIYYYy", field.name);
+          validator.current.showMessageFor(name);
+        }
+      });
+
       if (name === "cryptocurrencyAddressTag") {
         handleInputChange("cryptocurrencyAddress", {
           ...collected.cryptocurrencyAddress,
@@ -178,7 +198,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
       if (name === "country") setCountryHasChanged(v);
     },
-    [handleInputChange, collected.cryptocurrencyAddress]
+    [fields, handleInputChange, collected.cryptocurrencyAddress]
   );
 
   useEffect(() => {
@@ -350,7 +370,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 key={i}
                 className={stylesCommon["body-form-child"]}
                 handleInputChange={onChange}
-                error={errorObj?.[field.name]}
+                error={validator.current.message(
+                  "cryptocurrencyAddress",
+                  `${collected.selectedCrypto?.id}:${collected.cryptocurrencyAddress?.address}`
+                )}
                 disabled={!collected.isAddressEditable}
                 onClick={walletFieldClick}
               />
@@ -632,7 +655,22 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     ccCVVValue={collected.ccCVV}
                     key={i}
                     handleInputChange={onChange}
-                    errorObj={errorObj}
+                    errorObj={
+                      errorObj ?? {
+                        ccNumber: validator.current.message(
+                          "ccNumber",
+                          collected.ccNumber
+                        ),
+                        ccMonth: validator.current.message(
+                          "ccMonth",
+                          collected.ccMonth
+                        ),
+                        ccCVV: validator.current.message(
+                          "ccCVV",
+                          collected.ccCVV
+                        ),
+                      }
+                    }
                   />
                 </div>
               ) : (
@@ -702,7 +740,13 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     )}
                   />
                   <InputDelegator
-                    error={errorObj?.phoneNumber}
+                    error={
+                      errorObj?.phoneNumber ??
+                      validator.current.message(
+                        "phoneNumber",
+                        collected["phoneNumber"]
+                      )
+                    }
                     ref={
                       inputRefs[
                         fields.findIndex(
@@ -733,7 +777,15 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 ref={inputRefs[i].ref}
                 key={i}
                 hint={field.hint}
-                error={errorObj?.[field.name]}
+                error={
+                  errorObj?.[field.name] ??
+                  validator.current.message(field.name, collected[field.name])
+                }
+                success={
+                  validator.current.fieldValid(field.name) === true
+                    ? "Field validation is successful."
+                    : ""
+                }
                 name={field.name}
                 value={getValueByField(field, collected)}
                 onChange={onChange}
@@ -758,12 +810,16 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           }`}
         >
           <ButtonAction
-            onClick={()=>{
+            onClick={() => {
               onActionButton();
-              gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
+              gtmEventFormData(
+                GtmEventAction.WALLET_FORM,
+                GtmEventCategory.BUTTON,
+                GtmEventLabel.CONTINUE
+              );
             }}
             text={isLoading ? "Sending..." : "Continue"}
-            disabled={!isFilled || isLoading}
+            disabled={!isFilled || isLoading || !validator.current.allValid()}
           />
           <Footer />
         </div>
@@ -771,7 +827,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     </main>
   );
 };
- 
+
 const getValueByField = (
   field: BodyFormViewType["fields"][0],
   collected: CollectedStateType

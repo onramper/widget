@@ -33,10 +33,10 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
       setNewErr(error);
     }, [error]);
 
-    useEffect(() => {
-      setNewInfo(undefined);
-      setNewErr(undefined);
-    }, [collected.cryptocurrencyAddress]);
+    // useEffect(() => {
+    // setNewInfo(undefined);
+    // setNewErr(undefined);
+    // }, [collected.cryptocurrencyAddress]);
 
     useEffect(() => {
       if (collected.cryptocurrencyAddress === undefined)
@@ -60,7 +60,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
       },
       [handleInputChange, collected.cryptocurrencyAddress]
     );
-    
+
     const getWalletAddrs = useCallback(async () => {
       setNewInfo(undefined);
       const importedWallets = await ProviderManager.getAccounts();
