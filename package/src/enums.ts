@@ -57,6 +57,7 @@ export enum GtmEventLabel {
   MENU_HELP = "help",
   MENU_MOONPAY_SUPPORT = "moonPaySupport",
   MENU_UNISWAP_SUPPORT = "uniswapSupport",
+  AMOUNT_SWITCH="amountSwitch",
 }
 
 export enum GtmGatewaySelectionType {
