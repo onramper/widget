@@ -13,6 +13,7 @@ import InputDelegator from "./InputDelegator";
 type InputCryptoAddrType = {
   handleInputChange: (name: string, value: any) => void;
   error?: string;
+  success?: string;
   className: string;
   type?: string;
   hint?: string;
@@ -32,11 +33,6 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
     useEffect(() => {
       setNewErr(error);
     }, [error]);
-
-    // useEffect(() => {
-    // setNewInfo(undefined);
-    // setNewErr(undefined);
-    // }, [collected.cryptocurrencyAddress]);
 
     useEffect(() => {
       if (collected.cryptocurrencyAddress === undefined)
@@ -125,6 +121,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
         }
         type={type}
         error={newErr}
+        success={props.success}
         value={collected.cryptocurrencyAddress?.address ?? ""}
         iconPosition="end"
         name="cryptocurrencyAddress"

@@ -134,6 +134,12 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     }
   };
 
+  const getSuccessMessage = (fieldName: string) => {
+    if (validator.current.fieldValid(fieldName) === true)
+      return "Field validation is successful.";
+    return "";
+  };
+
   useEffect(() => {
     if (isRestartCalled && !collected.errors) {
       onlyScreen(<BuyCryptoView />);
@@ -176,13 +182,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           };
         }
       }
-
-      fields.forEach((field) => {
-        if (field.name === name) {
-          console.log("IIIYYYy", field.name);
-          validator.current.showMessageFor(name);
-        }
-      });
+      validator.current.showMessageFor(name);
 
       if (name === "cryptocurrencyAddressTag") {
         handleInputChange("cryptocurrencyAddress", {
@@ -198,7 +198,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
       if (name === "country") setCountryHasChanged(v);
     },
-    [fields, handleInputChange, collected.cryptocurrencyAddress]
+    [handleInputChange, collected.cryptocurrencyAddress]
   );
 
   useEffect(() => {
@@ -374,6 +374,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                   "cryptocurrencyAddress",
                   `${collected.selectedCrypto?.id}:${collected.cryptocurrencyAddress?.address}`
                 )}
+                success={getSuccessMessage("cryptocurrencyAddress")}
                 disabled={!collected.isAddressEditable}
                 onClick={walletFieldClick}
               />
@@ -396,7 +397,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                   onChange={onChange}
                   label={field.humanName}
                   placeholder={field.placeholder}
-                  error={errorObj?.[field.name]}
+                  error={
+                    errorObj?.[field.name] ??
+                    validator.current.message(field.name, collected[field.name])
+                  }
+                  success={getSuccessMessage(field.name)}
                   className={stylesCommon["body-form-child"]}
                   type={getInputType(field)}
                 />
@@ -420,7 +425,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                   onChange={onChange}
                   label={field.humanName}
                   placeholder={field.placeholder}
-                  error={errorObj?.[field.name]}
+                  error={
+                    errorObj?.[field.name] ??
+                    validator.current.message(field.name, collected[field.name])
+                  }
+                  success={getSuccessMessage(field.name)}
                   className={stylesCommon["body-form-child"]}
                   type={getInputType(field)}
                   value={verifyCode}
@@ -665,6 +674,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                           "ccMonth",
                           collected.ccMonth
                         ),
+                        ccYear: validator.current.message(
+                          "ccYear",
+                          collected.ccYear?.substr(-2)
+                        ),
                         ccCVV: validator.current.message(
                           "ccCVV",
                           collected.ccCVV
@@ -745,8 +758,11 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                       validator.current.message(
                         "phoneNumber",
                         collected["phoneNumber"]
+                          ? `${collected["phoneCountryCode"]}${collected["phoneNumber"]}`
+                          : ""
                       )
                     }
+                    success={getSuccessMessage("phoneNumber")}
                     ref={
                       inputRefs[
                         fields.findIndex(
@@ -781,11 +797,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                   errorObj?.[field.name] ??
                   validator.current.message(field.name, collected[field.name])
                 }
-                success={
-                  validator.current.fieldValid(field.name) === true
-                    ? "Field validation is successful."
-                    : ""
-                }
+                success={getSuccessMessage(field.name)}
                 name={field.name}
                 value={getValueByField(field, collected)}
                 onChange={onChange}
