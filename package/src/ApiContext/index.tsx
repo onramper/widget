@@ -267,15 +267,22 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         // Experimentation - Simplified Approach for static routing
         if (Date.now() % 11 >= 6) {
           getGatewayStaticRouting(country);
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Performance);
           sendExperimentGtmEvent(SelectGatewayByType.Performance);
         } else {
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
           sendExperimentGtmEvent(SelectGatewayByType.Price);
         }
       } else if (props.selectGatewayBy === SelectGatewayByType.Performance) {
         getGatewayStaticRouting(country);
       }
     },
-    [getGatewayStaticRouting, props.selectGatewayBy, sendExperimentGtmEvent]
+    [
+      getGatewayStaticRouting,
+      handleInputChange,
+      props.selectGatewayBy,
+      sendExperimentGtmEvent,
+    ]
   );
 
   const restartWidget = useCallback(() => {
