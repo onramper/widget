@@ -71,6 +71,7 @@ type BodyFormViewType = {
   inputName?: string;
   onErrorDismissClick: (field?: string) => void;
   heading?: string;
+  formName?: string;
 };
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
@@ -83,12 +84,13 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     errorObj,
     errorMsg,
     infoMsg,
+    formName,
   } = props;
 
   const [isRestartCalled, setIsRestartCalled] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
   const sendDataToGTM = useGTMDispatch();
-
+  
   const restartToAnotherGateway = () => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
@@ -758,9 +760,14 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           }`}
         >
           <ButtonAction
-            onClick={()=>{
+            onClick={()=>{                            
               onActionButton();
-              gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
+              if(formName=="walletForm"){
+                gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
+              }
+              if(formName=="emailForm"){
+                gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE); 
+              }
             }}
             text={isLoading ? "Sending..." : "Continue"}
             disabled={!isFilled || isLoading}

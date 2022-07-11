@@ -73,3 +73,8 @@ export enum MenuItemLabel {
   "support-uniswap" = GtmEventLabel.MENU_UNISWAP_SUPPORT,
   "help" = GtmEventLabel.MENU_HELP,
 }
+
+export enum stepFormFieldLabel {
+  "email" = GtmEventLabel.EMAIL_ADDRESS,
+  "password" = GtmEventLabel.PASSWORD,
+}

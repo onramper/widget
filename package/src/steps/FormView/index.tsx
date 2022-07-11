@@ -18,6 +18,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: StepType.form } }> = ({
   const { nextScreen } = useContext(NavContext);
   const { inputInterface, collected, apiInterface } = useContext(APIContext);
   const [isFilled, setIsFilled] = useState(false);
+  const [formName, setFormName] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string>();
   const [errorObj, setErrorObj] = useState<{
@@ -46,7 +47,10 @@ const FormView: React.FC<{ nextStep: NextStep & { type: StepType.form } }> = ({
     if (nextStep.title) {
       return;
     }
-
+    
+    if (nextStepData.some((field) => field.name === "cryptocurrencyAddress")){
+      setFormName('walletForm');
+    }
     // set title
     if (
       nextStepData.some((field) => field.name === "email") &&
@@ -54,6 +58,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: StepType.form } }> = ({
       nextStepData.length <= 2
     ) {
       setTitle("Input your email");
+      setFormName('emailForm');
     } else if (
       nextStepData.some((field) => field.name === "phoneNumber") &&
       nextStepData.length <= 2
@@ -95,10 +100,12 @@ const FormView: React.FC<{ nextStep: NextStep & { type: StepType.form } }> = ({
 
     const params = nextStepData.reduce((acc, current) => {
       let value = collected[current.name];
-      if (current.name === "cryptocurrencyAddress")
+      if (current.name === "cryptocurrencyAddress"){
         value = collected[current.name]?.address;
-      if (current.name === "cryptocurrencyAddressTag")
+      }
+      if (current.name === "cryptocurrencyAddressTag"){
         value = collected["cryptocurrencyAddress"]?.memo;
+      }
       return { ...acc, [current.name]: value };
     }, {});
     try {
@@ -168,6 +175,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: StepType.form } }> = ({
         }}
         errorObj={errorObj}
         heading={useHeading ? title : undefined}
+        formName={formName}
       />
     </div>
   );
