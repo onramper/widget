@@ -56,7 +56,7 @@ const InputCryptoAddr = React.forwardRef<HTMLDivElement, InputCryptoAddrType>(
       },
       [handleInputChange, collected.cryptocurrencyAddress]
     );
-
+    
     const getWalletAddrs = useCallback(async () => {
       setNewInfo(undefined);
       const importedWallets = await ProviderManager.getAccounts();
