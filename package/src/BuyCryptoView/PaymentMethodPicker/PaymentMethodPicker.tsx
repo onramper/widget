@@ -228,7 +228,10 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
           <li
             itemProp="option"
             className={styles["option-wrapper"]}
-            onClick={() => props.openMoreOptions && props.openMoreOptions()}
+            onClick={() => {
+              sendDataToGTM(genPaymentMethodOptionEvent("other"));
+              props.openMoreOptions?.();
+            }}
           >
             <div className={styles["option-logo-wrapper"]}>
               <span>+{props.items.length - maxLength}</span>
