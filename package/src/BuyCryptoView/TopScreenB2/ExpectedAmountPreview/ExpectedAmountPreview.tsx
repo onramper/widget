@@ -44,7 +44,7 @@ const ExpectedAmountPreview: React.FC = () => {
 
     const inputNode = document.getElementById("editable-amount");
     inputNode && inputNode.focus();
-  }, [collected.amountInCrypto, collected.bestExpectedCrypto, inputInterface]);
+  }, [collected.amountInCrypto, collected.bestExpectedCrypto, inputInterface, sendDataToGTM]);
 
   useEffect(() => {
     const setAmountByBestRateAvailable = () => {
