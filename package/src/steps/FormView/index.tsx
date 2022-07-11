@@ -49,7 +49,12 @@ const FormView: React.FC<{ nextStep: NextStep & { type: StepType.form } }> = ({
     }
     
     if (nextStepData.some((field) => field.name === "cryptocurrencyAddress")){
-      setFormName('walletForm');
+      setFormName('walletForm');      
+    }
+    if (
+      nextStepData.some((field) => field.name === "email") && 
+      nextStepData.length <= 1){
+      setFormName('emailForm');      
     }
     // set title
     if (
