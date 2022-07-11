@@ -4,7 +4,7 @@ theme styles
 .theme {
   --primary-color: #0316c1;
   --error-color: #d25656;
-  --success-color: #3ad66f;
+  --success-color: #35a461;
   --text-dark-color: #292d32;
   --text-light-color: #7c7d82;
   --grey-light-color: #abadb8;
@@ -336,7 +336,7 @@ li {
 }
 
 .shrink-0 {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 /* general transition */

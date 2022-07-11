@@ -44,6 +44,7 @@
   "dependencies": {
     "@onramper/flag-icons": "^1.0.1",
     "@onramper/moonpay-adapter": "^1.6.19",
+    "@onramper/validator": "github:onramper/validator#master",
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
     "@types/react-gtm-module": "^2.0.1",

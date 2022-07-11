@@ -5,6 +5,7 @@ import InputTransition from "./BaseInputTransition";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import hintIcon from "../../../icons/hint.svg";
 import infoIcon from "../../../icons/info.svg";
+import SuccessMessage from "../../SuccessMessage/SuccessMessage";
 
 const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>(
   (props, ref) => {
@@ -102,7 +103,7 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>(
                 onMouseOver={() => setIsMouseOver(true)}
                 onMouseOut={() => setIsMouseOver(false)}
                 onClick={props.onClick}
-                />
+              />
             ) : (
               <> {props.inputSupportFallbackNode} </>
             )}
@@ -111,7 +112,12 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>(
 
         <ErrorMessage
           text={props.error}
-          className={`${classes["text-error-wrapper"]}`}
+          className={`${classes["text-wrapper"]}`}
+        />
+
+        <SuccessMessage
+          text={props.success}
+          className={`${classes["text-wrapper"]}`}
         />
 
         {props.hint && (

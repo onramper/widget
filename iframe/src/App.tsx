@@ -50,7 +50,7 @@ const recommendedCryptoCurrencies = getArrayParam(
   "recommendedCryptoCurrencies"
 );
 const darkMode = getParam("darkMode");
-const selectGatewayBy =  getParam("selectGatewayBy", "price");
+const selectGatewayBy = getParam("selectGatewayBy");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
