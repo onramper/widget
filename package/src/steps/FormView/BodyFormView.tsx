@@ -827,10 +827,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           <ButtonAction
             onClick={()=>{                            
               onActionButton();
-              if(formName=="walletForm"){
+              if(formName==="walletForm"){
                 gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
               }
-              if(formName=="emailForm"){
+              if(formName==="emailForm"){
                 gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE); 
               }
             }}
