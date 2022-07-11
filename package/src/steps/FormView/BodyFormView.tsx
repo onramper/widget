@@ -134,7 +134,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     }
   };
 
-  const getSuccessMessage = (fieldName: string) => {
+  const handleSuccess = (fieldName: string) => {
     if (validator.current.fieldValid(fieldName) === true)
       return "Field validation is successful.";
     return "";
@@ -374,7 +374,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                   "cryptocurrencyAddress",
                   `${collected.selectedCrypto?.id}:${collected.cryptocurrencyAddress?.address}`
                 )}
-                success={getSuccessMessage("cryptocurrencyAddress")}
+                success={handleSuccess("cryptocurrencyAddress")}
                 disabled={!collected.isAddressEditable}
                 onClick={walletFieldClick}
               />
@@ -401,7 +401,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     errorObj?.[field.name] ??
                     validator.current.message(field.name, collected[field.name])
                   }
-                  success={getSuccessMessage(field.name)}
+                  success={handleSuccess(field.name)}
                   className={stylesCommon["body-form-child"]}
                   type={getInputType(field)}
                 />
@@ -429,7 +429,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                     errorObj?.[field.name] ??
                     validator.current.message(field.name, collected[field.name])
                   }
-                  success={getSuccessMessage(field.name)}
+                  success={handleSuccess(field.name)}
                   className={stylesCommon["body-form-child"]}
                   type={getInputType(field)}
                   value={verifyCode}
@@ -684,6 +684,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                         ),
                       }
                     }
+                    onSuccess={handleSuccess}
                   />
                 </div>
               ) : (
@@ -762,7 +763,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                           : ""
                       )
                     }
-                    success={getSuccessMessage("phoneNumber")}
+                    success={handleSuccess("phoneNumber")}
                     ref={
                       inputRefs[
                         fields.findIndex(
@@ -797,7 +798,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                   errorObj?.[field.name] ??
                   validator.current.message(field.name, collected[field.name])
                 }
-                success={getSuccessMessage(field.name)}
+                success={handleSuccess(field.name)}
                 name={field.name}
                 value={getValueByField(field, collected)}
                 onChange={onChange}
