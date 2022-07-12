@@ -105,7 +105,7 @@ const BuyCryptoView: React.FC = () => {
           nextScreen(<Step nextStep={buyStep} />);
         }}
         onMenuClick={() => {
-          sendDataToGTM(menuBtnClickGtmEvent);
+          sendDataToGTM({ ...menuBtnClickGtmEvent });
           nextScreen(<Menu className={tabHeaderClasses["tabs-header-menu"]} />);
         }}
       />

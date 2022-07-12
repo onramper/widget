@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
-import classes from "./TabsHeader.module.css";
-import headerClasses from "../Header.module.css";
-import Menu from "../Menu/Menu";
-import { NavContext } from "../../../NavContext";
-import TabGroup from "../../TabGroup/TabGroup";
+import React from "react";
 import iconMenu from "../../../icons/menu-var-2.svg";
+import TabGroup from "../../TabGroup/TabGroup";
+import headerClasses from "../Header.module.css";
+import classes from "./TabsHeader.module.css";
 
 export type ITabsHeaderProps = {
   onMenuClick?: () => void;
@@ -14,12 +12,6 @@ export type ITabsHeaderProps = {
 };
 
 const TabsHeader: React.FC<ITabsHeaderProps> = (props: ITabsHeaderProps) => {
-  const { nextScreen } = useContext(NavContext);
-  const {
-    onMenuClick = () =>
-      nextScreen(<Menu className={classes["tabs-header-menu"]} />),
-  } = props;
-
   return (
     <nav className={classes.header}>
       <TabGroup
@@ -28,7 +20,7 @@ const TabsHeader: React.FC<ITabsHeaderProps> = (props: ITabsHeaderProps) => {
         onClickItem={props.onClickItem}
       />
       <img
-        onClick={onMenuClick}
+        onClick={props.onMenuClick}
         alt="menu"
         className={`${headerClasses["header-burger-icon"]}`}
         src={iconMenu}
