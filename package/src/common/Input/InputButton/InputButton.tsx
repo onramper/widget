@@ -81,7 +81,7 @@ const InputButton = React.forwardRef<HTMLDivElement, InputButtonProps>(
 
         <ErrorMessage
           text={props.error}
-          className={`${classes["text-error-wrapper"]}`}
+          className={`${classes["text-wrapper"]}`}
         />
 
         {props.hint && (

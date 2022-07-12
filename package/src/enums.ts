@@ -3,6 +3,7 @@ export enum GtmEvent {
   CRYPTO_TO_FIAT = "crypto-to-fiat",
   ELEMENT_CLICK = "element-click",
   GATEWAY_SELECTION = "gateway-selection",
+  EXPERIMENT = "experiment",
 }
 
 export enum GtmEventAction {
@@ -36,6 +37,8 @@ export enum GtmEventCategory {
   DROPDOWN = "dropdown",
   TAB = "tab",
   OPTION = "option",
+  VARIANT_A = "variantA",
+  CONTROL = "control",
 }
 
 export enum GtmEventLabel {
@@ -62,6 +65,8 @@ export enum GtmEventLabel {
   MENU_HELP = "help",
   MENU_MOONPAY_SUPPORT = "moonPaySupport",
   MENU_UNISWAP_SUPPORT = "uniswapSupport",
+  AMOUNT_SWITCH="amountSwitch",
+  STATIC_ROUTING_EXPERIMENT = "staticRoutingExperiment",
 }
 
 export enum GtmGatewaySelectionType {
