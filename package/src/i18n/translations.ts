@@ -30,6 +30,13 @@ export const resources = {
           support: {
             moonpay: "MoonPay Support",
             uniswap: "Uniswap Support",
+            btcdirect: "BTCDirect Support",
+            coinify: "Coinify Support",
+            indacoin: "Indacoin Support",
+            mercuryo: "Mercuryo Support",
+            utorg: "Utorg Support",
+            wyre: "Wyre Support",
+            xanpool: "Xanpool Support",
           },
         },
       },
