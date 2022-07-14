@@ -91,22 +91,6 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     props.fatalError,
   ]);
 
-  const retryRedirect = (url: string) => {
-    let count = 3;
-    const interval = setInterval(() => {
-      if (!windowObjectReference.current && count > 0) {
-        count--;
-        windowObjectReference.current = window.open(
-          url,
-          "_blank",
-          "height=595,width=440,scrollbars=yes,left=0,popup=yes"
-        );
-        setAutoRedirect(true);
-      }
-      clearInterval(interval);
-    });
-  };
-
   const redirect = useCallback(async (url: string) => {
     const interval = 250;
     const times2Count = (1000 * 60) / interval;
@@ -124,37 +108,13 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
       triggerGTMEvent(gtmPayloadRef.current);
       return;
     } else {
-      retryRedirect(url);
-      // setAutoRedirect(true);
-      // windowObjectReference.current = window.open(
-      //   url,
-      //   "_blank",
-      //   "height=595,width=440,scrollbars=yes,left=0,popup=yes"
-      // );
+      setAutoRedirect(true);
+      windowObjectReference.current = window.open(
+        url,
+        "_blank",
+        "height=595,width=440,scrollbars=yes,left=0,popup=yes"
+      );
     }
-    //try to open popup
-    //  windowObjectReference.current = window.open(
-    //   url,
-    //   "_blank",
-    //   "height=595,width=440,scrollbars=yes,left=0,popup=yes"
-    // ); //todo: add config
-    //if opened -> all is ok
-    // if (windowObjectReference.current) {
-    //   triggerGTMEvent(gtmPayloadRef.current);
-
-    //   const interval = 250;
-    //   const times2Count = (1000 * 60) / interval;
-    //   let count = 0;
-    //   const checkIfClosed = setInterval(() => {
-    //     if (windowObjectReference.current.closed || count > times2Count) {
-    //       setUserClosedPopup(true);
-    //       clearInterval(checkIfClosed);
-    //     }
-    //     count++;
-    //   }, interval);
-    //   return;
-    // }
-    //if not opened -> warn user about popup blocked + ask user for click a button
     setAutoRedirect(false);
   }, []);
 
