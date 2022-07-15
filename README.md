@@ -67,7 +67,7 @@ npm run build
 Build the widget component source files into the `./dist` folder:
 
 ```shell
-npm run build:component
+npm run build:{prod|dev|demo}
 ```
 
 ## Buy page
