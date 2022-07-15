@@ -83,7 +83,7 @@ const menuItems: ListItemType[] = [
         id: "support-wyre",
         text: "menu.menuItems.support.wyre",
         icon: wyreIcon,
-        link: "https://support.sendwyre.com/en/collections/2186435-wyre-widget",
+        link: "https://support.sendwyre.com/hc/en-us",
       },
       {
         id: "support-xanpool",
