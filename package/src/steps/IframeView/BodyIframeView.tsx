@@ -70,6 +70,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
     hostname === getHostname(selectedGateway?.nextStep.url);
 
   const gtmPayloadRef = useRef(props.gtmPayload);
+  const windowObjectReference: any = useRef(null);
 
   const restartWidget = () => {
     apiInterface.clearErrors();
@@ -91,30 +92,29 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
   ]);
 
   const redirect = useCallback(async (url: string) => {
-    setAutoRedirect(true);
-    //try to open popup
-    const windowObjectReference = window.open(
-      url,
-      "_blank",
-      "height=595,width=440,scrollbars=yes,left=0"
-    ); //todo: add config
-    //if opened -> all is ok
-    if (windowObjectReference) {
-      triggerGTMEvent(gtmPayloadRef.current);
+    const interval = 250;
+    const times2Count = (1000 * 60) / interval;
+    let count = 0;
+    const checkIfClosed = setInterval(() => {
+      if (windowObjectReference.current.closed || count > times2Count) {
+        setUserClosedPopup(true);
+        clearInterval(checkIfClosed);
+      }
+      count++;
+    }, interval);
 
-      const interval = 250;
-      const times2Count = (1000 * 60) / interval;
-      let count = 0;
-      const checkIfClosed = setInterval(() => {
-        if (windowObjectReference.closed || count > times2Count) {
-          setUserClosedPopup(true);
-          clearInterval(checkIfClosed);
-        }
-        count++;
-      }, interval);
+    if (windowObjectReference.current) {
+      windowObjectReference.current.focus();
+      triggerGTMEvent(gtmPayloadRef.current);
       return;
+    } else {
+      setAutoRedirect(true);
+      windowObjectReference.current = window.open(
+        url,
+        "_blank",
+        "height=595,width=440,scrollbars=yes,left=0,popup=yes"
+      );
     }
-    //if not opened -> warn user about popup blocked + ask user for click a button
     setAutoRedirect(false);
   }, []);
 
