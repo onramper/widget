@@ -72,8 +72,8 @@ jobs:
             echo "::set-output name=domain::icebergdemo.onramper.dev"
           elif [ $REF == 'refs/heads/layer2-dev' ]
           then
-            echo "::set-output name=stage::l2"
-            echo "::set-output name=domain::volcano.onramper.dev"
+            echo "::set-output name=stage::dev"
+            echo "::set-output name=domain::swap.onramper.dev"
           elif [ $REF == 'refs/heads/layer2-prod' ]
           then
             echo "::set-output name=stage::prod"

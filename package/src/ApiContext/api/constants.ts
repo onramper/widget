@@ -13,10 +13,8 @@ export const BASE_API = (() => {
       return "https://l2.onramper.tech"; //  "https://bwspdt92de.execute-api.us-west-1.amazonaws.com" ;
     case "prod":
       return "https://onramper.tech";
-    case "demo":
+    default: // Includes `dev` and `demo` stages.
       return "https://staging.onramper.tech";
-    default:
-      return "http://localhost:3000/dev";
   }
 })();
 
