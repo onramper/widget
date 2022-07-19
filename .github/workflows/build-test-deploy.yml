@@ -25,10 +25,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-          # cache: "npm"
-          # cache-dependency-path: |
-          #   package/package-lock.json
-          #   iframe/package-lock.json
+          cache: "npm"
+          cache-dependency-path: |
+            package/package-lock.json
+            iframe/package-lock.json
       - run: (cd package && npm ci --omit peer &&  npm run build:dev)
       - run: (cd iframe && npm ci &&  npm run build)
 
@@ -91,10 +91,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-          # cache: "npm"
-          # cache-dependency-path: |
-          #   package/package-lock.json
-          #   iframe/package-lock.json
+          cache: "npm"
+          cache-dependency-path: |
+            package/package-lock.json
+            iframe/package-lock.json
       - run: (cd package && npm ci --omit peer && npm run build:$STAGE)
         env:
           STAGE: ${{ steps.git-branch.outputs.stage }}
@@ -118,9 +118,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-          # cache: "npm"
-          # cache-dependency-path: |
-          #   package/package-lock.json
+          cache: "npm"
+          cache-dependency-path: |
+            package/package-lock.json
           registry-url: "https://registry.npmjs.org"
       - name: Clean install and build
         run: (cd package && npm ci --omit peer && npm run build:prod)
