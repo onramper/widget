@@ -16,6 +16,7 @@ import "./isolateinheritance.css";
 import "./normalize.min.css";
 import { GTM_ID } from "./ApiContext/api/constants";
 import { GTMProvider } from "./hooks/gtm";
+import Cookies from "js-cookie";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -40,7 +41,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
 
   const gtmParams = {
     gtmId: GTM_ID,
-    dataLayer: { apiKey: props.API_KEY },
+    dataLayer: { apiKey: props.API_KEY, clientId: Cookies.get("_ga") },
   };
 
   return (
