@@ -91,7 +91,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   const [isRestartCalled, setIsRestartCalled] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
   const sendDataToGTM = useGTMDispatch();
-  
+
   const restartToAnotherGateway = () => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
@@ -165,6 +165,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   useEffect(() => {
     setPush2Bottom(fields.some((field) => field.name === "termsOfUse"));
   }, [fields]);
+  console.log(
+    inputRefs[1]?.ref?.current?.getElementsByTagName("input")[0].value
+  );
 
   const onChange = useCallback(
     (name: string, value: any, type?: string) => {
@@ -825,13 +828,21 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           }`}
         >
           <ButtonAction
-            onClick={()=>{                            
+            onClick={() => {
               onActionButton();
-              if(formName==="walletForm"){
-                gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
+              if (formName === "walletForm") {
+                gtmEventFormData(
+                  GtmEventAction.WALLET_FORM,
+                  GtmEventCategory.BUTTON,
+                  GtmEventLabel.CONTINUE
+                );
               }
-              if(formName==="emailForm"){
-                gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE); 
+              if (formName === "emailForm") {
+                gtmEventFormData(
+                  GtmEventAction.EMAIL_FORM,
+                  GtmEventCategory.BUTTON,
+                  GtmEventLabel.CONTINUE
+                );
               }
             }}
             text={isLoading ? "Sending..." : "Continue"}
@@ -843,7 +854,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     </main>
   );
 };
- 
+
 const getValueByField = (
   field: BodyFormViewType["fields"][0],
   collected: CollectedStateType

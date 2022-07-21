@@ -211,6 +211,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
               item.id === props.selectedId ? " " + styles.selected : ""
             }`}
             onClick={() => {
+              console.log("YRYRYRYRYR", item.id);
               sendDataToGTM(genPaymentMethodOptionEvent(item.id));
               props.onChange(item);
             }}
@@ -221,6 +222,11 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
               </div>
             )}
             <div className={styles["option-label"]}> {item.name} </div>
+            <div className={styles["tooltip"]}>
+              <div className={styles["tooltiptext"]}>
+                <span>Unfortunately Venmo is currently not available</span>
+              </div>
+            </div>
           </li>
         ))}
 
