@@ -1,0 +1,24 @@
+{
+  "name": "currencies-api",
+  "version": "1.0.0",
+  "description": "Onramper endpoint for currencies information",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc --project ./src",
+    "pack": "powershell Compress-Archive -Force ./dist/** ./deploy.zip"
+  },
+  "keywords": [
+    "currencies",
+    "fiat",
+    "crypto"
+  ],
+  "author": "Sadath Iqbal <sadath@onramper.com>",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.101",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/node": "^18.0.6",
+    "jest": "^28.1.3"
+  }
+}
