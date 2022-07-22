@@ -97,6 +97,20 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     setIsRestartCalled(true);
   };
 
+  const gtmEventValidatorData = (
+    action: string,
+    category: string,
+    label: string
+  ) => {
+    const gtmData = {
+      event: GtmEvent.FIELD_ERROR,
+      action: action,
+      category: category,
+      label: label,
+    };
+    sendDataToGTM(gtmData);
+  };
+
   const gtmEventFormData = (
     action: GtmEventAction,
     category: GtmEventCategory,
@@ -184,8 +198,15 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           };
         }
       }
-      validator.current.showMessageFor(name);
 
+      validator.current.showMessageFor(name);  
+
+      if (name === "cryptocurrencyAddress" || "cryptocurrencyAddressTag") {
+        value= value?.address;        
+      }
+      const errorMessage = validator.current.message(name, value);      
+      gtmEventValidatorData(formName??"", name, errorMessage);
+      
       if (name === "cryptocurrencyAddressTag") {
         handleInputChange("cryptocurrencyAddress", {
           ...collected.cryptocurrencyAddress,
@@ -266,7 +287,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     if (errorObj && inputRefs !== null) {
       // smooth scroll to the first error
       let errName = Object.keys(errorObj)[0];
-
       // if the error is in any of the Credit/Debit Card fields, scoll to the first one (credit card number)
       if (CREDIT_CARD_FIELDS_NAME_GROUP.some((f) => f === errName))
         errName = CREDIT_CARD_FIELDS_NAME_GROUP[0];

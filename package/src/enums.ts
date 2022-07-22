@@ -4,6 +4,7 @@ export enum GtmEvent {
   ELEMENT_CLICK = "element-click",
   GATEWAY_SELECTION = "gateway-selection",
   EXPERIMENT = "experiment",
+  FIELD_ERROR = "fieldError",
 }
 
 export enum GtmEventAction {
