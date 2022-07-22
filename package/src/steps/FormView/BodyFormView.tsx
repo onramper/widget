@@ -76,7 +76,6 @@ type BodyFormViewType = {
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   const validator = useRef(new OnramperValidator({}));
-  const { handleInputChange, onActionButton, fields = [] } = props;
   const { collected, apiInterface } = useContext(APIContext);
   const { backScreen, nextScreen, onlyScreen } = useContext(NavContext);
   const {
@@ -86,12 +85,15 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     errorMsg,
     infoMsg,
     formName,
+    handleInputChange,
+    onActionButton,
+    fields = [],
   } = props;
 
   const [isRestartCalled, setIsRestartCalled] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
   const sendDataToGTM = useGTMDispatch();
-  
+
   const restartToAnotherGateway = () => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
@@ -158,6 +160,13 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
       ref: React.createRef<HTMLDivElement>(),
     }));
   }, [fields]);
+
+  useEffect(() => {
+    fields.forEach((field, idx) => {
+      if (inputRefs[idx]?.ref?.current?.getElementsByTagName("input")[0]?.value)
+        validator.current.showMessageFor(field.name);
+    });
+  }, [fields, inputRefs]);
 
   const [countryHasChanged, setCountryHasChanged] = useState("initialkey");
 
@@ -825,13 +834,21 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           }`}
         >
           <ButtonAction
-            onClick={()=>{                            
+            onClick={() => {
               onActionButton();
-              if(formName==="walletForm"){
-                gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
+              if (formName === "walletForm") {
+                gtmEventFormData(
+                  GtmEventAction.WALLET_FORM,
+                  GtmEventCategory.BUTTON,
+                  GtmEventLabel.CONTINUE
+                );
               }
-              if(formName==="emailForm"){
-                gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE); 
+              if (formName === "emailForm") {
+                gtmEventFormData(
+                  GtmEventAction.EMAIL_FORM,
+                  GtmEventCategory.BUTTON,
+                  GtmEventLabel.CONTINUE
+                );
               }
             }}
             text={isLoading ? "Sending..." : "Continue"}
@@ -843,7 +860,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     </main>
   );
 };
- 
+
 const getValueByField = (
   field: BodyFormViewType["fields"][0],
   collected: CollectedStateType
