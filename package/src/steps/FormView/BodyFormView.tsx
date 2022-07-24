@@ -98,7 +98,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   };
 
   const gtmEventValidatorData = (
-    action: string,
+    action: string = "",
     category: string,
     label: string
   ) => {
@@ -205,7 +205,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         value= value?.address;        
       }
       const errorMessage = validator.current.message(name, value);      
-      gtmEventValidatorData(formName??"", name, errorMessage);
+      gtmEventValidatorData(formName, name, errorMessage);
       
       if (name === "cryptocurrencyAddressTag") {
         handleInputChange("cryptocurrencyAddress", {
