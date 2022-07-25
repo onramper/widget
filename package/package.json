@@ -48,6 +48,7 @@
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
     "@types/js-cookie": "^3.0.2",
+    "@types/lodash.debounce": "^4.0.7",
     "@types/react-gtm-module": "^2.0.1",
     "abort-controller": "^3.0.0",
     "i18next": "^21.6.11",

@@ -179,7 +179,7 @@ const FormView: React.FC<{ nextStep: NextStep & { type: StepType.form } }> = ({
           else setErrorMsg(undefined);
         }}
         errorObj={errorObj}
-        heading={useHeading ? title : undefined}
+        heading={title}
         formName={formName}
       />
     </div>

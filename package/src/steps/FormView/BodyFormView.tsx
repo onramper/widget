@@ -44,6 +44,7 @@ import InputDelegator from "../../common/Input/InputDelegator";
 import OverlayPicker from "../../common/OverlayPicker/OverlayPicker";
 import { CountryIcon } from "@onramper/flag-icons";
 import {
+  FormName,
   GtmEvent,
   GtmEventAction,
   GtmEventCategory,
@@ -51,6 +52,7 @@ import {
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
 import { OnramperValidator } from "@onramper/validator/dist";
+import { debounce } from "lodash";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
   "ccMonth",
@@ -98,7 +100,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   };
 
   const gtmEventValidatorData = (
-    action: string = "",
+    action: GtmEventAction | FormName,
     category: string,
     label: string
   ) => {
@@ -180,6 +182,14 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     setPush2Bottom(fields.some((field) => field.name === "termsOfUse"));
   }, [fields]);
 
+  const debouncedFilter = useCallback(debounce((name,value) => {
+    if (name === "cryptocurrencyAddress" || "cryptocurrencyAddressTag") {
+      value= value?.address;        
+    }
+    const errorMessage = validator.current.message(name, value);          
+    gtmEventValidatorData(FormName[props.heading as keyof typeof FormName], name, errorMessage);
+  }, 1000),[]);
+
   const onChange = useCallback(
     (name: string, value: any, type?: string) => {
       let v = value;
@@ -199,13 +209,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
         }
       }
 
-      validator.current.showMessageFor(name);  
-
-      if (name === "cryptocurrencyAddress" || "cryptocurrencyAddressTag") {
-        value= value?.address;        
-      }
-      const errorMessage = validator.current.message(name, value);      
-      gtmEventValidatorData(formName, name, errorMessage);
+      validator.current.showMessageFor(name);
+      debouncedFilter(name, value);
       
       if (name === "cryptocurrencyAddressTag") {
         handleInputChange("cryptocurrencyAddress", {
