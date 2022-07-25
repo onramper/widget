@@ -182,13 +182,17 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     setPush2Bottom(fields.some((field) => field.name === "termsOfUse"));
   }, [fields]);
 
-  const debouncedFilter = useCallback(debounce((name,value) => {
+  const gtmEventLogErrorEvents = (name: string,value: any) => {
     if (name === "cryptocurrencyAddress" || "cryptocurrencyAddressTag") {
       value= value?.address;        
     }
     const errorMessage = validator.current.message(name, value);          
     gtmEventValidatorData(FormName[props.heading as keyof typeof FormName], name, errorMessage);
-  }, 1000),[]);
+  }
+
+  const debouncedFilter = useCallback(debounce((name, value) => 
+    gtmEventLogErrorEvents(name, value), 1000),[]
+  );
 
   const onChange = useCallback(
     (name: string, value: any, type?: string) => {
@@ -277,6 +281,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     collected.state,
     collected.selectedCountry,
     handleInputChange,
+    debouncedFilter,
   ]);
 
   // scroll to fields on new error (general error)
