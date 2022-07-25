@@ -163,10 +163,18 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
   useEffect(() => {
     fields.forEach((field, idx) => {
-      if (inputRefs[idx]?.ref?.current?.getElementsByTagName("input")[0]?.value)
+      if (
+        (field.name === "ccMonth" && collected.ccMonth) ||
+        (field.name === "ccYear" && collected.ccYear) ||
+        (field.name === "ccCVV" && collected.ccCVV)
+      )
+        validator.current.showMessageFor(field.name);
+      else if (
+        inputRefs[idx]?.ref?.current?.getElementsByTagName("input")[0]?.value
+      )
         validator.current.showMessageFor(field.name);
     });
-  }, [fields, inputRefs]);
+  }, [collected.ccCVV, collected.ccMonth, collected.ccYear, fields, inputRefs]);
 
   const [countryHasChanged, setCountryHasChanged] = useState("initialkey");
 
@@ -193,6 +201,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           };
         }
       }
+
       validator.current.showMessageFor(name);
 
       if (name === "cryptocurrencyAddressTag") {
