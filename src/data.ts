@@ -1,20 +1,28 @@
-import { DynamoDB } from 'aws-sdk';
-import { AppDatabase } from './core';
+import { DynamoDB, SSOOIDC } from 'aws-sdk';
+import { GetItemInput, ScanInput } from 'aws-sdk/clients/dynamodb';
+import { AppDatabase, Currency, CoreError, CurrenciesOrError, CurrencyOrError, CoreDatabaseError, CurrencyNotFoundError } from './core';
 
+enum KeyType {
+    CURRENCY_RECORD_PREFIX = 'Currency#',
+    COUNTRY_RECORD_PREFIX = 'Country#',
+    ROOT_RECORD = 'Default'
+}
 
 class ServiceDatabase implements AppDatabase {
 
     private tableName: string;
     private db: DynamoDB.DocumentClient;
 
-    constructor(tableName: string, region: string) {
+
+
+    constructor(tableName: string, region: string, endpointUrl?: string) {
 
         this.tableName = tableName;
-        this.db = new DynamoDB.DocumentClient({ region: region });
+        this.db = new DynamoDB.DocumentClient({ region: region, endpoint: endpointUrl });
 
     }
 
-    async getAllCurrencies():Promise<any> {
+    async getAllCurrencies(): Promise<any> {
 
         var params = {
             ExpressionAttributeValues: {
@@ -23,32 +31,100 @@ class ServiceDatabase implements AppDatabase {
             },
             //KeyConditionExpression: `Id = :s and begins_with(#i,:e)`,
             ProjectionExpression: 'Id, #n, Networks, Symbol, #t',
-            ExpressionAttributeNames: {'#n':'Name', '#t':'Type', '#i':'Index'},
+            ExpressionAttributeNames: { '#n': 'Name', '#t': 'Type', '#i': 'Index' },
             TableName: this.tableName,
             FilterExpression: "begins_with(Id,:s) and #i = :e",
         };
 
-        this.db.scan(params, function(err,data){
-            if(err) {console.log(err); return;}
-            console.log(data);
-        });
-
         let results = await this.db.scan(params).promise();
+
+        // -- Handle the case where result may be an error.
+        if (results.$response.error)
+            return new CoreDatabaseError(this.tableName, results.$response.error);
+
 
         return results.Items;
     }
 
-    getCurrencyForIds(idList: string[]) { return [] }
-    getCurrencyForTypes(typesList: string[]) { return [] }
-    getCurrenciesForCountry(country: string[]) { return [] }
+    async getCurrencyForId(id: string): Promise<any> {
+        let params = {
+            TableName: this.tableName,
+            Key: {
+                Id: KeyType.CURRENCY_RECORD_PREFIX + id.toUpperCase(),
+                Index: KeyType.ROOT_RECORD
+            },
+            ProjectionExpression: 'Id, #n, Networks, Symbol, #t',
+            ExpressionAttributeNames: { '#n': 'Name', '#t': 'Type'},
+        };
+
+        let results = await this.db.get(params).promise();
+
+        // -- Handle the case where result may be an error.
+        if (results.$response.error){
+            return new CoreDatabaseError(this.tableName, results.$response.error);
+        }        
+
+        return results.Item;
+
+    }
+
+    getCurrencyForType(typeName: string) { return [] }
+
+    async getCurrenciesForCountry(countryId: string) {         
+
+        let params = {
+            TableName: this.tableName,            
+            KeyConditionExpression: "Id = :i and #i = :e",                
+            ProjectionExpression: "Id, #n",
+            ExpressionAttributeNames: { "#n": "BlackList","#i":"Index"},
+            ExpressionAttributeValues:{":i":KeyType.COUNTRY_RECORD_PREFIX+countryId.toUpperCase(), ":e":KeyType.ROOT_RECORD}
+        };
+
+        let results = await this.db.query(params).promise();
+
+        if (results.$response.error){
+            return new CoreDatabaseError(this.tableName, results.$response.error);
+        }  
+
+        if(!results.Items){
+            return this.getAllCurrencies();
+        }
+
+        let blacklist = results.Items[0].BlackList;
+
+        let list = blacklist?.map((currencyItemId:any) => {
+            return KeyType.CURRENCY_RECORD_PREFIX.concat(currencyItemId);
+        });
+
+        let paramsForCurrencies = {
+            ExpressionAttributeValues: {                            
+                ':e': KeyType.ROOT_RECORD,
+                ':b': KeyType.CURRENCY_RECORD_PREFIX
+            },
+            //KeyConditionExpression: `Id = :s and begins_with(#i,:e)`,
+            ProjectionExpression: 'Id, #n, Networks, Symbol, #t',
+            ExpressionAttributeNames: { '#n': 'Name', '#t': 'Type', '#i': 'Index'},
+            TableName: this.tableName,
+            FilterExpression: "begins_with(Id,:b) and #i = :e",                        
+        };
+
+        let currencyResults = await this.db.scan(paramsForCurrencies).promise();
+
+        // -- Handle the case where result may be an error.
+        if (currencyResults.$response.error)
+            return new CoreDatabaseError(this.tableName, currencyResults.$response.error);
+        
+        let items = currencyResults.Items?.filter(element=>{
+            return !list.includes(element.Id);
+        });
+
+
+        return items;         
+    }
 
 }
 
-enum KeyType {
-    CURRENCY_RECORD_PREFIX = 'Currency#',
-    COUNTRY_RECORD_PREFIX = 'Country#',
-    ROOT_RECORD = 'Default'
-}
+
 
 
 export { ServiceDatabase, KeyType }

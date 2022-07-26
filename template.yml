@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  currencies-api
+
+  Api implementations for currencies
+
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    Timeout: 180
+    Handler: index.handler    
+    Environment:
+      Variables:
+        CURRENCIES_API_TABLE_NAME: currencies
+        CURRENCIES_API_AWS_REGION: local
+        CURRENCIES_API_AWS_ENDPOINT_URL: http://host.docker.internal:8000
+
+Resources:
+  Currencies:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Events:
+        GetAllCurrencies:
+          Type: HttpApi
+          Properties:            
+            Path: /
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        GetCurrencyById:
+          Type: HttpApi
+          Properties:            
+            Path: /{currencyId}
+            Method: GET
+            Auth:
+              Authorizer: NONE           
+      
+  APIIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref Currencies
+      Description: HTTP proxy integration
+      IntegrationType: HTTP_PROXY
+      IntegrationMethod: ANY
+      PayloadFormatVersion: "2.0"
