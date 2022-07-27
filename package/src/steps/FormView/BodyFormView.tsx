@@ -51,8 +51,8 @@ import {
   GtmEventLabel,
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
+import useDebounce from "../../hooks/debounce"
 import { OnramperValidator } from "@onramper/validator/dist";
-import { debounce } from "lodash";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
   "ccMonth",
@@ -92,6 +92,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
   const [isRestartCalled, setIsRestartCalled] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
+  const [value, setValue] = useState("");
+  const [name, setName] = useState("");
+  const debouncedValue = useDebounce(value, 1000);
   const sendDataToGTM = useGTMDispatch();
   
   const restartToAnotherGateway = () => {
@@ -185,14 +188,10 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   const gtmEventLogErrorEvents = (name: string,value: any) => {
     if (name === "cryptocurrencyAddress" || "cryptocurrencyAddressTag") {
       value= value?.address;        
-    }
-    const errorMessage = validator.current.message(name, value);          
+    }    
+    const errorMessage = validator.current.message(name, value);   
     gtmEventValidatorData(FormName[props.heading as keyof typeof FormName], name, errorMessage);
   }
-
-  const debouncedFilter = useCallback(debounce((name, value) => 
-    gtmEventLogErrorEvents(name, value), 1000),[]
-  );
 
   const onChange = useCallback(
     (name: string, value: any, type?: string) => {
@@ -212,10 +211,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           };
         }
       }
-
-      validator.current.showMessageFor(name);
-      debouncedFilter(name, value);
-      
+      setValue(value);
+      setName(name);     
       if (name === "cryptocurrencyAddressTag") {
         handleInputChange("cryptocurrencyAddress", {
           ...collected.cryptocurrencyAddress,
@@ -232,7 +229,14 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     },
     [handleInputChange, collected.cryptocurrencyAddress]
   );
-
+   useEffect(() => {
+    if(debouncedValue){
+      validator.current.showMessageFor(name);
+      gtmEventLogErrorEvents(name, value);
+    } 
+   }, [
+    debouncedValue,
+  ]);
   useEffect(() => {
     // setting initial values
     if (countryHasChanged === "initialkey") {
@@ -281,7 +285,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     collected.state,
     collected.selectedCountry,
     handleInputChange,
-    debouncedFilter,
   ]);
 
   // scroll to fields on new error (general error)
