@@ -76,7 +76,6 @@ type BodyFormViewType = {
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   const validator = useRef(new OnramperValidator({}));
-  const { handleInputChange, onActionButton, fields = [] } = props;
   const { collected, apiInterface } = useContext(APIContext);
   const { backScreen, nextScreen, onlyScreen } = useContext(NavContext);
   const {
@@ -86,6 +85,9 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     errorMsg,
     infoMsg,
     formName,
+    handleInputChange,
+    onActionButton,
+    fields = [],
   } = props;
 
   const [isRestartCalled, setIsRestartCalled] = useState(false);
@@ -159,6 +161,21 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     }));
   }, [fields]);
 
+  useEffect(() => {
+    fields.forEach((field, idx) => {
+      if (
+        (field.name === "ccMonth" && collected.ccMonth) ||
+        (field.name === "ccYear" && collected.ccYear) ||
+        (field.name === "ccCVV" && collected.ccCVV)
+      )
+        validator.current.showMessageFor(field.name);
+      else if (
+        inputRefs[idx]?.ref?.current?.getElementsByTagName("input")[0]?.value
+      )
+        validator.current.showMessageFor(field.name);
+    });
+  }, [collected.ccCVV, collected.ccMonth, collected.ccYear, fields, inputRefs]);
+
   const [countryHasChanged, setCountryHasChanged] = useState("initialkey");
 
   const [push2Bottom, setPush2Bottom] = useState(false);
@@ -187,6 +204,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           };
         }
       }
+
       validator.current.showMessageFor(name);
 
       if (name === "cryptocurrencyAddressTag") {
