@@ -142,10 +142,17 @@ const CurrencySwitcher: React.FC = () => {
           indexSelected={data.availableCurrencies.findIndex(
             (m) => m.id === collected.selectedCurrency?.id
           )}
-          items={data.availableCurrencies.map((i) => ({
-            ...i,
-            iconSvg: <CurrencyIcon name={i.id} />,
-          }))}
+          items={data.availableCurrencies
+            .sort((a, b) => {
+              if (a.info && b.info) {
+                return a.info.localeCompare(b.info);
+              }
+              return a.name.localeCompare(b.name);
+            })
+            .map((i) => ({
+              ...i,
+              iconSvg: <CurrencyIcon name={i.id} />,
+            }))}
           onItemClick={handleItemClick}
           searchable
         />
