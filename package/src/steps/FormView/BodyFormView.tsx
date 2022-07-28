@@ -182,9 +182,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   useEffect(() => {
     setPush2Bottom(fields.some((field) => field.name === "termsOfUse"));
   }, [fields]);
-  console.log(
-    inputRefs[1]?.ref?.current?.getElementsByTagName("input")[0].value
-  );
 
   const onChange = useCallback(
     (name: string, value: any, type?: string) => {
