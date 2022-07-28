@@ -15,7 +15,7 @@
 .option-wrapper {
   min-width: var(--item-width);
   height: 57px;
-  padding: 0.5rem;
+  padding: 0.2rem;
   padding-top: 0.563rem;
   font-size: 13px;
   line-height: 16px;
