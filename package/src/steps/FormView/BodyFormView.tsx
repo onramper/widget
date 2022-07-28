@@ -185,7 +185,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     setPush2Bottom(fields.some((field) => field.name === "termsOfUse"));
   }, [fields]);
 
-  const gtmEventLogErrorEvents = (name: string,value: any) => {
+  const gtmEventLogErrorEvents = (name: string, value: any) => {
     if (name === "cryptocurrencyAddress" || "cryptocurrencyAddressTag") {
       value= value?.address;        
     }    
