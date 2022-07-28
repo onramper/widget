@@ -4,15 +4,15 @@ import { CoreHttpResponse, CoreError } from './core';
 import { ServiceDatabase } from './data';
 import { CurrenciesRepo } from "./repo";
 import { env } from "process";
-import { getAllCurrencies, getCurrency } from "./app";
-import { InternalServerError, Ok } from './responses';
+import { getAllCurrencies, getCurrency, getCurrenciesForType } from "./app";
+import { InternalServerError, Ok, ServerUnavailable } from './responses';
 
 export const handler = async (event: APIGatewayProxyEventV2, context: APIGatewayEventRequestContextV2): Promise<APIGatewayProxyResultV2> => {
 
     // CHECK SERVICE GUARDS BEFORE PROCEEDING
     // -- Service guards are specified in service-config.json from the lambda's config layer
     if (serviceConfig.IsServiceDisabled)
-        return { statusCode: 503, body: "Service Unavailable" };
+        return ServerUnavailable([]);
 
     // CHECK ENVIRONMENT FOR ERRORS BEFORE PROCEEDING
     // -- We check all configurations, and if they are invalid an array of CoreErrors are returned.
@@ -45,10 +45,16 @@ export const handler = async (event: APIGatewayProxyEventV2, context: APIGateway
 
     switch (event.routeKey) {
         case "GET /":            
-            response = await getAllCurrencies(repository,{countryId:event.queryStringParameters?.countryId});           
+            response = await getAllCurrencies(repository,{countryId:event.queryStringParameters?.country});           
             break;
         case "GET /{currencyId}":
             response = await getCurrency(repository,event.pathParameters?.currencyId!);
+            break;
+        case "GET /types":
+            response = await getCurrenciesForType(repository,"");
+            break;
+        case "GET /types/{typeName}":
+            response = await getCurrenciesForType(repository,event.pathParameters?.typeName!);
             break;
         default:
             response = RouteUnavailable();

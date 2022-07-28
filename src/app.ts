@@ -1,6 +1,10 @@
-import { CoreHttpResponse, CoreError, CurrencyNotFoundError, CoreDatabaseError, CurrencyValidationError } from './core';
+import { CoreHttpResponse, CoreError, CurrencyNotFoundError, CoreDatabaseError, CurrencyValidationError, CurrenciesOrError } from './core';
 import { CurrenciesRepo } from './repo';
 import * as response from './responses';
+
+interface CurrencyQueryParameters{
+    countryId?:string    
+}
 
 export async function getAllCurrencies(repo:CurrenciesRepo, params?:CurrencyQueryParameters): Promise<CoreHttpResponse> {
 
@@ -18,6 +22,7 @@ export async function getCurrency(repo:CurrenciesRepo, currencyId: string): Prom
     // GUARDS
     // -- Handle validation
     let validationsResults:CoreError[] = validateCurrencyId(currencyId);
+
     if(validationsResults.length > 0){
         return response.BadRequest(validationsResults);
     }
@@ -39,7 +44,6 @@ export async function getCurrency(repo:CurrenciesRepo, currencyId: string): Prom
     return response.Ok(results);
 }
 
-
 function validateCurrencyId(currencyId:string):CoreError[]{
     let errors:CoreError[] = [];
 
@@ -50,16 +54,10 @@ function validateCurrencyId(currencyId:string):CoreError[]{
     return errors;
 }
 
+export async function getCurrenciesForType(repo:CurrenciesRepo, typeName: string): Promise<CoreHttpResponse> {
+    let results = await repo.getCurrenciesByType(typeName);       
 
-interface CurrencyQueryParameters{
-    countryId?:string    
-}
-
-
-
-
-export function getCurrenciesForType(type: string): CoreHttpResponse {
-    return response.Ok();
+    return response.Ok(results);
 }
 
 

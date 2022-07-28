@@ -35,7 +35,14 @@ Resources:
             Path: /{currencyId}
             Method: GET
             Auth:
-              Authorizer: NONE           
+              Authorizer: NONE      
+        GetCurrencyByType:
+          Type: HttpApi
+          Properties:            
+            Path: /types/{typeName}
+            Method: GET
+            Auth:
+              Authorizer: NONE     
       
   APIIntegration:
     Type: AWS::ApiGatewayV2::Integration

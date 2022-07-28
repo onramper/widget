@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc --project ./src",
-    "pack": "powershell Compress-Archive -Force ./dist/** ./deploy.zip"
+    "pack": "powershell Compress-Archive -Force ./dist/** ./deploy.zip",
+    "local": "sam local start-api"
   },
   "keywords": [
     "currencies",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.101",
     "@types/aws-sdk": "^2.7.0",
+    "@types/dynamodb": "^1.3.2",
     "@types/node": "^18.0.6",
     "jest": "^28.1.3"
   }

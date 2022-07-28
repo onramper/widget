@@ -1,4 +1,3 @@
-import { type } from "os";
 import { Currency, AppDatabase, CoreError, CurrenciesOrError, CurrencyOrError, CurrencyNotFoundError } from "./core";
 
 class CurrenciesRepo {
@@ -13,9 +12,12 @@ class CurrenciesRepo {
         
         let results;
 
-        if(countryId){
+        if(countryId){           
+            
             results = await this.db.getCurrenciesForCountry(countryId);
-        }else{
+            
+            
+        }else{        
             results = await this.db.getAllCurrencies();
         }
 
@@ -25,7 +27,7 @@ class CurrenciesRepo {
 
         // Send the data to the heap
         return results.map((element:any) => {
-            return new Currency(element.Id, element.Name, element.Symbol, element.Type, element.Networks);
+            return new Currency(element.Id, element.Name, element.Type,element.Symbol, element.Networks);
         });
     }
 
@@ -49,6 +51,10 @@ class CurrenciesRepo {
 
     async getCryptoCurrencies(): CurrenciesOrError {
         return this.db.getCurrencyForType('crypto');
+    }
+
+    async getCurrenciesByType(typeName:string):CurrenciesOrError{
+        return this.db.getCurrencyForType(typeName);
     }
 
     cleanId(id:string):string{

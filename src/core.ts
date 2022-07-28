@@ -59,6 +59,7 @@ export class CurrencyValidationError extends CoreError{
 export interface AppDatabase {
     getAllCurrencies(): any;
     getCurrencyForId(id: string): any;
+    getCurrrencyTypes(): any;
     getCurrencyForType(typeName: string): any;
     getCurrenciesForCountry(countryId: string): any;
 }

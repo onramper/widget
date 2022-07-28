@@ -26,6 +26,7 @@ export function BadRequest(errors: CoreError[]): CoreHttpResponse {
 }
 
 export function ServerUnavailable(errors: CoreError[]): CoreHttpResponse {
+    
     return createCoreHttpResponse(503, errors);
 }
 
