@@ -103,7 +103,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   useEffect(() => {
     //This will be removed once the Venmo/Cashapp experiment completed.
     if (collected.selectedCountry === "us") {
-      if (variant === "Normal") {
+      if (variant === "Control") {
         setPaymentMethods(availablePaymentMethods);
       } else {
         const _paymentMethods: ItemType[] = [...availablePaymentMethods];
@@ -127,7 +127,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     if (variant) {
       let category;
       switch (variant) {
-        case "Normal":
+        case "Control":
           category = GtmEventCategory.CONTROL;
           break;
         case "Venmo":

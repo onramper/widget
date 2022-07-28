@@ -6,7 +6,7 @@ export const useCashAppVenmoExperiment = () => {
   useEffect(() => {
     if (Math.floor(Math.random() * 2) === 0) {
       //normal approach
-      setVariant("Normal");
+      setVariant("Control");
     } else if (Math.floor(Math.random() * 2) === 1) {
       //cash app
       setVariant("CashApp");
@@ -19,4 +19,4 @@ export const useCashAppVenmoExperiment = () => {
   return variant;
 };
 
-type VariantType = "Normal" | "CashApp" | "Venmo";
+type VariantType = "Control" | "CashApp" | "Venmo";
