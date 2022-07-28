@@ -188,6 +188,11 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     }
   }, [calculateDistribution, items, maxLength, props.items, props.selectedId]);
 
+  const handleItemClick = (item: ItemType) => {
+    sendDataToGTM(genPaymentMethodOptionEvent(item.id));
+    props.onChange(item);
+  };
+
   if (props.isLoading)
     return <Skeleton style={style} maxLength={maxLength} ref={containerRef} />;
 
@@ -210,11 +215,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
             className={`${styles["option-wrapper"]} ${
               item.id === props.selectedId ? " " + styles.selected : ""
             }`}
-            onClick={() => {
-              console.log("YRYRYRYRYR", item.id);
-              sendDataToGTM(genPaymentMethodOptionEvent(item.id));
-              props.onChange(item);
-            }}
+            onClick={() => handleItemClick(item)}
           >
             {item.icon && (
               <div className={styles["option-logo-wrapper"]}>
@@ -222,11 +223,6 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
               </div>
             )}
             <div className={styles["option-label"]}> {item.name} </div>
-            <div className={styles["tooltip"]}>
-              <div className={styles["tooltiptext"]}>
-                <span>Unfortunately Venmo is currently not available</span>
-              </div>
-            </div>
           </li>
         ))}
 
