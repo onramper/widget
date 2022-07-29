@@ -9,4 +9,5 @@ export const LoadingItem: ItemType = {
   name: "Loading...",
 };
 
-export const walletNetworkType = process.env.STAGE === "prod" ?? "testnet";
+export const walletNetworkType =
+  process.env.STAGE === "prod" ? "prod" : "testnet";
