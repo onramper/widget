@@ -35,6 +35,8 @@ export enum GtmEventCategory {
   OPTION = "option",
   VARIANT_A = "variantA",
   CONTROL = "control",
+  CASH_APP = "cashApp",
+  VENMO = "venmo",
 }
 
 export enum GtmEventLabel {
@@ -68,8 +70,9 @@ export enum GtmEventLabel {
   MENU_UTORG_SUPPORT = "utorgSupport",
   MENU_WYRE_SUPPORT = "wyreSupport",
   MENU_XANPOOL_SUPPORT = "xanpoolSupport",
-  AMOUNT_SWITCH="amountSwitch",
+  AMOUNT_SWITCH = "amountSwitch",
   STATIC_ROUTING_EXPERIMENT = "staticRoutingExperiment",
+  PAYMENT_METHOD_FAKE_DOOR_EXPERIMENT = "paymentMethodFakeDoor",
 }
 
 export enum GtmGatewaySelectionType {

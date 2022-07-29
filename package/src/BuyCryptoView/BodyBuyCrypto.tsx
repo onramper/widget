@@ -1,38 +1,59 @@
 import React, {
+  useCallback,
   useContext,
   useEffect,
-  useState,
-  useCallback,
   useLayoutEffect,
+  useState,
 } from "react";
-import stylesCommon from "../styles.module.css";
-import ButtonAction from "../common/ButtonAction";
-import { APIContext, GatewayRateOption } from "../ApiContext";
-import type { ItemType } from "../ApiContext";
-import { NavContext } from "../NavContext";
-import PaymentMethodPicker from "./PaymentMethodPicker/PaymentMethodPicker";
-import GatewayIndicator from "./GatewayIndicator/GatewayIndicator";
-import { IGatewaySelected } from "./GatewayIndicator/GatewayIndicator.models";
-import errorTypes from "./../ApiContext/api/errorTypes";
-import TopScreenB2 from "./TopScreenB2/TopScreenB2";
-import NotificationSection from "./NotificationSection/NotificationSection";
-import Step from "./../steps/Step";
-import TopScreenA from "./ScreenA/TopScreenA";
-import OverlayPicker from "../common/OverlayPicker/OverlayPicker";
-import { getBestGatewayByPrice, getBestGatewayByPerformance } from "../utils";
-import { LoadingItem } from "./constants";
-import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
-import Footer from "../common/Footer";
 import { useTranslation } from "react-i18next";
-import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
-import { StepType } from "../ApiContext/api/types/nextStep";
+import type { ItemType } from "../ApiContext";
+import { APIContext, GatewayRateOption } from "../ApiContext";
 import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
-import { useGatewaySelectionGtm } from "./hooks";
+import { StepType } from "../ApiContext/api/types/nextStep";
+import ButtonAction from "../common/ButtonAction";
+import Footer from "../common/Footer";
+import InfoBox from "../common/InfoBox";
+import OverlayPicker from "../common/OverlayPicker/OverlayPicker";
+import { GtmEvent, GtmEventCategory, GtmEventLabel } from "../enums";
+import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
+import { useCashAppVenmoExperiment } from "../hooks/ab-test-experiments/useCashAppVenmoExperiment";
 import { useGTMDispatch } from "../hooks/gtm";
 import {
   buyBtnClickGtmEvent,
   genPaymentMethodSelectEvent,
 } from "../hooks/gtm/buyCryptoViewEvents";
+import { cashAppIcon } from "../icons/payment-methods/cashApp";
+import { venmoIcon } from "../icons/payment-methods/venmo";
+import { NavContext } from "../NavContext";
+import stylesCommon from "../styles.module.css";
+import { getBestGatewayByPerformance, getBestGatewayByPrice } from "../utils";
+import errorTypes from "./../ApiContext/api/errorTypes";
+import Step from "./../steps/Step";
+import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
+import { LoadingItem } from "./constants";
+import GatewayIndicator from "./GatewayIndicator/GatewayIndicator";
+import { IGatewaySelected } from "./GatewayIndicator/GatewayIndicator.models";
+import { useGatewaySelectionGtm } from "./hooks";
+import NotificationSection from "./NotificationSection/NotificationSection";
+import PaymentMethodPicker from "./PaymentMethodPicker/PaymentMethodPicker";
+import TopScreenA from "./ScreenA/TopScreenA";
+import TopScreenB2 from "./TopScreenB2/TopScreenB2";
+
+const venmoPaymentMethod: ItemType = {
+  id: "venmo",
+  name: "Venmo",
+  symbol: "",
+  info: "",
+  icon: venmoIcon,
+};
+
+const cashAppPaymentMethod: ItemType = {
+  id: "cashApp",
+  name: "Cash app",
+  symbol: "",
+  info: "",
+  icon: cashAppIcon,
+};
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -61,13 +82,15 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     data: { availablePaymentMethods, allRates, handlePaymentMethodChange },
   } = useContext(APIContext);
   const { nextScreen, backScreen } = useContext(NavContext);
-
+  const [paymentMethods, setPaymentMethods] = useState<ItemType[]>([]);
   const [hasMinMaxErrorsMsg, setHasMinMaxErrorsMsg] = useState<boolean>();
   const [isGatewayInitialLoading, setIsGatewayInitialLoading] =
     useState<boolean>(true);
   const [showScreenA, setShowScreenA] = useState(false);
   const sendDataToGTM = useGTMDispatch();
   const { gatewaySelectionTxt } = useGatewaySelectionGtm();
+  const variant = useCashAppVenmoExperiment();
+  const [showExperimentInfo, setShowExperimentInfo] = useState(false);
 
   useEffect(() => {
     const errType = collected.errors?.RATE?.type;
@@ -76,6 +99,53 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         !!collected.errors?.RATE?.message
     );
   }, [collected.errors]);
+
+  useEffect(() => {
+    //This will be removed once the Venmo/Cashapp experiment completed.
+    if (collected.selectedCountry === "us") {
+      if (variant === "Control") {
+        setPaymentMethods(availablePaymentMethods);
+      } else {
+        const _paymentMethods: ItemType[] = [...availablePaymentMethods];
+        let paymentMethod;
+        if (variant === "Venmo") paymentMethod = venmoPaymentMethod;
+        else if (variant === "CashApp") paymentMethod = cashAppPaymentMethod;
+        paymentMethod && _paymentMethods.splice(1, 0, paymentMethod);
+        setPaymentMethods(_paymentMethods);
+      }
+    } else {
+      setPaymentMethods(availablePaymentMethods);
+    }
+  }, [
+    availablePaymentMethods,
+    collected.selectedCountry,
+    sendDataToGTM,
+    variant,
+  ]);
+
+  useEffect(() => {
+    if (variant) {
+      let category;
+      switch (variant) {
+        case "Control":
+          category = GtmEventCategory.CONTROL;
+          break;
+        case "Venmo":
+          category = GtmEventCategory.VENMO;
+          break;
+        case "CashApp":
+          category = GtmEventCategory.CASH_APP;
+          break;
+        default:
+          break;
+      }
+      sendDataToGTM({
+        event: GtmEvent.EXPERIMENT,
+        category,
+        label: GtmEventLabel.PAYMENT_METHOD_FAKE_DOOR_EXPERIMENT,
+      });
+    }
+  }, [sendDataToGTM, variant]);
 
   const isNextStepConfirmed = useCallback(() => {
     if (!collected.selectedGateway) return false;
@@ -106,17 +176,22 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   }, [collected, isNextStepConfirmed, nextScreen, sendDataToGTM]);
 
   const openMorePaymentOptions = useCallback(() => {
-    if (availablePaymentMethods.length > 1) {
+    if (paymentMethods.length > 1) {
       nextScreen(
         <OverlayPicker
           name="paymentMethod"
           title="Select payment method"
-          indexSelected={availablePaymentMethods.findIndex(
+          indexSelected={paymentMethods.findIndex(
             (m) => m.id === collected.selectedPaymentMethod?.id
           )}
-          items={availablePaymentMethods}
+          items={paymentMethods}
           onItemClick={(name: string, index: number, item: ItemType) => {
-            handlePaymentMethodChange(item);
+            if (item.name === "Venmo" || item.name === "Cash app") {
+              setShowExperimentInfo(true);
+            } else {
+              setShowExperimentInfo(false);
+              handlePaymentMethodChange(item);
+            }
             sendDataToGTM(genPaymentMethodSelectEvent(item.id));
             backScreen();
           }}
@@ -124,12 +199,12 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
       );
     }
   }, [
-    availablePaymentMethods,
-    backScreen,
+    nextScreen,
+    paymentMethods,
     collected.selectedPaymentMethod?.id,
     handlePaymentMethodChange,
-    nextScreen,
     sendDataToGTM,
+    backScreen,
   ]);
 
   useEffect(() => {
@@ -180,6 +255,15 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     );
   }, []);
 
+  const handlePaymentChange = (item: ItemType) => {
+    if (item.name === "Venmo" || item.name === "Cash app") {
+      setShowExperimentInfo(true);
+    } else {
+      setShowExperimentInfo(false);
+      handlePaymentMethodChange(item);
+    }
+  };
+
   return (
     <main className={stylesCommon.body}>
       <NotificationSection onBuyCrypto={onBuyCrypto} />
@@ -190,12 +274,20 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
       <PaymentMethodPicker
         openMoreOptions={openMorePaymentOptions}
         selectedId={selectedPaymentMethod.id}
-        items={availablePaymentMethods}
-        onChange={props.handlePaymentMethodChange}
-        isLoading={
-          !props.initLoadingFinished || availablePaymentMethods.length === 0
-        }
+        items={paymentMethods}
+        onChange={handlePaymentChange}
+        isLoading={!props.initLoadingFinished || paymentMethods.length === 0}
       />
+      {showExperimentInfo && (
+        <InfoBox
+          in={true}
+          type="info"
+          canBeDismissed={true}
+          className={`${stylesCommon.body__child}`}
+        >
+          Unfortunately {variant} is currently not available.
+        </InfoBox>
+      )}
 
       {(!!collected.selectedGateway || isGatewayInitialLoading) &&
         collected.errors?.RATE?.type !== errorTypes.NO_RATES && (
