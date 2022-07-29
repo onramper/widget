@@ -51,7 +51,7 @@ import {
   GtmEventLabel,
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
-import useDebounce from "../../hooks/debounce"
+import { useDebounce } from "../../hooks/debounce"
 import { OnramperValidator } from "@onramper/validator/dist";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
@@ -186,7 +186,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   }, [fields]);
 
   const gtmEventLogErrorEvents = (name: string, value: any) => {
-    if (name === "cryptocurrencyAddress" || "cryptocurrencyAddressTag") {
+    if (name === "cryptocurrencyAddress" || name === "cryptocurrencyAddressTag") {
       value= value?.address;        
     }    
     const errorMessage = validator.current.message(name, value);   
