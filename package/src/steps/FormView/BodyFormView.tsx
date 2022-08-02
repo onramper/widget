@@ -50,7 +50,8 @@ import {
   GtmEventLabel,
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
-import { OnramperValidator } from "@onramper/validator/dist";
+import { OnramperValidator } from "@onramper/validator";
+import { walletNetworkType } from "../../BuyCryptoView/constants";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
   "ccMonth",
@@ -163,10 +164,18 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
 
   useEffect(() => {
     fields.forEach((field, idx) => {
-      if (inputRefs[idx]?.ref?.current?.getElementsByTagName("input")[0]?.value)
+      if (
+        (field.name === "ccMonth" && collected.ccMonth) ||
+        (field.name === "ccYear" && collected.ccYear) ||
+        (field.name === "ccCVV" && collected.ccCVV)
+      )
+        validator.current.showMessageFor(field.name);
+      else if (
+        inputRefs[idx]?.ref?.current?.getElementsByTagName("input")[0]?.value
+      )
         validator.current.showMessageFor(field.name);
     });
-  }, [fields, inputRefs]);
+  }, [collected.ccCVV, collected.ccMonth, collected.ccYear, fields, inputRefs]);
 
   const [countryHasChanged, setCountryHasChanged] = useState("initialkey");
 
@@ -193,6 +202,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           };
         }
       }
+
       validator.current.showMessageFor(name);
 
       if (name === "cryptocurrencyAddressTag") {
@@ -383,7 +393,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 handleInputChange={onChange}
                 error={validator.current.message(
                   "cryptocurrencyAddress",
-                  `${collected.selectedCrypto?.id}:${collected.cryptocurrencyAddress?.address}`
+                  `${collected.selectedCrypto?.id}:${collected.cryptocurrencyAddress?.address}:${walletNetworkType}`
                 )}
                 success={handleSuccess("cryptocurrencyAddress")}
                 disabled={!collected.isAddressEditable}
