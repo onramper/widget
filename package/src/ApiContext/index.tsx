@@ -265,7 +265,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     (country: string) => {
       if (!props.selectGatewayBy) {
         // Experimentation - Simplified Approach for static routing
-        if (Date.now() % 10 >= 4) {
+        if (Date.now() % 10 >= 5) {
           getGatewayStaticRouting(country);
           handleInputChange("selectGatewayBy", SelectGatewayByType.Performance);
           sendExperimentGtmEvent(SelectGatewayByType.Performance);
