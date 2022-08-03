@@ -1,15 +1,16 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import styles from "./styles.module.css";
-import GatewayOption from "./GatewayOption";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { APIContext, GatewayRateOption } from "../ApiContext";
+import { documents } from "../ApiContext/api/constants";
+import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
+import { GtmEvent, GtmEventAction, GtmGatewaySelectionType } from "../enums";
+import { useGTMDispatch } from "../hooks/gtm";
+import { getArrOfMinsMaxs } from "../utils";
 import type {
   IGatewayStats,
   IRatesListProps,
 } from "./ChooseGatewayView.models";
-import { APIContext, GatewayRateOption } from "../ApiContext";
-import { documents } from "../ApiContext/api/constants";
-import { getArrOfMinsMaxs } from "../utils";
-import { GtmEvent, GtmGatewaySelectionType, GtmEventAction } from "../enums";
-import { useGTMDispatch } from "../hooks/gtm";
+import GatewayOption from "./GatewayOption";
+import styles from "./styles.module.css";
 
 const RatesList: React.FC<IRatesListProps> = (props) => {
   const sendDataToGTM = useGTMDispatch();
@@ -74,7 +75,6 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
   ]);
 
   const [stats, setStats] = useState(getStats());
-
   const triggerGtm = useCallback(
     (gatewayName?: string) => {
       sendDataToGTM({
@@ -83,17 +83,25 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
         label: GtmGatewaySelectionType.PRICE,
         action: GtmEventAction.MANUAL_SELECTION,
       });
-      handleInputChange("lastGatewaySuggestion", GtmGatewaySelectionType.PRICE);
     },
-    [handleInputChange, sendDataToGTM]
+    [sendDataToGTM]
   );
 
-  const setSelectedGateway = useCallback(
+  const handleGatewayChange = useCallback(
     (item: GatewayRateOption) => {
       triggerGtm(item.name);
       handleInputChange("selectedGateway", item);
+      const gatewayStat = stats[item.name];
+      handleInputChange(
+        "selectGatewayBy",
+        gatewayStat.cheapest
+          ? SelectGatewayByType.Price
+          : gatewayStat.fast
+          ? SelectGatewayByType.Performance
+          : SelectGatewayByType.Basic
+      );
     },
-    [handleInputChange, triggerGtm]
+    [handleInputChange, stats, triggerGtm]
   );
 
   useEffect(() => {
@@ -136,7 +144,7 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
           index={i}
           isOpen={item.id === collected.selectedGateway?.id}
           selectedReceivedCrypto={collected.selectedGateway?.receivedCrypto}
-          onClick={() => setSelectedGateway(item)}
+          onClick={() => handleGatewayChange(item)}
           stats={stats}
           {...item}
         />

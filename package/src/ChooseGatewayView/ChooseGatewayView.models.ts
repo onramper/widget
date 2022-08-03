@@ -26,6 +26,6 @@ export interface IRatesListProps {
 
 export enum BadgeType {
   Cheapest = "Cheapest",
-  Fast = "Fast",
+  Fast = "Best performance",
   NoIdRequired = "No ID",
 }
