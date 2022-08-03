@@ -1,14 +1,18 @@
 import { DynamoDB } from 'aws-sdk';
-import { QueryInput } from 'aws-sdk/clients/dynamodb';
-import { AppDatabase, CoreDatabaseError } from './core';
+import { AppDatabase } from './core';
+import { CoreDatabaseError } from "./onramper/errors";
 
-export { ServiceDatabase }
+export { ServiceDatabase };
 
+
+
+// DATABSE CONSTANTS
+//=================
 const KeySeperator: string = '#';
+
 const CurrencyTypeIndex: string = "TypeIndex";
 
-
-enum KeyParts {
+const enum KeyParts {
 
     CURRENCY_KEY_PREFIX = 'Currency',
 
@@ -18,6 +22,9 @@ enum KeyParts {
 
 }
 
+
+// KEY CONVERSIONS
+//============
 const CurrencyKey = (currencyId: string) => {
     if (currencyId === "") { return ""; }
 
@@ -43,6 +50,9 @@ const GetIdFromKeyEnd = (currencykey: string) => {
     return keyComponents[keyComponents.length - 1];
 };
 
+
+// DATABASE IMPLEMENTATION
+//========================
 class ServiceDatabase implements AppDatabase {
 
     private tableName: string;

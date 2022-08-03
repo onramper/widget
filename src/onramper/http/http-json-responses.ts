@@ -1,4 +1,11 @@
-import { CoreHttpResponse, CoreError } from "./core";
+/* Copyright ONRAMPER | SAFUDEX B.V. - All Rights Reserved
+ * Proprietary and confidential
+ * 
+ * @url:https://onramper.com
+ */
+
+import { CoreHttpResponse } from ".";
+import { CoreError } from "../errors";
 
 
 export function Ok(items?: any): CoreHttpResponse {    

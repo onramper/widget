@@ -9,9 +9,10 @@ Globals:
   Function:
     Runtime: nodejs16.x
     Timeout: 180
-    Handler: index.handler    
+    Handler: index.apiEntry    
     Environment:
       Variables:
+        CURRENCIES_API_URL_ROOT: currencies
         CURRENCIES_API_TABLE_NAME: currencies
         CURRENCIES_API_AWS_REGION: local
         CURRENCIES_API_AWS_ENDPOINT_URL: http://host.docker.internal:8000
@@ -25,21 +26,21 @@ Resources:
         GetAllCurrencies:
           Type: HttpApi
           Properties:            
-            Path: /
+            Path: /currencies
             Method: GET
             Auth:
               Authorizer: NONE
         GetCurrencyById:
           Type: HttpApi
           Properties:            
-            Path: /{currencyId}
+            Path: /currencies/{currencyId}
             Method: GET
             Auth:
               Authorizer: NONE      
         GetCurrencyByType:
           Type: HttpApi
           Properties:            
-            Path: /types/{typeName}
+            Path: /currencies/types/{typeName}
             Method: GET
             Auth:
               Authorizer: NONE     
