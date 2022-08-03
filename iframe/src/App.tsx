@@ -124,7 +124,9 @@ function App() {
 }
 
 function getParam(name: string, defaultValue?: string): string | undefined {
-  const value = new URLSearchParams(window.location.search).get(name);
+  const value = new URLSearchParams(
+    window.location.search.replace(/\/+$/, "")
+  ).get(name);
   if (value === null) return defaultValue;
   try {
     return decodeURIComponent(value);
