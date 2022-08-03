@@ -16,7 +16,10 @@ import InfoBox from "../common/InfoBox";
 import OverlayPicker from "../common/OverlayPicker/OverlayPicker";
 import { GtmEvent, GtmEventCategory, GtmEventLabel } from "../enums";
 import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
-import { useCashAppVenmoExperiment } from "../hooks/ab-test-experiments/useCashAppVenmoExperiment";
+import {
+  useCashAppVenmoExperiment,
+  usePreSelectItezExperiment,
+} from "../hooks/ab-test-experiments";
 import { useGTMDispatch } from "../hooks/gtm";
 import {
   buyBtnClickGtmEvent,
@@ -89,7 +92,8 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   const [showScreenA, setShowScreenA] = useState(false);
   const sendDataToGTM = useGTMDispatch();
   const { gatewaySelectionTxt } = useGatewaySelectionGtm();
-  const variant = useCashAppVenmoExperiment();
+  const cashAppVenmoVariant = useCashAppVenmoExperiment();
+  const preSelectItezVariant = usePreSelectItezExperiment();
   const [showExperimentInfo, setShowExperimentInfo] = useState(false);
 
   useEffect(() => {
@@ -103,13 +107,14 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   useEffect(() => {
     //This will be removed once the Venmo/Cashapp experiment completed.
     if (collected.selectedCountry === "us") {
-      if (variant === "Control") {
+      if (cashAppVenmoVariant === "Control") {
         setPaymentMethods(availablePaymentMethods);
       } else {
         const _paymentMethods: ItemType[] = [...availablePaymentMethods];
         let paymentMethod;
-        if (variant === "Venmo") paymentMethod = venmoPaymentMethod;
-        else if (variant === "CashApp") paymentMethod = cashAppPaymentMethod;
+        if (cashAppVenmoVariant === "Venmo") paymentMethod = venmoPaymentMethod;
+        else if (cashAppVenmoVariant === "CashApp")
+          paymentMethod = cashAppPaymentMethod;
         paymentMethod && _paymentMethods.splice(1, 0, paymentMethod);
         setPaymentMethods(_paymentMethods);
       }
@@ -120,13 +125,13 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     availablePaymentMethods,
     collected.selectedCountry,
     sendDataToGTM,
-    variant,
+    cashAppVenmoVariant,
   ]);
 
   useEffect(() => {
-    if (variant) {
+    if (cashAppVenmoVariant) {
       let category;
-      switch (variant) {
+      switch (cashAppVenmoVariant) {
         case "Control":
           category = GtmEventCategory.CONTROL;
           break;
@@ -145,7 +150,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         label: GtmEventLabel.PAYMENT_METHOD_FAKE_DOOR_EXPERIMENT,
       });
     }
-  }, [sendDataToGTM, variant]);
+  }, [sendDataToGTM, cashAppVenmoVariant]);
 
   const isNextStepConfirmed = useCallback(() => {
     if (!collected.selectedGateway) return false;
@@ -208,24 +213,31 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   ]);
 
   useEffect(() => {
-    if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
-      const gatewayByPerformance = getBestGatewayByPerformance(
-        allRates,
-        collected.selectedCurrency?.name,
-        collected.selectedCrypto?.name,
-        collected.staticRouting
+    if (preSelectItezVariant && preSelectItezVariant === "Itez") {
+      handleInputChange(
+        "selectedGateway",
+        allRates.find((i) => i.id === "Itez")
       );
-      if (gatewayByPerformance) {
-        handleInputChange("selectedGateway", gatewayByPerformance);
-        return;
+    } else {
+      if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
+        const gatewayByPerformance = getBestGatewayByPerformance(
+          allRates,
+          collected.selectedCurrency?.name,
+          collected.selectedCrypto?.name,
+          collected.staticRouting
+        );
+        if (gatewayByPerformance) {
+          handleInputChange("selectedGateway", gatewayByPerformance);
+          return;
+        }
       }
-    }
 
-    const gatewayByPrice = getBestGatewayByPrice(
-      allRates,
-      !!collected.amountInCrypto
-    );
-    handleInputChange("selectedGateway", gatewayByPrice);
+      const gatewayByPrice = getBestGatewayByPrice(
+        allRates,
+        !!collected.amountInCrypto
+      );
+      handleInputChange("selectedGateway", gatewayByPrice);
+    }
   }, [
     allRates,
     collected.amountInCrypto,
@@ -235,6 +247,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     collected.selectedPaymentMethod,
     handleInputChange,
     collected.staticRouting,
+    preSelectItezVariant,
   ]);
 
   useEffect(() => {
@@ -285,7 +298,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
           canBeDismissed={true}
           className={`${stylesCommon.body__child}`}
         >
-          Unfortunately {variant} is currently not available.
+          Unfortunately {cashAppVenmoVariant} is currently not available.
         </InfoBox>
       )}
 
@@ -293,7 +306,9 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         collected.errors?.RATE?.type !== errorTypes.NO_RATES && (
           <GatewayIndicator
             selectedGateway={mapGatewaySelectedToPicker(
-              collected.selectedGateway
+              preSelectItezVariant === "Itez"
+                ? allRates.find((i) => i.id === "Itez")
+                : collected.selectedGateway
             )}
             gatewaySelectionTxt={gatewaySelectionTxt}
             unitCrypto={collected.selectedCrypto?.name}

@@ -265,7 +265,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     (country: string) => {
       if (!props.selectGatewayBy) {
         // Experimentation - Simplified Approach for static routing
-        if (Date.now() % 11 >= 6) {
+        if (Date.now() % 10 >= 4) {
           getGatewayStaticRouting(country);
           handleInputChange("selectGatewayBy", SelectGatewayByType.Performance);
           sendExperimentGtmEvent(SelectGatewayByType.Performance);
@@ -275,6 +275,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         }
       } else if (props.selectGatewayBy === SelectGatewayByType.Performance) {
         getGatewayStaticRouting(country);
+        handleInputChange("selectGatewayBy", SelectGatewayByType.Performance);
+      } else {
+        handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
       }
     },
     [
