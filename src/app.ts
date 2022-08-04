@@ -1,15 +1,7 @@
 import { CurrencyNotFoundError, CurrencyValidationError, CurrenciesOrError } from './core';
 import { CurrenciesRepo } from './repo';
-import { CoreDatabaseError,CoreError } from "./onramper/errors";
-import { CoreHttpResponse, HttpResponse } from "./onramper/http";
-
-// QUERY PARAMETER OBJECTS
-
-interface CurrencyQueryParameters{
-    countryId?:string    
-}
-// -- End QUERY PARAMETER OBJECTS
-
+import { CoreDatabaseError,CoreError } from "core-lib/errors";
+import { CoreHttpResponse, HttpResponse } from "core-lib/http";
 
 // CONTROLLERS
 
@@ -75,4 +67,12 @@ export async function getCurrenciesForType(repo:CurrenciesRepo, typeName: string
 }
 
 
+
+
+// QUERY PARAMETER OBJECTS
+
+interface CurrencyQueryParameters{
+    countryId?:string    
+}
+// -- End QUERY PARAMETER OBJECTS
 

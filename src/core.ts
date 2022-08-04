@@ -1,11 +1,12 @@
-import { CoreError } from "./onramper/errors";
+import { CoreError } from "core-lib/errors";
+
 
 // TYPES
 //======
 type ResultOrError<TResult> = Promise<TResult | CoreError>;
 export type CurrenciesOrError = ResultOrError<Currency[]>;
 export type CurrencyOrError = ResultOrError<Currency>;
-export type AsyncAny = Promise<any>;
+
 
 // INTERFACES
 //===========

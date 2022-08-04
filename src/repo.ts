@@ -1,5 +1,5 @@
 import { Currency, AppDatabase, CurrenciesOrError, CurrencyOrError, CurrencyNotFoundError } from "./core";
-import { CoreError } from "./onramper/errors";
+import { CoreError } from "core-lib/errors";
 
 
 export { CurrenciesRepo };
