@@ -25,6 +25,6 @@
     "jest": "^28.1.3"
   },
   "dependencies": {
-    "core-lib": "1.0.0"
+    "ramp-core": "1.0.0"
   }
 }

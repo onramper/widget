@@ -1,4 +1,4 @@
-import { CoreError } from "core-lib/errors";
+import { CoreError } from "ramp-core/errors";
 
 
 // TYPES

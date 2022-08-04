@@ -1,7 +1,7 @@
 import { CurrencyNotFoundError, CurrencyValidationError, CurrenciesOrError } from './core';
 import { CurrenciesRepo } from './repo';
-import { CoreDatabaseError,CoreError } from "core-lib/errors";
-import { CoreHttpResponse, HttpResponse } from "core-lib/http";
+import { CoreDatabaseError,CoreError } from "ramp-core/errors";
+import { CoreHttpResponse, HttpResponse } from "ramp-core/http";
 
 // CONTROLLERS
 

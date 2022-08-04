@@ -1,5 +1,5 @@
 import { Currency, AppDatabase, CurrenciesOrError, CurrencyOrError, CurrencyNotFoundError } from "./core";
-import { CoreError } from "core-lib/errors";
+import { CoreError } from "ramp-core/errors";
 
 
 export { CurrenciesRepo };
