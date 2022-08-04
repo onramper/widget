@@ -45,9 +45,7 @@ export async function getCurrency(repo:CurrenciesRepo, currencyId: string): Prom
 function validateCurrencyId(currencyId:string):CoreError[]{
     let errors:CoreError[] = [];
 
-    if(currencyId.length < 3 || currencyId.length > 4){
-        errors.push(new CurrencyValidationError(`The currencyId path parameter must be either a 3 letter or 4 letter currency code.`));
-    }
+    // -- Enter validation criteria here.
 
     return errors;
 }
