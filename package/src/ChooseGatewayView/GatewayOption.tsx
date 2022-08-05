@@ -7,6 +7,7 @@ import { GateWayOptionProps, BadgeType } from "./ChooseGatewayView.models";
 import { ReactComponent as ArrowUpSvg } from "../icons/arrow-up.svg";
 import Checkbox from "../common/Checkbox/Checkbox";
 import { toMaxDecimalsFloor } from "../utils";
+import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
 
 const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
   const { collected } = useContext(APIContext);
@@ -55,16 +56,25 @@ const GatewayOption: React.FC<GateWayOptionProps> = (props) => {
       return;
     }
 
-    if (props.stats[props.name]?.cheapest) {
+    const stat = props.stats[props.name];
+    if (stat?.cheapest && stat?.fastest) {
+      if (collected.selectGatewayBy === SelectGatewayByType.Performance)
+        return badgeItemMap[BadgeType.Fastest];
+      else return badgeItemMap[BadgeType.Cheapest];
+    }
+    if (stat?.cheapest) {
       return badgeItemMap[BadgeType.Cheapest];
     }
 
-    if (props.stats[props.name]?.fast) {
+    if (stat?.fastest) {
+      return badgeItemMap[BadgeType.Fastest];
+    }
+    if (stat?.fast) {
       return badgeItemMap[BadgeType.Fast];
     }
 
     return undefined;
-  }, [props.name, props.stats]);
+  }, [collected.selectGatewayBy, props.name, props.stats]);
 
   const updateBadgeList = useCallback(() => {
     const results = [];

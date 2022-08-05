@@ -1,5 +1,6 @@
 import { BadgeType } from "./ChooseGatewayView.models";
 import checkIcon from "./../icons/check-circle.svg";
+import flashIcon from "./../icons/flash.svg";
 import percentageIcon from "./../icons/percentage.svg";
 import incognitoIcon from "./../icons/incognito.svg";
 
@@ -9,7 +10,7 @@ export const cryptoAmountsWarning =
 export const badgeItemMap = {
   [BadgeType.Fast]: {
     label: BadgeType.Fast,
-    icon: checkIcon,
+    icon: flashIcon,
   },
   [BadgeType.Cheapest]: {
     label: BadgeType.Cheapest,
@@ -18,5 +19,9 @@ export const badgeItemMap = {
   [BadgeType.NoIdRequired]: {
     label: BadgeType.NoIdRequired,
     icon: incognitoIcon,
+  },
+  [BadgeType.Fastest]: {
+    label: BadgeType.Fastest,
+    icon: checkIcon,
   },
 };
