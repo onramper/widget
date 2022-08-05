@@ -220,12 +220,13 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         return;
       }
     }
-
-    const gatewayByPrice = getBestGatewayByPrice(
-      allRates,
-      !!collected.amountInCrypto
-    );
-    handleInputChange("selectedGateway", gatewayByPrice);
+    if (collected.selectGatewayBy === SelectGatewayByType.Price) {
+      const gatewayByPrice = getBestGatewayByPrice(
+        allRates,
+        !!collected.amountInCrypto
+      );
+      handleInputChange("selectedGateway", gatewayByPrice);
+    }
   }, [
     allRates,
     collected.amountInCrypto,

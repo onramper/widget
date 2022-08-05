@@ -6,6 +6,7 @@ export interface IGatewayStats {
     noId: boolean;
     fast: boolean;
     cheapest: boolean;
+    fastest: boolean;
     count: number;
   };
 }
@@ -26,6 +27,7 @@ export interface IRatesListProps {
 
 export enum BadgeType {
   Cheapest = "Cheapest",
-  Fast = "Best performance",
+  Fast = "Fast",
+  Fastest = "Best performance",
   NoIdRequired = "No ID",
 }
