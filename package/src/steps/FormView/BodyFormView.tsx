@@ -51,7 +51,7 @@ import {
   GtmEventLabel,
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
-import { useDebounce } from "../../hooks/debounce"
+import { useDebounce } from "../../hooks/useDebounce";
 import { OnramperValidator } from "@onramper/validator/dist";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
@@ -407,7 +407,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 handleInputChange={onChange}
                 error={validator.current.message(
                   "cryptocurrencyAddress",
-                  `${collected.selectedCrypto?.id}:${collected.cryptocurrencyAddress?.address}`
+                  `${collected.selectedCrypto?.id}:${collected.cryptocurrencyAddress?.address}:${walletNetworkType}`
                 )}
                 success={handleSuccess("cryptocurrencyAddress")}
                 disabled={!collected.isAddressEditable}

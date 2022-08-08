@@ -8,3 +8,5 @@ export const LoadingItem: ItemType = {
   id: "",
   name: "Loading...",
 };
+
+export const walletNetworkType = "both";

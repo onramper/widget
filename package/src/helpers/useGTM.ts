@@ -57,7 +57,7 @@ export const generateGtmCtxValue = (collected: CollectedStateType) => {
     selectedCurrency,
     selectedGateway,
     selectedPaymentMethod,
-    lastGatewaySuggestion,
+    selectGatewayBy,
   } = collected;
 
   const urlParams = selectedGateway?.nextStep?.url?.split("/");
@@ -78,7 +78,7 @@ export const generateGtmCtxValue = (collected: CollectedStateType) => {
       selectedCrypto: selectedCrypto?.id,
       selectedGateway: selectedGateway?.id,
     },
-    gatewaySuggestion: lastGatewaySuggestion,
+    gatewaySuggestion: selectGatewayBy,
     transactionId: urlParams?.[urlParams.length - 1],
   };
 };
