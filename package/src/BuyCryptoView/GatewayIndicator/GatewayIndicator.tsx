@@ -109,7 +109,11 @@ const GatewayIndicator: React.FC<GatewayIndicatorProps> = (
   }
 
   return (
-    <div className={styles.wrapper} onClick={props.openMoreOptions}>
+    <div
+      className={styles.wrapper}
+      data-testid="gateway-indicator"
+      onClick={props.openMoreOptions}
+    >
       <div className={styles["option-wrapper"]} ref={optionWrapperRef}>
         <img
           className={styles["option-icon"]}

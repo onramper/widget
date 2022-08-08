@@ -90,6 +90,7 @@ const CurrencyInput: React.FC = () => {
       )}
       <input
         ref={inputRef}
+        data-testid="currency-input"
         id="editable-amount"
         className={`${styles["text"]} ${styles["input"]}`}
         placeholder="100"
