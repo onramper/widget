@@ -238,7 +238,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     debouncedValue,
     name,
     value,
-    gtmEventLogErrorEvents,
   ]);
   useEffect(() => {
     // setting initial values
