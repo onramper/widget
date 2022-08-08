@@ -33,7 +33,7 @@ import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
 import { LoadingItem } from "./constants";
 import GatewayIndicator from "./GatewayIndicator/GatewayIndicator";
 import { IGatewaySelected } from "./GatewayIndicator/GatewayIndicator.models";
-import { useGatewaySelectionGtm } from "./hooks";
+import { useGatewaySelection } from "./hooks";
 import NotificationSection from "./NotificationSection/NotificationSection";
 import PaymentMethodPicker from "./PaymentMethodPicker/PaymentMethodPicker";
 import TopScreenA from "./ScreenA/TopScreenA";
@@ -88,7 +88,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     useState<boolean>(true);
   const [showScreenA, setShowScreenA] = useState(false);
   const sendDataToGTM = useGTMDispatch();
-  const { gatewaySelectionTxt } = useGatewaySelectionGtm();
+  const { gatewaySelectionTxt } = useGatewaySelection();
   const variant = useCashAppVenmoExperiment();
   const [showExperimentInfo, setShowExperimentInfo] = useState(false);
 
@@ -220,12 +220,13 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         return;
       }
     }
-
-    const gatewayByPrice = getBestGatewayByPrice(
-      allRates,
-      !!collected.amountInCrypto
-    );
-    handleInputChange("selectedGateway", gatewayByPrice);
+    if (collected.selectGatewayBy === SelectGatewayByType.Price) {
+      const gatewayByPrice = getBestGatewayByPrice(
+        allRates,
+        !!collected.amountInCrypto
+      );
+      handleInputChange("selectedGateway", gatewayByPrice);
+    }
   }, [
     allRates,
     collected.amountInCrypto,

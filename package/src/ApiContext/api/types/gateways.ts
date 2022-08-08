@@ -44,6 +44,7 @@ interface IGatewayItem {
 export enum SelectGatewayByType {
   Performance = "performance",
   Price = "price",
+  Basic = "basic",
 }
 
 export type {

@@ -207,8 +207,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       );
   }, [lastCall, handleInputChange, state.data.responseRate]);
 
-  /* *********** */
-
   const addData = useCallback(
     (data: any) =>
       dispatch({ type: DataActionsType.AddData, payload: { value: data } }),
@@ -233,9 +231,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const getGatewayStaticRouting = useCallback(
     async (country: string) => {
       try {
-        updateStaticRouting(
-          (await API.getGatewayStaticRouting(country)).recommended
-        );
+        const data = await API.getGatewayStaticRouting(country);
+        updateStaticRouting(data.recommended);
+        return data;
       } catch (error) {
         return processErrors({
           GATEWAYS: {
@@ -263,19 +261,20 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   );
 
   const initiateRouting = useCallback(
-    (country: string) => {
+    async (country: string) => {
+      const routingData = await getGatewayStaticRouting(country);
       if (!props.selectGatewayBy) {
         // Experimentation - Simplified Approach for static routing
-        if (Date.now() % 11 >= 6) {
-          getGatewayStaticRouting(country);
+        if (
+          Object.keys(typeof routingData === "object" && routingData).length &&
+          Date.now() % 10 >= 5
+        ) {
           handleInputChange("selectGatewayBy", SelectGatewayByType.Performance);
           sendExperimentGtmEvent(SelectGatewayByType.Performance);
         } else {
           handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
           sendExperimentGtmEvent(SelectGatewayByType.Price);
         }
-      } else if (props.selectGatewayBy === SelectGatewayByType.Performance) {
-        getGatewayStaticRouting(country);
       }
     },
     [
