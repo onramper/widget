@@ -19,9 +19,9 @@
   align-items: center;
 }
 
-.crypto-switcher:hover {
+/* .crypto-switcher:hover {
   text-decoration: underline;
-}
+} */
 
 .swap-icon {
   width: 12px;
