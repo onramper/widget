@@ -16,7 +16,7 @@ export const useGatewaySelection = () => {
     if (collected.selectGatewayBy === SelectGatewayByType.Performance)
       setGatewaySelectionTxt(t("buyCryptoView.bestPerformance"));
 
-    if (collected.selectGatewayBy === SelectGatewayByType.Basic)
+    if (collected.selectGatewayBy === SelectGatewayByType.NotSuggested)
       setGatewaySelectionTxt(t("buyCryptoView.basic"));
   }, [collected.selectGatewayBy, t]);
 

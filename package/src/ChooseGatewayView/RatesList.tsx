@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { APIContext, GatewayRateOption } from "../ApiContext";
 import { documents } from "../ApiContext/api/constants";
 import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
-import { GtmEvent, GtmEventAction, GtmGatewaySelectionType } from "../enums";
+import { GtmEvent, GtmEventAction } from "../enums";
 import { useGTMDispatch } from "../hooks/gtm";
 import { getArrOfMinsMaxs } from "../utils";
 import type {
@@ -58,13 +58,12 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
     );
 
     return props.availableRates.reduce<IGatewayStats>((acc, rate, index) => {
-      const what = bestPerformanceGateway === rate.name.toLowerCase();
       const allbadges = {
         _id: index,
         noId: !requiresPaperIdMap[rate.identifier],
         fast: rate.duration.seconds <= 60 * 10,
         cheapest: cheapest.some((id) => id === rate.identifier),
-        fastest: what,
+        fastest: bestPerformanceGateway === rate.name.toLowerCase(),
       };
       return {
         ...acc,
@@ -92,28 +91,17 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
         ? SelectGatewayByType.Price
         : gatewayStat.fastest
         ? SelectGatewayByType.Performance
-        : SelectGatewayByType.Basic;
+        : SelectGatewayByType.NotSuggested;
     },
     [selectGatewayBy]
   );
-  const handleOnrampSelectionClose = useCallback(() => {
-    if (selectedGateway) {
-      const gatewayStat = stats[selectedGateway.name];
-      const selectionType = getSelectionType(gatewayStat);
-      handleInputChange("selectGatewayBy", selectionType);
-    }
-  }, [getSelectionType, handleInputChange, selectedGateway, stats]);
-
-  useEffect(() => {
-    return handleOnrampSelectionClose();
-  }, [handleOnrampSelectionClose]);
 
   const triggerGtm = useCallback(
-    (gatewayName?: string) => {
+    (selectionType: any, gatewayName?: string) => {
       sendDataToGTM({
         event: GtmEvent.GATEWAY_SELECTION,
         category: gatewayName,
-        label: GtmGatewaySelectionType.PRICE,
+        label: selectionType,
         action: GtmEventAction.MANUAL_SELECTION,
       });
     },
@@ -123,9 +111,12 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
   const handleGatewayChange = useCallback(
     (item: GatewayRateOption) => {
       handleInputChange("selectedGateway", item);
-      triggerGtm(item.name);
+      const gatewayStat = stats[item.name];
+      const selectionType = getSelectionType(gatewayStat);
+      handleInputChange("selectGatewayBy", selectionType);
+      triggerGtm(selectionType, item.name);
     },
-    [handleInputChange, triggerGtm]
+    [getSelectionType, handleInputChange, stats, triggerGtm]
   );
 
   useEffect(() => {
