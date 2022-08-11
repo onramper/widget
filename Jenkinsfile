@@ -20,9 +20,5 @@ pipeline {
             sh 'cd iframe && npm ci && npm run build && ls -al'
           }
        }
-
-       stage(Deploy) {
-
-       }
     }
 }
