@@ -14,13 +14,6 @@ pipeline {
 
     stages {
         stage('Lint and Build') {
-<<<<<<< HEAD
-            sh 'npm install'
-            sh 'cd package && npm ci --omit peer'
-            sh 'npm run build:dev'
-    }
-}
-=======
           steps {
             sh 'npm install'
             sh 'cd package && npm ci --omit peer'
@@ -29,4 +22,3 @@ pipeline {
        }
     }
 }
->>>>>>> 5d6973bd1e0eee71317ce7aa22f84a717a96f51b
