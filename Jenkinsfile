@@ -17,5 +17,6 @@ pipeline {
             sh 'npm install'
             sh 'cd package && npm ci --omit peer'
             sh 'npm run build:dev'
+        }
     }
 }
