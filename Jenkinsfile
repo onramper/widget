@@ -16,8 +16,13 @@ pipeline {
         stage('Lint and Build') {
           steps {
             sh 'npm install'
-            sh 'cd package && npm ci --omit peer && npm run build:dev'
+            sh 'cd package && npm ci --omit peer && npm run build:dev && ls -al'
+            sh 'cd iframe && npm ci && npm run build && ls -al'
           }
+       }
+
+       stage(Deploy) {
+
        }
     }
 }
