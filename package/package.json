@@ -44,7 +44,7 @@
   "dependencies": {
     "@onramper/flag-icons": "^1.0.1",
     "@onramper/moonpay-adapter": "^1.6.19",
-    "@onramper/validator": "^1.0.3",
+    "@onramper/validator": "^1.0.4",
     "@sentry/browser": "^6.1.0",
     "@sentry/react": "^6.2.0",
     "@types/js-cookie": "^3.0.2",
