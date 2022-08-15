@@ -192,7 +192,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     }    
     const errorMessage = validator.current.message(name, value);   
     gtmEventValidatorData(FormName[props.heading as keyof typeof FormName], name, errorMessage);
-  },[]);
+  }, []);
 
   const onChange = useCallback(
     (name: string, value: any, type?: string) => {
