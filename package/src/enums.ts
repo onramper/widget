@@ -4,6 +4,7 @@ export enum GtmEvent {
   ELEMENT_CLICK = "element-click",
   GATEWAY_SELECTION = "gateway-selection",
   EXPERIMENT = "experiment",
+  FIELD_ERROR = "fieldError",
 }
 
 export enum GtmEventAction {
@@ -94,4 +95,15 @@ export enum MenuItemLabel {
   "support-wyre" = GtmEventLabel.MENU_WYRE_SUPPORT,
   "support-xanpool" = GtmEventLabel.MENU_XANPOOL_SUPPORT,
   "help" = GtmEventLabel.MENU_HELP,
+}
+
+export enum FormTitle {
+  EMAIL_FORM = "emailForm",
+  WALLET_FORM = "walletForm",
+}
+
+export enum FormName {
+  "Input your email" = FormTitle.EMAIL_FORM,
+  "Your BTC address" = FormTitle.WALLET_FORM,
+  "Purchase form" = FormTitle.EMAIL_FORM,
 }

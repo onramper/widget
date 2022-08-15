@@ -44,12 +44,14 @@ import InputDelegator from "../../common/Input/InputDelegator";
 import OverlayPicker from "../../common/OverlayPicker/OverlayPicker";
 import { CountryIcon } from "@onramper/flag-icons";
 import {
+  FormName,
   GtmEvent,
   GtmEventAction,
   GtmEventCategory,
   GtmEventLabel,
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
+import { useDebounce } from "../../hooks/useDebounce";
 import { OnramperValidator } from "@onramper/validator";
 import { walletNetworkType } from "../../BuyCryptoView/constants";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
@@ -77,6 +79,7 @@ type BodyFormViewType = {
 
 const BodyFormView: React.FC<BodyFormViewType> = (props) => {
   const validator = useRef(new OnramperValidator({}));
+  const { handleInputChange, onActionButton, fields = [] } = props;
   const { collected, apiInterface } = useContext(APIContext);
   const { backScreen, nextScreen, onlyScreen } = useContext(NavContext);
   const {
@@ -86,18 +89,32 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     errorMsg,
     infoMsg,
     formName,
-    handleInputChange,
-    onActionButton,
-    fields = [],
   } = props;
 
   const [isRestartCalled, setIsRestartCalled] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
+  const [value, setValue] = useState("");
+  const [name, setName] = useState("");
+  const debouncedValue = useDebounce(value, 1000);
   const sendDataToGTM = useGTMDispatch();
-
+  
   const restartToAnotherGateway = () => {
     apiInterface.clearErrors();
     setIsRestartCalled(true);
+  };
+
+  const gtmEventValidatorData = (
+    action: GtmEventAction | FormName,
+    category: string,
+    label: string
+  ) => {
+    const gtmData = {
+      event: GtmEvent.FIELD_ERROR,
+      action: action,
+      category: category,
+      label: label,
+    };
+    sendDataToGTM(gtmData);
   };
 
   const gtmEventFormData = (
@@ -162,27 +179,20 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     }));
   }, [fields]);
 
-  useEffect(() => {
-    fields.forEach((field, idx) => {
-      if (
-        (field.name === "ccMonth" && collected.ccMonth) ||
-        (field.name === "ccYear" && collected.ccYear) ||
-        (field.name === "ccCVV" && collected.ccCVV)
-      )
-        validator.current.showMessageFor(field.name);
-      else if (
-        inputRefs[idx]?.ref?.current?.getElementsByTagName("input")[0]?.value
-      )
-        validator.current.showMessageFor(field.name);
-    });
-  }, [collected.ccCVV, collected.ccMonth, collected.ccYear, fields, inputRefs]);
-
   const [countryHasChanged, setCountryHasChanged] = useState("initialkey");
 
   const [push2Bottom, setPush2Bottom] = useState(false);
   useEffect(() => {
     setPush2Bottom(fields.some((field) => field.name === "termsOfUse"));
   }, [fields]);
+
+  const gtmEventLogErrorEvents = useCallback((name: string, value: any) => {
+    if (name === "cryptocurrencyAddress" || name === "cryptocurrencyAddressTag") {
+      value= value?.address;        
+    }    
+    const errorMessage = validator.current.message(name, value);   
+    gtmEventValidatorData(FormName[props.heading as keyof typeof FormName], name, errorMessage);
+  }, []);
 
   const onChange = useCallback(
     (name: string, value: any, type?: string) => {
@@ -202,9 +212,8 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           };
         }
       }
-
-      validator.current.showMessageFor(name);
-
+      setValue(value);
+      setName(name);     
       if (name === "cryptocurrencyAddressTag") {
         handleInputChange("cryptocurrencyAddress", {
           ...collected.cryptocurrencyAddress,
@@ -221,7 +230,17 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     },
     [handleInputChange, collected.cryptocurrencyAddress]
   );
-
+   useEffect(() => {
+    if(debouncedValue){
+      validator.current.showMessageFor(name);
+      gtmEventLogErrorEvents(name, value);
+    } 
+   }, [
+    debouncedValue,
+    name,
+    value,
+    gtmEventLogErrorEvents, 
+  ]);
   useEffect(() => {
     // setting initial values
     if (countryHasChanged === "initialkey") {
@@ -285,7 +304,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     if (errorObj && inputRefs !== null) {
       // smooth scroll to the first error
       let errName = Object.keys(errorObj)[0];
-
       // if the error is in any of the Credit/Debit Card fields, scoll to the first one (credit card number)
       if (CREDIT_CARD_FIELDS_NAME_GROUP.some((f) => f === errName))
         errName = CREDIT_CARD_FIELDS_NAME_GROUP[0];
@@ -844,21 +862,13 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
           }`}
         >
           <ButtonAction
-            onClick={() => {
+            onClick={()=>{                            
               onActionButton();
-              if (formName === "walletForm") {
-                gtmEventFormData(
-                  GtmEventAction.WALLET_FORM,
-                  GtmEventCategory.BUTTON,
-                  GtmEventLabel.CONTINUE
-                );
+              if(formName==="walletForm"){
+                gtmEventFormData(GtmEventAction.WALLET_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE);            
               }
-              if (formName === "emailForm") {
-                gtmEventFormData(
-                  GtmEventAction.EMAIL_FORM,
-                  GtmEventCategory.BUTTON,
-                  GtmEventLabel.CONTINUE
-                );
+              if(formName==="emailForm"){
+                gtmEventFormData(GtmEventAction.EMAIL_FORM, GtmEventCategory.BUTTON, GtmEventLabel.CONTINUE); 
               }
             }}
             text={isLoading ? "Sending..." : "Continue"}
@@ -870,7 +880,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     </main>
   );
 };
-
+ 
 const getValueByField = (
   field: BodyFormViewType["fields"][0],
   collected: CollectedStateType
