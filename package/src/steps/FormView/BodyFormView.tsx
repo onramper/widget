@@ -53,6 +53,7 @@ import {
 import { useGTMDispatch } from "../../hooks/gtm";
 import { useDebounce } from "../../hooks/useDebounce";
 import { OnramperValidator } from "@onramper/validator/dist";
+import { walletNetworkType } from "../../BuyCryptoView/constants";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
   "ccMonth",
@@ -185,13 +186,13 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     setPush2Bottom(fields.some((field) => field.name === "termsOfUse"));
   }, [fields]);
 
-  const gtmEventLogErrorEvents = (name: string, value: any) => {
+  const gtmEventLogErrorEvents = useCallback((name: string, value: any) => {
     if (name === "cryptocurrencyAddress" || name === "cryptocurrencyAddressTag") {
       value= value?.address;        
     }    
     const errorMessage = validator.current.message(name, value);   
     gtmEventValidatorData(FormName[props.heading as keyof typeof FormName], name, errorMessage);
-  }
+  });
 
   const onChange = useCallback(
     (name: string, value: any, type?: string) => {
