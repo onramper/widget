@@ -52,7 +52,7 @@ import {
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
 import { useDebounce } from "../../hooks/useDebounce";
-import { OnramperValidator } from "@onramper/validator/dist";
+import { OnramperValidator } from "@onramper/validator";
 import { walletNetworkType } from "../../BuyCryptoView/constants";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
@@ -239,7 +239,7 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
     debouncedValue,
     name,
     value,
-    gtmEventLogErrorEvents,
+    gtmEventLogErrorEvents, 
   ]);
   useEffect(() => {
     // setting initial values
