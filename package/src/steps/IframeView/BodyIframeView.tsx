@@ -331,6 +331,7 @@ const BodyIframeView: React.FC<BodyIframeViewType> = (props) => {
             </div>
           )) || (
             <iframe
+              title="Sandbox"
               src={iframeUrl}
               allow={props.features}
               style={{
