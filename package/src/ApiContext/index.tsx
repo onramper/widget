@@ -46,6 +46,7 @@ import i18n from "../i18n/config";
 import { isLanguageSupported, supportedLanguages } from "./utils/languages";
 import { useGTMDispatch } from "../hooks/gtm";
 import { GtmEvent, GtmEventCategory, GtmEventLabel } from "../enums";
+import { useThirdPartyCookieCheck } from "../hooks/cookie-check/useThirdPartyCookieCheck";
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
@@ -111,7 +112,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO;
 
   const sendDataToGTM = useGTMDispatch();
-
+  const is3pcCookiesSupported = useThirdPartyCookieCheck();
   const generateInitialCollectedState = useCallback((): CollectedStateType => {
     return {
       ...initialState.collected,
@@ -284,7 +285,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       sendExperimentGtmEvent,
     ]
   );
-
   const restartWidget = useCallback(() => {
     dispatch({
       type: CollectedActionsType.ResetCollected,
@@ -296,7 +296,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       const actualCountry = props.country || country;
-
+      handleInputChange("is3pcCookiesSupported", is3pcCookiesSupported);
       // The language provided explicitly via the '?language=' query parameter.
       let explicitLanguage;
       if (props.language) {
@@ -439,6 +439,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       props.recommendedCryptoCurrencies,
       props.filters,
       handleInputChange,
+      is3pcCookiesSupported,
       initiateRouting,
       addData,
       clearErrors,

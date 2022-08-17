@@ -94,6 +94,7 @@ const ExchangingAmountsSection: React.FC = () => {
       nextScreen(
         <OverlayPicker
           name="crypto"
+          data-testid="crypto-selection"
           indexSelected={items.findIndex(
             (m) => m.id === collected.selectedCrypto?.id
           )}
@@ -118,6 +119,7 @@ const ExchangingAmountsSection: React.FC = () => {
       nextScreen(
         <OverlayPicker
           name="currency"
+          data-testid="fiat-selection"
           title={t("header.selectFiat")}
           indexSelected={data.availableCurrencies.findIndex(
             (m) => m.id === collected.selectedCurrency?.id

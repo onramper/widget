@@ -1,17 +1,8 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import classes from "./ExpectedAmountPreview.module.css";
-import commonClasses from "../../../styles.module.css";
+import React, { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { APIContext } from "../../../ApiContext";
 import ErrorMessage from "../../../common/ErrorMessage/ErrorMessage";
-import { ReactComponent as ArrowSwapIcon } from "../../../icons/swap-arrows.svg";
-import { useTranslation } from "react-i18next";
-import {
-  GtmEvent,
-  GtmEventAction,
-  GtmEventCategory,
-  GtmEventLabel,
-} from "../../../enums";
-import { useGTMDispatch } from "../../../hooks/gtm";
+import classes from "./ExpectedAmountPreview.module.css";
 
 const ExpectedAmountPreview: React.FC = () => {
   const { t } = useTranslation();
@@ -20,31 +11,36 @@ const ExpectedAmountPreview: React.FC = () => {
 
   const [expectedCrypto, setExpectedCrypto] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const sendDataToGTM = useGTMDispatch();
 
   const unitName = collected.amountInCrypto
     ? collected.selectedCurrency?.name
     : collected.selectedCrypto?.name;
 
-  const swapCategories = useCallback(() => {
-    const gtmData = {
-      event: GtmEvent.ELEMENT_CLICK,
-      action: GtmEventAction.TRANSACTION_FORM,
-      category: GtmEventCategory.BUTTON,
-      label: GtmEventLabel.AMOUNT_SWITCH,
-    };
-    sendDataToGTM(gtmData);
-    if (collected.bestExpectedCrypto !== 0) {
-      inputInterface.handleInputChange("amount", collected.bestExpectedCrypto);
-    }
-    inputInterface.handleInputChange(
-      "amountInCrypto",
-      !collected.amountInCrypto
-    );
+  // Commented Temporarily
+  // const swapCategories = useCallback(() => {
+  //   const gtmData = {
+  //     event: GtmEvent.ELEMENT_CLICK,
+  //     action: GtmEventAction.TRANSACTION_FORM,
+  //     category: GtmEventCategory.BUTTON,
+  //     label: GtmEventLabel.AMOUNT_SWITCH,
+  //   };
+  //   sendDataToGTM(gtmData);
+  //   if (collected.bestExpectedCrypto !== 0) {
+  //     inputInterface.handleInputChange("amount", collected.bestExpectedCrypto);
+  //   }
+  //   inputInterface.handleInputChange(
+  //     "amountInCrypto",
+  //     !collected.amountInCrypto
+  //   );
 
-    const inputNode = document.getElementById("editable-amount");
-    inputNode && inputNode.focus();
-  }, [collected.amountInCrypto, collected.bestExpectedCrypto, inputInterface, sendDataToGTM]);
+  //   const inputNode = document.getElementById("editable-amount");
+  //   inputNode && inputNode.focus();
+  // }, [
+  //   collected.amountInCrypto,
+  //   collected.bestExpectedCrypto,
+  //   inputInterface,
+  //   sendDataToGTM,
+  // ]);
 
   useEffect(() => {
     const setAmountByBestRateAvailable = () => {
@@ -106,13 +102,14 @@ const ExpectedAmountPreview: React.FC = () => {
           : t("buyCryptoView.youGet");
         return (
           <div
-            className={`${classes["crypto-switcher"]} ${commonClasses["clickable-txt"]}`}
-            onClick={() => swapCategories()}
+            className={`${classes["crypto-switcher"]}`}
+            // className={`${classes["crypto-switcher"]} ${commonClasses["clickable-txt"]}`} // css hover also removed
+            // onClick={() => swapCategories()}
           >
             <span>
               {qtyDescription} <strong> {qtyText} </strong>
             </span>
-            <ArrowSwapIcon className={classes["swap-icon"]} />
+            {/* <ArrowSwapIcon className={classes["swap-icon"]} /> */}
           </div>
         );
       })()}

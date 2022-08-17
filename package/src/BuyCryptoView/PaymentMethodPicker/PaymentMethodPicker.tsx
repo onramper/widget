@@ -199,7 +199,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
   const numChildren = maxLength + (maxLength < props.items.length ? 1 : 0);
 
   return (
-    <>
+    <div data-testid="payment-method-picker">
       <div className={styles.title}>{t("buyCryptoView.paymentMethod")}</div>
 
       <ul
@@ -242,7 +242,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
           </li>
         )}
       </ul>
-    </>
+    </div>
   );
 };
 
