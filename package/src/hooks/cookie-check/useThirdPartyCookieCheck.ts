@@ -5,7 +5,7 @@ export const useThirdPartyCookieCheck = () => {
   useEffect(() => {
     const frame = document.createElement("iframe");
     frame.id = "3pc";
-    frame.src = "https://onramper.github.io/third-party-cookie-check/";
+    frame.src = "https://check-cookie.onramper.tech";
     frame.style.display = "none";
     frame.style.position = "fixed";
     document.body.appendChild(frame);
