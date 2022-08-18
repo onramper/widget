@@ -250,6 +250,15 @@ export interface Filters {
   onlyGateways?: string[];
   onlyFiat?: string[];
 }
+
+export interface Transaction {
+  txnAmount?: number;
+  txnFiat: string;
+  txnCrypto: string;
+  txnPaymentMethod: string;
+  txnGateway: string;
+}
+
 const filterGatewaysResponse = (
   gatewaysResponse: GatewaysResponse,
   filters?: Filters
@@ -274,7 +283,6 @@ const filterGatewaysResponse = (
 
   const _onlyFiat = onlyFiat?.map((code) => code.toUpperCase());
   const _excludeFiat = excludeFiat?.map((code) => code.toUpperCase());
-
   const filtredGateways = gatewaysResponse.gateways
     .map((gateway) => {
       let cryptosList = gateway.cryptoCurrencies;

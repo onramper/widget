@@ -51,6 +51,12 @@ const recommendedCryptoCurrencies = getArrayParam(
 );
 const darkMode = getParam("darkMode");
 const selectGatewayBy = getParam("selectGatewayBy");
+const txnAmount = Number(getParam("txnAmount"));
+const txnFiat = getParam("txnFiat");
+const txnCrypto = getParam("txnCrypto");
+const txnPaymentMethod = getParam("txnPaymentMethod");
+const txnGateway = getParam("txnGateway");
+const skipTransactionScreen = getParam("skipTransactionScreen");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -116,6 +122,18 @@ function App() {
             isAmountEditable={isAmountEditable}
             recommendedCryptoCurrencies={recommendedCryptoCurrencies}
             darkMode={darkMode === "true"}
+            skipTransactionScreen={
+              skipTransactionScreen === undefined
+                ? undefined
+                : skipTransactionScreen === "true"
+            }
+            transaction={{
+              txnAmount,
+              txnFiat: txnFiat ?? "",
+              txnCrypto: txnCrypto ?? "",
+              txnPaymentMethod: txnPaymentMethod ?? "",
+              txnGateway: txnGateway ?? "",
+            }}
           />
         </div>
       </div>

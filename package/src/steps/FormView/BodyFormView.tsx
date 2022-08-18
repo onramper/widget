@@ -391,10 +391,6 @@ const BodyFormView: React.FC<BodyFormViewType> = (props) => {
                 key={i}
                 className={stylesCommon["body-form-child"]}
                 handleInputChange={onChange}
-                error={validator.current.message(
-                  "cryptocurrencyAddress",
-                  `${collected.selectedCrypto?.id}:${collected.cryptocurrencyAddress?.address}:${walletNetworkType}`
-                )}
                 success={handleSuccess("cryptocurrencyAddress")}
                 disabled={!collected.isAddressEditable}
                 onClick={walletFieldClick}
