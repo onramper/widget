@@ -253,8 +253,8 @@ export interface Filters {
 
 export interface Transaction {
   txnAmount?: number;
-  txnFiat: string;
-  txnCrypto: string;
+  txnFiat?: string;
+  txnCrypto?: string;
   txnPaymentMethod: string;
   txnGateway: string;
 }

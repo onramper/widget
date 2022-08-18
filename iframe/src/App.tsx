@@ -19,7 +19,7 @@ const defaultColor = `#${getParam("color", "0316C1")}`;
 const fontFamily = getParam("fontFamily", "'Inter', sans-serif");
 const defaultAmount = Number(getParam("defaultAmount", "200"));
 const defaultCrypto = getParam("defaultCrypto", "BTC");
-const defaultFiat = getParam("defaultFiat");
+const defaultFiat = getParam("defaultFiat", "USD");
 const defaultFiatSoft = getParam("defaultFiatSoft");
 const defaultPaymentMethod = getArrayParam("defaultPaymentMethod");
 const addresses = getAddressesParam();
@@ -128,9 +128,9 @@ function App() {
                 : skipTransactionScreen === "true"
             }
             transaction={{
-              txnAmount,
-              txnFiat: txnFiat ?? "",
-              txnCrypto: txnCrypto ?? "",
+              txnAmount: isNaN(txnAmount) ? defaultAmount : txnAmount,
+              txnFiat: txnFiat ?? defaultFiat,
+              txnCrypto: txnCrypto ?? defaultCrypto,
               txnPaymentMethod: txnPaymentMethod ?? "",
               txnGateway: txnGateway ?? "",
             }}
