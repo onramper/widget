@@ -39,7 +39,7 @@ import type {
 } from "./api/types/nextStep";
 
 import { NextStepError } from "./api";
-import type { Filters } from "./api";
+import type { Filters, Transaction } from "./api";
 import phoneCodes from "./utils/phoneCodes";
 import i18n from "../i18n/config";
 import { isLanguageSupported, supportedLanguages } from "./utils/languages";
@@ -84,6 +84,8 @@ interface APIProviderType {
   recommendedCryptoCurrencies?: string[];
   darkMode?: boolean;
   selectGatewayBy?: string | "price" | "performance";
+  skipTransactionScreen?: boolean;
+  transaction: Transaction;
 }
 
 /**
@@ -135,11 +137,13 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         ? arrayUnique(props.recommendedCryptoCurrencies)
         : undefined,
       selectGatewayBy: props.selectGatewayBy,
+      skipTransactionScreen: props.skipTransactionScreen,
+      transaction: props.transaction,
     };
   }, [
+    defaultAmount,
     defaultAddrs,
     isAddressEditable,
-    defaultAmount,
     props.themeColor,
     props.amountInCrypto,
     props.partnerContext,
@@ -150,6 +154,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.isAmountEditable,
     props.recommendedCryptoCurrencies,
     props.selectGatewayBy,
+    props.skipTransactionScreen,
+    props.transaction,
   ]);
 
   const iniState: StateType = {
@@ -751,6 +757,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     } catch (error) {
       if (error.name === "AbortError") return {};
       setLastCall(undefined);
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: "API",
@@ -767,6 +774,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     }
 
     if (!responseRate || responseRate.length <= 0) {
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: "NO_RATES",
@@ -839,6 +847,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (minMaxErrors.MIN) errNAME = "MIN";
       else if (minMaxErrors.MAX) errNAME = "MAX";
       else {
+        addData({ isRateError: true });
         return processErrors({
           RATE: {
             type: "ALL_UNAVAILABLE",
@@ -847,7 +856,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           },
         });
       }
-
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: errNAME,

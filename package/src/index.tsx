@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
 import styles from "./styles.module.css";
 import { NavProvider, NavContainer } from "./NavContext";
@@ -17,6 +16,7 @@ import "./normalize.min.css";
 import { GTM_ID } from "./ApiContext/api/constants";
 import { GTMProvider } from "./hooks/gtm";
 import Cookies from "js-cookie";
+import BaseScreenView from "./BaseScreenView";
 
 type OnramperWidgetProps = Omit<APIProviderType, "themeColor"> & {
   color?: string;
@@ -66,12 +66,28 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
           <NavProvider>
             <APIProvider
               API_KEY={props.API_KEY}
-              defaultAmount={props.defaultAmount}
+              defaultAmount={
+                props.skipTransactionScreen
+                  ? props.transaction.txnAmount
+                  : props.defaultAmount
+              }
               defaultAddrs={props.defaultAddrs}
-              defaultCrypto={props.defaultCrypto}
-              defaultFiat={props.defaultFiat}
+              defaultCrypto={
+                props.skipTransactionScreen
+                  ? props.transaction.txnCrypto
+                  : props.defaultCrypto
+              }
+              defaultFiat={
+                props.skipTransactionScreen
+                  ? props.transaction.txnFiat
+                  : props.defaultCrypto
+              }
               defaultFiatSoft={props.defaultFiatSoft}
-              defaultPaymentMethod={props.defaultPaymentMethod}
+              defaultPaymentMethod={
+                props.skipTransactionScreen
+                  ? [props.transaction.txnPaymentMethod]
+                  : props.defaultPaymentMethod
+              }
               filters={props.filters}
               country={props.country}
               language={props.language}
@@ -87,9 +103,11 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               isAmountEditable={props.isAmountEditable}
               recommendedCryptoCurrencies={props.recommendedCryptoCurrencies}
               selectGatewayBy={props.selectGatewayBy}
+              skipTransactionScreen={props.skipTransactionScreen}
+              transaction={props.transaction}
             >
               <div style={{ flexGrow: 1, display: "flex" }}>
-                <NavContainer home={<BuyCryptoView />} />
+                <NavContainer home={<BaseScreenView />} />
               </div>
             </APIProvider>
           </NavProvider>
