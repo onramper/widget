@@ -757,7 +757,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     } catch (error) {
       if (error.name === "AbortError") return {};
       setLastCall(undefined);
-      addData({ ratesError: true });
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: "API",
@@ -774,7 +774,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     }
 
     if (!responseRate || responseRate.length <= 0) {
-      addData({ ratesError: true });
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: "NO_RATES",
@@ -847,7 +847,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (minMaxErrors.MIN) errNAME = "MIN";
       else if (minMaxErrors.MAX) errNAME = "MAX";
       else {
-        addData({ ratesError: true });
+        addData({ isRateError: true });
         return processErrors({
           RATE: {
             type: "ALL_UNAVAILABLE",
@@ -856,7 +856,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           },
         });
       }
-      addData({ ratesError: true });
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: errNAME,

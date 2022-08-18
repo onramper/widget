@@ -6,11 +6,11 @@ import TransactionLoadingView from "./TransactionLoadingView";
 const BaseScreenView: React.FC = () => {
   const {
     collected,
-    data: { ratesError },
+    data: { isRateError },
   } = useContext(APIContext);
   const { skipTransactionScreen } = collected;
 
-  if (skipTransactionScreen && !ratesError) {
+  if (skipTransactionScreen && !isRateError) {
     return <TransactionLoadingView />;
   } else {
     return <BuyCryptoView />;
