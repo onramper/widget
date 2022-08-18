@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import BuyCryptoView from "./BuyCryptoView";
 import ErrorView from "./common/ErrorView";
 import styles from "./styles.module.css";
 import { NavProvider, NavContainer } from "./NavContext";

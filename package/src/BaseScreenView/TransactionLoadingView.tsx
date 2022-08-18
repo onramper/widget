@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { APIContext } from "../ApiContext";
+import { APIContext, GatewayRateOption } from "../ApiContext";
 import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
 import ProgressHeader from "../common/Header/ProgressHeader/ProgressHeader";
 import { NavContext } from "../NavContext";
@@ -35,7 +35,7 @@ const TransactionLoadingView: React.FC = () => {
 
   useEffect(() => {
     if (initLoadingFinished && allRates.length !== 0) {
-      let selectedGateway =
+      let selectedGateway: GatewayRateOption | undefined | null =
         txnGateway && allRates.find((rate) => txnGateway === rate.name);
       if (selectedGateway) {
         handleInputChange("selectedGateway", selectedGateway);

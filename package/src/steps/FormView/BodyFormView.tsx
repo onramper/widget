@@ -51,7 +51,6 @@ import {
 } from "../../enums";
 import { useGTMDispatch } from "../../hooks/gtm";
 import { OnramperValidator } from "@onramper/validator";
-import { walletNetworkType } from "../../BuyCryptoView/constants";
 const CREDIT_CARD_FIELDS_NAME_GROUP = [
   "ccNumber",
   "ccMonth",
