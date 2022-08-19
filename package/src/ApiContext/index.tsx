@@ -281,6 +281,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
           sendExperimentGtmEvent(SelectGatewayByType.Price);
         }
+      } else {
+        handleInputChange("isRoutingRequested", true);
       }
     },
     [
@@ -1101,7 +1103,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           handlePaymentMethodChange,
           restartWidget,
         },
-        apiInterface: { init, executeStep, getRates, clearErrors },
+        apiInterface: {
+          init,
+          executeStep,
+          getRates,
+          clearErrors,
+        },
       }}
     >
       {props.children}

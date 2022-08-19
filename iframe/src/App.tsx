@@ -128,7 +128,7 @@ function App() {
                 : skipTransactionScreen === "true"
             }
             transaction={{
-              txnAmount: isNaN(txnAmount) ? defaultAmount : txnAmount,
+              txnAmount: txnAmount ?? defaultAmount,
               txnFiat: txnFiat ?? defaultFiat,
               txnCrypto: txnCrypto ?? defaultCrypto,
               txnPaymentMethod: txnPaymentMethod ?? "",
