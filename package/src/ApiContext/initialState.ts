@@ -71,6 +71,7 @@ export type CollectedStateType = {
   supportBuy: boolean;
   isAmountEditable?: boolean;
   staticRouting?: StaticRoutingItemType[];
+  isRoutingRequested: boolean;
   [key: string]: any;
 };
 
@@ -156,6 +157,7 @@ export const initialState: StateType = {
     isAmountEditable: true,
     redirectURL: undefined,
     recommendedCryptoCurrencies: undefined,
+    isRoutingRequested: false,
   },
   data: {
     availableCryptos: [],

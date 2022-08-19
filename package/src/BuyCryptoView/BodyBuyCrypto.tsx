@@ -124,7 +124,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   ]);
 
   useEffect(() => {
-    if (variant) {
+    if (variant && collected.selectedCountry === "us") {
       let category;
       switch (variant) {
         case "Control":
@@ -145,7 +145,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         label: GtmEventLabel.PAYMENT_METHOD_FAKE_DOOR_EXPERIMENT,
       });
     }
-  }, [sendDataToGTM, variant]);
+  }, [collected.selectedCountry, sendDataToGTM, variant]);
 
   const isNextStepConfirmed = useCallback(() => {
     if (!collected.selectedGateway) return false;
