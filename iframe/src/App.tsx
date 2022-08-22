@@ -128,9 +128,9 @@ function App() {
                 : skipTransactionScreen === "true"
             }
             transaction={{
-              txnAmount: txnAmount ?? defaultAmount,
-              txnFiat: txnFiat ?? defaultFiat,
-              txnCrypto: txnCrypto ?? defaultCrypto,
+              txnAmount: txnAmount ?? 0,
+              txnFiat: txnFiat ?? "",
+              txnCrypto: txnCrypto ?? "",
               txnPaymentMethod: txnPaymentMethod ?? "",
               txnGateway: txnGateway ?? "",
             }}

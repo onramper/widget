@@ -71,7 +71,6 @@ export type CollectedStateType = {
   supportBuy: boolean;
   isAmountEditable?: boolean;
   staticRouting?: StaticRoutingItemType[];
-  isRoutingRequested: boolean;
   [key: string]: any;
 };
 
@@ -115,6 +114,7 @@ export type DataStateType = {
   mappedHiddenByFiat: GatewayRateOptionSimple[];
   responseRate?: RateResponse;
   isRateError: boolean;
+  isRatesLoaded: boolean;
   ICONS_MAP?: {
     [key: string]: { icon: string; name: string; symbol?: string };
   };
@@ -157,7 +157,6 @@ export const initialState: StateType = {
     isAmountEditable: true,
     redirectURL: undefined,
     recommendedCryptoCurrencies: undefined,
-    isRoutingRequested: false,
   },
   data: {
     availableCryptos: [],
@@ -174,6 +173,7 @@ export const initialState: StateType = {
     responseRate: undefined,
     mappedHiddenByFiat: [],
     isRateError: false,
+    isRatesLoaded: false,
   },
   inputInterface: {
     handleInputChange: () => null,
