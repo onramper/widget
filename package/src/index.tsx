@@ -67,7 +67,8 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
             <APIProvider
               API_KEY={props.API_KEY}
               defaultAmount={
-                props.skipTransactionScreen
+                props.skipTransactionScreen &&
+                !isNaN(props.transaction.txnAmount!)
                   ? props.transaction.txnAmount
                   : props.defaultAmount
               }

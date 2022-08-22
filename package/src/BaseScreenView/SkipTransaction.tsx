@@ -11,7 +11,7 @@ import Footer from "../common/Footer";
 import ErrorView from "../common/ErrorView";
 import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
 
-const TransactionLoadingView: React.FC = () => {
+const SkipTransaction: React.FC = () => {
   const {
     inputInterface,
     collected,
@@ -21,12 +21,14 @@ const TransactionLoadingView: React.FC = () => {
       availablePaymentMethods,
       availableCryptos,
       availableCurrencies,
+      isRateError,
+      isRatesLoaded,
     },
   } = useContext(APIContext);
   const { handleInputChange } = inputInterface;
   const { onlyScreen } = useContext(NavContext);
   const { init } = apiInterface;
-  const { transaction, isRoutingRequested } = collected;
+  const { transaction } = collected;
   const { txnGateway, txnPaymentMethod, txnFiat, txnCrypto, txnAmount } =
     transaction;
   const [initLoadingFinished, setInitLoadingFinished] = useState(false);
@@ -38,8 +40,27 @@ const TransactionLoadingView: React.FC = () => {
   }, [init]);
 
   useEffect(() => {
-    return () => handleInputChange("skipTransactionScreen", false);
+    return () => {
+      handleInputChange("skipTransactionScreen", false);
+    };
   }, [handleInputChange]);
+
+  useEffect(() => {
+    if (isRatesLoaded && isRateError) {
+      const rate = allRates.find(
+        (rate) => collected.selectedGateway?.name === rate.name
+      );
+      const message = rate?.error?.message ?? allRates[0].error?.message;
+      message && onlyScreen(<ErrorView message={message} />);
+    }
+  }, [
+    isRateError,
+    allRates,
+    onlyScreen,
+    handleInputChange,
+    isRatesLoaded,
+    collected.selectedGateway?.name,
+  ]);
 
   useEffect(() => {
     if (txnAmount === 0 || isNaN(txnAmount))
@@ -47,36 +68,33 @@ const TransactionLoadingView: React.FC = () => {
   }, [onlyScreen, txnAmount]);
 
   useEffect(() => {
-    if (
-      allRates.length !== 0 &&
+    if (!txnCrypto)
+      onlyScreen(<ErrorView message="Crypto currency not provided." />);
+    else if (
+      isRatesLoaded &&
       availableCryptos.findIndex((crypto) => txnCrypto === crypto.id) === -1
     )
-      onlyScreen(<ErrorView message="Unsupported crypo currency." />);
-  }, [
-    allRates.length,
-    availableCryptos,
-    initLoadingFinished,
-    onlyScreen,
-    txnCrypto,
-  ]);
+      onlyScreen(
+        <ErrorView message="Unable to find requested crypo currency." />
+      );
+  }, [isRatesLoaded, availableCryptos, onlyScreen, txnCrypto]);
 
   useEffect(() => {
-    if (
-      allRates.length !== 0 &&
+    if (!txnFiat)
+      onlyScreen(<ErrorView message="Fiat currency not provided." />);
+    else if (
+      isRatesLoaded &&
       availableCurrencies.findIndex((fiat) => txnFiat === fiat.id) === -1
     )
-      onlyScreen(<ErrorView message="Unsupported fiat currency." />);
-  }, [
-    allRates.length,
-    availableCurrencies,
-    initLoadingFinished,
-    onlyScreen,
-    txnFiat,
-  ]);
+      onlyScreen(
+        <ErrorView message="Unable to find requested fiat currency." />
+      );
+  }, [isRatesLoaded, availableCurrencies, onlyScreen, txnFiat]);
 
   useEffect(() => {
     if (
-      allRates.length !== 0 &&
+      initLoadingFinished &&
+      isRatesLoaded &&
       availablePaymentMethods.findIndex(
         (paymentMethod) => txnPaymentMethod === paymentMethod.id
       ) === -1
@@ -86,7 +104,7 @@ const TransactionLoadingView: React.FC = () => {
       );
     }
   }, [
-    allRates.length,
+    isRatesLoaded,
     availablePaymentMethods,
     initLoadingFinished,
     onlyScreen,
@@ -94,13 +112,9 @@ const TransactionLoadingView: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if (initLoadingFinished && allRates.length !== 0) {
-      let selectedGateway: GatewayRateOption | undefined | null =
-        txnGateway && allRates.find((rate) => txnGateway === rate.name);
-
-      if (selectedGateway) {
-        handleInputChange("selectedGateway", selectedGateway);
-      } else if (isRoutingRequested) {
+    if (initLoadingFinished && isRatesLoaded) {
+      let selectedGateway: GatewayRateOption | undefined | null;
+      if (!txnGateway) {
         if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
           selectedGateway = getBestGatewayByPerformance(
             allRates,
@@ -117,11 +131,18 @@ const TransactionLoadingView: React.FC = () => {
           );
           handleInputChange("selectedGateway", selectedGateway);
         }
-
+        if (!selectedGateway) {
+          selectedGateway = getBestGatewayByPrice(
+            allRates,
+            !!collected.amountInCrypto
+          );
+          handleInputChange("selectedGateway", selectedGateway);
+        }
+      } else {
+        selectedGateway = allRates.find((rate) => txnGateway === rate.name);
         if (!selectedGateway)
           onlyScreen(<ErrorView message="Unable to find requested onramp." />);
-      } else {
-        onlyScreen(<ErrorView message="Unable to find requested onramp." />);
+        handleInputChange("selectedGateway", selectedGateway);
       }
     }
   }, [
@@ -135,8 +156,8 @@ const TransactionLoadingView: React.FC = () => {
     allRates,
     txnGateway,
     handleInputChange,
-    isRoutingRequested,
     onlyScreen,
+    isRatesLoaded,
   ]);
 
   useEffect(() => {
@@ -148,16 +169,17 @@ const TransactionLoadingView: React.FC = () => {
           isConfirmed={true}
         />
       );
+      handleInputChange("skipTransactionScreen", false);
     }
-  }, [collected, collected.selectedGateway, onlyScreen]);
+  }, [collected, collected.selectedGateway, handleInputChange, onlyScreen]);
 
   return (
     <div className={styles.view}>
-      <ProgressHeader useBackButton={false} />
+      <ProgressHeader useBackButton />
       <BodyLoading error={""} />
       <Footer />
     </div>
   );
 };
 
-export default TransactionLoadingView;
+export default SkipTransaction;

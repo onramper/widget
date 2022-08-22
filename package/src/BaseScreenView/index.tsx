@@ -1,17 +1,14 @@
 import React, { useContext } from "react";
 import { APIContext } from "../ApiContext";
 import BuyCryptoView from "../BuyCryptoView";
-import TransactionLoadingView from "./TransactionLoadingView";
+import SkipTransaction from "./SkipTransaction";
 
 const BaseScreenView: React.FC = () => {
-  const {
-    collected,
-    data: { isRateError },
-  } = useContext(APIContext);
+  const { collected } = useContext(APIContext);
   const { skipTransactionScreen } = collected;
 
-  if (skipTransactionScreen && !isRateError) {
-    return <TransactionLoadingView />;
+  if (skipTransactionScreen) {
+    return <SkipTransaction />;
   } else {
     return <BuyCryptoView />;
   }

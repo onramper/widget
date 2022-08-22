@@ -281,8 +281,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
           sendExperimentGtmEvent(SelectGatewayByType.Price);
         }
-      } else {
-        handleInputChange("isRoutingRequested", true);
       }
     },
     [
@@ -802,7 +800,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     }));
 
     // save to state.date
-    addData({ allRates: mappedAllRates });
+    addData({ allRates: mappedAllRates, isRatesLoaded: true });
 
     // IF THERE ARE NO RATES AVAILABLES THEN REDUCE UNAVAILABLE RATES TO AN ERRORS OBJECT
     const unavailableRates = responseRate.filter((item) => !item.available);
