@@ -79,7 +79,12 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   } = props;
   const {
     collected,
-    data: { availablePaymentMethods, allRates, handlePaymentMethodChange },
+    data: {
+      availablePaymentMethods,
+      allRates,
+      handlePaymentMethodChange,
+      isRatesLoaded,
+    },
   } = useContext(APIContext);
   const { nextScreen, backScreen } = useContext(NavContext);
   const [paymentMethods, setPaymentMethods] = useState<ItemType[]>([]);
@@ -208,24 +213,32 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   ]);
 
   useEffect(() => {
-    if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
-      const gatewayByPerformance = getBestGatewayByPerformance(
-        allRates,
-        collected.selectedCurrency?.name,
-        collected.selectedCrypto?.name,
-        collected.staticRouting
-      );
-      if (gatewayByPerformance) {
-        handleInputChange("selectedGateway", gatewayByPerformance);
-        return;
+    if (isRatesLoaded) {
+      if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
+        const gatewayByPerformance = getBestGatewayByPerformance(
+          allRates,
+          collected.selectedCurrency?.name,
+          collected.selectedCrypto?.name,
+          collected.staticRouting
+        );
+        if (gatewayByPerformance) {
+          handleInputChange("selectedGateway", gatewayByPerformance);
+        } else {
+          const gatewayByPrice = getBestGatewayByPrice(
+            allRates,
+            !!collected.amountInCrypto
+          );
+          handleInputChange("selectedGateway", gatewayByPrice);
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
+        }
       }
-    }
-    if (collected.selectGatewayBy === SelectGatewayByType.Price) {
-      const gatewayByPrice = getBestGatewayByPrice(
-        allRates,
-        !!collected.amountInCrypto
-      );
-      handleInputChange("selectedGateway", gatewayByPrice);
+      if (collected.selectGatewayBy === SelectGatewayByType.Price) {
+        const gatewayByPrice = getBestGatewayByPrice(
+          allRates,
+          !!collected.amountInCrypto
+        );
+        handleInputChange("selectedGateway", gatewayByPrice);
+      }
     }
   }, [
     allRates,
@@ -236,6 +249,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     collected.selectedPaymentMethod,
     handleInputChange,
     collected.staticRouting,
+    isRatesLoaded,
   ]);
 
   useEffect(() => {
