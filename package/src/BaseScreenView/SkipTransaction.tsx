@@ -113,7 +113,6 @@ const SkipTransaction: React.FC = () => {
 
   useEffect(() => {
     if (initLoadingFinished && isRatesLoaded) {
-      debugger;
       let selectedGateway: GatewayRateOption | undefined | null;
       if (!txnGateway) {
         if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
