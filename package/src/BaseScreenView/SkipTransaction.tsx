@@ -130,13 +130,13 @@ const SkipTransaction: React.FC = () => {
             !!collected.amountInCrypto
           );
           handleInputChange("selectedGateway", selectedGateway);
-        }
-        if (!selectedGateway) {
+        } else if (!selectedGateway) {
           selectedGateway = getBestGatewayByPrice(
             allRates,
             !!collected.amountInCrypto
           );
           handleInputChange("selectedGateway", selectedGateway);
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
         }
       } else {
         selectedGateway = allRates.find((rate) => txnGateway === rate.name);
