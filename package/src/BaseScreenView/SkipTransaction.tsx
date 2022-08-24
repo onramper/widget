@@ -65,6 +65,8 @@ const SkipTransaction: React.FC = () => {
   useEffect(() => {
     if (txnAmount === 0 || isNaN(txnAmount))
       onlyScreen(<ErrorView message="Transaction amount is not valid." />);
+
+    // allRates.find((rate) => rate.error?.limit < txnAmount);
   }, [onlyScreen, txnAmount]);
 
   useEffect(() => {
@@ -112,7 +114,7 @@ const SkipTransaction: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if (initLoadingFinished && isRatesLoaded) {
+    if (isRatesLoaded) {
       let selectedGateway: GatewayRateOption | undefined | null;
       if (!txnGateway) {
         if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
@@ -122,21 +124,24 @@ const SkipTransaction: React.FC = () => {
             collected.selectedCrypto?.name,
             collected.staticRouting
           );
-          if (selectedGateway)
+          if (selectedGateway) {
             handleInputChange("selectedGateway", selectedGateway);
-        } else if (collected.selectGatewayBy === SelectGatewayByType.Price) {
+          } else {
+            selectedGateway = getBestGatewayByPrice(
+              allRates,
+              !!collected.amountInCrypto
+            );
+            handleInputChange("selectedGateway", selectedGateway);
+            handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
+          }
+        }
+
+        if (collected.selectGatewayBy === SelectGatewayByType.Price) {
           selectedGateway = getBestGatewayByPrice(
             allRates,
             !!collected.amountInCrypto
           );
           handleInputChange("selectedGateway", selectedGateway);
-        } else if (!selectedGateway) {
-          selectedGateway = getBestGatewayByPrice(
-            allRates,
-            !!collected.amountInCrypto
-          );
-          handleInputChange("selectedGateway", selectedGateway);
-          handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
         }
       } else {
         selectedGateway = allRates.find((rate) => txnGateway === rate.name);
@@ -150,9 +155,7 @@ const SkipTransaction: React.FC = () => {
     collected.selectGatewayBy,
     collected.selectedCrypto,
     collected.selectedCurrency,
-    collected.selectedPaymentMethod,
     collected.staticRouting,
-    initLoadingFinished,
     allRates,
     txnGateway,
     handleInputChange,
@@ -161,6 +164,11 @@ const SkipTransaction: React.FC = () => {
   ]);
 
   useEffect(() => {
+    if (collected.selectedGateway?.error) {
+      onlyScreen(
+        <ErrorView message={collected.selectedGateway?.error.message} />
+      );
+    }
     if (collected.selectedGateway?.nextStep) {
       triggerLandingViewGtmFtcEvent(collected);
       onlyScreen(
