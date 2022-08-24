@@ -113,6 +113,8 @@ export type DataStateType = {
   filtredGatewaysByCurrency: GatewaysResponse["gateways"];
   mappedHiddenByFiat: GatewayRateOptionSimple[];
   responseRate?: RateResponse;
+  isRateError: boolean;
+  isRatesLoaded: boolean;
   ICONS_MAP?: {
     [key: string]: { icon: string; name: string; symbol?: string };
   };
@@ -170,6 +172,8 @@ export const initialState: StateType = {
     filtredGatewaysByCurrency: [],
     responseRate: undefined,
     mappedHiddenByFiat: [],
+    isRateError: false,
+    isRatesLoaded: false,
   },
   inputInterface: {
     handleInputChange: () => null,

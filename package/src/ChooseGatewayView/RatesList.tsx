@@ -20,6 +20,8 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
       selectedGateway,
       amountInCrypto,
       selectGatewayBy,
+      selectedCurrency,
+      selectedCrypto,
     },
     inputInterface: { handleInputChange },
   } = useContext(APIContext);
@@ -32,7 +34,11 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
   }, [amountInCrypto]);
 
   const getStats = useCallback(() => {
-    const bestPerformanceGateway = staticRouting?.[0].gateway;
+    const bestPerformanceGateway = staticRouting?.find(
+      (d) =>
+        d?.fiat === selectedCurrency?.id && d?.crypto === selectedCrypto?.id
+    )?.gateway;
+
     const requiresPaperIdMap = props.availableRates.reduce((acc, rate) => {
       const hasNoId = (rate.requiredKYC ?? []).some((kyc) => {
         if (typeof kyc === "string") {
@@ -77,6 +83,8 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
     amountInCrypto,
     getDefaultReceivedCrypto,
     props.availableRates,
+    selectedCrypto?.id,
+    selectedCurrency?.id,
     staticRouting,
   ]);
 
