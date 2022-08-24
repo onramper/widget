@@ -65,6 +65,8 @@ const SkipTransaction: React.FC = () => {
   useEffect(() => {
     if (txnAmount === 0 || isNaN(txnAmount))
       onlyScreen(<ErrorView message="Transaction amount is not valid." />);
+
+    // allRates.find((rate) => rate.error?.limit < txnAmount);
   }, [onlyScreen, txnAmount]);
 
   useEffect(() => {
@@ -112,7 +114,7 @@ const SkipTransaction: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if (initLoadingFinished && isRatesLoaded) {
+    if (isRatesLoaded) {
       let selectedGateway: GatewayRateOption | undefined | null;
       if (!txnGateway) {
         if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
@@ -122,9 +124,9 @@ const SkipTransaction: React.FC = () => {
             collected.selectedCrypto?.name,
             collected.staticRouting
           );
-          if (selectedGateway && collected.staticRouting?.length !== 0)
+          if (selectedGateway) {
             handleInputChange("selectedGateway", selectedGateway);
-          if (!selectedGateway) {
+          } else {
             selectedGateway = getBestGatewayByPrice(
               allRates,
               !!collected.amountInCrypto
@@ -132,7 +134,9 @@ const SkipTransaction: React.FC = () => {
             handleInputChange("selectedGateway", selectedGateway);
             handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
           }
-        } else if (collected.selectGatewayBy === SelectGatewayByType.Price) {
+        }
+
+        if (collected.selectGatewayBy === SelectGatewayByType.Price) {
           selectedGateway = getBestGatewayByPrice(
             allRates,
             !!collected.amountInCrypto
@@ -151,9 +155,7 @@ const SkipTransaction: React.FC = () => {
     collected.selectGatewayBy,
     collected.selectedCrypto,
     collected.selectedCurrency,
-    collected.selectedPaymentMethod,
     collected.staticRouting,
-    initLoadingFinished,
     allRates,
     txnGateway,
     handleInputChange,
