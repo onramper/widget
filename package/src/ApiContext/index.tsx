@@ -478,13 +478,10 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       if (gateways.length <= 0) return {};
       if (state.data.availableCryptos.length <= 0) return {};
-
-      const actualCrypto = state.data.availableCryptos.find(
-        (cryptoCurrency) => cryptoCurrency.id === _crypto?.id
-      ) || {
-        id: DEFAULT_CRYPTO,
-        name: DEFAULT_CRYPTO,
-      };
+      const actualCrypto =
+        state.data.availableCryptos.find(
+          (cryptoCurrency) => cryptoCurrency.id === _crypto?.id
+        ) || state.data.availableCryptos[0];
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CRYPTO
       const filtredGatewaysByCrypto = gateways.filter((item) =>
@@ -500,7 +497,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           filtredGatewaysByCrypto[i].fiatCurrencies
         );
       }
-
       availableCurrencies = arrayObjUnique(availableCurrencies, "id");
       if (availableCurrencies.length <= 0) {
         return processErrors({
@@ -710,7 +706,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   > => {
     // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
     if (!state.data.responseGateways) return;
-
     // IF THE AMOUNT IS NOT SET OR IT'S ===0 THEN NO AVAILABLE RATES
     if (!state.collected.amount || !isFinite(state.collected.amount)) {
       clearErrors();
