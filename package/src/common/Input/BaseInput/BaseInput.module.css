@@ -96,6 +96,10 @@
   background-color: var(--input-disabled-bg-color);
 }
 
+.validation-icon {
+  margin-left: 4px;
+}
+
 .input-wrapper input {
   outline: none;
   font-size: 16px;
