@@ -455,7 +455,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       props.recommendedCryptoCurrencies,
       props.filters,
       handleInputChange,
-      // is3pcCookiesSupported,
       initiateRouting,
       addData,
       clearErrors,
