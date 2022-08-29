@@ -266,10 +266,13 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     [sendDataToGTM]
   );
 
+  useEffect(() => {
+    handleInputChange("is3pcCookiesSupported", is3pcCookiesSupported);
+  }, [handleInputChange, is3pcCookiesSupported]);
+
   const initiateRouting = useCallback(
     async (country: string) => {
       const routingData = await getGatewayStaticRouting(country);
-
       if (!props.selectGatewayBy) {
         // Experimentation - Simplified Approach for static routing
         if (
@@ -301,6 +304,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       sendExperimentGtmEvent,
     ]
   );
+
   const restartWidget = useCallback(() => {
     dispatch({
       type: CollectedActionsType.ResetCollected,
@@ -308,11 +312,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     });
   }, [generateInitialCollectedState]);
 
-  /* *********** */
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       const actualCountry = props.country || country;
-      handleInputChange("is3pcCookiesSupported", is3pcCookiesSupported);
       // The language provided explicitly via the '?language=' query parameter.
       let explicitLanguage;
       if (props.language) {
@@ -376,7 +378,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           },
         });
       }
-
       initiateRouting(widgetsCountry);
 
       const ICONS_MAP = responseGateways.icons || {};
@@ -455,7 +456,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       props.recommendedCryptoCurrencies,
       props.filters,
       handleInputChange,
-      is3pcCookiesSupported,
       initiateRouting,
       addData,
       clearErrors,

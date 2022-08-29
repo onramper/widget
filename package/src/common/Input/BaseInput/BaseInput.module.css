@@ -88,8 +88,16 @@
   border-color: var(--error-color);
 }
 
+.input-wrapper-success {
+  border-color: var(--success-color);
+}
+
 .input-wrapper-disabled {
   background-color: var(--input-disabled-bg-color);
+}
+
+.validation-icon {
+  margin-left: 4px;
 }
 
 .input-wrapper input {
