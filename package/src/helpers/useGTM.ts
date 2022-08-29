@@ -53,8 +53,7 @@ export const generateGtmCtxValue = (collected: CollectedStateType) => {
     selectGatewayBy,
   } = collected;
 
-  const urlParams = selectedGateway?.nextStep?.url?.split("/");
-
+  console.log(selectedGateway?.nextStep?.txId);
   return {
     payment: {
       amount,
@@ -72,7 +71,7 @@ export const generateGtmCtxValue = (collected: CollectedStateType) => {
       selectedGateway: selectedGateway?.id,
     },
     gatewaySuggestion: selectGatewayBy,
-    transactionId: urlParams?.[urlParams.length - 1],
+    transactionId: selectedGateway?.nextStep?.txId,
   };
 };
 
