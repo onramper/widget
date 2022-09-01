@@ -57,6 +57,7 @@ const txnCrypto = getParam("txnCrypto");
 const txnPaymentMethod = getParam("txnPaymentMethod");
 const txnGateway = getParam("txnGateway");
 const skipTransactionScreen = getParam("skipTransactionScreen");
+const initScreen = getParam("initScreen");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -134,6 +135,7 @@ function App() {
               txnPaymentMethod: txnPaymentMethod ?? "",
               txnGateway: txnGateway ?? "",
             }}
+            initScreen={initScreen ?? ""}
           />
         </div>
       </div>

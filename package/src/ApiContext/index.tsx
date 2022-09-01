@@ -87,6 +87,7 @@ interface APIProviderType {
   selectGatewayBy?: string | "price" | "performance";
   skipTransactionScreen?: boolean;
   transaction: Transaction;
+  initScreen: string;
 }
 
 /**
@@ -139,6 +140,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       selectGatewayBy: props.selectGatewayBy,
       skipTransactionScreen: props.skipTransactionScreen,
       transaction: props.transaction,
+      initScreen: props.initScreen,
     };
   }, [
     defaultAmount,
@@ -156,6 +158,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.selectGatewayBy,
     props.skipTransactionScreen,
     props.transaction,
+    props.initScreen,
   ]);
 
   const iniState: StateType = {

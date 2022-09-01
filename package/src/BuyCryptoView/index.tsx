@@ -32,14 +32,19 @@ const BuyCryptoView: React.FC = () => {
 
   const { handlePaymentMethodChange } = data;
   const { init } = apiInterface;
-  const { errors } = collected;
-
+  const { errors, initScreen } = collected;
   //flagEffectInit used to call init again
   useEffect(() => {
     init().finally(() => {
       setInitLoadingFinished(true);
     });
   }, [init]);
+
+  useEffect(() => {
+    if (initLoadingFinished && buyStep && initScreen === "sell") {
+      nextScreen(<Step nextStep={buyStep} />);
+    }
+  }, [buyStep, initLoadingFinished, initScreen, nextScreen]);
 
   //listening to errors sent by APIContext
   useEffect(() => {
@@ -70,16 +75,18 @@ const BuyCryptoView: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const nextStep = await API.sell("BTC", 0.1, "blockchain", {
-          amountInCrypto: true,
-          country: collected.selectedCountry,
-        });
+        if (collected.selectedCountry) {
+          const nextStep = await API.sell("BTC", 0.1, "blockchain", {
+            amountInCrypto: true,
+            country: collected.selectedCountry,
+          });
 
-        if (nextStep?.nextStep?.type) {
-          nextStep.nextStep.eventName = GtmEvent.CRYPTO_TO_FIAT;
-          nextStep.nextStep.eventCategory = nextStep.identifier;
+          if (nextStep?.nextStep?.type) {
+            nextStep.nextStep.eventName = GtmEvent.CRYPTO_TO_FIAT;
+            nextStep.nextStep.eventCategory = nextStep.identifier;
+          }
+          setBuyStep(nextStep.nextStep);
         }
-        setBuyStep(nextStep.nextStep);
       } catch (error) {
         console.error(error);
       }

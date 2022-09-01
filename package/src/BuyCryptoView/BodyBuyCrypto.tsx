@@ -125,6 +125,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
           )}
           items={paymentMethods}
           onItemClick={(name: string, index: number, item: ItemType) => {
+            handlePaymentMethodChange(item);
             sendDataToGTM(genPaymentMethodSelectEvent(item.id));
             backScreen();
           }}
@@ -132,9 +133,10 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
       );
     }
   }, [
-    nextScreen,
     paymentMethods,
+    nextScreen,
     collected.selectedPaymentMethod?.id,
+    handlePaymentMethodChange,
     sendDataToGTM,
     backScreen,
   ]);
