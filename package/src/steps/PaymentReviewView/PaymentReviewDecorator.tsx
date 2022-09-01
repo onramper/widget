@@ -150,7 +150,7 @@ const PaymentReviewDecorator: React.FC<
         props.nextStep?.eventCategory || collected.selectedGateway?.id || "",
       label: "review",
       action: `step ${currentStep() + 1}`,
-      value: generateGtmCtxValue(collected),
+      value: generateGtmCtxValue(collected, props.nextStep?.txId),
     });
     nextScreen(<Step nextStep={props.nextStep} isConfirmed />);
   };

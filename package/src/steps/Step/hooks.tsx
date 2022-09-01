@@ -1,20 +1,15 @@
 import { NextStep, APIContext } from "../../ApiContext";
 import { useState, useRef, useEffect, useContext } from "react";
 import { NavContext } from "../../NavContext";
-import {
-  triggerGTMEvent,
-  generateGtmCtxValue,
-} from "../../helpers/useGTM";
-import {
-  GtmEvent,
-} from "../../enums";
+import { triggerGTMEvent, generateGtmCtxValue } from "../../helpers/useGTM";
+import { GtmEvent } from "../../enums";
 import { StepType } from "../../ApiContext/api/types/nextStep";
 
 const stepIgnoreList = [
   StepType.iframe,
   StepType.redirect,
   StepType.information,
-  StepType.completed
+  StepType.completed,
 ];
 
 export const useStepGtmCall = (step?: NextStep) => {
@@ -47,7 +42,7 @@ export const useStepGtmCall = (step?: NextStep) => {
         category: step?.eventCategory || collected?.selectedGateway?.id || "",
         label: step?.eventLabel || step?.type,
         action,
-        value: generateGtmCtxValue(collected),
+        value: generateGtmCtxValue(collected, step?.txId),
       });
     });
   }, [collected, currentStep, step]);
