@@ -20,7 +20,7 @@ export const useStepGtm = (nextStep: NextStep) => {
       category: nextStep?.eventCategory || collected.selectedGateway?.id || "",
       label: nextStep?.eventLabel || nextStep?.type,
       action: `step ${currentStep() + 1}`,
-      value: generateGtmCtxValue(collected),
+      value: generateGtmCtxValue(collected, nextStep?.txId),
     });
   }, [collected, currentStep, nextStep]);
   return "";

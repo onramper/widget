@@ -39,7 +39,10 @@ export const triggerGTMEvent = ({
   });
 };
 
-export const generateGtmCtxValue = (collected: CollectedStateType) => {
+export const generateGtmCtxValue = (
+  collected: CollectedStateType,
+  txId: string | undefined
+) => {
   const {
     amount,
     amountInCrypto,
@@ -52,8 +55,6 @@ export const generateGtmCtxValue = (collected: CollectedStateType) => {
     selectedPaymentMethod,
     selectGatewayBy,
   } = collected;
-
-  console.log(selectedGateway?.nextStep?.txId);
   return {
     payment: {
       amount,
@@ -72,6 +73,7 @@ export const generateGtmCtxValue = (collected: CollectedStateType) => {
     },
     gatewaySuggestion: selectGatewayBy,
     transactionId: selectedGateway?.nextStep?.txId,
+    transactionId2: txId,
   };
 };
 
@@ -83,7 +85,10 @@ export const triggerLandingViewGtmFtcEvent = (
     category: collected.selectedGateway?.id || "",
     label: "transactionForm",
     action: `step 1`,
-    value: generateGtmCtxValue(collected),
+    value: generateGtmCtxValue(
+      collected,
+      collected.selectedGateway?.nextStep?.txId
+    ),
   });
 };
 
