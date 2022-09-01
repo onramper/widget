@@ -106,6 +106,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               selectGatewayBy={props.selectGatewayBy}
               skipTransactionScreen={props.skipTransactionScreen}
               transaction={props.transaction}
+              initScreen={props.initScreen}
             >
               <div style={{ flexGrow: 1, display: "flex" }}>
                 <NavContainer home={<BaseScreenView />} />
