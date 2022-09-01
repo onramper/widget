@@ -11,6 +11,7 @@ const ListItemButtonGroup: React.FC<ListItemButtonGroupProps> = (props) => {
   const onClick = (item: ListItemType) => {
     props.onClick?.(item);
     if (item.link) {
+      props.onClick?.(item);
       window.open(item.link);
     }
   };
