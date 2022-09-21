@@ -26,6 +26,6 @@
     "ramp-core": "./ramp-core"
   },
   "dependencies": {
-    "@onramper/ramp-core": "file:../server-ramp-core/dist/ramp-core"    
+    "@onramper/ramp-core": "1.0.0"
   }
 }
