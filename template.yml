@@ -9,7 +9,7 @@ Globals:
   Function:
     Runtime: nodejs16.x
     Timeout: 180
-    Handler: index.apiHandler   
+    Handler: index.handler   
     Environment:
       Variables:
         CURRENCIES_API_URL_ROOT: currencies

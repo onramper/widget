@@ -16,7 +16,7 @@ import { getAllCurrencies, getCurrency, getCurrenciesForType } from "./app";
 
 // API CALLS
 // -- Application Gateway V2 calls. When V3 comes we will change here.
-export const apiHandler = async (
+export const handler = async (
     event: APIGatewayProxyEventV2,
     context: APIGatewayEventRequestContextV2)
 
