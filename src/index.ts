@@ -6,8 +6,8 @@ import {
 } from 'aws-lambda';
 
 import serviceConfig from './service.config.json';
-import { CoreError } from 'ramp-core/errors';
-import { CoreHttpResponse, HttpResponse } from "ramp-core/http";
+import { CoreError } from '@onramper/ramp-core/errors'
+import { CoreHttpResponse, HttpResponse } from "@onramper/ramp-core/http";
 import { ServiceDatabase } from './data';
 import { CurrenciesRepo } from "./repo";
 import { env } from "process";

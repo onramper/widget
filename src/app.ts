@@ -1,7 +1,7 @@
 import { CurrencyNotFoundError, CurrencyValidationError, CurrenciesOrError } from './core';
 import { CurrenciesRepo } from './repo';
-import { CoreDatabaseError,CoreError } from "ramp-core/errors";
-import { CoreHttpResponse, HttpResponse } from "ramp-core/http";
+import { CoreDatabaseError,CoreError } from "@onramper/ramp-core/errors";
+import { CoreHttpResponse, HttpResponse } from "@onramper/ramp-core/http";
 
 // CONTROLLERS
 
@@ -14,6 +14,8 @@ export async function getAllCurrencies(repo:CurrenciesRepo, params?:CurrencyQuer
 
     return HttpResponse.Ok(results);
 }
+
+
 
 export async function getCurrency(repo:CurrenciesRepo, currencyId: string): Promise<CoreHttpResponse> {
 
@@ -42,6 +44,8 @@ export async function getCurrency(repo:CurrenciesRepo, currencyId: string): Prom
     return HttpResponse.Ok(results);
 }
 
+
+
 function validateCurrencyId(currencyId:string):CoreError[]{
     let errors:CoreError[] = [];
 
@@ -50,6 +54,8 @@ function validateCurrencyId(currencyId:string):CoreError[]{
     return errors;
 }
 
+
+
 // -- Removes quotation marks from the query string values.
 function sanitizeParam(param:string|undefined){
     if(param === undefined){
@@ -57,6 +63,8 @@ function sanitizeParam(param:string|undefined){
     }
     return param.replace('"','').replace('"','')
 }
+
+
 
 export async function getCurrenciesForType(repo:CurrenciesRepo, typeName: string): Promise<CoreHttpResponse> {
     let results = await repo.getCurrenciesByType(typeName);       

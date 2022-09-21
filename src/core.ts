@@ -1,4 +1,4 @@
-import { CoreError } from "ramp-core/errors";
+import { CoreError } from "@onramper/ramp-core/errors";
 
 
 // TYPES

@@ -1,6 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import { AppDatabase } from './core';
-import { CoreDatabaseError } from "ramp-core/errors";
+import { CoreDatabaseError } from "@onramper/ramp-core/errors";
 
 export { ServiceDatabase };
 
