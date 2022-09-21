@@ -23,7 +23,7 @@
     "@types/dynamodb": "^1.3.2",
     "@types/node": "^18.0.6",
     "jest": "^28.1.3",
-    "ramp-core": "./ramp-core"
+    "@onramper/ramp-core": "1.0.0"
   },
   "dependencies": {
     "@onramper/ramp-core": "1.0.0"
