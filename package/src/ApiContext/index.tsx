@@ -38,6 +38,7 @@ import type {
   InfoDepositBankAccount,
 } from "./api/types/nextStep";
 
+
 import { NextStepError } from "./api";
 import type { Filters, Transaction } from "./api";
 import phoneCodes from "./utils/phoneCodes";
@@ -142,8 +143,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       skipTransactionScreen: props.skipTransactionScreen,
       transaction: props.transaction,
       initScreen: props.initScreen,
-      defaultCrypto: defaultCrypto,
-      defaultFiat: defaultFiat,
     };
   }, [
     defaultAddrs,
@@ -162,8 +161,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.skipTransactionScreen,
     props.transaction,
     props.initScreen,
-    defaultCrypto,
-    defaultFiat,
   ]);
 
   const iniState: StateType = {
