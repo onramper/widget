@@ -18,10 +18,19 @@ const SuccessView: React.FC<SuccessViewProps> = (props) => {
   useStepGtm(props.nextStep as NextStep);
 
   React.useEffect(() => {
-    emit(EVENTS.PURCHASE_COMPLETED, {
+    const event = EVENTS.PURCHASE_COMPLETED;
+    const data = {
       gateway: collected.selectedGateway?.identifier ?? "Onramper",
       trackingUrl: props.nextStep.trackingUrl,
-    });
+    };
+
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(JSON.stringify({ event, data }));
+    } else if (window.Android && window.Android.sendEvent) {
+      window.Android.sendEvent(JSON.stringify({ event, data }));
+    } else {
+      emit(event, data);
+    }
   }, [collected.selectedGateway?.identifier, props.nextStep.trackingUrl]);
 
   return (
