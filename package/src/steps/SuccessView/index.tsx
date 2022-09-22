@@ -25,11 +25,11 @@ const SuccessView: React.FC<SuccessViewProps> = (props) => {
     };
 
     if (window.ReactNativeWebView) {
-      //emit to react native web view
+      //emit to react native webview
       window.ReactNativeWebView.postMessage(JSON.stringify({ event, data }));
-    } else if (window.Android && window.Android.sendEvent) {
-      //emit to android web view
-      window.Android.sendEvent(JSON.stringify({ event, data }));
+    } else if (window.AndroidBridge && window.AndroidBridge.sendEvent) {
+      //emit to android webview
+      window.AndroidBridge.sendEvent(JSON.stringify({ event, data }));
     } else {
       //emit to web browser
       emit(event, data);
