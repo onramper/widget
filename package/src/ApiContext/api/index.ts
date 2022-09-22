@@ -391,13 +391,12 @@ interface SellParams {
 
 const sell = async (
   crypto: string,
-  fiat: string,
   amount: number,
   paymentMethod: string,
   params?: SellParams
 ): Promise<GatewayRate> => {
   const urlParams = createUrlParamsFromObject(params ?? {});
-  const ratesUrl = `${BASE_API}/sell/${crypto}/${fiat}/${paymentMethod}/${amount}?${urlParams}`;
+  const ratesUrl = `${BASE_API}/sell/${crypto}/${paymentMethod}/${amount}?${urlParams}`;
   logRequest(ratesUrl);
   const ratesRes = await fetch(ratesUrl, {
     headers,
