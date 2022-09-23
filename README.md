@@ -18,7 +18,7 @@ The API requires ***server-currencies-db*** for data persistance.
 - Type                - AWS DynamoDb Table
 - Schema Repository   - <insert database schema repo server-currencies-db> 
 
-## Deployment
+# Deployment
 1. Checkout the source from the relevant branch
 2. Authenticate with OnRampers npm registry
 
@@ -52,7 +52,7 @@ CURRENCIES_API_AWS_REGION = <The region the table is located in>
 CURRENCIES_API_AWS_ENDPOINT_URL = (*optional*) <The endpoint URL if needed>
 ```
 
-## Development
+# Development
 
 #### Mandatory Dependencies
 - Node/Npm 16.x - https://nodejs.org/en/
