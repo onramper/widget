@@ -78,4 +78,9 @@ Email: <your onramper email address>
 $ npm install  
 ```
 
+If you wish to debug the application locally, use -
+```shell
+$ npm run local
+```
+
 Happy Coding!
