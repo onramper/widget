@@ -20,7 +20,7 @@ The API requires ***server-currencies-db*** for data persistance.
 
 ## Deployment
 1. Checkout the source from the relevant branch
-2. Authenticate with OnRampers npm registry
+2. Authenticate with OnRampers npm registry on GitHub packages
 
 ```shell
 $ npm login --scope=@onramper --registry=https://npm.pkg.github.com
@@ -28,16 +28,16 @@ Username: <your GitHub username>
 Password: <your GitHub access Token>
 Email: <your onramper email address>
 ```
-
-3. Build the project
+3. Set the ***apiRootURL*** to the integration URL within the *service.config.json* file. Default value is */currencies*
+4. Build the project
 
 ```shell
 $ npm install  
 $ npm run build
 ```
 
-4. All deployment assets will appear inside a folder named ~/dist
-5. Zip all assets and upload to a AWS Lambda
+5. All deployment assets will appear inside a folder named ~/dist
+6. Zip all assets and upload to a AWS Lambda
 
 #### Lambda Configuration
 1. Set the Runtime Configuration **Handler** property to **index.handler**
