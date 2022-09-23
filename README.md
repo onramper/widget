@@ -28,7 +28,7 @@ Username: <your GitHub username>
 Password: <your GitHub access Token>
 Email: <your onramper email address>
 ```
-3. Set the ***apiRootURL*** to the integration URL within the *service.config.json* file. Default value is */currencies*
+3. Set the ***apiUrlRoot*** to the integration URL within the *service.config.json* file. Default value is */currencies*
 4. Build the project
 
 ```shell
