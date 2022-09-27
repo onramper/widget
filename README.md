@@ -23,6 +23,7 @@ The API requires ***server-currencies-db*** for data persistance.
 2. Set environment variable NODE_TOKEN to a GitHub token for your account
 3. Authenticate with OnRampers npm registry
 
+
 ##### For local
 ```shell
 $ npm login --scope=@onramper --registry=https://npm.pkg.github.com
@@ -30,6 +31,7 @@ Username: <your GitHub username>
 Password: <your GitHub access Token>
 Email: <your onramper email address>
 ```
+
 ##### For Jenkins
 ```shell
 $ npm config set "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}"
@@ -82,6 +84,11 @@ Email: <your onramper email address>
 3. Install dependencies. Execute the following from the root folder of your project.
 ```shell
 $ npm install  
+```
+
+If you wish to debug the application locally, use -
+```shell
+$ npm run local
 ```
 
 Happy Coding!

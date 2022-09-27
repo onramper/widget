@@ -1,5 +1,11 @@
-import { Currency, AppDatabase, CoreError, CurrenciesOrError, CurrencyOrError, CurrencyNotFoundError } from "./core";
+import { Currency, AppDatabase, CurrenciesOrError, CurrencyOrError, CurrencyNotFoundError } from "./core";
+import { CoreError } from "@onramper/ramp-core/errors";
 
+
+export { CurrenciesRepo };
+
+
+// APPLICATION REPOSITORY IMPLEMENTATION
 class CurrenciesRepo {
 
     private db: AppDatabase;
@@ -14,13 +20,13 @@ class CurrenciesRepo {
 
         if(countryId){           
             
-            results = await this.db.getCurrenciesForCountry(countryId);
+            results = await this.db.getCurrenciesForCountry(countryId);            
             
-            
-        }else{        
-            results = await this.db.getAllCurrencies();
-        }
+        }else{      
 
+            results = await this.db.getAllCurrencies();
+
+        }
 
         if(results instanceof CoreError)
             return results;
@@ -62,4 +68,3 @@ class CurrenciesRepo {
     }
 }
 
-export { CurrenciesRepo };

@@ -1,21 +1,21 @@
-import { CoreHttpResponse, CoreError, CurrencyNotFoundError, CoreDatabaseError, CurrencyValidationError, CurrenciesOrError } from './core';
+import { CurrencyNotFoundError, CurrencyValidationError, CurrenciesOrError } from './core';
 import { CurrenciesRepo } from './repo';
-import * as response from './responses';
+import { CoreDatabaseError,CoreError } from "@onramper/ramp-core/errors";
+import { CoreHttpResponse, HttpResponse } from "@onramper/ramp-core/http";
 
-interface CurrencyQueryParameters{
-    countryId?:string    
-}
+// CONTROLLERS
 
-export async function getAllCurrencies(repo:CurrenciesRepo, params?:CurrencyQueryParameters): Promise<CoreHttpResponse> {
-
-    let results = await repo.getAllCurrencies(params?.countryId);
-
+export async function getAllCurrencies(repo:CurrenciesRepo, params?:CurrencyQueryParameters): Promise<CoreHttpResponse> {       
+    
+    let results = await repo.getAllCurrencies(sanitizeParam(params?.countryId));
     if(results instanceof CoreDatabaseError){
-        return response.InternalServerError([results]);
+        return HttpResponse.InternalServerError([results]);
     }
 
-    return response.Ok(results);
+    return HttpResponse.Ok(results);
 }
+
+
 
 export async function getCurrency(repo:CurrenciesRepo, currencyId: string): Promise<CoreHttpResponse> {
 
@@ -24,7 +24,7 @@ export async function getCurrency(repo:CurrenciesRepo, currencyId: string): Prom
     let validationsResults:CoreError[] = validateCurrencyId(currencyId);
 
     if(validationsResults.length > 0){
-        return response.BadRequest(validationsResults);
+        return HttpResponse.BadRequest(validationsResults);
     }
 
     // EXECUTION
@@ -33,32 +33,52 @@ export async function getCurrency(repo:CurrenciesRepo, currencyId: string): Prom
     // RESULTS
     // -- Handle Errors
     if(results instanceof CurrencyNotFoundError){
-        return response.NotFound([results]);
+        return HttpResponse.NotFound([results]);
     }
 
     if(results instanceof CoreDatabaseError){
-        return response.InternalServerError([results]);
+        return HttpResponse.InternalServerError([results]);
     }
 
     // -- Handle Success
-    return response.Ok(results);
+    return HttpResponse.Ok(results);
 }
+
+
 
 function validateCurrencyId(currencyId:string):CoreError[]{
     let errors:CoreError[] = [];
 
-    if(currencyId.length < 3 || currencyId.length > 4){
-        errors.push(new CurrencyValidationError(`The currencyId path parameter must be either a 3 letter or 4 letter currency code.`));
-    }
+    // -- Enter validation criteria here.
 
     return errors;
 }
 
-export async function getCurrenciesForType(repo:CurrenciesRepo, typeName: string): Promise<CoreHttpResponse> {
-    let results = await repo.getCurrenciesByType(typeName);       
 
-    return response.Ok(results);
+
+// -- Removes quotation marks from the query string values.
+function sanitizeParam(param:string|undefined){
+    if(param === undefined){
+        return param;
+    }
+    return param.replace('"','').replace('"','')
 }
 
 
+
+export async function getCurrenciesForType(repo:CurrenciesRepo, typeName: string): Promise<CoreHttpResponse> {
+    let results = await repo.getCurrenciesByType(typeName);       
+
+    return HttpResponse.Ok(results);
+}
+
+
+
+
+// QUERY PARAMETER OBJECTS
+
+interface CurrencyQueryParameters{
+    countryId?:string    
+}
+// -- End QUERY PARAMETER OBJECTS
 
