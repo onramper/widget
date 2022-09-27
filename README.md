@@ -20,24 +20,30 @@ The API requires ***server-currencies-db*** for data persistance.
 
 # Deployment
 1. Checkout the source from the relevant branch
-2. Authenticate with OnRampers npm registry
+2. Set environment variable NODE_TOKEN to a GitHub token for your account
+3. Authenticate with OnRampers npm registry
 
+##### For local
 ```shell
 $ npm login --scope=@onramper --registry=https://npm.pkg.github.com
 Username: <your GitHub username>
 Password: <your GitHub access Token>
 Email: <your onramper email address>
 ```
+##### For Jenkins
+```shell
+$ npm config set "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}"
+```
 
-3. Build the project
+4. Build the project
 
 ```shell
 $ npm install  
 $ npm run build
 ```
 
-4. All deployment assets will appear inside a folder named ~/dist
-5. Zip all assets and upload to a AWS Lambda
+5. All deployment assets will appear inside a folder named ~/dist
+6. Zip all assets and upload to a AWS Lambda
 
 #### Lambda Configuration
 1. Set the Runtime Configuration **Handler** property to **index.handler**
