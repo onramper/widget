@@ -69,16 +69,16 @@ export const handler = async (
     // -- Routing based on APIGatewayProxyEventV2.routeKey
 
     switch (event.routeKey) {
-        case `GET ${serviceConfig.apiUrlRoot}`:
+        case `GET ${serviceConfig.ApiUrlRoot}`:
             response = await getAllCurrencies(repository, { countryId: event.queryStringParameters?.country });
             break;
-        case `GET ${serviceConfig.apiUrlRoot}/types`:
+        case `GET ${serviceConfig.ApiUrlRoot}/types`:
             response = await getCurrenciesForType(repository, "");
             break;
-        case `GET ${serviceConfig.apiUrlRoot}/types/{typeName}`:
+        case `GET ${serviceConfig.ApiUrlRoot}/types/{typeName}`:
             response = await getCurrenciesForType(repository, event.pathParameters?.typeName!);
             break;
-        case `GET ${serviceConfig.apiUrlRoot}/{currencyId}`:
+        case `GET ${serviceConfig.ApiUrlRoot}/{currencyId}`:
             response = await getCurrency(repository, event.pathParameters?.currencyId!);
             break;
         default:
