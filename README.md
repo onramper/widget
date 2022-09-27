@@ -24,7 +24,7 @@ The API requires ***server-currencies-db*** for data persistance.
 3. Authenticate with OnRampers npm registry
 
 
-##### For local
+##### For Local
 ```shell
 $ npm login --scope=@onramper --registry=https://npm.pkg.github.com
 Username: <your GitHub username>
