@@ -56,7 +56,7 @@ export const handler = async (
         return HttpResponse.InternalServerError(
             [
                 {
-                    errorId: 1134,
+                    errorId: 1004,
                     message: "Could not access the database. ERROR:: " + error
                 }
             ]
@@ -104,7 +104,7 @@ function checkForEnvironmentErrors(): CoreError[] {
     // -- Verify minimum environment variables set.
     if (!process.env.CURRENCIES_API_TABLE_NAME) {
         errors.push({
-            errorId: 5021,
+            errorId: 1002,
             message: `The datasource table name in the environment, is not set. 
                       Please set environment variable "CURRENCIES_API_TABLE_NAME" to a valid table.`
         });
@@ -112,7 +112,7 @@ function checkForEnvironmentErrors(): CoreError[] {
 
     if (!process.env.CURRENCIES_API_AWS_REGION) {
         errors.push({
-            errorId: 5022,
+            errorId: 1003,
             message: `The datasource region in the environment, is not set. 
                       Please set environment variable "CURRENCIES_API_AWS_REGION" to a valid value.`
         });
