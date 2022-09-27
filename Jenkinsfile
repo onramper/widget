@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage('Code Build') {
             steps {
-                sh 'npm config set '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}''
+                sh "npm config set '//npm.pkg.github.com/:_authToken' "${NPM_TOKEN}""
                 sh 'npm install'
                 sh 'npm run build'
             }
