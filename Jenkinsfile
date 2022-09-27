@@ -9,6 +9,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        NPM_TOKEN = credentials('NPM_TOKEN')
     }
 
     agent any
@@ -16,6 +17,7 @@ pipeline {
     stages {
         stage('Code Build') {
             steps {
+                sh 'npm config set '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}''
                 sh 'npm install'
                 sh 'npm run build'
             }
