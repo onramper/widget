@@ -22,8 +22,6 @@ data "archive_file" "zip_the_nodejs_code" {
 
 
 resource "aws_lambda_function" "myLambda" {
-  depends_on = [data.archive_file.zip_the_nodejs_code]
-  source_code_hash = "${path.module}/currencies-dev.zip"
   filename         = "${path.module}/currencies-dev.zip"
   function_name    = "currencies-dev"
   role             = "arn:aws:iam::207627709836:role/service-role/lambda-IAM-role"

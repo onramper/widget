@@ -2,7 +2,7 @@ pipeline {
 
     parameters {
         string(name: 'environment', defaultValue: 'aws', description: 'Workspace for the deployment')
-        booleanParam(name: 'AutoApprove', defaultValue: true, description: 'Approval Setting')
+        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'dev', name: 'BRANCH', type: 'PT_BRANCH'
     }
 
 
