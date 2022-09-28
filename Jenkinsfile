@@ -10,8 +10,6 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         NPM_TOKEN = credentials('NPM_TOKEN')
-        CURRENCIES_API_TABLE_NAME = "currencies-dev"
-        CURRENCIES_API_AWS_REGION = "us-east-1"
     }
 
     agent any

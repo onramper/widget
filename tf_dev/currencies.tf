@@ -32,4 +32,10 @@ resource "aws_lambda_function" "myLambda" {
   role             = "arn:aws:iam::207627709836:role/service-role/lambda-IAM-role"
   handler          = "index.handler"
   runtime          = "nodejs16.x"
+  environment {
+    variables = {
+        CURRENCIES_API_TABLE_NAME = "currencies-dev"
+        CURRENCIES_API_AWS_REGION = "us-east-1"
+    }
+  }
 }
