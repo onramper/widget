@@ -81,7 +81,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               defaultFiat={
                 props.skipTransactionScreen
                   ? props.transaction.txnFiat
-                  : props.defaultCrypto
+                  : props.defaultFiat
               }
               defaultFiatSoft={props.defaultFiatSoft}
               defaultPaymentMethod={

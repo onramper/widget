@@ -79,8 +79,10 @@ const BuyCryptoView: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        if (collected.selectedCountry) {
-          const nextStep = await API.sell("BTC", 0.1, "blockchain", {
+        if (collected.selectedCountry && collected.defaultCrypto) {
+          const crypto = collected.defaultCrypto ?? "BTC";
+          const fiat = collected.defaultFiat ?? "EUR";
+          const nextStep = await API.sell(crypto, fiat, 0.1, "blockchain", {
             amountInCrypto: true,
             country: collected.selectedCountry,
           });
@@ -95,7 +97,11 @@ const BuyCryptoView: React.FC = () => {
         console.error(error);
       }
     })();
-  }, [collected.selectedCountry]);
+  }, [
+    collected.defaultCrypto,
+    collected.defaultFiat,
+    collected.selectedCountry,
+  ]);
 
   const handleTabItemClick = useCallback(
     (i: number, label?: string) => {
