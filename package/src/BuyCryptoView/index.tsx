@@ -115,7 +115,6 @@ const BuyCryptoView: React.FC = () => {
       } else if (label?.includes("swap")) {
         //swp tab click
         sendDataToGTM(swapTabClickGtmEvent);
-        window.localStorage.setItem("onramper_url", window.location.href);
         window.location.replace(SWAP_URL);
       }
     },
