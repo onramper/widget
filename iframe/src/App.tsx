@@ -45,6 +45,7 @@ const redirectURL = getParam("redirectURL", undefined);
 const minAmountEur = Number(getParam("minAmountEur", "0"));
 const supportSell = getParam("supportSell", "true") === "true";
 const supportBuy = getParam("supportBuy", "true") === "true";
+const supportSwap = getParam("supportSwap", "true") === "true";
 const isAmountEditable = getParam("isAmountEditable", "true") === "true";
 const recommendedCryptoCurrencies = getArrayParam(
   "recommendedCryptoCurrencies"
@@ -119,6 +120,7 @@ function App() {
             redirectURL={redirectURL}
             minAmountEur={minAmountEur}
             supportSell={supportSell}
+            supportSwap={supportSwap}
             supportBuy={supportBuy}
             isAmountEditable={isAmountEditable}
             recommendedCryptoCurrencies={recommendedCryptoCurrencies}

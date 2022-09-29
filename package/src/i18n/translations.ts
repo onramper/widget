@@ -4,6 +4,7 @@ export const resources = {
       tabs: {
         buy: "Buy",
         sell: "Sell",
+        swap: "Swap",
       },
       buyCryptoView: {
         heading: "How much do you want to buy?",

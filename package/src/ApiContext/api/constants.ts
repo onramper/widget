@@ -14,6 +14,11 @@ export const BASE_API =
     ? "https://onramper.tech"
     : "https://staging.onramper.tech";
 
+export const SWAP_URL =
+  process.env.STAGE === "prod"
+    ? "https://swap.onramper.com/"
+    : "https://swap.onramper.dev/";
+
 export const SANDBOX_HOSTNAME =
   process.env.STAGE === "prod"
     ? "sandbox.onramper.tech"
