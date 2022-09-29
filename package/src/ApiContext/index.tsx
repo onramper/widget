@@ -79,6 +79,7 @@ interface APIProviderType {
   redirectURL?: string;
   minAmountEur?: number;
   supportSell: boolean;
+  supportSwap: boolean;
   supportBuy: boolean;
   isAmountEditable?: boolean;
   recommendedCryptoCurrencies?: string[];
@@ -130,6 +131,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       redirectURL: props.redirectURL,
       minAmountEur: props.minAmountEur,
       supportSell: props.supportSell,
+      supportSwap: props.supportSwap,
       supportBuy: props.supportBuy,
       isAmountEditable:
         props.isAmountEditable ?? initialState.collected.isAmountEditable,
@@ -153,6 +155,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.redirectURL,
     props.minAmountEur,
     props.supportSell,
+    props.supportSwap,
     props.supportBuy,
     props.isAmountEditable,
     props.recommendedCryptoCurrencies,

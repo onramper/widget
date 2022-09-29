@@ -9,7 +9,7 @@ const TabGroup: React.FC<TabGroupProps> = (props: TabGroupProps) => {
     <div className={styles.wrapper}>
       {props.items.map((label: string, i: number) => (
         <div
-          onClick={() => props.onClickItem(i)}
+          onClick={() => props.onClickItem(i, label)}
           key={i}
           className={`${styles["option-wrapper"]} ${
             i === props.indexSelected ? styles.selected : ""

@@ -68,6 +68,7 @@ export type CollectedStateType = {
   isPartnerContextSent: boolean;
   redirectURL?: string;
   supportSell: boolean;
+  supportSwap: boolean;
   supportBuy: boolean;
   isAmountEditable?: boolean;
   staticRouting?: StaticRoutingItemType[];
@@ -155,6 +156,7 @@ export const initialState: StateType = {
     isPartnerContextSent: false,
     supportSell: true,
     supportBuy: true,
+    supportSwap: false,
     isAmountEditable: true,
     redirectURL: undefined,
     recommendedCryptoCurrencies: undefined,

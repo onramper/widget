@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import BodyBuyCrypto from "./BodyBuyCrypto";
 import styles from "../styles.module.css";
 import ChooseGatewayView from "../ChooseGatewayView/ChooseGatewayView";
@@ -15,10 +15,12 @@ import {
   buyTabClickGtmEvent,
   sellTabClickGtmEvent,
   menuBtnClickGtmEvent,
+  swapTabClickGtmEvent,
 } from "../hooks/gtm/buyCryptoViewEvents";
 import { useGTMDispatch } from "../hooks/gtm";
 import Menu from "../common/Header/Menu/Menu";
 import tabHeaderClasses from "./../common/Header/TabsHeader/TabsHeader.module.css";
+import { SWAP_URL } from "../ApiContext/api/constants";
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -99,24 +101,44 @@ const BuyCryptoView: React.FC = () => {
     collected.selectedCountry,
   ]);
 
+  const handleTabItemClick = useCallback(
+    (i: number, label?: string) => {
+      console.log(label);
+      if (label?.includes("buy")) {
+        //buytab click
+        sendDataToGTM(buyTabClickGtmEvent);
+      } else if (label?.includes("sell")) {
+        //sell tab click
+        sendDataToGTM(sellTabClickGtmEvent);
+        triggerLandingViewGtmCtfEvent(collected, buyStep?.eventCategory);
+        nextScreen(<Step nextStep={buyStep} />);
+      } else if (label?.includes("swap")) {
+        //swp tab click
+        sendDataToGTM(swapTabClickGtmEvent);
+        window.location.replace(SWAP_URL);
+      }
+    },
+    [buyStep, collected, nextScreen, sendDataToGTM]
+  );
+
+  const getAvailableTabs = useCallback(() => {
+    const { supportSell, supportSwap } = collected;
+    let filteredTabs = tabNames;
+    if (!supportSell) {
+      filteredTabs = filteredTabs.filter((s) => !s.includes("sell"));
+    }
+    if (!supportSwap) {
+      filteredTabs = filteredTabs.filter((s) => !s.includes("swap"));
+    }
+    return filteredTabs;
+  }, [collected]);
+
   return (
     <div className={styles.view}>
       <TabsHeader
-        tabs={
-          buyStep && collected.supportSell
-            ? tabNames
-            : tabNames.filter((s, i) => i !== 1)
-        }
+        tabs={getAvailableTabs()}
         tabSelected={0}
-        onClickItem={(i: number) => {
-          if (i === 0) {
-            sendDataToGTM(buyTabClickGtmEvent);
-            return;
-          }
-          sendDataToGTM(sellTabClickGtmEvent);
-          triggerLandingViewGtmCtfEvent(collected, buyStep?.eventCategory);
-          nextScreen(<Step nextStep={buyStep} />);
-        }}
+        onClickItem={handleTabItemClick}
         onMenuClick={() => {
           sendDataToGTM({ ...menuBtnClickGtmEvent });
           nextScreen(<Menu className={tabHeaderClasses["tabs-header-menu"]} />);

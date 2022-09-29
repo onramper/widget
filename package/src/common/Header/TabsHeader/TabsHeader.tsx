@@ -8,7 +8,7 @@ export type ITabsHeaderProps = {
   onMenuClick?: () => void;
   tabs: string[];
   tabSelected: number;
-  onClickItem: (index: number) => void;
+  onClickItem: (index: number, label?: string) => void;
 };
 
 const TabsHeader: React.FC<ITabsHeaderProps> = (props: ITabsHeaderProps) => {
