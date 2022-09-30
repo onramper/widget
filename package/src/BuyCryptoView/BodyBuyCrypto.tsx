@@ -1,32 +1,38 @@
 import React, {
+  useCallback,
   useContext,
   useEffect,
-  useState,
-  useCallback,
   useLayoutEffect,
+  useState,
 } from "react";
-import stylesCommon from "../styles.module.css";
-import ButtonAction from "../common/ButtonAction";
-import { APIContext, GatewayRateOption } from "../ApiContext";
+import { useTranslation } from "react-i18next";
 import type { ItemType } from "../ApiContext";
+import { APIContext, GatewayRateOption } from "../ApiContext";
+import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
+import { StepType } from "../ApiContext/api/types/nextStep";
+import ButtonAction from "../common/ButtonAction";
+import Footer from "../common/Footer";
+import OverlayPicker from "../common/OverlayPicker/OverlayPicker";
+import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
+import { useGTMDispatch } from "../hooks/gtm";
+import {
+  buyBtnClickGtmEvent,
+  genPaymentMethodSelectEvent,
+} from "../hooks/gtm/buyCryptoViewEvents";
 import { NavContext } from "../NavContext";
-import PaymentMethodPicker from "./PaymentMethodPicker/PaymentMethodPicker";
+import stylesCommon from "../styles.module.css";
+import { getBestGatewayByPerformance, getBestGatewayByPrice } from "../utils";
+import errorTypes from "./../ApiContext/api/errorTypes";
+import Step from "./../steps/Step";
+import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
+import { LoadingItem } from "./constants";
 import GatewayIndicator from "./GatewayIndicator/GatewayIndicator";
 import { IGatewaySelected } from "./GatewayIndicator/GatewayIndicator.models";
-import errorTypes from "./../ApiContext/api/errorTypes";
-import TopScreenB2 from "./TopScreenB2/TopScreenB2";
+import { useGatewaySelection } from "./hooks";
 import NotificationSection from "./NotificationSection/NotificationSection";
-import Step from "./../steps/Step";
+import PaymentMethodPicker from "./PaymentMethodPicker/PaymentMethodPicker";
 import TopScreenA from "./ScreenA/TopScreenA";
-import OverlayPicker from "../common/OverlayPicker/OverlayPicker";
-import { getBestGatewayByPrice, getBestGatewayByPerformance } from "../utils";
-import { LoadingItem } from "./constants";
-import { IBodyBuyCryptoProps } from "./BuyCryptoView.models";
-import Footer from "../common/Footer";
-import { useTranslation } from "react-i18next";
-import { triggerLandingViewGtmFtcEvent } from "../helpers/useGTM";
-import { StepType } from "../ApiContext/api/types/nextStep";
-import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
+import TopScreenB2 from "./TopScreenB2/TopScreenB2";
 
 function mapGatewaySelectedToPicker(
   selectedGateway?: GatewayRateOption
@@ -52,14 +58,21 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   } = props;
   const {
     collected,
-    data: { availablePaymentMethods, allRates, handlePaymentMethodChange },
+    data: {
+      availablePaymentMethods,
+      allRates,
+      handlePaymentMethodChange,
+      isRatesLoaded,
+    },
   } = useContext(APIContext);
   const { nextScreen, backScreen } = useContext(NavContext);
-
+  const [paymentMethods, setPaymentMethods] = useState<ItemType[]>([]);
   const [hasMinMaxErrorsMsg, setHasMinMaxErrorsMsg] = useState<boolean>();
   const [isGatewayInitialLoading, setIsGatewayInitialLoading] =
     useState<boolean>(true);
   const [showScreenA, setShowScreenA] = useState(false);
+  const sendDataToGTM = useGTMDispatch();
+  const { gatewaySelectionTxt } = useGatewaySelection();
 
   useEffect(() => {
     const errType = collected.errors?.RATE?.type;
@@ -68,6 +81,10 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         !!collected.errors?.RATE?.message
     );
   }, [collected.errors]);
+
+  useEffect(() => {
+    setPaymentMethods(availablePaymentMethods);
+  }, [availablePaymentMethods]);
 
   const isNextStepConfirmed = useCallback(() => {
     if (!collected.selectedGateway) return false;
@@ -83,6 +100,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
   }, [collected.selectedGateway]);
 
   const onNextStep = useCallback(() => {
+    sendDataToGTM(buyBtnClickGtmEvent);
     if (!collected.selectedGateway) {
       return;
     }
@@ -94,46 +112,63 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         isConfirmed={!isNextStepConfirmed()}
       />
     );
-  }, [collected, isNextStepConfirmed, nextScreen]);
+  }, [collected, isNextStepConfirmed, nextScreen, sendDataToGTM]);
 
   const openMorePaymentOptions = useCallback(() => {
-    if (availablePaymentMethods.length > 1) {
+    if (paymentMethods.length > 1) {
       nextScreen(
         <OverlayPicker
           name="paymentMethod"
           title="Select payment method"
-          indexSelected={availablePaymentMethods.findIndex(
+          indexSelected={paymentMethods.findIndex(
             (m) => m.id === collected.selectedPaymentMethod?.id
           )}
-          items={availablePaymentMethods}
+          items={paymentMethods}
           onItemClick={(name: string, index: number, item: ItemType) => {
             handlePaymentMethodChange(item);
+            sendDataToGTM(genPaymentMethodSelectEvent(item.id));
             backScreen();
           }}
         />
       );
     }
   }, [
-    availablePaymentMethods,
-    backScreen,
+    paymentMethods,
+    nextScreen,
     collected.selectedPaymentMethod?.id,
     handlePaymentMethodChange,
-    nextScreen,
+    sendDataToGTM,
+    backScreen,
   ]);
 
   useEffect(() => {
-    handleInputChange(
-      "selectedGateway",
-      collected.selectGatewayBy === SelectGatewayByType.Performance
-        ? getBestGatewayByPerformance(
+    if (isRatesLoaded) {
+      if (collected.selectGatewayBy === SelectGatewayByType.Performance) {
+        const gatewayByPerformance = getBestGatewayByPerformance(
+          allRates,
+          collected.selectedCurrency?.name,
+          collected.selectedCrypto?.name,
+          collected.staticRouting
+        );
+        if (gatewayByPerformance) {
+          handleInputChange("selectedGateway", gatewayByPerformance);
+        } else {
+          const gatewayByPrice = getBestGatewayByPrice(
             allRates,
-            !!collected.amountInCrypto,
-            collected.selectedCurrency?.name,
-            collected.selectedCrypto?.name,
-            collected.staticRouting
-          )
-        : getBestGatewayByPrice(allRates, !!collected.amountInCrypto)
-    );
+            !!collected.amountInCrypto
+          );
+          handleInputChange("selectedGateway", gatewayByPrice);
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
+        }
+      }
+      if (collected.selectGatewayBy === SelectGatewayByType.Price) {
+        const gatewayByPrice = getBestGatewayByPrice(
+          allRates,
+          !!collected.amountInCrypto
+        );
+        handleInputChange("selectedGateway", gatewayByPrice);
+      }
+    }
   }, [
     allRates,
     collected.amountInCrypto,
@@ -143,6 +178,7 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     collected.selectedPaymentMethod,
     handleInputChange,
     collected.staticRouting,
+    isRatesLoaded,
   ]);
 
   useEffect(() => {
@@ -163,6 +199,10 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     );
   }, []);
 
+  const handlePaymentChange = (item: ItemType) => {
+    handlePaymentMethodChange(item);
+  };
+
   return (
     <main className={stylesCommon.body}>
       <NotificationSection onBuyCrypto={onBuyCrypto} />
@@ -173,11 +213,9 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
       <PaymentMethodPicker
         openMoreOptions={openMorePaymentOptions}
         selectedId={selectedPaymentMethod.id}
-        items={availablePaymentMethods}
-        onChange={props.handlePaymentMethodChange}
-        isLoading={
-          !props.initLoadingFinished || availablePaymentMethods.length === 0
-        }
+        items={paymentMethods}
+        onChange={handlePaymentChange}
+        isLoading={!props.initLoadingFinished || paymentMethods.length === 0}
       />
 
       {(!!collected.selectedGateway || isGatewayInitialLoading) &&
@@ -186,13 +224,13 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
             selectedGateway={mapGatewaySelectedToPicker(
               collected.selectedGateway
             )}
+            gatewaySelectionTxt={gatewaySelectionTxt}
             unitCrypto={collected.selectedCrypto?.name}
             unitFiat={collected.selectedCurrency?.name}
             openMoreOptions={onBuyCrypto}
             isLoading={collected.isCalculatingAmount}
             isInitialLoading={isGatewayInitialLoading}
             amountInCrypto={!!collected.amountInCrypto}
-            byPerformance={collected.selectGatewayBy === SelectGatewayByType.Performance}
           />
         )}
 

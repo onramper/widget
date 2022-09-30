@@ -57,7 +57,7 @@ const PopupView: React.FC<{
         reportError(event.data, false, event.data);
       } else {
         reportError(
-          "Unknown error. Please, contact help@onramper.com and provide the following info: " +
+          "Unknown error. Please, contact support@onramper.com and provide the following info: " +
             nextStep.url,
           false,
           event.data

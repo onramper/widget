@@ -1,6 +1,7 @@
 import { useRef, useContext, useEffect } from "react";
 import { NavContext } from "./../NavContext";
-import { triggerGTMEvent, generateGtmStepValue, GtmEventNames } from "./useGTM";
+import { triggerGTMEvent, generateGtmCtxValue } from "./useGTM";
+import { GtmEvent } from "../enums";
 import { APIContext, NextStep } from "./../ApiContext";
 
 export const useStepGtm = (nextStep: NextStep) => {
@@ -15,11 +16,11 @@ export const useStepGtm = (nextStep: NextStep) => {
     firstRenderRef.current = true;
 
     triggerGTMEvent({
-      event: nextStep?.eventName || GtmEventNames.FiatToCrypto,
+      event: nextStep?.eventName || GtmEvent.FIAT_TO_CRYPTO,
       category: nextStep?.eventCategory || collected.selectedGateway?.id || "",
       label: nextStep?.eventLabel || nextStep?.type,
       action: `step ${currentStep() + 1}`,
-      value: generateGtmStepValue(collected),
+      value: generateGtmCtxValue(collected, nextStep?.txId),
     });
   }, [collected, currentStep, nextStep]);
   return "";

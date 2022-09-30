@@ -1,0 +1,17 @@
+.footer {
+  height: 70px;
+  width: 100%;
+  background: white;
+  position: absolute;
+  opacity: 0.9;
+  bottom: 0;
+}
+
+.fbutton {
+  display: inline-block;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  bottom: 15px;
+  transform: translateX(-50%);
+}

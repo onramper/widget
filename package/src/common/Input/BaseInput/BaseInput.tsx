@@ -5,6 +5,8 @@ import InputTransition from "./BaseInputTransition";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import hintIcon from "../../../icons/hint.svg";
 import infoIcon from "../../../icons/info.svg";
+import { ReactComponent as ErrorIcon } from "../../../icons/exclamation-triangle.svg";
+import { ReactComponent as SuccessIcon } from "../../../icons/circle-check.svg";
 
 const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>(
   (props, ref) => {
@@ -43,11 +45,9 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>(
       }
       return value;
     };
-
     const onIconClick = () => {
       props.onIconClick?.(props.name, formatValue(props.value), label);
     };
-
     return (
       <div ref={ref} className={`${classes.wrapper} ${props.className}`}>
         {label && (
@@ -66,6 +66,8 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>(
             props.error || props.error === ""
               ? classes["input-wrapper-error"]
               : ""
+          } ${
+            props.success && isFocused ? classes["input-wrapper-success"] : ""
           } ${props.disabled ? classes["input-wrapper-disabled"] : ""}`}
         >
           {props.icon && (
@@ -78,7 +80,6 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>(
               alt="Icon"
             />
           )}
-
           <span
             style={{ order: props.iconPosition === "end" ? -1 : "unset" }}
             className={getInputWrapperChildClass()}
@@ -102,16 +103,25 @@ const BaseInput = React.forwardRef<HTMLDivElement, BaseInputProps>(
                 onBlur={() => setIsFocused(false)}
                 onMouseOver={() => setIsMouseOver(true)}
                 onMouseOut={() => setIsMouseOver(false)}
+                onClick={props.onClick}
               />
             ) : (
               <> {props.inputSupportFallbackNode} </>
             )}
           </span>
+          <div className={`${classes["validation-icon"]}`}>
+            {props.success ? (
+              <SuccessIcon />
+            ) : props.error ? (
+              <ErrorIcon />
+            ) : null}
+          </div>
         </div>
 
         <ErrorMessage
           text={props.error}
-          className={`${classes["text-error-wrapper"]}`}
+          className={`${classes["text-wrapper"]}`}
+          showIcon={false}
         />
 
         {props.hint && (

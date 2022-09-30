@@ -20,7 +20,7 @@ const defaultColor = `#${getParam("color", "0316C1")}`;
 const fontFamily = getParam("fontFamily", "'Inter', sans-serif");
 const defaultAmount = Number(getParam("defaultAmount", "200"));
 const defaultCrypto = getParam("defaultCrypto", "BTC");
-const defaultFiat = getParam("defaultFiat");
+const defaultFiat = getParam("defaultFiat", "USD");
 const defaultFiatSoft = getParam("defaultFiatSoft");
 const defaultPaymentMethod = getArrayParam("defaultPaymentMethod");
 const addresses = getAddressesParam();
@@ -51,7 +51,14 @@ const recommendedCryptoCurrencies = getArrayParam(
   "recommendedCryptoCurrencies"
 );
 const darkMode = getParam("darkMode");
-const selectGatewayBy =  getParam("selectGatewayBy", "price");
+const selectGatewayBy = getParam("selectGatewayBy");
+const txnAmount = Number(getParam("txnAmount"));
+const txnFiat = getParam("txnFiat");
+const txnCrypto = getParam("txnCrypto");
+const txnPaymentMethod = getParam("txnPaymentMethod");
+const txnGateway = getParam("txnGateway");
+const skipTransactionScreen = getParam("skipTransactionScreen");
+const initScreen = getParam("initScreen");
 
 if (gFontPath) loadGoogleFont(gFontPath);
 
@@ -128,6 +135,19 @@ function App() {
             isAmountEditable={isAmountEditable}
             recommendedCryptoCurrencies={recommendedCryptoCurrencies}
             darkMode={darkMode === "true"}
+            skipTransactionScreen={
+              skipTransactionScreen === undefined
+                ? undefined
+                : skipTransactionScreen === "true"
+            }
+            transaction={{
+              txnAmount: txnAmount ?? 0,
+              txnFiat: txnFiat ?? "",
+              txnCrypto: txnCrypto ?? "",
+              txnPaymentMethod: txnPaymentMethod ?? "",
+              txnGateway: txnGateway ?? "",
+            }}
+            initScreen={initScreen ?? ""}
           />
         </div>
       </div>
@@ -136,7 +156,9 @@ function App() {
 }
 
 function getParam(name: string, defaultValue?: string): string | undefined {
-  const value = new URLSearchParams(window.location.search).get(name);
+  const value = new URLSearchParams(
+    window.location.search.replace(/\/+$/, "")
+  ).get(name);
   if (value === null) return defaultValue;
   try {
     return decodeURIComponent(value);

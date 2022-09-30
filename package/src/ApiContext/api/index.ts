@@ -250,6 +250,15 @@ export interface Filters {
   onlyGateways?: string[];
   onlyFiat?: string[];
 }
+
+export interface Transaction {
+  txnAmount?: number;
+  txnFiat?: string;
+  txnCrypto?: string;
+  txnPaymentMethod: string;
+  txnGateway: string;
+}
+
 const filterGatewaysResponse = (
   gatewaysResponse: GatewaysResponse,
   filters?: Filters
@@ -274,7 +283,6 @@ const filterGatewaysResponse = (
 
   const _onlyFiat = onlyFiat?.map((code) => code.toUpperCase());
   const _excludeFiat = excludeFiat?.map((code) => code.toUpperCase());
-
   const filtredGateways = gatewaysResponse.gateways
     .map((gateway) => {
       let cryptosList = gateway.cryptoCurrencies;
@@ -383,12 +391,13 @@ interface SellParams {
 
 const sell = async (
   crypto: string,
+  fiat: string,
   amount: number,
   paymentMethod: string,
   params?: SellParams
 ): Promise<GatewayRate> => {
   const urlParams = createUrlParamsFromObject(params ?? {});
-  const ratesUrl = `${BASE_API}/sell/${crypto}/${paymentMethod}/${amount}?${urlParams}`;
+  const ratesUrl = `${BASE_API}/sell/${crypto}/${fiat}/${paymentMethod}/${amount}?${urlParams}`;
   logRequest(ratesUrl);
   const ratesRes = await fetch(ratesUrl, {
     headers,

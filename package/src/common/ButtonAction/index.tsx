@@ -20,6 +20,7 @@ const ButtonAction: React.FC<ButtonActionType> = (props) => {
 
   return (
     <button
+      data-testid="buy-button"
       onClick={onClick}
       className={`${styles["button-action"]} ${
         size === "small" ? styles["button-action--small"] : ""

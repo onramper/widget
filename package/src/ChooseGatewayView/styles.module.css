@@ -1,6 +1,6 @@
 .body {
-  padding: 0 calc(var(--padding-rl) - 10px)
-    var(--body-space-childs) var(--padding-rl);
+  padding: 0 calc(var(--padding-rl) - 10px) var(--body-space-childs)
+    var(--padding-rl);
   min-width: 320px;
   box-sizing: border-box;
   overflow-y: scroll;
@@ -9,6 +9,7 @@
 .rates-list {
   width: 100%;
   font-size: 1rem;
+  padding-bottom: 50px;
 }
 
 .option-wrapper {
@@ -31,6 +32,8 @@
 
 .option-container-disabled {
   cursor: default;
+  -webkit-filter: grayscale(1);
+  opacity: 0.6;
   flex-wrap: nowrap;
 }
 

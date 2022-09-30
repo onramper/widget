@@ -1,17 +1,28 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import styles from "./styles.module.css";
-import GatewayOption from "./GatewayOption";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { APIContext, GatewayRateOption } from "../ApiContext";
+import { documents } from "../ApiContext/api/constants";
+import { SelectGatewayByType } from "../ApiContext/api/types/gateways";
+import { GtmEvent, GtmEventAction } from "../enums";
+import { useGTMDispatch } from "../hooks/gtm";
+import { getArrOfMinsMaxs } from "../utils";
 import type {
   IGatewayStats,
   IRatesListProps,
 } from "./ChooseGatewayView.models";
-import { APIContext, GatewayRateOption } from "../ApiContext";
-import { documents } from "../ApiContext/api/constants";
-import { getArrOfMinsMaxs } from "../utils";
+import GatewayOption from "./GatewayOption";
+import styles from "./styles.module.css";
 
 const RatesList: React.FC<IRatesListProps> = (props) => {
+  const sendDataToGTM = useGTMDispatch();
   const {
-    collected,
+    collected: {
+      staticRouting,
+      selectedGateway,
+      amountInCrypto,
+      selectGatewayBy,
+      selectedCurrency,
+      selectedCrypto,
+    },
     inputInterface: { handleInputChange },
   } = useContext(APIContext);
   const [sortedAvailableRates, setSortedAvailableRates] = useState<
@@ -19,12 +30,15 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
   >([]);
 
   const getDefaultReceivedCrypto = useCallback(() => {
-    return collected.amountInCrypto
-      ? Number.NEGATIVE_INFINITY
-      : Number.POSITIVE_INFINITY;
-  }, [collected.amountInCrypto]);
+    return amountInCrypto ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+  }, [amountInCrypto]);
 
   const getStats = useCallback(() => {
+    const bestPerformanceGateway = staticRouting?.find(
+      (d) =>
+        d?.fiat === selectedCurrency?.id && d?.crypto === selectedCrypto?.id
+    )?.gateway;
+
     const requiresPaperIdMap = props.availableRates.reduce((acc, rate) => {
       const hasNoId = (rate.requiredKYC ?? []).some((kyc) => {
         if (typeof kyc === "string") {
@@ -46,7 +60,7 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
         name: rate.identifier,
         value: rate.receivedCrypto ?? defaultReceivedCrypto,
       })),
-      collected.amountInCrypto ?? false
+      amountInCrypto ?? false
     );
 
     return props.availableRates.reduce<IGatewayStats>((acc, rate, index) => {
@@ -55,6 +69,7 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
         noId: !requiresPaperIdMap[rate.identifier],
         fast: rate.duration.seconds <= 60 * 10,
         cheapest: cheapest.some((id) => id === rate.identifier),
+        fastest: bestPerformanceGateway === rate.name.toLowerCase(),
       };
       return {
         ...acc,
@@ -65,18 +80,51 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
       };
     }, {});
   }, [
-    collected.amountInCrypto,
+    amountInCrypto,
     getDefaultReceivedCrypto,
     props.availableRates,
+    selectedCrypto?.id,
+    selectedCurrency?.id,
+    staticRouting,
   ]);
 
   const [stats, setStats] = useState(getStats());
 
-  const setSelectedGateway = useCallback(
+  const getSelectionType = useCallback(
+    (gatewayStat: any) => {
+      if (gatewayStat.cheapest && gatewayStat.fastest) {
+        return selectGatewayBy;
+      }
+      return gatewayStat.cheapest
+        ? SelectGatewayByType.Price
+        : gatewayStat.fastest
+        ? SelectGatewayByType.Performance
+        : SelectGatewayByType.NotSuggested;
+    },
+    [selectGatewayBy]
+  );
+
+  const triggerGtm = useCallback(
+    (selectionType: any, gatewayName?: string) => {
+      sendDataToGTM({
+        event: GtmEvent.GATEWAY_SELECTION,
+        category: gatewayName,
+        label: selectionType,
+        action: GtmEventAction.MANUAL_SELECTION,
+      });
+    },
+    [sendDataToGTM]
+  );
+
+  const handleGatewayChange = useCallback(
     (item: GatewayRateOption) => {
       handleInputChange("selectedGateway", item);
+      const gatewayStat = stats[item.name];
+      const selectionType = getSelectionType(gatewayStat);
+      handleInputChange("selectGatewayBy", selectionType);
+      triggerGtm(selectionType, item.name);
     },
-    [handleInputChange]
+    [getSelectionType, handleInputChange, stats, triggerGtm]
   );
 
   useEffect(() => {
@@ -87,17 +135,13 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
         res =
           ((b.receivedCrypto ?? defaultReceivedCrypto) -
             (a.receivedCrypto ?? defaultReceivedCrypto)) *
-          (collected.amountInCrypto ? -1 : 1);
+          (amountInCrypto ? -1 : 1);
       if (res === 0) res = a.duration.seconds - b.duration.seconds;
       return res;
     });
 
     setSortedAvailableRates(sortedItems);
-  }, [
-    collected.amountInCrypto,
-    getDefaultReceivedCrypto,
-    props.availableRates,
-  ]);
+  }, [amountInCrypto, getDefaultReceivedCrypto, props.availableRates]);
 
   useEffect(() => {
     setStats(getStats);
@@ -117,9 +161,9 @@ const RatesList: React.FC<IRatesListProps> = (props) => {
         <GatewayOption
           key={i}
           index={i}
-          isOpen={item.id === collected.selectedGateway?.id}
-          selectedReceivedCrypto={collected.selectedGateway?.receivedCrypto}
-          onClick={() => setSelectedGateway(item)}
+          isOpen={item.id === selectedGateway?.id}
+          selectedReceivedCrypto={selectedGateway?.receivedCrypto}
+          onClick={() => handleGatewayChange(item)}
           stats={stats}
           {...item}
         />

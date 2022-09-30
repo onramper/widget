@@ -39,10 +39,13 @@ import type {
 } from "./api/types/nextStep";
 
 import { NextStepError } from "./api";
-import type { Filters } from "./api";
+import type { Filters, Transaction } from "./api";
 import phoneCodes from "./utils/phoneCodes";
 import i18n from "../i18n/config";
 import { isLanguageSupported, supportedLanguages } from "./utils/languages";
+import { useGTMDispatch } from "../hooks/gtm";
+import { GtmEvent, GtmEventCategory, GtmEventLabel } from "../enums";
+import { useThirdPartyCookieCheck } from "../hooks/cookie-check/useThirdPartyCookieCheck";
 
 const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
@@ -81,6 +84,9 @@ interface APIProviderType {
   recommendedCryptoCurrencies?: string[];
   darkMode?: boolean;
   selectGatewayBy?: string | "price" | "performance";
+  skipTransactionScreen?: boolean;
+  transaction: Transaction;
+  initScreen: string;
 }
 
 /**
@@ -106,7 +112,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const defaultFiatSoft =
     props.defaultFiatSoft?.toUpperCase() || DEFAULT_CURRENCY;
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO;
-
+  const sendDataToGTM = useGTMDispatch();
+  const is3pcCookiesSupported = useThirdPartyCookieCheck();
   const generateInitialCollectedState = useCallback((): CollectedStateType => {
     return {
       ...initialState.collected,
@@ -130,11 +137,16 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         ? arrayUnique(props.recommendedCryptoCurrencies)
         : undefined,
       selectGatewayBy: props.selectGatewayBy,
+      skipTransactionScreen: props.skipTransactionScreen,
+      transaction: props.transaction,
+      initScreen: props.initScreen,
+      defaultCrypto: defaultCrypto,
+      defaultFiat: defaultFiat,
     };
   }, [
+    defaultAmount,
     defaultAddrs,
     isAddressEditable,
-    defaultAmount,
     props.themeColor,
     props.amountInCrypto,
     props.partnerContext,
@@ -145,6 +157,11 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.isAmountEditable,
     props.recommendedCryptoCurrencies,
     props.selectGatewayBy,
+    props.skipTransactionScreen,
+    props.transaction,
+    props.initScreen,
+    defaultCrypto,
+    defaultFiat,
   ]);
 
   const iniState: StateType = {
@@ -202,8 +219,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       );
   }, [lastCall, handleInputChange, state.data.responseRate]);
 
-  /* *********** */
-
   const addData = useCallback(
     (data: any) =>
       dispatch({ type: DataActionsType.AddData, payload: { value: data } }),
@@ -225,6 +240,77 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     });
   }, []);
 
+  const getGatewayStaticRouting = useCallback(
+    async (country: string) => {
+      try {
+        const data = await API.getGatewayStaticRouting(country);
+        updateStaticRouting(data.recommended);
+        return data;
+      } catch (error) {
+        return processErrors({
+          GATEWAYS: {
+            type: "API",
+            message: error.message,
+          },
+        });
+      }
+    },
+    [processErrors, updateStaticRouting]
+  );
+
+  const sendExperimentGtmEvent = useCallback(
+    (category: string) => {
+      sendDataToGTM({
+        event: GtmEvent.EXPERIMENT,
+        category:
+          category === SelectGatewayByType.Price
+            ? GtmEventCategory.CONTROL
+            : GtmEventCategory.VARIANT_A,
+        label: GtmEventLabel.STATIC_ROUTING_EXPERIMENT,
+      });
+    },
+    [sendDataToGTM]
+  );
+
+  useEffect(() => {
+    handleInputChange("is3pcCookiesSupported", is3pcCookiesSupported);
+  }, [handleInputChange, is3pcCookiesSupported]);
+
+  const initiateRouting = useCallback(
+    async (country: string) => {
+      const routingData = await getGatewayStaticRouting(country);
+      if (!props.selectGatewayBy) {
+        // Experimentation - Simplified Approach for static routing
+        if (
+          Object.keys(typeof routingData === "object" && routingData).length >
+            0 &&
+          Date.now() % 10 >= 5
+        ) {
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Performance);
+          sendExperimentGtmEvent(SelectGatewayByType.Performance);
+        } else {
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
+          sendExperimentGtmEvent(SelectGatewayByType.Price);
+        }
+      } else {
+        if (
+          props.selectGatewayBy === SelectGatewayByType.Performance &&
+          Object.keys(typeof routingData === "object" && routingData).length > 0
+        )
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Performance);
+        else {
+          handleInputChange("selectGatewayBy", SelectGatewayByType.Price);
+        }
+      }
+    },
+    [
+      getGatewayStaticRouting,
+      handleInputChange,
+      props.selectGatewayBy,
+      sendExperimentGtmEvent,
+    ]
+  );
+
   const restartWidget = useCallback(() => {
     dispatch({
       type: CollectedActionsType.ResetCollected,
@@ -232,11 +318,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     });
   }, [generateInitialCollectedState]);
 
-  /* *********** */
   const init = useCallback(
     async (country?: string): Promise<ErrorObjectType | undefined | {}> => {
       const actualCountry = props.country || country;
-
       // The language provided explicitly via the '?language=' query parameter.
       let explicitLanguage;
       if (props.language) {
@@ -300,21 +384,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           },
         });
       }
-
-      if (props.selectGatewayBy === SelectGatewayByType.Performance) {
-        try {
-          updateStaticRouting(
-            (await API.getGatewayStaticRouting(widgetsCountry)).recommended
-          );
-        } catch (error) {
-          return processErrors({
-            GATEWAYS: {
-              type: "API",
-              message: error.message,
-            },
-          });
-        }
-      }
+      initiateRouting(widgetsCountry);
 
       const ICONS_MAP = responseGateways.icons || {};
 
@@ -386,17 +456,16 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       });
     },
     [
-      addData,
-      handleInputChange,
-      props.filters,
-      processErrors,
-      clearErrors,
       props.country,
+      props.language,
       props.displayChatBubble,
       props.recommendedCryptoCurrencies,
-      props.language,
-      props.selectGatewayBy,
-      updateStaticRouting,
+      props.filters,
+      handleInputChange,
+      initiateRouting,
+      addData,
+      clearErrors,
+      processErrors,
     ]
   );
 
@@ -416,7 +485,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       if (gateways.length <= 0) return {};
       if (state.data.availableCryptos.length <= 0) return {};
-
       const actualCrypto =
         state.data.availableCryptos.find(
           (cryptoCurrency) => cryptoCurrency.id === _crypto?.id
@@ -436,7 +504,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           filtredGatewaysByCrypto[i].fiatCurrencies
         );
       }
-
       availableCurrencies = arrayObjUnique(availableCurrencies, "id");
       if (availableCurrencies.length <= 0) {
         return processErrors({
@@ -496,7 +563,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       );
       const unPrioritized = availablePaymentMethods.filter(
         (item) => !prioritized.some((defaultItem) => defaultItem === item)
-        );
+      );
       return [...prioritized, ...unPrioritized];
     },
     [defaultPaymentMethod]
@@ -646,7 +713,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   > => {
     // IF RESPONSE IS NOT SET, DON'T DO ANYTHING
     if (!state.data.responseGateways) return;
-
     // IF THE AMOUNT IS NOT SET OR IT'S ===0 THEN NO AVAILABLE RATES
     if (!state.collected.amount || !isFinite(state.collected.amount)) {
       clearErrors();
@@ -705,6 +771,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     } catch (error) {
       if (error.name === "AbortError") return {};
       setLastCall(undefined);
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: "API",
@@ -721,6 +788,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     }
 
     if (!responseRate || responseRate.length <= 0) {
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: "NO_RATES",
@@ -746,7 +814,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     }));
 
     // save to state.date
-    addData({ allRates: mappedAllRates });
+    addData({ allRates: mappedAllRates, isRatesLoaded: true });
 
     // IF THERE ARE NO RATES AVAILABLES THEN REDUCE UNAVAILABLE RATES TO AN ERRORS OBJECT
     const unavailableRates = responseRate.filter((item) => !item.available);
@@ -793,6 +861,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       if (minMaxErrors.MIN) errNAME = "MIN";
       else if (minMaxErrors.MAX) errNAME = "MAX";
       else {
+        addData({ isRateError: true });
         return processErrors({
           RATE: {
             type: "ALL_UNAVAILABLE",
@@ -801,7 +870,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           },
         });
       }
-
+      addData({ isRateError: true });
       return processErrors({
         RATE: {
           type: errNAME,
@@ -1046,7 +1115,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           handlePaymentMethodChange,
           restartWidget,
         },
-        apiInterface: { init, executeStep, getRates, clearErrors },
+        apiInterface: {
+          init,
+          executeStep,
+          getRates,
+          clearErrors,
+        },
       }}
     >
       {props.children}

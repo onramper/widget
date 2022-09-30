@@ -4,6 +4,8 @@ import { PaymentMethodPickerProps } from "./PaymentMethodPicker.models";
 import styles from "./PaymentMethodPicker.module.css";
 import commonStyles from "../../styles.module.css";
 import { useTranslation } from "react-i18next";
+import { genPaymentMethodOptionEvent } from "../../hooks/gtm/buyCryptoViewEvents";
+import { useGTMDispatch } from "../../hooks/gtm";
 
 const Skeleton = React.forwardRef<
   HTMLUListElement,
@@ -63,6 +65,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
 
   const containerRef = useRef<HTMLUListElement>(null);
   const itemsLengthRef = useRef<Number>(items.length);
+  const sendDataToGTM = useGTMDispatch();
 
   const setMaxLength = (value: number) => {
     _setMaxLength(value);
@@ -185,13 +188,18 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
     }
   }, [calculateDistribution, items, maxLength, props.items, props.selectedId]);
 
+  const handleItemClick = (item: ItemType) => {
+    sendDataToGTM(genPaymentMethodOptionEvent(item.id));
+    props.onChange(item);
+  };
+
   if (props.isLoading)
     return <Skeleton style={style} maxLength={maxLength} ref={containerRef} />;
 
   const numChildren = maxLength + (maxLength < props.items.length ? 1 : 0);
 
   return (
-    <>
+    <div data-testid="payment-method-picker">
       <div className={styles.title}>{t("buyCryptoView.paymentMethod")}</div>
 
       <ul
@@ -207,7 +215,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
             className={`${styles["option-wrapper"]} ${
               item.id === props.selectedId ? " " + styles.selected : ""
             }`}
-            onClick={() => props.onChange(item)}
+            onClick={() => handleItemClick(item)}
           >
             {item.icon && (
               <div className={styles["option-logo-wrapper"]}>
@@ -222,7 +230,10 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
           <li
             itemProp="option"
             className={styles["option-wrapper"]}
-            onClick={() => props.openMoreOptions && props.openMoreOptions()}
+            onClick={() => {
+              sendDataToGTM(genPaymentMethodOptionEvent("other"));
+              props.openMoreOptions?.();
+            }}
           >
             <div className={styles["option-logo-wrapper"]}>
               <span>+{props.items.length - maxLength}</span>
@@ -231,7 +242,7 @@ const PaymentMethodPicker: React.FC<PaymentMethodPickerProps> = (
           </li>
         )}
       </ul>
-    </>
+    </div>
   );
 };
 

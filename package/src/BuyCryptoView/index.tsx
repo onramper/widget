@@ -9,7 +9,16 @@ import { APIContext, NextStep } from "../ApiContext";
 import * as API from "../ApiContext/api";
 import TabsHeader from "../common/Header/TabsHeader/TabsHeader";
 import { tabNames } from "./constants";
-import { triggerLandingViewGtmCtfEvent, GtmEventNames } from "../helpers/useGTM";
+import { triggerLandingViewGtmCtfEvent } from "../helpers/useGTM";
+import { GtmEvent } from "../enums";
+import {
+  buyTabClickGtmEvent,
+  sellTabClickGtmEvent,
+  menuBtnClickGtmEvent,
+} from "../hooks/gtm/buyCryptoViewEvents";
+import { useGTMDispatch } from "../hooks/gtm";
+import Menu from "../common/Header/Menu/Menu";
+import tabHeaderClasses from "./../common/Header/TabsHeader/TabsHeader.module.css";
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -19,17 +28,23 @@ const BuyCryptoView: React.FC = () => {
   const { data, inputInterface, collected, apiInterface } =
     useContext(APIContext);
   const [initLoadingFinished, setInitLoadingFinished] = useState(false);
+  const sendDataToGTM = useGTMDispatch();
 
   const { handlePaymentMethodChange } = data;
   const { init } = apiInterface;
-  const { errors } = collected;
-
+  const { errors, initScreen } = collected;
   //flagEffectInit used to call init again
   useEffect(() => {
     init().finally(() => {
       setInitLoadingFinished(true);
     });
   }, [init]);
+
+  useEffect(() => {
+    if (initLoadingFinished && buyStep && initScreen === "sell") {
+      nextScreen(<Step nextStep={buyStep} />);
+    }
+  }, [buyStep, initLoadingFinished, initScreen, nextScreen]);
 
   //listening to errors sent by APIContext
   useEffect(() => {
@@ -60,21 +75,29 @@ const BuyCryptoView: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const nextStep = await API.sell("BTC", 0.1, "blockchain", {
-          amountInCrypto: true,
-          country: collected.selectedCountry,
-        });
-        
-        if (nextStep?.nextStep?.type) {
-          nextStep.nextStep.eventName = GtmEventNames.CryptoToFiat;
-          nextStep.nextStep.eventCategory = nextStep.identifier;
+        if (collected.selectedCountry && collected.defaultCrypto) {
+          const crypto = collected.defaultCrypto ?? "BTC";
+          const fiat = collected.defaultFiat ?? "EUR";
+          const nextStep = await API.sell(crypto, fiat, 0.1, "blockchain", {
+            amountInCrypto: true,
+            country: collected.selectedCountry,
+          });
+
+          if (nextStep?.nextStep?.type) {
+            nextStep.nextStep.eventName = GtmEvent.CRYPTO_TO_FIAT;
+            nextStep.nextStep.eventCategory = nextStep.identifier;
+          }
+          setBuyStep(nextStep.nextStep);
         }
-        setBuyStep(nextStep.nextStep);
       } catch (error) {
         console.error(error);
       }
     })();
-  }, [collected.selectedCountry]);
+  }, [
+    collected.defaultCrypto,
+    collected.defaultFiat,
+    collected.selectedCountry,
+  ]);
 
   return (
     <div className={styles.view}>
@@ -87,11 +110,16 @@ const BuyCryptoView: React.FC = () => {
         tabSelected={0}
         onClickItem={(i: number) => {
           if (i === 0) {
+            sendDataToGTM(buyTabClickGtmEvent);
             return;
           }
-
+          sendDataToGTM(sellTabClickGtmEvent);
           triggerLandingViewGtmCtfEvent(collected, buyStep?.eventCategory);
           nextScreen(<Step nextStep={buyStep} />);
+        }}
+        onMenuClick={() => {
+          sendDataToGTM({ ...menuBtnClickGtmEvent });
+          nextScreen(<Menu className={tabHeaderClasses["tabs-header-menu"]} />);
         }}
       />
       <BodyBuyCrypto

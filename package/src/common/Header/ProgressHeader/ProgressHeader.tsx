@@ -6,12 +6,17 @@ import classes from "./ProgressHeader.module.css";
 import headerClasses from "../Header.module.css";
 import { ReactComponent as IconMenu } from "../../../icons/menu-var-2.svg";
 import { ReactComponent as ArrowLeftIcon } from "../../../icons/arrow-left.svg";
+import { useGTMDispatch } from "../../../hooks/gtm";
+import { menuBtnClickGtmEvent } from "../../../hooks/gtm/buyCryptoViewEvents";
 
 const ProgressHeader: React.FC<ProgressHeaderProps> = (props) => {
+  const sendDataToGTM = useGTMDispatch();
   const { nextScreen, backScreen } = useContext(NavContext);
   const {
-    onMenuClick = () =>
-      nextScreen(<Menu className={headerClasses["header-menu"]} />),
+    onMenuClick = () => {
+      sendDataToGTM({ ...menuBtnClickGtmEvent });
+      nextScreen(<Menu className={headerClasses["header-menu"]} />);
+    },
   } = props;
 
   return (

@@ -17,9 +17,11 @@ export type InputFacadeProps = {
   name: string;
   onIconClick?: (name: string, value: string, label: string) => void;
   error?: string;
+  success?: string;
   hint?: string;
   hintButton?: boolean;
   onHintClick?: () => void;
+  onClick?: () => void;
   clickableIcon?: boolean;
   maxLength?: number;
   info?: string;
