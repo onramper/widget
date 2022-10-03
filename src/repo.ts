@@ -60,7 +60,7 @@ class CurrenciesRepo {
     }
 
     async getCurrenciesByType(typeName:string):CurrenciesOrError{
-        return this.db.getCurrencyForType(typeName);
+        return this.db.getCurrencyForType(typeName.toLowerCase());
     }
 
     cleanId(id:string):string{
