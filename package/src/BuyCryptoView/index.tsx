@@ -43,7 +43,9 @@ const BuyCryptoView: React.FC = () => {
   }, [init]);
 
   useEffect(() => {
-    if (initLoadingFinished && buyStep && initScreen === "sell") {
+    if (initScreen === "swap") {
+      window.location.replace(SWAP_URL);
+    } else if (initLoadingFinished && buyStep && initScreen === "sell") {
       nextScreen(<Step nextStep={buyStep} />);
     }
   }, [buyStep, initLoadingFinished, initScreen, nextScreen]);

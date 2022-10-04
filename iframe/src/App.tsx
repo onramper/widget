@@ -78,7 +78,7 @@ function App() {
   // Google Tag Manager
   useEffect(() => {
     const tagManagerArgs = {
-      gtmId: process.env.REACT_APP_GTM_ID ?? '',
+      gtmId: process.env.REACT_APP_GTM_ID ?? "",
       dataLayer: {
         apiKey: apiKey,
       },
