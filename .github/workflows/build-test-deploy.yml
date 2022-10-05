@@ -90,6 +90,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           domain: ${{ steps.git-branch.outputs.domain }}
           publish_dir: "./iframe/build"
+
   publish:
     needs: [lint-and-build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -110,3 +111,4 @@ jobs:
         run: (cd package && npm publish)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import TagManager from "react-gtm-module";
 import OnramperWidget, { Onramper } from "@onramper/widget";
 
 const com_key = "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00";
@@ -45,6 +46,7 @@ const redirectURL = getParam("redirectURL", undefined);
 const minAmountEur = Number(getParam("minAmountEur", "0"));
 const supportSell = getParam("supportSell", "true") === "true";
 const supportBuy = getParam("supportBuy", "true") === "true";
+const supportSwap = getParam("supportSwap", "true") === "true";
 const isAmountEditable = getParam("isAmountEditable", "true") === "true";
 const recommendedCryptoCurrencies = getArrayParam(
   "recommendedCryptoCurrencies"
@@ -72,6 +74,17 @@ function App() {
     height: "100%",
     backgroundColor: inIframe() ? "transparent" : "whitesmoke",
   } as React.CSSProperties;
+
+  // Google Tag Manager
+  useEffect(() => {
+    const tagManagerArgs = {
+      gtmId: process.env.REACT_APP_GTM_ID ?? "",
+      dataLayer: {
+        apiKey: apiKey,
+      },
+    };
+    TagManager.initialize(tagManagerArgs);
+  }, []);
 
   return (
     <>
@@ -119,6 +132,7 @@ function App() {
             redirectURL={redirectURL}
             minAmountEur={minAmountEur}
             supportSell={supportSell}
+            supportSwap={supportSwap}
             supportBuy={supportBuy}
             isAmountEditable={isAmountEditable}
             recommendedCryptoCurrencies={recommendedCryptoCurrencies}

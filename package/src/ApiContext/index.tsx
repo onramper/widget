@@ -38,7 +38,6 @@ import type {
   InfoDepositBankAccount,
 } from "./api/types/nextStep";
 
-
 import { NextStepError } from "./api";
 import type { Filters, Transaction } from "./api";
 import phoneCodes from "./utils/phoneCodes";
@@ -80,6 +79,7 @@ interface APIProviderType {
   redirectURL?: string;
   minAmountEur?: number;
   supportSell: boolean;
+  supportSwap: boolean;
   supportBuy: boolean;
   isAmountEditable?: boolean;
   recommendedCryptoCurrencies?: string[];
@@ -131,6 +131,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       redirectURL: props.redirectURL,
       minAmountEur: props.minAmountEur,
       supportSell: props.supportSell,
+      supportSwap: props.supportSwap,
       supportBuy: props.supportBuy,
       isAmountEditable:
         props.isAmountEditable ?? initialState.collected.isAmountEditable,
@@ -141,6 +142,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       skipTransactionScreen: props.skipTransactionScreen,
       transaction: props.transaction,
       initScreen: props.initScreen,
+      defaultCrypto: defaultCrypto,
+      defaultFiat: defaultFiat,
     };
   }, [
     defaultAmount,
@@ -152,6 +155,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.redirectURL,
     props.minAmountEur,
     props.supportSell,
+    props.supportSwap,
     props.supportBuy,
     props.isAmountEditable,
     props.recommendedCryptoCurrencies,
@@ -159,6 +163,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.skipTransactionScreen,
     props.transaction,
     props.initScreen,
+    defaultCrypto,
+    defaultFiat,
   ]);
 
   const iniState: StateType = {

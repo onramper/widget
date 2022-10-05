@@ -47,6 +47,13 @@ export const sellTabClickGtmEvent = {
   label: GtmEventLabel.SELL,
 };
 
+export const swapTabClickGtmEvent = {
+  event: GtmEvent.ELEMENT_CLICK,
+  action: GtmEventAction.TRANSACTION_FORM,
+  category: GtmEventCategory.TAB,
+  label: GtmEventLabel.SWAP,
+};
+
 export const menuBtnClickGtmEvent = {
   event: GtmEvent.ELEMENT_CLICK,
   action: GtmEventAction.TRANSACTION_FORM,

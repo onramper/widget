@@ -54,6 +54,7 @@ export enum GtmEventLabel {
   OUT_CURRENCY = "outCurrency",
   BUY = "buy",
   SELL = "sell",
+  SWAP = "swap",
   MENU = "menu",
   AMOUNT = "amount",
   MENU_CLOSE = "menuClose",
