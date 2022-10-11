@@ -40,6 +40,7 @@ $ npm config set "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}"
 4. Build the project
 
 ```shell
+$ npm install
 $ npm run build
 ```
 
