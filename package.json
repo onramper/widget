@@ -15,7 +15,7 @@
     "crypto",
     "onramper"
   ],
-  "author": "Sadath Iqbal <sadath@onramper.com>",
+  "author": "Sadath Iqbal<sadath@onramper.com>",
   "license": "UNLICENSED",
   "devDependencies": {    
     "@types/aws-lambda": "^8.10.101",
