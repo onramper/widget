@@ -47,7 +47,6 @@ import { useGTMDispatch } from "../hooks/gtm";
 import { GtmEvent, GtmEventCategory, GtmEventLabel } from "../enums";
 import { useThirdPartyCookieCheck } from "../hooks/cookie-check/useThirdPartyCookieCheck";
 
-const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
 const DEFAULT_CRYPTO = "BTC";
 export const DEFAULT_COUNTRY = "US";
@@ -677,10 +676,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       state.data.availableCurrencies,
       state.data.responseGateways,
       state.collected.selectedCurrency,
-      defaultAmount,
       defaultFiat,
       defaultFiatSoft,
-      props.amountInCrypto,
       withSortedByDefaultPaymentMethods,
     ]
   );
