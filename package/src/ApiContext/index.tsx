@@ -608,18 +608,18 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         ) ||
         state.data.availableCurrencies[0];
 
-      if (!state.collected.selectedCurrency) {
-        let calculatedDefaultAmount = defaultAmount;
-        if (!props.amountInCrypto) {
-          const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
-          const defaultLocalCurrencyAmount =
-            DEFAULT_AMOUNTS_MAP[actualCurrency.id] ?? 200;
-          calculatedDefaultAmount =
-            (defaultLocalCurrencyAmount * defaultAmount) /
-            BASE_DEFAULT_AMOUNT_IN_USD;
-        }
-        handleInputChange("amount", calculatedDefaultAmount);
-      }
+      // if (!state.collected.selectedCurrency) {
+      //   let calculatedDefaultAmount = defaultAmount;
+      //   if (!props.amountInCrypto) {
+      //     const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
+      //     const defaultLocalCurrencyAmount =
+      //       DEFAULT_AMOUNTS_MAP[actualCurrency.id] ?? 200;
+      //     calculatedDefaultAmount =
+      //       (defaultLocalCurrencyAmount * defaultAmount) /
+      //       BASE_DEFAULT_AMOUNT_IN_USD;
+      //   }
+      //   handleInputChange("amount", calculatedDefaultAmount);
+      // }
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) =>
@@ -722,7 +722,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       addData({ allRates: [] });
       return;
     }
-
     // CHECK IF REQUEST PARAMETERS ARE SET
     const actualAmount = state.collected.amount;
     const inCurrency = state.collected.selectedCurrency?.id;
