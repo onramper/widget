@@ -47,7 +47,6 @@ import { useGTMDispatch } from "../hooks/gtm";
 import { GtmEvent, GtmEventCategory, GtmEventLabel } from "../enums";
 import { useThirdPartyCookieCheck } from "../hooks/cookie-check/useThirdPartyCookieCheck";
 
-const BASE_DEFAULT_AMOUNT_IN_USD = 100;
 const DEFAULT_CURRENCY = "USD";
 const DEFAULT_CRYPTO = "BTC";
 export const DEFAULT_COUNTRY = "US";
@@ -608,18 +607,18 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         ) ||
         state.data.availableCurrencies[0];
 
-      if (!state.collected.selectedCurrency) {
-        let calculatedDefaultAmount = defaultAmount;
-        if (!props.amountInCrypto) {
-          const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
-          const defaultLocalCurrencyAmount =
-            DEFAULT_AMOUNTS_MAP[actualCurrency.id] ?? 200;
-          calculatedDefaultAmount =
-            (defaultLocalCurrencyAmount * defaultAmount) /
-            BASE_DEFAULT_AMOUNT_IN_USD;
-        }
-        handleInputChange("amount", calculatedDefaultAmount);
-      }
+      // if (!state.collected.selectedCurrency) {
+      //   let calculatedDefaultAmount = defaultAmount;
+      //   if (!props.amountInCrypto) {
+      //     const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
+      //     const defaultLocalCurrencyAmount =
+      //       DEFAULT_AMOUNTS_MAP[actualCurrency.id] ?? 200;
+      //     calculatedDefaultAmount =
+      //       (defaultLocalCurrencyAmount * defaultAmount) /
+      //       BASE_DEFAULT_AMOUNT_IN_USD;
+      //   }
+      //   handleInputChange("amount", calculatedDefaultAmount);
+      // }
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) =>
@@ -677,10 +676,8 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       state.data.availableCurrencies,
       state.data.responseGateways,
       state.collected.selectedCurrency,
-      defaultAmount,
       defaultFiat,
       defaultFiatSoft,
-      props.amountInCrypto,
       withSortedByDefaultPaymentMethods,
     ]
   );
@@ -722,7 +719,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       addData({ allRates: [] });
       return;
     }
-
     // CHECK IF REQUEST PARAMETERS ARE SET
     const actualAmount = state.collected.amount;
     const inCurrency = state.collected.selectedCurrency?.id;
