@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "build:local": "tsc --project ./src && copyfiles package.json .npmrc dist && cd dist && npm install --omit=dev",
     "build": "tsc --project ./src",    
     "pack": "powershell Compress-Archive -Force ./dist/** ./deploy.zip",
     "local": "sam local start-api"
