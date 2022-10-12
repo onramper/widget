@@ -84,6 +84,7 @@ Email: <your onramper email address>
 3. Install dependencies. Execute the following from the root folder of your project.
 ```shell
 $ npm install  
+& npm run build:local
 ```
 
 If you wish to debug the application locally, use -
