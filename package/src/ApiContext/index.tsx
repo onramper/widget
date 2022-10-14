@@ -143,6 +143,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       initScreen: props.initScreen,
       defaultCrypto: defaultCrypto,
       defaultFiat: defaultFiat,
+      apiKey: API_KEY,
     };
   }, [
     defaultAmount,
@@ -164,6 +165,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.initScreen,
     defaultCrypto,
     defaultFiat,
+    API_KEY,
   ]);
 
   const iniState: StateType = {
@@ -620,6 +622,16 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       //   handleInputChange("amount", calculatedDefaultAmount);
       // }
 
+      // if (!state.collected.selectedCurrency) {
+      //   console.log(defaultAmount);
+      //   const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
+      //   const countryDefaultAmount = DEFAULT_AMOUNTS_MAP[actualCurrency.id];
+      //   handleInputChange(
+      //     "amount",
+      //     defaultAmount === 200 ? countryDefaultAmount : defaultAmount
+      //   );
+      // }
+
       // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) =>
         item.fiatCurrencies.some(
@@ -669,16 +681,16 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       });
     },
     [
-      processErrors,
-      handleInputChange,
-      addData,
+      state.collected.selectedCurrency,
+      state.data.responseGateways,
       state.data.filtredGatewaysByCrypto,
       state.data.availableCurrencies,
-      state.data.responseGateways,
-      state.collected.selectedCurrency,
       defaultFiat,
-      defaultFiatSoft,
       withSortedByDefaultPaymentMethods,
+      handleInputChange,
+      addData,
+      defaultFiatSoft,
+      processErrors,
     ]
   );
 

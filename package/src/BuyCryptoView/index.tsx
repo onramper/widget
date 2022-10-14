@@ -34,7 +34,9 @@ const BuyCryptoView: React.FC = () => {
 
   const { handlePaymentMethodChange } = data;
   const { init } = apiInterface;
-  const { errors, initScreen } = collected;
+  const { errors, initScreen, apiKey } = collected;
+
+  console.log(apiKey);
   //flagEffectInit used to call init again
   useEffect(() => {
     init().finally(() => {
@@ -44,11 +46,11 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     if (initScreen === "swap") {
-      window.location.replace(SWAP_URL);
+      window.location.replace(`${SWAP_URL}?apiKey=${apiKey}`);
     } else if (initLoadingFinished && buyStep && initScreen === "sell") {
       nextScreen(<Step nextStep={buyStep} />);
     }
-  }, [buyStep, initLoadingFinished, initScreen, nextScreen]);
+  }, [apiKey, buyStep, initLoadingFinished, initScreen, nextScreen]);
 
   //listening to errors sent by APIContext
   useEffect(() => {
@@ -117,10 +119,10 @@ const BuyCryptoView: React.FC = () => {
       } else if (label?.includes("swap")) {
         //swp tab click
         sendDataToGTM(swapTabClickGtmEvent);
-        window.location.replace(SWAP_URL);
+        window.location.replace(`${SWAP_URL}?apiKey=${apiKey}`);
       }
     },
-    [buyStep, collected, nextScreen, sendDataToGTM]
+    [apiKey, buyStep, collected, nextScreen, sendDataToGTM]
   );
 
   const getAvailableTabs = useCallback(() => {
