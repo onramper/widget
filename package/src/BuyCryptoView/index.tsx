@@ -36,7 +36,6 @@ const BuyCryptoView: React.FC = () => {
   const { init } = apiInterface;
   const { errors, initScreen, apiKey } = collected;
 
-  console.log(apiKey);
   //flagEffectInit used to call init again
   useEffect(() => {
     init().finally(() => {
