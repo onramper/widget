@@ -34,8 +34,7 @@ const BuyCryptoView: React.FC = () => {
 
   const { handlePaymentMethodChange } = data;
   const { init } = apiInterface;
-  const { errors, initScreen, apiKey } = collected;
-
+  const { errors, initScreen } = collected;
   //flagEffectInit used to call init again
   useEffect(() => {
     init().finally(() => {
@@ -45,11 +44,11 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     if (initScreen === "swap") {
-      window.location.replace(`${SWAP_URL}?apiKey=${apiKey}`);
+      window.location.replace(SWAP_URL);
     } else if (initLoadingFinished && buyStep && initScreen === "sell") {
       nextScreen(<Step nextStep={buyStep} />);
     }
-  }, [apiKey, buyStep, initLoadingFinished, initScreen, nextScreen]);
+  }, [buyStep, initLoadingFinished, initScreen, nextScreen]);
 
   //listening to errors sent by APIContext
   useEffect(() => {

@@ -144,7 +144,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       initScreen: props.initScreen,
       defaultCrypto: defaultCrypto,
       defaultFiat: defaultFiat,
-      apiKey: API_KEY,
     };
   }, [
     defaultAddrs,
@@ -165,7 +164,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.initScreen,
     defaultCrypto,
     defaultFiat,
-    API_KEY,
   ]);
 
   const iniState: StateType = {
