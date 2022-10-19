@@ -103,7 +103,7 @@ function updateLanguageIfRequired(language: string) {
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
   const {
-    defaultAmount,
+    defaultAmount = 0,
     defaultAddrs = {},
     API_KEY,
     isAddressEditable = true,
