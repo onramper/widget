@@ -67,6 +67,7 @@ Onramper.on(Onramper.EVENTS.ALL, (context) => {
   window.parent.postMessage(context, "*"); //  `*` on any domain
 });
 
+localStorage.setItem("urlsss", window.location.search);
 function App() {
   const style = {
     display: "flex",
