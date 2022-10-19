@@ -18,7 +18,7 @@ const defaultApiKey =
 const apiKey = getParam("apiKey", defaultApiKey);
 const defaultColor = `#${getParam("color", "0316C1")}`;
 const fontFamily = getParam("fontFamily", "'Inter', sans-serif");
-const defaultAmount = Number(getParam("defaultAmount", "200"));
+const defaultAmount = Number(getParam("defaultAmount", "0"));
 const defaultCrypto = getParam("defaultCrypto", "BTC");
 const defaultFiat = getParam("defaultFiat");
 const defaultFiatSoft = getParam("defaultFiatSoft");
@@ -67,7 +67,6 @@ Onramper.on(Onramper.EVENTS.ALL, (context) => {
   window.parent.postMessage(context, "*"); //  `*` on any domain
 });
 
-localStorage.setItem("params", window.location.search);
 function App() {
   const style = {
     display: "flex",

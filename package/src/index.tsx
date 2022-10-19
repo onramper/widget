@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import ErrorView from "./common/ErrorView";
 import styles from "./styles.module.css";
@@ -43,6 +43,10 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     gtmId: GTM_ID,
     dataLayer: { apiKey: props.API_KEY, clientId: Cookies.get("_ga") },
   };
+
+  useEffect(() => {
+    localStorage.setItem("params", window.location.search);
+  }, []);
 
   return (
     <div

@@ -46,6 +46,7 @@ import { isLanguageSupported, supportedLanguages } from "./utils/languages";
 import { useGTMDispatch } from "../hooks/gtm";
 import { GtmEvent, GtmEventCategory, GtmEventLabel } from "../enums";
 import { useThirdPartyCookieCheck } from "../hooks/cookie-check/useThirdPartyCookieCheck";
+import { DEFAULT_CURRENCY_AMOUNT } from "./api/constants";
 
 const DEFAULT_CURRENCY = "USD";
 const DEFAULT_CRYPTO = "BTC";
@@ -102,7 +103,7 @@ function updateLanguageIfRequired(language: string) {
 
 const APIProvider: React.FC<APIProviderType> = (props) => {
   const {
-    defaultAmount = 100,
+    defaultAmount,
     defaultAddrs = {},
     API_KEY,
     isAddressEditable = true,
@@ -117,7 +118,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const generateInitialCollectedState = useCallback((): CollectedStateType => {
     return {
       ...initialState.collected,
-      amount: defaultAmount < 0 ? initialState.collected.amount : defaultAmount,
+      amount: 0,
       defaultAddrs: Object.entries(defaultAddrs).reduce(
         (acc, [key, value]) => ({ ...acc, [key.toUpperCase()]: value }),
         {}
@@ -145,7 +146,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       defaultFiat: defaultFiat,
     };
   }, [
-    defaultAmount,
     defaultAddrs,
     isAddressEditable,
     props.themeColor,
@@ -607,28 +607,18 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         ) ||
         state.data.availableCurrencies[0];
 
-      // if (!state.collected.selectedCurrency) {
-      //   let calculatedDefaultAmount = defaultAmount;
-      //   if (!props.amountInCrypto) {
-      //     const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
-      //     const defaultLocalCurrencyAmount =
-      //       DEFAULT_AMOUNTS_MAP[actualCurrency.id] ?? 200;
-      //     calculatedDefaultAmount =
-      //       (defaultLocalCurrencyAmount * defaultAmount) /
-      //       BASE_DEFAULT_AMOUNT_IN_USD;
-      //   }
-      //   handleInputChange("amount", calculatedDefaultAmount);
-      // }
-
-      // if (!state.collected.selectedCurrency) {
-      //   console.log(defaultAmount);
-      //   const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
-      //   const countryDefaultAmount = DEFAULT_AMOUNTS_MAP[actualCurrency.id];
-      //   handleInputChange(
-      //     "amount",
-      //     defaultAmount === 200 ? countryDefaultAmount : defaultAmount
-      //   );
-      // }
+      if (!state.collected.selectedCurrency) {
+        const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
+        const countryDefaultAmount = DEFAULT_AMOUNTS_MAP[actualCurrency.id];
+        handleInputChange(
+          "amount",
+          defaultAmount === 0 && countryDefaultAmount
+            ? countryDefaultAmount
+            : defaultAmount === 0
+            ? DEFAULT_CURRENCY_AMOUNT
+            : defaultAmount
+        );
+      }
 
       // FILTER POSIBLE GATEWAYS BY SELECTED CURRENCY
       const filtredGatewaysByCurrency = filtredGatewaysByCrypto.filter((item) =>
@@ -688,6 +678,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       handleInputChange,
       addData,
       defaultFiatSoft,
+      defaultAmount,
       processErrors,
     ]
   );
