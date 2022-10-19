@@ -607,7 +607,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         ) ||
         state.data.availableCurrencies[0];
 
-      if (!state.collected.selectedCurrency) {
+      if (state.collected.selectedCurrency) {
         const DEFAULT_AMOUNTS_MAP = responseGateways.defaultAmounts ?? {};
         const countryDefaultAmount = DEFAULT_AMOUNTS_MAP[actualCurrency.id];
         handleInputChange(
