@@ -38,3 +38,4 @@ export const GTM_ID =
   process.env.STAGE === "prod" ? "GTM-MKWPFXR" : "GTM-W8KDKZR";
 
 export const DEFAULT_GTM_DATA_LAYER = "dataLayer";
+export const DEFAULT_CURRENCY_AMOUNT = 200;
