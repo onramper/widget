@@ -55,9 +55,10 @@ $ npm run build
 5. Add the following environment variables
 
 ```shell
-CURRENCIES_API_TABLE_NAME = <Name of DynamoDB table>
-CURRENCIES_API_AWS_REGION = <The region the table is located in>
-CURRENCIES_API_AWS_ENDPOINT_URL = (*optional*) <The endpoint URL if needed>
+DB_HOST = < host address of the Aurora RDS cluster >
+DB_PORT = < port name that the cluster is listening on >
+DB_USER = < postgres instance user's username >
+DB_PASSWORD = < postgres instance user's password >
 ```
 
 # Development
