@@ -1,6 +1,6 @@
 {
   "name": "@onramper/widget",
-  "version": "2.2.23",
+  "version": "2.2.24",
   "engines": {
     "node": ">=16.0.0"
   },
