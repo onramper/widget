@@ -15,7 +15,7 @@ https://www.notion.so/onramper/Currencies-API-945773d7db3e4e4183f7d8322045f0f3
 The API requires ***server-currencies-db*** for data persistance. 
 
 #### Database
-- Type                - AWS DynamoDb Table
+- Type                - Aurora RSD Postgres (Serverless 2)
 - Schema Repository   - <insert database schema repo server-currencies-db> 
 
 # Deployment
