@@ -21,6 +21,7 @@ import { useGTMDispatch } from "../hooks/gtm";
 import Menu from "../common/Header/Menu/Menu";
 import tabHeaderClasses from "./../common/Header/TabsHeader/TabsHeader.module.css";
 import { SWAP_URL } from "../ApiContext/api/constants";
+import BodyLoading from "../steps/WaitView/BodyLoading";
 
 const BuyCryptoView: React.FC = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -113,7 +114,7 @@ const BuyCryptoView: React.FC = () => {
         //sell tab click
         sendDataToGTM(sellTabClickGtmEvent);
         triggerLandingViewGtmCtfEvent(collected, buyStep?.eventCategory);
-        nextScreen(<Step nextStep={buyStep} />);
+        buyStep && nextScreen(<Step nextStep={buyStep} />);
       } else if (label?.includes("swap")) {
         //swp tab click
         sendDataToGTM(swapTabClickGtmEvent);
