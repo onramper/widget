@@ -1,70 +1,77 @@
-import { Currency, AppDatabase, CurrenciesOrError, CurrencyOrError, CurrencyNotFoundError } from "./core";
-import { CoreError } from "@onramper/ramp-core/errors";
+import { CoreError } from '@onramper/ramp-core/errors';
 
-
-export { CurrenciesRepo };
-
+import {
+  Currency,
+  AppDatabase,
+  CurrenciesOrError,
+  CurrencyNotFoundError,
+  CurrenciesQueryParams,
+} from './core';
 
 // APPLICATION REPOSITORY IMPLEMENTATION
 class CurrenciesRepo {
+  private db: AppDatabase;
 
-    private db: AppDatabase;
+  constructor(db: AppDatabase) {
+    this.db = db;
+  }
 
-    constructor(db: AppDatabase) {
-        this.db = db;
+  async getAllCurrencies(params: CurrenciesQueryParams): CurrenciesOrError {
+    const results = await this.db.getCurrenciesInfo(params);
+
+    if (results instanceof CoreError) return results;
+
+    return results.map((element: any) => {
+      return new Currency(
+        element.currencyindexid,
+        element.currencyid,
+        element.name,
+        element.type,
+        element.symbol,
+        element.network
+      );
+    });
+  }
+
+  async getCurrency(currencyId: string): CurrenciesOrError {
+    const currency = await this.db.getCurrencyForId(currencyId);
+
+    if (currency instanceof CoreError) {
+      return currency;
     }
 
-    async getAllCurrencies(countryId?:string): CurrenciesOrError {
-        
-        let results;
-
-        if(countryId){           
-            
-            results = await this.db.getCurrenciesForCountry(countryId);            
-            
-        }else{      
-
-            results = await this.db.getAllCurrencies();
-
-        }
-
-        if(results instanceof CoreError)
-            return results;
-
-        // Send the data to the heap
-        return results.map((element:any) => {
-            return new Currency(element.Id, element.Name, element.Type,element.Symbol, element.Networks);
-        });
+    if (!currency || currency.length === 0) {
+      return new CurrencyNotFoundError(currencyId);
     }
 
-    async getCurrency(currencyId: string): CurrencyOrError {
-        let currency = await this.db.getCurrencyForId(currencyId);
-        
-        if(currency instanceof CoreError){
-            return currency;
-        }
+    const results = currency.map((currencyItem: any) => {
+      return new Currency(
+        currencyItem.currencyindexid,
+        currencyItem.currencyid,
+        currencyItem.name,
+        currencyItem.type,
+        currencyItem.symbol,
+        currencyItem.network
+      );
+    });
 
-        if(!currency){
-            return new CurrencyNotFoundError(currencyId);
-        }
-        
-        return new Currency(this.cleanId(currency.Id.toString()), currency.Name, currency.Symbol, currency.Type, currency.Networks);
-    }
+    return results;
+  }
 
-    async getFiatCurrencies(): CurrenciesOrError {
-        return this.db.getCurrencyForType('fiat');
-    }
+  async getAllCurrencyTypes() {
+    const results = await this.db.getCurrrencyTypes();
+    return results;
+  }
 
-    async getCryptoCurrencies(): CurrenciesOrError {
-        return this.db.getCurrencyForType('crypto');
-    }
+  async getAllCurrencyNetworks() {
+    const results = await this.db.getAllNetworks();
+    return results;
+  }
 
-    async getCurrenciesByType(typeName:string):CurrenciesOrError{
-        return this.db.getCurrencyForType(typeName.toLowerCase());
-    }
-
-    cleanId(id:string):string{
-        return id.slice(id.length-3);
-    }
+  async getAllCurrencyPaymentTypes() {
+    const results = await this.db.getAllPaymentTypes();
+    return results;
+  }
 }
 
+export { CurrenciesRepo };

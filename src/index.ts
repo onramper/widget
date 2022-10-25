@@ -1,130 +1,153 @@
-import { 
-    APIGatewayProxyResultV2, 
-    APIGatewayProxyEventV2, 
-    APIGatewayEventRequestContextV2, 
-    SQSEvent 
-} from 'aws-lambda';
-
+import { APIGatewayProxyResultV2, APIGatewayProxyEventV2 } from 'aws-lambda';
+import { CoreError } from '@onramper/ramp-core/errors';
+import { CoreHttpResponse, HttpResponse } from '@onramper/ramp-core/http';
+import { env } from 'process';
 import serviceConfig from './service.config.json';
-import { CoreError } from '@onramper/ramp-core/errors'
-import { CoreHttpResponse, HttpResponse } from "@onramper/ramp-core/http";
-import { ServiceDatabase } from './data';
-import { CurrenciesRepo } from "./repo";
-import { env } from "process";
-import { getAllCurrencies, getCurrency, getCurrenciesForType } from "./app";
+import AuroraPostgresDatabase from './data';
 
+import { CurrenciesRepo } from './repo';
+import {
+  getAllCurrencies,
+  getCurrency,
+  getAllCurrencyTypes,
+  getAllCurrencyNetworks,
+  getAllCurrencyPaymentTypes,
+} from './app';
+import { AppDatabase, ErrorCodes } from './core';
 
 // API CALLS
 // -- Application Gateway V2 calls. When V3 comes we will change here.
 export const handler = async (
-    event: APIGatewayProxyEventV2,
-    context: APIGatewayEventRequestContextV2)
+  event: APIGatewayProxyEventV2
+): Promise<APIGatewayProxyResultV2> => {
+  // CHECK SERVICE GUARDS BEFORE PROCEEDING
+  // -- Service guards are specified in service.config.json from the lambda's config layer
+  if (serviceConfig.IsServiceDisabled) {
+    return HttpResponse.ServerUnavailable([]);
+  }
 
-    : Promise<APIGatewayProxyResultV2> => {
+  // CHECK ENVIRONMENT FOR ERRORS BEFORE PROCEEDING
+  // -- checking environment variables
+  const envErrors: CoreError[] = checkForEnvironmentErrors();
+  if (envErrors.length > 0) {
+    return HttpResponse.InternalServerError(envErrors);
+  }
 
-    // CHECK SERVICE GUARDS BEFORE PROCEEDING
-    // -- Service guards are specified in service.config.json from the lambda's config layer
-    if (serviceConfig.IsServiceDisabled) {
-        return HttpResponse.ServerUnavailable([]);
-    }
+  // INITIALIZE APPLICATION
+  // -- Create repository instance with parameters from the environment. Because of the 'checkForEnvironmentErrors()'
+  // -- we are certain these parameters are not null or empty.
 
-    // CHECK ENVIRONMENT FOR ERRORS BEFORE PROCEEDING
-    // -- We check all configurations, and if they are invalid an array of CoreErrors are returned.
-    let envErrors = checkForEnvironmentErrors();
-    if (envErrors.length > 0) {
-        return HttpResponse.InternalServerError(envErrors);
-    }
+  let repository: CurrenciesRepo;
 
-    // INITIALIZE APPLICATION
-    // -- Create repository instance with parameters from the environment. Because of the 'CHECK SERVICE CONFIGURATIONS'
-    // -- we are certain these parameters are not null or empty.
+  try {
+    const database: AppDatabase = new AuroraPostgresDatabase(
+      env.DB_HOST!,
+      Number.parseInt(env.DB_PORT!, 10),
+      env.DB_NAME!,
+      env.DB_USER!,
+      env.DB_PASSWORD!
+    );
+    repository = new CurrenciesRepo(database);
+  } catch (error) {
+    return HttpResponse.InternalServerError([
+      {
+        errorId: ErrorCodes.OtherDatabaseError,
+        message: `Could not access the database. ERROR:: ${error}`,
+      },
+    ]);
+  }
 
-    let repository: CurrenciesRepo;
+  // EXECUTE REQUEST
+  // -- Holds the final response from this application.
+  let response: CoreHttpResponse;
+  // -- Routing based on APIGatewayProxyEventV2.routeKey
 
-    try {
-        repository = new CurrenciesRepo(
-            new ServiceDatabase(
-                // -- CURRENCIES_API_TABLE_NAME and CURRENCIES_API_AWS_REGION have already been validated
-                //    in checkForEnvironmentErrors() above
-                env.CURRENCIES_API_TABLE_NAME!,
-                env.CURRENCIES_API_AWS_REGION!,
-                // -- Because CURRENCIES_API_AWS_ENDPOINT_URL has not been validated yet.
-                env.CURRENCIES_API_AWS_ENDPOINT_URL ? env.CURRENCIES_API_AWS_ENDPOINT_URL : undefined
-            )
-        );
-    } catch (error) {
-        return HttpResponse.InternalServerError(
-            [
-                {
-                    errorId: 1004,
-                    message: "Could not access the database. ERROR:: " + error
-                }
-            ]
-        );
-    }
+  switch (event.routeKey) {
+    case `GET ${serviceConfig.ApiUrlRoot}`:
+      response = await getAllCurrencies(repository, {
+        country: event.queryStringParameters?.country?.split(',')[0],
+        pay: event.queryStringParameters?.pay?.split(','),
+        network: event.queryStringParameters?.network?.split(','),
+        type: event.queryStringParameters?.type?.split(','),
+        participation: event.queryStringParameters?.participation?.split(','),
+        onramp: event.queryStringParameters?.onramp?.split(','),
+      });
+      break;
+    case `GET ${serviceConfig.ApiUrlRoot}/types`:
+      response = await getAllCurrencyTypes(repository);
+      break;
+    case `GET ${serviceConfig.ApiUrlRoot}/networks`:
+      response = await getAllCurrencyNetworks(repository);
+      break;
+    case `GET ${serviceConfig.ApiUrlRoot}/payment-types`:
+      response = await getAllCurrencyPaymentTypes(repository);
+      break;
+    case `GET ${serviceConfig.ApiUrlRoot}/{currencyId}`:
+      response = await getCurrency(
+        repository,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+        event.pathParameters?.currencyId!
+      );
+      break;
+    default:
+      response = HttpResponse.BadRequest([]);
+  }
 
-    // EXECUTE REQUEST
-    // -- Holds the final response from this application.
-    let response: CoreHttpResponse;
-    // -- Routing based on APIGatewayProxyEventV2.routeKey
-
-    switch (event.routeKey) {
-        case `GET ${serviceConfig.ApiUrlRoot}`:
-            response = await getAllCurrencies(repository, { countryId: event.queryStringParameters?.country });
-            break;
-        case `GET ${serviceConfig.ApiUrlRoot}/types`:
-            response = await getCurrenciesForType(repository, "");
-            break;
-        case `GET ${serviceConfig.ApiUrlRoot}/types/{typeName}`:
-            response = await getCurrenciesForType(repository, event.pathParameters?.typeName!);
-            break;
-        case `GET ${serviceConfig.ApiUrlRoot}/{currencyId}`:
-            response = await getCurrency(repository, event.pathParameters?.currencyId!);
-            break;
-        default:
-            response = HttpResponse.BadRequest([]);
-    }
-
-    // Convert the internal CoreHttpResponse object to a native resonse object for the infrastructure.
-    return dispatch(response);
-}
-
-// SYSTEM EVENTS
-// -- Implementation for Onrampers SQS service
-export const msgHandler = async (event: SQSEvent) => {
-
-    // TODO [ high ]: Integration code goes here ...
-
-}
+  // Convert the internal CoreHttpResponse object to a native resonse object for the infrastructure.
+  return dispatch(response);
+};
 
 function checkForEnvironmentErrors(): CoreError[] {
+  const errors: CoreError[] = [];
 
-    let errors: CoreError[] = [];
+  // -- Verify minimum environment variables set.
+  if (!process.env.DB_HOST) {
+    errors.push({
+      errorId: ErrorCodes.EnvVarsError,
+      message: `ENV ERROR: The database host name is not set as an environment variable. Set "DB_HOST" to the host address of the database.`,
+    });
+  }
 
-    // -- Verify minimum environment variables set.
-    if (!process.env.CURRENCIES_API_TABLE_NAME) {
-        errors.push({
-            errorId: 1002,
-            message: `The datasource table name in the environment, is not set. 
-                      Please set environment variable "CURRENCIES_API_TABLE_NAME" to a valid table.`
-        });
-    }
+  if (!process.env.DB_PORT) {
+    errors.push({
+      errorId: ErrorCodes.EnvVarsError,
+      message: `ENV ERROR: The database port is not set as an environment variable. Set "DB_PORT" to the port number the database is listening.`,
+    });
+  } else if (Number.isNaN(Number.parseInt(process.env.DB_PORT, 10))) {
+    errors.push({
+      errorId: ErrorCodes.InvalidPortNumber,
+      message: `ENV ERROR: Database port number is not a number. Set environment variable "DB_PORT" to a port number.`,
+    });
+  }
 
-    if (!process.env.CURRENCIES_API_AWS_REGION) {
-        errors.push({
-            errorId: 1003,
-            message: `The datasource region in the environment, is not set. 
-                      Please set environment variable "CURRENCIES_API_AWS_REGION" to a valid value.`
-        });
-    }
+  if (!process.env.DB_NAME) {
+    errors.push({
+      errorId: ErrorCodes.EnvVarsError,
+      message: `ENV ERROR: The database name is not set as an environment variable. Set "DB_NAME" to the database name you wish to use.`,
+    });
+  }
 
-    return errors;
+  if (!process.env.DB_USER) {
+    errors.push({
+      errorId: ErrorCodes.EnvVarsError,
+      message: `ENV ERROR: The database username is not set as an environment variable. Set "DB_USER" to a username of the database.`,
+    });
+  }
+
+  if (!process.env.DB_PASSWORD) {
+    errors.push({
+      errorId: ErrorCodes.EnvVarsError,
+      message: `ENV ERROR: The database password is not set as an environment variable. Set "DB_PASSWORD" to a valid password for the database user.`,
+    });
+  }
+
+  return errors;
 }
 
 // APPLICATION BOUNDRY
 // -- Converts the service defined 'CoreHttpResponse' to the hosting provider defined 'APIGatewayProxyResultV2'
 function dispatch(response: CoreHttpResponse): APIGatewayProxyResultV2 {
-    return {
-        ...response
-    };
+  return {
+    ...response,
+  };
 }

@@ -42,7 +42,6 @@ node_modules/
 jspm_packages/
 dist/
 .vscode/
-ramp-core/
 # TypeScript v1 declaration files
 typings/
 
@@ -104,4 +103,5 @@ dist
 
 # TernJS port file
 .tern-port
-CURRENCIES_API.postman_collection.json
+.npmrc
+deploy.zip

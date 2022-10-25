@@ -1,175 +1,192 @@
-import { DynamoDB } from 'aws-sdk';
-import { AppDatabase } from './core';
-import { CoreDatabaseError } from "@onramper/ramp-core/errors";
+import { Pool } from 'pg';
+import { CoreError } from '@onramper/ramp-core/errors';
+import { AppDatabase, ErrorCodes, CurrenciesQueryParams } from './core';
 
-export { ServiceDatabase };
+export default class AuroraPostgresDatabase implements AppDatabase {
+  private dbPool;
 
+  private readonly currencyShapeQuery: string;
 
+  constructor(
+    host: string,
+    port: number,
+    databaseName: string,
+    username: string,
+    password: string
+  ) {
+    this.dbPool = new Pool({
+      host,
+      port,
+      user: username,
+      password,
+      database: databaseName,
+    });
 
-// DATABSE CONSTANTS
-//=================
-const KeySeperator: string = '#';
+    this.currencyShapeQuery =
+      'select currencyindexid,currencyid,c.name,networks.name as network,symbol, types.name as type from currencies as c left join currencynetworks as networks on c.networkid = networks.id left join currencytypes as types on c.typeid = types.id';
+  }
 
-const CurrencyTypeIndex: string = "TypeIndex";
+  async getCurrenciesInfo(params: CurrenciesQueryParams) {
+    const client = await this.dbPool.connect();
 
-const enum KeyParts {
+    let query = `select fin.currencyindexid,fin.currencyid,fin.name,fin.symbol,fin.network as network,fin.type as type from ( select a.currencyindexid,a.currencyid,a.name,a.symbol,n.name as network,t.name as type from (select currencyindexid,currencyid,name,symbol,networkid,typeid from currencies where true`;
+    const queryParams = [];
+    let paramcount = 1;
+    if (params.country) {
+      query = query.concat(
+        ` and currencyindexid not in (select currencyindexid from countrycurrencyblacklist where countryisocode=$${paramcount} )`
+      );
+      paramcount += 1;
+      queryParams.push(params.country);
+    }
 
-    CURRENCY_KEY_PREFIX = 'Currency',
+    if (params.onramp || params.participation) {
+      const currencyPairQueryRoot = `and currencyindexid in (`;
+      let onrampFilter = 'true';
+      if (params.onramp) {
+        onrampFilter = ` onrampid=any($${paramcount})`;
+        paramcount += 1;
+        queryParams.push(params.onramp);
+      }
 
-    COUNTRY_KEY_PREFIX = 'Country',
+      const sourceFilter = `select sourcecurrencyindexid as id from currencypairs where ${onrampFilter}`;
+      const targetFilter = `select targetcurrencyindexid as id from currencypairs where ${onrampFilter}`;
 
-    ROOT_RECORD = 'Default',
+      if (
+        !params.participation ||
+        (params.participation &&
+          params.participation.includes('source') &&
+          params.participation.includes('target'))
+      ) {
+        query = `${query} ${currencyPairQueryRoot} ${sourceFilter} union ${targetFilter}`;
+      } else if (
+        params.participation &&
+        params.participation.includes('source')
+      ) {
+        query = `${query} ${currencyPairQueryRoot} ${sourceFilter}`;
+      } else if (
+        params.participation &&
+        params.participation.includes('target')
+      ) {
+        query = `${query} ${currencyPairQueryRoot} ${targetFilter}`;
+      } else {
+        query = `${query} ${currencyPairQueryRoot} ${sourceFilter} union ${targetFilter}`;
+      }
+      query += ')';
+    }
 
-    TARGETS_KEY_PREFIX = 'Target'
+    if (params.pay) {
+      console.log('Payment Params ', params.pay);
+      const currencyPayQueryRoot = `and currencyindexid in (`;
+      let onrampParam = '';
 
-}
+      if (params.onramp) {
+        onrampParam = ` and onrampid = any($${paramcount})`;
+        paramcount += 1;
+        queryParams.push(params.onramp);
+      }
 
+      const paymentTypeQuery = `select currencyindexid from currencypayments where paymenttypeid in (select id from paymenttypes where name = any($${paramcount}))`;
+      paramcount += 1;
+      queryParams.push(params.pay);
 
-// KEY CONVERSIONS
-//============
-const CurrencyKey = (currencyId: string) => {
-    if (currencyId === "") { return ""; }
+      query += ` ${currencyPayQueryRoot} ${paymentTypeQuery} ${onrampParam}`;
+      query += ')';
+    }
 
-    return KeyParts.CURRENCY_KEY_PREFIX.concat(
-        KeySeperator,
-        currencyId.toUpperCase()
+    if (params.network) {
+      query = query.concat(
+        ` and networkid = any(select id from currencynetworks where name=any($${paramcount}))`
+      );
+      paramcount += 1;
+      queryParams.push(params.network);
+    }
+    if (params.type) {
+      query = query.concat(
+        ` and typeid = any(select id from currencytypes where name=any($${paramcount}))`
+      );
+      paramcount += 1;
+      queryParams.push(params.type);
+    }
+
+    query = query.concat(
+      ' ) as a left join currencynetworks as n on a.networkid = n.id left join currencytypes as t on a.typeid = t.id ) as fin'
     );
-};
 
-const CountryKey = (countryId: string): string => {
+    const results = (await client.query(query, queryParams)).rows;
 
-    return KeyParts.COUNTRY_KEY_PREFIX.concat(
-        KeySeperator,
-        countryId.toUpperCase()
+    client.release(true);
+    return results;
+  }
+
+  async getCurrencyForId(id: string) {
+    const client = await this.dbPool.connect();
+
+    const queryString: string = this.currencyShapeQuery.concat(
+      ` where currencyid='${id.toUpperCase()}'`
     );
-};
+    const results = (await client.query(queryString)).rows;
 
-const TargetKey = (currencyId: string) => {
-    return KeyParts.TARGETS_KEY_PREFIX.concat(
-        KeySeperator,
-        currencyId.toUpperCase()
-    );
+    client.release(true);
+
+    return results;
+  }
+
+  /* eslint-disable */
+  async getCurrrencyTypes() {
+    const client = await this.dbPool.connect();
+    const typesArray = `select name, description from currencytypes where enabled=true and deleted = false`;
+    const results = (await client.query(typesArray)).rows;
+
+    client.release(true);
+
+    return results;
+  }
+
+  async getAllNetworks() {
+    const client = await this.dbPool.connect();
+    const typesArray = `select name, description from currencynetworks where enabled=true and deleted = false`;
+    const results = (await client.query(typesArray)).rows;
+
+    client.release(true);
+    return results;
+  }
+
+  async getAllPaymentTypes() {
+    const client = await this.dbPool.connect();
+    const typesArray = `select name, description from paymenttypes where enabled=true and deleted = false`;
+    const results = (await client.query(typesArray)).rows;
+
+    client.release(true);
+    return results;
+  }
+
+  async getCurrencyCountryBlackList(
+    countryId?: string
+  ): Promise<string[] | CoreError> {
+    let validationExpr: RegExp = new RegExp('[a-zA-Z]{2}');
+
+    if (!countryId) {
+      return [];
+    }
+
+    if (!validationExpr.test(countryId)) {
+      return new CoreError(
+        ErrorCodes.InvalidCountryCode,
+        `The country code ${countryId} is invalid. Please pass an ISO 3166-1 alpha-2 compliant country code.`
+      );
+    }
+
+    const query = `select c.currencyid from countrycurrencyblacklist as b left join currencies as c on c.currencyindexid=b.currencyindexid where countryisocode=$1`;
+    const queryParams: any[] = [countryId.toLowerCase()];
+    const client = await this.dbPool.connect();
+    let results = (await client.query(query, queryParams)).rows;
+
+    const returnRes: string[] = results.map((item) => {
+      return item.currencyid;
+    });
+
+    client.release(true);
+    return returnRes;
+  }
 }
-
-const GetIdFromKeyEnd = (currencykey: string) => {
-    if (currencykey === "") { return ""; }
-
-    const keyComponents: string[] = currencykey.split(KeySeperator);
-    // The Id is at the very end of the key string.
-    return keyComponents[keyComponents.length - 1];
-};
-
-
-// DATABASE IMPLEMENTATION
-//========================
-class ServiceDatabase implements AppDatabase {
-
-    private tableName: string;
-    private db: DynamoDB.DocumentClient;
-
-    constructor(tableName: string, region: string, endpointUrl?: string) {
-
-        this.tableName = tableName;
-        this.db = new DynamoDB.DocumentClient({ region: region, endpoint: endpointUrl });
-
-    }
-
-    async getAllCurrencies(): Promise<any> {
-
-        var params = {
-            ExpressionAttributeValues: {
-                ':s': KeyParts.CURRENCY_KEY_PREFIX,
-                ':e': KeyParts.ROOT_RECORD
-            },
-            //KeyConditionExpression: `Id = :s and begins_with(#i,:e)`,
-            ProjectionExpression: 'Id, #n, Networks, Symbol, #t',
-            ExpressionAttributeNames: { '#n': 'Name', '#t': 'Type' },
-            TableName: this.tableName,
-            FilterExpression: "begins_with(Id,:s) and RecordKey = :e",
-        };
-
-        let results = await this.db.scan(params).promise();
-
-        // -- Handle the case where result may be an error.
-        if (results.$response.error)
-            return new CoreDatabaseError(this.tableName, results.$response.error);
-
-
-        return results.Items;
-    }
-
-    async getCurrencyForId(id: string): Promise<any> {
-        let params = {
-            TableName: this.tableName,
-            Key: {
-                Id: CurrencyKey(id),
-                RecordKey: KeyParts.ROOT_RECORD
-            },
-            ProjectionExpression: 'Id, #n, Networks, Symbol, #t',
-            ExpressionAttributeNames: { '#n': 'Name', '#t': 'Type' },
-        };
-
-        let results = await this.db.get(params).promise();
-
-        // -- Handle the case where result may be an error.
-        if (results.$response.error) {
-            return new CoreDatabaseError(this.tableName, results.$response.error);
-        }
-        return results.Item;
-    }
-
-    async getCurrrencyTypes(): Promise<any> {
-        // Implement a unique list of currency
-    }
-
-    async getCurrencyForType(typeName: string): Promise<any> {
-
-        let params = {
-            TableName: this.tableName,
-            IndexName: CurrencyTypeIndex,
-            KeyConditionExpression: '#t = :t',
-            ProjectionExpression: 'Id, #n, Networks, Symbol, #t',
-            ExpressionAttributeNames: { '#n': 'Name', '#t': 'Type' },
-            ExpressionAttributeValues: { ':t': typeName, ':c': KeyParts.CURRENCY_KEY_PREFIX },
-            FilterExpression: 'begins_with(Id,:c) and #t = :t'
-        }
-
-        let results = await this.db.scan(params).promise();
-
-        return results.Items;
-    }
-
-    async getCurrenciesForCountry(countryId: string): Promise<any> {
-
-        let params = {
-            TableName: this.tableName,
-            Key: {
-                Id: CountryKey(countryId),
-                RecordKey: KeyParts.ROOT_RECORD
-            },
-            ProjectionExpression: 'BlackList'
-        };
-
-        let results = await this.db.get(params).promise();
-
-        if (results.$response.error) {
-            return new CoreDatabaseError(this.tableName, results.$response.error);
-        }
-
-        // -- If the list is empty or a record does not exist, that means no country restrictions are to be applied.
-        if (!results.Item?.BlackList) {
-            return this.getAllCurrencies();
-        }
-
-        let blacklist: string[] = JSON.parse(JSON.stringify(results.Item?.BlackList));
-
-        // This scan operation must be replaced by a cached record.
-        let currencyResults = await this.getAllCurrencies();
-
-        let items = currencyResults.filter((element: any) => {
-            return !blacklist.includes(GetIdFromKeyEnd(element.Id));
-        });
-        return items;
-    }
-}
-

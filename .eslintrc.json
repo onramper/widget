@@ -1,0 +1,45 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
+  "extends": [
+    "airbnb-base",
+    "prettier",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/typescript"
+  ],
+  "rules": {
+    // 0 - Silence, 1 - Warn, 2 - Error
+    "prettier/prettier": 0,
+    "no-explicit-any": 0,
+    "no-console": 0,
+    "no-shadow": 0,
+    "@typescript-eslint/no-shadow": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/prefer-default-export": 0,
+    "@typescript-eslint/no-unused-vars": 1,
+    "no-use-before-define": 0,
+    "@typescript-eslint/no-use-before-define": 0,
+    "@typescript-eslint/interface-name-prefix": 0,
+    "max-classes-per-file": 0,
+    "class-methods-use-this": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+
+    "quotes": [1, "single", { "allowTemplateLiterals": true }],
+    "prefer-default-export": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  },
+
+  "overrides": []
+}

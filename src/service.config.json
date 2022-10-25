@@ -1,9 +1,9 @@
 {
-    "IsServiceDisabled": false,
-    "ApiUrlRoot": "/currencies",
-    "License": {
-        "CopyrightText": "Copyright ONRAMPER | SAFUDEX B.V. - All Rights Reserved",
-        "LicenseText": "Proprietary and confidential",
-        "LicenseUrl": "https://onramper.com"
-    }
+  "IsServiceDisabled": false,
+  "ApiUrlRoot": "/currencies",
+  "License": {
+    "CopyrightText": "Copyright ONRAMPER | SAFUDEX B.V. - All Rights Reserved",
+    "LicenseText": "Proprietary and confidential",
+    "LicenseUrl": "https://onramper.com"
+  }
 }
