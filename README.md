@@ -59,6 +59,7 @@ DB_HOST = < host address of the Aurora RDS cluster >
 DB_PORT = < port name that the cluster is listening on >
 DB_USER = < postgres instance user's username >
 DB_PASSWORD = < postgres instance user's password >
+DB_NAME = < postgres instance name >
 ```
 
 # Development
