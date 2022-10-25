@@ -41,6 +41,8 @@ $ npm config set "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}"
 
 ```shell
 $ npm install
+$ cp package.json .npmrc dist/
+$ npm install --omitDev
 $ npm run build
 ```
 
