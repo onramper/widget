@@ -26,9 +26,18 @@ export default class AuroraPostgresDatabase implements AppDatabase {
       'select currencyindexid,currencyid,c.name,networks.name as network,symbol, types.name as type from currencies as c left join currencynetworks as networks on c.networkid = networks.id left join currencytypes as types on c.typeid = types.id';
   }
 
+  private arrayToLower(stringArray: string[]): string[] {
+    if (stringArray.length === 0) return stringArray;
+    return stringArray.map((item: string) => item.toLowerCase());
+  }
+
+  private arrayToUpper(stringArray: string[]): string[] {
+    if (stringArray.length === 0) return stringArray;
+    return stringArray.map((item: string) => item.toLowerCase());
+  }
+
   async getCurrenciesInfo(params: CurrenciesQueryParams) {
     const client = await this.dbPool.connect();
-
     let query = `select fin.currencyindexid,fin.currencyid,fin.name,fin.symbol,fin.network as network,fin.type as type from ( select a.currencyindexid,a.currencyid,a.name,a.symbol,n.name as network,t.name as type from (select currencyindexid,currencyid,name,symbol,networkid,typeid from currencies where true`;
     const queryParams = [];
     let paramcount = 1;
@@ -37,7 +46,7 @@ export default class AuroraPostgresDatabase implements AppDatabase {
         ` and currencyindexid not in (select currencyindexid from countrycurrencyblacklist where countryisocode=$${paramcount} )`
       );
       paramcount += 1;
-      queryParams.push(params.country);
+      queryParams.push(params.country.toLowerCase());
     }
 
     if (params.onramp || params.participation) {
@@ -46,11 +55,17 @@ export default class AuroraPostgresDatabase implements AppDatabase {
       if (params.onramp) {
         onrampFilter = ` onrampid=any($${paramcount})`;
         paramcount += 1;
-        queryParams.push(params.onramp);
+        queryParams.push(this.arrayToLower(params.onramp));
       }
 
       const sourceFilter = `select sourcecurrencyindexid as id from currencypairs where ${onrampFilter}`;
       const targetFilter = `select targetcurrencyindexid as id from currencypairs where ${onrampFilter}`;
+
+      if (params.participation) {
+        params.participation.map((participation) =>
+          participation.toLowerCase()
+        );
+      }
 
       if (
         !params.participation ||
@@ -83,12 +98,12 @@ export default class AuroraPostgresDatabase implements AppDatabase {
       if (params.onramp) {
         onrampParam = ` and onrampid = any($${paramcount})`;
         paramcount += 1;
-        queryParams.push(params.onramp);
+        queryParams.push(this.arrayToLower(params.onramp));
       }
 
       const paymentTypeQuery = `select currencyindexid from currencypayments where paymenttypeid in (select id from paymenttypes where name = any($${paramcount}))`;
       paramcount += 1;
-      queryParams.push(params.pay);
+      queryParams.push(this.arrayToLower(params.pay));
 
       query += ` ${currencyPayQueryRoot} ${paymentTypeQuery} ${onrampParam}`;
       query += ')';
@@ -99,14 +114,14 @@ export default class AuroraPostgresDatabase implements AppDatabase {
         ` and networkid = any(select id from currencynetworks where name=any($${paramcount}))`
       );
       paramcount += 1;
-      queryParams.push(params.network);
+      queryParams.push(this.arrayToLower(params.network));
     }
     if (params.type) {
       query = query.concat(
         ` and typeid = any(select id from currencytypes where name=any($${paramcount}))`
       );
       paramcount += 1;
-      queryParams.push(params.type);
+      queryParams.push(this.arrayToLower(params.type));
     }
 
     query = query.concat(
@@ -121,11 +136,12 @@ export default class AuroraPostgresDatabase implements AppDatabase {
 
   async getCurrencyForId(id: string) {
     const client = await this.dbPool.connect();
+    const queryParams = [];
 
-    const queryString: string = this.currencyShapeQuery.concat(
-      ` where currencyid='${id.toUpperCase()}'`
-    );
-    const results = (await client.query(queryString)).rows;
+    const queryString: string =
+      this.currencyShapeQuery.concat(` where currencyid=$1`);
+    queryParams.push(id.toUpperCase());
+    const results = (await client.query(queryString, queryParams)).rows;
 
     client.release(true);
 
@@ -139,7 +155,6 @@ export default class AuroraPostgresDatabase implements AppDatabase {
     const results = (await client.query(typesArray)).rows;
 
     client.release(true);
-
     return results;
   }
 

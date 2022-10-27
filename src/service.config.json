@@ -1,6 +1,13 @@
 {
   "IsServiceDisabled": false,
   "ApiUrlRoot": "/currencies",
+  "Environment": {
+    "DB_NAME": "DB_NAME",
+    "DB_PORT": "DB_PORT",
+    "DB_HOST": "DB_HOST",
+    "DB_USER": "DB_USER",
+    "DB_PASSWORD": "DB_PASSWORD"
+  },
   "License": {
     "CopyrightText": "Copyright ONRAMPER | SAFUDEX B.V. - All Rights Reserved",
     "LicenseText": "Proprietary and confidential",

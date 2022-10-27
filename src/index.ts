@@ -101,43 +101,50 @@ function checkForEnvironmentErrors(): CoreError[] {
   const errors: CoreError[] = [];
 
   // -- Verify minimum environment variables set.
-  if (!process.env.DB_HOST) {
+  // -- See service.config.json for environment mappings
+  // eslint-disable-next-line dot-notation
+  if (!process.env[serviceConfig.Environment.DB_HOST]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database host name is not set as an environment variable. Set "DB_HOST" to the host address of the database.`,
+      message: `ENV ERROR: The database host name is not set as an environment variable. Set "${serviceConfig.Environment.DB_HOST}" to the host address of the database.`,
     });
   }
 
-  if (!process.env.DB_PORT) {
+  if (!process.env[serviceConfig.Environment.DB_PORT]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database port is not set as an environment variable. Set "DB_PORT" to the port number the database is listening.`,
+      message: `ENV ERROR: The database port is not set as an environment variable. Set "${serviceConfig.Environment.DB_PORT}" to the port number the database is listening.`,
     });
-  } else if (Number.isNaN(Number.parseInt(process.env.DB_PORT, 10))) {
+  } else if (
+    Number.isNaN(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      Number.parseInt(process.env[serviceConfig.Environment.DB_PORT]!, 10)
+    )
+  ) {
     errors.push({
       errorId: ErrorCodes.InvalidPortNumber,
-      message: `ENV ERROR: Database port number is not a number. Set environment variable "DB_PORT" to a port number.`,
+      message: `ENV ERROR: Database port number is not a number. Set environment variable "${serviceConfig.Environment.DB_PORT}" to a port number.`,
     });
   }
 
-  if (!process.env.DB_NAME) {
+  if (!process.env[serviceConfig.Environment.DB_NAME]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database name is not set as an environment variable. Set "DB_NAME" to the database name you wish to use.`,
+      message: `ENV ERROR: The database name is not set as an environment variable. Set "${serviceConfig.Environment.DB_NAME}" to the database name you wish to use.`,
     });
   }
 
-  if (!process.env.DB_USER) {
+  if (!process.env[serviceConfig.Environment.DB_USER]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database username is not set as an environment variable. Set "DB_USER" to a username of the database.`,
+      message: `ENV ERROR: The database username is not set as an environment variable. Set "${serviceConfig.Environment.DB_USER}" to a username of the database.`,
     });
   }
 
-  if (!process.env.DB_PASSWORD) {
+  if (!process.env[serviceConfig.Environment.DB_PASSWORD]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database password is not set as an environment variable. Set "DB_PASSWORD" to a valid password for the database user.`,
+      message: `ENV ERROR: The database password is not set as an environment variable. Set "${serviceConfig.Environment.DB_PASSWORD}" to a valid password for the database user.`,
     });
   }
 
@@ -148,6 +155,10 @@ function checkForEnvironmentErrors(): CoreError[] {
 // -- Converts the service defined 'CoreHttpResponse' to the hosting provider defined 'APIGatewayProxyResultV2'
 function dispatch(response: CoreHttpResponse): APIGatewayProxyResultV2 {
   return {
+    headers: {
+      ...response.headers,
+      'Content-Type': 'application/json',
+    },
     ...response,
   };
 }
