@@ -84,8 +84,7 @@ export class CurrencyNotFoundError extends CoreError {
   constructor(currencyId: string) {
     super(
       ErrorCodes.InvalidCurrencyId,
-      `The currency with Id: ${currencyId} cannot be found. 
-            Provide a valid currency Id.`
+      `The currency with Id: ${currencyId} cannot be found. Provide a valid currency Id.`
     );
   }
 }
