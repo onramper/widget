@@ -188,7 +188,7 @@ export default class AuroraPostgresDatabase implements AppDatabase {
     if (!validationExpr.test(countryId)) {
       return new CoreError(
         ErrorCodes.InvalidCountryCode,
-        `The country code ${countryId} is invalid. Please pass an ISO 3166-1 alpha-2 compliant country code.`
+        `The country code ${countryId.trim()} is invalid. Please pass an ISO 3166-1 alpha-2 compliant country code.`
       );
     }
 

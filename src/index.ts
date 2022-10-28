@@ -65,12 +65,14 @@ export const handler = async (
   switch (event.routeKey) {
     case `GET ${serviceConfig.ApiUrlRoot}`:
       response = await getAllCurrencies(repository, {
-        country: event.queryStringParameters?.country?.split(',')[0],
-        pay: event.queryStringParameters?.pay?.split(','),
-        network: event.queryStringParameters?.network?.split(','),
-        type: event.queryStringParameters?.type?.split(','),
-        participation: event.queryStringParameters?.participation?.split(','),
-        onramp: event.queryStringParameters?.onramp?.split(','),
+        country: event.queryStringParameters?.country?.trim().split(',')[0],
+        pay: event.queryStringParameters?.pay?.trim().split(','),
+        network: event.queryStringParameters?.network?.trim().split(','),
+        type: event.queryStringParameters?.type?.trim().split(','),
+        participation: event.queryStringParameters?.participation
+          ?.trim()
+          .split(','),
+        onramp: event.queryStringParameters?.onramp?.trim().split(','),
       });
       break;
     case `GET ${serviceConfig.ApiUrlRoot}/types`:
@@ -82,13 +84,17 @@ export const handler = async (
     case `GET ${serviceConfig.ApiUrlRoot}/payment-types`:
       response = await getAllCurrencyPaymentTypes(repository);
       break;
-    case `GET ${serviceConfig.ApiUrlRoot}/{currencyId}`:
+    case `GET ${serviceConfig.ApiUrlRoot}/{currencyId}`: {
+      const currencyId = event.pathParameters?.currencyId
+        ? event.pathParameters?.currencyId
+        : '';
       response = await getCurrency(
         repository,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-        event.pathParameters?.currencyId!
+        currencyId.trim()
       );
       break;
+    }
     default:
       response = HttpResponse.BadRequest([]);
   }
@@ -106,14 +112,14 @@ function checkForEnvironmentErrors(): CoreError[] {
   if (!process.env[serviceConfig.Environment.DB_HOST]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database host name is not set as an environment variable. Set "${serviceConfig.Environment.DB_HOST}" to the host address of the database.`,
+      message: `ENV ERROR: The database host name is not set as an environment variable. Set "${serviceConfig.Environment.DB_HOST.trim()}" to the host address of the database.`,
     });
   }
 
   if (!process.env[serviceConfig.Environment.DB_PORT]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database port is not set as an environment variable. Set "${serviceConfig.Environment.DB_PORT}" to the port number the database is listening.`,
+      message: `ENV ERROR: The database port is not set as an environment variable. Set "${serviceConfig.Environment.DB_PORT.trim()}" to the port number the database is listening.`,
     });
   } else if (
     Number.isNaN(
@@ -123,28 +129,28 @@ function checkForEnvironmentErrors(): CoreError[] {
   ) {
     errors.push({
       errorId: ErrorCodes.InvalidPortNumber,
-      message: `ENV ERROR: Database port number is not a number. Set environment variable "${serviceConfig.Environment.DB_PORT}" to a port number.`,
+      message: `ENV ERROR: Database port number is not a number. Set environment variable "${serviceConfig.Environment.DB_PORT.trim()}" to a port number.`,
     });
   }
 
   if (!process.env[serviceConfig.Environment.DB_NAME]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database name is not set as an environment variable. Set "${serviceConfig.Environment.DB_NAME}" to the database name you wish to use.`,
+      message: `ENV ERROR: The database name is not set as an environment variable. Set "${serviceConfig.Environment.DB_NAME.trim()}" to the database name you wish to use.`,
     });
   }
 
   if (!process.env[serviceConfig.Environment.DB_USER]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database username is not set as an environment variable. Set "${serviceConfig.Environment.DB_USER}" to a username of the database.`,
+      message: `ENV ERROR: The database username is not set as an environment variable. Set "${serviceConfig.Environment.DB_USER.trim()}" to a username of the database.`,
     });
   }
 
   if (!process.env[serviceConfig.Environment.DB_PASSWORD]) {
     errors.push({
       errorId: ErrorCodes.EnvVarsError,
-      message: `ENV ERROR: The database password is not set as an environment variable. Set "${serviceConfig.Environment.DB_PASSWORD}" to a valid password for the database user.`,
+      message: `ENV ERROR: The database password is not set as an environment variable. Set "${serviceConfig.Environment.DB_PASSWORD.trim()}" to a valid password for the database user.`,
     });
   }
 
