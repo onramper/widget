@@ -165,7 +165,8 @@ function getParam(name: string, defaultValue?: string): string | undefined {
   try {
     return decodeURIComponent(value);
   } catch (error) {
-    throw new Error(`Couldn't decode ${name} parameter!`);
+    // throw new Error(`Couldn't decode ${name} parameter!`);
+    console.error(`Couldn't decode ${name} parameter!`);
   }
 }
 
@@ -227,7 +228,8 @@ function getJSONParam(name: string, defaultValue?: string) {
     if (!value) return defaultValue;
     return JSON.parse(decodeURIComponent(value));
   } catch (error) {
-    throw new Error(`Invalid value for ${name} parameter!`);
+    // throw new Error(`Invalid value for ${name} parameter!`);
+    console.error(`Invalid value for ${name} parameter!`);
   }
 }
 
