@@ -34,7 +34,7 @@ const BuyCryptoView: React.FC = () => {
 
   const { handlePaymentMethodChange } = data;
   const { init } = apiInterface;
-  const { errors, initScreen } = collected;
+  const { errors, initScreen, queryParams } = collected;
   //flagEffectInit used to call init again
   useEffect(() => {
     init().finally(() => {
@@ -44,11 +44,11 @@ const BuyCryptoView: React.FC = () => {
 
   useEffect(() => {
     if (initScreen === "swap") {
-      window.location.replace(`${SWAP_URL}${localStorage.getItem("params")}`);
+      window.location.replace(`${SWAP_URL}${queryParams}`);
     } else if (initLoadingFinished && buyStep && initScreen === "sell") {
       nextScreen(<Step nextStep={buyStep} />);
     }
-  }, [buyStep, initLoadingFinished, initScreen, nextScreen]);
+  }, [buyStep, initLoadingFinished, initScreen, nextScreen, queryParams]);
 
   //listening to errors sent by APIContext
   useEffect(() => {
@@ -117,10 +117,10 @@ const BuyCryptoView: React.FC = () => {
       } else if (label?.includes("swap")) {
         //swp tab click
         sendDataToGTM(swapTabClickGtmEvent);
-        window.location.replace(`${SWAP_URL}${localStorage.getItem("params")}`);
+        window.location.replace(`${SWAP_URL}${queryParams}`);
       }
     },
-    [buyStep, collected, nextScreen, sendDataToGTM]
+    [buyStep, collected, nextScreen, queryParams, sendDataToGTM]
   );
 
   const getAvailableTabs = useCallback(() => {
