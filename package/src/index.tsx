@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import ErrorView from "./common/ErrorView";
 import styles from "./styles.module.css";
@@ -43,10 +43,6 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
     gtmId: GTM_ID,
     dataLayer: { apiKey: props.API_KEY, clientId: Cookies.get("_ga") },
   };
-
-  useEffect(() => {
-    localStorage.setItem("params", window.location.search);
-  }, []);
 
   return (
     <div
@@ -112,6 +108,7 @@ const OnramperWidget: React.FC<OnramperWidgetProps> = (props) => {
               skipTransactionScreen={props.skipTransactionScreen}
               transaction={props.transaction}
               initScreen={props.initScreen}
+              queryParams={window.location.search}
             >
               <div style={{ flexGrow: 1, display: "flex" }}>
                 <NavContainer home={<BaseScreenView />} />

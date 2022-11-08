@@ -88,6 +88,7 @@ interface APIProviderType {
   skipTransactionScreen?: boolean;
   transaction: Transaction;
   initScreen: string;
+  queryParams?: string;
 }
 
 /**
@@ -144,6 +145,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       initScreen: props.initScreen,
       defaultCrypto: defaultCrypto,
       defaultFiat: defaultFiat,
+      queryParams: props.queryParams,
     };
   }, [
     defaultAddrs,
@@ -162,6 +164,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
     props.skipTransactionScreen,
     props.transaction,
     props.initScreen,
+    props.queryParams,
     defaultCrypto,
     defaultFiat,
   ]);
