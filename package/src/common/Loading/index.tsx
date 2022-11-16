@@ -5,9 +5,7 @@ const Loading = () => {
   return (
     <>
       <div className={styles["load"]}>
-        <div className={styles["line"]}></div>
-        <div className={styles["line"]}></div>
-        <div className={styles["line"]}></div>
+         <div className={`${styles["spinner"]}`}/>
       </div>
     </>
   );
