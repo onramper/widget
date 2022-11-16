@@ -10,7 +10,7 @@
     from 90deg at 50% 50%,
     rgba(39, 174, 96, 0) 0deg,
     rgba(31, 144, 255, 0) 0.04deg,
-    #3c4ef0 360deg
+    var(--primary-color) 360deg
   );   
 
   animation: rotate 1.5s infinite linear;
@@ -37,7 +37,7 @@
   transform: translateY(-50%);
   height: 4px;
   width: 4px;
-  background: #3c4ef0;
+  background: var(--primary-color);
   border-radius: 50%;
 }
 
