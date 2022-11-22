@@ -714,6 +714,11 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             "selectedGateway",
             state.data.allRates.find((r: any) => r.id === "Mercuryo")
           );
+
+          handleInputChange(
+            "selectGatewayBy",
+            SelectGatewayByType.NotSuggested
+          );
         }
       }
       handleInputChange("selectedPaymentMethod", actualPaymentMethod);
