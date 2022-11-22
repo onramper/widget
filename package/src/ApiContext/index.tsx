@@ -708,12 +708,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
         const applePay = state.data.availablePaymentMethods.find(
           (p) => p.id === "applePay"
         );
-        if (applePay) {
+        const mercuryo = state.data.allRates.find(
+          (rate: GatewayRateOption) => rate.id === "Mercuryo"
+        );
+        if (applePay && mercuryo) {
           actualPaymentMethod = applePay;
-          handleInputChange(
-            "selectedGateway",
-            state.data.allRates.find((r: any) => r.id === "Mercuryo")
-          );
+          handleInputChange("selectedGateway", mercuryo);
 
           handleInputChange(
             "selectGatewayBy",
