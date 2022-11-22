@@ -168,6 +168,12 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
         );
         handleInputChange("selectedGateway", gatewayByPrice);
       }
+      if (collected.selectGatewayBy === SelectGatewayByType.NotSuggested) {
+        const gateway = allRates.find(
+          (g) => g.id === collected.selectedGateway?.id
+        );
+        handleInputChange("selectedGateway", gateway);
+      }
     }
   }, [
     allRates,
@@ -175,10 +181,10 @@ const BodyBuyCrypto: React.FC<IBodyBuyCryptoProps> = (props) => {
     collected.selectGatewayBy,
     collected.selectedCrypto,
     collected.selectedCurrency,
-    collected.selectedPaymentMethod,
     handleInputChange,
     collected.staticRouting,
     isRatesLoaded,
+    collected.selectedGateway?.id,
   ]);
 
   useEffect(() => {
