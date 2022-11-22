@@ -698,35 +698,34 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       const paymentToSearch =
         selectedPaymentMethod || state.collected.selectedPaymentMethod;
-      let actualPaymentMethod =
+      const actualPaymentMethod =
         state.data.availablePaymentMethods.find(
           (currency) => currency.id === paymentToSearch?.id
         ) || state.data.availablePaymentMethods[0];
 
-      if (window.ApplePaySession) {
-        // Select apple pay and mercuryo as default when apple pay is available
-        const applePay = state.data.availablePaymentMethods.find(
-          (p) => p.id === "applePay"
-        );
-        if (applePay) {
-          actualPaymentMethod = applePay;
-          handleInputChange(
-            "selectedGateway",
-            state.data.allRates.find((r: any) => r.id === "Mercuryo")
-          );
+      // if (window.ApplePaySession) {
+      //   // Select apple pay and mercuryo as default when apple pay is available
+      //   const applePay = state.data.availablePaymentMethods.find(
+      //     (p) => p.id === "applePay"
+      //   );
+      //   if (applePay) {
+      //     actualPaymentMethod = applePay;
+      //     handleInputChange(
+      //       "selectedGateway",
+      //       state.data.allRates.find((r: any) => r.id === "Mercuryo")
+      //     );
 
-          handleInputChange(
-            "selectGatewayBy",
-            SelectGatewayByType.NotSuggested
-          );
-        }
-      }
+      //     handleInputChange(
+      //       "selectGatewayBy",
+      //       SelectGatewayByType.NotSuggested
+      //     );
+      //   }
+      // }
       handleInputChange("selectedPaymentMethod", actualPaymentMethod);
     },
     [
       handleInputChange,
       state.collected.selectedPaymentMethod,
-      state.data.allRates,
       state.data.availablePaymentMethods,
       state.data.responseGateways,
     ]
