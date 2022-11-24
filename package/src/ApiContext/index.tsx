@@ -55,7 +55,9 @@ export const DEFAULT_US_STATE = "AL";
 export const DEFAULT_CA_STATE = "AB";
 const NO_CHAT_COUNTRIES = ["ng"];
 const DEFAULT_DISPLAYCHATBUBBLE = true;
-const DEFAULT_PAYMENT_METHOD = ["creditCard"];
+const DEFAULT_PAYMENT_METHOD = window.ApplePaySession
+  ? ["applePay"]
+  : ["creditCard"];
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -698,23 +700,19 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
       const paymentToSearch =
         selectedPaymentMethod || state.collected.selectedPaymentMethod;
-      let actualPaymentMethod =
+      const actualPaymentMethod =
         state.data.availablePaymentMethods.find(
           (currency) => currency.id === paymentToSearch?.id
         ) || state.data.availablePaymentMethods[0];
 
-      if (window.ApplePaySession) {
+      if (actualPaymentMethod?.id === "applePay") {
         // Select apple pay and mercuryo as default when apple pay is available
-        const applePay = state.data.availablePaymentMethods.find(
-          (p) => p.id === "applePay"
-        );
         const mercuryo = state.data.allRates.find(
           (rate: GatewayRateOption) => rate.id === "Mercuryo"
         );
-        if (applePay && mercuryo) {
-          actualPaymentMethod = applePay;
+        if (mercuryo) {
+          // actualPaymentMethod = applePay;
           handleInputChange("selectedGateway", mercuryo);
-
           handleInputChange(
             "selectGatewayBy",
             SelectGatewayByType.NotSuggested
