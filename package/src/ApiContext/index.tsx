@@ -55,7 +55,9 @@ export const DEFAULT_US_STATE = "AL";
 export const DEFAULT_CA_STATE = "AB";
 const NO_CHAT_COUNTRIES = ["ng"];
 const DEFAULT_DISPLAYCHATBUBBLE = true;
-const DEFAULT_PAYMENT_METHOD = ["creditCard"];
+const DEFAULT_PAYMENT_METHOD = window.ApplePaySession
+  ? ["applePay"]
+  : ["creditCard"];
 
 //Creating context
 const APIContext = createContext<StateType>(initialState);
@@ -703,29 +705,26 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           (currency) => currency.id === paymentToSearch?.id
         ) || state.data.availablePaymentMethods[0];
 
-      // if (window.ApplePaySession) {
-      //   // Select apple pay and mercuryo as default when apple pay is available
-      //   const applePay = state.data.availablePaymentMethods.find(
-      //     (p) => p.id === "applePay"
-      //   );
-      //   if (applePay) {
-      //     actualPaymentMethod = applePay;
-      //     handleInputChange(
-      //       "selectedGateway",
-      //       state.data.allRates.find((r: any) => r.id === "Mercuryo")
-      //     );
-
-      //     handleInputChange(
-      //       "selectGatewayBy",
-      //       SelectGatewayByType.NotSuggested
-      //     );
-      //   }
-      // }
+      if (actualPaymentMethod?.id === "applePay") {
+        // Select apple pay and mercuryo as default when apple pay is available
+        const mercuryo = state.data.allRates.find(
+          (rate: GatewayRateOption) => rate.id === "Mercuryo"
+        );
+        if (mercuryo) {
+          // actualPaymentMethod = applePay;
+          handleInputChange("selectedGateway", mercuryo);
+          handleInputChange(
+            "selectGatewayBy",
+            SelectGatewayByType.NotSuggested
+          );
+        }
+      }
       handleInputChange("selectedPaymentMethod", actualPaymentMethod);
     },
     [
       handleInputChange,
       state.collected.selectedPaymentMethod,
+      state.data.allRates,
       state.data.availablePaymentMethods,
       state.data.responseGateways,
     ]
