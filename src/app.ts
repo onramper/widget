@@ -1,10 +1,6 @@
 import { CoreDatabaseError, CoreError } from '@onramper/ramp-core/errors';
 import { CoreHttpResponse, HttpResponse } from '@onramper/ramp-core/http';
-import {
-    CurrenciesQueryParams,
-    CurrencyNotFoundError,
-    TransactionValidationParams,
-} from './core';
+import { CurrenciesQueryParams, CurrencyNotFoundError, TransactionValidationParams } from './core';
 import { CurrenciesRepo } from './repo';
 // CONTROLLERS
 // -- Removes quotation marks from the query string values.
@@ -18,10 +14,7 @@ function sanitize(param: string | undefined) {
 
 // QUERY PARAMETER OBJECTS
 
-export async function getAllCurrencies(
-    repo: CurrenciesRepo,
-    params: CurrenciesQueryParams
-): Promise<CoreHttpResponse> {
+export async function getAllCurrencies(repo: CurrenciesRepo, params: CurrenciesQueryParams): Promise<CoreHttpResponse> {
     const results = await repo.getAllCurrencies(params);
     if (results instanceof CoreDatabaseError) {
         return HttpResponse.InternalServerError([results]);
@@ -36,9 +29,7 @@ export async function hasTransactionPath(
 ): Promise<CoreHttpResponse> {
     const response = {
         result: await repo.IsValidTransaction(
-            params.amount && Number.parseInt(params.amount, 10)
-                ? Number.parseInt(params.amount, 10)
-                : 0,
+            params.amount && Number.parseInt(params.amount, 10) ? Number.parseInt(params.amount, 10) : 0,
             params.source,
             params.target,
             params.provider,
@@ -50,10 +41,7 @@ export async function hasTransactionPath(
     return HttpResponse.Ok(response);
 }
 
-export async function getCurrency(
-    repo: CurrenciesRepo,
-    currencyId: string
-): Promise<CoreHttpResponse> {
+export async function getCurrency(repo: CurrenciesRepo, currencyId: string): Promise<CoreHttpResponse> {
     // EXECUTION
     const results = await repo.getCurrency(currencyId);
 
@@ -71,9 +59,7 @@ export async function getCurrency(
     return HttpResponse.Ok(results);
 }
 
-export async function getAllCurrencyTypes(
-    repo: CurrenciesRepo
-): Promise<CoreHttpResponse> {
+export async function getAllCurrencyTypes(repo: CurrenciesRepo): Promise<CoreHttpResponse> {
     const results = await repo.getAllCurrencyTypes();
     if (results instanceof CoreError) {
         return HttpResponse.BadRequest([results]);
@@ -82,9 +68,7 @@ export async function getAllCurrencyTypes(
     return HttpResponse.Ok(results);
 }
 
-export async function getAllCurrencyNetworks(
-    repo: CurrenciesRepo
-): Promise<CoreHttpResponse> {
+export async function getAllCurrencyNetworks(repo: CurrenciesRepo): Promise<CoreHttpResponse> {
     const results = await repo.getAllCurrencyNetworks();
     if (results instanceof CoreError) {
         return HttpResponse.BadRequest([results]);
@@ -93,9 +77,7 @@ export async function getAllCurrencyNetworks(
     return HttpResponse.Ok(results);
 }
 
-export async function getAllCurrencyPaymentTypes(
-    repo: CurrenciesRepo
-): Promise<CoreHttpResponse> {
+export async function getAllCurrencyPaymentTypes(repo: CurrenciesRepo): Promise<CoreHttpResponse> {
     const results = await repo.getAllCurrencyPaymentTypes();
     if (results instanceof CoreError) {
         return HttpResponse.BadRequest([results]);

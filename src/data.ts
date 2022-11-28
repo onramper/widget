@@ -7,13 +7,7 @@ export default class AuroraPostgresDatabase implements AppDatabase {
 
     private readonly currencyShapeQuery: string;
 
-    constructor(
-        host: string,
-        port: number,
-        databaseName: string,
-        username: string,
-        password: string
-    ) {
+    constructor(host: string, port: number, databaseName: string, username: string, password: string) {
         this.dbPool = new Pool({
             host,
             port,
@@ -62,9 +56,7 @@ export default class AuroraPostgresDatabase implements AppDatabase {
             const targetFilter = `select targetcurrencyindexid as id from currencypairs where ${onrampFilter}`;
 
             if (params.participation) {
-                params.participation.map((participation) =>
-                    participation.toLowerCase()
-                );
+                params.participation.map((participation) => participation.toLowerCase());
             }
 
             if (
@@ -74,15 +66,9 @@ export default class AuroraPostgresDatabase implements AppDatabase {
                     params.participation.includes('target'))
             ) {
                 query = `${query} ${currencyPairQueryRoot} ${sourceFilter} union ${targetFilter}`;
-            } else if (
-                params.participation &&
-                params.participation.includes('source')
-            ) {
+            } else if (params.participation && params.participation.includes('source')) {
                 query = `${query} ${currencyPairQueryRoot} ${sourceFilter}`;
-            } else if (
-                params.participation &&
-                params.participation.includes('target')
-            ) {
+            } else if (params.participation && params.participation.includes('target')) {
                 query = `${query} ${currencyPairQueryRoot} ${targetFilter}`;
             } else {
                 query = `${query} ${currencyPairQueryRoot} ${sourceFilter} union ${targetFilter}`;
@@ -117,9 +103,7 @@ export default class AuroraPostgresDatabase implements AppDatabase {
             queryParams.push(this.arrayToLower(params.network));
         }
         if (params.type) {
-            query = query.concat(
-                ` and typeid = any(select id from currencytypes where name=any($${paramcount}))`
-            );
+            query = query.concat(` and typeid = any(select id from currencytypes where name=any($${paramcount}))`);
             paramcount += 1;
             queryParams.push(this.arrayToLower(params.type));
         }
@@ -143,34 +127,18 @@ export default class AuroraPostgresDatabase implements AppDatabase {
     ): Promise<boolean> {
         const client = await this.dbPool.connect();
         const query = `with sourceCurrency as (select currencyindexid from currencies where currencyid = $1), targetCurrency as (select currencyindexid from currencies where currencyid = $2), paymentTypes as (select id from paymenttypes where name=$4 ) select COUNT(*) as Number_Of_Paths from (select * from currencypairs where sourcecurrencyindexid in (select currencyindexid from sourceCurrency) and targetcurrencyindexid in (select currencyindexid from targetcurrency) and onrampid = $3) as pairs left join currencypayments as payments on pairs.sourcecurrencyindexid = payments.currencyindexid and pairs.onrampid = payments.onrampid inner join paymentTypes as paytypes on paytypes.id = payments.paymenttypeid where payments.minamount <= $5 and payments.maxamount > $5`;
-        const results = (
-            await client.query(query, [
-                sourceCurrency,
-                targetCurrency,
-                onrampid,
-                paymentMethod,
-                amount,
-            ])
-        ).rows;
-        console.log('RESULTS ', results[0]);
-        console.log(
-            'Converstion ',
-            Number.parseInt(results[0].Number_Of_Paths, 10)
-        );
+        const results = (await client.query(query, [sourceCurrency, targetCurrency, onrampid, paymentMethod, amount]))
+            .rows;
+
         client.release(true);
-        return (
-            results &&
-            results.length > 0 &&
-            Number.parseInt(results[0].number_of_paths, 10) > 0
-        );
+        return results && results.length > 0 && Number.parseInt(results[0].number_of_paths, 10) > 0;
     }
 
     async getCurrencyForId(id: string) {
         const client = await this.dbPool.connect();
         const queryParams = [];
 
-        const queryString: string =
-            this.currencyShapeQuery.concat(` where currencyid=$1`);
+        const queryString: string = this.currencyShapeQuery.concat(` where currencyid=$1`);
         queryParams.push(id.toUpperCase());
         const results = (await client.query(queryString, queryParams)).rows;
 
@@ -207,9 +175,7 @@ export default class AuroraPostgresDatabase implements AppDatabase {
         return results;
     }
 
-    async getCurrencyCountryBlackList(
-        countryId?: string
-    ): Promise<string[] | CoreError> {
+    async getCurrencyCountryBlackList(countryId?: string): Promise<string[] | CoreError> {
         let validationExpr: RegExp = new RegExp('[a-zA-Z]{2}');
 
         if (!countryId) {

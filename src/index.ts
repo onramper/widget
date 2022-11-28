@@ -18,9 +18,7 @@ import { AppDatabase, ErrorCodes, TransactionValidationParams } from './core';
 
 // API CALLS
 // -- Application Gateway V2 calls. When V3 comes we will change here.
-export const handler = async (
-    event: APIGatewayProxyEventV2
-): Promise<APIGatewayProxyResultV2> => {
+export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
     if (serviceConfig.IsServiceDisabled) {
         return HttpResponse.ServerUnavailable([]);
     }
@@ -58,17 +56,11 @@ export const handler = async (
     switch (event.routeKey) {
         case `GET ${serviceConfig.ApiUrlRoot}`:
             response = await getAllCurrencies(repository, {
-                country: event.queryStringParameters?.country
-                    ?.trim()
-                    .split(',')[0],
+                country: event.queryStringParameters?.country?.trim().split(',')[0],
                 pay: event.queryStringParameters?.pay?.trim().split(','),
-                network: event.queryStringParameters?.network
-                    ?.trim()
-                    .split(','),
+                network: event.queryStringParameters?.network?.trim().split(','),
                 type: event.queryStringParameters?.type?.trim().split(','),
-                participation: event.queryStringParameters?.participation
-                    ?.trim()
-                    .split(','),
+                participation: event.queryStringParameters?.participation?.trim().split(','),
                 onramp: event.queryStringParameters?.onramp?.trim().split(','),
             });
             break;
@@ -106,9 +98,7 @@ export const handler = async (
             response = await getAllCurrencyPaymentTypes(repository);
             break;
         case `GET ${serviceConfig.ApiUrlRoot}/{currencyId}`: {
-            const currencyId = event.pathParameters?.currencyId
-                ? event.pathParameters?.currencyId
-                : '';
+            const currencyId = event.pathParameters?.currencyId ? event.pathParameters?.currencyId : '';
             response = await getCurrency(repository, currencyId.trim());
             break;
         }
@@ -174,16 +164,8 @@ function checkForEnvironmentErrors(): CoreError[] {
     return errors;
 }
 
-function isValidTransactionParams(
-    item: any
-): item is TransactionValidationParams {
-    if (
-        'amount' in item &&
-        'source' in item &&
-        'target' in item &&
-        'pay' in item &&
-        'provider' in item
-    ) {
+function isValidTransactionParams(item: any): item is TransactionValidationParams {
+    if ('amount' in item && 'source' in item && 'target' in item && 'pay' in item && 'provider' in item) {
         return true;
     }
 
