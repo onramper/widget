@@ -94,7 +94,7 @@ const ExpectedAmountPreview: React.FC = () => {
           return t("buyCryptoView.fetchingPrice");
         }
 
-        const qtyText = `${expectedCrypto.toFixed(
+        const qtyText = `${collected.selectedGateway?.receivedCrypto?.toFixed(
           collected.amountInCrypto ? 2 : 8
         )} ${unitName}`;
         const qtyDescription = collected.amountInCrypto
