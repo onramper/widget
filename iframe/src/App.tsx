@@ -11,7 +11,7 @@ const defaultApiKey =
     ? undefined
     : process.env.REACT_APP_STAGE === "l2"
     ? l2_key
-    : window.location.origin.split(".")[2] === "com"
+    : window.location.origin.includes("com")
     ? com_key
     : dev_key;
 
