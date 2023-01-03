@@ -705,7 +705,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           (currency) => currency.id === paymentToSearch?.id
         ) || state.data.availablePaymentMethods[0];
 
-      if (actualPaymentMethod?.id === "applePay") {
+      /*if (actualPaymentMethod?.id === "applePay") {
         // Select apple pay and mercuryo as default when apple pay is available
         const mercuryo = state.data.allRates.find(
           (rate: GatewayRateOption) => rate.id === "Mercuryo"
@@ -718,7 +718,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
             SelectGatewayByType.NotSuggested
           );
         }
-      }
+      }*/
       handleInputChange("selectedPaymentMethod", actualPaymentMethod);
     },
     [
