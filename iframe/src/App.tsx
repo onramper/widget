@@ -177,7 +177,7 @@ function getArrayParam(paramName: string, defaultValue?: string[]) {
 }
 
 function getWalletsParam() {
-  if(apiKey == "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || apiKey == "pk_test_oDsXkHokDdr06zZ0_sxJGw00"){
+  if(apiKey === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || apiKey === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"){
     console.error(`Wallets param disabled.`);
     return;
   }
