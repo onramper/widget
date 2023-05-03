@@ -356,7 +356,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
         const excludeGateways =
             props.API_KEY === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || props.API_KEY === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
-                ? ['transak', 'moonpay']
+                ? ['Transak', 'Moonpay']
                 : [];
 
         responseGateways = API.filterGatewaysResponse(
