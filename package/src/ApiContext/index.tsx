@@ -118,6 +118,12 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO;
   const sendDataToGTM = useGTMDispatch();
   const is3pcCookiesSupported = useThirdPartyCookieCheck();
+
+  const excludeGateways =
+      props.API_KEY === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || props.API_KEY === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
+          ? ['Transak', 'Moonpay']
+          : [];
+
   const generateInitialCollectedState = useCallback((): CollectedStateType => {
     return {
       ...initialState.collected,
@@ -354,11 +360,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           includeDefaultAmounts: true,
         });
 
-        const excludeGateways =
-            props.API_KEY === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || props.API_KEY === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
-                ? ['Transak', 'Moonpay']
-                : [];
-
         responseGateways = API.filterGatewaysResponse(
           rawResponseGateways,
           props.filters,
@@ -475,7 +476,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       props.displayChatBubble,
       props.recommendedCryptoCurrencies,
       props.filters,
-      props.API_KEY,
       handleInputChange,
       initiateRouting,
       addData,
