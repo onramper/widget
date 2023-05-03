@@ -475,6 +475,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       props.displayChatBubble,
       props.recommendedCryptoCurrencies,
       props.filters,
+      props.API_KEY,
       handleInputChange,
       initiateRouting,
       addData,
