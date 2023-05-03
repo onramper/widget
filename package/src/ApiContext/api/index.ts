@@ -261,7 +261,8 @@ export interface Transaction {
 
 const filterGatewaysResponse = (
   gatewaysResponse: GatewaysResponse,
-  filters?: Filters
+  filters?: Filters,
+  excludeGateways?: string[]
 ): GatewaysResponse => {
   if (!filters) return gatewaysResponse;
 
@@ -324,6 +325,12 @@ const filterGatewaysResponse = (
         return true;
       }
       return onlyGateways.includes(gateway.identifier);
+    })
+    .filter((gateway) => {
+      if (excludeGateways === undefined) {
+        return true;
+      }
+      return !excludeGateways.includes(gateway.identifier);
     });
   return {
     ...gatewaysResponse,
