@@ -264,7 +264,7 @@ const filterGatewaysResponse = (
   filters?: Filters,
   excludeGateways?: string[]
 ): GatewaysResponse => {
-  if (!filters) return gatewaysResponse;
+  if (!filters && !excludeGateways) return gatewaysResponse;
 
   const {
     onlyCryptos,
@@ -274,7 +274,7 @@ const filterGatewaysResponse = (
     excludeFiat,
     onlyGateways,
     onlyFiat,
-  } = filters;
+  } = filters || {};
 
   const _onlyCryptos = onlyCryptos?.map((id) => id.toUpperCase());
   const _excludeCryptos = excludeCryptos?.map((id) => id.toUpperCase());
