@@ -353,9 +353,16 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           includeIcons: true,
           includeDefaultAmounts: true,
         });
+
+        const excludeGateways =
+            props.API_KEY === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || props.API_KEY === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
+                ? ['Transak', 'Moonpay']
+                : [];
+
         responseGateways = API.filterGatewaysResponse(
           rawResponseGateways,
-          props.filters
+          props.filters,
+          excludeGateways
         );
       } catch (error) {
         return processErrors({
