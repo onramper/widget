@@ -249,6 +249,7 @@ export interface Filters {
   excludeFiat?: string[];
   onlyGateways?: string[];
   onlyFiat?: string[];
+  excludeGateways?: string[];
 }
 
 export interface Transaction {
@@ -261,8 +262,7 @@ export interface Transaction {
 
 const filterGatewaysResponse = (
   gatewaysResponse: GatewaysResponse,
-  filters?: Filters,
-  excludeGateways?: string[]
+  filters?: Filters
 ): GatewaysResponse => {
   if (!filters) return gatewaysResponse;
 
@@ -274,7 +274,8 @@ const filterGatewaysResponse = (
     excludeFiat,
     onlyGateways,
     onlyFiat,
-  } = filters;
+    excludeGateways,
+  } = filters || {};
 
   const _onlyCryptos = onlyCryptos?.map((id) => id.toUpperCase());
   const _excludeCryptos = excludeCryptos?.map((id) => id.toUpperCase());
@@ -362,6 +363,7 @@ type DefaultAddrs = {
 const filterRatesResponse = (
   ratesResponse: RateResponse,
   onlyGateways?: string[],
+  excludeGateways?: string[],
   defaultAddrs?: DefaultAddrs,
   selectedCrypto?: string
 ): RateResponse => {
@@ -372,6 +374,14 @@ const filterRatesResponse = (
     ) {
       return false;
     }
+
+    if (
+        excludeGateways !== undefined &&
+        excludeGateways.includes(gateway.identifier)
+    ) {
+      return false;
+    }
+
     if (defaultAddrs !== undefined && selectedCrypto !== undefined) {
       const memoUsed = defaultAddrs[selectedCrypto]?.memo !== undefined;
       if (memoUsed) {

@@ -354,15 +354,9 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
           includeDefaultAmounts: true,
         });
 
-        const excludeGateways =
-            props.API_KEY === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || props.API_KEY === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
-                ? ['Transak', 'Moonpay']
-                : [];
-
         responseGateways = API.filterGatewaysResponse(
           rawResponseGateways,
-          props.filters,
-          excludeGateways
+          props.filters
         );
       } catch (error) {
         return processErrors({
@@ -793,6 +787,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       responseRate = API.filterRatesResponse(
         rawResponseRate,
         props.filters?.onlyGateways,
+        props.filters?.excludeGateways,
         state.collected.defaultAddrs,
         state.collected.selectedCrypto?.id
       );
