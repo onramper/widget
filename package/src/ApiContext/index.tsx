@@ -118,12 +118,6 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
   const defaultCrypto = props.defaultCrypto?.toUpperCase() || DEFAULT_CRYPTO;
   const sendDataToGTM = useGTMDispatch();
   const is3pcCookiesSupported = useThirdPartyCookieCheck();
-
-  const excludeGateways =
-      props.API_KEY === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || props.API_KEY === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
-          ? ['Transak', 'Moonpay']
-          : [];
-
   const generateInitialCollectedState = useCallback((): CollectedStateType => {
     return {
       ...initialState.collected,
@@ -362,8 +356,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
 
         responseGateways = API.filterGatewaysResponse(
           rawResponseGateways,
-          props.filters,
-          excludeGateways
+          props.filters
         );
       } catch (error) {
         return processErrors({
@@ -794,6 +787,7 @@ const APIProvider: React.FC<APIProviderType> = (props) => {
       responseRate = API.filterRatesResponse(
         rawResponseRate,
         props.filters?.onlyGateways,
+        props.filters?.excludeGateways,
         state.collected.defaultAddrs,
         state.collected.selectedCrypto?.id
       );

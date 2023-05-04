@@ -30,6 +30,10 @@ const onlyPaymentMethods = getArrayParam("onlyPaymentMethods");
 const excludePaymentMethods = getArrayParam("excludePaymentMethods");
 const excludeFiat = getArrayParam("excludeFiat");
 const onlyGateways = getArrayParam("onlyGateways");
+const excludeGateways =
+    apiKey === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || apiKey === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
+        ? ['Transak', 'Moonpay']
+        : undefined;
 const onlyFiat = getArrayParam("onlyFiat");
 const country = getParam("country");
 const language = getParam("language");
@@ -109,6 +113,7 @@ function App() {
               excludeFiat: excludeFiat,
               onlyGateways: onlyGateways,
               onlyFiat: onlyFiat,
+              excludeGateways: excludeGateways
             }}
             selectGatewayBy={selectGatewayBy}
             country={country}
