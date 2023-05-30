@@ -30,8 +30,7 @@ const onlyPaymentMethods = getArrayParam("onlyPaymentMethods");
 const excludePaymentMethods = getArrayParam("excludePaymentMethods");
 const excludeFiat = getArrayParam("excludeFiat");
 const onlyGateways = getArrayParam("onlyGateways");
-const excludeGateways =
-    apiKey === "pk_prod_trQ0nGBcmU_JY41N8Tl50Q00" || apiKey === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
+const excludeGateways = apiKey === "pk_test_oDsXkHokDdr06zZ0_sxJGw00"
         ? ['Transak', 'Moonpay']
         : undefined;
 const onlyFiat = getArrayParam("onlyFiat");
