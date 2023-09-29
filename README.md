@@ -1,10 +1,20 @@
+# ⚠️ DEPRECATION WARNING ⚠️
+
+This widget has been deprecated and the repository is currently in the maintenance mode.
+
+Please refer to the Onramper official documentation on how to configure the brand new widget offered by Onramper: https://docs.onramper.com/docs/integration-widget.
+
+You can also try the new widget on [this page](https://www.onramper.com/try).
+
+---
+
 # Onramper
 
 [Instructions of how to integrate the widget in your website here.](https://docs.onramper.dev/widget)
 
 This project is created using create-react-app with typescript, here you will find some notes about how to customize or build the widget from the source files. In this repo you will find the source files of Onramper's buy page ([`widget.onramper.com`](https://widget.onramper.com)) and the source files of the widget component ([`@onramper/widget`](https://npmjs.org/package/@onramper/widget))
 
-###### Developement
+###### Development
 ```shell
 $ cd iframe
 $ npm run setup
